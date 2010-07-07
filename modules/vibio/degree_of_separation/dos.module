@@ -1,0 +1,118 @@
+<?php
+require_once("dijkstra.class.php");
+
+define("DOS_DEFAULT_DEPTH", 3);
+define("DOS_INFINITY", 5000);
+
+function dos_perm()
+{
+	return array(
+		"dos admin",
+	);
+}
+
+function dos_menu()
+{
+	return array(
+		"admin/settings/degree-of-separation"	=> array(
+			"title"				=> "Degree of Separation",
+			"description"		=> "Manage the way degree of separation behaves",
+			"page callback"		=> "drupal_get_form",
+			"page arguments"	=> array("dos_admin"),
+			"access arguments"	=> array("dos admin"),
+			"type"				=> MENU_NORMAL_ITEM,
+			"file"				=> "forms.inc.php",
+		),
+	);
+}
+
+//dijkstra
+function dos_get($target_uid, $type=false)
+{
+	global $user;
+	
+	$from_uid = $user->uid;
+	
+	if ($target_uid == $from_uid)
+	{
+		return $target_uid;
+	}
+	elseif (!$type && !($type = variable_get("dos_relation_type", false)))
+	{
+		return array();
+	}
+	
+	$current_depth = 1;
+	$profiles = array();
+	$points = array();
+	$queue = array($from_uid);
+	
+	//first we have to build our social network graph
+	while (!empty($queue) && $current_depth < variable_get("dos_max_depth", DOS_DEFAULT_DEPTH))
+	{
+		$next_queue = array();
+		
+		foreach ($queue as $quid)
+		{
+			$params = array(
+				"user"	=> $quid,
+			);
+			$options = array(
+				"include_user_info"	=> true,
+			);
+			$rels = user_relationships_load($params, $options);
+			
+			foreach ($rels as $rel)
+			{
+				$key = min($rel->requester_id, $rel->requestee_id)."_".max($rel->requester_id, $rel->requestee_id);
+				
+				if (!array_key_exists($key, $points))
+				{
+					$points[$key] = array($rel->requester_id, $rel->requestee_id, 1); //distance between requester/requestee is 1
+				}
+				if (!array_key_exists($rel->requester_id, $profiles))
+				{
+					$profiles[$rel->requester_id] = $rel->requester->name;
+				}
+				if (!array_key_exists($rel->requestee_id, $profiles))
+				{
+					$profiles[$rel->requestee_id] = $rel->requestee->name;
+				}
+				
+				if ($quid != $rel->requester_id)
+				{
+					$next_queue[] = $rel->requester_id;
+				}
+				elseif ($quid != $rel->requestee_id)
+				{
+					$next_queue[] = $rel->requestee_id;
+				}
+			}
+		}
+		
+		$queue = $next_queue;
+		++$current_depth;
+	}
+	
+	$map = array();
+	foreach ($points as $p)
+	{
+		$x = $p[0];
+		$y = $p[1];
+		$d = $p[2];
+		
+		$map[$x][$y] = $map[$y][$x] = $d;
+	}
+	
+	$dijkstra = new Dijkstra($map, DOS_INFINITY);
+	$dijkstra->findShortestPath($from_uid, $target_uid);
+	$path = array();
+	
+	foreach ($dijkstra->getResults($target_uid, true) as $p)
+	{
+		$path[$p] = $profiles[$p];
+	}
+	
+	return $path;
+}
+?>

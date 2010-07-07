@@ -1,0 +1,33 @@
+<?php
+function vibio_ajax_perm()
+{
+	return array(
+		"vibio_ajax access",
+	);
+}
+
+function vibio_ajax_menu()
+{
+	return array(
+		"vibio-ajax"	=> array(
+			"page callback"		=> "_vibio_ajax_service",
+			"access arguments"	=> array("vibio_ajax access"),
+			"type"				=> MENU_CALLBACK,
+		),
+	);
+}
+
+function _vibio_ajax_service($func, $arg)
+{
+	$service_function = "_vibio_ajax_".str_replace("-", "_", $func);
+	if (function_exists($service_function))
+	{
+		$service_function($arg);
+	}
+}
+
+function _vibio_ajax_get_friends($uid)
+{
+	exit(views_embed_view("user_relationships_browser", "default", $uid));
+}
+?>

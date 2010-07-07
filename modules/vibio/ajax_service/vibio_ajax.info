@@ -1,0 +1,4 @@
+name = "Vibio Ajax Service"
+description = "Ajax Service"
+core = 6.x
+package = "Vibio"

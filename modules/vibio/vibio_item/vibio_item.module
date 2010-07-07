@@ -1,0 +1,95 @@
+<?php
+define("VIBIO_ITEM_ACCESS_ME", 1);
+define("VIBIO_ITEM_ACCESS_ALL", 2);
+define("VIBIO_ITEM_ACCESS_AUTHENTICATED", 3);
+define("VIBIO_ITEM_ACCESS_FRIENDS", 4);
+
+function vibio_item_form_alter(&$form, &$form_state, $form_id)
+{
+	if ($form_id == "vibio_item_node_form")
+	{	
+		_vibio_item_unset($form);
+		_vibio_item_defaults($form);
+	}
+}
+
+function vibio_item_nodeapi(&$node, $op, $a3=null, $a4=null)
+{
+	if ($node->type != "vibio_item")
+	{
+		return;
+	}
+	
+	switch ($op)
+	{
+		case "load":
+			if (!_vibio_item_access($node))
+			{
+				drupal_set_message(t("The item owner has opted not to show that item"), "error");
+				drupal_goto();
+			}
+			break;
+	}
+}
+
+function _vibio_item_access($node)
+{
+	global $user;
+	
+	if ($user->uid == $node->uid) //always view your own items
+	{
+		return true;
+	}
+	
+	switch ($node->field_privacy_settings[0]['value'])
+	{
+		case VIBIO_ITEM_ACCESS_ME:
+			return $user->uid == $node->uid;
+		case VIBIO_ITEM_ACCESS_AUTHENTICATED:
+			return $user->uid > 0;
+		case VIBIO_ITEM_ACCESS_FRIENDS:
+			$params = array(
+				"between"	=> array($user->uid, $node->uid),
+			);
+			$options = array(
+				"count" => true,
+			);
+			
+			return user_relationships_load($params, $options) > 0;
+		case VIBIO_ITEM_ACCESS_ALL:
+		default:
+			return true;
+	}
+}
+
+function _vibio_item_unset(&$form)
+{
+	unset($form['revision_information']);
+	unset($form['path']);
+	unset($form['menu']);
+	unset($form['attachments']);
+}
+
+function _vibio_item_defaults(&$form)
+{
+	global $user;
+	
+	$form['author'] = array(
+		"name"	=> array(
+			"#type"	=> "value",
+			"#value"=> $user->name,
+		),
+		"date"	=> array(
+			"#type"	=> "value",
+			"#value"=> "",
+		),
+	);
+	
+	$form['options'] = array(
+		"status"	=> array(
+			"#type"	=> "value",
+			"#value"=> true,
+		),
+	);
+}
+?>

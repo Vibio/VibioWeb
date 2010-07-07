@@ -1,0 +1,6 @@
+name = "Heartbeat Integration"
+description = "Integration between Heartbeat and User Relationships. Provides functionality not supported out-of-the-box"
+core = 6.x
+package = "Vibio"
+dependencies[] = heartbeat
+dependencies[] = user_relationships_api

@@ -1,0 +1,5 @@
+name = "Degree of Separation"
+description = "Calculate the Degree of Separation between users, up to a configureable distance"
+core = 6.x
+package = "Vibio"
+dependencies[] = user_relationships_api

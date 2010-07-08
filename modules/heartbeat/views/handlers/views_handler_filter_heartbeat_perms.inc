@@ -22,7 +22,15 @@ class views_handler_filter_heartbeat_perms extends views_handler_filter_equality
    */
   function admin_summary() {
     $options = _heartbeat_perms_options();
-    return (!empty($this->value) ? $options[$this->value] : $options[1]);
+	
+	$message = "";
+	if ($this->operator == "!=")
+	{
+		$message = "(not) ";
+	}
+	$message .= !isset($this->value) ? $options[1] : $options[$this->value];
+
+	return $message;
   }
 
   /**
@@ -41,7 +49,7 @@ class views_handler_filter_heartbeat_perms extends views_handler_filter_equality
 
   function query() {
     $this->ensure_my_table();
-    $sql = "$this->table_alias.$this->real_field = '%s' ";
+    $sql = "$this->table_alias.$this->real_field $this->operator '%s' ";
     $this->query->add_where($this->options['group'], $sql, $this->value);
   }
 }

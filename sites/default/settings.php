@@ -237,3 +237,10 @@ ini_set('url_rewriter.tags',        '');
 #   'forum'      => 'Discussion board',
 #   '@count min' => '@count minutes',
 # );
+
+//override any settings
+$settings_file = dirname(__FILE__)."/../../../local/settings.php";
+if (file_exists($settings_file))
+{
+	require_once($settings_file);
+}

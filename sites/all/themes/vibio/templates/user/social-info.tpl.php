@@ -5,7 +5,7 @@ $friends = t("Friends");
 $stuff = t("Stuff");
 
 $activity_feed = views_embed_view("user_heartbeat_activity", "default", $uid);
-
+//test
 echo "
 	<div id='social_tabs'>
 		<ul>

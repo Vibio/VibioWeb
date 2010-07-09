@@ -1,0 +1,53 @@
+<?php
+require_once("ebay.lib.php");
+require_once("ebay_comm.lib.php");
+
+function ebay_perm()
+{
+	return array(
+		"ebay admin",
+		"ebay link_account",
+		"ebay search",
+	);
+}
+
+function ebay_menu()
+{
+	return array(
+		"admin/settings/ebay"	=> array(
+			"title"				=> "eBay Integration Admin",
+			"page callback"		=> "drupal_get_form",
+			"access arguments"	=> array("ebay admin"),
+			"page arguments"	=> array("ebay_admin"),
+			"file"				=> "ebay.forms.php",
+		),
+	);
+}
+
+function ebay_theme(&$existing, $type, $theme, $path)
+{
+	return array(
+		"ebay_link_account_init"	=> array(
+			"arguments"	=> array("session_id" => false),
+			"template"	=> "templates/ebay/link-account",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+	);
+}
+
+function ebay_preprocess_ebay_link_account_init(&$vars)
+{
+	global $user;
+	
+	if (!$vars['session_id'])
+	{
+		$vars['session_id'] = ebay_get_session_id();
+	}
+	
+	//TODO: store this in the db, then read from the db
+	$_SESSION['ebay_account_link'] = array(
+		"session_id"=> $vars['session_id'],
+		"uid"		=> $user->uid,
+	);
+}
+?>

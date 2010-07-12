@@ -1,4 +1,6 @@
 <?php
+define("EBAY_COMM_MSG_SUCCESS", "success");
+
 //$xml is a simple xml element
 function _ebay_comm_send($xml, $url_var, $header_version_var)
 {

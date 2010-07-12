@@ -44,10 +44,10 @@ function ebay_preprocess_ebay_link_account_init(&$vars)
 		$vars['session_id'] = ebay_get_session_id();
 	}
 	
-	//TODO: store this in the db, then read from the db
-	$_SESSION['ebay_account_link'] = array(
-		"session_id"=> $vars['session_id'],
-		"uid"		=> $user->uid,
-	);
+	$sql = "REPLACE INTO {ebay_pending}
+			(`uid`, `session_id`)
+			VALUES
+			(%d, '%s')";
+	db_query($sql, $user->uid, $vars['session_id']);
 }
 ?>

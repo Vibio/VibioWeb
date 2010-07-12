@@ -1,7 +1,12 @@
 <?php
 //$xml is a simple xml element
-function _ebay_comm_send($xml, $url, $header_version)
+function _ebay_comm_send($xml, $url_var, $header_version_var)
 {
+	if (!($url = variable_get($url_var, false)) || !($header_version = variable_get($header_version_var, false)))
+	{
+		return false;
+	}
+	
 	$curl = curl_init();
 	
 	curl_setopt($curl, CURLOPT_URL, $url);
@@ -14,8 +19,22 @@ function _ebay_comm_send($xml, $url, $header_version)
 
 	$response = curl_exec($curl);
 	curl_close($curl);
-
-	return new SimpleXMLElement($response);
+	
+	try
+	{
+		$xml = new SimpleXMLElement($response);
+	}
+	catch (Exception $e)
+	{
+		return false;
+	}
+	
+	if (strtolower($xml->Ack) != EBAY_COMM_MSG_SUCCESS)
+	{
+		return false;
+	}
+	
+	return $xml;
 }
 
 function _ebay_comm_get_headers($func_name, $version)

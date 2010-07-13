@@ -3,6 +3,10 @@ require_once("ebay.lib.php");
 require_once("ebay.api.php");
 require_once("ebay_comm.lib.php");
 
+define("EBAY_SEARCH_NETWORK", 1);
+define("EBAY_SEARCH_VIBIO", 2);
+define("EBAY_SEARCH_ALL", 3);
+
 function ebay_perm()
 {
 	return array(
@@ -41,6 +45,20 @@ function ebay_theme(&$existing, $type, $theme, $path)
 			"template"	=> "templates/ebay/link-account",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+		"ebay_search_results"		=> array(
+			"arguments"	=> array("search_result" => false, "args" => array()),
+			"template"	=> "templates/ebay/ebay-search-results",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"ebay_search_result_item"	=> array(
+			"arguments"	=> array("item" => false),
+			"template"	=> "templates/ebay/ebay-search-result-item",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"ebay_empty_search"			=> array(
+			"template"	=> "templates/ebay/empty-search",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
 	);
 }
 
@@ -77,6 +95,69 @@ function ebay_network_get_userinfo($uid)
 	return array(
 		"ebay_id"	=> db_result(db_query($sql, $uid)),
 	);
+}
+
+function ebay_search($op="search", $keys=null)
+{
+	switch ($op)
+	{
+		case "search":
+			return _ebay_search($keys);
+		case "name":
+			return t("eBay");
+		default:
+			break;
+	}
+}
+
+function ebay_search_page($results)
+{
+	return empty($results[0]) ? theme("ebay_empty_search") : theme("ebay_search_results", $results[0]);
+}
+
+function ebay_form_alter(&$form, $state, $id)
+{
+	if ($id == "search_form" && $form['module']['#value'] == "ebay")
+	{
+		$options = _ebay_search_user_options();
+		if (isset($form['#parameters'][3]))
+		{
+			preg_match('/users:([a-z]+)/i', $form['#parameters'][3], $defaults);
+			
+			$default_user_option = array_flip($options);
+			$default_user_option = $default_user_option[$defaults[1]];
+		}
+		
+		$form['ebay_advanced'] = array(
+			"#type"			=> "fieldset",
+			"#title"		=> t("Advanced"),
+			"#collapsible"	=> true,
+			"#collapsed"	=> false,
+			"search_users"	=> array(
+				"#type"				=> "select",
+				"#title"			=> t("Search Users"),
+				"#options"			=> $options,
+				"#default_value"	=> $default_user_option,
+			),
+		);
+		
+		$form["#validate"][] = "ebay_search_validate";
+	}
+}
+
+function ebay_search_validate($form, &$state)
+{
+	$vals = &$state['values'];
+	$keys = $vals['processed_keys'];
+	$user_options = _ebay_search_user_options();
+	
+	if (array_key_exists($vals['search_users'], $user_options))
+	{
+		$keys = preg_replace('/(\s+)users:([a-z]+)/i', '', $keys);
+		$keys .= " users:{$user_options[$vals['search_users']]} ";
+	}
+	
+	form_set_value($form['basic']['inline']['processed_keys'], urldecode(trim($keys)), $state);
 }
 
 function ebay_access($perm)

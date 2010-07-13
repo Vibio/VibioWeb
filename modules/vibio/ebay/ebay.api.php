@@ -57,6 +57,8 @@ function ebay_get_user($token)
 
 function ebay_find_items_advanced($args)
 {
+	global $user;
+	
 	$xml = _ebay_xml_init("FindItemsAdvancedRequest", 'xmlns="urn:ebay:apis:eBLBaseComponents"');
 	
 	if (isset($args['keywords']))
@@ -64,9 +66,25 @@ function ebay_find_items_advanced($args)
 		$xml->addChild("QueryKeywords", $args['keywords']);
 	}
 	
-	if (isset($args['for_user']))
+	if (isset($args['friends_by_user']) && is_numeric($args['friends_by_user']))
 	{
+		$do_search = false;
+		$network = network_get($args['friends_by_user'], "default", 1); //1 is how deep to go, leave at 1 for now
+		foreach ($network as $uid => $data)
+		{
+			if ($uid == $args['friends_by_user'] || !$data['ebay_id'])
+			{
+				continue;
+			}
+			
+			$do_search = true;
+			$xml->addChild("SellerID", $data['ebay_id']);
+		}
 		
+		if (!$do_search)
+		{
+			return false;
+		}
 	}
 	elseif (isset($args['users']))
 	{
@@ -81,6 +99,18 @@ function ebay_find_items_advanced($args)
 			}
 			
 			$xml->addChild("SellerID", $ebay_id);
+		}
+	}
+	elseif ($args['all_vibio'])
+	{
+		$sql = "SELECT `ebay_id`
+				FROM {ebay_users}
+				WHERE `uid` != %d";
+		$res = db_query($sql, $user->uid);
+		
+		while ($row = db_fetch_array($res))
+		{
+			$xml->addChild("SellerID", $row['ebay_id']);
 		}
 	}
 

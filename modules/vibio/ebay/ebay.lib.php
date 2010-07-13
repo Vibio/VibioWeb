@@ -30,4 +30,42 @@ function _ebay_xml_init($root_element="some_element_name", $attributes="")
 {
 	return new SimpleXMLElement("<?xml version='1.0' encoding='utf-8'?><{$root_element} {$attributes}></{$root_element}>");
 }
+
+function _ebay_search($keys)
+{
+	global $user;
+	
+	$keys = urldecode($keys);
+	$search_args = array();
+	
+	if (preg_match('/users:([a-z]+)/i', $keys, $matches))
+	{
+		$search_args['keywords'] = preg_replace('/(\s*)users:([a-z]+)/i', '', $keys);
+		$options = array_flip(_ebay_search_user_options());
+		
+		switch ($options[$matches[1]])
+		{
+			case EBAY_SEARCH_NETWORK:
+				$search_args['friends_by_user'] = $user->uid;
+				break;
+			case EBAY_SEARCH_VIBIO:
+				$search_args['all_vibio'] = true;
+				break;
+			case EBAY_SEARCH_ALL:
+			default:
+				break;
+		}
+	}
+
+	return array(ebay_find_items_advanced($search_args));
+}
+
+function _ebay_search_user_options()
+{
+	return array(
+		EBAY_SEARCH_NETWORK	=> t("Friends"),
+		EBAY_SEARCH_VIBIO	=> t("Vibio"),
+		EBAY_SEARCH_ALL		=> t("eBay"),
+	);
+}
 ?>

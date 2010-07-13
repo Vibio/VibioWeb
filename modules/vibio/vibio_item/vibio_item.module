@@ -13,22 +13,13 @@ function vibio_item_form_alter(&$form, &$form_state, $form_id)
 	}
 }
 
-function vibio_item_nodeapi(&$node, $op, $a3=null, $a4=null)
+function vibio_item_preprocess_node(&$vars)
 {
-	if ($node->type != "vibio_item")
+	if (!_vibio_item_access($vars['node']))
 	{
-		return;
-	}
-	
-	switch ($op)
-	{
-		case "load":
-			if (!_vibio_item_access($node))
-			{
-				drupal_set_message(t("The item owner has opted not to show that item"), "error");
-				drupal_goto();
-			}
-			break;
+		$referrer = !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+		drupal_set_message(t("The owner has decided not to show that item"), "error");
+		drupal_goto($referrer);
 	}
 }
 

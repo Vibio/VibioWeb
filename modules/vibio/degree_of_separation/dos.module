@@ -77,6 +77,6 @@ function dos_preprocess_user_profile(&$vars)
 	$args = explode("/", $_GET['q']);
 	$uid = (int) $args[1];
 	
-	var_dump(dos_get($uid));
+	$vars['profile']['dos'] = dos_get($uid);
 }
 ?>

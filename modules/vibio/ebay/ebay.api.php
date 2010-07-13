@@ -88,12 +88,12 @@ function ebay_find_items_advanced($args)
 	}
 	elseif (isset($args['users']))
 	{
-		foreach (explode(",", $args['users']) as $user)
+		foreach (explode(",", $args['users']) as $uid)
 		{
 			$sql = "SELECT `ebay_id`
 					FROM {ebay_users}
 					WHERE `uid`=%d";
-			if (!($ebay_id = db_result(db_query($sql, $user))))
+			if (!($ebay_id = db_result(db_query($sql, $uid))))
 			{
 				continue;
 			}

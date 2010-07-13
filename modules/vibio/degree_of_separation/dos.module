@@ -31,88 +31,52 @@ function dos_get($target_uid, $type=false)
 {
 	global $user;
 	
-	$from_uid = $user->uid;
-	
-	if ($target_uid == $from_uid)
+	if ($target_uid == $user->uid)
 	{
-		return $target_uid;
+		return false;
 	}
 	elseif (!$type && !($type = variable_get("dos_relation_type", false)))
 	{
 		return array();
 	}
 	
-	$current_depth = 1;
-	$profiles = array();
-	$points = array();
-	$queue = array($from_uid);
+	$network = network_get($user->uid, variable_get("dos_max_depth", DOS_DEFAULT_DEPTH));
+	$paths = array();
+	$map = array();
 	
-	//first we have to build our social network graph
-	while (!empty($queue) && $current_depth < variable_get("dos_max_depth", DOS_DEFAULT_DEPTH))
+	foreach ($network as $uid => $data)
 	{
-		$next_queue = array();
-		
-		foreach ($queue as $quid)
+		foreach ($data['friends'] as $friend_id)
 		{
-			$params = array(
-				"user"	=> $quid,
-			);
-			$options = array(
-				"include_user_info"	=> true,
-			);
-			$rels = user_relationships_load($params, $options);
+			$from = min($uid, $friend_id);
+			$to = max($uid, $friend_id);
+			$dup_check = "{$from}_{$to}";
 			
-			foreach ($rels as $rel)
+			if (!in_array($dup_check, $paths))
 			{
-				$key = min($rel->requester_id, $rel->requestee_id)."_".max($rel->requester_id, $rel->requestee_id);
-				
-				if (!array_key_exists($key, $points))
-				{
-					$points[$key] = array($rel->requester_id, $rel->requestee_id, 1); //distance between requester/requestee is 1
-				}
-				if (!array_key_exists($rel->requester_id, $profiles))
-				{
-					$profiles[$rel->requester_id] = $rel->requester->name;
-				}
-				if (!array_key_exists($rel->requestee_id, $profiles))
-				{
-					$profiles[$rel->requestee_id] = $rel->requestee->name;
-				}
-				
-				if ($quid != $rel->requester_id)
-				{
-					$next_queue[] = $rel->requester_id;
-				}
-				elseif ($quid != $rel->requestee_id)
-				{
-					$next_queue[] = $rel->requestee_id;
-				}
+				$paths[] = $dup_check;
+				$map[$from][$to] = $map[$to][$from] = 1;
 			}
 		}
-		
-		$queue = $next_queue;
-		++$current_depth;
-	}
-	
-	$map = array();
-	foreach ($points as $p)
-	{
-		$x = $p[0];
-		$y = $p[1];
-		$d = $p[2];
-		
-		$map[$x][$y] = $map[$y][$x] = $d;
 	}
 	
 	$dijkstra = new Dijkstra($map, DOS_INFINITY);
-	$dijkstra->findShortestPath($from_uid, $target_uid);
+	$dijkstra->findShortestPath($user->uid, $target_uid);
 	$path = array();
 	
 	foreach ($dijkstra->getResults($target_uid, true) as $p)
 	{
-		$path[$p] = $profiles[$p];
+		$path[$p] = $network[$p]['name'];
 	}
 	
 	return $path;
+}
+
+function dos_preprocess_user_profile(&$vars)
+{
+	$args = explode("/", $_GET['q']);
+	$uid = (int) $args[1];
+	
+	var_dump(dos_get($uid));
 }
 ?>

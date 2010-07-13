@@ -64,7 +64,11 @@ function ebay_find_items_advanced($args)
 		$xml->addChild("QueryKeywords", $args['keywords']);
 	}
 	
-	if (isset($args['users']))
+	if (isset($args['for_user']))
+	{
+		
+	}
+	elseif (isset($args['users']))
 	{
 		foreach (explode(",", $args['users']) as $user)
 		{

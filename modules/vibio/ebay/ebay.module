@@ -69,6 +69,16 @@ function ebay_preprocess_ebay_link_account_init(&$vars)
 	db_query($sql, $user->uid, $vars['session_id']);
 }
 
+function ebay_network_get_userinfo($uid)
+{
+	$sql = "SELECT `ebay_id`
+			FROM {ebay_users}
+			WHERE `uid`=%d";
+	return array(
+		"ebay_id"	=> db_result(db_query($sql, $uid)),
+	);
+}
+
 function ebay_access($perm)
 {
 	return true;

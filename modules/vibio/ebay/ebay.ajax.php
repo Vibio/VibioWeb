@@ -8,7 +8,7 @@ function ebay_ajax()
 		exit(t("No action specified."));
 	}
 	$func = "_ebay_ajax_{$args['action']}";
-	
+
 	exit($func($args));
 }
 

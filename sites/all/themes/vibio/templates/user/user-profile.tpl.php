@@ -2,6 +2,8 @@
   <?php print $user_profile; ?>
 </div>
 
+<div id="user_ebay_items"></div>
+
 <div id="user_social_info">
 	<?php echo $profile['social_info']; ?>
 </div>

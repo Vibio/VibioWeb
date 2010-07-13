@@ -50,6 +50,7 @@ function _ebay_comm_get_headers($func_name, $version)
 		"X-EBAY-API-CERT-NAME:".variable_get("ebayapi_certid", false),
 		"X-EBAY-API-CALL-NAME:{$func_name}",
 		"X-EBAY-API-SITEID: 0",
+		'Content-Type: text/xml;charset=utf-8',
 	);
 
 	return $headers;

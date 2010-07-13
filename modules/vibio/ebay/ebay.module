@@ -16,11 +16,19 @@ function ebay_menu()
 {
 	return array(
 		"admin/settings/ebay"	=> array(
-			"title"				=> "eBay Integration Admin",
+			"title"				=> "eBay Integration",
+			"description"		=> "Manage eBay integration settings: keys, api urls, api versions, etc.",
 			"page callback"		=> "drupal_get_form",
 			"access arguments"	=> array("ebay admin"),
 			"page arguments"	=> array("ebay_admin"),
 			"file"				=> "ebay.forms.php",
+		),
+		"ebay/ajax/service"		=> array(
+			"page callback"		=> "ebay_ajax",
+			"access callback"	=> "ebay_access",
+			"access arguments"	=> array("ebay ajax"),
+			"file"				=> "ebay.ajax.php",
+			"type"				=> MENU_CALLBACK,
 		),
 	);
 }
@@ -34,6 +42,15 @@ function ebay_theme(&$existing, $type, $theme, $path)
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
 	);
+}
+
+function ebay_preprocess_user_profile(&$vars)
+{
+	$args = explode("/", $_GET['q']);
+	$uid = $args[1];
+	
+	drupal_add_js("var user_profile_uid = $uid;", "inline");
+	drupal_add_js("sites/all/themes/vibio/js/user-ebay.js");
 }
 
 function ebay_preprocess_ebay_link_account_init(&$vars)
@@ -50,5 +67,10 @@ function ebay_preprocess_ebay_link_account_init(&$vars)
 			VALUES
 			(%d, '%s')";
 	db_query($sql, $user->uid, $vars['session_id']);
+}
+
+function ebay_access($perm)
+{
+	return true;
 }
 ?>

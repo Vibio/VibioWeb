@@ -54,4 +54,34 @@ function ebay_get_user($token)
 	
 	return $res ? $res->User : false;
 }
+
+function ebay_find_items_advanced($args)
+{
+	$xml = _ebay_xml_init("FindItemsAdvancedRequest", 'xmlns="urn:ebay:apis:eBLBaseComponents"');
+	
+	if (isset($args['keywords']))
+	{
+		$xml->addChild("QueryKeywords", $args['keywords']);
+	}
+	
+	if (isset($args['users']))
+	{
+		foreach (explode(",", $args['users']) as $user)
+		{
+			$sql = "SELECT `ebay_id`
+					FROM {ebay_users}
+					WHERE `uid`=%d";
+			if (!($ebay_id = db_result(db_query($sql, $user))))
+			{
+				continue;
+			}
+			
+			$xml->addChild("SellerID", $ebay_id);
+		}
+	}
+
+	$res = _ebay_comm_send($xml, "ebayapi_shopping_url", "ebayapi_shopping_version");
+	
+	return $res;
+}
 ?>

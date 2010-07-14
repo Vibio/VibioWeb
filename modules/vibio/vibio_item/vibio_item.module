@@ -4,13 +4,28 @@ define("VIBIO_ITEM_ACCESS_ALL", 2);
 define("VIBIO_ITEM_ACCESS_AUTHENTICATED", 3);
 define("VIBIO_ITEM_ACCESS_FRIENDS", 4);
 
-function vibio_item_form_alter(&$form, &$form_state, $form_id)
+/*
+ the plan: COPY the node_search stuff (just op search) and add type:vibio_item to it, and also add filters based on user friendships.
+ then hide the tab for regular content. hax.
+*/
+function vibio_item_form_alter(&$form, &$state, $id)
 {
-	if ($form_id == "vibio_item_node_form")
+	if ($id == "vibio_item_node_form")
 	{	
 		_vibio_item_unset($form);
 		_vibio_item_defaults($form);
 	}
+	elseif ($id == "search_theme_form")
+	{
+		$form['#submit'][] = "vibio_item_search_submit";
+	}
+}
+
+//this is how i change the default tab
+function vibio_item_search_submit($form, &$state)
+{
+	$form_id = $form['form_id']['#value'];
+	$state['redirect'] = 'search/ebay/'.trim($state['values'][$form_id]);
 }
 
 function vibio_item_preprocess_node(&$vars)

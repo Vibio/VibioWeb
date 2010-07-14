@@ -1,4 +1,6 @@
 <?php
+require_once("vibio_item.inc.php");
+
 define("VIBIO_ITEM_ACCESS_ME", 1);
 define("VIBIO_ITEM_ACCESS_ALL", 2);
 define("VIBIO_ITEM_ACCESS_AUTHENTICATED", 3);
@@ -10,10 +12,37 @@ define("VIBIO_ITEM_ACCESS_FRIENDS", 4);
 */
 function vibio_item_form_alter(&$form, &$state, $id)
 {
+	global $user;
+	
 	if ($id == "vibio_item_node_form")
 	{	
 		_vibio_item_unset($form);
 		_vibio_item_defaults($form);
+	}
+	elseif ($id == "search_form" && $form['module']['#value'] == "vibio_item" && $user->uid > 0)
+	{
+		$options = _vibio_item_user_options();
+		if (!empty($form['#parameters'][3]))
+		{
+			preg_match('/(\s+)users:([a-z]+)/i', $form['#parameters'][3], $defaults);
+			$default_user_option = array_flip($options);
+			$default_user_option = $defaults[2];
+		}
+		
+		$form['vibio_advanced'] = array(
+			"#type"			=> "fieldset",
+			"#title"		=> t("Advanced"),
+			"#collapsible"	=> true,
+			"#collapsed"	=> false,
+			"search_users"	=> array(
+				"#type"			=> "select",
+				"#title"		=> t("Search Users"),
+				"#options"		=> $options,
+				"#default_value"=> $default_user_option,
+			),
+		);
+		
+		$form["#validate"][] = "vibio_item_search_validate";
 	}
 	elseif ($id == "search_theme_form")
 	{
@@ -21,11 +50,37 @@ function vibio_item_form_alter(&$form, &$state, $id)
 	}
 }
 
+function vibio_item_search_validate($form, &$state)
+{
+	$vals = &$state['values'];
+	$keys = $vals['processed_keys'];
+	$user_options = _vibio_item_user_options();
+	
+	if (array_key_exists($vals['search_users'], $user_options))
+	{
+		$keys = preg_replace('/(\s+)users:([a-z]+)/i', '', $keys); //remove any existing value
+		$keys .= " users:{$vals['search_users']} ";
+	}
+	
+	form_set_value($form['basic']['inline']['processed_keys'], urldecode(trim($keys)), $state);
+}
+
+function vibio_item_search($op="search", $keys=null)
+{
+	switch ($op)
+	{
+		case "name":
+			return t("Vibio");
+		case "search":
+			return _vibio_item_search($keys);
+	}
+}
+
 //this is how i change the default tab
 function vibio_item_search_submit($form, &$state)
 {
 	$form_id = $form['form_id']['#value'];
-	$state['redirect'] = 'search/ebay/'.trim($state['values'][$form_id]);
+	$state['redirect'] = 'search/vibio_item/'.trim($state['values'][$form_id]);
 }
 
 function vibio_item_preprocess_node(&$vars)
@@ -36,66 +91,5 @@ function vibio_item_preprocess_node(&$vars)
 		drupal_set_message(t("The owner has decided not to show that item"), "error");
 		drupal_goto($referrer);
 	}
-}
-
-function _vibio_item_access($node)
-{
-	global $user;
-	
-	if ($user->uid == $node->uid) //always view your own items
-	{
-		return true;
-	}
-	
-	switch ($node->field_privacy_settings[0]['value'])
-	{
-		case VIBIO_ITEM_ACCESS_ME:
-			return $user->uid == $node->uid;
-		case VIBIO_ITEM_ACCESS_AUTHENTICATED:
-			return $user->uid > 0;
-		case VIBIO_ITEM_ACCESS_FRIENDS:
-			$params = array(
-				"between"	=> array($user->uid, $node->uid),
-			);
-			$options = array(
-				"count" => true,
-			);
-			
-			return user_relationships_load($params, $options) > 0;
-		case VIBIO_ITEM_ACCESS_ALL:
-		default:
-			return true;
-	}
-}
-
-function _vibio_item_unset(&$form)
-{
-	unset($form['revision_information']);
-	unset($form['path']);
-	unset($form['menu']);
-	unset($form['attachments']);
-}
-
-function _vibio_item_defaults(&$form)
-{
-	global $user;
-	
-	$form['author'] = array(
-		"name"	=> array(
-			"#type"	=> "value",
-			"#value"=> $user->name,
-		),
-		"date"	=> array(
-			"#type"	=> "value",
-			"#value"=> "",
-		),
-	);
-	
-	$form['options'] = array(
-		"status"	=> array(
-			"#type"	=> "value",
-			"#value"=> true,
-		),
-	);
 }
 ?>

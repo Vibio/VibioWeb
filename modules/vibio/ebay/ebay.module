@@ -116,7 +116,9 @@ function ebay_search_page($results)
 
 function ebay_form_alter(&$form, $state, $id)
 {
-	if ($id == "search_form" && $form['module']['#value'] == "ebay")
+	global $user;
+	
+	if ($id == "search_form" && $form['module']['#value'] == "ebay" && $user->uid > 0)
 	{
 		$options = _ebay_search_user_options();
 		if (isset($form['#parameters'][3]))
@@ -152,7 +154,7 @@ function ebay_search_validate($form, &$state)
 	
 	if (array_key_exists($vals['search_users'], $user_options))
 	{
-		$keys = preg_replace('/(\s+)users:([a-z]+)/i', '', $keys);
+		$keys = preg_replace('/(\s+)users:([a-z]+)/i', '', $keys); //remove any existing value
 		$keys .= " users:{$user_options[$vals['search_users']]} ";
 	}
 	

@@ -17,9 +17,8 @@ function _ebay_ajax_find_items_advanced($args)
 	if ($items = ebay_find_items_advanced($args))
 	{
 		$display_args = array(
-			"expandable_search"	=> $args['expandable_search'],
+			"hide_wrapper"	=> $args['hide_wrapper'],
 		);
-		
 		return theme("ebay_search_results", $items, $display_args);
 	}
 	return theme("ebay_empty_search");

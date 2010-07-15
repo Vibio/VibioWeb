@@ -1,22 +1,20 @@
 <?php
-if ($args['expandable_search'])
-{
-	echo "
-		<div class='ebay_expandable_search'>
-			expandable search menu
-		</div>
-	";
-}
-
 $items = "";
-foreach ($search_result->SearchResult->ItemArray->Item as $result)
+
+foreach ($search_result->searchResult->item as $result)
 {
 	$items .= theme("ebay_search_result_item", $result);
 }
 
-echo "
-	<div class='ebay_search_results'>
-		$items
-	</div>
-";
+if (!$data['hide_wrapper'])
+{
+	echo "<div class='ebay_search_results'>";
+}
+
+echo $items.$data['pager'];
+
+if (!$data['hide_wrapper'])
+{
+	echo "</div>";
+}
 ?>

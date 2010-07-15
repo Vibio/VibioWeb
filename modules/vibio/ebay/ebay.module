@@ -45,7 +45,7 @@ function ebay_theme(&$existing, $type, $theme, $path)
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
 		"ebay_search_results"		=> array(
-			"arguments"	=> array("search_result" => false, "args" => array()),
+			"arguments"	=> array("search_result" => false, 'data' => array()),
 			"template"	=> "templates/ebay/ebay-search-results",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
@@ -61,6 +61,20 @@ function ebay_theme(&$existing, $type, $theme, $path)
 	);
 }
 
+function ebay_preprocess_ebay_search_results(&$vars)
+{	
+	// set these to have our custom ebay pager output to use the same theme as drupal
+	global $pager_page_array, $pager_total;
+	
+	$pager_element = is_array($pager_page_array) && !empty($pager_page_array) ? count($pager_page_array) : 0;
+	
+	
+	$pager_page_array[$pager_element] = (int) $vars['search_result']->paginationOutput->pageNumber - 1;
+	$pager_total[$pager_element] = (int) $vars['search_result']->paginationOutput->totalPages;
+	
+	$vars['data']['pager'] = theme("pager", array(), variable_get("ebayapi_entriesperpage", 20), $pager_element);
+}
+
 function ebay_preprocess_user_profile(&$vars)
 {
 	$args = explode("/", $_GET['q']);
@@ -68,6 +82,7 @@ function ebay_preprocess_user_profile(&$vars)
 	
 	drupal_add_js("var user_profile_uid = $uid;", "inline");
 	drupal_add_js("sites/all/themes/vibio/js/user-ebay.js");
+	drupal_add_js("sites/all/themes/vibio/js/ebay-search.js");
 }
 
 function ebay_preprocess_ebay_link_account_init(&$vars)
@@ -101,6 +116,7 @@ function ebay_search($op="search", $keys=null)
 	switch ($op)
 	{
 		case "search":
+			drupal_add_js("sites/all/themes/vibio/js/ebay-search.js");
 			return _ebay_search($keys);
 		case "name":
 			return t("eBay");

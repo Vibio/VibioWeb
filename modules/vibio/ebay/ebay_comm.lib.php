@@ -31,7 +31,7 @@ function _ebay_comm_send($xml, $url_var, $header_version_var)
 		return false;
 	}
 	
-	if (strtolower($xml->Ack) != EBAY_COMM_MSG_SUCCESS)
+	if (strtolower($xml->Ack) != EBAY_COMM_MSG_SUCCESS && strtolower($xml->ack) != EBAY_COMM_MSG_SUCCESS) //bleh.
 	{
 		return false;
 	}
@@ -42,6 +42,9 @@ function _ebay_comm_send($xml, $url_var, $header_version_var)
 function _ebay_comm_get_headers($func_name, $version)
 {
 	$headers = array (
+		"X-EBAY-SOA-SECURITY-APPNAME:".variable_get("ebayapi_appid", false),
+		"X-EBAY-SOA-OPERATION-NAME:{$func_name}",
+		
 		"X-EBAY-API-COMPATIBILITY-LEVEL:{$version}",
 		"X-EBAY-API-VERSION:{$version}",
 		"X-EBAY-API-REQUEST-ENCODING:XML",
@@ -50,6 +53,7 @@ function _ebay_comm_get_headers($func_name, $version)
 		"X-EBAY-API-CERT-NAME:".variable_get("ebayapi_certid", false),
 		"X-EBAY-API-CALL-NAME:{$func_name}",
 		"X-EBAY-API-SITEID: 0",
+		
 		'Content-Type: text/xml;charset=utf-8',
 	);
 

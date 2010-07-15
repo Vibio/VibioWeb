@@ -59,16 +59,24 @@ function ebay_find_items_advanced($args)
 {
 	global $user;
 	
-	$xml = _ebay_xml_init("FindItemsAdvancedRequest", 'xmlns="urn:ebay:apis:eBLBaseComponents"');
-	
-	if (isset($args['keywords']))
+	if (empty($args['page_number']) || $args['page_number'] < 1)
 	{
-		$xml->addChild("QueryKeywords", $args['keywords']);
+		$args['page_number'] = 1;
 	}
+	
+	drupal_add_js("var ebay_search_args = ".json_encode($args), "inline");
+	
+	$version = variable_get("ebayapi_finding_version", "");
+	
+	$xml = _ebay_xml_init("findItemsAdvancedRequest", "xmlns='http://www.ebay.com/marketplace/search/{$version}/services'");
+	$xml->addChild("keywords", $args['keywords']);
+	$page = $xml->addChild("paginationInput");
+	$page->addChild("entriesPerPage", variable_get("ebayapi_entriesperpage", 20));
+	$page->addChild("pageNumber", $args['page_number']);
 	
 	if (isset($args['friends_by_user']) && is_numeric($args['friends_by_user']))
 	{
-		$do_search = false;
+		$user_found = false;
 		$network = network_get($args['friends_by_user'], "default", 1); //1 is how deep to go, leave at 1 for now
 		foreach ($network as $uid => $data)
 		{
@@ -77,17 +85,24 @@ function ebay_find_items_advanced($args)
 				continue;
 			}
 			
-			$do_search = true;
-			$xml->addChild("SellerID", $data['ebay_id']);
+			if (!$user_found)
+			{
+				$user_found = true;
+				$item_filter = $xml->addChild("itemFilter");
+				$item_filter->addChild("name", "Seller");
+				
+			}
+			$item_filter->addChild("value", $data['ebay_id']);
 		}
 		
-		if (!$do_search)
+		if (!$user_found)
 		{
 			return false;
 		}
 	}
 	elseif (isset($args['users']))
 	{
+		$first = true;
 		foreach (explode(",", $args['users']) as $uid)
 		{
 			$sql = "SELECT `ebay_id`
@@ -98,7 +113,13 @@ function ebay_find_items_advanced($args)
 				continue;
 			}
 			
-			$xml->addChild("SellerID", $ebay_id);
+			if ($first)
+			{
+				$first = false;
+				$item_filter = $xml->addChild("itemFilter");
+				$item_filter->addChild("name", "Seller");
+			}
+			$item_filter->addChild("value", $ebay_id);
 		}
 	}
 	elseif ($args['all_vibio'])
@@ -108,13 +129,26 @@ function ebay_find_items_advanced($args)
 				WHERE `uid` != %d";
 		$res = db_query($sql, $user->uid);
 		
+		$first = true;
 		while ($row = db_fetch_array($res))
 		{
-			$xml->addChild("SellerID", $row['ebay_id']);
+			if ($first)
+			{
+				$first = false;
+				$item_filter = $xml->addChild("itemFilter");
+				$item_filter->addChild("name", "Seller");
+			}
+			$item_filter->addChild("value", $row['ebay_id']);
+		}
+		
+		if ($first)
+		{
+			return false;
 		}
 	}
-
-	$res = _ebay_comm_send($xml, "ebayapi_shopping_url", "ebayapi_shopping_version");
+	
+	$x = $xml->asXML();
+	$res = _ebay_comm_send($xml, "ebayapi_finding_url", "ebayapi_finding_version");
 	
 	return $res;
 }

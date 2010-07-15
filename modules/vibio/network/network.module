@@ -74,7 +74,7 @@ function _network_get_friends($uid, $rel_type)
 {
 	$cache_key = "friends:{$uid}:{$rel_type}";
 	
-	if (false && $cache = cache_get($cache_key, "cache_network"))
+	if ($cache = cache_get($cache_key, "cache_network"))
 	{
 		return $cache->data;
 	}

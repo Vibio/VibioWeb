@@ -1,0 +1,79 @@
+<?php
+function ur_generate_menu()
+{
+	return array(
+		"admin/generate/user-relationships"	=> array(
+			"title"				=> "User Relationships",
+			"page callback"		=> "drupal_get_form",
+			"page arguments"	=> array("ur_generate_admin"),
+			"access arguments"	=> array("ur_generate admin"),
+			"type"				=> MENU_NORMAL_ITEM,
+		),
+	);
+}
+
+function ur_generate_admin()
+{
+	return array(
+		"generate_amount"	=> array(
+			"#title"		=> t("Amount of relationships"),
+			"#type"			=> "textfield",
+			"#size"			=> 6,
+			"#required"		=> true,
+			"#default_value"=> 200,
+		),
+		"submit"			=> array(
+			"#type"	=> "submit",
+			"#value"=> t("generate"),
+		),
+	);
+}
+
+function ur_generate_admin_validate($form, &$state)
+{
+	if (!is_numeric($state['values']['generate_amount']))
+	{
+		form_set_error("generate_amount", t("Amount of relationships must be numeric"));
+	}
+}
+
+function ur_generate_admin_submit($form, &$state)
+{
+	$amount = $state['values']['generate_amount'];
+	$rtid = 1;
+	
+	for ($i = 0; $i < $amount; ++$i)
+	{
+		$sql = "SELECT `uid`
+				FROM {users}
+				ORDER BY RAND()
+				LIMIT 1";
+		$uid1 = db_result(db_query($sql));
+		
+		$sql = "SELECT `uid`
+				FROM {users}
+				WHERE `uid` != %d
+				ORDER BY RAND()
+				LIMIT 1";
+		$uid2 = db_result(db_query($sql, $uid1));
+		
+		$sql = "DELETE FROM {user_relationships}
+				WHERE requester_id IN (%d, %d)
+					AND requestee_id IN (%d, %d)
+					AND rtid=%d";
+		db_query($sql, $uid1, $uid2, $uid1, $uid2, $rtid);
+		
+		$sql = "INSERT INTO {user_relationships}
+				SET requester_id=%d, requestee_id=%d, rtid=%d, approved=1, created_at=%d, updated_at=%d, flags=0";
+		db_query($sql, $uid1, $uid2, $rtid, time(), time());
+		
+		$rid = db_last_insert_id("user_relationships", "rid");
+		
+		$sql = "INSERT INTO {user_relationships}
+				SET rid=%d, requester_id=%d, requestee_id=%d, rtid=%d, approved=1, created_at=%d, updated_at=%d, flags=0";
+		db_query($sql, $rid, $uid2, $uid1, $rtid, time(), time());
+	}
+	
+	drupal_set_message("done");
+}
+?>

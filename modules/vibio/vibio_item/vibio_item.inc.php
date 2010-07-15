@@ -12,7 +12,8 @@ function _vibio_item_search($keys)
 	// Build matching conditions
 	list($join1, $where1) = _db_rewrite_sql();
 	$arguments1 = array();
-	$conditions1 = "n.status = 1 AND n.type='vibio_item'";
+	$conditions1 = "n.status = 1 AND n.type='vibio_item' AND n.uid != %d";
+	$arguments1[] = $user->uid;
 	
 	// Build ranking expression (we try to map each parameter to a
 	// uniform distribution in the range 0..1).

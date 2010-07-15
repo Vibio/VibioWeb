@@ -81,7 +81,6 @@ function ebay_preprocess_user_profile(&$vars)
 	$uid = $args[1];
 	
 	drupal_add_js("var user_profile_uid = $uid;", "inline");
-	drupal_add_js("sites/all/themes/vibio/js/user-ebay.js");
 	drupal_add_js("sites/all/themes/vibio/js/ebay-search.js");
 }
 
@@ -183,6 +182,21 @@ function ebay_search_validate($form, &$state)
 	}
 	
 	form_set_value($form['basic']['inline']['processed_keys'], urldecode(trim($keys)), $state);
+}
+
+function ebay_user_social_info($uid)
+{
+	return array(
+		"ebay_inventory"	=> array(
+			"title"			=> t("eBay"),
+			"custom_ajax"	=> true,
+			"args"			=> json_encode(array(
+				"url"		=> "/ebay/ajax/service",
+				"action"	=> "find_items_advanced",
+				"users"		=> $uid,
+			)),
+		),
+	);
 }
 
 function ebay_access($perm)

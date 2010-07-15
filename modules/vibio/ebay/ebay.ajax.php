@@ -1,5 +1,5 @@
 <?php
-function ebay_ajax()
+function ebay_ajax() //can accept url args or POST args
 {
 	$args = $_POST;
 	

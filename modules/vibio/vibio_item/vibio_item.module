@@ -6,10 +6,6 @@ define("VIBIO_ITEM_ACCESS_ALL", 2);
 define("VIBIO_ITEM_ACCESS_AUTHENTICATED", 3);
 define("VIBIO_ITEM_ACCESS_FRIENDS", 4);
 
-/*
- the plan: COPY the node_search stuff (just op search) and add type:vibio_item to it, and also add filters based on user friendships.
- then hide the tab for regular content. hax.
-*/
 function vibio_item_form_alter(&$form, &$state, $id)
 {
 	global $user;

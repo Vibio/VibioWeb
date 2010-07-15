@@ -50,3 +50,13 @@ function vibio_preprocess_user_social_info(&$vars)
 {
 	drupal_add_js("sites/all/themes/vibio/js/user.js");
 }
+
+function vibio_menu_item_link($link)
+{
+	if ($link['type'] & MENU_IS_LOCAL_TASK && $link['path'] == "search/node/%")
+	{
+		return "";
+	}
+	
+	return zen_menu_item_link($link);
+}

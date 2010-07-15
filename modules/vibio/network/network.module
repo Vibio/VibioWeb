@@ -53,9 +53,21 @@ function network_get($uid, $rel_type="default", $depth=false)
 	return $network;
 }
 
-function network_preprocess_user_profile(&$vars)
+function network_user_relationships($op, &$rel)
 {
-	global $user;
+	switch ($op)
+	{
+		case "approve":
+		case "remove":
+			cache_clear_all("friends:{$rel->requester->uid}", "cache_network", true);
+			cache_clear_all("friends:{$rel->requestee->uid}", "cache_network", true);
+			break;
+	}
+}
+
+function network_ebay_add_account($uid)
+{
+	cache_clear_all("userinfo:$uid", "cache_network");
 }
 
 function _network_get_friends($uid, $rel_type)

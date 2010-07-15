@@ -1,3 +1,3 @@
 <?php
-var_dump($node->title);
+var_dump($node);
 ?>

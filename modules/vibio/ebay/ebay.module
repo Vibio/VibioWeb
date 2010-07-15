@@ -106,8 +106,16 @@ function ebay_network_get_userinfo($uid)
 	$sql = "SELECT `ebay_id`
 			FROM {ebay_users}
 			WHERE `uid`=%d";
+	$res = db_query($sql, $uid);
+	
+	$ids = array();
+	while ($row = db_fetch_array($res))
+	{
+		$ids[] = $row['ebay_id'];
+	}
+	
 	return array(
-		"ebay_id"	=> db_result(db_query($sql, $uid)),
+		"ebay_ids"	=> $ids,
 	);
 }
 

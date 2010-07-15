@@ -12,6 +12,7 @@ function _ebay_save_token($uid, $token)
 			VALUES
 			(%d, '%s', '%s')";
 	db_query($sql, $uid, (string) $user->UserID, $token);
+	module_invoke_all("ebay_add_account", $uid);
 }
 
 function _ebay_delete_pending($uid)

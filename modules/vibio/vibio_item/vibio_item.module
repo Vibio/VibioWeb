@@ -81,7 +81,7 @@ function vibio_item_search_submit($form, &$state)
 
 function vibio_item_preprocess_node(&$vars)
 {
-	if ($vars['node']->type == "vibio_item" && !_vibio_item_access($vars['node']))
+	if (!$vars['teaser'] && $vars['node']->type == "vibio_item" && !_vibio_item_access($vars['node']))
 	{
 		$referrer = !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
 		drupal_set_message(t("The owner has decided not to show that item"), "error");

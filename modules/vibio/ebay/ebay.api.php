@@ -80,19 +80,23 @@ function ebay_find_items_advanced($args)
 		$network = network_get($args['friends_by_user'], "default", 1); //1 is how deep to go, leave at 1 for now
 		foreach ($network as $uid => $data)
 		{
-			if ($uid == $args['friends_by_user'] || !$data['ebay_id'])
+			if ($uid == $args['friends_by_user'] || empty($data['ebay_ids']))
 			{
 				continue;
 			}
 			
-			if (!$user_found)
+			foreach ($data['ebay_ids'] as $ebay_id)
 			{
-				$user_found = true;
-				$item_filter = $xml->addChild("itemFilter");
-				$item_filter->addChild("name", "Seller");
+				if (!$user_found)
+				{
+					$user_found = true;
+					$item_filter = $xml->addChild("itemFilter");
+					$item_filter->addChild("name", "Seller");
+					
+				}
 				
+				$item_filter->addChild("value", $ebay_id);
 			}
-			$item_filter->addChild("value", $data['ebay_id']);
 		}
 		
 		if (!$user_found)
@@ -108,18 +112,24 @@ function ebay_find_items_advanced($args)
 			$sql = "SELECT `ebay_id`
 					FROM {ebay_users}
 					WHERE `uid`=%d";
-			if (!($ebay_id = db_result(db_query($sql, $uid))))
-			{
-				continue;
-			}
+			$res = db_query($sql, $uid);
 			
-			if ($first)
+			while ($row = db_fetch_array($res))
 			{
-				$first = false;
-				$item_filter = $xml->addChild("itemFilter");
-				$item_filter->addChild("name", "Seller");
+				if ($first)
+				{
+					$first = false;
+					$item_filter = $xml->addChild("itemFilter");
+					$item_filter->addChild("name", "Seller");
+				}
+				
+				$item_filter->addChild("value", $row['ebay_id']);
 			}
-			$item_filter->addChild("value", $ebay_id);
+		}
+		
+		if ($first)
+		{
+			return false;
 		}
 	}
 	elseif ($args['all_vibio'])

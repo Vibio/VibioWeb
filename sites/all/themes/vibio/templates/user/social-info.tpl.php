@@ -3,7 +3,7 @@ $activity = t("Activity");
 $friends = t("Friends");
 $stuff = t("Vibio Items");
 
-$activity_feed = views_embed_view("user_heartbeat_activity", "default", $uid);
+$activity_feed = views_embed_view("user_heartbeat_activity", "block_1", $uid);
 $tabs = module_invoke_all("user_social_info", $uid);
 
 $additional_tabs = "";

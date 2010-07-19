@@ -33,6 +33,6 @@ function _vibio_ajax_get_friends($uid)
 
 function _vibio_ajax_get_inventory($uid)
 {
-	exit(views_embed_view("my_inventory", "default", $uid));
+	exit(views_embed_view("my_inventory", "block_1", $uid));
 }
 ?>

@@ -1,0 +1,105 @@
+<?php
+define("PRIVACY_ONLYME", 4);
+define("PRIVACY_CONNECTION", 3);
+define("PRIVACY_AUTHENTICATED", 2);
+define("PRIVACY_PUBLIC", 1);
+
+function privacy_perm()
+{
+	return array(
+		"privacy admin", //some users should be able to see EVERYTHING
+	);
+}
+
+function privacy_nodeapi(&$node, $op, $a3=null, $a4=null)
+{
+	if ($node->type == "vibio_item")
+	{
+		global $user;
+		
+		switch ($op)
+		{
+			case "delete":
+				privacy_del($user->uid, "node", $node->nid);
+				break;
+			case "update":
+			case "insert":
+				if ($_SESSION['privacy_settings']['type'] == "node")
+				{
+					privacy_set($user->uid, $_SESSION['privacy_settings']['type'], $node->nid, $_SESSION['privacy_settings']['setting']);
+					unset($_SESSION['privacy_settings']);
+				}
+				break;
+			default:
+				break;
+		}
+	}
+}
+
+function privacy_form_vibio_item_node_form_alter(&$form, &$state)
+{
+	$form = array_merge($form, _privacy_form());
+}
+
+function _privacy_form($type="node")
+{
+	return array(
+		"privacy_setting"	=> array(
+			"#title"	=> t("Privacy Settings"),
+			"#type"		=> "select",
+			"#options"	=> _privacy_options(),
+		),
+		"privacy_type"		=> array(
+			"#type"	=> "value",
+			"#value"=> $type,
+		),
+		"#submit"			=> array(
+			"_privacy_form_submit",
+		),
+	);
+}
+
+function _privacy_form_submit($form, &$state)
+{
+	$_SESSION['privacy_settings'] = array(
+		"type"		=> $state['values']['privacy_type'],
+		"setting"	=> $state['values']['privacy_setting'],
+	);
+}
+
+function privacy_get($uid, $type, $type_id)
+{
+	$sql = "SELECT `setting`
+			FROM {privacy_settings}
+			WHERE `uid`=%d
+				AND `type`='%s',
+				AND `type_id`='%s'";
+	return db_result(db_query($sql, $uid, $type, $type_id));
+}
+
+function privacy_set($uid, $type, $type_id, $setting)
+{
+	$sql = "REPLACE INTO {privacy_settings}
+			SET `uid`=%d, `type`='%s', `type_id`='%s', `setting`=%d";
+	db_query($sql, $uid, $type, $type_id, $setting);
+}
+
+function privacy_del($uid, $type, $type_id)
+{
+	$sql = "DELETE FROM {privacy_settings}
+			WHERE `uid`=%d
+				AND `type`='%s'
+				AND `type_id`='%s'";
+	db_query($sql, $uid, $type, $type_id);
+}
+
+function _privacy_options()
+{
+	return array(
+		PRIVACY_ONLYME			=> t("Private to me"),
+		PRIVACY_CONNECTION		=> t("Only my connections"),
+		PRIVACY_AUTHENTICATED	=> t("Only users with Vibio accounts"),
+		PRIVACY_PUBLIC			=> t("Anyone"),
+	);
+}
+?>

@@ -62,7 +62,7 @@ function _vibio_item_search($keys)
 	// eliminate nodes that the current user isn't allowed to see, based on friendship status
 	if (module_exists("privacy"))
 	{
-		$join1 .= " LEFT JOIN {privacy_settings} p ON p.`type_id`=n.`nid`";
+		$join1 .= " JOIN {privacy_settings} p ON p.`type_id`=n.`nid`";
 	
 		/*
 		  note that we don't use the "user_item" string. that's because a user shouldn't see their own items in search.

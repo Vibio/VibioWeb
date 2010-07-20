@@ -13,6 +13,21 @@ function privacy_perm()
 	);
 }
 
+function privacy_user($op, &$edit, &$account, $category=null)
+{
+	switch ($op)
+	{
+		case "insert":
+		case "update":
+			module_invoke_all("privacy_update_user", $edit, $account, $category);
+			break;
+		case "delete":
+			privacy_del_user($account->uid);
+		default:
+			break;
+	}
+}
+
 function privacy_nodeapi(&$node, $op, $a3=null, $a4=null)
 {
 	if ($node->type == "vibio_item")
@@ -41,6 +56,28 @@ function privacy_nodeapi(&$node, $op, $a3=null, $a4=null)
 function privacy_form_vibio_item_node_form_alter(&$form, &$state)
 {
 	$form = array_merge($form, _privacy_form());
+}
+
+function privacy_form_user_profile_form_alter(&$form, &$state)
+{
+	if (empty($form['heartbeat_activity_settings_select']['heartbeat_activity_settings']))
+	{
+		return;
+	}
+	
+	foreach ($form['heartbeat_activity_settings_select']['heartbeat_activity_settings'] as $type_id => $field)
+	{
+		if (!is_array($field))
+		{
+			continue;
+		}
+		
+		$default = privacy_get($form['_account']['#value']->uid, "heartbeat_messages", $type_id);
+		$field = $form['heartbeat_activity_settings_select']['heartbeat_activity_settings'][$type_id]['access'];
+		$field['#options'] = _privacy_options();
+		$field['#default_value'] = $default;
+		$form['heartbeat_activity_settings_select']['heartbeat_activity_settings'][$type_id]['access'] = $field;
+	}
 }
 
 function _privacy_form($type="node")
@@ -74,7 +111,7 @@ function privacy_get($uid, $type, $type_id)
 	$sql = "SELECT `setting`
 			FROM {privacy_settings}
 			WHERE `uid`=%d
-				AND `type`='%s',
+				AND `type`='%s'
 				AND `type_id`='%s'";
 	return db_result(db_query($sql, $uid, $type, $type_id));
 }
@@ -93,6 +130,41 @@ function privacy_del($uid, $type, $type_id)
 				AND `type`='%s'
 				AND `type_id`='%s'";
 	db_query($sql, $uid, $type, $type_id);
+}
+
+function privacy_del_user($uid)
+{
+	$sql = "DELETE FROM {privacy_settings}
+			WHERE `uid`=%d";
+	db_query($sql, $uid);
+}
+
+function privacy_get_access_level($to_uid, $from_uid=null)
+{
+	static $privacy_access_levels = array();
+	
+	if ($from_uid == null)
+	{
+		global $user;
+		$from_uid = $user->uid;
+	}
+	
+	if (!$from_uid) //anonymous user
+	{
+		return PRIVACY_PUBLIC;
+	}
+	elseif ($from_uid == $to_uid)
+	{
+		return PRIVACY_ONLYME;
+	}
+	
+	if (!$privacy_access_levels[$from_uid][$to_uid])
+	{
+		$network = network_get($from_uid, "default", 1);
+		$privacy_access_levels[$from_uid][$to_uid] = array_key_exists($to_uid, $network) ? PRIVACY_CONNECTION : PRIVACY_AUTHENTICATED;
+	}
+	
+	return $privacy_access_levels[$from_uid][$to_uid];
 }
 
 function _privacy_options()

@@ -10,6 +10,22 @@ function hbi_user_relationships($op, &$relationship)
 	}
 }
 
+function hbi_privacy_update_user($form, $user, $category)
+{
+	if ($category == "account")
+	{
+		if (empty($form['heartbeat_activity_settings']))
+		{
+			return;
+		}
+		
+		foreach ($form['heartbeat_activity_settings'] as $type_id => $access)
+		{
+			privacy_set($user->uid, "heartbeat_messages", $type_id, $access['access']);
+		}
+	}
+}
+
 function _hbi_set_relationship($op, &$relationship)
 {
 	$message_id = $op == "approve" ? "heartbeat_become_friends" : "heartbeat_cancel_friendship";

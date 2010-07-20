@@ -2,3 +2,4 @@ name = "Privacy"
 description = "Stores user privacy settings"
 core = 6.x
 package = "Vibio"
+dependencies[] = network

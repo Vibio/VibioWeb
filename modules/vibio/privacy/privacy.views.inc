@@ -36,6 +36,10 @@ function privacy_views_data()
 						),
 					),
 				),
+				"node"	=> array(
+					"left_field"	=> "nid",
+					"field"			=> "type_id",
+				),
 			),
 		),
 		"type"		=> array(

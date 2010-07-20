@@ -4,6 +4,8 @@ define("PRIVACY_CONNECTION", 3);
 define("PRIVACY_AUTHENTICATED", 2);
 define("PRIVACY_PUBLIC", 1);
 
+require_once("privacy.views.inc");
+
 function privacy_perm()
 {
 	return array(

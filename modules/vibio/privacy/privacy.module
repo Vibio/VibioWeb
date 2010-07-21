@@ -13,64 +13,6 @@ function privacy_perm()
 	);
 }
 
-function privacy_menu()
-{
-	$menu = array();
-	
-	if (module_exists("profile"))
-	{
-		$sql = "SELECT DISTINCT(`category`)
-				FROM {profile_fields}";
-		$res = db_query($sql);
-		
-		while ($row = db_fetch_array($res))
-		{
-			$category = _privacy_format_string($row['category'], true);
-			
-			$menu["user/%user/profile/$category"] = array(
-				"title"				=> $row['category'],
-				"page callback" 	=> "privacy_view_profile_category",
-				"page arguments"	=> array(1, $row['category']),
-				"access callback"	=> "privacy_access_profile",
-				"access arguments"	=> array(1, _privacy_format_string($row['category'])),
-				"type"				=> MENU_LOCAL_TASK,
-			);
-		}
-	}
-	
-	return $menu;
-}
-
-function _privacy_get_profile_title($user, $category)
-{
-	return t("!user - !category", array("!user" => $user->name, "!category" => $category));
-}
-
-function privacy_access_profile($user, $category)
-{
-	$privacy_setting = privacy_get($user->uid, "profile", "profile_{$category}");
-	return user_access("access user profiles") && privacy_get_access_level($user->uid) >= $privacy_setting;
-}
-
-function privacy_view_profile_category($user, $category)
-{
-	drupal_set_title(_privacy_get_profile_title($user, $category));
-	
-	$res = _profile_get_fields($category);
-	$out = "";
-	
-	while ($row = db_fetch_array($res))
-	{
-		if (isset($user->$row['name']) && !empty($user->$row['name']))
-		{
-			$list = implode(", ", explode("\n", trim($user->$row['name'])));
-			$out .= "<strong>{$row['title']}</strong>: {$list}<br />";
-		}
-	}
-	
-	return $out ? $out : t("User !user has no information for category !category", array("!user" => $user->name, "!category" => $category));
-}
-
 function privacy_user($op, &$edit, &$account, $category=null)
 {
 	switch ($op)
@@ -117,40 +59,24 @@ function privacy_form_vibio_item_node_form_alter(&$form, &$state)
 }
 
 function privacy_form_user_profile_form_alter(&$form, &$state)
-{
-	$category = _privacy_format_string($form['_category']['#value']);
-	
-	$profile_categories = array(
-		"about_me",
-		"demographics",
-	);
-	
-	if ($category == "account")
+{	
+	if ($form['_category']['#value'] != "account" || empty($form['heartbeat_activity_settings_select']['heartbeat_activity_settings']))
 	{
-		if (empty($form['heartbeat_activity_settings_select']['heartbeat_activity_settings']))
+		return;
+	}
+	
+	foreach ($form['heartbeat_activity_settings_select']['heartbeat_activity_settings'] as $type_id => $field)
+	{
+		if (!is_array($field))
 		{
-			return;
+			continue;
 		}
 		
-		foreach ($form['heartbeat_activity_settings_select']['heartbeat_activity_settings'] as $type_id => $field)
-		{
-			if (!is_array($field))
-			{
-				continue;
-			}
-			
-			$default = privacy_get($form['_account']['#value']->uid, "heartbeat_messages", $type_id);
-			$field = $form['heartbeat_activity_settings_select']['heartbeat_activity_settings'][$type_id]['access'];
-			$field['#options'] = _privacy_options();
-			$field['#default_value'] = $default;
-			$form['heartbeat_activity_settings_select']['heartbeat_activity_settings'][$type_id]['access'] = $field;
-		}
-	}
-	elseif (in_array($category, $profile_categories))
-	{
-		$form_category = $form['_category']['#value'];
-		$form[$form_category]['privacy_settings_fieldset'] = _privacy_fieldset($form['_account']['#value']->uid, "profile", "profile_{$category}");
-		$form['#submit'][] = "_privacy_form_submit";
+		$default = privacy_get($form['_account']['#value']->uid, "heartbeat_messages", $type_id);
+		$field = $form['heartbeat_activity_settings_select']['heartbeat_activity_settings'][$type_id]['access'];
+		$field['#options'] = _privacy_options();
+		$field['#default_value'] = $default;
+		$form['heartbeat_activity_settings_select']['heartbeat_activity_settings'][$type_id]['access'] = $field;
 	}
 }
 
@@ -273,12 +199,6 @@ function privacy_get_access_level($to_uid, $from_uid=null)
 	}
 	
 	return $privacy_access_levels[$from_uid][$to_uid];
-}
-
-function _privacy_format_string($string, $for_url=false)
-{
-	$replacement = $for_url ? "-" : "_";
-	return str_replace(array(" ", "-", "+", "_"), $replacement, strtolower($string));
 }
 
 function _privacy_options()

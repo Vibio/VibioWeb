@@ -203,4 +203,29 @@ function ebay_access($perm)
 {
 	return true;
 }
+
+function ebay_profile_ext_progress($uid)
+{
+	$possible_points = 1;
+	
+	$sql = "SELECT count(*)
+			FROM {ebay_users}
+			WHERE `uid`=%d";
+	$points = db_result(db_query($sql, $uid)) > 0 ? $possible_points : 0;
+			
+	$data = array(
+		"possible_points"	=> $possible_points,
+		"points"			=> $points,
+	);
+	
+	$data['complete'] = $possible_points == $points;
+	if (!$data['complete'])
+	{
+		$data['completion_steps'] = array(
+			t("Link eBay account")	=> "/user/{$uid}/edit/accounts/ebay",
+		);
+	}
+	
+	return array(t("eBay") => $data);
+}
 ?>

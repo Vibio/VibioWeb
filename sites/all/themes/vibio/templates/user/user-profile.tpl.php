@@ -1,6 +1,13 @@
 <div class="profile">
-  <?php print $user_profile; ?>
+  <?php
+  echo $profile['user_picture'];
+  echo $profile['user_relationships_ui'];
+  ?>
 </div>
+
+<?php
+echo "profile completeness: {$profile['profile_progress']}%";
+?>
 
 <div id="user_dos">
 	<?php echo "your relation to this user: <xmp>".print_r($profile['dos'], true)."</xmp>"; ?>

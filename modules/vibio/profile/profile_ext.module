@@ -23,6 +23,74 @@ function profile_ext_menu()
 	return $menu;
 }
 
+function profile_ext_get_progress($uid)
+{
+	$total = 0;
+	$completed = 0;
+	
+	foreach (module_invoke_all("profile_ext_progress", $uid) as $category => $data)
+	{
+		$total += $data['possible_points'];
+		$completed += $data['points'];
+	}
+	
+	return number_format(100*($completed/$total));
+}
+
+function profile_ext_profile_ext_progress($uid)
+{
+	$sql = "SELECT *
+			FROM {profile_fields}
+			ORDER BY `category`";
+	$res = db_query($sql);
+	
+	$data = array(
+		"possible_points"	=> 0,
+		"points"			=> 0,
+		"complete"			=> true,
+	);
+	
+	while ($row = db_fetch_array($res))
+	{
+		$fields[$row['category']][] = $row['fid'];
+		++$data['possible_points'];
+	}
+	
+	foreach ($fields as $category => $fids)
+	{
+		$sql_fids = implode(",", $fids);
+		$sql = "SELECT COUNT(*)
+				FROM {profile_values}
+				WHERE `uid`=%d
+					AND `value` != ''
+					AND `fid` IN ($sql_fids)";
+		$category_complete = db_result(db_query($sql, $uid));
+		$data['points'] += $category_complete;
+		
+		if ($category_complete < count($fids)) //greatest value should only be equal to
+		{
+			$params = array(
+				"!category"	=> $category,
+				"!missing"	=> count($fids) - $category_complete,
+			);
+			$text = t("Complete !category profile info (!missing items missing)", $params);
+			
+			$data['complete'] = false;
+			$data['completion_steps'][$text] = "/user/{$uid}/edit/{$category}";
+		}
+	}
+	
+	return array(t("Profile")	=> $data);
+}
+
+function profile_ext_preprocess_user_profile(&$vars)
+{
+	$args = explode("/", $_GET['q']);
+	$uid = $args[1];
+	
+	$vars['profile']['profile_progress'] = profile_ext_get_progress($uid);
+}
+
 function profile_ext_access_profile($user, $category)
 {
 	$privacy_setting = privacy_get($user->uid, "profile", "profile_{$category}");

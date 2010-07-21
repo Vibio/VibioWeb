@@ -59,8 +59,8 @@ function network_user_relationships($op, &$rel)
 	{
 		case "approve":
 		case "remove":
-			cache_clear_all("friends:{$rel->requester->uid}", "cache_network", true);
-			cache_clear_all("friends:{$rel->requestee->uid}", "cache_network", true);
+			cache_clear_all("friends:{$rel->requester_id}", "cache_network", true);
+			cache_clear_all("friends:{$rel->requestee_id}", "cache_network", true);
 			break;
 	}
 }
@@ -73,14 +73,14 @@ function network_ebay_add_account($uid)
 function _network_get_friends($uid, $rel_type)
 {
 	$cache_key = "friends:{$uid}:{$rel_type}";
-	
 	if ($cache = cache_get($cache_key, "cache_network"))
 	{
 		return $cache->data;
 	}
 
 	$params = array(
-		"user"	=> $uid,
+		"user"		=> $uid,
+		"approved"	=> 1,
 	);
 	$options = array(
 		"include_user_info"	=> true,

@@ -70,6 +70,11 @@ function network_ebay_add_account($uid)
 	cache_clear_all("userinfo:$uid", "cache_network");
 }
 
+function network_ebay_remove_account($uid)
+{
+	cache_clear_all("userinfo:$uid", "cache_network");
+}
+
 function _network_get_friends($uid, $rel_type)
 {
 	$cache_key = "friends:{$uid}:{$rel_type}";

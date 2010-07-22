@@ -1,4 +1,11 @@
 <?php
+function profile_ext_perm()
+{
+	return array(
+		"profile_ext manage external_accounts",
+	);
+}
+
 function profile_ext_menu()
 {
 	$menu = array();
@@ -20,7 +27,66 @@ function profile_ext_menu()
 		);
 	}
 	
+	$menu['user/%/linked-accounts'] = array(
+		"title"				=> "External Accounts",
+		"page callback"		=> "profile_ext_manage_external_accounts",
+		"page arguments"	=> array(1),
+		"access callback"	=> "profile_ext_access",
+		"access arguments"	=> array("profile_ext manage external_accounts"),
+		"type"				=> MENU_LOCAL_TASK,
+	);
+	
 	return $menu;
+}
+
+function profile_ext_theme(&$existing, $type, $theme, $path)
+{
+	return array(
+		"profile_ext_external_accounts"	=> array(
+			"arguments"	=> array(
+				"partner_data"	=> array(),
+				"user_accounts"	=> false,
+				"is_admin"		=> false,
+			),
+			"template"	=> "templates/profile/external-accounts",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+	);
+}
+
+function profile_ext_manage_external_accounts($uid)
+{
+	global $user;
+	
+	// profile_ext depends on privacy depends on network
+	$info = _network_get_userinfo($uid);
+	$external_accounts = module_invoke_all("profile_ext_external_account_data");
+	$is_admin = $user->uid == $uid;
+	
+	drupal_add_js("var external_accounts = {}", "inline");
+	$out = "";
+	foreach ($external_accounts as $type => $data)
+	{
+		if ($data['js'])
+		{
+			$confirm_params = array(
+				"!account_type"	=> $data['name'],
+			);
+			
+			$confirm = t("Are you sure you want to remove !account_type account !account_name from your Vibio account?", $confirm_params);
+			$js = "
+				external_accounts.{$data['id']} = {
+					confirm_text: '$confirm'
+				}
+			";
+			drupal_add_js($js, "inline");
+			drupal_add_js($data['js']);
+		}
+		
+		$out .= theme("profile_ext_external_accounts", $data, $info[$type], $is_admin);
+	}
+	
+	return $out;
 }
 
 function profile_ext_get_progress($uid)
@@ -95,6 +161,11 @@ function profile_ext_access_profile($user, $category)
 {
 	$privacy_setting = privacy_get($user->uid, "profile", "profile_{$category}");
 	return user_access("access user profiles") && privacy_get_access_level($user->uid) >= $privacy_setting;
+}
+
+function profile_ext_access($perm)
+{
+	return user_access("administer users") || user_access($perm);
 }
 
 function _profile_ext_get_title($user, $category)

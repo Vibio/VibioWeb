@@ -1,4 +1,7 @@
 <?php
+require_once(drupal_get_path("module", "views")."/includes/base.inc");
+require_once(drupal_get_path("module", "views")."/includes/handlers.inc");
+
 class views_join_between extends views_join
 {
 	function join($table, &$query)

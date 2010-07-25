@@ -1,4 +1,6 @@
 <?php
+require_once("handlers/join_between.inc");
+
 function privacy_views_handlers()
 {
 	return array(
@@ -14,9 +16,7 @@ function privacy_views_handlers()
 }
 
 function privacy_views_data()
-{
-	require_once("handlers/join_between.inc");
-	
+{	
     $data['privacy_settings'] = array(
 		"table"		=> array(
 			"group" => t("Privacy Settings"),
@@ -68,11 +68,26 @@ function privacy_views_data()
 	return $data;
 }
 
-function privacy_views_views_query_alter(&$view, &$query)
+function privacy_views_query_alter(&$view, &$query)
 {
 	if ($view->base_table == "heartbeat_activity")
 	{
-		//foreach (_privacy_get_fields()
+		$uid = $view->args[0];
+		$access = $view->args[1];
+		
+		// the "else 1" is so that items that are not referencing nodes get a free pass since they won't be found in the sub query
+		$sql = "CASE
+					WHEN nid > 0 THEN %d
+					ELSE 1
+					END >= ALL (
+						SELECT `setting`
+						FROM {privacy_settings}
+						WHERE `type_id`=nid
+							AND `type`='node'
+							AND `uid`=%d
+					)
+		";
+		$query->add_where(0, $sql, $access, $uid);
 	}
 }
 ?>

@@ -2,8 +2,9 @@
 $activity = t("Activity");
 $friends = t("Friends");
 $stuff = t("Vibio Items");
+$access = module_exists("privacy") ? privacy_get_access_level($uid) : 1;
 
-$activity_feed = views_embed_view("user_heartbeat_activity", "default", $uid);
+$activity_feed = views_embed_view("user_heartbeat_activity", "block_1", $uid, $access);
 $tabs = module_invoke_all("user_social_info", $uid);
 
 $additional_tabs = "";

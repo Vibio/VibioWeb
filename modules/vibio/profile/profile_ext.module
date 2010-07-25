@@ -1,0 +1,217 @@
+<?php
+function profile_ext_perm()
+{
+	return array(
+		"profile_ext manage external_accounts",
+	);
+}
+
+function profile_ext_menu()
+{
+	$menu = array();
+	$sql = "SELECT DISTINCT(`category`)
+			FROM {profile_fields}";
+	$res = db_query($sql);
+	
+	while ($row = db_fetch_array($res))
+	{
+		$category = _profile_ext_format_string($row['category'], true);
+		
+		$menu["user/%user/profile/$category"] = array(
+			"title"				=> $row['category'],
+			"page callback" 	=> "profile_ext_view_profile_category",
+			"page arguments"	=> array(1, $row['category']),
+			"access callback"	=> "profile_ext_access_profile",
+			"access arguments"	=> array(1, _profile_ext_format_string($row['category'])),
+			"type"				=> MENU_LOCAL_TASK,
+		);
+	}
+	
+	$menu['user/%/linked-accounts'] = array(
+		"title"				=> "External Accounts",
+		"page callback"		=> "profile_ext_manage_external_accounts",
+		"page arguments"	=> array(1),
+		"access callback"	=> "profile_ext_access",
+		"access arguments"	=> array("profile_ext manage external_accounts"),
+		"type"				=> MENU_LOCAL_TASK,
+	);
+	
+	return $menu;
+}
+
+function profile_ext_theme(&$existing, $type, $theme, $path)
+{
+	return array(
+		"profile_ext_external_accounts"	=> array(
+			"arguments"	=> array(
+				"partner_data"	=> array(),
+				"user_accounts"	=> false,
+				"is_admin"		=> false,
+			),
+			"template"	=> "templates/profile/external-accounts",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+	);
+}
+
+function profile_ext_manage_external_accounts($uid)
+{
+	global $user;
+	
+	// profile_ext depends on privacy depends on network
+	$info = _network_get_userinfo($uid);
+	$external_accounts = module_invoke_all("profile_ext_external_account_data");
+	$is_admin = $user->uid == $uid;
+	
+	drupal_add_js("var external_accounts = {}", "inline");
+	$out = "";
+	foreach ($external_accounts as $type => $data)
+	{
+		if ($data['js'])
+		{
+			$confirm_params = array(
+				"!account_type"	=> $data['name'],
+			);
+			
+			$confirm = t("Are you sure you want to remove !account_type account !account_name from your Vibio account?", $confirm_params);
+			$js = "
+				external_accounts.{$data['id']} = {
+					confirm_text: '$confirm'
+				}
+			";
+			drupal_add_js($js, "inline");
+			drupal_add_js($data['js']);
+		}
+		
+		$out .= theme("profile_ext_external_accounts", $data, $info[$type], $is_admin);
+	}
+	
+	return $out;
+}
+
+function profile_ext_get_progress($uid)
+{
+	$total = 0;
+	$completed = 0;
+	
+	foreach (module_invoke_all("profile_ext_progress", $uid) as $category => $data)
+	{
+		$total += $data['possible_points'];
+		$completed += $data['points'];
+	}
+	
+	return number_format(100*($completed/$total));
+}
+
+function profile_ext_profile_ext_progress($uid)
+{
+	$sql = "SELECT *
+			FROM {profile_fields}
+			ORDER BY `category`";
+	$res = db_query($sql);
+	
+	$data = array(
+		"possible_points"	=> 0,
+		"points"			=> 0,
+		"complete"			=> true,
+	);
+	
+	while ($row = db_fetch_array($res))
+	{
+		$fields[$row['category']][] = $row['fid'];
+		++$data['possible_points'];
+	}
+	
+	foreach ($fields as $category => $fids)
+	{
+		$sql_fids = implode(",", $fids);
+		$sql = "SELECT COUNT(*)
+				FROM {profile_values}
+				WHERE `uid`=%d
+					AND `value` != ''
+					AND `fid` IN ($sql_fids)";
+		$category_complete = db_result(db_query($sql, $uid));
+		$data['points'] += $category_complete;
+		
+		if ($category_complete < count($fids)) //greatest value should only be equal to
+		{
+			$params = array(
+				"!category"	=> $category,
+				"!missing"	=> count($fids) - $category_complete,
+			);
+			$text = t("Complete !category profile info (!missing items missing)", $params);
+			
+			$data['complete'] = false;
+			$data['completion_steps'][$text] = "/user/{$uid}/edit/{$category}";
+		}
+	}
+	
+	return array(t("Profile")	=> $data);
+}
+
+function profile_ext_preprocess_user_profile(&$vars)
+{
+	$args = explode("/", $_GET['q']);
+	$uid = $args[1];
+	
+	$vars['profile']['profile_progress'] = profile_ext_get_progress($uid);
+}
+
+function profile_ext_access_profile($user, $category)
+{
+	$privacy_setting = privacy_get($user->uid, "profile", "profile_{$category}");
+	return user_access("access user profiles") && privacy_get_access_level($user->uid) >= $privacy_setting;
+}
+
+function profile_ext_access($perm)
+{
+	return user_access("administer users") || user_access($perm);
+}
+
+function _profile_ext_get_title($user, $category)
+{
+	return t("!user - !category", array("!user" => $user->name, "!category" => $category));
+}
+
+function profile_ext_view_profile_category($user, $category)
+{
+	drupal_set_title(_profile_ext_get_title($user, $category));
+	
+	$res = _profile_get_fields($category);
+	$out = "";
+	
+	while ($row = db_fetch_array($res))
+	{
+		if (isset($user->$row['name']) && !empty($user->$row['name']))
+		{
+			$list = implode(", ", explode("\n", trim($user->$row['name'])));
+			$out .= "<strong>{$row['title']}</strong>: {$list}<br />";
+		}
+	}
+	
+	return $out ? $out : t("User !user has no information for category !category", array("!user" => $user->name, "!category" => $category));
+}
+
+function profile_ext_form_user_profile_form_alter(&$form, &$state)
+{
+	$category = _profile_ext_format_string($form['_category']['#value']);
+	
+	$profile_categories = array(
+		"about_me",
+		"demographics",
+	);
+	
+	if (in_array($category, $profile_categories))
+	{
+		$form_category = $form['_category']['#value'];
+		$form[$form_category]['privacy_settings_fieldset'] = _privacy_fieldset($form['_account']['#value']->uid, "profile", "profile_{$category}");
+		$form['#submit'][] = "_privacy_form_submit";
+	}
+}
+
+function _profile_ext_format_string($string, $for_url=false)
+{
+	$replacement = $for_url ? "-" : "_";
+	return str_replace(array(" ", "-", "+", "_"), $replacement, strtolower($string));
+}
+?>

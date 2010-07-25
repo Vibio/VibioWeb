@@ -1,0 +1,19 @@
+<?php
+function privacy_install()
+{
+	$sql = array(
+		"CREATE TABLE IF NOT EXISTS {privacy_settings} (
+			`uid` int unsigned not null,
+			`type` varchar(255),
+			`type_id` varchar(255),
+			`setting` int unsigned not null,
+			primary key (`uid`, `type`, `type_id`)
+		)Engine=InnoDB"
+	);
+	
+	foreach ($sql as $s)
+	{
+		db_query($s);
+	}
+}
+?>

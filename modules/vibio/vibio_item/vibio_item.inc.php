@@ -61,31 +61,41 @@ function _vibio_item_search($keys)
 	}
 	
 	// eliminate nodes that the current user isn't allowed to see, based on friendship status
-	$join1 .= " JOIN {content_type_vibio_item} vi ON vi.nid=n.nid";
+	if (module_exists("privacy"))
+	{
+		$join1 .= " JOIN {privacy_settings} p ON p.`type_id`=n.`nid`";
 	
-	$where1 .= "
-		CASE
-			WHEN vi.`field_privacy_settings_value`=%d THEN n.uid
-			WHEN vi.`field_privacy_settings_value` IN (%d, %d)
-				AND %d > 0 THEN 'authenticated'
-			WHEN vi.`field_privacy_settings_value`=%d THEN 'public'
-			END IN (
-				'public',
-				'authenticated',
-				(
-					SELECT ur.`requester_id`
-					FROM {user_relationships} ur
-					WHERE ur.`approved`=1
-						AND ur.`requestee_id`=%d
-						AND ur.`requester_id`=n.uid
-				)
-			)";
-	$arguments1[] = VIBIO_ITEM_ACCESS_FRIENDS;
-	$arguments1[] = VIBIO_ITEM_ACCESS_AUTHENTICATED;
-	$arguments1[] = VIBIO_ITEM_ACCESS_ALL;
-	$arguments1[] = $user->uid;
-	$arguments1[] = VIBIO_ITEM_ACCESS_ALL;
-	$arguments1[] = $user->uid;
+		/*
+		  note that we don't use the "user_item" string. that's because a user shouldn't see their own items in search.
+		  also note that if a node doesn't have a privacy setting set, then it will show up. shouldn't happen, though.
+		*/
+		$where1 .= "
+			p.`type`='node' AND
+			CASE
+				WHEN p.`setting`=%d THEN 'user_item'
+				WHEN p.`setting`=%d THEN n.uid
+				WHEN p.`setting` IN (%d, %d)
+					AND %d > 0 THEN 'authenticated'
+				WHEN p.`setting`=%d THEN 'public'
+				END IN (
+					'public',
+					'authenticated',
+					(
+						SELECT ur.`requester_id`
+						FROM {user_relationships} ur
+						WHERE ur.`approved`=1
+							AND ur.`requestee_id`=%d
+							AND ur.`requester_id`=n.uid
+					)
+				)";
+		$arguments1[] = PRIVACY_ONLYME;
+		$arguments1[] = PRIVACY_CONNECTION;
+		$arguments1[] = PRIVACY_AUTHENTICATED;
+		$arguments1[] = PRIVACY_PUBLIC;
+		$arguments1[] = $user->uid;
+		$arguments1[] = PRIVACY_PUBLIC;
+		$arguments1[] = $user->uid;
+	}
 	
 	$access = search_query_extract($keys, "users");
 	

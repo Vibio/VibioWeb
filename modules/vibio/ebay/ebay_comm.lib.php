@@ -20,6 +20,12 @@ function _ebay_comm_send($xml, $url_var, $header_version_var)
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 
 	$response = curl_exec($curl);
+	
+	if (!$response)
+	{
+		$error = curl_getinfo($curl);
+	}
+	
 	curl_close($curl);
 	
 	try

@@ -33,6 +33,13 @@ function ebay_menu()
 			"file"				=> "ebay.ajax.php",
 			"type"				=> MENU_CALLBACK,
 		),
+		"ebay/ajax/theme"		=> array(
+			"page callback"		=> "ebay_ajax_theme",
+			"access callback"	=> "ebay_access",
+			"access arguments"	=> array("ebay ajax"),
+			"file"				=> "ebay.ajax.php",
+			"type"				=> MENU_CALLBACK,
+		),
 	);
 }
 
@@ -202,5 +209,59 @@ function ebay_user_social_info($uid)
 function ebay_access($perm)
 {
 	return true;
+}
+
+function ebay_profile_ext_external_account_data()
+{
+	return array(
+		"ebay_ids"	=> array(
+			"id"		=> "ebay",
+			"name"		=> "eBay",
+			"title"		=> t("eBay Accounts"),
+			"js"		=> "sites/all/themes/vibio/js/ebay-account.js",
+			"remove"	=> array(
+				"class"	=> "ebay_remove_account",
+			),
+			"add"		=> array(
+				"class"	=> "ebay_add_account",
+			),
+		),
+	);
+}
+
+function ebay_profile_ext_progress($uid)
+{
+	$possible_points = 1;
+	
+	$sql = "SELECT count(*)
+			FROM {ebay_users}
+			WHERE `uid`=%d";
+	$points = db_result(db_query($sql, $uid)) > 0 ? $possible_points : 0;
+			
+	$data = array(
+		"possible_points"	=> $possible_points,
+		"points"			=> $points,
+	);
+	
+	$data['complete'] = $possible_points == $points;
+	if (!$data['complete'])
+	{
+		$data['completion_steps'] = array(
+			t("Link eBay account")	=> "/user/{$uid}/edit/accounts",
+		);
+	}
+	
+	return array(t("eBay") => $data);
+}
+
+function _ebay_is_owner($account_name)
+{
+	global $user;
+	
+	$sql = "SELECT COUNT(*)
+			FROM {ebay_users}
+			WHERE `ebay_id`='%s'
+				AND `uid`=%d";
+	return db_result(db_query($sql, $account_name, $user->uid));
 }
 ?>

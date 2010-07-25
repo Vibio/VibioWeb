@@ -28,11 +28,13 @@ function _vibio_ajax_service($func, $arg)
 
 function _vibio_ajax_get_friends($uid)
 {
+	$access = module_exists("privacy") ? privacy_get_access_level($uid) : 1;
 	exit(views_embed_view("user_relationships_browser", "default", $uid));
 }
 
 function _vibio_ajax_get_inventory($uid)
 {
-	exit(views_embed_view("my_inventory", "default", $uid));
+	$access = module_exists("privacy") ? privacy_get_access_level($uid) : 1;
+	exit(views_embed_view("user_inventory", "block_1", $uid, $access));
 }
 ?>

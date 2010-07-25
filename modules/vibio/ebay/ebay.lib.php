@@ -13,6 +13,18 @@ function _ebay_save_token($uid, $token)
 			(%d, '%s', '%s')";
 	db_query($sql, $uid, (string) $user->UserID, $token);
 	module_invoke_all("ebay_add_account", $uid);
+	
+	return true;
+}
+
+function _ebay_delete_token($uid, $account)
+{
+	$sql = "DELETE FROM {ebay_users}
+			WHERE `ebay_id`='%s'
+				AND `uid`=%d";
+	db_query($sql, $account, $uid);
+	
+	module_invoke_all("ebay_remove_account", $uid);
 }
 
 function _ebay_delete_pending($uid)

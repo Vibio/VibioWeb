@@ -1,0 +1,141 @@
+<?php
+define("OFFER2BUY_MAX_PRICE", 1000000);
+
+function offer2buy_form_vibio_item_node_form_alter(&$form, &$state)
+{
+	$nid = $form['nid']['#value'];
+	$settings = offer2buy_get_settings($nid);
+	
+	$form['offer2buy'] = array(
+		"#type"				=> "fieldset",
+		"#title"			=> t("Offer to Buy Settings"),
+		"#description"		=> t('These options only affect your posting if this item is set to type "selling"'),
+		"#collapsible"		=> true,
+		"#collapsed"		=> false,
+		"#weight"			=> -8,
+		"o2b_price"				=> array(
+			"#type"			=> "textfield",
+			"#title"		=> t("Price"),
+			"#description"	=> t("The listing price for this item (in USD)"),
+			"#default_value"=> $settings['price'],
+			"#size"			=> 8,
+		),
+		"o2b_is_negotiable"		=> array(
+			"#type"			=> "checkbox",
+			"#title"		=> t("Price is Negotiable"),
+			"#description"	=> t("This determines whether or not you want to allow other users to offer more or less for the item."),
+			"#default_value"=> $settings['is_negotiable'],
+		),
+		"o2b_allow_offer_views"	=> array(
+			"#type"			=> "checkbox",
+			"#title"		=> t("Allow Offer Views"),
+			"#description"	=> t("Should people viewing your item be able to see the offers on the item?"),
+			"#default_value"=> $settings['allow_offer_views'],
+		),
+		"o2b_nid"	=> array(
+			"#type"	=> "value",
+			"#value"=> $nid,
+		),
+	);
+	
+	$form['#validate'][] = "_offer2buy_node_validate";
+	$form['#submit'][] = "_offer2buy_node_submit";
+}
+
+function _offer2buy_node_validate($form, &$state)
+{
+	if (!is_numeric($state['values']['o2b_price']))
+	{
+		form_set_error("o2b_price", t("Invalid price definition."));
+	}
+	else
+	{
+		$price = number_format($state['values']['o2b_price'], 2);
+	
+		if ($price < 0 || $price > OFFER2BUY_MAX_PRICE)
+		{
+			form_set_error("o2b_price", t("Invalid price definition."));
+		}
+	}
+}
+
+function _offer2buy_node_submit($form, &$state)
+{
+	$vals = $state['values'];
+	$price = number_format($vals['o2b_price'], 2);
+	
+	$_SESSION['o2b_settings'] = array(
+		"price"				=> $price,
+		"is_negotiable"		=> $vals['o2b_is_negotiable'],
+		"allow_offer_views"	=> $vals['o2b_allow_offer_views'],
+	);
+}
+
+function offer2buy_nodeapi(&$node, $op, $a3=null, $a4=null)
+{
+	if ($node->type == "vibio_item")
+	{
+		switch ($op)
+		{
+			case "load":
+				global $user;
+				
+				$sql = "SELECT *
+						FROM {offer2buy}
+						WHERE `nid`=%d";
+				$settings = db_fetch_array(db_query($sql, $node->nid));
+				
+				if ($node->uid == $user->uid || $settings['allow_offer_views'])
+				{
+					$sql = "SELECT o.*, u.`name`
+							FROM {offer2buy_offers} o JOIN {users} u
+								ON o.`uid`=u.`uid`
+							WHERE `nid`=%d
+							ORDER BY `offer` DESC, `timestamp` DESC";
+					$res = db_query($sql, $node->nid);
+					
+					$offers = array();
+					while ($row = db_fetch_array($res))
+					{
+						$offers[] = $row;
+					}
+				}
+				
+				return array(
+					"offer2buy"	=> array(
+						"settings"	=> $settings,
+						"offers"	=> $offers,
+					),
+				);
+				
+				break;
+			case "update":
+			case "insert":
+				if (!empty($_SESSION['o2b_settings']))
+				{
+					$vals = $_SESSION['o2b_settings'];
+					$sql = "REPLACE INTO {offer2buy}
+							SET `nid`=%d, `price`=%f, `is_negotiable`=%d, `allow_offer_views`=%d";
+					db_query($sql, $node->nid, $vals['price'], $vals['is_negotiable'], $vals['allow_offer_views']);
+					unset($_SESSION['o2b_settings']);
+				}
+				break;
+			default:
+				break;
+		}
+	}
+}
+
+function offer2buy_get_settings($nid=false)
+{
+	if (!$nid)
+	{
+		return false;
+	}
+	
+	$sql = "SELECT *
+			FROM {offer2buy}
+			WHERE `nid`=%d";
+	return db_fetch_array(db_query($sql, $nid));
+}
+?>

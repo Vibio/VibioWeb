@@ -1,0 +1,42 @@
+<?php
+function offer2buy_install()
+{
+	// DECIMAL(9,2) sets max price to $1,000,000.00
+	$sql = array(
+		"CREATE TABLE IF NOT EXISTS {offer2buy} (
+			`nid` INT UNSIGNED NOT NULL PRIMARY KEY,
+			`price` DECIMAL(9,2) UNSIGNED NOT NULL DEFAULT 0,
+			`is_negotiable` TINYINT UNSIGNED NOT NULL DEFAULT 1,
+			`allow_offer_views` TINYINT UNSIGNED NOT NULL DEFAULT 0
+		) Engine=InnoDB",
+		"CREATE TABLE IF NOT EXISTS {offer2buy_offers} (
+			`nid` INT UNSIGNED NOT NULL,
+			`uid` INT UNSIGNED NOT NULL,
+			`offer` DECIMAL(9,2) UNSIGNED NOT NULL,
+			`timestamp` INT UNSIGNED NOT NULL,
+			`comment` VARCHAR(255),
+			PRIMARY KEY (`nid`, `uid`),
+			FOREIGN KEY (`nid`) REFERENCES {offer2buy}(`nid`)
+				ON DELETE CASCADE
+		) Engine=InnoDB",
+	);
+	
+	foreach ($sql as $s)
+	{
+		db_query($s);
+	}
+}
+
+function offer2buy_uninstall()
+{
+	$sql = array(
+		"DROP TABLE IF EXISTS {offer2buy_offers}",
+		"DROP TABLE IF EXISTS {offer2buy}",
+	);
+	
+	foreach ($sql as $s)
+	{
+		db_query($s);
+	}
+}
+?>

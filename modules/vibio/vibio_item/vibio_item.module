@@ -1,10 +1,7 @@
 <?php
 require_once("vibio_item.inc.php");
 
-define("VIBIO_ITEM_ACCESS_ME", 1);
-define("VIBIO_ITEM_ACCESS_ALL", 2);
-define("VIBIO_ITEM_ACCESS_AUTHENTICATED", 3);
-define("VIBIO_ITEM_ACCESS_FRIENDS", 4);
+define("VIBIO_ITEM_TYPE_SELL", 2);
 
 function vibio_item_form_alter(&$form, &$state, $id)
 {

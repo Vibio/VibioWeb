@@ -55,7 +55,7 @@ function privacy_nodeapi(&$node, $op, $a3=null, $a4=null)
 
 function privacy_form_vibio_item_node_form_alter(&$form, &$state)
 {
-	$form = array_merge($form, _privacy_form());
+	$form = array_merge($form, _privacy_form($form['#node']->uid, "node", $form['#node']->nid));
 }
 
 function privacy_form_user_profile_form_alter(&$form, &$state)

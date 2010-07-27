@@ -4,8 +4,9 @@ function hbi_user_relationships($op, &$relationship)
 	switch ($op)
 	{
 		case "approve":
-		case "remove":
 			_hbi_set_relationship($op, $relationship);
+			break;
+		case "remove":
 			break;
 	}
 }

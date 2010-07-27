@@ -163,32 +163,13 @@ function _vibio_item_search($keys)
 
 function _vibio_item_access($node)
 {
-	global $user;
-	
-	if ($user->uid == $node->uid) //always view your own items
+	if (is_numeric($node))
 	{
-		return true;
+		$node = node_load($node);
 	}
 	
-	switch ($node->field_privacy_settings[0]['value'])
-	{
-		case VIBIO_ITEM_ACCESS_ME:
-			return $user->uid == $node->uid;
-		case VIBIO_ITEM_ACCESS_AUTHENTICATED:
-			return $user->uid > 0;
-		case VIBIO_ITEM_ACCESS_FRIENDS:
-			$params = array(
-				"between"	=> array($user->uid, $node->uid),
-			);
-			$options = array(
-				"count" => true,
-			);
-			
-			return user_relationships_load($params, $options) > 0;
-		case VIBIO_ITEM_ACCESS_ALL:
-		default:
-			return true;
-	}
+	return module_exists("privacy") ?
+		privacy_get($node->uid, "node", $node->nid) <= privacy_get_access_level($node->uid) : true;
 }
 
 function _vibio_item_unset(&$form)

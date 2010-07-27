@@ -113,7 +113,7 @@ function offer2buy_nodeapi(&$node, $op, $a3=null, $a4=null)
 							FROM {offer2buy_offers} o JOIN {users} u
 								ON o.`uid`=u.`uid`
 							WHERE `nid`=%d
-							ORDER BY `offer` DESC, `timestamp` DESC";
+							ORDER BY `offer` DESC, `timestamp` ASC";
 					$res = db_query($sql, $node->nid);
 					
 					$offers = array();

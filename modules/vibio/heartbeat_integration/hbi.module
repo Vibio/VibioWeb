@@ -27,6 +27,16 @@ function hbi_privacy_update_user($form, $user, $category)
 	}
 }
 
+function hbi_offer2buy_make_offer($node, $offerer, $owner, $offer)
+{
+	$variables = array(
+		"@offerer"	=> l("user/{$offerer->uid}", $offerer->name),
+		"@item"		=> l($node->title, "node/{$node->nid}"),
+	);
+	
+	heartbeat_api_log("make_offer_on_vibio_item", $offerer->uid, $owner->uid, $node->nid, 0, $variables);
+}
+
 function _hbi_set_relationship($op, &$relationship)
 {
 	$message_id = $op == "approve" ? "heartbeat_become_friends" : "heartbeat_cancel_friendship";

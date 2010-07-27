@@ -41,6 +41,12 @@ function dos_get($target_uid, $type=false)
 	}
 	
 	$network = network_get($user->uid, variable_get("dos_max_depth", DOS_DEFAULT_DEPTH));
+	
+	if (!array_key_exists($target_uid, $network))
+	{
+		return array();
+	}
+	
 	$paths = array();
 	$map = array();
 	

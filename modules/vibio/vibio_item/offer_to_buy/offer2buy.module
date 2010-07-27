@@ -6,6 +6,7 @@ function offer2buy_perm()
 {
 	return array(
 		"offer2buy offer",
+		"offer2buy admin",
 	);
 }
 
@@ -18,6 +19,15 @@ function offer2buy_menu()
 			"file"				=> "offer2buy.ajax.php",
 			"access arguments"	=> array("offer2buy offer"),
 			"type"				=> MENU_CALLBACK,
+		),
+		"admin/settings/offer2buy"	=> array(
+			"title"				=> "Offer2Buy",
+			"description"		=> t("Control offer2buy email messages"),
+			"page callback"		=> "drupal_get_form",
+			"page arguments"	=> array("offer2buy_admin"),
+			"access arguments"	=> array("offer2buy admin"),
+			"file"				=> "offer2buy.forms.php",
+			"type"				=> MENU_NORMAL_ITEM,
 		),
 	);
 }
@@ -257,12 +267,53 @@ function offer2buy_offer_form_validate($form, &$state)
 function offer2buy_offer_form_submit($form, &$state)
 {
 	$vals = $state['values'];
+	$offer = number_format($vals['offer'], 2);
 	
 	$sql = "REPLACE INTO {offer2buy_offers}
 			SET `nid`=%d, `uid`=%d, `offer`=%f, `timestamp`=%d, `comment`='%s'";
-	db_query($sql, $vals['nid'], $vals['uid'], $vals['offer'], time(), $vals['comment']);
+	db_query($sql, $vals['nid'], $vals['uid'], $offer, time(), $vals['comment']);
 	
+	$node = node_load($vals['nid']);
+	$offerer = user_load($vals['uid']);
+	$item_owner = user_load($node->uid);
+	$offer = array(
+		"comment"	=> $vals['comment'],
+		"amount"	=> $offer,
+	);
+	
+	module_invoke_all("offer2buy_make_offer", $node, $offerer, $item_owner, $offer);
+	
+	drupal_set_message(t("Your offer has been sent to !user", array("!user" => $item_owner->name)));
 	drupal_goto($vals['destination']);
+}
+
+function offer2buy_offer2buy_make_offer($node, $offerer, $owner, $offer)
+{
+	global $language;
+	
+	$params = array(
+		"offerer"	=> $offerer,
+		"owner"		=> $owner,
+		"offer"		=> $offer,
+		"item"		=> $node,
+	);
+	
+	drupal_mail("offer2buy", "offer_make", $owner->mail, $language, $params);
+	drupal_mail("offer2buy", "offer_confirm", $offerer->mail, $language, $params);
+}
+
+function offer2buy_mail($key, &$message, $params)
+{
+	if ($key == "offer_make" && ($body = variable_get("offer2buy_offer_message", false)))
+	{
+		$message['subject'] = t("Offer on \"!title\" from !user", array("!title" => $params['item']->title, "!user" => $params['offerer']->name));
+		$message['body'] = _offer2buy_replace($body, $params);
+	}
+	elseif ($key == "offer_confirm" && ($body = variable_get("offer2buy_offer_confirmation", false)))
+	{
+		$message['subject'] = t("Confirmation for offer to !user for item !item", array("!user" => $params['owner']->name, "!item" => $params['item']->title));
+		$message['body'] = _offer2buy_replace($body, $params);
+	}
 }
 
 function _offer2buy_valid_price($price)
@@ -274,5 +325,27 @@ function _offer2buy_valid_price($price)
 	
 	$price = number_format($price, 2);
 	return $price >= 0 && $price <= OFFER2BUY_MAX_PRICE;
+}
+
+function _offer2buy_replace($message, $params)
+{
+	$link_options = array(
+		"absolute"	=> true,
+	);
+	
+	$replacements = array(
+		"!offerer"	=> l($params['offerer']->name, "user/{$params['offerer']->uid}", $link_options),
+		"!owner"	=> l($params['owner']->name, "user/{$params['owner']->uid}", $link_options),
+		"!item"		=> l($params['item']->title, "node/{$params['item']->nid}", $link_options),
+		"!comment"	=> filter_xss($params['offer']['comment']),
+		"!offer"	=> $params['offer']['amount'],
+	);
+	
+	foreach ($replacements as $search => $replace)
+	{
+		$message = str_replace($search, $replace, $message);
+	}
+	
+	return $message;
 }
 ?>

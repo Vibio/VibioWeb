@@ -1,5 +1,26 @@
 <?php
 define("OFFER2BUY_MAX_PRICE", 1000000);
+define("OFFER2BUY_MAX_COMMENT_LENGTH", 255);
+
+function offer2buy_perm()
+{
+	return array(
+		"offer2buy offer",
+	);
+}
+
+function offer2buy_menu()
+{
+	return array(
+		"offer2buy/ajax/offer/%"	=> array(
+			"page callback"		=> "offer2buy_ajax_offer",
+			"page arguments"	=> array(3),
+			"file"				=> "offer2buy.ajax.php",
+			"access arguments"	=> array("offer2buy offer"),
+			"type"				=> MENU_CALLBACK,
+		),
+	);
+}
 
 function offer2buy_form_vibio_item_node_form_alter(&$form, &$state)
 {
@@ -44,18 +65,9 @@ function offer2buy_form_vibio_item_node_form_alter(&$form, &$state)
 
 function _offer2buy_node_validate($form, &$state)
 {
-	if (!is_numeric($state['values']['o2b_price']))
+	if (!_offer2buy_valid_price($state['values']['o2b_price']))
 	{
 		form_set_error("o2b_price", t("Invalid price definition."));
-	}
-	else
-	{
-		$price = number_format($state['values']['o2b_price'], 2);
-	
-		if ($price < 0 || $price > OFFER2BUY_MAX_PRICE)
-		{
-			form_set_error("o2b_price", t("Invalid price definition."));
-		}
 	}
 }
 
@@ -126,6 +138,17 @@ function offer2buy_nodeapi(&$node, $op, $a3=null, $a4=null)
 	}
 }
 
+function offer2buy_theme(&$existing, $type, $theme, $path)
+{
+	return array(
+		"offer2buy_init"	=> array(
+			"arguments"	=> array("nid" => false),
+			"template"	=> "templates/offer2buy/init",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+	);
+}
+
 function offer2buy_get_settings($nid=false)
 {
 	if (!$nid)
@@ -137,5 +160,119 @@ function offer2buy_get_settings($nid=false)
 			FROM {offer2buy}
 			WHERE `nid`=%d";
 	return db_fetch_array(db_query($sql, $nid));
+}
+
+function offer2buy_preprocess_node(&$vars)
+{
+	if (!$vars['teaser'] && $vars['node']->type == "vibio_item")
+	{
+		drupal_add_css("sites/all/themes/vibio/css/offer2buy.css");
+		drupal_add_js("sites/all/themes/vibio/js/offer2buy.js");
+	}
+}
+
+function offer2buy_get_offer($uid, $nid)
+{
+	$sql = "SELECT *
+			FROM {offer2buy_offers}
+			WHERE `uid`=%d
+				AND `nid`=%d";
+	return db_fetch_array(db_query($sql, $uid, $nid));
+}
+
+function offer2buy_offer_form(&$state, $nid, $referrer)
+{
+	global $user;
+	
+	$settings = offer2buy_get_settings($nid);
+	$current_offer = offer2buy_get_offer($user->uid, $nid);
+	
+	$form = array(
+		"uid"		=> array(
+			"#type"	=> "value",
+			"#value"=> $user->uid,
+		),
+		"nid"		=> array(
+			"#type"	=> "value",
+			"#value"=> $nid,
+		),
+		"destination"	=> array(
+			"#type"	=> "value",
+			"#value"=> empty($_GET['destination']) ? request_uri() : $_GET['destination'],
+		),
+		"offer"		=> array(
+			"#type"			=> "textfield",
+			"#title"		=> t("Offer"),
+			"#default_value"=> $current_offer ? $current_offer['offer'] : $settings['price'],
+		),
+		"comment"	=> array(
+			"#type"			=> "textarea",
+			"#title"		=> t("Comment"),
+			"#description"	=> t("A comment that the seller will see when reviewing offers for this item."),
+			"#default_value"=> $current_offer['comment'],
+		),
+		"submit"	=> array(
+			"#type"	=> "submit",
+			"#value"=> t("Offer"),
+		),
+	);
+	
+	if (!$settings['is_negotiable'])
+	{
+		$form['offer']['#attributes'] = array(
+			"readonly"	=> "readonly",
+		);
+	}
+	
+	if ($current_offer)
+	{
+		$form['#prefix'] = t("You already have a pending offer on this item. The details of that offer are shown below. Any edits will replace your original offer.");
+	}
+	
+	return $form;
+}
+
+function offer2buy_offer_form_validate($form, &$state)
+{
+	$vals = $state['values'];
+	$error = false;
+	
+	if (!_offer2buy_valid_price($vals['offer']))
+	{
+		form_set_error("offer", t("Invalid offer amount"));
+		$error = true;
+	}
+	elseif (strlen($vals['comment']) > OFFER2BUY_MAX_COMMENT_LENGTH)
+	{
+		form_set_error("comment", t("Comment cannot exceed !limit characters", array("!limit" => OFFER2BUY_MAX_COMMENT_LENGTH)));
+		$error = true;
+	}
+	
+	if ($error)
+	{
+		drupal_goto($vals['destination']);
+	}
+}
+
+function offer2buy_offer_form_submit($form, &$state)
+{
+	$vals = $state['values'];
+	
+	$sql = "REPLACE INTO {offer2buy_offers}
+			SET `nid`=%d, `uid`=%d, `offer`=%f, `timestamp`=%d, `comment`='%s'";
+	db_query($sql, $vals['nid'], $vals['uid'], $vals['offer'], time(), $vals['comment']);
+	
+	drupal_goto($vals['destination']);
+}
+
+function _offer2buy_valid_price($price)
+{
+	if (!is_numeric($price))
+	{
+		return false;
+	}
+	
+	$price = number_format($price, 2);
+	return $price >= 0 && $price <= OFFER2BUY_MAX_PRICE;
 }
 ?>

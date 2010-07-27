@@ -31,7 +31,7 @@ function hbi_offer2buy_make_offer($node, $offerer, $owner, $offer)
 {
 	$variables = array(
 		"@offerer"	=> l("user/{$offerer->uid}", $offerer->name),
-		"@item"		=> l($node->title, "node/{$node->nid}"),
+		"@item"		=> l("node/{$node->nid}", $node->title),
 	);
 	
 	heartbeat_api_log("make_offer_on_vibio_item", $offerer->uid, $owner->uid, $node->nid, 0, $variables);

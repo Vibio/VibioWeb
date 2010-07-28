@@ -366,12 +366,16 @@ function _offer2buy_replace($message, $params)
 		"absolute"	=> true,
 	);
 	
+	$private_msg_subject = "{$params['item']->title}";
+	
 	$replacements = array(
-		"!offerer"	=> l($params['offerer']->name, "user/{$params['offerer']->uid}", $link_options),
-		"!owner"	=> l($params['owner']->name, "user/{$params['owner']->uid}", $link_options),
-		"!item"		=> l($params['item']->title, "node/{$params['item']->nid}", $link_options),
-		"!comment"	=> filter_xss($params['offer']['comment']),
-		"!offer"	=> $params['offer']['amount'],
+		"!offerer_message_url"	=> url("messages/new/{$params['offerer']->uid}/$private_msg_subject", $link_options),
+		"!owner_message_url"	=> url("messages/new/{$params['owner']->uid}/$private_msg_subject", $link_options),
+		"!offerer"				=> l($params['offerer']->name, "user/{$params['offerer']->uid}", $link_options),
+		"!owner"				=> l($params['owner']->name, "user/{$params['owner']->uid}", $link_options),
+		"!item"					=> l($params['item']->title, "node/{$params['item']->nid}", $link_options),
+		"!comment"				=> filter_xss($params['offer']['comment']),
+		"!offer"				=> $params['offer']['amount'],
 	);
 	
 	foreach ($replacements as $search => $replace)

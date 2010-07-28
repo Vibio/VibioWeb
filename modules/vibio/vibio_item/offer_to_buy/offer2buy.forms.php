@@ -3,7 +3,7 @@ function offer2buy_admin()
 {
 	//offer2buy_offer_accept
 	return system_settings_form(array(
-		"#prefix"	=> t("Replacement variables: !offerer is the name/profile link of the person making the offer, !owner is the person who currently owns the item, !item is a link to the item, and !offer is the amount of the offer made."),
+		"#prefix"	=> t("Replacement variables: !offerer is the name/profile link of the person making the offer, !owner is the person who currently owns the item, !item is a link to the item, and !offer is the amount of the offer made. !owner_message_url is the url to send a message to the item owner, !offerer_message_url is the same for the offerer (Note that these will automatically have the item name as a subject line)"),
 		"offer_creation"=> array(
 			"#type"			=> "fieldset",
 			"#title"		=> t("Offer Creation"),

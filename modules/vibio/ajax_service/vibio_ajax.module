@@ -37,4 +37,16 @@ function _vibio_ajax_get_inventory($uid)
 	$access = module_exists("privacy") ? privacy_get_access_level($uid) : 1;
 	exit(views_embed_view("user_inventory", "block_1", $uid, $access));
 }
+
+function _vibio_ajax_get_relational_activity($uid)
+{
+	global $user;
+	
+	if ($user->uid != $uid)
+	{
+		exit("You are not authorized to view this data.");
+	}
+	
+	exit(views_embed_view("user_relational_activity", "default", $uid));
+}
 ?>

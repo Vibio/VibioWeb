@@ -1,4 +1,6 @@
 <?php
+require_once("hbi.views.inc");
+
 function hbi_user_relationships($op, &$relationship)
 {
 	switch ($op)

@@ -1,5 +1,7 @@
 <?php
-$activity = t("Activity");
+global $user;
+
+$activity = t("My Activity");
 $friends = t("Friends");
 $stuff = t("Vibio Items");
 $access = module_exists("privacy") ? privacy_get_access_level($uid) : 1;
@@ -40,6 +42,12 @@ foreach ($tabs as $id => $data)
 }
 $script .= "</script>";
 
+if ($user->uid == $uid)
+{
+	$relational_header = t("Relational Activity");
+	$relational_tab = "<li><a href='/vibio-ajax/get-relational-activity/$uid'>$relational_header</a></li>";
+}
+
 echo "
 	$script
 	<div id='social_tabs'>
@@ -47,6 +55,7 @@ echo "
 			<li>
 				<a href='#user_activity'>$activity</a>
 			</li>
+			$relational_tab
 			<li>
 				<a href='/vibio-ajax/get-friends/$uid'>$friends</a>
 			</li>

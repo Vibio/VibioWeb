@@ -70,7 +70,7 @@ function privacy_views_data()
 
 function privacy_views_query_alter(&$view, &$query)
 {
-	if ($view->base_table == "heartbeat_activity")
+	if ($view->name == "user_heartbeat_activity")
 	{
 		$uid = $view->args[0];
 		$access = $view->args[1];
@@ -88,6 +88,23 @@ function privacy_views_query_alter(&$view, &$query)
 					)
 		";
 		$query->add_where(0, $sql, $access, $uid);
+	}
+	elseif ($view->name == "user_relational_activity" && module_exists("user_relationships_api"))
+	{
+		$uid = $view->args[0];
+		
+		$sql = "CASE
+					WHEN nid=0 THEN 1
+					ELSE %d
+					END >= ALL (
+						SELECT `setting`
+						FROM {privacy_settings}
+						WHERE `type_id`=nid
+							AND `type`='node'
+							AND `uid`=uid
+					)
+		";
+		$query->add_where(0, $sql, PRIVACY_CONNECTION);
 	}
 }
 ?>

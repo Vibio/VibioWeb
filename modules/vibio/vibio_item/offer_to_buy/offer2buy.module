@@ -151,9 +151,19 @@ function offer2buy_nodeapi(&$node, $op, $a3=null, $a4=null)
 function offer2buy_theme(&$existing, $type, $theme, $path)
 {
 	return array(
-		"offer2buy_init"	=> array(
+		"offer2buy_init"		=> array(
 			"arguments"	=> array("nid" => false),
 			"template"	=> "templates/offer2buy/init",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"offer2buy_offer_list"	=> array(
+			"arguments"	=> array("offers" => array(), "is_owner" => false),
+			"template"	=> "templates/offer2buy/list",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"offer2buy_offer"		=> array(
+			"arguments"	=> array("offer" => array(), "is_owner" => false),
+			"template"	=> "templates/offer2buy/offer",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
 	);
@@ -299,7 +309,20 @@ function offer2buy_offer2buy_make_offer($node, $offerer, $owner, $offer)
 	);
 	
 	drupal_mail("offer2buy", "offer_make", $owner->mail, $language, $params);
-	drupal_mail("offer2buy", "offer_confirm", $offerer->mail, $language, $params);
+	drupal_mail("offer2buy", "offer_make_confirm", $offerer->mail, $language, $params);
+}
+
+function offer2buy_offerbuy_accept_offer($node, $offerer, $owner, $offer)
+{
+	$params = array(
+		"item"		=> $node,
+		"offerer"	=> $offerer,
+		"owner"		=> $owner,
+		"offer"		=> $offer,
+	);
+	
+	drupal_mail("offer2buy", "offer_accept", $offerer->mail, $language, $params);
+	drupal_mail("offer2buy", "offer_accept_confirm", $owner->mail, $language, $params);
 }
 
 function offer2buy_mail($key, &$message, $params)
@@ -309,9 +332,19 @@ function offer2buy_mail($key, &$message, $params)
 		$message['subject'] = t("Offer on \"!title\" from !user", array("!title" => $params['item']->title, "!user" => $params['offerer']->name));
 		$message['body'] = _offer2buy_replace($body, $params);
 	}
-	elseif ($key == "offer_confirm" && ($body = variable_get("offer2buy_offer_confirmation", false)))
+	elseif ($key == "offer_make_confirm" && ($body = variable_get("offer2buy_offer_confirmation", false)))
 	{
-		$message['subject'] = t("Confirmation for offer to !user for item !item", array("!user" => $params['owner']->name, "!item" => $params['item']->title));
+		$message['subject'] = t("Confirmation for offer to !user for item \"!item\"", array("!user" => $params['owner']->name, "!item" => $params['item']->title));
+		$message['body'] = _offer2buy_replace($body, $params);
+	}
+	elseif ($key == "offer_accept" && ($body = variable_get("offer2buy_offer_accept", false)))
+	{
+		$message['subject'] = t("Offer accepted for \"!item\"!", array("!item" => $params['item']->title));
+		$message['body'] = _offer2buy_replace($body, $params);
+	}
+	elseif ($key == "offer_accept_confirm" && ($body = variable_get("offer2buy_offer_accept_confirm", false)))
+	{
+		$message['subject'] = t("Offer acceptance confirmation: \$!offer from !offerer", array("!offer" => $params['offer']['amount'], "!offerer" => $params['offerer']->name));
 		$message['body'] = _offer2buy_replace($body, $params);
 	}
 }
@@ -347,5 +380,55 @@ function _offer2buy_replace($message, $params)
 	}
 	
 	return $message;
+}
+
+function offer2buy_forms($id, $args)
+{
+	if (strpos($id, "offer2buy_offer_accept_form_") !== false)
+	{
+		$forms[$id] = array(
+			"callback"	=> "offer2buy_offer_accept_form",
+		);
+		
+		return $forms;
+	}
+}
+
+function offer2buy_offer_accept_form($state, $uid, $nid)
+{
+	return array(
+		"uid"		=> array(
+			"#type"	=> "value",
+			"#value"=> $uid,
+		),
+		"nid"		=> array(
+			"#type"	=> "value",
+			"#value"=> $nid,
+		),
+		"submit"	=> array(
+			"#type"	=> "submit",
+			"#value"=> t("Accept Offer"),
+		),
+		"#submit"	=> array(
+			"offer2buy_offer_accept_form_submit",
+		),
+	);
+}
+
+function offer2buy_offer_accept_form_submit($form, &$state)
+{
+	//TODO: we need to define the flow of what happens here. all we'll do is send a message right now.
+	$vals = $state['values'];
+	$node = node_load($vals['nid']);
+	$offerer = user_load($vals['uid']);
+	$owner = user_load($node->uid);
+	
+	$sql = "SELECT `offer` AS amount, `comment`
+			FROM {offer2buy_offers}
+			WHERE `uid`=%d
+				AND `nid`=%d";
+	$offer = db_fetch_array(db_query($sql, $offerer->uid, $node->nid));
+	
+	module_invoke_all("offerbuy_accept_offer", $node, $offerer, $owner, $offer);
 }
 ?>

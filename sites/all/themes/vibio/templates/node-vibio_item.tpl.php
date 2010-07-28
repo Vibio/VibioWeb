@@ -5,14 +5,7 @@ if ($node->field_posting_type[0]['value'] == VIBIO_ITEM_TYPE_SELL)
 	
 	if ($node->offer2buy['settings']['allow_offer_views'] || $user->uid == $node->uid)
 	{
-		if (!empty($node->offer2buy['offers']))
-		{
-			var_dump($node->offer2buy['offers']);
-		}
-		else
-		{
-			echo t("There are currently no offers on this item.");
-		}
+		echo theme("offer2buy_offer_list", $node->offer2buy['offers'], $user->uid == $node->uid);
 		echo "<br />";
 	}
 	
@@ -23,5 +16,9 @@ if ($node->field_posting_type[0]['value'] == VIBIO_ITEM_TYPE_SELL)
 		echo theme("offer2buy_init", $node->nid);
 	}
 }
-var_dump($node);
+
+echo "
+	<h2>{$node->title}</h2>
+	{$node->body}
+";
 ?>

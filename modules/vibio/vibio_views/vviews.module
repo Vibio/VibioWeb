@@ -1,0 +1,64 @@
+<?php
+function vviews_views_api()
+{
+	return array(
+		"api"	=> 2,
+	);
+}
+
+function vviews_user_relationships($op, &$rel)
+{
+	switch ($op)
+	{
+		case "approve":
+			$event = "add friend";
+			_vviews_clear_cache($rel->requestee_id, "user_heartbeat_activity", $event);
+			_vviews_clear_cache($rel->requester_id, "user_heartbeat_activity", $event);
+		case "remove": //note the intentional omission of a break statement, since we also want to clear these on additions
+			$event = "remove friend";
+			_vviews_clear_cache($rel->requestee_id, "user_relationships_browser", $event);
+			_vviews_clear_cache($rel->requester_id, "user_relationships_browser", $event);
+			break;
+		default:
+			break;
+	}
+}
+
+function vviews_nodeapi(&$node, $op, $a3=null, $a4=null)
+{
+	if ($node->type == "vibio_item")
+	{
+		switch ($op)
+		{
+			case "insert":
+			case "update":
+				$event = "create/modify item";
+				_vviews_clear_cache($node->uid, "user_heartbeat_activity", $event);
+				_vviews_clear_cache($node->uid, "user_inventory", $event); // want to clear since they might have changed the privacy settings
+				break;
+			default:
+				break;
+		}
+	}
+}
+
+function vviews_privacy_update_user($form, $user, $category)
+{
+	if ($category == "account")
+	{
+		_vviews_clear_cache($user->uid, "user_heartbeat_activity", "privacy settings change");
+	}
+}
+
+function _vviews_clear_cache($args, $view_name, $event="")
+{
+	if (!is_array($args))
+	{
+		$args = array($args);
+	}
+	
+	$cid = "{$view_name}:".implode(":", $args);
+	cache_clear_all($cid, "cache_views_data", true); //because of paging, we always want a wildcard clear
+	watchdog("Views Cached Data", t("Clearing cache with cid !cid from event \"!event\"", array("!cid" => $cid, "!event" => $event)));
+}
+?>

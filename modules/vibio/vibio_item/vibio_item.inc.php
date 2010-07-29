@@ -100,18 +100,22 @@ function _vibio_item_search($keys)
 	$access = search_query_extract($keys, "users");
 	
 	//don't care if this is set to "all", since if that's the case we just don't do anything else
-	if ((!$access && $user->uid) || $access == "friends")
+	if ((!$access && $user->uid) || $access == "network")
 	{
-		$join1 .= " JOIN {user_relationships} ur ON ur.`requester_id`=n.`uid`";
-		$where1 .= "
-			AND ur.`requestee_id`=%d
-			AND ur.`requester_id`=n.`uid`
-			AND ur.`approved`=1
-		";
-		$arguments1[] = $user->uid;
+		$dos = search_query_extract($keys, "dos");
+	
+		if (!$dos)
+		{
+			$dos = 1;
+		}
+		$network = array_keys(network_get($user->uid, "default", $dos));
+		array_shift($network);
+		$uids = implode(",", $network);
+		$where1 .= " AND n.`uid` IN ($uids)";
 	}
 	
 	$keys = preg_replace('/(\s+)users:([a-z]+)/i', '', $keys);
+	$keys = preg_replace('/(\s+)dos:([0-9]+)/i', '', $keys);
 	
 	// When all search factors are disabled (ie they have a weight of zero), 
 	// the default score is based only on keyword relevance and there is no need to 
@@ -206,7 +210,7 @@ function _vibio_item_defaults(&$form)
 function _vibio_item_user_options()
 {
 	return array(
-		"friends"	=> t("Friends"),
+		"network"	=> t("Network"),
 		"all"		=> t("Vibio"),
 	);
 }

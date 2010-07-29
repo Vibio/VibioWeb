@@ -1,20 +1,4 @@
 <?php
-require_once("handlers/join_between.inc");
-
-function privacy_views_handlers()
-{
-	return array(
-		"info"	=> array(
-			"path"	=> drupal_get_path("module", "privacy")."/handlers",
-		),
-		"handlers"	=> array(
-			"views_handler_privacy_argument_numeric"	=> array(
-				"parent"	=> "views_handler_argument_numeric",
-			),
-		),
-	);
-}
-
 function privacy_views_data()
 {	
     $data['privacy_settings'] = array(
@@ -25,10 +9,10 @@ function privacy_views_data()
 				"title"	=> t("Privacy settings"),
 			),
 			"join"		=> array(
-				"heartbeat_activity"	=> array(
+				"heartbeat_activity"	=> array( //joining against heartbeat REQUIRES module vviews
 					"left_field"	=> "message_id",
 					"field"			=> "type_id",
-					"handler"		=> "views_join_between",
+					"handler"		=> "views_handler_join_between",
 					"type"			=> "INNER",
 					"extra"			=> array(
 						"additional_join_fields"	=> array(
@@ -60,7 +44,7 @@ function privacy_views_data()
 			"real field"	=> "setting",
 			"title"			=> t("Currently requested setting (url arg) >= setting"),
 			"argument"		=> array(
-				"handler"	=> "views_handler_privacy_argument_numeric",
+				"handler"	=> "views_handler_comparison_argument_numeric",
 			),
 		),
     );

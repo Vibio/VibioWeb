@@ -1,5 +1,10 @@
 <?php
-require_once("hbi.views.inc");
+function hbi_views_api()
+{
+	return array(
+		"api"	=> 2,
+	);
+}
 
 function hbi_user_relationships($op, &$relationship)
 {
@@ -7,8 +12,6 @@ function hbi_user_relationships($op, &$relationship)
 	{
 		case "approve":
 			_hbi_set_relationship($op, $relationship);
-			break;
-		case "remove":
 			break;
 	}
 }

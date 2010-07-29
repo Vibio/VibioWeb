@@ -35,7 +35,7 @@ function _vibio_ajax_get_friends($uid)
 function _vibio_ajax_get_inventory($uid)
 {
 	$access = module_exists("privacy") ? privacy_get_access_level($uid) : 1;
-	exit(views_embed_view("user_inventory", "block_1", $uid, $access));
+	exit(views_embed_view("user_inventory", "default", $uid, $access));
 }
 
 function _vibio_ajax_get_relational_activity($uid)

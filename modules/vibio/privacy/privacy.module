@@ -4,8 +4,6 @@ define("PRIVACY_CONNECTION", 3);
 define("PRIVACY_AUTHENTICATED", 2);
 define("PRIVACY_PUBLIC", 1);
 
-require_once("privacy.views.inc");
-
 function privacy_perm()
 {
 	return array(
@@ -78,6 +76,13 @@ function privacy_form_user_profile_form_alter(&$form, &$state)
 		$field['#default_value'] = $default;
 		$form['heartbeat_activity_settings_select']['heartbeat_activity_settings'][$type_id]['access'] = $field;
 	}
+}
+
+function privacy_views_api()
+{
+	return array(
+		"api"	=> 2,
+	);
 }
 
 function _privacy_fieldset($uid=false, $type="node", $type_id=false)

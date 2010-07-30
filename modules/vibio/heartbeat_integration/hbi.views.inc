@@ -5,6 +5,11 @@ function hbi_views_data_alter(&$data)
 		'left_field'	=> 'uid',
 		'field'			=> 'requestee_id',
 	);
+	
+	$data['users']['table']['join']['heartbeat_activity'] = array(
+		'left_field'	=> 'uid',
+		'field'			=> 'uid',
+	);
 }
 
 function hbi_views_query_alter(&$view, &$query)

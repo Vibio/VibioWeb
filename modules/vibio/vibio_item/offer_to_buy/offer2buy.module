@@ -2,6 +2,8 @@
 define("OFFER2BUY_MAX_PRICE", 1000000);
 define("OFFER2BUY_MAX_COMMENT_LENGTH", 255);
 
+require_once("offer2buy.actions.php");
+
 function offer2buy_perm()
 {
 	return array(
@@ -17,7 +19,6 @@ function offer2buy_menu()
 			"title"				=> "Offer2Buy Dashboard",
 			"page callback"		=> "offer2buy_dashboard",
 			"access arguments"	=> array("offer2buy offer"),
-			"file"				=> "offer2buy.actions.php",
 			"type"				=> MENU_NORMAL_ITEM,
 		),
 		"offer2buy/%"				=> array(
@@ -193,6 +194,12 @@ function offer2buy_theme(&$existing, $type, $theme, $path)
 		"offer2buy_actions_list"=> array(
 			"arguments"	=> array("list"	=> array(), "type" => "required"),
 			"template"	=> "templates/offer2buy/action-list",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"offer2buy_action_item"	=> array(
+			"arguments"	=> array("action"	=> array(), "type" => "required"),
+			"template"	=> "templates/offer2buy/action-item",
+			"path"		=> drupal_get_path("theme", "vibio"),
 		),
 	);
 }
@@ -462,5 +469,6 @@ function offer2buy_offer_accept_form_submit($form, &$state)
 	$offer = db_fetch_array(db_query($sql, $offerer->uid, $node->nid));
 	
 	module_invoke_all("offerbuy_accept_offer", $node, $offerer, $owner, $offer);
+	_offer2buy_init_actions($node->nid, $offerer->uid, $owner->uid);
 }
 ?>

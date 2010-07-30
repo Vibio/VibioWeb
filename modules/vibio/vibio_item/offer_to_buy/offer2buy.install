@@ -19,6 +19,21 @@ function offer2buy_install()
 			FOREIGN KEY (`nid`) REFERENCES {offer2buy}(`nid`)
 				ON DELETE CASCADE
 		) Engine=InnoDB",
+		"CREATE TABLE IF NOT EXISTS {offer2buy_action_history} (
+			`nid` INT UNSIGNED NOT NULL,
+			`uid` INT UNSIGNED NOT NULL,
+			`target_uid` INT UNSIGNED NOT NULL,
+			`action` INT UNSIGNED NOT NULL,
+			`timestamp` INT UNSIGNED NOT NULL,
+			FOREIGN KEY (`nid`) REFERENCES {offer2buy}(`nid`)
+		) Engine=InnoDB",
+		"CREATE TABLE IF NOT EXISTS {offer2buy_pending_action} (
+			`nid` INT UNSIGNED NOT NULL PRIMARY KEY,
+			`uid` INT UNSIGNED NOT NULL,
+			`target_uid` INT UNSIGNED NOT NULL,
+			`required_action` INT UNSIGNED NOT NULL,
+			FOREIGN KEY (`nid`) REFERENCES {offer2buy}(`nid`)
+		) ENGINE=InnoDB",
 	);
 	
 	foreach ($sql as $s)
@@ -27,9 +42,40 @@ function offer2buy_install()
 	}
 }
 
+function offer2buy_update_1()
+{
+	$sql = array(
+		"CREATE TABLE IF NOT EXISTS {offer2buy_action_history} (
+			`nid` INT UNSIGNED NOT NULL,
+			`uid` INT UNSIGNED NOT NULL,
+			`target_uid` INT UNSIGNED NOT NULL,
+			`action` INT UNSIGNED NOT NULL,
+			`timestamp` INT UNSIGNED NOT NULL,
+			FOREIGN KEY (`nid`) REFERENCES {offer2buy}(`nid`)
+		) Engine=InnoDB",
+		"CREATE TABLE IF NOT EXISTS {offer2buy_pending_action} (
+			`nid` INT UNSIGNED NOT NULL PRIMARY KEY,
+			`uid` INT UNSIGNED NOT NULL,
+			`target_uid` INT UNSIGNED NOT NULL,
+			`required_action` INT UNSIGNED NOT NULL,
+			FOREIGN KEY (`nid`) REFERENCES {offer2buy}(`nid`)
+		) ENGINE=InnoDB",
+	);
+	
+	$updates = array();
+	foreach ($sql as $s)
+	{
+		$updates[] = update_sql($s);
+	}
+	
+	return $updates;
+}
+
 function offer2buy_uninstall()
 {
 	$sql = array(
+		"DROP TABLE IF EXISTS {offer2buy_action_history}",
+		"DROP TABLE IF EXISTS {offer2buy_pending_action}",
 		"DROP TABLE IF EXISTS {offer2buy_offers}",
 		"DROP TABLE IF EXISTS {offer2buy}",
 	);

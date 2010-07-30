@@ -3,7 +3,7 @@ global $user;
 
 $activity = t("My Activity");
 $friends = t("Friends");
-$stuff = t("Vibio Items");
+$stuff = t("Inventory");
 $access = module_exists("privacy") ? privacy_get_access_level($uid) : 1;
 
 $activity_feed = views_embed_view("user_heartbeat_activity", "block_1", $uid, $access);

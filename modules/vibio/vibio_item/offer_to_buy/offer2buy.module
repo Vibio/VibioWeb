@@ -431,9 +431,17 @@ function offer2buy_forms($id, $args)
 		
 		return $forms;
 	}
+	elseif (strpos($id, "offer2buy_action_complete_") !== false)
+	{
+		$forms[$id] = array(
+			"callback"	=> "offer2buy_action_complete_form",
+		);
+		
+		return $forms;
+	}
 }
 
-function offer2buy_offer_accept_form($state, $uid, $nid)
+function offer2buy_offer_accept_form(&$state, $uid, $nid)
 {
 	return array(
 		"uid"		=> array(
@@ -456,7 +464,6 @@ function offer2buy_offer_accept_form($state, $uid, $nid)
 
 function offer2buy_offer_accept_form_submit($form, &$state)
 {
-	//TODO: we need to define the flow of what happens here. all we'll do is send a message right now.
 	$vals = $state['values'];
 	$node = node_load($vals['nid']);
 	$offerer = user_load($vals['uid']);
@@ -470,5 +477,12 @@ function offer2buy_offer_accept_form_submit($form, &$state)
 	
 	module_invoke_all("offerbuy_accept_offer", $node, $offerer, $owner, $offer);
 	_offer2buy_init_actions($node->nid, $offerer->uid, $owner->uid);
+}
+
+function offer2buy_offer2buy_complete_actions($old_owner_uid, $node)
+{
+	$sql = "DELETE FROM {offer2buy_offers}
+			WHERE `nid`=%d";
+	db_query($sql, $node->nid);
 }
 ?>

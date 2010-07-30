@@ -1,5 +1,5 @@
 <?php
-$target_user = user_load($action['target_uid']);
+$target_user = $type == "required" ? user_load($action['target_uid']) : user_load($action['uid']);
 $node = node_load($action['nid']);
 
 switch ($action['required_action'])
@@ -27,11 +27,12 @@ $message_params = array(
 if ($type == "required")
 {
 	$message = t("You need to !action !user for !item", $message_params);
+	$action_complete_form = drupal_get_form("offer2buy_action_complete_{$action['nid']}_{$action['uid']}_{$action['target_uid']}_{$action['required_action']}", $action);
 }
 else
 {
 	$message = t("!user needs to !action you for !item", $message_params);
 }
 
-echo $message."<br />";
+echo $message.$action_complete_form."<div style='clear: both;'></div>";
 ?>

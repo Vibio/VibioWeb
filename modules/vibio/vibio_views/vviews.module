@@ -50,6 +50,14 @@ function vviews_privacy_update_user($form, $user, $category)
 	}
 }
 
+function vviews_offer2buy_complete_actions($old_owner_uid, $node)
+{
+	$event = "offer2buy transfer item";
+	
+	//only have to clear the old owners cache, the new owners cache will be cleared through hook_nodeapi
+	_vviews_clear_cache($old_owner_uid, "user_inventory", $event); 
+}
+
 function _vviews_clear_cache($args, $view_name, $event="")
 {
 	if (!is_array($args))

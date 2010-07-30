@@ -1,3 +1,8 @@
 .offer2buy_nid {
 	display: none;
 }
+
+.offer2buy_action_complete_form {
+	float: left;
+	margin-right: 15px;
+}

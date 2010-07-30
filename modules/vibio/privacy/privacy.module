@@ -209,10 +209,10 @@ function privacy_get_access_level($to_uid, $from_uid=null)
 function _privacy_options()
 {
 	return array(
-		PRIVACY_ONLYME			=> t("Private to me"),
-		PRIVACY_CONNECTION		=> t("Only my connections"),
-		PRIVACY_AUTHENTICATED	=> t("Only users with Vibio accounts"),
 		PRIVACY_PUBLIC			=> t("Anyone"),
+		PRIVACY_AUTHENTICATED	=> t("Only users with Vibio accounts"),
+		PRIVACY_CONNECTION		=> t("Only my connections"),
+		PRIVACY_ONLYME			=> t("Private to me"),
 	);
 }
 ?>

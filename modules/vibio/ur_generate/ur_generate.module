@@ -15,6 +15,7 @@ function ur_generate_menu()
 function ur_generate_admin()
 {
 	return array(
+		"#prefix"			=> t("Make sure to turn off UR emails on the !settings page!", array("!settings" => l("settings", "admin/user/relationships/settings"))),
 		"generate_amount"	=> array(
 			"#title"		=> t("Amount of relationships"),
 			"#type"			=> "textfield",
@@ -39,39 +40,44 @@ function ur_generate_admin_validate($form, &$state)
 
 function ur_generate_admin_submit($form, &$state)
 {
+	set_time_limit(0);
+	
 	$amount = $state['values']['generate_amount'];
 	$rtid = 1;
 	
 	for ($i = 0; $i < $amount; ++$i)
 	{
-		$sql = "SELECT `uid`
+		$sql = "SELECT `uid`, `name`
 				FROM {users}
 				ORDER BY RAND()
 				LIMIT 1";
-		$uid1 = db_result(db_query($sql));
+		$user1 = db_fetch_object(db_query($sql));
 		
-		$sql = "SELECT `uid`
+		$sql = "SELECT `uid`, `name`
 				FROM {users}
 				WHERE `uid` != %d
+					AND `uid` NOT IN (
+						SELECT `requestee_id`
+						FROM {user_relationships}
+						WHERE `requester_id`=%d
+					)
 				ORDER BY RAND()
 				LIMIT 1";
-		$uid2 = db_result(db_query($sql, $uid1));
+		if (!($user2 = db_fetch_object(db_query($sql, $user1->uid, $user1->uid))))
+		{
+			continue;
+		}
 		
-		$sql = "DELETE FROM {user_relationships}
-				WHERE requester_id IN (%d, %d)
-					AND requestee_id IN (%d, %d)
-					AND rtid=%d";
-		db_query($sql, $uid1, $uid2, $uid1, $uid2, $rtid);
+		$rel = new stdClass;
+		$rel->requester_id = $user1->uid;
+		$rel->requester = $user1;
+		$rel->requestee_id = $user2->uid;
+		$rel->requestee = $user2;
+		$rel->approved = 1;
+		$rel->rtid = 1;
+		$rel->name = "Connection";
 		
-		$sql = "INSERT INTO {user_relationships}
-				SET requester_id=%d, requestee_id=%d, rtid=%d, approved=1, created_at=%d, updated_at=%d, flags=0";
-		db_query($sql, $uid1, $uid2, $rtid, time(), time());
-		
-		$rid = db_last_insert_id("user_relationships", "rid");
-		
-		$sql = "INSERT INTO {user_relationships}
-				SET rid=%d, requester_id=%d, requestee_id=%d, rtid=%d, approved=1, created_at=%d, updated_at=%d, flags=0";
-		db_query($sql, $rid, $uid2, $uid1, $rtid, time(), time());
+		user_relationships_save_relationship($rel, "approve");
 	}
 	
 	drupal_set_message("done");

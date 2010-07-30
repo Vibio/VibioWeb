@@ -64,6 +64,7 @@ echo "
 			</li>
 			$additional_tabs
 		</ul>
+		<div id='social_loading_div'><img src='/sites/all/themes/vibio/images/ajax-loader.gif' /></div>
 		<div id='user_activity'>
 			$activity_feed
 		</div>

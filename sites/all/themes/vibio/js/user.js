@@ -1,9 +1,19 @@
 $(document).ready(function()
 {
+	$("#social_loading_div").hide();
+	
 	$("#social_tabs").tabs({
 		cache: true,
-		show: function(event, ui)
+		select: function(event, ui)
 		{
+			$("#social_loading_div").show();
+		},
+		load: function(e, ui)
+		{
+			$("#social_loading_div").hide();
+		},
+		show: function(event, ui)
+		{	
 			var selected_index = $(this).tabs("option", "selected");
 			var selected_tab = $(this).find(".ui-tabs-nav > li:eq("+selected_index+") > a");
 			

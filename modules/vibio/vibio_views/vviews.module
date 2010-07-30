@@ -50,6 +50,18 @@ function vviews_privacy_update_user($form, $user, $category)
 	}
 }
 
+function vviews_comment(&$comment, $op)
+{
+	switch ($op)
+	{
+		case "publish":
+			_vviews_clear_cache($old_owner_uid, "user_heartbeat_activity", "creating comment");
+			break;
+		default:
+			break;
+	}
+}
+
 function vviews_offer2buy_complete_actions($old_owner_uid, $node)
 {
 	$event = "offer2buy transfer item";

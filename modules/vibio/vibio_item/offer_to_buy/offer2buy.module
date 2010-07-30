@@ -13,6 +13,20 @@ function offer2buy_perm()
 function offer2buy_menu()
 {
 	return array(
+		"offer2buy"					=> array(
+			"title"				=> "Offer2Buy Dashboard",
+			"page callback"		=> "offer2buy_dashboard",
+			"access arguments"	=> array("offer2buy offer"),
+			"file"				=> "offer2buy.actions.php",
+			"type"				=> MENU_NORMAL_ITEM,
+		),
+		"offer2buy/%"				=> array(
+			"page callback"		=> "offer2buy_dashboard",
+			"page arguments"	=> array(1),
+			"access arguments"	=> array("offer2buy admin"),
+			"file"				=> "offer2buy.actions.php",
+			"type"				=> MENU_CALLBACK,
+		),
 		"offer2buy/ajax/offer/%"	=> array(
 			"page callback"		=> "offer2buy_ajax_offer",
 			"page arguments"	=> array(3),
@@ -75,6 +89,11 @@ function offer2buy_form_vibio_item_node_form_alter(&$form, &$state)
 
 function _offer2buy_node_validate($form, &$state)
 {
+	if ($state['values']['field_posting_type'][0]['value'] != VIBIO_ITEM_TYPE_SELL)
+	{
+		return; //only care about validating input if the posting type is "sell"
+	}
+	
 	if (!_offer2buy_valid_price($state['values']['o2b_price']))
 	{
 		form_set_error("o2b_price", t("Invalid price definition."));
@@ -83,6 +102,11 @@ function _offer2buy_node_validate($form, &$state)
 
 function _offer2buy_node_submit($form, &$state)
 {
+	if ($state['values']['field_posting_type'][0]['value'] != VIBIO_ITEM_TYPE_SELL)
+	{
+		return; //only care about validating input if the posting type is "sell"
+	}
+	
 	$vals = $state['values'];
 	$price = number_format($vals['o2b_price'], 2);
 	
@@ -165,6 +189,10 @@ function offer2buy_theme(&$existing, $type, $theme, $path)
 			"arguments"	=> array("offer" => array(), "is_owner" => false),
 			"template"	=> "templates/offer2buy/offer",
 			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"offer2buy_actions_list"=> array(
+			"arguments"	=> array("list"	=> array(), "type" => "required"),
+			"template"	=> "templates/offer2buy/action-list",
 		),
 	);
 }

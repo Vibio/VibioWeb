@@ -31,4 +31,16 @@ function vviews_views_handlers()
 		),
 	);
 }
+
+function vviews_views_data_alter(&$data)
+{
+	$data['node']['uid'] = array(
+		'title'		=> t("Author UID"),
+		'help'		=> t("The UID of the user who currently owns the node"),
+		'argument'	=> array(
+			'handler'	 	=> 'views_handler_argument_numeric',
+			'name field'	=> t('Author'),
+		),
+	);
+}
 ?>

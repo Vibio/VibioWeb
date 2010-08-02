@@ -25,15 +25,26 @@ function offer2buy_install()
 			`target_uid` INT UNSIGNED NOT NULL,
 			`action` INT UNSIGNED NOT NULL,
 			`timestamp` INT UNSIGNED NOT NULL,
-			FOREIGN KEY (`nid`) REFERENCES {offer2buy}(`nid`)
+			INDEX (`uid`),
+			INDEX (`nid`)
 		) Engine=InnoDB",
 		"CREATE TABLE IF NOT EXISTS {offer2buy_pending_action} (
 			`nid` INT UNSIGNED NOT NULL PRIMARY KEY,
 			`uid` INT UNSIGNED NOT NULL,
 			`target_uid` INT UNSIGNED NOT NULL,
 			`required_action` INT UNSIGNED NOT NULL,
-			FOREIGN KEY (`nid`) REFERENCES {offer2buy}(`nid`)
+			INDEX (`uid`),
+			INDEX (`nid`)
 		) ENGINE=InnoDB",
+		"CREATE TABLE IF NOT EXISTS {offer2buy_completed_transactions} (
+			`nid` INT UNSIGNED NOT NULL,
+			`buyer` INT UNSIGNED NOT NULL,
+			`seller` INT UNSIGNED NOT NULL,
+			`price` DOUBLE(9,2) UNSIGNED NOT NULL,
+			`timestamp` INT UNSIGNED NOT NULL,
+			INDEX (`buyer`),
+			INDEX (`seller`)
+		) Engine=InnoDB"
 	);
 	
 	foreach ($sql as $s)
@@ -44,31 +55,17 @@ function offer2buy_install()
 
 function offer2buy_update_1()
 {
-	$sql = array(
-		"CREATE TABLE IF NOT EXISTS {offer2buy_action_history} (
+	return array(update_sql(
+		"CREATE TABLE IF NOT EXISTS {offer2buy_completed_transactions} (
 			`nid` INT UNSIGNED NOT NULL,
-			`uid` INT UNSIGNED NOT NULL,
-			`target_uid` INT UNSIGNED NOT NULL,
-			`action` INT UNSIGNED NOT NULL,
+			`buyer` INT UNSIGNED NOT NULL,
+			`seller` INT UNSIGNED NOT NULL,
+			`price` DOUBLE(9,2) UNSIGNED NOT NULL,
 			`timestamp` INT UNSIGNED NOT NULL,
-			FOREIGN KEY (`nid`) REFERENCES {offer2buy}(`nid`)
-		) Engine=InnoDB",
-		"CREATE TABLE IF NOT EXISTS {offer2buy_pending_action} (
-			`nid` INT UNSIGNED NOT NULL PRIMARY KEY,
-			`uid` INT UNSIGNED NOT NULL,
-			`target_uid` INT UNSIGNED NOT NULL,
-			`required_action` INT UNSIGNED NOT NULL,
-			FOREIGN KEY (`nid`) REFERENCES {offer2buy}(`nid`)
-		) ENGINE=InnoDB",
+			INDEX (`buyer`),
+			INDEX (`seller`)
+		) Engine=InnoDB"),
 	);
-	
-	$updates = array();
-	foreach ($sql as $s)
-	{
-		$updates[] = update_sql($s);
-	}
-	
-	return $updates;
 }
 
 function offer2buy_uninstall()

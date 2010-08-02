@@ -481,7 +481,19 @@ function offer2buy_offer_accept_form_submit($form, &$state)
 
 function offer2buy_offer2buy_complete_actions($old_owner_uid, $node)
 {
-	$sql = "DELETE FROM {offer2buy_offers}
+	$sql = "SELECT `offer`
+			FROM {offer2buy_offers}
+			WHERE `nid`=%d
+				AND `uid`=%d";
+	$price = db_result(db_query($sql, $node->nid, $node->uid));
+	
+	$sql = "INSERT INTO {offer2buy_completed_transactions}
+			(`nid`, `buyer`, `seller`, `price`, `timestamp`)
+			VALUES
+			(%d, %d, %d, %f, %d)";
+	db_query($sql, $node->nid, $node->uid, $old_owner_uid, $price, time());
+	
+	$sql = "DELETE FROM {offer2buy}
 			WHERE `nid`=%d";
 	db_query($sql, $node->nid);
 }

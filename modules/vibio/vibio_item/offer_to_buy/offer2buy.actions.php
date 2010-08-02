@@ -17,6 +17,7 @@ function _offer2buy_complete_actions($nid, $new_owner_uid)
 	$node = node_load($nid);
 	$old_owner_uid = $node->uid;
 	$node->uid = $new_owner_uid;
+	$node->field_posting_type[0]['value'] = VIBIO_ITEM_TYPE_OWN;
 	node_save($node);
 	
 	module_invoke_all("offer2buy_complete_actions", $old_owner_uid, $node);

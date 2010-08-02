@@ -206,6 +206,11 @@ function privacy_get_access_level($to_uid, $from_uid=null)
 	return $privacy_access_levels[$from_uid][$to_uid];
 }
 
+function privacy_offer2buy_complete_actions($old_uid, $node)
+{
+	privacy_del($old_uid, "node", $node->nid);
+}
+
 function _privacy_options()
 {
 	return array(

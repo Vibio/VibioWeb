@@ -47,4 +47,49 @@ function offer2buy_admin()
 		),
 	));
 }
+
+function offer2buy_ajax_edit_post_type($nid)
+{
+	$output = drupal_get_form("offer2buy_change_list_type", $nid);
+	
+	if ($_POST['ajax'])
+	{
+		exit($output);
+	}
+	
+	return $output;
+}
+
+function offer2buy_change_list_type(&$state, $nid)
+{
+	$form = array_merge(_offer2buy_fields_form($nid, array()), array(
+		"submit"	=> array(
+			"#type"	=> "submit",
+			"#value"=> t("Sell"),
+		),
+		"field_posting_type"	=> array(
+			"#type"	=> "value",
+			"#value"=> array(array("value" => VIBIO_ITEM_TYPE_SELL)), //to pass _offer2buy_node_submit
+		),
+		"#redirect"	=> isset($_GET['destination']) ? $_GET['destination'] : false,
+		"#validate"	=> array(
+			"_offer2buy_node_validate",
+		),
+		"#submit"	=> array(
+			"_offer2buy_node_submit",
+			"offer2buy_change_list_type_submit",
+		),
+	));
+	
+	return $form;
+}
+
+function offer2buy_change_list_type_submit($form, &$state)
+{
+	$node = node_load($state['values']['o2b_nid']);
+	$node->field_posting_type[0]['value'] = VIBIO_ITEM_TYPE_SELL;
+	node_save($node);
+	
+	drupal_set_message(t("!title has been updated", array("!title" => l($node->title, "node/{$node->nid}"))));
+}
 ?>

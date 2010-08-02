@@ -7,6 +7,7 @@
   
   <?php print $styles; ?>
   <link rel="stylesheet" href="/sites/all/themes/vibio/css/jquery-ui.tabs.css" />
+  <link rel="stylesheet" href="/sites/all/themes/vibio/css/vibio_dialog.css" />
   
   <?php print $scripts; ?>
   <script type="text/javascript" src="/sites/all/themes/vibio/js/jquery-ui-1.8.2.custom.min.js"></script>

@@ -1,0 +1,13 @@
+#vibio_dialog {
+	border: 1px solid black;
+	padding: 10px;
+	background: white;
+}
+
+.ui-widget-overlay {
+	background: black;
+	opacity: 0.4;
+	position: absolute;
+	top: 0;
+	left: 0;
+}

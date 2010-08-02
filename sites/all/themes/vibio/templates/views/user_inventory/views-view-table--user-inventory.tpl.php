@@ -1,6 +1,3 @@
-<?php
-$x = 1;
-?>
 <table class="<?php print $class; ?>">
   <?php if (!empty($title)) : ?>
     <caption><?php print $title; ?></caption>

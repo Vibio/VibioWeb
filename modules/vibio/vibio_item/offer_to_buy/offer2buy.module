@@ -35,6 +35,13 @@ function offer2buy_menu()
 			"access arguments"	=> array("offer2buy offer"),
 			"type"				=> MENU_CALLBACK,
 		),
+		"offer2buy/ajax/edit-post-type/%"	=> array(
+			"page callback"		=> "offer2buy_ajax_edit_post_type",
+			"page arguments"	=> array(3),
+			"access callback"	=> "offer2buy_change_list_type_access",
+			"access arguments"	=> array(3),
+			"file"				=> "offer2buy.forms.php",
+		),
 		"admin/settings/offer2buy"	=> array(
 			"title"				=> "Offer2Buy",
 			"description"		=> t("Control offer2buy email messages"),
@@ -59,6 +66,17 @@ function offer2buy_form_vibio_item_node_form_alter(&$form, &$state)
 		"#collapsible"		=> true,
 		"#collapsed"		=> false,
 		"#weight"			=> -8,
+	);
+	
+	$form['offer2buy'] = array_merge($form['offer2buy'], _offer2buy_fields_form($nid, $settings));
+	
+	$form['#validate'][] = "_offer2buy_node_validate";
+	$form['#submit'][] = "_offer2buy_node_submit";
+}
+
+function _offer2buy_fields_form($nid, $settings)
+{
+	return array(
 		"o2b_price"				=> array(
 			"#type"			=> "textfield",
 			"#title"		=> t("Price"),
@@ -83,9 +101,6 @@ function offer2buy_form_vibio_item_node_form_alter(&$form, &$state)
 			"#value"=> $nid,
 		),
 	);
-	
-	$form['#validate'][] = "_offer2buy_node_validate";
-	$form['#submit'][] = "_offer2buy_node_submit";
 }
 
 function _offer2buy_node_validate($form, &$state)
@@ -111,11 +126,20 @@ function _offer2buy_node_submit($form, &$state)
 	$vals = $state['values'];
 	$price = number_format($vals['o2b_price'], 2);
 	
-	$_SESSION['o2b_settings'] = array(
-		"price"				=> $price,
-		"is_negotiable"		=> $vals['o2b_is_negotiable'],
-		"allow_offer_views"	=> $vals['o2b_allow_offer_views'],
-	);
+	if (!empty($vals['o2b_nid']))
+	{
+		$sql = "REPLACE INTO {offer2buy}
+				SET `nid`=%d, `price`=%f, `is_negotiable`=%d, `allow_offer_views`=%d";
+		db_query($sql, $vals['o2b_nid'], $price, $vals['o2b_is_negotiable'], $vals['o2b_allow_offer_views']);
+	}
+	else
+	{
+		$_SESSION['o2b_settings'] = array(
+			"price"				=> $price,
+			"is_negotiable"		=> $vals['o2b_is_negotiable'],
+			"allow_offer_views"	=> $vals['o2b_allow_offer_views'],
+		);
+	}
 }
 
 function offer2buy_nodeapi(&$node, $op, $a3=null, $a4=null)
@@ -224,6 +248,11 @@ function offer2buy_preprocess_node(&$vars)
 		drupal_add_css("sites/all/themes/vibio/css/offer2buy.css");
 		drupal_add_js("sites/all/themes/vibio/js/offer2buy.js");
 	}
+}
+
+function offer2buy_preprocess_user_profile(&$vars)
+{
+	drupal_add_js("sites/all/themes/vibio/js/offer2buy_actions.js");
 }
 
 function offer2buy_get_offer($uid, $nid)
@@ -496,5 +525,17 @@ function offer2buy_offer2buy_complete_actions($old_owner_uid, $node)
 	$sql = "DELETE FROM {offer2buy}
 			WHERE `nid`=%d";
 	db_query($sql, $node->nid);
+}
+
+function offer2buy_change_list_type_access($nid)
+{
+	global $user;
+	
+	$sql = "SELECT `uid`
+			FROM {node}
+			WHERE `nid`=%d";
+	$uid = db_result(db_query($sql, $nid));		
+	
+	return $uid == $user->uid;
 }
 ?>

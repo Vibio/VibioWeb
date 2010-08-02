@@ -30,7 +30,8 @@ $(document).ready(function()
 				modal: true,
 				resizeable: false,
 				draggable: false,
-				autoOpen: false
+				autoOpen: false,
+				width: 450
 			};
 		}
 	};

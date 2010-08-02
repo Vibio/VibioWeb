@@ -209,6 +209,7 @@ function privacy_get_access_level($to_uid, $from_uid=null)
 function privacy_offer2buy_complete_actions($old_uid, $node)
 {
 	privacy_del($old_uid, "node", $node->nid);
+	privacy_set($node->uid, "node", $node->nid, PRIVACY_ONLYME);
 }
 
 function _privacy_options()

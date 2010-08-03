@@ -23,6 +23,22 @@ function ur_generate_admin()
 			"#required"		=> true,
 			"#default_value"=> 200,
 		),
+		"target_uid"		=> array(
+			"#title"		=> t("Target User"),
+			"#description"	=> t("The user whose network will grow."),
+			"#type"			=> "textfield",
+			"#size"			=> 6,
+			"#required"		=> true,
+			"#default_value"=> 1,
+		),
+		"refresh_interval"	=> array(
+			"#title"		=> t("Network Refresh Interval"),
+			"#description"	=> t("The amount of relationships before the network is refreshed."),
+			"#type"			=> "textfield",
+			"#size"			=> 6,
+			"#required"		=> true,
+			"#default_value"=> 5,
+		),
 		"submit"			=> array(
 			"#type"	=> "submit",
 			"#value"=> t("generate"),
@@ -42,42 +58,57 @@ function ur_generate_admin_submit($form, &$state)
 {
 	set_time_limit(0);
 	
-	$amount = $state['values']['generate_amount'];
-	$rtid = 1;
+	$x = count(network_get(1));
 	
-	for ($i = 0; $i < $amount; ++$i)
+	$amount = $state['values']['generate_amount'];
+	$refresh = $state['values']['refresh_interval'];
+	$target = $state['values']['target_uid'];
+	$network = false;
+	$rtid = 1;
+	$i = 0;
+	
+	while ($i < $amount)
 	{
-		$sql = "SELECT `uid`, `name`
-				FROM {users}
-				ORDER BY RAND()
-				LIMIT 1";
-		$user1 = db_fetch_object(db_query($sql));
+		$network = implode(",", array_keys(network_get($target, false, 2)));
+		$limit = min($refresh, $amount - $i);
 		
-		$sql = "SELECT `uid`, `name`
-				FROM {users}
-				WHERE `uid` != %d
-					AND `uid` NOT IN (
-						SELECT `requestee_id`
-						FROM {user_relationships}
-						WHERE `requester_id`=%d
-					)
-				ORDER BY RAND()
-				LIMIT 1";
-		if (!($user2 = db_fetch_object(db_query($sql, $user1->uid, $user1->uid))))
+		for ($j = 0; $j < $limit; ++$j)
 		{
-			continue;
+			$sql = "SELECT `uid`, `name`
+					FROM {users}
+					WHERE `uid` IN ($network)
+					ORDER BY RAND()
+					LIMIT 1";
+			$user1 = db_fetch_object(db_query($sql));
+			
+			$sql = "SELECT `uid`, `name`
+					FROM {users}
+					WHERE `uid` != %d
+						AND `uid` NOT IN (
+							SELECT `requestee_id`
+							FROM {user_relationships}
+							WHERE `requester_id`=%d
+						)
+					ORDER BY RAND()
+					LIMIT 1";
+			if (!($user2 = db_fetch_object(db_query($sql, $user1->uid, $user1->uid))))
+			{
+				continue;
+			}
+			
+			$rel = new stdClass;
+			$rel->requester_id = $user1->uid;
+			$rel->requester = $user1;
+			$rel->requestee_id = $user2->uid;
+			$rel->requestee = $user2;
+			$rel->approved = 1;
+			$rel->rtid = 1;
+			$rel->name = "Connection";
+			
+			user_relationships_save_relationship($rel, "approve");
 		}
 		
-		$rel = new stdClass;
-		$rel->requester_id = $user1->uid;
-		$rel->requester = $user1;
-		$rel->requestee_id = $user2->uid;
-		$rel->requestee = $user2;
-		$rel->approved = 1;
-		$rel->rtid = 1;
-		$rel->name = "Connection";
-		
-		user_relationships_save_relationship($rel, "approve");
+		$i += $refresh;
 	}
 	
 	drupal_set_message("done");

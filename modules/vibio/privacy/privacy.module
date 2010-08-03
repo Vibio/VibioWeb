@@ -199,7 +199,7 @@ function privacy_get_access_level($to_uid, $from_uid=null)
 	
 	if (!$privacy_access_levels[$from_uid][$to_uid])
 	{
-		$network = network_get($from_uid, "default", 1);
+		$network = network_get($from_uid, false, 1);
 		$privacy_access_levels[$from_uid][$to_uid] = array_key_exists($to_uid, $network) ? PRIVACY_CONNECTION : PRIVACY_AUTHENTICATED;
 	}
 	

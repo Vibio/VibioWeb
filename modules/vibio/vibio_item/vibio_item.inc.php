@@ -108,7 +108,7 @@ function _vibio_item_search($keys)
 		{
 			$dos = 1;
 		}
-		$network = array_keys(network_get($user->uid, "default", $dos));
+		$network = array_keys(network_get($user->uid, false, $dos));
 		array_shift($network);
 		$uids = implode(",", $network);
 		$where1 .= " AND n.`uid` IN ($uids)";

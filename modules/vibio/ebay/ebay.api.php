@@ -77,7 +77,7 @@ function ebay_find_items_advanced($args)
 	if (isset($args['friends_by_user']) && is_numeric($args['friends_by_user']))
 	{
 		$user_found = false;
-		$network = network_get($args['friends_by_user'], "default", 1); //1 is how deep to go, leave at 1 for now
+		$network = network_get($args['friends_by_user'], false, 1); //1 is how deep to go, leave at 1 for now
 		foreach ($network as $uid => $data)
 		{
 			if ($uid == $args['friends_by_user'] || empty($data['ebay_ids']))

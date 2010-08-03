@@ -8,9 +8,11 @@ define("NETWORK_DEFAULT_DEPTH", 3);
  * for each user in the target user's network, so putting the data into a useful format shouldn't
  * be too hard.
 */
-function network_get($uid, $rel_type="default", $depth=false)
+function network_get($uid, $rel_type=false, $depth=false)
 {
 	static $networks = array();
+	
+	$rel_type = $rel_type ? $rel_type : 1;
 	
 	if (isset($networks[$uid][$rel_type][$depth]))
 	{
@@ -49,6 +51,7 @@ function network_get($uid, $rel_type="default", $depth=false)
 	}
 	
 	$networks[$uid][$rel_type][$depth] = $network;
+	$x = count($network);
 	
 	return $network;
 }

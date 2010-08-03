@@ -51,7 +51,6 @@ function network_get($uid, $rel_type=false, $depth=false)
 	}
 	
 	$networks[$uid][$rel_type][$depth] = $network;
-	$x = count($network);
 	
 	return $network;
 }

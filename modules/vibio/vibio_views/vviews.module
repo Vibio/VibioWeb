@@ -72,7 +72,6 @@ function vviews_offer2buy_complete_actions($old_owner_uid, $node)
 
 function _vviews_clear_cache($args, $view_name, $event="")
 {
-	return;
 	if (!is_array($args))
 	{
 		$args = array($args);

@@ -17,8 +17,11 @@ if ($node->field_posting_type[0]['value'] == VIBIO_ITEM_TYPE_SELL)
 	}
 }
 
+$product_data = $node->product_nid ? theme("node", node_load($node->product_nid)) : "";
+
 echo "
 	<h2>{$node->title}</h2>
+	{$product_data}
 	{$node->body}
 ";
 ?>

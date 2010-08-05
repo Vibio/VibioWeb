@@ -1,4 +1,5 @@
 <?php
+global $user;
 $image = file_create_url($node->field_main_image[0]['filepath']);
 
 if (isset($node->amazon_data))
@@ -21,7 +22,6 @@ if (isset($node->amazon_data))
 		$description = _vibio_amazon_clean_content_allowhtml($review);
 	}
 	
-	$external_link = t("Get \"!item\" from !external_link.", array("!item" => $node->title, "!external_link" => l(t("Amazon"), $node->amazon_data['detailpageurl'], array("absolute" => true))));
 	$theme = "vibio_amazon_item_"._amazon_clean_type($node->amazon_data['producttypename']);
 	if ($details = theme($theme, $node->amazon_data))
 	{
@@ -31,18 +31,17 @@ if (isset($node->amazon_data))
 		";
 	}
 	
-	$create = l("I have one!", "product/{$node->nid}/add-to-inventory");
+	$create = $page || $user->uid != $node->uid ? l("I have one!", "product/{$node->nid}/add-to-inventory") : "";
+	$external_link = $page ? t("Get \"!item\" from !external_link.", array("!item" => $node->title, "!external_link" => l(t("Amazon"), $node->amazon_data['detailpageurl'], array("absolute" => true)))) : "";
 	
 	echo "
-		<div>
-			<img src='{$image}' style='float: left; padding: 0 10px 10px 0;' />
-			$create
-			<div style='clear: left;'></div>
-			<h4>Description</h4>
-			$description
-			$details
-			<p>$external_link</p>
-		</div>
+		<img src='{$image}' style='float: left; padding: 0 10px 10px 0;' />
+		$create
+		<h4>Description</h4>
+		$description
+		$details
+		<p>$external_link</p>
+		<div style='clear: left;'></div>
 	";	
 }
 ?>

@@ -9,6 +9,7 @@ function product_add_to_inventory($product)
 	$node->uid = $user->uid;
 	$node->name = $user->name;
 	$node->type = "vibio_item";
+	$node->product_nid = $product->nid;
 	
 	node_object_prepare($node);
 	

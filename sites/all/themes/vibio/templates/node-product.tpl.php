@@ -31,10 +31,12 @@ if (isset($node->amazon_data))
 		";
 	}
 	
+	$create = l("I have one!", "product/{$node->nid}/add-to-inventory");
+	
 	echo "
 		<div>
 			<img src='{$image}' style='float: left; padding: 0 10px 10px 0;' />
-			<h2>{$node->title}</h2>
+			$create
 			<div style='clear: left;'></div>
 			<h4>Description</h4>
 			$description

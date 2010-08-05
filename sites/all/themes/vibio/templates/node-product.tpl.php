@@ -42,6 +42,10 @@ if (isset($node->amazon_data))
 			$manage_link = l("I have one!", "product/{$node->nid}/add-to-inventory");
 		}
 	}
+	else
+	{
+		drupal_set_title($node->title);
+	}
 	
 	$external_link = $page ? t("Get \"!item\" from !external_link.", array("!item" => $node->title, "!external_link" => l(t("Amazon"), $node->amazon_data['detailpageurl'], array("absolute" => true)))) : "";
 	

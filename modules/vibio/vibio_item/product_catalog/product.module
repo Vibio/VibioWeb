@@ -80,6 +80,9 @@ function product_nodeapi(&$node, $op, $a3=null, $a4=null)
 
 function product_form_vibio_item_node_form_alter(&$form, &$state)
 {
+	$product = node_load($form['#node']->product_nid);
+	
+	$form['title']['#default_value'] = $product->title;
 	$form['product_product_nid'] = array(
 		"#type"	=> "value",
 		"#value"=> $form['#node']->product_nid,

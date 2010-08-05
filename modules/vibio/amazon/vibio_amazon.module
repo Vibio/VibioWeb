@@ -7,6 +7,13 @@ function vibio_amazon_nodeapi(&$node, $op, $a3=null, $a4=null)
 			return array(
 				"amazon_data"	=> array_shift(amazon_item_lookup_from_db($node->field_amazon_asin[0]['asin'])),
 			);
+		case "delete":
+			$sql = "DELETE FROM {amazon_item_node}
+					WHERE `nid`=%d";
+			db_query($sql, $node->nid);
+			break;
+		default:
+			break;
 	}
 }
 
@@ -133,7 +140,7 @@ function _vibio_amazon_search_result($item)
 	$item['node'] = $node;
 	
 	return array(
-		'title'		=> check_plain($node->title),
+		'title'		=> $node->title,
 		'link'		=> $node->path ? url($node->path) : url("node/{$node->nid}"),
 		'type'		=> check_plain($item['productgroup']),
 		'user' 		=> isset($item['participants']) ? implode(', ', $item['participants']) : '',
@@ -149,6 +156,64 @@ function vibio_amazon_theme()
 			"template"	=> "templates/amazon/amazon-item-dvd",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+		"vibio_amazon_item_games"	=> array(
+			"arguments"	=> array("item" => array()),
+			"template"	=> "templates/amazon/amazon-item-games",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"vibio_amazon_item_software"	=> array(
+			"arguments"	=> array("item" => array()),
+			"template"	=> "templates/amazon/amazon-item-software",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"vibio_amazon_item_music"	=> array(
+			"arguments"	=> array("item" => array()),
+			"template"	=> "templates/amazon/amazon-item-music",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"vibio_amazon_item_book"	=> array(
+			"arguments"	=> array("item" => array()),
+			"template"	=> "templates/amazon/amazon-item-book",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
 	);
+}
+
+function _vibio_amazon_clean_content($text, $tags=array(), $invert=false)
+{	
+	if (!empty($tags))
+	{
+		$text = $invert ?
+			preg_replace('@<('. implode('|', $tags) .')\b.*?>.*?</\1>@i', '', $text) :
+			preg_replace('@<(?!(?:'. implode('|', $tags) .')\b)(\w+)\b.*?>.*?</\1>@i', '', $text);
+	}
+	else
+	{
+		$text = $invert ? $text : preg_replace('@<(\w+)\b.*?>.*?</\1>@i', '', $text);
+	}
+	
+	$text = nl2br(trim(preg_replace('/<br([ \/]*)>/i', "\n", $text))); //trim leading and trailing br tags
+	$text = preg_replace('/\(([^\)]*)\)/', "", $text); //remove text in ( and ), since it might be something like "click here to find out more!"
+	
+	return $text;
+}
+
+function _vibio_amazon_clean_content_allowhtml($text)
+{
+	$allowed_tags = array(
+		"b",
+		"br",
+		"h2",
+		"i",
+		"li",
+		"p",
+		"strong",
+		"sub",
+		"sup",
+		"span",
+		"ul",
+	);
+	
+	return _vibio_amazon_clean_content($text, $allowed_tags);
 }
 ?>

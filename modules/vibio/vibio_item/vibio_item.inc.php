@@ -7,7 +7,9 @@ function _vibio_item_search($keys)
 		return node_search("search", $keys. "type:vibio_item");
 	}
 	
-	if (module_exists("product"))
+	$is_product_search = module_exists("product");
+	
+	if ($is_product_search)
 	{
 		if ((!variable_get("product_local_search", false) || $_GET['external']) && ($results = product_external_search($keys)))
 		{
@@ -27,8 +29,13 @@ function _vibio_item_search($keys)
 	// Build matching conditions
 	list($join1, $where1) = _db_rewrite_sql();
 	$arguments1 = array();
-	$conditions1 = "n.status = 1 AND n.type='$node_type' AND n.uid != %d";
-	$arguments1[] = $user->uid;
+	$conditions1 = "n.status = 1 AND n.type='$node_type'";
+	
+	if (!$is_product_search)
+	{
+		$conditions1 .= " AND n.uid != %d";
+		$arguments1[] = $user->uid;
+	}
 	
 	// Build ranking expression (we try to map each parameter to a
 	// uniform distribution in the range 0..1).
@@ -76,7 +83,7 @@ function _vibio_item_search($keys)
 	}
 	
 	// eliminate nodes that the current user isn't allowed to see, based on friendship status
-	if (module_exists("privacy") && $node_type == "vibio_item")
+	if (module_exists("privacy") && !$is_product_search)
 	{
 		$join1 .= " JOIN {privacy_settings} p ON p.`type_id`=n.`nid`";
 	
@@ -115,7 +122,7 @@ function _vibio_item_search($keys)
 	$access = search_query_extract($keys, "users");
 	
 	//don't care if this is set to "all", since if that's the case we just don't do anything else
-	if (!module_exists("product") && (!$access && $user->uid) || $access == "network")
+	if (!$is_product_search && (!$access && $user->uid) || $access == "network")
 	{
 		$dos = search_query_extract($keys, "dos");
 	

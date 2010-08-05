@@ -1,35 +1,46 @@
 <?php
 $image = file_create_url($node->field_main_image[0]['filepath']);
-$allowed_tags = array("br", "p", "strong", "sub", "sup", "span");
 
-foreach ($node->amazon_data['editorialreviews'] as $review)
+if (isset($node->amazon_data))
 {
-	if ($review['source'] == "Amazon.com Product Description")
+	foreach ($node->amazon_data['editorialreviews'] as $review)
 	{
-		$description = filter_xss($review['content'], $allowed_tags);
+		if ($review['source'] == "Amazon.com Product Description")
+		{
+			$review = $review['content'];
+		}
 	}
+	
+	if (!$description)
+	{
+		$review = $node->amazon_data['editorialreviews'][0]['content'];
+	}
+	
+	if (!($description = _vibio_amazon_clean_content($review)))
+	{
+		$description = _vibio_amazon_clean_content_allowhtml($review);
+	}
+	
+	$external_link = t("Get \"!item\" from !external_link.", array("!item" => $node->title, "!external_link" => l(t("Amazon"), $node->amazon_data['detailpageurl'], array("absolute" => true))));
+	$theme = "vibio_amazon_item_"._amazon_clean_type($node->amazon_data['producttypename']);
+	if ($details = theme($theme, $node->amazon_data))
+	{
+		$details = "
+			<h4>Details</h4>
+			$details
+		";
+	}
+	
+	echo "
+		<div>
+			<img src='{$image}' style='float: left; padding: 0 10px 10px 0;' />
+			<h2>{$node->title}</h2>
+			<div style='clear: left;'></div>
+			<h4>Description</h4>
+			$description
+			$details
+			<p>$external_link</p>
+		</div>
+	";	
 }
-
-if (!$description)
-{
-	$review = array_shift($node->amazon_data['editorialreviews']);
-	$description = filter_xss($review['content'], $allowed_tags);
-}
-
-$external_link = t("Get \"!item\" from !external_link.", array("!item" => $node->title, "!external_link" => l(t("Amazon"), $node->amazon_data['detailpageurl'], array("absolute" => true))));
-$theme = "vibio_amazon_item_"._amazon_clean_type($node->amazon_data['producttypename']);
-$details = theme($theme, $node->amazon_data);
-
-echo "
-	<div>
-		<img src='{$image}' style='float: left; padding: 0 10px 10px 0;' />
-		<h2>{$node->title}</h2>
-		<div style='clear: left;'></div>
-		<h4>Description</h4>
-		$description
-		<p>$external_link</p>
-		<h4>Details</h4>
-		$details
-	</div>
-";
 ?>

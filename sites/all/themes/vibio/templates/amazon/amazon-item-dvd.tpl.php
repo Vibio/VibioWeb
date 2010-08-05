@@ -1,15 +1,25 @@
 <?php
-$actors = implode(", ", $item['actor']);
-$writers = implode(", ", $item['creator']);
-$directors = implode(", ", $item['director']);
+if (isset($item['actor']))
+{
+	$actors = "Actors: ". implode(", ", $item['actor'])."<br />";
+}
+if (isset($item['creator']))
+{
+	$writers = "Writers: ".implode(", ", $item['creator'])."<br />";
+}
+if (isset($item['director']))
+{
+	$directors = "Directors: ".implode(", ", $item['director'])."<br />";
+}
 
 echo "
-	Actors: {$actors}<br />
-	Writers: {$writers}<br />
-	Directors: {$directors}<br />
+	{$actors}
+	{$writers}
+	{$directors}
 	Format: {$item['binding']}<br />
 	Run Time: {$item['runningtime']} minutes<br />
 	Aspect Ratio: {$item['aspectratio']}<br />
 	Rating: {$item['audiencerating']}<br />
+	Studio: {$item['studio']}
 ";
 ?>

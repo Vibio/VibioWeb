@@ -42,15 +42,24 @@ function amazon_search_search($op = 'search', $keys = NULL, $skip_access_check =
 }
 
 function amazon_search_simple_search($keywords = '', $parameters = array()) {
+  global $pager_page_array, $pager_total;
+  $pager_element = is_array($pager_page_array) && !empty($pager_page_array) ? count($pager_page_array) : 0;
+  $current_page = $_GET['page'] ? $_GET['page'] : 0;
+  
   $parameters += array(
     'ResponseGroup' => 'Large',
-    'SearchIndex' => 'All',
+    'SearchIndex'   => 'All',
+    'ItemPage'      => $current_page + 1,
   );
   $parameters['Keywords'] = urlencode($keywords);
   drupal_alter('amazon_search_parameters', $parameters);
 
   $items = array();
   $results = amazon_http_request('ItemSearch', $parameters);
+  
+  $pager_page_array[$pager_element] = $current_page;
+  $pager_total[$pager_element] = (int) $results->Items->TotalPages;
+  
   foreach($results->Items->Item as $xml) {
     $item = amazon_item_clean_xml($xml);
     $items[$item['asin']] = $item;

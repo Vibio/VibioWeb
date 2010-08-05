@@ -141,8 +141,14 @@ function _vibio_amazon_search_result($item)
 	);
 }
 
-function vibio_amazon_amazon_item_clean_xml(&$item, $xml)
+function vibio_amazon_theme()
 {
-	$x = 1;
+	return array(
+		"vibio_amazon_item_dvd"	=> array(
+			"arguments"	=> array("item" => array()),
+			"template"	=> "templates/amazon/amazon-item-dvd",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+	);
 }
 ?>

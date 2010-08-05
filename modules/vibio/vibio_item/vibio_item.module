@@ -13,7 +13,7 @@ function vibio_item_form_alter(&$form, &$state, $id)
 		_vibio_item_unset($form);
 		_vibio_item_defaults($form);
 	}
-	elseif ($id == "search_form" && $form['module']['#value'] == "vibio_item" && $user->uid > 0)
+	elseif ($id == "search_form" && $form['module']['#value'] == "vibio_item" && $user->uid > 0 && !module_exists("product"))
 	{
 		$options = _vibio_item_user_options();
 		if (!empty($form['#parameters'][3]))

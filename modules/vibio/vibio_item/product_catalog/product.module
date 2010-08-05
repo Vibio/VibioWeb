@@ -1,0 +1,44 @@
+<?php
+function product_perm()
+{
+	return array(
+		"product admin",
+	);
+}
+
+function product_menu()
+{
+	return array(
+		"admin/settings/product-catalog"	=> array(
+			"title"				=> "Product Catalog",
+			"description"		=> "Change settings related to the product catalog",
+			"page callback"		=> "drupal_get_form",
+			"page arguments"	=> array("product_admin"),
+			"access arguments"	=> array("product admin"),
+			"file"				=> "product.forms.php",
+		),
+	);
+}
+
+function product_external_search($args)
+{
+	if (!($provider = variable_get("product_source", false)) || !function_exists("{$provider}_product_search"))
+	{
+		return false;
+	}
+	if (!is_array($keys))
+	{
+		$args = array("keywords"	=> $args);
+	}
+	
+	$func = "{$provider}_product_search";
+	$args['keywords'] = _product_remove_options($args['keywords']);
+	
+	return $func($args);
+}
+
+function _product_remove_options($keys)
+{
+	return preg_replace('/(^| )([a-z0-9]+):(.*)( |$)/i', '', $keys);
+}
+?>

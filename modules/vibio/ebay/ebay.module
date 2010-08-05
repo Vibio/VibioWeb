@@ -264,4 +264,26 @@ function _ebay_is_owner($account_name)
 				AND `uid`=%d";
 	return db_result(db_query($sql, $account_name, $user->uid));
 }
+
+/*
+ disabled.
+ function ebay_product_source()
+{
+	return array(
+		"ebay"	=> "eBay",
+	);
+}*/
+
+function ebay_product_search($args)
+{
+	$products = ebay_find_products($args);
+	$results = array();
+	
+	foreach ($products->Product as $p)
+	{
+		$x = $p->ItemSpecifics;
+	}
+	
+	return $results;
+}
 ?>

@@ -1,0 +1,5 @@
+name="Product Catalog"
+description="Handles the automated creation of product content from external sources."
+core=6.x
+package="Vibio"
+dependencies[] = vibio_item

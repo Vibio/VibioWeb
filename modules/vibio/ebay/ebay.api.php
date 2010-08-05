@@ -55,6 +55,30 @@ function ebay_get_user($token)
 	return $res ? $res->User : false;
 }
 
+function ebay_find_products($args)
+{
+	if (!$args['keywords'])
+	{
+		return false;
+	}
+	
+	if (empty($args['page_number']) || $args['page_number'] < 1)
+	{
+		$args['page_number'] = 1;
+	}
+	
+	drupal_add_js("var ebay_search_args = ".json_encode($args), "inline");
+	
+	$xml = _ebay_xml_init("FindProductsRequest", 'xmlns="urn:ebay:apis:eBLBaseComponents"');
+	$xml->addChild("QueryKeywords", $args['keywords']);
+	$xml->addChild("MaxEntries", variable_get("ebayapi_entriesperpage", 20));
+	$xml->addChild("PageNumber", $args['page_number']);
+	
+	$res = _ebay_comm_send($xml, "ebayapi_shopping_url", "ebayapi_shopping_version");
+	
+	return $res;
+}
+
 function ebay_find_items_advanced($args)
 {
 	global $user;
@@ -157,7 +181,6 @@ function ebay_find_items_advanced($args)
 		}
 	}
 	
-	$x = $xml->asXML();
 	$res = _ebay_comm_send($xml, "ebayapi_finding_url", "ebayapi_finding_version");
 	
 	return $res;

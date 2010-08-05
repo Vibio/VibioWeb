@@ -1,0 +1,148 @@
+<?php
+function vibio_amazon_nodeapi(&$node, $op, $a3=null, $a4=null)
+{
+	switch ($op)
+	{
+		case "load":
+			return array(
+				"amazon_data"	=> array_shift(amazon_item_lookup_from_db($node->field_amazon_asin[0]['asin'])),
+			);
+	}
+}
+
+function vibio_amazon_amazon_item_insert($item)
+{
+	$sql = "SELECT `nid`
+			FROM {amazon_item_node}
+			WHERE `asin`='%s'";
+	if ($nid = db_result(db_query($sql, $item['asin'])))
+	{
+		return $nid;
+	}
+	
+	module_load_include("inc", "node", "node.pages");
+	
+	$publisher = user_load(1);
+	$node = array("type" => "product");
+	$state['values'] = array(
+		"title"	=> $item['title'],
+		"name"	=> $publisher->name,
+		"op"	=> t("Save"),
+		"field_amazon_asin"	=> array(
+			array(
+				"asin"	=> $item['asin'],
+			),
+		),
+	);
+	
+	_vibio_amazon_add_images($state, $item);
+	drupal_execute("product_node_form", $state, (object) $node);
+	
+	//save the relationship between these items
+	$nid = $state['nid'];
+	$sql = "REPLACE INTO {amazon_item_node}
+			SET `nid`=%d, `asin`='%s', `module`='%s'";
+	db_query($sql, $nid, $item['asin'], 'amazon');
+	
+	return $nid;
+}
+
+function _vibio_amazon_add_images(&$state, $item)
+{	
+	if (!isset($item['imagesets']['mediumimage']))
+	{
+		return;
+	}
+	
+	//download the image somewhere...
+	$path = file_directory_path();
+	$item_image = $item['imagesets']['mediumimage']['url'];
+	$extension = preg_match('/\.([^\.]+)$/', $item_image, $matches);
+	$extension = $matches[1] ? $matches[1] : "jpg";
+	$file_destination = "{$path}/products/{$item['asin']}.{$extension}";
+	file_put_contents($file_destination, file_get_contents($item_image));
+	
+	//save in {files}..
+	$image_data = image_get_info($file_destination);
+	$mime_type = $image_data['mime_type'] ? $image_data['mime_type'] : "image/jpeg";
+	
+	$file = new stdClass();
+	$file->filename = basename($file_destination);
+	$file->filepath = $file_destination;
+	$file->filemime = $mime_type;
+	$file->filesize = filesize($file_destination);
+	$file->uid = 1;
+	$file->status = FILE_STATUS_PERMANENT;
+	$file->timestamp = time();
+	drupal_write_record("files", $file);
+	$file->fid = db_result(db_query("SELECT `fid` FROM {files} WHERE `filepath`='%s'", $file->filepath));
+	
+	//hax
+	$_SESSION['amazon']['temp_file_fid'] = $file->fid;
+	
+	//add to state
+	$state['values']['field_main_image'] = array(
+		array(
+			"fid"			=> $file->fid,
+			"title"			=> basename($file->filename),
+			"filename"		=> $file->filename,
+			"filepath"		=> $file->filepath,
+			"filesize"		=> $file->filesize,
+			"mimetype"		=> $file->filemime,
+			"description"	=> basename($file->filename),
+			"list"			=> 1,
+		),
+	);
+}
+
+function vibio_amazon_file_references($file)
+{
+	if ($file->fid == $_SESSION['amazon']['temp_file_fid'])
+	{
+		unset($_SESSION['amazon']['temp_file_fid']);
+		return array(
+			"vibio_amazon"	=> 1,
+		);
+	}
+}
+
+function vibio_amazon_product_source()
+{
+	return array(
+		"vibio_amazon" => "Amazon",
+	);
+}
+
+function vibio_amazon_product_search($args)
+{
+	$items = amazon_search_search("search", $args['keywords'], true);
+	return $items;
+}
+
+function _vibio_amazon_search_result($item)
+{
+	$sql = "SELECT `nid`
+			FROM {amazon_item_node}
+			WHERE `asin`='%s'";
+	if (!($nid = db_result(db_query($sql, $item['asin']))))
+	{
+		return array();
+	}
+	
+	$node = node_load($nid);
+	$item['node'] = $node;
+	
+	return array(
+		'title'		=> check_plain($node->title),
+		'link'		=> $node->path ? url($node->path) : url("node/{$node->nid}"),
+		'type'		=> check_plain($item['productgroup']),
+		'user' 		=> isset($item['participants']) ? implode(', ', $item['participants']) : '',
+		'snippet'	=> isset($item['editorialreviews']) ? check_markup($item['editorialreviews'][0]['content']) : '',
+	);
+}
+
+function vibio_amazon_amazon_item_clean_xml(&$item, $xml)
+{
+	$x = 1;
+}
+?>

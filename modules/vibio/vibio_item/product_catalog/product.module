@@ -95,4 +95,20 @@ function _product_inventory_add_title($product)
 {
 	return t("Add \"!product\" to your inventory", array("!product" => $product->title));
 }
+
+function product_user_owns_product($product_id, $uid=false)
+{
+	if (!$uid)
+	{
+		global $user;
+		$uid = $user->uid;
+	}
+	
+	$sql = "SELECT n.`nid`
+			FROM {node} n JOIN {product_items} pi
+				ON n.`nid`=pi.`item_nid`
+			WHERE n.`uid`=%d
+				AND pi.`product_nid`=%d";
+	return db_result(db_query($sql, $uid, $product_id));
+}
 ?>

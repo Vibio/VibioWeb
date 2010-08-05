@@ -31,12 +31,23 @@ if (isset($node->amazon_data))
 		";
 	}
 	
-	$create = $page || $user->uid != $node->uid ? l("I have one!", "product/{$node->nid}/add-to-inventory") : "";
+	if ($page)
+	{
+		if ($item_id = product_user_owns_product($node->nid))
+		{
+			$manage_link = t("This item is already in your !inventory", array("!inventory" => l(t("inventory"), "node/$item_id")));
+		}
+		else
+		{
+			$manage_link = l("I have one!", "product/{$node->nid}/add-to-inventory");
+		}
+	}
+	
 	$external_link = $page ? t("Get \"!item\" from !external_link.", array("!item" => $node->title, "!external_link" => l(t("Amazon"), $node->amazon_data['detailpageurl'], array("absolute" => true)))) : "";
 	
 	echo "
-		<img src='{$image}' style='float: left; padding: 0 10px 10px 0;' />
-		$create
+		<a href='$node_url'><img src='{$image}' style='float: left; padding: 0 10px 10px 0;' /></a>
+		$manage_link
 		<h4>Description</h4>
 		$description
 		$details

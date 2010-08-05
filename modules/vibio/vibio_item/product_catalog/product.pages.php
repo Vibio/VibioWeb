@@ -2,6 +2,13 @@
 function product_add_to_inventory($product)
 {
 	global $user;
+	
+	if ($item_id = product_user_owns_product($product->nid, $user->uid))
+	{
+		drupal_set_message(t("You already own this item!"));
+		drupal_goto("node/{$item_id}");
+	}
+	
 	module_load_include("inc", "node", "node.pages");
 	
 	$form_id = "vibio_item_node_form";

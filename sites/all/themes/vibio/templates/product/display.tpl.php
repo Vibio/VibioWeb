@@ -48,7 +48,7 @@ elseif (arg(0) != "product" && arg(2) != "add-to-inventory")
 $external_link = $page ? t("Get \"!item\" from !external_link.", array("!item" => $node->title, "!external_link" => l(t("Amazon"), $node->amazon_data['detailpageurl'], array("absolute" => true)))) : "";
 
 echo "
-	<a href='$node_url'><img src='{$image}' style='float: left; padding: 0 10px 10px 0;' /></a>
+	<a href='/node/{$node->nid}'><img src='{$image}' style='float: left; padding: 0 10px 10px 0;' /></a>
 	$manage_link
 	<h4>Description</h4>
 	$description

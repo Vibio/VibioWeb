@@ -46,7 +46,7 @@ function profile_ext_theme(&$existing, $type, $theme, $path)
 			"arguments"	=> array(
 				"partner_data"	=> array(),
 				"user_accounts"	=> false,
-				"is_admin"		=> false,
+				"admin_external_account"		=> false,
 			),
 			"template"	=> "templates/profile/external-accounts",
 			"path"		=> drupal_get_path("theme", "vibio"),

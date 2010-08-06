@@ -5,7 +5,7 @@ if (!empty($user_accounts))
 	foreach ($user_accounts as $account)
 	{
 		$accounts .= "<li><span class='account_id'>$account</span>";
-		if ($is_admin)
+		if ($admin_external_account)
 		{
 			$options = array(
 				"attributes"	=> array(
@@ -20,7 +20,7 @@ if (!empty($user_accounts))
 	$accounts .= "</ul>";
 }
 
-if ($is_admin)
+if ($admin_external_account)
 {
 	$options = array(
 		"attributes"	=> array(

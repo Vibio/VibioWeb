@@ -36,10 +36,12 @@ function offer2buy_dashboard($uid=false)
 	drupal_add_js("sites/all/themes/vibio/js/offer2buy_actions.js");
 	drupal_add_css("sites/all/themes/vibio/css/offer2buy.css");
 	
+	$items_selling = _offer2buy_get_item_offers($uid);
 	$required = _offer2buy_dashboard_get_required_actions($uid);
 	$pending = _offer2buy_dashboard_get_pending_actions($uid);
 	
-	$out = theme("offer2buy_actions_list", $required, "required");
+	$out  = theme("offer2buy_list_all_offers", $items_selling);
+	$out .= theme("offer2buy_actions_list", $required, "required");
 	$out .= theme("offer2buy_actions_list", $pending, "pending");
 	
 	return $out;
@@ -98,6 +100,32 @@ function offer2buy_action_complete_form_submit($form, &$state)
 	{
 		_offer2buy_complete_actions($action['nid'], $action['uid']);
 	}
+}
+
+function _offer2buy_get_item_offers($uid)
+{
+	$sql = "SELECT o.*, u.name
+			FROM {offer2buy_offers} o JOIN {users} u ON o.`uid`=u.`uid`
+			WHERE o.`nid` IN (
+				SELECT `nid`
+				FROM {node}
+				WHERE `uid`=%d
+			)
+			ORDER BY o.`offer` DESC, o.`timestamp` ASC";
+	$res = db_query($sql, $uid);
+	
+	$offers = array();
+	while ($row = db_fetch_array($res))
+	{
+		if (!array_key_exists($row['nid'], $offers))
+		{
+			$offers[$row['nid']]['item'] = node_load($row['nid']);
+		}
+		
+		$offers[$row['nid']]['offers'][] = $row;
+	}
+	
+	return $offers;
 }
 
 // these are the actions this user needs to do

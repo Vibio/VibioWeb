@@ -6,3 +6,11 @@
 	float: left;
 	margin-right: 15px;
 }
+
+.offer_details, .offer_accept {
+	float: left;
+}
+
+.offer_details {
+	margin-right: 15px;
+}

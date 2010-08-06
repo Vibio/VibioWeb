@@ -7,7 +7,24 @@ function _vibio_item_search($keys)
 		return node_search("search", $keys. "type:vibio_item");
 	}
 	
-	$is_product_search = module_exists("product");
+	$valid_keys = array(
+		"target_user"	=> "user",
+		"item_status"	=> "item_status",
+		"access"		=> "users",
+		"dos"			=> "dos",
+	);
+	
+	$target_user = search_query_extract($keys, "user");
+	$item_status = search_query_extract($keys, "item_status");
+	$access = search_query_extract($keys, "users");
+	$dos = search_query_extract($keys, "dos");
+	
+	$keys = preg_replace('/(\s+)user:([0-9]+)/i', '', $keys);
+	$keys = preg_replace('/(\s+)item_status:([0-9]+)/i', '', $keys);
+	$keys = preg_replace('/(\s+)users:([a-z,0-9]+)/i', '', $keys);
+	$keys = preg_replace('/(\s+)dos:([0-9]+)/i', '', $keys);
+	
+	$is_product_search = !$target_user && module_exists("product");
 	
 	if ($is_product_search)
 	{
@@ -33,8 +50,9 @@ function _vibio_item_search($keys)
 	
 	if (!$is_product_search)
 	{
-		$conditions1 .= " AND n.uid != %d";
-		$arguments1[] = $user->uid;
+		$operator = $target_user ? "=" : "!=";
+		$conditions1 .= " AND n.uid $operator %d";
+		$arguments1[] = $target_user ? $target_user : $user->uid;
 	}
 	
 	// Build ranking expression (we try to map each parameter to a
@@ -83,7 +101,7 @@ function _vibio_item_search($keys)
 	}
 	
 	// eliminate nodes that the current user isn't allowed to see, based on friendship status
-	if (module_exists("privacy") && !$is_product_search)
+	if (module_exists("privacy") && !$is_product_search && $target_user != $user->uid)
 	{
 		$join1 .= " JOIN {privacy_settings} p ON p.`type_id`=n.`nid`";
 	
@@ -119,13 +137,9 @@ function _vibio_item_search($keys)
 		$arguments1[] = $user->uid;
 	}
 	
-	$access = search_query_extract($keys, "users");
-	
 	//don't care if this is set to "all", since if that's the case we just don't do anything else
-	if (!$is_product_search && (!$access && $user->uid) || $access == "network")
+	if (!$is_product_search && $target_user != $user->uid && (!$access && $user->uid) || $access == "network")
 	{
-		$dos = search_query_extract($keys, "dos");
-	
 		if (!$dos)
 		{
 			$dos = 1;
@@ -135,9 +149,6 @@ function _vibio_item_search($keys)
 		$uids = implode(",", $network);
 		$where1 .= " AND n.`uid` IN ($uids)";
 	}
-	
-	$keys = preg_replace('/(\s+)users:([a-z]+)/i', '', $keys);
-	$keys = preg_replace('/(\s+)dos:([0-9]+)/i', '', $keys);
 	
 	// When all search factors are disabled (ie they have a weight of zero), 
 	// the default score is based only on keyword relevance and there is no need to 

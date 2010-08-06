@@ -4,9 +4,13 @@ function vibio_amazon_nodeapi(&$node, $op, $a3=null, $a4=null)
 	switch ($op)
 	{
 		case "load":
-			return array(
-				"amazon_data"	=> array_shift(amazon_item_lookup_from_db($node->field_amazon_asin[0]['asin'])),
-			);
+			if ($node->type == "product")
+			{
+				return array(
+					"amazon_data"	=> array_shift(amazon_item_lookup_from_db($node->field_amazon_asin[0]['asin'])),
+				);
+			}
+			break;
 		case "delete":
 			$sql = "DELETE FROM {amazon_item_node}
 					WHERE `nid`=%d";

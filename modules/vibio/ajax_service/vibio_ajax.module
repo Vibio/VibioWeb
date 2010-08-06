@@ -38,15 +38,16 @@ function _vibio_ajax_get_inventory($uid)
 	exit(views_embed_view("user_inventory", "default", $uid, $access));
 }
 
-function _vibio_ajax_get_relational_activity($uid)
+function _vibio_ajax_get_relational_activity($uid, $ajax=true)
 {
 	global $user;
+	$return = $user->uid == $uid ? views_embed_view("user_relational_activity", "default", $uid) : t("You are not authorized to view this data.");
 	
-	if ($user->uid != $uid)
+	if ($ajax)
 	{
-		exit("You are not authorized to view this data.");
+		exit($return);
 	}
 	
-	exit(views_embed_view("user_relational_activity", "default", $uid));
+	return $return;
 }
 ?>

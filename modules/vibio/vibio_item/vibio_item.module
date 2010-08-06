@@ -4,6 +4,19 @@ require_once("vibio_item.inc.php");
 define("VIBIO_ITEM_TYPE_OWN", 1);
 define("VIBIO_ITEM_TYPE_SELL", 2);
 
+function vibio_item_menu()
+{
+	return array(
+		"user-inventory/%/search"	=> array(
+			"page callback"		=> "vibio_item_user_inventory_search_results",
+			"page arguments"	=> array(1),
+			"access arguments"	=> array("access content"),
+			"type"				=> MENU_CALLBACK,
+			"file"				=> "vibio_item.pages.php",
+		),
+	);
+}
+
 function vibio_item_form_alter(&$form, &$state, $id)
 {
 	global $user;
@@ -85,5 +98,33 @@ function vibio_item_preprocess_node(&$vars)
 		drupal_set_message(t("The owner has decided not to show that item"), "error");
 		drupal_goto($referrer);
 	}
+}
+
+function vibio_item_user_inventory_search(&$state, $uid)
+{
+	return array(
+		"inventory_uid"	=> array(
+			"#type"	=> "hidden",
+			"#value"=> $uid,
+		),
+		"phrase"		=> array(
+			"#title"=> t("Item Name"),
+			"#type"	=> "textfield",
+			"#size"	=> 24,
+		),
+		"item_status"	=> array(
+			"#title"	=> t("Item Status"),
+			"#type"		=> "select",
+			"#options"	=> array(
+				0	=> t("Any"),
+				VIBIO_ITEM_TYPE_OWN		=> t("Own"),
+				VIBIO_ITEM_TYPE_SELL	=> t("For Sale"),
+			),
+		),
+		"submit"	=> array(
+			"#type"	=> "submit",
+			"#value"=> t("search"),
+		),
+	);
 }
 ?>

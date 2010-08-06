@@ -1,3 +1,8 @@
+<?php
+echo drupal_get_form("vibio_item_user_inventory_search", $view->args[0]);
+?>
+
+<div id='user_inventory'>
 <table class="<?php print $class; ?>">
   <?php if (!empty($title)) : ?>
     <caption><?php print $title; ?></caption>
@@ -23,3 +28,4 @@
     <?php endforeach; ?>
   </tbody>
 </table>
+</div>

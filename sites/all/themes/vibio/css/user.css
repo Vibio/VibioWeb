@@ -1,3 +1,13 @@
 .profile .picture {
 	float: none;
 }
+
+#social_tabs {
+	list-style-type: none;
+	padding: 0;
+}
+
+#social_tabs li {
+	float: left;
+	margin-right: 10px;
+}

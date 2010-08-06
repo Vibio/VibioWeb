@@ -21,7 +21,7 @@
   */
 global $user;
 
-$type = $row->node_data_field_main_image_field_posting_type_value;
+$type = $row->node_data_field_posting_type_field_posting_type_value;
 echo $type == VIBIO_ITEM_TYPE_OWN ? t("Own") : t("For Sale");
 
 if ($user->uid == $view->args[0] && $type != VIBIO_ITEM_TYPE_SELL)

@@ -1,13 +1,40 @@
 <?php
 global $user;
-
-$activity = t("My Activity");
-$friends = t("Friends");
-$stuff = t("Inventory");
 $access = module_exists("privacy") ? privacy_get_access_level($uid) : 1;
 
-$activity_feed = views_embed_view("user_heartbeat_activity", "block_1", $uid, $access);
-$tabs = module_invoke_all("user_social_info", $uid);
+$tab = arg(2);
+
+switch ($tab)
+{
+	case "friend-activity":
+		$view = _vibio_ajax_get_relational_activity($uid, false);
+		break;
+	case "friends":
+		$view = views_embed_view("user_relationships_browser", "default", $uid);
+		break;
+	case "inventory":
+		$view = views_embed_view("user_inventory", "default", $uid, $access);
+		break;
+	case "activity":
+		$view = views_embed_view("user_heartbeat_activity", "block_1", $uid, $access);
+		break;
+	default:
+		$view = $user->uid == $uid ? _vibio_ajax_get_relational_activity($uid, false) : views_embed_view("user_heartbeat_activity", "block_1", $uid, $access);
+		break;
+}
+ 
+$tabs = array(); //module_invoke_all("user_social_info", $uid); //need to re do how this is done.
+
+$tasks = array(
+	"activity"	=> t("My Activity"),
+	"friends"	=> t("Friends"),
+	"inventory"	=> t("Inventory"),
+);
+
+if ($user->uid == $uid)
+{
+	$tasks = array_merge(array("friend-activity" => t("Friend Activity")), $tasks);
+}
 
 $additional_tabs = "";
 $additional_divs = "";
@@ -48,27 +75,13 @@ if ($user->uid == $uid)
 	$relational_tab = "<li><a href='/vibio-ajax/get-relational-activity/$uid'>$relational_header</a></li>";
 }
 
-echo "
-	$script
-	<div id='social_tabs'>
-		<ul>
-			<li>
-				<a href='#user_activity'>$activity</a>
-			</li>
-			$relational_tab
-			<li>
-				<a href='/vibio-ajax/get-friends/$uid'>$friends</a>
-			</li>
-			<li>
-				<a href='/vibio-ajax/get-inventory/$uid'>$stuff</a>
-			</li>
-			$additional_tabs
-		</ul>
-		<div id='social_loading_div'><img src='/sites/all/themes/vibio/images/ajax-loader.gif' /></div>
-		<div id='user_activity'>
-			$activity_feed
-		</div>
-		$additional_divs
-	</div>
-";
+echo "<ul id='social_tabs'>";
+foreach ($tasks as $url => $title)
+{
+	echo "<li><a href='/user/{$uid}/{$url}'>$title</a></li>";
+}
+echo "<li><img id='social_loading_div' src='/sites/all/themes/vibio/images/ajax-loader.gif' /></li>";
+echo "</ul><div style='clear: both;'></div>";
+
+echo $view;
 ?>

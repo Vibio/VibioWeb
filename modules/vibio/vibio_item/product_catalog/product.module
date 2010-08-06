@@ -48,39 +48,62 @@ function product_external_search($args)
 
 function product_nodeapi(&$node, $op, $a3=null, $a4=null)
 {
-	if ($node->type != "vibio_item")
+	if ($node->type == "vibio_item")
 	{
-		return;
+		switch ($op)
+		{
+			case "insert":
+				if (isset($node->product_product_nid))
+				{
+					$sql = "REPLACE INTO {product_items}
+							SET `product_nid`=%d, `item_nid`=%d";
+					db_query($sql, $node->product_product_nid, $node->nid);
+				}
+				break;
+			case "delete":
+				$sql = "DELETE FROM {product_items}
+						WHERE `nid`=%d";
+				db_query($sql, $node->nid);
+				break;
+			case "view":
+				$sql = "SELECT `product_nid`
+						FROM {product_items}
+						WHERE `item_nid`=%d";
+				$node->product_nid = db_result(db_query($sql, $node->nid));
+			default:
+				break;
+		}
 	}
+	
+	if ($node->type == "product")
+	{
+		switch ($op)
+		{
+			case "update index":
+				return theme("product_display", $node);
+		}
+	}
+}
 
-	switch ($op)
-	{
-		case "insert":
-			if (isset($node->product_product_nid))
-			{
-				$sql = "REPLACE INTO {product_items}
-						SET `product_nid`=%d, `item_nid`=%d";
-				db_query($sql, $node->product_product_nid, $node->nid);
-			}
-			break;
-		case "delete":
-			$sql = "DELETE FROM {product_items}
-					WHERE `nid`=%d";
-			db_query($sql, $node->nid);
-			break;
-		case "view":
-			$sql = "SELECT `product_nid`
-					FROM {product_items}
-					WHERE `item_nid`=%d";
-			$node->product_nid = db_result(db_query($sql, $node->nid));
-		default:
-			break;
-	}
+function product_theme()
+{
+	return array(
+		"product_display"	=> array(
+			"arguments"	=> array("node"	=> false, "page" => false),
+			"template"	=> "templates/product/display",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+	);
 }
 
 function product_form_vibio_item_node_form_alter(&$form, &$state)
 {
 	$product = node_load($form['#node']->product_nid);
+	
+	if (!$product)
+	{
+		return;
+	}
 	
 	$form['title']['#default_value'] = $product->title;
 	$form['product_product_nid'] = array(
@@ -91,7 +114,7 @@ function product_form_vibio_item_node_form_alter(&$form, &$state)
 
 function _product_remove_options($keys)
 {
-	return preg_replace('/(^| )([a-z0-9]+):(.*)( |$)/i', '', $keys);
+	return preg_replace('/(^| )([a-z0-9_]+):(.*)( |$)/i', '', $keys);
 }
 
 function _product_inventory_add_title($product)

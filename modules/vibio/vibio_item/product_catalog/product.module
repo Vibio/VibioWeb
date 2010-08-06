@@ -62,7 +62,7 @@ function product_nodeapi(&$node, $op, $a3=null, $a4=null)
 				break;
 			case "delete":
 				$sql = "DELETE FROM {product_items}
-						WHERE `nid`=%d";
+						WHERE `item_nid`=%d";
 				db_query($sql, $node->nid);
 				break;
 			case "view":

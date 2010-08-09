@@ -1,4 +1,6 @@
 <?php
+define("PRODUCT_OWNER_CACHE_TTL", 300);
+
 function _product_search_user_inventory($keys, $uid)
 {
 	global $user;
@@ -123,6 +125,92 @@ function _product_search_user_inventory($keys, $uid)
 			'snippet' => search_excerpt($keys, $node->body),
 		);
 	}
+	return $results;
+}
+
+function _product_get_product_owners($nid, $as_uid=false)
+{
+	if (!$as_uid)
+	{
+		global $user;
+		$as_uid = $user->uid;
+	}
+	
+	return array(
+		"network"	=> _product_get_owners($nid, $as_uid),
+		"vibio"		=> _product_get_owners($nid, $as_uid, "vibio"),
+	);
+}
+
+function _product_get_owners($nid, $as_uid, $type="network")
+{
+	$depth = 3;
+	$per_page = 10;
+	$offset = is_numeric($_GET['page']) && $_GET['page'] > 0 ? $_GET['page'] : 0;
+	$offset = $offset*$per_page;
+	
+	$cache_key = "product_owners:{$nid}:{$as_uid}:{$type}:{$offset}";
+	if (false && $cache = cache_get($cache_key))
+	{
+		return $cache->data;
+	}
+	
+	$network = array_keys(network_get($as_uid, false, $depth));
+	array_shift($network);
+	$network = implode(",", $network);
+	
+	if (!$network && $type == "network")
+	{
+		return array();
+	}
+	
+	switch ($type)
+	{
+		case "vibio":
+			$network_op = "NOT IN";
+			$privacy_check = $as_uid ? PRIVACY_AUTHENTICATED : PRIVACY_PUBLIC;
+			break;
+		case "network":
+		default:
+			$network_op = "IN";
+			$privacy_check = PRIVACY_CONNECTION;
+			break;
+	}
+
+	$network_check = $network ? " AND u.`uid` $network_op ($network)" : "";
+	
+	$sql = "SELECT n.`nid`, n.`title`, u.`uid`, u.`name`, u.`picture`
+			FROM {node} n JOIN {users} u JOIN {privacy_settings} p
+				ON n.`uid`=u.`uid` AND p.`uid`=n.`uid`
+			WHERE p.`type`='node'
+				AND p.`type_id`=n.`nid`
+				AND p.`setting` <= %d
+				AND u.`uid` != %d
+				$network_check
+				AND n.`nid` IN (
+					SELECT `item_nid`
+					FROM {product_items}
+					WHERE `product_nid`=%d
+				)
+			ORDER BY n.`changed` DESC
+			LIMIT $offset, $per_page";
+	$res = db_query($sql, $privacy_check, $as_uid, $nid);
+	
+	$results = array();
+	while ($row = db_fetch_array($res))
+	{
+		$results[] = array(
+			"node"	=> l($row['title'], "node/{$row['nid']}"),
+			"user"	=> array(
+				"picture"	=> file_create_url($row['picture']),
+				"name"		=> $row['name'],
+				"uid"		=> $row['uid'],
+				"dos"		=> $as_uid && $type == "network" && module_exists("dos") ? dos_get($row['uid'], false, $depth) : array(),
+			),
+		);
+	}
+	
+	cache_set($cache_key, $results, "table", time() + PRODUCT_OWNER_CACHE_TTL);
 	return $results;
 }
 ?>

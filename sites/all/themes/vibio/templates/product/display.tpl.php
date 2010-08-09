@@ -47,6 +47,17 @@ elseif (arg(0) != "product" && arg(2) != "add-to-inventory")
 
 $external_link = $page ? t("Get \"!item\" from !external_link.", array("!item" => $node->title, "!external_link" => l(t("Amazon"), $node->amazon_data['detailpageurl'], array("absolute" => true)))) : "";
 
+if ($page)
+{
+	module_load_include("inc", "product");
+	$owners_header = t("People who have !title in their inventory", array("!title" => $node->title));
+	$product_owners = "<h3>$owners_header</h3>";
+	foreach (_product_get_product_owners($node->nid, $user->uid) as $type => $items)
+	{
+		$product_owners .= theme("product_owners", $type, $items);
+	}
+}
+
 echo "
 	<a href='/node/{$node->nid}'><img src='{$image}' style='float: left; padding: 0 10px 10px 0;' /></a>
 	$manage_link
@@ -54,6 +65,7 @@ echo "
 	$description
 	<div style='clear: left;'></div>
 	$details
+	$product_owners
 	<p>$external_link</p>
 ";	
 ?>

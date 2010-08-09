@@ -27,7 +27,7 @@ function dos_menu()
 }
 
 //dijkstra
-function dos_get($target_uid, $type=false)
+function dos_get($target_uid, $type=false, $max_depth=false)
 {
 	global $user;
 	
@@ -40,7 +40,9 @@ function dos_get($target_uid, $type=false)
 		return array();
 	}
 	
-	$network = network_get($user->uid, $type, variable_get("dos_max_depth", DOS_DEFAULT_DEPTH));
+	$target_uid = (int) $target_uid;
+	$max_depth = $max_depth ? $max_depth : variable_get("dos_max_depth", DOS_DEFAULT_DEPTH);
+	$network = network_get($user->uid, $type, $max_depth);
 	
 	if (!array_key_exists($target_uid, $network))
 	{

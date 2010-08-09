@@ -3,3 +3,4 @@ description="Handles the automated creation of product content from external sou
 core=6.x
 package="Vibio"
 dependencies[] = vibio_item
+dependencies[] = privacy

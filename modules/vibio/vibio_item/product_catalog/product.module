@@ -93,6 +93,16 @@ function product_theme()
 			"template"	=> "templates/product/display",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+		"product_owners"	=> array(
+			"arguments"	=> array("type"	=> "network", "items" => array()),
+			"template"	=> "templates/product/owners",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"product_owner"		=> array(
+			"arguments"	=> array("item"	=> array()),
+			"template"	=> "templates/product/owner",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
 	);
 }
 

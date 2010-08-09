@@ -26,6 +26,12 @@ function product_menu()
 			"file"				=> "product.pages.php",
 			"type"				=> MENU_CALLBACK,
 		),
+		"product/get-owners"				=> array(
+			"page callback"		=> "_product_get_owners_page",
+			"access arguments"	=> array("access content"),
+			"file"				=> "product.pages.php",
+			"type"				=> MENU_CALLBACK,
+		),
 	);
 }
 
@@ -94,7 +100,7 @@ function product_theme()
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
 		"product_owners"	=> array(
-			"arguments"	=> array("type"	=> "network", "items" => array()),
+			"arguments"	=> array("type"	=> "network", "data" => array()),
 			"template"	=> "templates/product/owners",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
@@ -104,6 +110,12 @@ function product_theme()
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
 	);
+}
+
+function product_preprocess_product_display(&$vars)
+{
+	drupal_add_css("sites/all/themes/vibio/css/product.css");
+	drupal_add_js("sites/all/themes/vibio/js/product.js");
 }
 
 function product_form_vibio_item_node_form_alter(&$form, &$state)

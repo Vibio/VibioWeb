@@ -25,4 +25,26 @@ function product_add_to_inventory($product)
 	
 	return $output;
 }
+
+function _product_get_owners_page()
+{
+	global $user;
+	$p = $_POST;
+	
+	if (!isset($p['product']) || !isset($p['type']))
+	{
+		return;
+	}
+	
+	module_load_include("inc", "product");
+	$data = _product_get_owners($p['product'], $user->uid, $p['type'], $p['page']);
+	$output = theme("product_owners", $p['type'], $data);
+	
+	if ($p['ajax'])
+	{
+		exit($output);
+	}
+	
+	return $output;
+}
 ?>

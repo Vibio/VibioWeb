@@ -11,17 +11,7 @@ $(document).ready(function()
 	
 	$("#user_inventory .pager li > a").live("click", function()
 	{
-		var get_args = $(this).attr("href").split("?")[1].split("&");
-		var page = 0;
-		
-		$.each(get_args, function(i, e)
-		{
-			var arg = e.split("=");
-			if (arg[0] == "page")
-			{
-				page = arg[1];
-			}
-		});
+		var page = vibio_utility.get_a_get_arg($(this), "page");
 		
 		user_inventory_search(page);
 		return false;

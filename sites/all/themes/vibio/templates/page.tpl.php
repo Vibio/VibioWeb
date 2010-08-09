@@ -12,6 +12,7 @@
   <?php print $scripts; ?>
   <script type="text/javascript" src="/sites/all/themes/vibio/js/jquery-ui-1.8.2.custom.min.js"></script>
   <script type="text/javascript" src="/sites/all/themes/vibio/js/vibio_dialog.js"></script>
+  <script type="text/javascript" src="/sites/all/themes/vibio/js/utility.js"></script>
 </head>
 <body class="<?php print $classes; ?>">
 <div id="page-wrapper">

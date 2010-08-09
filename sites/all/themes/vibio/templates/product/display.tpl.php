@@ -50,11 +50,19 @@ $external_link = $page ? t("Get \"!item\" from !external_link.", array("!item" =
 if ($page)
 {
 	module_load_include("inc", "product");
+	
 	$owners_header = t("People who have !title in their inventory", array("!title" => $node->title));
 	$product_owners = "<h3>$owners_header</h3>";
-	foreach (_product_get_product_owners($node->nid, $user->uid) as $type => $items)
+	
+	foreach (_product_get_product_owners($node->nid, $user->uid) as $type => $data)
 	{
-		$product_owners .= theme("product_owners", $type, $items);
+		$type_title = $type == "network" ? t("In your network") : t("On Vibio");
+		$product_owners .= "<div class='product_owners_type_container' id='product_type_{$type}'>";
+		$product_owners .= "<h4>$type_title</h4>";
+		$product_owners .= "<div class='product_owners_results'>";
+		$product_owners .= theme("product_owners", $type, $data);
+		
+		$product_owners .= "</div></div>";
 	}
 }
 

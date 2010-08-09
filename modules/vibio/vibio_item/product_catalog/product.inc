@@ -1,5 +1,6 @@
 <?php
 define("PRODUCT_OWNER_CACHE_TTL", 300);
+define("PRODUCT_OWNER_DISPLAY_PER_PAGE", 10);
 
 function _product_search_user_inventory($keys, $uid)
 {
@@ -142,15 +143,13 @@ function _product_get_product_owners($nid, $as_uid=false)
 	);
 }
 
-function _product_get_owners($nid, $as_uid, $type="network")
+function _product_get_owners($nid, $as_uid, $type="network", $page=0)
 {
 	$depth = 3;
-	$per_page = 10;
-	$offset = is_numeric($_GET['page']) && $_GET['page'] > 0 ? $_GET['page'] : 0;
-	$offset = $offset*$per_page;
+	$offset = $page*PRODUCT_OWNER_DISPLAY_PER_PAGE;
 	
-	$cache_key = "product_owners:{$nid}:{$as_uid}:{$type}:{$offset}";
-	if (false && $cache = cache_get($cache_key))
+	$cache_key = "product_owners:{$nid}:{$as_uid}:{$type}:{$page}";
+	if ($cache = cache_get($cache_key))
 	{
 		return $cache->data;
 	}
@@ -193,8 +192,10 @@ function _product_get_owners($nid, $as_uid, $type="network")
 					WHERE `product_nid`=%d
 				)
 			ORDER BY n.`changed` DESC
-			LIMIT $offset, $per_page";
-	$res = db_query($sql, $privacy_check, $as_uid, $nid);
+			LIMIT $offset, %d";
+	$count_sql = preg_replace(array('/SELECT.*?FROM /As', '/ORDER BY .*/', '/LIMIT .*/'), array('SELECT COUNT(*) FROM ', '', ''), $sql);
+	$total_results = db_result(db_query($count_sql, $privacy_check, $as_uid, $nid));
+	$res = db_query($sql, $privacy_check, $as_uid, $nid, PRODUCT_OWNER_DISPLAY_PER_PAGE);
 	
 	$results = array();
 	while ($row = db_fetch_array($res))
@@ -210,7 +211,12 @@ function _product_get_owners($nid, $as_uid, $type="network")
 		);
 	}
 	
-	cache_set($cache_key, $results, "table", time() + PRODUCT_OWNER_CACHE_TTL);
-	return $results;
+	$data = array(
+		"count"		=> $total_results,
+		"page"		=> $page,
+		"results"	=> $results,
+	);
+	cache_set($cache_key, $data, "cache", time() + PRODUCT_OWNER_CACHE_TTL);
+	return $data;
 }
 ?>

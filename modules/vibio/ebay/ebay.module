@@ -193,17 +193,32 @@ function ebay_search_validate($form, &$state)
 
 function ebay_user_social_info($uid)
 {
+	$sql = "SELECT COUNT(*)
+			FROM {ebay_users}
+			WHERE `uid`=%d";
+	if (!db_result(db_query($sql, $uid)))
+	{
+		return array();
+	}
+	
 	return array(
 		"ebay_inventory"	=> array(
-			"title"			=> t("eBay"),
-			"custom_ajax"	=> true,
-			"args"			=> json_encode(array(
-				"url"		=> "/ebay/ajax/service",
-				"action"	=> "find_items_advanced",
-				"users"		=> $uid,
-			)),
+			"title"	=> t("eBay Listings"),
+			"url"	=> "ebay-items",
 		),
 	);
+}
+
+function ebay_items_user_data($uid)
+{
+	drupal_add_js("sites/all/themes/vibio/js/ebay-search.js");
+	
+	$args = array(
+		"users"	=> $uid,
+	);
+	
+	$items = ebay_find_items_advanced($args);
+	return theme("ebay_search_results", $items);
 }
 
 function ebay_access($perm)

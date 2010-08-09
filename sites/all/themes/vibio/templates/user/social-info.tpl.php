@@ -19,11 +19,21 @@ switch ($tab)
 		$view = views_embed_view("user_heartbeat_activity", "block_1", $uid, $access);
 		break;
 	default:
-		$view = $user->uid == $uid ? _vibio_ajax_get_relational_activity($uid, false) : views_embed_view("user_heartbeat_activity", "block_1", $uid, $access);
+		$func = strtolower(str_replace("-", "_", $tab))."_user_data";
+		if (function_exists($func))
+		{
+			$view = $func(arg(1));
+		}
+		else
+		{
+			$view = $user->uid == $uid ?
+				_vibio_ajax_get_relational_activity($uid, false) :
+				views_embed_view("user_heartbeat_activity", "block_1", $uid, $access);
+		}
 		break;
 }
  
-$tabs = array(); //module_invoke_all("user_social_info", $uid); //need to re do how this is done.
+$tabs = module_invoke_all("user_social_info", $uid); //need to re do how this is done.
 
 $tasks = array(
 	"activity"	=> t("My Activity"),
@@ -36,38 +46,12 @@ if ($user->uid == $uid)
 	$tasks = array_merge(array("friend-activity" => t("Friend Activity")), $tasks);
 }
 
-$additional_tabs = "";
-$additional_divs = "";
-$script = "
-	<script type='text/javascript'>
-		var tab_args = {};
-";
-foreach ($tabs as $id => $data)
+foreach ($tabs as $data)
 {
-	if ($data['custom_ajax'])
-	{
-		$url = "#{$id}";
-		$link_attr = "class='tablink_custom_ajax' id='tablink_{$id}'";
-		$additional_divs .= "<div id='{$id}'></div>";
-	}
-	else
-	{
-		$url = $data['url'];
-		$link_attr = "";
-	}
-	
-	$additional_tabs .= "
-		<li>
-			<a href='{$url}' {$link_attr}>{$data['title']}</a>
-		</li>
-	";
-	
-	if ($data['args'])
-	{
-		$script .= "tab_args.$id = {$data['args']}";
-	}
+	$tasks[$data['url']] = $data['title'];
 }
-$script .= "</script>";
+
+$additional_tabs = "";
 
 if ($user->uid == $uid)
 {

@@ -21,6 +21,11 @@ function ebay_admin()
 			"#default_value"=> variable_get("ebayapi_entriesperpage", 20),
 			"#required"		=> true,
 		),
+		"ebayapi_campaignid"	=> array(
+			"#type"			=> "textfield",
+			"#title"		=> t("Campaign ID"),
+			"#default_value"=> variable_get("ebayapi_campaignid", ""),
+		),
 		"keys"			=> array(
 			"#type"			=> "fieldset",
 			"#title"		=> t("Keys"),

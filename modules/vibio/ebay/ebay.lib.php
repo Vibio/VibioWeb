@@ -44,6 +44,20 @@ function _ebay_xml_init($root_element="some_element_name", $attributes="")
 	return new SimpleXMLElement("<?xml version='1.0' encoding='utf-8'?><{$root_element} {$attributes}></{$root_element}>");
 }
 
+function _ebay_xml_affiliate_details($xml)
+{
+	if (!($campaign_id = variable_get("ebayapi_campaignid", false)))
+	{
+		return $xml;
+	}
+	
+	$affiliate = $xml->addChild("affiliate");
+	$affiliate->addChild("networkId", 9); //9 is ebay partner network
+	$addiliate->addChild("trackingId", $campaign_id);
+	
+	return $xml;
+}
+
 function _ebay_search($keys)
 {
 	global $user;

@@ -92,7 +92,7 @@ function ebay_find_items_advanced($args)
 	
 	$version = variable_get("ebayapi_finding_version", "");
 	
-	$xml = _ebay_xml_init("findItemsAdvancedRequest", "xmlns='http://www.ebay.com/marketplace/search/{$version}/services'");
+	$xml = _ebay_xml_affiliate_details(_ebay_xml_init("findItemsAdvancedRequest", "xmlns='http://www.ebay.com/marketplace/search/{$version}/services'"));
 	$xml->addChild("keywords", $args['keywords']);
 	$page = $xml->addChild("paginationInput");
 	$page->addChild("entriesPerPage", variable_get("ebayapi_entriesperpage", 20));

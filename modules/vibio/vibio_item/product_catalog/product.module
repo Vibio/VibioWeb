@@ -26,6 +26,13 @@ function product_menu()
 			"file"				=> "product.pages.php",
 			"type"				=> MENU_CALLBACK,
 		),
+		"product/add"			=> array(
+			"title"				=> "Add New Product",
+			"page callback"		=> "product_add_new",
+			"access arguments"	=> array("create product content"),
+			"file"				=> "product.pages.php",
+			"type"				=> MENU_CALLBACK,
+		),
 		"product/get-owners"				=> array(
 			"page callback"		=> "_product_get_owners_page",
 			"access arguments"	=> array("access content"),
@@ -99,6 +106,11 @@ function product_theme()
 			"template"	=> "templates/product/amazon-display",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+		"product_display"	=> array(
+			"arguments"	=> array("node"	=> false, "page" => false),
+			"template"	=> "templates/product/display",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
 		"product_owners"	=> array(
 			"arguments"	=> array("type"	=> "network", "data" => array()),
 			"template"	=> "templates/product/owners",
@@ -132,6 +144,16 @@ function product_form_vibio_item_node_form_alter(&$form, &$state)
 		"#type"	=> "value",
 		"#value"=> $form['#node']->product_nid,
 	);
+}
+
+function product_form_alter(&$form, &$state, $id)
+{
+	if ($id == "product_node_form")
+	{
+		_vibio_item_unset($form);
+		_vibio_item_defaults($form);
+		unset($form['field_amazon_asin']);
+	}
 }
 
 function _product_remove_options($keys)

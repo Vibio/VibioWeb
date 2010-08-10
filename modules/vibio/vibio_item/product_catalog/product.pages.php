@@ -26,6 +26,23 @@ function product_add_to_inventory($product)
 	return $output;
 }
 
+function product_add_new()
+{
+	global $user;
+	
+	module_load_include("inc", "node", "node.pages");
+	
+	$form_id = "product_node_form";
+	$node = new stdClass;
+	$node->uid = $user->uid;
+	$node->name = $user->name;
+	$node->type = "product";
+	
+	node_object_prepare($node);
+	
+	return drupal_get_form($form_id, $node);
+}
+
 function _product_get_owners_page()
 {
 	global $user;

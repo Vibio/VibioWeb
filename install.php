@@ -20,6 +20,14 @@ function install_main() {
   require_once './includes/bootstrap.inc';
   drupal_bootstrap(DRUPAL_BOOTSTRAP_CONFIGURATION);
 
+  // The user agent header is used to pass a database prefix in the request when
+  // running tests. However, for security reasons, it is imperative that no
+  // installation be permitted using such a prefix.
+  if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], "simpletest") !== FALSE) {
+    header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden');
+    exit;
+  }
+
   // This must go after drupal_bootstrap(), which unsets globals!
   global $profile, $install_locale, $conf;
 
@@ -537,7 +545,7 @@ function install_select_locale($profilename) {
         $output .= '<ul><li><a href="install.php?profile='. $profilename .'&amp;locale=en">'. st('Continue installation in English') .'</a></li><li><a href="install.php?profile='. $profilename .'">'. st('Return to choose a language') .'</a></li></ul>';
       }
       else {
-        $output = '<ul><li><a href="install.php?profile='. $profilename .'&amp;locale=en">'. st('Install Drupal in English') .'</a></li><li><a href="install.php?profile='. $profilename .'&amp;localize=true">'. st('Learn how to install Drupal in other languages') .'</a></li></ul>';
+        $output = '<ul><li><a href="install.php?profile='. $profilename .'&amp;locale=en">'. st('Install Pressflow in English') .'</a></li><li><a href="install.php?profile='. $profilename .'&amp;localize=true">'. st('Learn how to install Pressflow in other languages') .'</a></li></ul>';
       }
       print theme('install_page', $output);
       exit;
@@ -630,6 +638,7 @@ function install_already_done_error() {
  */
 function install_tasks($profile, $task) {
   global $base_url, $install_locale;
+
   // Bootstrap newly installed Drupal, while preserving existing messages.
   $messages = isset($_SESSION['messages']) ? $_SESSION['messages'] : '';
   drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
@@ -908,7 +917,7 @@ function install_check_requirements($profile, $verify) {
 <li>Copy the %default_file file to %file.</li>
 <li>Change file permissions so that it is writable by the web server. If you are unsure how to grant file permissions, please consult the <a href="@handbook_url">on-line handbook</a>.</li>
 </ol>
-More details about installing Drupal are available in INSTALL.txt.', array('@drupal' => drupal_install_profile_name(), '%file' => $file, '%default_file' => $conf_path .'/default.settings.php', '@handbook_url' => 'http://drupal.org/server-permissions')), 'error');
+More details about installing Pressflow are available in INSTALL.txt.', array('@drupal' => drupal_install_profile_name(), '%file' => $file, '%default_file' => $conf_path .'/default.settings.php', '@handbook_url' => 'http://drupal.org/server-permissions')), 'error');
     }
     elseif (!$writable) {
       drupal_set_message(st('The @drupal installer requires write permissions to %file during the installation process. If you are unsure how to grant file permissions, please consult the <a href="@handbook_url">on-line handbook</a>.', array('@drupal' => drupal_install_profile_name(), '%file' => $file, '@handbook_url' => 'http://drupal.org/server-permissions')), 'error');
@@ -1009,6 +1018,7 @@ function install_task_list($active = NULL) {
  * Form API array definition for site configuration.
  */
 function install_configure_form(&$form_state, $url) {
+
   $form['intro'] = array(
     '#value' => st('To configure your website, please provide the following information.'),
     '#weight' => -10,

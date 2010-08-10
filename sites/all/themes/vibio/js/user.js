@@ -5,20 +5,25 @@ $(document).ready(function()
 	
 	$("#vibio-item-user-inventory-search").submit(function()
 	{
-		user_inventory_search(0);
-		return false;
+		return user_inventory_search(0);
 	});
 	
 	$("#user_inventory .pager li > a").live("click", function()
 	{
-		var page = vibio_utility.get_a_get_arg($(this), "page");
-		
-		user_inventory_search(page);
-		return false;
+		return user_inventory_search(vibio_utility.get_a_get_arg($(this), "page"));
 	});
 	
 	var user_inventory_search = function(page)
 	{
+		var phrase = $("#edit-phrase").val();
+		var status = $("#edit-item-status").val();
+		
+		if (phrase == "" && status == 0)
+		{
+			window.location = "/user/"+uid+"/inventory";
+			return false;
+		}
+		
 		$("#social_loading_div").show();
 		
 		var submit_data = {
@@ -44,6 +49,8 @@ $(document).ready(function()
 				$("#social_loading_div").hide();
 			}
 		});
+		
+		return false;
 	}
 	
 	/*$("#social_tabs").tabs({

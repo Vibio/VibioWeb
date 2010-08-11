@@ -12,23 +12,22 @@ function fb_user_signup()
 	module_load_include("inc", "fb");
 	$fb_user = fb_get_user(fb_get_cookie()); // here we get the raw, unverified cookie. we need to do this here since the user is logged out at this point
 	
-	$sql = "SELECT `uid`
-			FROM {users}
-			WHERE `name`='%s'
-				OR `mail`='%s'";
-	$uid = db_result(db_query($sql, $fb_user->name, $fb_user->email));
-	
-	if ($uid)
+	if ($uid = fb_user_exists($fb_user->id)) // if you have the cookie, you are good to go
 	{
-		if ($uid == fb_user_exists($fb_user->id)) // if the uid exists and the uid matches an existing fb user, auto login
-		{
-			user_external_login(user_load($uid));
-			drupal_goto($_GET['destination']);
-		}
+		user_external_login(user_load($uid));
+		drupal_goto($_GET['destination']);
+	}
+	else // if you the user doesn't exist, we have to check if that username/email already exists in drupal
+	{
+		$sql = "SELECT `uid`
+				FROM {users}
+				WHERE `name`='%s'
+					OR `mail`='%s'";
+		$uid = db_result(db_query($sql, $fb_user->name, $fb_user->email));
 		
 		fb_del_cookie();
 		drupal_set_message(t("The username !username or email address !email already exists", array("!username" => $fb_user->name, "!email" => $fb_user->email)), "error");
-		drupal_set_message(t("Account registration failed. Please manually create an account and link your facebook account."));
+		drupal_set_message(t("Account registration failed. Please manually create an account and link your facebook account."), "error");
 		drupal_goto($_GET['destination']);
 	}
 	
@@ -51,7 +50,7 @@ function fb_user_signup()
 	if (!$success || !($account = user_save("", $state['values'])))
 	{
 		fb_del_cookie();
-		drupal_set_message(t("Account registration failed. Please manually create an account and link your facebook account."));
+		drupal_set_message(t("Account registration failed. Please manually create an account and link your facebook account."), "error");
 		drupal_goto($_GET['destination']);
 	}
 	

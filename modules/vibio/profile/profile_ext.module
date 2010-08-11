@@ -59,7 +59,7 @@ function profile_ext_manage_external_accounts($uid)
 	global $user;
 	
 	// profile_ext depends on privacy depends on network
-	$info = _network_get_userinfo($uid);
+	$info = _network_get_userinfo($uid, false, true);
 	$external_accounts = module_invoke_all("profile_ext_external_account_data");
 	$is_admin = $user->uid == $uid;
 	

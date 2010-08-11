@@ -20,7 +20,9 @@ if (!empty($user_accounts))
 	$accounts .= "</ul>";
 }
 
-if ($admin_external_account)
+$add_account = $partner_data['add']['multiple'] ? true : empty($user_accounts);
+
+if ($admin_external_account && $add_account)
 {
 	$options = array(
 		"attributes"	=> array(

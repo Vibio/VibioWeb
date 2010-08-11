@@ -67,9 +67,16 @@ function fb_get_user($cookie=false)
 
 function fb_save_user(&$u, $fb_uid)
 {
+	$sql = "DELETE FROM {fb_users}
+			WHERE `fb_id`=%d
+				OR `uid`=%d";
+	db_query($sql, $fb_uid, $u->uid);
+	
 	$sql = "INSERT INTO {fb_users}
 			SET `uid`=%d, `fb_id`=%d, `time`=%d";
-	db_query($sql, $u->uid, $fb_uid, time());
+	db_query($sql, $u->uid, $fb_uid, time());\
+	
+	module_invoke_all("fb_link_account", $u);
 }
 
 function fb_verify_cookie($uid=false)

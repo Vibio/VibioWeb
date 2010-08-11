@@ -67,6 +67,11 @@ function network_user_relationships($op, &$rel)
 	}
 }
 
+function network_fb_link_account($user)
+{
+	cache_clear_all("userinfo:{$user->uid}", "cache_network");
+}
+
 function network_ebay_add_account($uid)
 {
 	cache_clear_all("userinfo:$uid", "cache_network");
@@ -110,10 +115,10 @@ function _network_get_friends($uid, $rel_type)
 	return $friends;
 }
 
-function _network_get_userinfo($uid, $info=false)
+function _network_get_userinfo($uid, $info=false, $reset=false)
 {
 	$cache_key = "userinfo:{$uid}";
-	if ($cache = cache_get($cache_key, "cache_network"))
+	if (!$reset && $cache = cache_get($cache_key, "cache_network"))
 	{
 		return $cache->data;
 	}

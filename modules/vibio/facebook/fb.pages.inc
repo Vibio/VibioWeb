@@ -59,4 +59,58 @@ function fb_user_signup()
 	user_external_login($account);
 	drupal_goto($_GET['destination']);
 }
+
+function fb_user_link_account()
+{
+	global $user;
+	
+	if (!$user->uid)
+	{
+		drupal_goto($_GET['destination']);
+	}
+	
+	module_load_include("inc", "fb");
+	$fb_user = fb_get_user(fb_get_cookie());
+	
+	$sql = "SELECT `uid`, `name`
+			FROM {users} 
+			WHERE `uid` IN (
+				SELECT `uid`
+				FROM {fb_users}
+				WHERE `fb_id`=%d
+			)";
+	$u = db_fetch_object(db_query($sql, $fb_user->id));
+	
+	if ($u)
+	{
+		drupal_set_message(t("That Facebook account is already linked to the Vibio account !account. Please remove the account from !account's account before continuing.", array("!account" => $u->name)), "error");
+		drupal_goto($_GET['destination']);
+	}
+	
+	fb_save_user($user, $fb_user->id);
+	drupal_set_message(t("Your Facebook account has been linked to Vibio!"));
+	drupal_goto($_GET['destination']);
+}
+
+function fb_user_remove_account()
+{
+	global $user;
+	
+	module_load_include("inc", "fb");
+	
+	$fb_id = arg(2);
+	if (!$fb_id || $user->uid != fb_user_exists($fb_id))
+	{
+		drupal_set_message(t("You are not allowed to unlink that Facebook account"), "error");
+		drupal_goto($_GET['destination']);
+	}
+	
+	$sql = "DELETE FROM {fb_users}
+			WHERE `uid`=%d
+				AND `fb_id`=%d";
+	db_query($sql, $user->uid, $fb_id);
+	
+	drupal_set_message(t("Your Facebook account has been successfully removed from your Vibio account."));
+	drupal_goto($_GET['destination']);
+}
 ?>

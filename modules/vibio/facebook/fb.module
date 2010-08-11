@@ -1,0 +1,93 @@
+<?php
+function fb_perm()
+{
+	return array(
+		"fb admin",
+		"fb user",
+	);
+}
+
+function fb_menu()
+{
+	return array(
+		"admin/settings/facebook"	=> array(
+			"title"				=> "Facebook Settings",
+			"page callback"		=> "drupal_get_form",
+			"page arguments"	=> array("facebook_admin"),
+			"access arguments"	=> array("fb admin"),
+			"file"				=> "fb.admin.inc",
+			"type"				=> MENU_NORMAL_ITEM,
+		),
+		"facebook/signup"		=> array(
+			"title"				=> "Sign Up Using Facebook",
+			"page callback"		=> "fb_user_signup",
+			"access arguments"	=> array("fb user"),
+			"file"				=> "fb.pages.inc",
+			"type"				=> MENU_CALLBACK,
+		),
+	);
+}
+
+function fb_user($op, &$edit, &$u, $category=null)
+{
+	switch ($op)
+	{
+		case "insert":
+			if ($edit['fb_id'])
+			{
+				module_load_include("inc", "fb");
+				fb_save_user($u, $edit['fb_id']);
+				$edit['fb_id'] = null;
+			}
+			break;
+		case "delete";
+			$sql = "DELETE FROM {fb_users}
+					WHERE `uid`=%d";
+			db_query($sql, $u->uid);
+	}
+}
+
+function fb_block($op="list", $delta=0, $edit=array())
+{
+	switch ($op)
+	{
+		case "list":
+			return array(
+				"fb_login"	=> array(
+					"info"	=> t("Facebook Login"),
+				),
+				"fb_api_init"	=> array( // this block is REQUIRED for any fb things to work.
+					"info"	=> t("Facebook API Init"),
+				),
+			);
+		case "view":
+			switch ($delta)
+			{
+				case "fb_login":
+					return array(
+						"subject"	=> "",
+						"content"	=> theme("fb_login_block"),
+					);
+				case "fb_api_init":
+					module_load_include("inc", "fb");
+					fb_add_js();
+					
+					return array(
+						"subject"	=> "",
+						"content"	=> "<div id='fb-root'></div>",
+					);
+			}
+	}
+}
+
+function fb_theme(&$existing, $type, $theme, $path)
+{
+	return array(
+		"fb_login_block"	=> array(
+			"arguments"	=> array(),
+			"template"	=> "templates/facebook/login-block",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+	);
+}
+?>

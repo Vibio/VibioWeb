@@ -1,0 +1,4 @@
+name="Facebook"
+description="Facebook Integration"
+package="Vibio"
+core=6.x

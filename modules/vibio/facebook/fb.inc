@@ -73,7 +73,7 @@ function fb_save_user(&$u, $fb_uid)
 	
 	$sql = "REPLACE INTO {fb_users}
 			SET `uid`=%d, `fb_id`=%d, `time`=%d";
-	db_query($sql, $u->uid, $fb_uid, time());\
+	db_query($sql, $u->uid, $fb_uid, time());
 	
 	module_invoke_all("fb_link_account", $u);
 }

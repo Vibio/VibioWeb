@@ -27,7 +27,7 @@
 <?php
 if (user_access("create product content"))
 {
-	echo t("Can't find your product? !create_link to Vibio!", array("!create_link" => l(t("Add one"), "product/add")));
+	echo t("Can't find your product? !create_link to Vibio!", array("!create_link" => l(t("Add it"), "product/add")));
 }
 
 echo $pager;

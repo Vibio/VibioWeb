@@ -49,7 +49,7 @@ function amazon_search_simple_search($keywords = '', $parameters = array()) {
   $parameters += array(
     'ResponseGroup' => 'Large',
     'SearchIndex'   => 'All',
-    'ItemPage'      => $current_page + 1,
+    'TagPage'      => $current_page + 1,
   );
   $parameters['Keywords'] = urlencode($keywords);
   drupal_alter('amazon_search_parameters', $parameters);

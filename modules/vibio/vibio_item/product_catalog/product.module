@@ -43,7 +43,7 @@ function product_menu()
 }
 
 function product_external_search($args)
-{
+{	
 	if (!($provider = variable_get("product_source", false)) || !function_exists("{$provider}_product_search"))
 	{
 		return false;
@@ -52,6 +52,8 @@ function product_external_search($args)
 	{
 		$args = array("keywords"	=> $args);
 	}
+	
+	drupal_add_js("sites/all/themes/vibio/js/product.js");
 	
 	$func = "{$provider}_product_search";
 	$args['keywords'] = _product_remove_options($args['keywords']);

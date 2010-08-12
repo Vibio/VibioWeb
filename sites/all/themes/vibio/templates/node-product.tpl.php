@@ -1,4 +1,10 @@
 <?php
+if ($_GET['breadcrumb'])
+{
+	$breadcrumb = t("Back to search results");
+	echo "<a href='{$_GET['breadcrumb']}'>$breadcrumb</a><br />";
+}
+
 if (isset($node->amazon_data))
 {
 	echo theme("product_amazon_display", $node, $page);

@@ -25,4 +25,11 @@ $(document).ready(function()
 		
 		return false;
 	});
+	
+	$(".search-results.vibio_item-results a").each(function()
+	{
+		var href = $(this).attr("href")+"?breadcrumb="+unescape(window.location.pathname)+window.location.search;
+		
+		$(this).attr("href", href);
+	});
 });

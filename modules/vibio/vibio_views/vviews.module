@@ -36,6 +36,9 @@ function vviews_nodeapi(&$node, $op, $a3=null, $a4=null)
 				_vviews_clear_cache($node->uid, "user_heartbeat_activity", $event);
 				_vviews_clear_cache($node->uid, "user_inventory", $event); // want to clear since they might have changed the privacy settings
 				break;
+			case "delete":
+				_vviews_clear_cache($node->uid, "user_inventory", "delete item");
+				break;
 			default:
 				break;
 		}

@@ -68,11 +68,10 @@ function fb_get_user($cookie=false)
 function fb_save_user(&$u, $fb_uid)
 {
 	$sql = "DELETE FROM {fb_users}
-			WHERE `fb_id`=%d
-				OR `uid`=%d";
-	db_query($sql, $fb_uid, $u->uid);
+			WHERE `uid`=%d";
+	db_query($sql, $u->uid);
 	
-	$sql = "INSERT INTO {fb_users}
+	$sql = "REPLACE INTO {fb_users}
 			SET `uid`=%d, `fb_id`=%d, `time`=%d";
 	db_query($sql, $u->uid, $fb_uid, time());\
 	
@@ -102,11 +101,6 @@ function fb_verify_cookie($uid=false)
 	$fb_cookie = db_result(db_query($sql, $uid)) == $cookie['uid'] ? $cookie : false;
 	
 	return $fb_cookie;
-}
-
-function fb_user_login_cookie($uid)
-{
-	
 }
 
 function fb_user_exists($fb_id)

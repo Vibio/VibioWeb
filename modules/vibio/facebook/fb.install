@@ -24,6 +24,10 @@ function fb_schema()
 					"default"	=> 0,
 				),
 			),
+			"indexes"	=> array(
+				"uid"	=> array("uid"),
+			),
+			"primary key"	=> array("fb_id"),
 		),
 	);
 }

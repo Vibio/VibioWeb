@@ -1,0 +1,80 @@
+<?php
+define("SAMEUSERNAME_VALIDATION_REGEX", '/the name (.*) is already taken./i');
+
+function sameusername_user($op, &$edit, &$account, $category = NULL)
+{
+	if ($category != "account")
+	{
+		return;
+	}
+	
+	switch ($op)
+	{
+		case "validate":
+			sameusername_validate_username($edit);
+			break;
+	}
+}
+
+function sameusername_form_alter(&$form, &$state, $id)
+{
+	switch ($id)
+	{
+		case "user_pass":
+			$form['name']['#title'] = t("E-mail Address");
+			
+			$form['#validate'] = is_array($form['#validate']) && !empty($form['#validate']) ? $form['#validate'] : array();
+			array_unshift($form['#validate'], "sameusername_validate_user_pass_reset");
+			break;
+		case "user_register":
+			$form['account']['name']['#title'] = t("Name");
+			$form['account']['name']['#description'] = t("This is the public name of your account. Please use your real name.");
+			break;
+		case 'user_login':
+		case 'user_login_block':
+			$form['name']['#title'] = t("E-mail Address");
+			$form['#validate'][] = "sameusername_validate_login";
+			break;
+	}
+}
+
+function sameusername_validate_username($edit)
+{
+	if (valid_email_address($edit['name']))
+	{
+		form_set_error("name", t("Your username cannot be an email address"));
+	}
+	
+	if (!($errors = form_get_errors()))
+	{
+		return false;
+	}
+	
+	foreach ($errors as $name => $message)
+	{
+		if (preg_match(SAMEUSERNAME_VALIDATION_REGEX, $message))
+		{
+			form_set_error(null, '', true);
+			unset($_SESSION['messages']['error']); //form_set_error will take care of repopulating this.
+			
+			foreach ($errors as $name => $message)
+			{
+				if (!preg_match(SAMEUSERNAME_VALIDATION_REGEX, $message))
+				{
+					form_set_error($name, $message);
+				}
+			}
+			
+			break;
+		}
+	}
+}
+
+function sameusername_validate_user_pass_reset($form, &$state)
+{
+	if (!valid_email_address($state['values']['name']))
+	{
+		form_set_error("name", t("Invalid E-mail address."));
+	}
+}
+?>

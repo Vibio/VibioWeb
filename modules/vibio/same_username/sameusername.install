@@ -1,0 +1,8 @@
+<?php
+function sameusername_install()
+{
+	$sql = "ALTER TABLE {users} DROP INDEX `name`";
+	
+	db_query($sql);
+}
+?>

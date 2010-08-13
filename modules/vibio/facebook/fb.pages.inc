@@ -21,14 +21,14 @@ function fb_user_signup()
 	{
 		$sql = "SELECT `uid`
 				FROM {users}
-				WHERE `name`='%s'
-					OR `mail`='%s'";
-		$uid = db_result(db_query($sql, $fb_user->name, $fb_user->email));
-		
-		fb_del_cookie();
-		drupal_set_message(t("The username !username or email address !email already exists", array("!username" => $fb_user->name, "!email" => $fb_user->email)), "error");
-		drupal_set_message(t("Account registration failed. Please manually create an account and link your facebook account."), "error");
-		drupal_goto($_GET['destination']);
+				WHERE `mail`='%s'";
+		if ($uid = db_result(db_query($sql, $fb_user->email)))
+		{
+			fb_del_cookie();
+			drupal_set_message(t("The email address !email already exists", array("!username" => $fb_user->name, "!email" => $fb_user->email)), "error");
+			drupal_set_message(t("Account registration failed. Please manually create an account and link your facebook account."), "error");
+			drupal_goto($_GET['destination']);
+		}
 	}
 	
 	$state = array(

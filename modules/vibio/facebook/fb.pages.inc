@@ -25,8 +25,7 @@ function fb_user_signup()
 		if ($uid = db_result(db_query($sql, $fb_user->email)))
 		{
 			fb_del_cookie();
-			drupal_set_message(t("The email address !email already exists", array("!username" => $fb_user->name, "!email" => $fb_user->email)), "error");
-			drupal_set_message(t("Account registration failed. Please manually create an account and link your facebook account."), "error");
+			drupal_set_message(t("The email address !email already exists on Vibio. If you own this account, please log in and manually link your Facebook account.", array("!email" => $fb_user->email)), "error");
 			drupal_goto($_GET['destination']);
 		}
 	}

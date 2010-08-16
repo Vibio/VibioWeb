@@ -13,6 +13,18 @@
   <script type="text/javascript" src="/sites/all/themes/vibio/js/jquery-ui-1.8.2.custom.min.js"></script>
   <script type="text/javascript" src="/sites/all/themes/vibio/js/vibio_dialog.js"></script>
   <script type="text/javascript" src="/sites/all/themes/vibio/js/utility.js"></script>
+  <script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-18021217-3']);
+	_gaq.push(['_setDomainName', '.vibio.com']);
+	_gaq.push(['_trackPageview']);
+  
+	(function() {
+	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+  </script>
 </head>
 <body class="<?php print $classes; ?>">
 <div id="page-wrapper">

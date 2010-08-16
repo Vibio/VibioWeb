@@ -1,0 +1,20 @@
+#facebook_login_prompt {
+	display: none;
+}
+
+.fb_popup #vibio_dialog {
+	padding: 0;
+}
+
+.fb_header {
+	background: #3B5998;
+	padding: 5px 10px;
+}
+
+.fb_body {
+	padding: 10px;
+}
+
+.fb_share_params {
+	display: none;
+}

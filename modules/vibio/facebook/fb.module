@@ -65,10 +65,13 @@ function fb_block($op="list", $delta=0, $edit=array())
 	{
 		case "list":
 			return array(
-				"fb_login"	=> array(
+				"fb_login"			=> array(
 					"info"	=> t("Facebook Login"),
 				),
-				"fb_api_init"	=> array( // this block is REQUIRED for any fb things to work.
+				"fb_login_prompt"	=> array(
+					"info"	=> t("Facebook Login Prompt"),
+				),
+				"fb_api_init"		=> array( // this block is REQUIRED for any fb things to work.
 					"info"	=> t("Facebook API Init"),
 				),
 			);
@@ -81,12 +84,18 @@ function fb_block($op="list", $delta=0, $edit=array())
 						"content"	=> theme("fb_login_block"),
 					);
 				case "fb_api_init":
+					drupal_add_css("sites/all/themes/vibio/css/facebook.css");
 					module_load_include("inc", "fb");
 					fb_add_js();
 					
 					return array(
 						"subject"	=> "",
 						"content"	=> "<div id='fb-root'></div>",
+					);
+				case "fb_login_prompt":
+					return array(
+						"subject"	=> "",
+						"content"	=> theme("fb_login_prompt"),
 					);
 			}
 	}
@@ -100,7 +109,25 @@ function fb_theme(&$existing, $type, $theme, $path)
 			"template"	=> "templates/facebook/login-block",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+		"fb_login_prompt"	=> array(
+			"arguments"	=> array(),
+			"template"	=> "templates/facebook/login-prompt",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"fb_share"			=> array(
+			"arguments"	=> array("node"	=> false),
+			"template"	=> "templates/facebook/share",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
 	);
+}
+
+function fb_preprocess_fb_share(&$vars)
+{
+	if (is_numeric($vars['node']))
+	{
+		$vars['node'] = node_load($vars['node']);
+	}
 }
 
 function fb_network_get_userinfo($uid)

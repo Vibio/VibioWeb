@@ -6,7 +6,7 @@ $(document).ready(function()
 		dialog: false,
 		dialog_options: {},
 		create: function(content)
-		{
+		{	
 			if (!this.dialog)
 			{
 				this.init();
@@ -33,6 +33,10 @@ $(document).ready(function()
 				autoOpen: false,
 				width: 450
 			};
+		},
+		set_options: function(options)
+		{
+			this.dialog.dialog("option", options);
 		}
 	};
 });

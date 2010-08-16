@@ -236,4 +236,28 @@ function _product_get_owners($nid, $as_uid, $type="network", $page=0)
 	cache_set($cache_key, $data, "cache", time() + PRODUCT_OWNER_CACHE_TTL);
 	return $data;
 }
+
+function _product_nid_from_item($nid)
+{
+	$sql = "SELECT `product_nid`
+			FROM {product_items}
+			WHERE `item_nid`=%d";
+	return db_result(db_query($sql, $nid));
+}
+
+function _product_get_image($nid)
+{
+	static $product_images = array();
+	
+	if (isset($product_images[$nid]))
+	{
+		return $product_images[$nid];
+	}
+	
+	$product = node_load(_product_nid_from_item($nid));
+	$url = file_create_url($product->field_main_image[0]['filepath']);
+	$product_images[$nid] = $url;
+	
+	return $url;
+}
 ?>

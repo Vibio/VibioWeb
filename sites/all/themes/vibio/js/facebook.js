@@ -7,29 +7,44 @@ $(document).ready(function()
 		xfbml: true
 	});
 	
-	$(".fb_login").click(function()
-	{
-		FB.login(function(res)
+	var fb_next_action;
+	var fb_next_action_args;
+	var fb_login_callbacks = {
+		"signup": function(res)
 		{
 			if (res.session)
 			{
 				window.location = "/facebook/signup?destination="+window.location.pathname.substring(1);
 			}
-		}, { perms: fb_app_perms });
-		
-		return false;
-	});
-	
-	$(".fb_link_account").click(function()
-	{
-		FB.login(function(res)
+		},
+		"link": function(res)
 		{
 			if (res.session)
 			{
 				window.location = "/facebook/link-account?destination="+window.location.pathname.substring(1);
 			}
-		}, { perms: fb_app_perms });
-		
+		},
+		"refresh": function(res)
+		{
+			if (res.session)
+			{
+				fb_next_action(fb_next_action_args);
+			}
+			
+			vibio_dialog.dialog.dialog("close");
+		}
+	};
+	
+	$(".fb_login").live("click", function()
+	{
+		var fb_callback = $(this).hasClass("fb_refresh") ? fb_login_callbacks.refresh : fb_login_callbacks.signup;
+		FB.login(fb_callback, { perms: fb_app_perms });
+		return false;
+	});
+	
+	$(".fb_link_account").click(function()
+	{
+		FB.login(fb_login_callbacks.link, { perms: fb_app_perms });
 		return false;
 	});
 	
@@ -37,34 +52,41 @@ $(document).ready(function()
 	{
 		var fb_id = $(this).siblings(".account_id").html();
 		window.location = "/facebook/remove-account/"+fb_id+"?destination="+window.location.pathname.substring(1);
+		return false;
+	});
+	
+	$(".fb_share").click(function()
+	{
+		var params = JSON.parse($(this).siblings(".fb_share_params").text()) || {};
+		share(params);
 		
 		return false;
 	});
 	
 	var share = function(post_params)
 	{
-		var default_post_params = {
-			message: "Wall Post from vibio.com!",
-			picture: "http://beta.vibio.com/mod/snocat/image/biglogo.png"
-		};
-		
-		$.extend(post_params, default_post_params);
+		post_params = post_params || {};
 
 		FB.api('/me/feed', 'post', post_params, function(response)
 		{
 			if (!response || response.error)
 			{
-				//prompt_login();
+				prompt_login();
+				fb_next_action = share;
+				fb_next_action_args = post_params;
 			}
 			else
 			{
 				console.log(response);
 			}
 		});
+		
+		return false;
 	}
 	
 	var prompt_login = function()
 	{
 		vibio_dialog.create($("#facebook_login_prompt").html());
+		vibio_dialog.set_options({"dialogClass": "fb_popup"});
 	}
 });

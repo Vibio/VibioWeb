@@ -13,15 +13,17 @@ else
 
 $t_params = array(
 	"!username"	=> $user->name, //since this will only show if the current user owns this item, we can save ourselves a user_load and do this.
+	"!item"		=> $node->title,
 );
 
 $message = $node->field_posting_type[0]['value'] == VIBIO_ITEM_TYPE_OWN ?
-	t("wants to share their item with you on Vibio! Come have a look.", $t_params) :
-	t("is selling this on Vibio and would like to share it with you!", $t_params);
+	t("wants to share \"!item\" with you on Vibio!", $t_params) :
+	t("is selling \"!item\" on Vibio and would like to share it with you!", $t_params);
 $share_params = json_encode(array(
 	"message"	=> $message,
 	"picture"	=> $picture,
 	"link"		=> url("node/{$node->nid}", array("absolute" => true,)),
+	"caption"	=> $node->title,
 ));
 
 echo "

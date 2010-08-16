@@ -12,7 +12,7 @@ class views_plugin_cache_argument extends views_plugin_cache {
 		if (!isset($this->_results_key))
 		{
 			$args = implode(":", $this->view->args);
-			foreach (array("page", "sort") as $additional_arg)
+			foreach (array("page", "sort", "order") as $additional_arg)
 			{
 				if (isset($_GET[$additional_arg]))
 				{

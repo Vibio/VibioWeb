@@ -16,15 +16,34 @@ function hbi_user_relationships($op, &$relationship)
 	}
 }
 
+function hbi_privacy_new_user($form, $account, $category)
+{
+	if ($category != "account")
+	{
+		return;
+	}
+	
+	$hidden_messages = _hbi_hidden_messages();
+	
+	$sql = "SELECT `message_id`
+			FROM {heartbeat_messages}";
+	$res = db_query($sql);
+	
+	while ($row = db_fetch_array($res))
+	{
+		$message_id = $row['message_id'];
+		
+		if (!in_array($message_id, $hidden_messages))
+		{
+			privacy_set($account->uid, "heartbeat_messages", $message_id, PRIVACY_PUBLIC);
+		}
+	}
+}
+
 function hbi_privacy_update_user($form, $user, $category)
 {
-	if ($category == "account")
+	if ($category == "account" && !empty($form['heartbeat_activity_settings']))
 	{
-		if (empty($form['heartbeat_activity_settings']))
-		{
-			return;
-		}
-		
 		foreach ($form['heartbeat_activity_settings'] as $type_id => $access)
 		{
 			privacy_set($user->uid, "heartbeat_messages", $type_id, $access['access']);
@@ -59,5 +78,14 @@ function _hbi_set_relationship($op, &$relationship)
 	$var_reverse['@user2'] = $variables['@user1'];
 	
 	heartbeat_api_log($message_id, $relationship->requester->uid, $relationship->requestee->uid, 0, 0, $var_reverse);
+}
+
+function _hbi_hidden_messages()
+{
+	return array(
+		"heartbeat_add_FL_OW_relation",
+		"heartbeat_cancel_friendship",
+		"heartbeat_edit_account",
+	);
 }
 ?>

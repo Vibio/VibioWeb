@@ -16,6 +16,7 @@ function privacy_user($op, &$edit, &$account, $category=null)
 	switch ($op)
 	{
 		case "insert":
+			module_invoke_all("privacy_new_user", $edit, $account, $category);
 		case "update":
 			module_invoke_all("privacy_update_user", $edit, $account, $category);
 			break;
@@ -63,10 +64,17 @@ function privacy_form_user_profile_form_alter(&$form, &$state)
 		return;
 	}
 	
+	$hidden_messages = _hbi_hidden_messages();
+	
 	foreach ($form['heartbeat_activity_settings_select']['heartbeat_activity_settings'] as $type_id => $field)
 	{
 		if (!is_array($field))
 		{
+			continue;
+		}
+		elseif (in_array($type_id, $hidden_messages))
+		{
+			unset($form['heartbeat_activity_settings_select']['heartbeat_activity_settings'][$type_id]);
 			continue;
 		}
 		

@@ -40,4 +40,31 @@ $(document).ready(function()
 		
 		return false;
 	});
+	
+	var share = function(post_params)
+	{
+		var default_post_params = {
+			message: "Wall Post from vibio.com!",
+			picture: "http://beta.vibio.com/mod/snocat/image/biglogo.png"
+		};
+		
+		$.extend(post_params, default_post_params);
+
+		FB.api('/me/feed', 'post', post_params, function(response)
+		{
+			if (!response || response.error)
+			{
+				//prompt_login();
+			}
+			else
+			{
+				console.log(response);
+			}
+		});
+	}
+	
+	var prompt_login = function()
+	{
+		vibio_dialog.create($("#facebook_login_prompt").html());
+	}
 });

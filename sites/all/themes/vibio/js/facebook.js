@@ -76,6 +76,12 @@ $(document).ready(function()
 	
 	var verify_login = function(action, params)
 	{
+		if (!fb_settings.fb_uid)
+		{
+			prompt_account_link();
+			return;
+		}
+		
 		FB.getLoginStatus(function(res)
 		{
 			if (res.session)
@@ -134,6 +140,12 @@ $(document).ready(function()
 	var share_success = function()
 	{
 		vibio_dialog.create($("#facebook_share_success").html());
+		vibio_dialog.set_options({"dialogClass": "fb_popup"});
+	}
+	
+	var prompt_account_link = function()
+	{
+		vibio_dialog.create($("#facebook_prompt_account_link").html());
 		vibio_dialog.set_options({"dialogClass": "fb_popup"});
 	}
 });

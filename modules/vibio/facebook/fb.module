@@ -134,6 +134,11 @@ function fb_theme(&$existing, $type, $theme, $path)
 			"template"	=> "templates/facebook/share-success",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+		"fb_prompt_account_link"	=> array(
+			"arguments"	=> array(),
+			"template"	=> "templates/facebook/prompt-account-link",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
 	);
 }
 

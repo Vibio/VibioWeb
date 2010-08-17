@@ -32,7 +32,10 @@ $(document).ready(function()
 			{
 				if (res.session.uid == fb_settings.fb_uid)
 				{
-					fb_next_action(fb_next_action_args);
+					if (typeof fb_next_action != "undefined")
+					{
+						fb_next_action(fb_next_action_args);
+					}
 				}
 				else
 				{
@@ -66,26 +69,50 @@ $(document).ready(function()
 	$(".fb_share").click(function()
 	{
 		var params = JSON.parse($(this).siblings(".fb_share_params").text()) || {};
-		share(params);
+		verify_login(share, params);
 		
 		return false;
 	});
 	
-	var share = function(post_params)
+	var verify_login = function(action, params)
 	{
-		post_params = post_params || {};
-
-		FB.api('/me/feed', 'post', post_params, function(response)
+		FB.getLoginStatus(function(res)
 		{
-			if (!response || response.error)
+			if (res.session)
 			{
-				prompt_login();
-				fb_next_action = share;
-				fb_next_action_args = post_params;
+				if (res.session.uid == fb_settings.fb_uid)
+				{
+					action(params);
+				}
+				else
+				{
+					incorrect_login();
+				}
 			}
 			else
 			{
+				prompt_login();
+			}
+		});
+	}
+	
+	var share = function(post_params)
+	{	
+		var defaults = {
+			method: "stream.publish",
+			display: "popup"
+		};
+		post_params = $.extend({}, defaults, post_params);
+		
+		FB.ui(post_params, function(response)
+		{
+			if (response && response.post_id)
+			{
 				share_success();
+			}
+			else
+			{
+				//what should we do here?
 			}
 		});
 		

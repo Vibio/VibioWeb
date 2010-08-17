@@ -13,14 +13,21 @@ $t_params = array(
 	"!item"		=> $node->title,
 );
 
+$href = url("node/{$node->nid}", array("absolute" => true,));
 $message = $node->field_posting_type[0]['value'] == VIBIO_ITEM_TYPE_OWN ?
 	t("wants to share \"!item\" with you on Vibio!", $t_params) :
 	t("is selling \"!item\" on Vibio and would like to share it with you!", $t_params);
 $share_params = json_encode(array(
 	"message"	=> $message,
-	"picture"	=> $picture,
-	"link"		=> url("node/{$node->nid}", array("absolute" => true,)),
-	"caption"	=> $node->title,
+	"attachment"=> array(
+		"href"			=> $href,
+		"caption"		=> $node->title,
+		"media"			=> array(array(
+			"type"	=> "image",
+			"src"	=> $picture,
+			"href"	=> $href,
+		)),
+	),
 ));
 
 echo "

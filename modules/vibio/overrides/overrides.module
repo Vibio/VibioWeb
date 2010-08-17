@@ -1,0 +1,27 @@
+<?php
+define("OVERRIDES_FILE_DOWNLOAD_DIRECT", 5);
+
+function overrides_form_system_file_system_settings_alter(&$form, &$state)
+{
+	$form['file_downloads']['#options'][OVERRIDES_FILE_DOWNLOAD_DIRECT] = t("Separate server");
+	$form['file_downloads']['#description'] .= " ".t("Choosing Separate vhost requires that the File URL is filled in with a valid url that will take you to the File system path.");
+	$form['overrides_file_url'] = array(
+		"#type"			=> "textfield",
+		"#title"		=> t("File URL"),
+		"#description"	=> t("The URL to access the file system path. No trailing slash plz."),
+		"#default_value"=> variable_get("overrides_file_url", ""),
+		"#weight"		=> -5,
+	);
+}
+
+function overrides_file_url_alter(&$path)
+{
+	$upload_dir = file_directory_path();
+	$file_url = variable_get("overrides_file_url", false);
+	
+	if ($file_url && variable_get('file_downloads', FILE_DOWNLOADS_PUBLIC) == OVERRIDES_FILE_DOWNLOAD_DIRECT && strpos($path, $upload_dir) === 0)
+	{
+		$path = str_replace($upload_dir, $file_url, $path);
+	}
+}
+?>

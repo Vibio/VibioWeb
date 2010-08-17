@@ -110,4 +110,21 @@ function fb_user_exists($fb_id)
 			WHERE `fb_id`=%d";
 	return db_result(db_query($sql, $fb_id));
 }
+
+function fb_user_has_fb($uid)
+{
+	static $fb_user_has_fb = array();
+	
+	if (isset($fb_user_has_fb[$uid]))
+	{
+		return $fb_user_has_fb[$uid];
+	}
+	
+	$sql = "SELECT count(*)
+			FROM {fb_users}
+			WHERE `uid`=%d";
+	$fb_user_has_fb[$uid] = db_result(db_query($sql, $uid));
+	
+	return $fb_user_has_fb[$uid];
+}
 ?>

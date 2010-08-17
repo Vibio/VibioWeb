@@ -5,9 +5,12 @@ echo drupal_get_form("vibio_item_user_inventory_search", $view->args[0]);
 $extra_columns = array();
 if ($user->uid == $view->args[0])
 {
-	$extra_columns = array(
-		"fb_share",
-	);
+	module_load_include("inc", "fb");
+	
+	if (fb_user_has_fb($user->uid))
+	{
+		$extra_columns[] = "fb_share";
+	}
 }
 ?>
 

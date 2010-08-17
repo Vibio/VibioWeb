@@ -6,11 +6,7 @@ $extra_columns = array();
 if ($user->uid == $view->args[0])
 {
 	module_load_include("inc", "fb");
-	
-	if (fb_user_has_fb($user->uid))
-	{
-		$extra_columns[] = "fb_share";
-	}
+	$share[] = "fb_share";
 }
 ?>
 
@@ -27,9 +23,10 @@ if ($user->uid == $view->args[0])
 			</th>
 		  <?php endforeach; ?>
 		  <?php
-		  foreach ($extra_columns as $c)
+		  if (!empty($share))
 		  {
-			echo "<th></th>";
+			$share_text = t("Share");
+			echo "<th>$share_text</th>";
 		  }
 		  ?>
 		</tr>
@@ -43,9 +40,14 @@ if ($user->uid == $view->args[0])
 			  </td>
 			<?php endforeach; ?>
 			<?php
-			foreach ($extra_columns as $theme)
+			if (!empty($share))
 			{
-				echo "<td>".theme($theme, $view->result[$count]->nid)."</td>";
+				echo "<td>";
+				foreach  ($share as $theme)
+				{
+					echo theme($theme, $view->result[$count]->nid);
+				}
+				echo "</td>";
 			}
 			?>
 		  </tr>

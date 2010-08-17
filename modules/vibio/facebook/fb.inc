@@ -1,6 +1,8 @@
 <?php
 function fb_add_js()
 {
+	global $user;
+	
 	if (!($app_id = variable_get("fb_app_id", false)))
 	{
 		drupal_add_js("alert('WARNING: Adding FB JS without settings!');", "inline");
@@ -8,9 +10,16 @@ function fb_add_js()
 	}
 	
 	$perms = variable_get("fb_signup_perms", "email");
+	$fb_uid = $user->uid ? fb_user_has_fb($user->uid) : 0;
+	
+	$fb_vars = json_encode(array(
+		"app_id"	=> $app_id,
+		"perms"		=> $perms,
+		"fb_uid"	=> $fb_uid,
+	));
 	
 	drupal_set_html_head("<script type='text/javascript' src='http://connect.facebook.net/en_US/all.js'></script>");
-	drupal_add_js("var fb_app_id = '$app_id'; var fb_app_perms = '$perms'", "inline");
+	drupal_add_js("var fb_settings = $fb_vars;", "inline");
 	drupal_add_js("sites/all/themes/vibio/js/facebook.js");
 	
 	return true;
@@ -120,7 +129,7 @@ function fb_user_has_fb($uid)
 		return $fb_user_has_fb[$uid];
 	}
 	
-	$sql = "SELECT count(*)
+	$sql = "SELECT `fb_id`
 			FROM {fb_users}
 			WHERE `uid`=%d";
 	$fb_user_has_fb[$uid] = db_result(db_query($sql, $uid));

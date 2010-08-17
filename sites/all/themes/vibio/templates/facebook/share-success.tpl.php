@@ -1,8 +1,8 @@
 <?php
-$message = t("Your Facebook session has expired! Please use the link below to re-initialize your session.");
+$message = t("You have successfully shared your Vibio item on Facebook!");
 ?>
 
-<div id="facebook_login_prompt" class="fb_dialog">
+<div id="facebook_share_success" class="fb_dialog">
 	<div class="fb_header">
 		<img src="/sites/all/themes/vibio/images/facebook/logo.png" />
 	</div>
@@ -10,6 +10,5 @@ $message = t("Your Facebook session has expired! Please use the link below to re
 		<div class="fb_login_message">
 			<?php echo $message; ?>
 		</div>
-		<a href="#" class="fb_login fb_refresh">Log in!</a>
 	</div>
 </div>

@@ -1,7 +1,7 @@
 $(document).ready(function()
 {
 	FB.init({
-		appId: fb_app_id,
+		appId: fb_settings.app_id,
 		status: true,
 		cookie: true,
 		xfbml: true
@@ -26,25 +26,33 @@ $(document).ready(function()
 		},
 		"refresh": function(res)
 		{
+			vibio_dialog.dialog.dialog("close");
+			
 			if (res.session)
 			{
-				fb_next_action(fb_next_action_args);
+				if (res.session.uid == fb_settings.fb_uid)
+				{
+					fb_next_action(fb_next_action_args);
+				}
+				else
+				{
+					FB.logout();
+					incorrect_login();
+				}
 			}
-			
-			vibio_dialog.dialog.dialog("close");
 		}
 	};
 	
 	$(".fb_login").live("click", function()
 	{
 		var fb_callback = $(this).hasClass("fb_refresh") ? fb_login_callbacks.refresh : fb_login_callbacks.signup;
-		FB.login(fb_callback, { perms: fb_app_perms });
+		FB.login(fb_callback, { perms: fb_settings.perms });
 		return false;
 	});
 	
 	$(".fb_link_account").click(function()
 	{
-		FB.login(fb_login_callbacks.link, { perms: fb_app_perms });
+		FB.login(fb_login_callbacks.link, { perms: fb_settings.perms });
 		return false;
 	});
 	
@@ -77,7 +85,7 @@ $(document).ready(function()
 			}
 			else
 			{
-				console.log(response);
+				share_success();
 			}
 		});
 		
@@ -87,6 +95,18 @@ $(document).ready(function()
 	var prompt_login = function()
 	{
 		vibio_dialog.create($("#facebook_login_prompt").html());
+		vibio_dialog.set_options({"dialogClass": "fb_popup"});
+	}
+	
+	var incorrect_login = function()
+	{
+		vibio_dialog.create($("#facebook_wrong_login").html());
+		vibio_dialog.set_options({"dialogClass": "fb_popup"});
+	}
+	
+	var share_success = function()
+	{
+		vibio_dialog.create($("#facebook_share_success").html());
 		vibio_dialog.set_options({"dialogClass": "fb_popup"});
 	}
 });

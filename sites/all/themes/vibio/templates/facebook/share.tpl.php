@@ -1,6 +1,4 @@
 <?php
-global $user;
-
 if (!$node->field_main_image[0]['filepath'] && module_exists("product"))
 {
 	module_load_include("inc", "product");
@@ -12,7 +10,6 @@ else
 }
 
 $t_params = array(
-	"!username"	=> $user->name, //since this will only show if the current user owns this item, we can save ourselves a user_load and do this.
 	"!item"		=> $node->title,
 );
 
@@ -29,7 +26,9 @@ $share_params = json_encode(array(
 echo "
 	<div class='fb_share_container'>
 		<span class='fb_share_params'>$share_params</span>
-		<a href='#' class='fb_share'>Share on Facebook!</a>
+		<a class='fb_share'>
+			<img src='/sites/all/themes/vibio/images/facebook/share.png' />
+		</a>
 	</div>
 ";
 ?>

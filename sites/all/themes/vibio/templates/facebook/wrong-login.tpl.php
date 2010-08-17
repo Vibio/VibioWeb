@@ -1,8 +1,8 @@
 <?php
-$message = t("Your Facebook session has expired! Please use the link below to re-initialize your session.");
+$message = t("The Facebook account you logged in with is not the account you have linked on Vibio. Please try again with the correct account.");
 ?>
 
-<div id="facebook_login_prompt" class="fb_dialog">
+<div id="facebook_wrong_login" class="fb_dialog">
 	<div class="fb_header">
 		<img src="/sites/all/themes/vibio/images/facebook/logo.png" />
 	</div>

@@ -8,7 +8,7 @@ if ($_GET['breadcrumb'])
 if (isset($node->amazon_data))
 {
 	echo theme("product_amazon_display", $node, $page);
-	$footer_text = $page ? t("Get \"!item\" from !external_link.", array("!item" => $node->title, "!external_link" => l(t("Amazon"), $node->amazon_data['detailpageurl'], array("absolute" => true)))) : "";
+	$external_link = $page ? t("Get \"!item\" from !external_link.", array("!item" => $node->title, "!external_link" => l(t("Amazon"), $node->amazon_data['detailpageurl'], array("absolute" => true)))) : "";
 }
 else
 {

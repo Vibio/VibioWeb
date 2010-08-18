@@ -36,16 +36,13 @@ if ($details = theme($theme, $node->amazon_data))
 	";
 }
 
-if ($page)
+if ($item_id = product_user_owns_product($node->nid))
 {
-	if ($item_id = product_user_owns_product($node->nid))
-	{
-		$manage_link = t("This item is already in your !inventory", array("!inventory" => l(t("inventory"), "node/$item_id")));
-	}
-	else
-	{
-		$manage_link = theme("product_inventory_add", $node->nid);
-	}
+	$manage_link = t("This item is already in your !inventory", array("!inventory" => l(t("inventory"), "node/$item_id")));
+}
+else
+{
+	$manage_link = theme("product_inventory_add", $node->nid);
 }
 
 echo "

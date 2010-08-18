@@ -1,15 +1,13 @@
 <?php
-if ($page)
+if ($item_id = product_user_owns_product($node->nid))
 {
-	if ($item_id = product_user_owns_product($node->nid))
-	{
-		$manage_link = t("This item is already in your !inventory", array("!inventory" => l(t("inventory"), "node/$item_id")));
-	}
-	else
-	{
-		$manage_link = theme("product_inventory_add", $node->nid);
-	}
+	$manage_link = t("This item is already in your !inventory", array("!inventory" => l(t("inventory"), "node/$item_id")));
 }
+else
+{
+	$manage_link = theme("product_inventory_add", $node->nid);
+}
+
 if (isset($node->field_main_image[0]['filepath']))
 {
 	$image = file_create_url($node->field_main_image[0]['filepath']);

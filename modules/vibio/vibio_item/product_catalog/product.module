@@ -154,7 +154,10 @@ function product_form_alter(&$form, &$state, $id)
 	{
 		_vibio_item_unset($form);
 		_vibio_item_defaults($form);
-		unset($form['field_amazon_asin']);
+		if (strpos($form['#action'], "search/vibio_item") === false) //if NOT coming from a search, unset this (user created)
+		{
+			unset($form['field_amazon_asin']);
+		}
 	}
 }
 

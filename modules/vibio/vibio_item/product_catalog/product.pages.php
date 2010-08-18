@@ -31,8 +31,13 @@ function product_add_to_inventory($product, $quick_add=false)
 					"value"	=> VIBIO_ITEM_TYPE_OWN,
 				),
 			),
-			"privacy_setting"	=> PRIVACY_ONLYME,
 		);
+		
+		if (module_exists("privacy"))
+		{
+			$privacy_setting = privacy_get($user->uid, "account_setting", "item_default");
+			$state['values']['privacy_setting'] = $privacy_setting ? $privacy_setting : PRIVACY_PUBLIC;
+		}
 		
 		drupal_execute($form_id, $state, $node);
 		

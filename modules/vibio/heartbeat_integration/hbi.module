@@ -18,7 +18,7 @@ function hbi_user_relationships($op, &$relationship)
 
 function hbi_privacy_new_user($form, $account, $category)
 {
-	if ($category != "account")
+	if ($category != "privacy_settings")
 	{
 		return;
 	}
@@ -42,7 +42,7 @@ function hbi_privacy_new_user($form, $account, $category)
 
 function hbi_privacy_update_user($form, $user, $category)
 {
-	if ($category == "account" && !empty($form['heartbeat_activity_settings']))
+	if ($category == "privacy_settings" && !empty($form['heartbeat_activity_settings']))
 	{
 		foreach ($form['heartbeat_activity_settings'] as $type_id => $access)
 		{

@@ -15,6 +15,20 @@ function privacy_user($op, &$edit, &$account, $category=null)
 {
 	switch ($op)
 	{
+		case "categories":
+			return array(array(
+				"name"	=> "privacy_settings",
+				"title"	=> t("Privacy Settings"),
+				"weight"=> 1,
+			));
+		case "form":
+			if ($category != "privacy_settings")
+			{
+				return;
+			}
+			$form['privacy_item_default'] = _privacy_fieldset($account->uid, "account_setting", "item_default", true, t("Default Item Privacy"), t("This is the setting that will be automatically populated for items"));
+			$form['heartbeat_activity_settings_select'] = _theme_user_message_select_form(t('Activity Stream'), isset($edit['heartbeat_activity_settings']) ? $edit['heartbeat_activity_settings'] : NULL);
+			return $form;
 		case "insert":
 			module_invoke_all("privacy_new_user", $edit, $account, $category);
 		case "update":
@@ -54,18 +68,35 @@ function privacy_nodeapi(&$node, $op, $a3=null, $a4=null)
 
 function privacy_form_vibio_item_node_form_alter(&$form, &$state)
 {
-	$form = array_merge($form, _privacy_form($form['#node']->uid, "node", $form['#node']->nid));
+	if (!$form['#node']->nid)
+	{
+		$type = "account_setting";
+		$type_id = "item_default";
+	}
+	else
+	{
+		$type = "node";
+		$type_id = $form['#node']->nid;
+	}
+	
+	$form = array_merge($form, _privacy_form($form['#node']->uid, $type, $type_id));
 }
 
 function privacy_form_user_profile_form_alter(&$form, &$state)
-{	
-	if ($form['_category']['#value'] != "account" || empty($form['heartbeat_activity_settings_select']['heartbeat_activity_settings']))
+{
+	if ($form['_category']['#value'] == "account")
+	{
+		unset($form['heartbeat_activity_settings_select']);
+		return;
+	}
+	elseif ($form['_category']['#value'] != "privacy_settings" || empty($form['heartbeat_activity_settings_select']['heartbeat_activity_settings']))
 	{
 		return;
 	}
 	
 	$hidden_messages = _hbi_hidden_messages();
 	
+	//hbi_privacy_update_user() is in charge of saving these values.
 	foreach ($form['heartbeat_activity_settings_select']['heartbeat_activity_settings'] as $type_id => $field)
 	{
 		if (!is_array($field))
@@ -86,6 +117,17 @@ function privacy_form_user_profile_form_alter(&$form, &$state)
 	}
 }
 
+function privacy_privacy_update_user($form, $u, $category)
+{
+	if ($category != "privacy_settings" || !isset($form['privacy_item_default']))
+	{
+		return;
+	}
+	$p = $form['privacy_item_default'];
+	
+	privacy_set($p['privacy_uid'], $p['privacy_type'], $p['privacy_typeid'], $p['privacy_setting']);
+}
+
 function privacy_views_api()
 {
 	return array(
@@ -93,23 +135,24 @@ function privacy_views_api()
 	);
 }
 
-function _privacy_fieldset($uid=false, $type="node", $type_id=false)
+function _privacy_fieldset($uid=false, $type="node", $type_id=false, $as_tree=false, $custom_title=false, $custom_description=false)
 {
 	$fieldset = array(
-		"#title"		=> t("Privacy Settings"),
-		"#description"	=> t("This setting controls who is allowed to see this information."),
+		"#title"		=> $custom_title ? $custom_title : t("Privacy Settings"),
+		"#description"	=> $custom_description ? $custom_description : t("This setting controls who is allowed to see this information."),
 		"#type"			=> "fieldset",
 		"#collapsible"	=> false,
+		"#tree"			=> $as_tree
 	);
 	
-	return array_merge($fieldset, _privacy_form($uid, $type, $type_id));
+	return array_merge($fieldset, _privacy_form($uid, $type, $type_id, $custom_title));
 }
 
-function _privacy_form($uid=false, $type="node", $type_id=false)
+function _privacy_form($uid=false, $type="node", $type_id=false, $custom_title=false)
 {
 	return array(
 		"privacy_setting"	=> array(
-			"#title"		=> t("Privacy Settings"),
+			"#title"		=> $custom_title ? $custom_title : t("Privacy Settings"),
 			"#type"			=> "select",
 			"#options"		=> _privacy_options(),
 			"#default_value"=> privacy_get($uid, $type, $type_id),

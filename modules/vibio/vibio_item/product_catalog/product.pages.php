@@ -1,5 +1,5 @@
 <?php
-function product_add_to_inventory($product)
+function product_add_to_inventory($product, $quick_add=false)
 {
 	global $user;
 	
@@ -19,6 +19,32 @@ function product_add_to_inventory($product)
 	$node->product_nid = $product->nid;
 	
 	node_object_prepare($node);
+	
+	if ($quick_add)
+	{
+		$state['values'] = array(
+			"title"	=> $product->title,
+			"name"	=> $user->name,
+			"op"	=> t("Save"),
+			"field_posting_type"	=> array(
+				array(
+					"value"	=> VIBIO_ITEM_TYPE_OWN,
+				),
+			),
+			"privacy_setting"	=> PRIVACY_ONLYME,
+		);
+		
+		drupal_execute($form_id, $state, $node);
+		
+		if ($nid = $state['nid'])
+		{
+			drupal_goto("node/$nid");
+		}
+		else
+		{
+			drupal_set_message(t("There was an error with quick add. Please fill out the form to add !product to your inventory", array("!product" => $product->title)), "error");
+		}
+	}
 	
 	$output = theme("node", $product);
 	$output .= drupal_get_form($form_id, $node);

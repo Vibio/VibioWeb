@@ -44,7 +44,7 @@ if ($page)
 	}
 	else
 	{
-		$manage_link = l("I have one!", "product/{$node->nid}/add-to-inventory");
+		$manage_link = theme("product_inventory_add", $node->nid);
 	}
 }
 

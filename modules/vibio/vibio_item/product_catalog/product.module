@@ -26,6 +26,15 @@ function product_menu()
 			"file"				=> "product.pages.php",
 			"type"				=> MENU_CALLBACK,
 		),
+		"product/%node/add-to-inventory/quick"	=> array(
+			"title callback"	=> "_product_inventory_add_title",
+			"title arguments"	=> array(1),
+			"page callback"		=> "product_add_to_inventory",
+			"page arguments"	=> array(1, true),
+			"access arguments"	=> array("create vibio_item content"),
+			"file"				=> "product.pages.php",
+			"type"				=> MENU_CALLBACK,
+		),
 		"product/add"			=> array(
 			"title"				=> "Add New Product",
 			"page callback"		=> "product_add_new",
@@ -121,6 +130,11 @@ function product_theme()
 		"product_owner"		=> array(
 			"arguments"	=> array("item"	=> array()),
 			"template"	=> "templates/product/owner",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"product_inventory_add"	=> array(
+			"arguments"	=> array("nid"	=> false),
+			"template"	=> "templates/product/inventory-add",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
 	);

@@ -54,11 +54,7 @@ function privacy_nodeapi(&$node, $op, $a3=null, $a4=null)
 				break;
 			case "update":
 			case "insert":
-				if ($_SESSION['privacy_settings']['type'] == "node")
-				{
-					privacy_set($user->uid, $_SESSION['privacy_settings']['type'], $node->nid, $_SESSION['privacy_settings']['setting']);
-					unset($_SESSION['privacy_settings']);
-				}
+				privacy_set($user->uid, "node", $node->nid, $node->privacy_setting);
 				break;
 			default:
 				break;
@@ -68,18 +64,18 @@ function privacy_nodeapi(&$node, $op, $a3=null, $a4=null)
 
 function privacy_form_vibio_item_node_form_alter(&$form, &$state)
 {
-	if (!$form['#node']->nid)
+	if ($form['#node']->nid)
 	{
-		$type = "account_setting";
-		$type_id = "item_default";
+		$default_type = "node";
+		$default_typeid = $form['#node']->nid;
 	}
 	else
 	{
-		$type = "node";
-		$type_id = $form['#node']->nid;
+		$default_type = "account_setting";
+		$default_typeid = "item_default";
 	}
 	
-	$form = array_merge($form, _privacy_form($form['#node']->uid, $type, $type_id));
+	$form = array_merge($form, _privacy_form($form['#node']->uid, $default_type, $default_typeid));
 }
 
 function privacy_form_user_profile_form_alter(&$form, &$state)
@@ -181,13 +177,6 @@ function _privacy_form_submit($form, &$state)
 	if ($vals['privacy_uid'] && $vals['privacy_typeid']) //if set, then whatever it is must have already defined these values, so we have everything we need
 	{
 		privacy_set($vals['privacy_uid'], $vals['privacy_type'], $vals['privacy_typeid'], $vals['privacy_setting']);
-	}
-	else // if no uid, then something (like nodeapi), must get this data later
-	{
-		$_SESSION['privacy_settings'] = array(
-			"type"		=> $vals['privacy_type'],
-			"setting"	=> $vals['privacy_setting'],
-		);
 	}
 }
 

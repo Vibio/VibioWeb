@@ -77,4 +77,26 @@ function sameusername_validate_user_pass_reset($form, &$state)
 		form_set_error("name", t("Invalid E-mail address."));
 	}
 }
+
+function sameusername_privatemsg_sql_autocomplete_alter(&$fragments, $search, $names)
+{
+	$fragments['select'][] = "u.uid";
+	$fragments['select'][] = "u.picture";
+}
+
+function sameusername_privatemsg_name_lookup($str)
+{
+	if (preg_match('/([a-z ]+)\(([\d]+)\)/i', $str, $matches))
+	{
+		$uid = $matches[2];
+		return user_load($uid);
+	}
+	
+	return false;
+}
+
+function _sameusername_privatemsg_format_username($u)
+{
+	return "{$u->name} ({$u->uid})";
+}
 ?>

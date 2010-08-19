@@ -36,14 +36,7 @@ if ($details = theme($theme, $node->amazon_data))
 	";
 }
 
-if ($item_id = product_user_owns_product($node->nid))
-{
-	$manage_link = t("This item is already in your !inventory", array("!inventory" => l(t("inventory"), "node/$item_id")));
-}
-else
-{
-	$manage_link = theme("product_inventory_add", $node->nid);
-}
+$manage_link = theme("product_inventory_manage_link", $node);
 
 echo "
 	<a href='/node/{$node->nid}'><img src='{$image}' style='float: left; padding: 0 10px 10px 0;' /></a>

@@ -137,6 +137,11 @@ function product_theme()
 			"template"	=> "templates/product/inventory-add",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+		"product_inventory_manage_link"	=> array(
+			"arguments"	=> array("product"	=> false),
+			"template"	=> "templates/product/inventory-manage-link",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
 	);
 }
 

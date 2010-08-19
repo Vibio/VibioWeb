@@ -166,7 +166,7 @@ function _product_get_owners($nid, $as_uid, $type="network", $page=0)
 	$offset = $page*PRODUCT_OWNER_DISPLAY_PER_PAGE;
 	
 	$cache_key = "product_owners:{$nid}:{$as_uid}:{$type}:{$page}";
-	if ($cache = cache_get($cache_key))
+	if ($cache = cache_get($cache_key, "cache_content"))
 	{
 		return $cache->data;
 	}
@@ -233,7 +233,7 @@ function _product_get_owners($nid, $as_uid, $type="network", $page=0)
 		"page"		=> $page,
 		"results"	=> $results,
 	);
-	cache_set($cache_key, $data, "cache", time() + PRODUCT_OWNER_CACHE_TTL);
+	cache_set($cache_key, $data, "cache_content", time() + PRODUCT_OWNER_CACHE_TTL);
 	return $data;
 }
 

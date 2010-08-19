@@ -12,17 +12,49 @@ class views_plugin_cache_argument extends views_plugin_cache {
 		if (!isset($this->_results_key))
 		{
 			$args = implode(":", $this->view->args);
-			foreach (array("page", "sort", "order") as $additional_arg)
+			$filter_args = array(
+				"page",
+				"sort",
+				"order",
+				"keys",
+				"item_status"
+			);
+			foreach ($filter_args as $additional_arg)
 			{
-				if (isset($_GET[$additional_arg]))
+				if (!empty($_GET[$additional_arg]))
 				{
-					$args .= ":{$_GET[$additional_arg]}";
+					$args .= ":{$additional_arg}={$_GET[$additional_arg]}";
 				}
 			}
-			$this->_results_key = $this->view->name.":".$args;
+			$this->_results_key = $this->view->name.":{$args}:results";
 		}
 		
 		return $this->_results_key;
+	}
+	
+	function get_output_key()
+	{
+		if (!isset($this->_output_key))
+		{
+			$args = implode(":", $this->view->args);
+			$filter_args = array(
+				"page",
+				"sort",
+				"order",
+				"keys",
+				"item_status"
+			);
+			foreach ($filter_args as $additional_arg)
+			{
+				if (!empty($_GET[$additional_arg]))
+				{
+					$args .= ":{$additional_arg}={$_GET[$additional_arg]}";
+				}
+			}
+			$this->_output_key = $this->view->name.":{$args}:output";
+		}
+		
+		return $this->_output_key;
 	}
 }
 ?>

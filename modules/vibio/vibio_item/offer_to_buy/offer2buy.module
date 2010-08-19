@@ -54,6 +54,13 @@ function offer2buy_menu()
 	);
 }
 
+function offer2buy_views_api()
+{
+	return array(
+		"api"	=> 2,
+	);
+}
+
 function offer2buy_form_vibio_item_node_form_alter(&$form, &$state)
 {
 	$nid = $form['nid']['#value'];

@@ -1,6 +1,5 @@
 <?php
 global $user;
-echo drupal_get_form("vibio_item_user_inventory_search", $view->args[0]);
 
 $extra_columns = array();
 if ($user->uid == $view->args[0])

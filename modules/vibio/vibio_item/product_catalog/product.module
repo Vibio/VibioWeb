@@ -105,6 +105,12 @@ function product_nodeapi(&$node, $op, $a3=null, $a4=null)
 		{
 			case "update index":
 				return theme("product_display", $node);
+			case 'search result':
+				module_load_include("inc", "product");
+				
+				return array(
+					"image"	=> _product_get_image($node->nid, true),
+				);
 		}
 	}
 }

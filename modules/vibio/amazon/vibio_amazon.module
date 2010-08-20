@@ -146,9 +146,7 @@ function _vibio_amazon_search_result($item)
 	return array(
 		'title'		=> $node->title,
 		'link'		=> $node->path ? url($node->path) : url("node/{$node->nid}"),
-		'type'		=> check_plain($item['productgroup']),
-		'user' 		=> isset($item['participants']) ? implode(', ', $item['participants']) : '',
-		'snippet'	=> isset($item['editorialreviews']) ? check_markup($item['editorialreviews'][0]['content']) : '',
+		'extra' 	=> node_invoke_nodeapi($node, 'search result'),
 	);
 }
 

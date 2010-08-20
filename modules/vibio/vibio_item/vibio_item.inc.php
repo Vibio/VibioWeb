@@ -192,7 +192,7 @@ function _vibio_item_search($keys)
 			'node' => $node,
 			'extra' => $extra,
 			'score' => $item->score / $total,
-			'snippet' => search_excerpt($keys, $node->body),
+			//'snippet' => search_excerpt($keys, $node->body),
 		);
 	}
 	return $results;

@@ -152,6 +152,7 @@ function googleanalytics_footer($main = 0) {
     // Add any custom code snippets if specified.
     $codesnippet_before = variable_get('googleanalytics_codesnippet_before', '');
     $codesnippet_after = variable_get('googleanalytics_codesnippet_after', '');
+    $codesnippet_after .= module_exists("gaet") ? gaet_get() : "";
 
     // Build tracker code for footer.
     $script = 'try{';

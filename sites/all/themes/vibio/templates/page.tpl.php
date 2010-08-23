@@ -4,6 +4,8 @@
 <head>
   <title><?php print $head_title; ?></title>
   <?php print $head; ?>
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
   
   <?php print $styles; ?>
   <link rel="stylesheet" href="/sites/all/themes/vibio/css/jquery-ui.tabs.css" />

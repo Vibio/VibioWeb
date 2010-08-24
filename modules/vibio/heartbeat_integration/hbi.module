@@ -49,7 +49,7 @@ function hbi_collections_insert($collection)
 		"@collection"	=> l($collection['title'], "collections/{$collection['cid']}"),
 	);
 	
-	heartbeat_api_log("heartbeat_add_collection", $u->uid, 0, 0, 0, $args);
+	heartbeat_api_log("heartbeat_add_collection", $u->uid, $collection['cid'], 0, 0, $args);
 }
 
 function hbi_privacy_update_user($form, $user, $category)

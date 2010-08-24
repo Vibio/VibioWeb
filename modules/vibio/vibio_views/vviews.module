@@ -85,6 +85,7 @@ function vviews_collection_save($collection)
 	
 	_vviews_clear_cache($collection['uid'], "user_collections", $event);
 	_vviews_clear_cache($args, "user_collection", $event);
+	_vviews_clear_cache($collection['uid'], "user_heartbeat_activity", $event);
 }
 
 function vviews_collection_update($uid, $cids)

@@ -61,17 +61,24 @@ function privacy_views_query_alter(&$view, &$query)
 		
 		// the "else 1" is so that items that are not referencing nodes get a free pass since they won't be found in the sub query
 		$sql = "CASE
-					WHEN nid > 0 THEN %d
-					ELSE 1
-					END >= ALL (
+					WHEN `nid` > 0 AND heartbeat_activity.`message_id`='heartbeat_add_collection' THEN %d >= (
+						SELECT `setting`
+						FROM {privacy_settings}
+						WHERE `type_id`=nid
+							AND `type`='collection'
+							AND `uid`=%d
+					)
+					WHEN nid > 0 THEN %d >= (
 						SELECT `setting`
 						FROM {privacy_settings}
 						WHERE `type_id`=nid
 							AND `type`='node'
 							AND `uid`=%d
 					)
+					ELSE 1
+					END > 0
 		";
-		$query->add_where(0, $sql, $access, $uid);
+		$query->add_where(0, $sql, $access, $uid, $access, $uid);
 	}
 	elseif ($view->name == "user_relational_activity" && module_exists("user_relationships_api"))
 	{

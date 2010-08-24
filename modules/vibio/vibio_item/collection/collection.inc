@@ -36,7 +36,7 @@ function collection_insert($vals)
 	$vals['uid'] = $user->uid;
 	
 	module_invoke_all("collections_insert", $vals);
-	return db_last_insert_id("collection", "cid");
+	return $vals['cid'];
 }
 
 function collection_get_item_cid($nid)

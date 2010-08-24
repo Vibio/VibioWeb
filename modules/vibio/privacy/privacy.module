@@ -75,7 +75,22 @@ function privacy_form_vibio_item_node_form_alter(&$form, &$state)
 		$default_typeid = "item_default";
 	}
 	
-	$form = array_merge($form, _privacy_form($form['#node']->uid, $default_type, $default_typeid));
+	$form = array_merge_recursive($form, _privacy_form($form['#node']->uid, $default_type, $default_typeid));
+}
+
+function privacy_form_collection_edit_alter(&$form, &$state)
+{
+	global $user;
+	
+	$form = array_merge_recursive($form, _privacy_form($user->uid, "collection", $form['cid']['#value']));
+	$form['privacy_settings']['#weight'] = 9;
+}
+
+function privacy_collection_save($vals)
+{
+	global $user;
+	$privacy_setting = isset($vals['privacy_setting']) ? $vals['privacy_setting'] : PRIVACY_ONLYME;
+	privacy_set($user->uid, "collection", $vals['cid'], $privacy_setting);
 }
 
 function privacy_form_user_profile_form_alter(&$form, &$state)
@@ -250,6 +265,16 @@ function privacy_offer2buy_complete_actions($old_uid, $node)
 {
 	privacy_del($old_uid, "node", $node->nid);
 	privacy_set($node->uid, "node", $node->nid, PRIVACY_ONLYME);
+}
+
+function privacy_product_inventory_quick_add($form_vals)
+{
+	global $user;
+	$privacy_setting = privacy_get($user->uid, "account_setting", "item_default");
+	
+	return array(
+		"privacy_setting" => $privacy_setting ? $privacy_setting : PRIVACY_PUBLIC,
+	);
 }
 
 function _privacy_options()

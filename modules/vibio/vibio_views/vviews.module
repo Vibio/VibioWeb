@@ -75,6 +75,29 @@ function vviews_comment(&$comment, $op)
 	}
 }
 
+function vviews_collection_save($collection)
+{
+	$event = "saving a collection";
+	$args = array(
+		$collection['uid'],
+		$collection['cid'],
+	);
+	
+	_vviews_clear_cache($collection['uid'], "user_collections", $event);
+	_vviews_clear_cache($args, "user_collection", $event);
+}
+
+function vviews_collection_update($uid, $cids)
+{
+	foreach ($cids as $cid)
+	{
+		if ($cid)
+		{
+			_vviews_clear_cache(array($uid, $cid), "user_collection", "updating a collection");
+		}
+	}
+}
+
 function vviews_offer2buy_complete_actions($old_owner_uid, $node)
 {
 	$event = "offer2buy transfer item";
@@ -92,6 +115,6 @@ function _vviews_clear_cache($args, $view_name, $event="")
 	
 	$cid = "{$view_name}:".implode(":", $args);
 	cache_clear_all($cid, "cache_views_data", true); //because of paging, we always want a wildcard clear
-	watchdog("Views Cached Data", t("Clearing cache with cid !cid from event \"!event\"", array("!cid" => $cid, "!event" => $event)));
+	watchdog("vviews_clear", t("Clearing cache with cid !cid from event \"!event\"", array("!cid" => $cid, "!event" => $event)));
 }
 ?>

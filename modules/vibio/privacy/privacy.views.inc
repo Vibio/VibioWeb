@@ -13,7 +13,7 @@ function privacy_views_data()
 					"left_field"	=> "message_id",
 					"field"			=> "type_id",
 					"handler"		=> "views_handler_join_between",
-					"type"			=> "INNER",
+					"type"			=> "LEFT",
 					"extra"			=> array(
 						"additional_join_fields"	=> array(
 							"uid"	=> "uid",

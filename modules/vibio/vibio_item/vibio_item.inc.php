@@ -247,4 +247,20 @@ function _vibio_item_user_options()
 		"all"		=> t("Vibio"),
 	);
 }
+
+function _vibio_item_get_image($nid)
+{
+	$node = node_load($nid);
+	if (!empty($node->field_main_image[0]['filepath']))
+	{
+		return file_create_url($node->field_main_image[0]['filepath']);
+	}
+	elseif (module_exists("product"))
+	{
+		module_load_include("inc", "product");
+		return _product_get_image($nid);
+	}
+	
+	return false;
+}
 ?>

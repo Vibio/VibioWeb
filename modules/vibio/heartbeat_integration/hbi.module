@@ -40,6 +40,18 @@ function hbi_privacy_new_user($form, $account, $category)
 	}
 }
 
+function hbi_collections_insert($collection)
+{
+	$u = user_load($collection['uid']);
+	
+	$args = array(
+		"@user"			=> l($u->name, "user/{$u->uid}"),
+		"@collection"	=> l($collection['title'], "collections/{$collection['cid']}"),
+	);
+	
+	heartbeat_api_log("heartbeat_add_collection", $u->uid, 0, 0, 0, $args);
+}
+
 function hbi_privacy_update_user($form, $user, $category)
 {
 	if ($category == "privacy_settings" && !empty($form['heartbeat_activity_settings']))

@@ -1,0 +1,234 @@
+<?php
+define("COLLECTION_DESCRIPTION_MAX_LENGTH", 65535);
+define("COLLECTION_TITLE_MAX_LENGTH", 255);
+
+function collection_perm()
+{
+	return array(
+		"collections user",
+	);
+}
+
+function collection_menu()
+{
+	return array(
+		"collections/manage"		=> array(
+			"title"				=> "Manage Your Collections",
+			"page callback"		=> "collection_manage",
+			"access arguments"	=> array("collections user"),
+			"file"				=> "collection.pages.inc",
+			"type"				=> MENU_SUGGESTED_ITEM,
+		),
+		"collections/manage/%collection"	=> array(
+			"title callback"	=> "collection_title",
+			"title arguments"	=> array(2),
+			"page callback"		=> "drupal_get_form",
+			"page arguments"	=> array("collection_edit", 2),
+			"access callback"	=> "collection_manage_collection_access",
+			"access arguments"	=> array(2),
+			"file"				=> "collection.pages.inc",
+			"type"				=> MENU_CALLBACK,
+		),
+		"collections/new"		=> array(
+			"title"				=> "New Collection",
+			"page callback"		=> "drupal_get_form",
+			"page arguments"	=> array("collection_edit"),
+			"access arguments"	=> array("collections user"),
+			"file"				=> "collection.pages.inc",
+			"type"				=> MENU_CALLBACK,
+		),
+		"collections/%collection"	=> array(
+			"title callback"	=> "collection_title",
+			"title arguments"	=> array(1),
+			"page callback"		=> "collection_view_collection",
+			"page arguments"	=> array(1),
+			"access callback"	=> "collection_access_collection",
+			"access arguments"	=> array(1),
+			"file"				=> "collection.pages.inc",
+			"type"				=> MENU_CALLBACK,
+		),
+	);
+}
+
+function collection_theme(&$existing)
+{
+	return array(
+		"collection_list_item" => array(
+			"arguments"	=> array("collection" => array()),
+			"template"	=> "templates/collections/collection",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+	);
+}
+
+function collection_preprocess_collection_list_item(&$vars)
+{
+	$sql = "SELECT n.`nid`
+			FROM {node} n JOIN {collection_items} ci ON n.`nid`=ci.`item_nid`
+			WHERE ci.`cid`=%d
+			ORDER BY n.`changed` DESC
+			LIMIT 1";
+	if (!$nid = db_result(db_query($sql, $vars['collection']->cid)))
+	{
+		return;
+	}
+	
+	$vars['collection']->image = _vibio_item_get_image($nid);
+}
+
+function collection_nodeapi(&$node, $op, $a3=null, $a4=null)
+{
+	if ($node->type != "vibio_item")
+	{
+		return;
+	}
+	
+	switch ($op)
+	{
+		case "insert":
+		case "update":
+			global $user;
+			
+			module_load_include("inc", "collection");
+			$cid = isset($node->collection_info) ? $node->collection_info['cid'] : collection_get_item_cid($node->nid);
+			unset($node->collection_info);
+			
+			if ($op == "update")
+			{
+				$old_cid = collection_get_item_cid($node->nid);
+			}
+			
+			if ($old_cid != $cid)
+			{
+				$sql = "REPLACE INTO {collection_items}
+						SET `cid`=%d, `item_nid`=%d";
+				db_query($sql, $cid, $node->nid);
+			}
+			
+			module_invoke_all("collection_update", $user->uid, array($cid, $old_cid));
+			break;
+		case "delete":
+			$sql = "DELETE FROM {collection_items}
+					WHERE `item_nid`=%d";
+			db_query($sql, $node->nid);
+			break;
+	}
+}
+
+function collection_views_api()
+{
+	return array(
+		"api"	=> 2,
+	);
+}
+
+function collection_form_vibio_item_node_form_alter(&$form, &$state)
+{
+	module_load_include("inc", "collection");
+	
+	if ($form['#node']->nid) //existing node
+	{
+		$default = collection_get_item_cid($form['#node']->nid);
+	}
+	
+	$form['collection_info'] = array(
+		"#title"		=> t("Collection"),
+		"#description"	=> "Some help text.",
+		"#type"			=> "fieldset",
+		"#collapsible"	=> true,
+		"#collapsed"	=> false,
+		"#tree"			=> true,
+		"cid"			=> array(
+			"#type"			=> "select",
+			"#title"		=> t("Collection"),
+			"#options"		=> collection_options(),
+			"#default_value"=> $default,
+		),
+		/*"new_collection"=> array(
+			"#type"			=> "textfield",
+			"#title"		=> t("New Collection"),
+			"#description"	=> t("Enter a name for this collection"),
+		),*/
+	);
+}
+
+function collection_product_inventory_quick_add($form_vals)
+{
+	global $user;
+	
+	module_load_include("inc", "collection");
+	
+	if (!$default = collection_get_user_default($user->uid, true))
+	{
+		return false;
+	}
+	
+	return array(
+		"collection_info"	=> array(
+			"cid"	=> $default,
+		),
+	);
+}
+
+function collection_offer2buy_complete_actions($old_uid, $node)
+{
+	module_load_include("inc", "collection");
+	$old_cid = collection_get_item_cid($node->nid);
+	
+	if (!($new_cid = collection_get_user_default($node->uid)))
+	{
+		$new_cid = collection_get_user_default($node->uid, true); //this will handle clearing the views caches for us...
+	}
+	else
+	{
+		module_invoke_all("collection_update", $node->uid, array($new_cid));
+	}
+	
+	$sql = "UPDATE {collection_items}
+			SET `cid`=%d
+			WHERE `item_nid`=%d";
+	db_query($sql, $new_cid, $node->nid);
+	
+	module_invoke_all("collection_update", $old_uid, array($old_cid));
+}
+
+function collection_load($cid)
+{
+	if (!is_numeric($cid))
+	{
+		return false;
+	}
+	
+	$sql = "SELECT *
+			FROM {collection}
+			WHERE `cid`=%d";
+	$collection = db_fetch_array(db_query($sql, $cid));
+	$collection = array_merge($collection, module_invoke_all("collection_load", $collection, $as_uid));
+	
+	return $collection;
+}
+
+function collection_access_collection($collection)
+{
+	if (isset($collection['privacy']) && module_exists("privacy"))
+	{
+		return privacy_get_access_level($collection['uid']) >= $collection['privacy'] && user_access("collections user");
+	}
+	else
+	{
+		return user_access("collections user");
+	}
+}
+
+function collection_manage_collection_access($collection)
+{
+	global $user;
+	
+	return $user->uid == $collection['uid'];
+}
+
+function collection_title($collection)
+{
+	return $collection['title'];
+}
+?>

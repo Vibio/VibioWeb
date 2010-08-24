@@ -33,11 +33,13 @@ function product_add_to_inventory($product, $quick_add=false)
 			),
 		);
 		
-		if (module_exists("privacy"))
+		$state['values'] = array_merge_recursive($state['values'], module_invoke_all("product_inventory_quick_add", $state['values']));
+		
+		/*if (module_exists("privacy"))
 		{
 			$privacy_setting = privacy_get($user->uid, "account_setting", "item_default");
 			$state['values']['privacy_setting'] = $privacy_setting ? $privacy_setting : PRIVACY_PUBLIC;
-		}
+		}*/
 		
 		drupal_execute($form_id, $state, $node);
 		

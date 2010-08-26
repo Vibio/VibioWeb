@@ -4,9 +4,15 @@ require_once("vibio_item.inc.php");
 define("VIBIO_ITEM_TYPE_OWN", 1);
 define("VIBIO_ITEM_TYPE_SELL", 2);
 
-function vibio_item_form_system_file_system_settings_alter(&$form, &$state)
+function vibio_item_theme(&$existing)
 {
-	$x = 1;
+	return array(
+		"vibio_item_user_other_items" => array(
+			"arguments" => array("node" => false, "display" => array()),
+			"template"	=> "templates/vibio_item/other-items",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+	);
 }
 
 function vibio_item_form_alter(&$form, &$state, $id)
@@ -90,5 +96,33 @@ function vibio_item_preprocess_node(&$vars)
 		drupal_set_message(t("The owner has decided not to show that item"), "error");
 		drupal_goto($referrer);
 	}
+}
+
+function vibio_item_preprocess_vibio_item_user_other_items(&$vars)
+{
+	$display_type = module_exists("collection") ? "collection" : "inventory";
+	$u = user_load($vars['node']->uid);
+	
+	if ($display_type == "collection")
+	{
+		module_load_include("inc", "collection");
+		$collection = collection_load(collection_get_item_cid($vars['node']->nid));
+		$replace_args = array(
+			"!user" 			=> $u->name,
+			"!current_item"		=> $vars['node']->title,
+			"!collection"		=> l($collection['title'], "collections/{$collection['cid']}"),
+			"!view_collections"	=> l(t("View all"), "user/{$u->uid}/inventory"),
+		);
+		
+		$display = t("\"!current_item\" is part of !user's !collection collection", $replace_args);
+		$display .= "<br />".t("View !collection", $replace_args);
+		$display .= "<br />".t("!view_collections of !user's collections", $replace_args);
+	}
+	else
+	{
+		$display = t("!browse more of !user's items", array("!user" => $u->name, "!browse" => l(t("Browse"), "user/{$u->uid}/inventory")));
+	}
+	
+	$vars['display'] = $display;
 }
 ?>

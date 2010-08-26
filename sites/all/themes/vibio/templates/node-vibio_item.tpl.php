@@ -21,10 +21,12 @@ $product = node_load($node->product_nid);
 $product->item =& $node;
 $product_data = $node->product_nid ? theme("node", $product) : "";
 $title = $product->title == $node->title ? "" : "<h2>{$node->title}</h2>";
+$user_other_items = theme("vibio_item_user_other_items", $node);
 
 echo "
 	{$product_data}
 	{$title}
 	{$node->body}
+	{$user_other_items}
 ";
 ?>

@@ -209,15 +209,19 @@ function _vibio_item_access($node)
 		privacy_get($node->uid, "node", $node->nid) <= privacy_get_access_level($node->uid) : true;
 }
 
-function _vibio_item_unset(&$form)
+function _vibio_item_unset(&$form, $type="vibio_item")
 {
-	unset($form['revision_information']);
+	if ($type == "vibio_item")
+	{
+		unset($form['revision_information']);
+	}
+	
 	unset($form['path']);
 	unset($form['menu']);
 	unset($form['attachments']);
 }
 
-function _vibio_item_defaults(&$form)
+function _vibio_item_defaults(&$form, $type="vibio_item")
 {
 	global $user;
 	
@@ -238,6 +242,16 @@ function _vibio_item_defaults(&$form)
 			"#value"=> true,
 		),
 	);
+	
+	if ($type != "vibio_item")
+	{
+		$form['revision_information'] = array(
+			'revision' => array(
+				"#type" => "value",
+				"#value"=> true,
+			),
+		);
+	}
 }
 
 function _vibio_item_user_options()

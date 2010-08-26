@@ -7,7 +7,16 @@ if ($_GET['breadcrumb'])
 
 if (isset($node->amazon_data))
 {
-	echo theme("product_amazon_display", $node, $page);
+	if (empty($node->body))
+	{
+		echo theme("product_amazon_display", $node, $page);
+	}
+	else
+	{
+		echo theme("product_display", $node, $page);
+		echo theme("vibio_amazon_item_details", $node);
+	}
+	
 	$external_link = $page ? t("Get \"!item\" from !external_link.", array("!item" => $node->title, "!external_link" => l(t("Amazon"), $node->amazon_data['detailpageurl'], array("absolute" => true)))) : "";
 }
 else

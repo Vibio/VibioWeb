@@ -27,15 +27,7 @@ else
 	}
 }
 
-$theme = "vibio_amazon_item_"._amazon_clean_type($node->amazon_data['producttypename']);
-if ($details = theme($theme, $node->amazon_data))
-{
-	$details = "
-		<h4>Details</h4>
-		$details
-	";
-}
-
+$details = theme("vibio_amazon_item_details", $node);
 $manage_link = theme("product_inventory_manage_link", $node);
 
 echo "

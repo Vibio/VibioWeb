@@ -170,6 +170,11 @@ function _vibio_amazon_search_result($item)
 function vibio_amazon_theme()
 {
 	return array(
+		"vibio_amazon_item_details" => array(
+			"arguments"	=> array("node" => false, "details" => ""),
+			"template"	=> "templates/amazon/amazon-item-details",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
 		"vibio_amazon_item_dvd"	=> array(
 			"arguments"	=> array("item" => array()),
 			"template"	=> "templates/amazon/amazon-item-dvd",
@@ -196,6 +201,13 @@ function vibio_amazon_theme()
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
 	);
+}
+
+function vibio_amazon_preprocess_vibio_amazon_item_details(&$vars)
+{
+	$node = $vars['node'];
+	$theme = "vibio_amazon_item_"._amazon_clean_type($node->amazon_data['producttypename']);
+	$vars['details'] = theme($theme, $node->amazon_data);
 }
 
 function _vibio_amazon_clean_content($text, $tags=array(), $invert=false)

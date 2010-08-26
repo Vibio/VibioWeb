@@ -1,15 +1,27 @@
 <?php
 function vibio_amazon_nodeapi(&$node, $op, $a3=null, $a4=null)
 {
+	if ($node->type != "product")
+	{
+		return;
+	}
+
 	switch ($op)
 	{
-		case "load":
-			if ($node->type == "product")
+		case "presave":
+			if (!empty($node->field_amazon_asin[0]['asin']) && empty($node->taxonomy))
 			{
-				return array(
-					"amazon_data"	=> array_shift(amazon_item_lookup_from_db($node->field_amazon_asin[0]['asin'])),
-				);
+				$vid = variable_get("vibio_amazon_category_id", 1);
+				if ($tid = _vibio_amazon_get_vibio_term_from_asin($node->field_amazon_asin[0]['asin'], $vid))
+				{
+					$node->taxonomy[$vid] = $tid;
+				}
 			}
+			break;
+		case "load":
+			return array(
+				"amazon_data"	=> array_shift(amazon_item_lookup_from_db($node->field_amazon_asin[0]['asin'])),
+			);
 			break;
 		case "delete":
 			$sql = "DELETE FROM {amazon_item_node}
@@ -32,6 +44,8 @@ function vibio_amazon_amazon_item_insert($item)
 	}
 	
 	module_load_include("inc", "node", "node.pages");
+	$vid = variable_get("vibio_amazon_category_id", 1);
+	$tid = _vibio_amazon_get_vibio_term_from_asin($item['asin'], $vid);
 	
 	$publisher = user_load(1);
 	$node = array("type" => "product");
@@ -43,6 +57,9 @@ function vibio_amazon_amazon_item_insert($item)
 			array(
 				"asin"	=> $item['asin'],
 			),
+		),
+		"taxonomy"	=> array(
+			$vid => $tid,
 		),
 	);
 	
@@ -217,5 +234,76 @@ function _vibio_amazon_clean_content_allowhtml($text)
 	);
 	
 	return _vibio_amazon_clean_content($text, $allowed_tags);
+}
+
+function _vibio_amazon_get_vibio_term_from_asin($asin, $vid)
+{
+	$category_map = array(
+		"Wireless"					=> "Electronics",
+		"CE"						=> "Electronics",
+		"Apparel"					=> "Apparel",
+		"Kitchen"					=> "Kitchen",
+		"DVD"						=> "DVD",
+		"Single Detail Page Misc"	=> "Other",
+		"Personal Computer"			=> "Computers",
+		"Software"					=> "Software",
+		"Office Product"			=> "Office",
+		"Book"						=> "Books",
+		"Digital Music Album"		=> "Music",
+		"eBooks"					=> "eBooks",
+		"Music"						=> "Music",
+		"Beauty"					=> "Health and Beauty",
+		"Magazine"					=> "Magazine",
+		"Toy"						=> "Toy",
+		"Video"						=> "Video",
+		"Baby Product"				=> "Baby",
+		"Sports"					=> "Sports",
+		"Digital Music Track"		=> "Music",
+		"Video Games"				=> "Video Games",
+		"Movie"						=> "Movie",
+		"TV Series Episode Video on Demand" => "TV Series",
+		"Health and Beauty"			=> "Health and Beauty",
+		"Lighting"					=> "Lighting",
+		"Home Improvement"			=> "Home Improvement",
+		"Shoes"						=> "Shoes",
+		"Watch"						=> "Jewelry",
+		"Furniture"					=> "Furniture",
+		"Pet Products"				=> "Pet",
+		"Photography"				=> "Photography",
+		"Lawn & Patio"				=> "Lawn & Patio",
+		"Automotive Parts and Accessories" => "Automotive Parts and Accessories",
+		"Car Audio or Theater" 		=> "Automotive Parts and Accessories",
+		"Home Theater"				=> "Home Theater",
+		"Grocery"					=> "Grocery",
+		"Musical Instruments"		=> "Musical Instruments",
+	);
+	
+	$sql = "SELECT `productgroup`
+			FROM {amazon_item}
+			WHERE `asin`='%s'";
+	if (!($group = db_result(db_query($sql, $asin))))
+	{
+		return false;
+	}
+	
+	if (isset($category_map[trim($group)]))
+	{
+		$sql = "SELECT `tid`
+				FROM {term_data}
+				WHERE `vid`=%d
+					AND `name` LIKE '%s'";
+		$tid = db_result(db_query($sql, $vid, $category_map[trim($group)]));
+	}
+	
+	if (!$tid)
+	{
+		$sql = "SELECT `tid`
+				FROM {term_data}
+				WHERE `vid`=%d
+					AND `name` LIKE 'other'";
+		$tid = db_result(db_query($sql, $vid));
+	}
+	
+	return $tid;
 }
 ?>

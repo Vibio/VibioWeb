@@ -99,6 +99,11 @@ function vviews_collection_update($uid, $cids)
 	}
 }
 
+function vviews_collection_delete_item($uid, $cid, $nid)
+{
+	_vviews_clear_cache(array($uid, $cid), "user_collection", "deleting an item.");
+}
+
 function vviews_offer2buy_complete_actions($old_owner_uid, $node)
 {
 	$event = "offer2buy transfer item";

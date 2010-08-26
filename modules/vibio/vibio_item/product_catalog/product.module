@@ -6,6 +6,13 @@ function product_perm()
 	);
 }
 
+function product_views_api()
+{
+	return array(
+		"api"	=> 2,
+	);
+}
+
 function product_menu()
 {
 	return array(

@@ -83,13 +83,13 @@ function collection_nodeapi(&$node, $op, $a3=null, $a4=null)
 		return;
 	}
 	
+	global $user;
+	module_load_include("inc", "collection");
+	
 	switch ($op)
 	{
 		case "insert":
 		case "update":
-			global $user;
-			
-			module_load_include("inc", "collection");
 			$cid = isset($node->collection_info) ? $node->collection_info['cid'] : collection_get_item_cid($node->nid);
 			unset($node->collection_info);
 			
@@ -108,9 +108,11 @@ function collection_nodeapi(&$node, $op, $a3=null, $a4=null)
 			module_invoke_all("collection_update", $user->uid, array($cid, $old_cid));
 			break;
 		case "delete":
+			$cid = collection_get_item_cid($node->nid);
 			$sql = "DELETE FROM {collection_items}
 					WHERE `item_nid`=%d";
 			db_query($sql, $node->nid);
+			module_invoke_all("collection_delete_item", $user->uid, $cid, $node->nid);
 			break;
 	}
 }

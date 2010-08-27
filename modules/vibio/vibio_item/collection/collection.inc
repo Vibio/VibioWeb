@@ -44,7 +44,15 @@ function collection_get_item_cid($nid)
 	$sql = "SELECT `cid`
 			FROM {collection_items}
 			WHERE `item_nid`=%d";
-	return db_result(db_query($sql, $nid));
+	$res = db_query($sql, $nid);
+	
+	$ret = array();
+	while ($row = db_fetch_array($res))
+	{
+		$ret[$row['cid']] = $row['cid'];
+	}
+	
+	return $ret;
 }
 
 function collection_options()

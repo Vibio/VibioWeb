@@ -59,9 +59,12 @@ function collection_schema()
 					"default"	=> 0,
 				),
 			),
-			"primary key"	=> array("item_nid"),
 			"indexes"		=> array(
-				"cid"	=> array("cid"),
+				"cid"		=> array("cid"),
+				"item_nid"	=> array("item_nid"),
+			),
+			"unique keys"	=> array(
+				"collection_item" => array("cid", "item_nid"),
 			),
 		),
 		"collection_user_defaults" => array(
@@ -111,6 +114,23 @@ function collection_update_1()
 	
 	$ret = array();
 	db_create_table($ret, "collection_user_defaults", $schema["collection_user_defaults"]);
+	
+	return $ret;
+}
+
+function collection_update_2()
+{
+	$ret = array();
+	db_drop_primary_key($ret, "collection_items");
+	db_add_index($ret, "collection_items", "item_nid", array("item_nid"));
+	
+	return $ret;
+}
+
+function collection_update_3()
+{
+	$ret = array();
+	db_add_unique_key($ret, "collection_items", "collection_item", array("cid", "item_nid"));
 	
 	return $ret;
 }

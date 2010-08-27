@@ -106,17 +106,17 @@ function vibio_item_preprocess_vibio_item_user_other_items(&$vars)
 	if ($display_type == "collection")
 	{
 		module_load_include("inc", "collection");
-		$collection = collection_load(collection_get_item_cid($vars['node']->nid));
-		$replace_args = array(
-			"!user" 			=> $u->name,
-			"!current_item"		=> $vars['node']->title,
-			"!collection"		=> l($collection['title'], "collections/{$collection['cid']}"),
-			"!view_collections"	=> l(t("View all"), "user/{$u->uid}/inventory"),
-		);
 		
-		$display = t("\"!current_item\" is part of !user's !collection collection", $replace_args);
-		$display .= "<br />".t("View !collection", $replace_args);
-		$display .= "<br />".t("!view_collections of !user's collections", $replace_args);
+		$display = t("\"!current_item\" is part of !user's following collections:", array("!user" => l($u->name, "user/{$u->uid}"), "!current_item" => $vars['node']->title));
+		$display .= "<ul>";
+		
+		foreach (collection_get_item_cid($vars['node']->nid) as $cid)
+		{
+			$collection = collection_load($cid);
+			$display .= "<li><a href='/collections/{$cid}'>{$collection['title']}</a></li>";
+		}
+		$display .= "</ul>";
+		$display .= t("!view_collections of !user's collections", array("!view_collections" => l(t("View all"), "user/{$u->uid}/inventory"), "!user" => l($u->name, "user/{$u->uid}")));
 	}
 	else
 	{

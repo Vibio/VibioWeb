@@ -17,7 +17,8 @@ class views_plugin_cache_argument extends views_plugin_cache {
 				"sort",
 				"order",
 				"keys",
-				"item_status"
+				"item_status",
+				"title",
 			);
 			foreach ($filter_args as $additional_arg)
 			{
@@ -42,7 +43,8 @@ class views_plugin_cache_argument extends views_plugin_cache {
 				"sort",
 				"order",
 				"keys",
-				"item_status"
+				"item_status",
+				"title",
 			);
 			foreach ($filter_args as $additional_arg)
 			{

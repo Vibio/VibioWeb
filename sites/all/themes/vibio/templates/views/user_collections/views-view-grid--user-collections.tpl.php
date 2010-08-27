@@ -1,3 +1,10 @@
+<?php
+if ($view->args[1] == PRIVACY_ONLYME)
+{
+	echo l("Create New Collection", "collections/new");
+}
+?>
+
 <table class="views-view-grid user-collections">
 	<?php
 	foreach ($rows as $i => $cols)
@@ -17,7 +24,7 @@
 		{
 			$result_index = count($cols)*$i + $j;
 			$col_class = "col-".($j + 1);
-			$output = theme("collection_list_item", $view->result[$result_index]);
+			$output = theme("collection_list_item", $view->result[$result_index], $view->args[0]);
 			
 			echo "
 				<td class='$col_class'>

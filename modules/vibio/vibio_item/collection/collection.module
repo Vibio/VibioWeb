@@ -54,7 +54,7 @@ function collection_theme(&$existing)
 {
 	return array(
 		"collection_list_item" => array(
-			"arguments"	=> array("collection" => array()),
+			"arguments"	=> array("collection" => array(), "viewer_uid" => false),
 			"template"	=> "templates/collections/collection",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
@@ -63,6 +63,13 @@ function collection_theme(&$existing)
 
 function collection_preprocess_collection_list_item(&$vars)
 {
+	if (empty($vars['collection']))
+	{
+		return;
+	}
+	
+	$vars['collection']->is_owner = $vars['collection']->collection_uid == $vars['viewer_uid'];
+	
 	$sql = "SELECT n.`nid`
 			FROM {node} n JOIN {collection_items} ci ON n.`nid`=ci.`item_nid`
 			WHERE ci.`cid`=%d

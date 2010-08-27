@@ -24,6 +24,9 @@ function collection_views_data()
 				"argument"	=> array(
 					"handler"	=> "views_handler_argument_user_uid",
 				),
+				"field"		=> array(
+					"handler"	=> "views_handler_field_numeric",
+				),
 			),
 			"title"	=> array(
 				"title"		=> t("Title"),
@@ -35,6 +38,12 @@ function collection_views_data()
 				),
 				"sort"		=> array(
 					"handler"	=> "views_handler_sort",
+				),
+			),
+			"description" => array(
+				"title" => t("Description"),
+				"field" => array(
+					"handler" => "views_handler_field",
 				),
 			),
 		),

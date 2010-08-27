@@ -12,8 +12,9 @@ function collection_view_collection($collection)
 
 function collection_manage()
 {
-	module_load_include("inc", "collection");
+	global $user;
 	
+	module_load_include("inc", "collection");
 	$collections = collection_get_collections();
 	
 	if (empty($collections))
@@ -21,29 +22,7 @@ function collection_manage()
 		return t("You currently have no collections. !create", array("!create" => l(t("Create a collection"), "collections/new")));
 	}
 	
-	$output = l("Create New Collection", "collections/new");
-	$output .= "<table>";
-	foreach ($collections as $cid => $c)
-	{
-		$manage_link = url("collections/manage/{$cid}");
-		$view_link = url("collections/{$cid}");
-		$manage_text = t("Manage Collection");
-		
-		$output .= "
-			<tr>
-				<td>
-					<a href='$view_link'>{$c['title']}</a>
-				</td>
-				<td align='right'><a href='$manage_link'>$manage_text</a></td>
-			</tr>
-			<tr>
-				<td colspan='2'>{$c['description']}</td>
-			</tr>
-		";
-	}
-	$output .= "</table>";
-	
-	return $output;
+	return views_embed_view("user_collections", "default", $user->uid, PRIVACY_ONLYME);
 }
 
 function collection_edit(&$state, $collection=false)

@@ -1,0 +1,79 @@
+<?php
+define("REPORT_DEFAULT_START", 60*60*24*7); //one week ago
+define("REPORT_RUN_INTERVAL", 60*60*24); //one day
+
+function reports_perm()
+{
+	return array(
+		"reports view",
+	);
+}
+
+// each module is individually responsible for calling db_set_active!
+function reports_cron()
+{
+	module_load_include("inc", "reports");
+	
+	$last_daily_run = variable_get("reports_last_daily_run", 0);
+	$now = time();
+	
+	module_invoke_all("reports_cron");
+	
+	if ($now - $last_daily_run < REPORT_RUN_INTERVAL)
+	{
+		return;
+	}
+	
+	module_invoke_all("reports_daily_cron", $last_daily_run);
+	variable_set("reports_last_daily_run", $now);
+}
+
+function reports_reports_daily_cron($last_run)
+{
+	reports_total_users();
+	reports_new_users($last_run);
+}
+
+function reports_menu()
+{
+	return array(
+		"reports"			=> array(
+			"title"				=> "Reports",
+			"page callback"		=> "reports_overview",
+			"access arguments"	=> array("reports view"),
+			"file"				=> "reports.pages.inc",
+			"type"				=> MENU_CALLBACK,
+		),
+		"reports/%reports"	=> array(
+			"page callback"		=> "reports_view_report",
+			"page arguments"	=> array(1),
+			"access arguments"	=> array("reports view"),
+			"file"				=> "reports.pages.inc",
+			"type"				=> MENU_CALLBACK,
+		),
+	);
+}
+
+function reports_load($name, $from=false, $to=false)
+{
+	$db = db_set_active("reports");
+	$from = $from ? $from : time() - REPORT_DEFAULT_START;
+	$to = $to ? $to : time();
+	
+	$sql = "SELECT *
+			FROM {reports}
+			WHERE `name`='%s'
+				AND `tstamp` BETWEEN %d AND %d
+			ORDER BY `tstamp` ASC";
+	$res = db_query($sql, $name, $from, $to);
+	
+	$report = array();
+	while ($row = db_fetch_object($res))
+	{
+		$report[] = $row;
+	}
+	
+	db_set_active($db);
+	return $report;
+}
+?>

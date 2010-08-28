@@ -189,6 +189,25 @@ function product_form_alter(&$form, &$state, $id)
 	}
 }
 
+function product_reports_daily_cron($last_run)
+{
+	$sql = "SELECT td.`name` category, COUNT(*) items_created
+			FROM {term_data} td JOIN {term_node} tn JOIN {product_items} pi JOIN {node} n
+				ON td.`tid`=tn.`tid`
+				AND pi.`product_nid`=tn.`nid`
+				AND pi.`item_nid`=n.`nid`
+			WHERE n.`type`='vibio_item'
+				AND n.`created` >= %d
+			GROUP BY td.`name`
+			ORDER BY COUNT(*) DESC";
+	$res = db_query($sql, $last_run);
+	
+	while ($row = db_fetch_object($res))
+	{
+		reports_log("items", $row->items_created, $row->category);
+	}
+}
+
 function _product_remove_options($keys)
 {
 	return preg_replace('/(^| )([a-z0-9_]+):(.*)( |$)/i', '', $keys);

@@ -4,8 +4,8 @@
 <head>
   <title><?php print $head_title; ?></title>
   <?php print $head; ?>
-  <meta name="description" content="" />
-  <meta name="keywords" content="" />
+  <meta name="description" content="Vibio is a social commerce tool that lets you buy, sell, and share items within your social graph" />
+  <meta name="keywords" content="social commerce, inventory, buy, sell, share, social graph, friends, trade, collections" />
   
   <?php print $styles; ?>
   <link rel="stylesheet" href="/sites/all/themes/vibio/css/jquery-ui.tabs.css" />

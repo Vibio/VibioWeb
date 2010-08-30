@@ -37,8 +37,13 @@ function reports_schema()
 
 function reports_install()
 {
-	$db = db_set_active("reports");
+	$db = db_set_active("reports"); //this doesn't seem to work...
 	drupal_install_schema("reports");
 	db_set_active($db);
+}
+
+function reports_uninstall()
+{
+	drupal_uninstall_schema("reports");
 }
 ?>

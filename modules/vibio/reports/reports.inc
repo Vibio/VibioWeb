@@ -18,12 +18,181 @@ function reports_new_users($since=0)
 	reports_log("new users", $new);
 }
 
+function reports_add_js($name, $data)
+{
+	drupal_add_js(drupal_get_path("module", "reports")."/js/flot/jquery.flot.js");
+	drupal_add_js(drupal_get_path("module", "reports")."/js/reports.js");
+	
+	$callback = "reports_add_js_".str_replace(" ", "_", $name);
+	
+	if (function_exists($callback))
+	{
+		$callback($data);
+	}
+	else
+	{
+		reports_default_js($name, $data);
+	}
+}
+
+function reports_add_js_items($data)
+{
+	drupal_add_js(drupal_get_path("module", "reports")."/js/jquery.flot.pie.js");
+	
+	$totals = array();
+	foreach ($data as $point)
+	{
+		$totals[$point->mod] += $point->value;
+	}
+	
+	$pie_data = array();
+	foreach ($totals as $key => $val)
+	{
+		$pie_data[] = array(
+			"label"	=> $key,
+			"data"	=> $val,
+		);
+	}
+	
+	$flot = array(
+		"flot"	=> array(
+			"data"		=> $pie_data,
+			"options"	=> array(
+				"series"	=> array(
+					"pie"	=> array(
+						"show"			=> true,
+						"radius"		=> "auto",
+						"innerRadius"	=> 0,
+						"tilt"			=> 1,
+						"label"			=> array(
+							"show"	=> true,
+						),
+						"highlight"		=> array(
+							"opacity"	=> 1,
+						),
+					),
+				),
+			),
+			"merge_defaults" => false,
+			"is_pie"		=> true,
+		),
+	);
+	
+	drupal_add_js($flot, "setting");
+}
+
+function reports_default_js($name, $data)
+{
+	drupal_add_js(drupal_get_path("module", "reports")."/js/flot/jquery.flot.selection.js");
+	
+	$flot = array(
+		"flot"	=> array(
+			"data"		=> array(
+				array(
+					"label"	=> $name,
+				),
+			),
+			"merge_defaults"=> true,
+			"is_pie"		=> false,
+		),
+	);
+	
+	foreach ($data as $point)
+	{
+		$flot['flot']['data'][0]['data'][] = array(
+			$point->tstamp,
+			$point->value,
+		);
+	}
+	
+	/*$flot['flot']['data'][0]['data'][] = array(
+		$point->tstamp + REPORT_RUN_INTERVAL*1000,
+		$point->value + 750,
+	);
+	
+	$flot['flot']['data'][0]['data'][] = array(
+		$point->tstamp + REPORT_RUN_INTERVAL*1000*2,
+		$point->value + 200,
+	);*/
+	
+	drupal_add_js($flot, "setting");
+}
+
 function reports_log($name, $val, $mod="")
 {
+	global $db_url;
 	$db = db_set_active("reports");
 	$sql = "INSERT IGNORE INTO {reports}
 			SET `name`='%s', `value`=%d, `mod`='%s', `tstamp`=%d";
 	db_query($sql, $name, $val, $mod, time());
 	db_set_active($db);
+}
+
+function reports_report_selector(&$state, $name, $from, $to, $collapsed=true)
+{
+	$from = $from ? $from : time() - REPORT_DEFAULT_START;
+	$to = $to ? $to : time();
+	
+	$from = array(
+		"year"	=> date("Y", $from),
+		"month"	=> date("n", $from),
+		"day"	=> date("d", $from),
+	);
+	$to = array(
+		"year"	=> date("Y", $to),
+		"month"	=> date("n", $to),
+		"day"	=> date("d", $to),
+	);
+	
+	$db = db_set_active("reports");
+	$sql = "SELECT DISTINCT(`name`)
+			FROM {reports}
+			ORDER BY `name`";
+	$res = db_query($sql);
+	db_set_active($db);
+	
+	$report_options = array();
+	while ($row = db_fetch_object($res))
+	{
+		$report_options[$row->name] = $row->name;
+	}
+	
+	return array(
+		"date_selector"	=> array(
+			"#type"			=> "fieldset",
+			"#title"		=> t("Report Selector"),
+			"#collapsible"	=> true,
+			"#collapsed"	=> $collapsed,
+			"report_name"	=> array(
+				"#type"			=> "select",
+				"#title"		=> t("Name"),
+				"#options"		=> $report_options,
+				"#default_value"=> $name,
+			),
+			"report_start"	=> array(
+				"#type"			=> "date",
+				"#title"		=> t("Start Date"),
+				"#default_value"=> $from,
+			),
+			"report_end"	=> array(
+				"#type"			=> "date",
+				"#title"		=> t("End Date"),
+				"#default_value"=> $to,
+			),
+			"submit"		=> array(
+				"#type"	=> "submit",
+				"#value"=> t("View Report"),
+			),
+		),
+	);
+}
+
+function reports_report_selector_submit($form, &$state)
+{
+	$vals = $state['values'];
+	$from = strtotime("{$vals['report_start']['year']}-{$vals['report_start']['month']}-{$vals['report_start']['day']}");
+	$to = strtotime("{$vals['report_end']['year']}-{$vals['report_end']['month']}-{$vals['report_end']['day']}");
+	
+	drupal_goto("reports/{$vals['report_name']}", "from=$from&to=$to");
 }
 ?>

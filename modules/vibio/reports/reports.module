@@ -1,11 +1,13 @@
 <?php
 define("REPORT_DEFAULT_START", 60*60*24*7); //one week ago
 define("REPORT_RUN_INTERVAL", 60*60*24); //one day
+define("REPORT_ONE_HOUR", 60*60);
 
 function reports_perm()
 {
 	return array(
 		"reports view",
+		"reports admin",
 	);
 }
 
@@ -19,13 +21,11 @@ function reports_cron()
 	
 	module_invoke_all("reports_cron");
 	
-	if ($now - $last_daily_run < REPORT_RUN_INTERVAL)
+	if (date("G") == variable_get("reports_hour", 0))
 	{
-		return;
+		module_invoke_all("reports_daily_cron", $last_daily_run);
+		variable_set("reports_last_daily_run", $now);
 	}
-	
-	module_invoke_all("reports_daily_cron", $last_daily_run);
-	variable_set("reports_last_daily_run", $now);
 }
 
 function reports_reports_daily_cron($last_run)
@@ -37,19 +37,38 @@ function reports_reports_daily_cron($last_run)
 function reports_menu()
 {
 	return array(
-		"reports"			=> array(
+		"admin/settings/reports"=> array(
+			"title"				=> "Reports",
+			"page callback"		=> "drupal_get_form",
+			"page arguments"	=> array("reports_settings"),
+			"access arguments"	=> array("reports admin"),
+			"file"				=> "reports.pages.inc",
+			"type"				=> MENU_NORMAL_ITEM,
+		),
+		"reports"				=> array(
 			"title"				=> "Reports",
 			"page callback"		=> "reports_overview",
 			"access arguments"	=> array("reports view"),
 			"file"				=> "reports.pages.inc",
 			"type"				=> MENU_CALLBACK,
 		),
-		"reports/%reports"	=> array(
+		"reports/%"				=> array(
 			"page callback"		=> "reports_view_report",
 			"page arguments"	=> array(1),
 			"access arguments"	=> array("reports view"),
 			"file"				=> "reports.pages.inc",
 			"type"				=> MENU_CALLBACK,
+		),
+	);
+}
+
+function reports_theme(&$existing, $type, $theme, $path)
+{
+	return array(
+		"reports_view_report"	=> array(
+			"arguments"	=> array("selector" => false),
+			"template"	=> "templates/reports/view",
+			"path"		=> drupal_get_path("theme", "vibio"),
 		),
 	);
 }
@@ -66,14 +85,15 @@ function reports_load($name, $from=false, $to=false)
 				AND `tstamp` BETWEEN %d AND %d
 			ORDER BY `tstamp` ASC";
 	$res = db_query($sql, $name, $from, $to);
+	db_set_active($db);
 	
 	$report = array();
 	while ($row = db_fetch_object($res))
 	{
+		$row->tstamp = 1000*($row->tstamp + REPORT_ONE_HOUR*variable_get("reports_offset", 0)); //x1000 is to convert unix timestamps into js timestamps.
 		$report[] = $row;
 	}
 	
-	db_set_active($db);
 	return $report;
 }
 ?>

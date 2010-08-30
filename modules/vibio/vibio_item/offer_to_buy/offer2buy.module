@@ -550,4 +550,18 @@ function offer2buy_change_list_type_access($nid)
 	
 	return $uid == $user->uid;
 }
+
+function offer2buy_reports_daily_cron($last_run)
+{
+	$sql = "SELECT COUNT(*) total_transactions, SUM(`price`) amount_transacted
+			FROM {offer2buy_completed_transactions}
+			WHERE `timestamp` > %d";
+	$res = db_query($sql, $last_run);
+	
+	if ($row = db_fetch_object($res))
+	{
+		reports_log("total transactions", $row->total_transactions);
+		reports_log("amount transacted", $row->amount_transacted);
+	}
+}
 ?>

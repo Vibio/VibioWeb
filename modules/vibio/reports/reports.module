@@ -78,13 +78,15 @@ function reports_load($name, $from=false, $to=false)
 	$db = db_set_active("reports");
 	$from = $from ? $from : time() - REPORT_DEFAULT_START;
 	$to = $to ? $to : time();
+	//the extra hour is  because we don't know exactly when the cron was run, so the timestamp will be a little off.
+	$to += variable_get("reports_hour", 0)*REPORT_ONE_HOUR + REPORT_ONE_HOUR; 
 	
 	$sql = "SELECT *
 			FROM {reports}
 			WHERE `name`='%s'
 				AND `tstamp` BETWEEN %d AND %d
 			ORDER BY `tstamp` ASC";
-	$res = db_query($sql, $name, $from, $to);
+	$res = db_query($sql, $name, $from, $to); 
 	db_set_active($db);
 	
 	$report = array();

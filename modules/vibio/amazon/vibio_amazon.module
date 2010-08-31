@@ -243,6 +243,7 @@ function _vibio_amazon_clean_content_allowhtml($text)
 		"sup",
 		"span",
 		"ul",
+		"div",
 	);
 	
 	return _vibio_amazon_clean_content($text, $allowed_tags);

@@ -1,27 +1,42 @@
 <?php
-if ($_GET['breadcrumb'])
+if ($_GET['searchcrumb'])
 {
-	$breadcrumb = t("Back to search results");
-	echo "<a href='{$_GET['breadcrumb']}'>$breadcrumb</a><br />";
+	$searchcrumb = t("Back to search results");
+	$searchcrumb = "<a href='{$_GET['searchcrumb']}'>$searchcrumb</a><br />";
 }
+else
+{
+	$searchcrumb = "";
+}
+
+if ($image = _product_get_image($node->nid, true))
+{
+	$image = "
+		<a href='/node/{$node->nid}'>
+			<img src='$image' style='float: left; padding: 0 10px 10px 0;' />
+		</a>
+	";
+}
+
+$manage_link = theme("product_inventory_manage_link", $node, $_GET['searchcrumb']);
 
 if (isset($node->amazon_data))
 {
 	if (empty($node->body))
 	{
-		echo theme("product_amazon_display", $node, $page);
+		$product_content = theme("product_amazon_display", $node, $page);
 	}
 	else
 	{
-		echo theme("product_display", $node, $page);
-		echo theme("vibio_amazon_item_details", $node);
+		$product_content = theme("product_display", $node, $page);
+		$product_content .= theme("vibio_amazon_item_details", $node);
 	}
 	
 	$external_link = $page ? t("Get \"!item\" from !external_link.", array("!item" => $node->title, "!external_link" => l(t("Amazon"), $node->amazon_data['detailpageurl'], array("absolute" => true)))) : "";
 }
 else
 {
-	echo theme("product_display", $node, $page);
+	$product_content = theme("product_display", $node, $page);
 }
 
 // these things will show up, regardless of the product source
@@ -50,6 +65,10 @@ if ($page)
 }
 
 echo "
+	$searchcrumb
+	$image
+	$manage_link
+	$product_content
 	$product_owners
 	<p>$external_link</p>
 ";

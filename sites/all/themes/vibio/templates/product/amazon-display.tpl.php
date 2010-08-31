@@ -1,10 +1,8 @@
 <?php
-global $user;
-$image = file_create_url($node->field_main_image[0]['filepath']);
-
+$unavailable = t("No description available.");
 if (empty($node->amazon_data['editorialreviews']))
 {
-	$description = t("No description available.");
+	$description = $unavailable;
 }
 else
 {
@@ -25,14 +23,16 @@ else
 	{
 		$description = _vibio_amazon_clean_content_allowhtml($review);
 	}
+	
+	if (empty($description))
+	{
+		$description = $unavailable;
+	}
 }
 
 $details = theme("vibio_amazon_item_details", $node);
-$manage_link = theme("product_inventory_manage_link", $node);
 
 echo "
-	<a href='/node/{$node->nid}'><img src='{$image}' style='float: left; padding: 0 10px 10px 0;' /></a>
-	$manage_link
 	<h4>Description</h4>
 	$description
 	<div style='clear: left;'></div>

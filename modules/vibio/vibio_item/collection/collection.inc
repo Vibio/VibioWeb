@@ -110,4 +110,19 @@ function collection_set_user_default($uid, $cid)
 			SET `uid`=%d, `cid`=%d";
 	return db_query($sql, $uid, $cid);
 }
+
+function collection_get_image($cid)
+{
+	$sql = "SELECT n.`nid`
+			FROM {node} n JOIN {collection_items} ci ON n.`nid`=ci.`item_nid`
+			WHERE ci.`cid`=%d
+			ORDER BY n.`changed` DESC
+			LIMIT 1";
+	if (!$nid = db_result(db_query($sql, $cid)))
+	{
+		return;
+	}
+	
+	return _vibio_item_get_image($nid);
+}
 ?>

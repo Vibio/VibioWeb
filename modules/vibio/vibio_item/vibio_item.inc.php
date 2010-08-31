@@ -264,7 +264,11 @@ function _vibio_item_user_options()
 
 function _vibio_item_get_image($nid)
 {
-	$node = node_load($nid);
+	if (!($node = node_load($nid)))
+	{
+		return false;
+	}
+	
 	if (!empty($node->field_main_image[0]['filepath']))
 	{
 		return file_create_url($node->field_main_image[0]['filepath']);

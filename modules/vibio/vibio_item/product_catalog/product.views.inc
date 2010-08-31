@@ -6,7 +6,11 @@ function product_views_data()
 			"table"	=> array(
 				"group"	=> t("Product Items"),
 				"join"	=> array(
-					"node"	=> array(
+					"node"				=> array(
+						"field"		=> "item_nid",
+						"left_field"=> "nid",
+					),
+					"heartbeat_activity"=> array(
 						"field"		=> "item_nid",
 						"left_field"=> "nid",
 					),
@@ -35,19 +39,6 @@ function product_views_data()
 		),
 	);
 }
-
-/*function product_views_data_alter(&$data)
-{
-	/*$data['term_data']['table']['join']['node'] = array(
-		"left_table" 	=> "term_node",
-		"left_field" 	=> "tid",
-		"field"			=> "tid",
-	);
-	$data['term_data']['product_category'] = $data['term_data']['name'];
-	$data['term_data']['product_category']['real field'] = 'name';
-	
-	$data['term_node']['table']['join']['node']['left_table'] = "product_items";
-}*/
 
 function product_views_handlers()
 {

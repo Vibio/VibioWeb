@@ -125,4 +125,11 @@ function vibio_item_preprocess_vibio_item_user_other_items(&$vars)
 	
 	$vars['display'] = $display;
 }
+
+function vibio_item_views_api()
+{
+	return array(
+		"api"	=> 2,
+	);
+}
 ?>

@@ -79,7 +79,8 @@ function reports_load($name, $from=false, $to=false)
 	$from = $from ? $from : time() - REPORT_DEFAULT_START;
 	$to = $to ? $to : time();
 	//the extra hour is  because we don't know exactly when the cron was run, so the timestamp will be a little off.
-	$to += variable_get("reports_hour", 0)*REPORT_ONE_HOUR + REPORT_ONE_HOUR; 
+	$from += variable_get("reports_hour", 0)*REPORT_ONE_HOUR + REPORT_ONE_HOUR;
+	$to += variable_get("reports_hour", 0)*REPORT_ONE_HOUR + REPORT_ONE_HOUR;
 	
 	$sql = "SELECT *
 			FROM {reports}

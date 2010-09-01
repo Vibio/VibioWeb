@@ -1,9 +1,9 @@
 <?php
 echo "
 	<tr>
-		<td>
+		<td align='center'>
 			<a href='$url'>
-				<img style='float: left; height: 50px; width: 50px;' src='{$info_split['image']}' />
+				<img class='search_result_image' src='{$info_split['image']}' />
 			</a>
 		</td>
 		<td valign='middle' style='padding-left: 20px;'>

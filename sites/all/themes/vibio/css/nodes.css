@@ -81,3 +81,8 @@
 .preview .node /* Preview of the content before submitting new or updated content */ {
   /* background-color: #ffffea; */ /* Drupal core uses a #ffffea background */
 }
+
+.search_result_image {
+  float: left;
+  max-height: 70px;
+}

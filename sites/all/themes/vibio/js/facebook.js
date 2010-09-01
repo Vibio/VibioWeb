@@ -66,7 +66,7 @@ $(document).ready(function()
 		return false;
 	});
 	
-	$(".fb_share").click(function()
+	$(".fb_share").live("click", function()
 	{
 		var params = JSON.parse($(this).siblings(".fb_share_params").text()) || {};
 		verify_login(share, params);

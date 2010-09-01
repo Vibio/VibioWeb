@@ -9,6 +9,5 @@ function offer2buy_ajax_offer($nid)
 	}
 	
 	exit(drupal_get_form("offer2buy_offer_form", $nid, $_GET['destination']));
-
 }
 ?>

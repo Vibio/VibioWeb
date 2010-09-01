@@ -7,7 +7,22 @@ define("PRIVACY_PUBLIC", 1);
 function privacy_perm()
 {
 	return array(
-		"privacy admin", //some users should be able to see EVERYTHING
+		"privacy admin",
+	);
+}
+
+function privacy_menu()
+{
+	return array(
+		"admin/settings/privacy/mass-update"	=> array(
+			"title"				=> "Set Privacy Settings",
+			"description"		=> "Set the privacy settings for all users",
+			"page callback"		=> "drupal_get_form",
+			"page arguments"	=> array("privacy_mass_set"),
+			"access arguments"	=> array("privacy admin"),
+			"file"				=> "privacy.pages.inc",
+			"type"				=> MENU_NORMAL_ITEM,
+		),
 	);
 }
 

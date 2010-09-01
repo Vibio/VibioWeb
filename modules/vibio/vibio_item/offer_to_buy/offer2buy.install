@@ -7,7 +7,8 @@ function offer2buy_install()
 			`nid` INT UNSIGNED NOT NULL PRIMARY KEY,
 			`price` DECIMAL(9,2) UNSIGNED NOT NULL DEFAULT 0,
 			`is_negotiable` TINYINT UNSIGNED NOT NULL DEFAULT 1,
-			`allow_offer_views` TINYINT UNSIGNED NOT NULL DEFAULT 0
+			`allow_offer_views` TINYINT UNSIGNED NOT NULL DEFAULT 0,
+			`is_on_sale` TINYINT UNSIGNED NOT NULL DEFAULT 0
 		) Engine=InnoDB",
 		"CREATE TABLE IF NOT EXISTS {offer2buy_offers} (
 			`nid` INT UNSIGNED NOT NULL,
@@ -65,6 +66,15 @@ function offer2buy_update_1()
 			INDEX (`buyer`),
 			INDEX (`seller`)
 		) Engine=InnoDB"),
+	);
+}
+
+function offer2buy_update_2()
+{
+	return array(
+		update_sql(
+			"ALTER TABLE {offer2buy} ADD COLUMN `is_on_sale` TINYINT UNSIGNED NOT NULL DEFAULT 0"
+		),
 	);
 }
 

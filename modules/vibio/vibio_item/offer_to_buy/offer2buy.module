@@ -103,7 +103,7 @@ function _offer2buy_fields_form($nid, $settings)
 			"#description"	=> t("Should people viewing your item be able to see the offers on the item?"),
 			"#default_value"=> $settings['allow_offer_views'],
 		),
-		"o2b_nid"	=> array(
+		"o2b_nid"				=> array(
 			"#type"	=> "value",
 			"#value"=> $nid,
 		),
@@ -125,28 +125,7 @@ function _offer2buy_node_validate($form, &$state)
 
 function _offer2buy_node_submit($form, &$state)
 {
-	if ($state['values']['field_posting_type'][0]['value'] != VIBIO_ITEM_TYPE_SELL)
-	{
-		return; //only care about validating input if the posting type is "sell"
-	}
-	
-	$vals = $state['values'];
-	$price = number_format($vals['o2b_price'], 2);
-	
-	if (!empty($vals['o2b_nid']))
-	{
-		$sql = "REPLACE INTO {offer2buy}
-				SET `nid`=%d, `price`=%f, `is_negotiable`=%d, `allow_offer_views`=%d";
-		db_query($sql, $vals['o2b_nid'], $price, $vals['o2b_is_negotiable'], $vals['o2b_allow_offer_views']);
-	}
-	else
-	{
-		$_SESSION['o2b_settings'] = array(
-			"price"				=> $price,
-			"is_negotiable"		=> $vals['o2b_is_negotiable'],
-			"allow_offer_views"	=> $vals['o2b_allow_offer_views'],
-		);
-	}
+	return;
 }
 
 function offer2buy_nodeapi(&$node, $op, $a3=null, $a4=null)
@@ -158,10 +137,7 @@ function offer2buy_nodeapi(&$node, $op, $a3=null, $a4=null)
 			case "load":
 				global $user;
 				
-				$sql = "SELECT *
-						FROM {offer2buy}
-						WHERE `nid`=%d";
-				$settings = db_fetch_array(db_query($sql, $node->nid));
+				$settings = offer2buy_get_settings($node->nid);
 				
 				if ($node->uid == $user->uid || $settings['allow_offer_views'])
 				{
@@ -181,6 +157,7 @@ function offer2buy_nodeapi(&$node, $op, $a3=null, $a4=null)
 				
 				return array(
 					"offer2buy"	=> array(
+						"type"		=> $node->field_posting_type[0]['value'],
 						"settings"	=> $settings,
 						"offers"	=> $offers,
 					),
@@ -189,14 +166,30 @@ function offer2buy_nodeapi(&$node, $op, $a3=null, $a4=null)
 				break;
 			case "update":
 			case "insert":
-				if (!empty($_SESSION['o2b_settings']))
+				$on_sale = $node->field_posting_type[0]['value'] == VIBIO_ITEM_TYPE_SELL;
+				$current_settings = offer2buy_get_settings($node->nid);
+				
+				if ($on_sale)
 				{
-					$vals = $_SESSION['o2b_settings'];
+					$price = number_format($node->o2b_price, 2);
+				
 					$sql = "REPLACE INTO {offer2buy}
-							SET `nid`=%d, `price`=%f, `is_negotiable`=%d, `allow_offer_views`=%d";
-					db_query($sql, $node->nid, $vals['price'], $vals['is_negotiable'], $vals['allow_offer_views']);
-					unset($_SESSION['o2b_settings']);
+							SET `nid`=%d, `price`=%f, `is_negotiable`=%d, `allow_offer_views`=%d, `is_on_sale`=1";
+					db_query($sql, $node->nid, $price, $node->o2b_is_negotiable, $node->o2b_allow_offer_views);
+					
+					if (!$current_settings['is_on_sale'])
+					{
+						module_invoke_all("offer2buy_set_item_on_sale", $node->nid);
+					}
 				}
+				else
+				{
+					$sql = "UPDATE {offer2buy}
+							SET `is_on_sale`=0
+							WHERE `nid`=%d";
+					db_query($sql, $node->nid);
+				}
+				
 				break;
 			default:
 				break;
@@ -384,8 +377,8 @@ function offer2buy_offer2buy_make_offer($node, $offerer, $owner, $offer)
 		"item"		=> $node,
 	);
 	
-	drupal_mail("offer2buy", "offer_make", $owner->mail, $language, $params);
-	drupal_mail("offer2buy", "offer_make_confirm", $offerer->mail, $language, $params);
+	//drupal_mail("offer2buy", "offer_make", $owner->mail, $language, $params);
+	//drupal_mail("offer2buy", "offer_make_confirm", $offerer->mail, $language, $params);
 }
 
 function offer2buy_offerbuy_accept_offer($node, $offerer, $owner, $offer)
@@ -397,8 +390,8 @@ function offer2buy_offerbuy_accept_offer($node, $offerer, $owner, $offer)
 		"offer"		=> $offer,
 	);
 	
-	drupal_mail("offer2buy", "offer_accept", $offerer->mail, $language, $params);
-	drupal_mail("offer2buy", "offer_accept_confirm", $owner->mail, $language, $params);
+	//drupal_mail("offer2buy", "offer_accept", $offerer->mail, $language, $params);
+	//drupal_mail("offer2buy", "offer_accept_confirm", $owner->mail, $language, $params);
 }
 
 function offer2buy_mail($key, &$message, $params)

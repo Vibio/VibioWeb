@@ -3,7 +3,8 @@ $row = $view->result[$view->row_index];
 
 if ($row->nid)
 {
-	if (strpos($row->message_id, "node") !== false && module_exists("vibio_item")) //this nid is for a node
+	$is_item_message = strpos($row->message_id, "node") !== false || strpos($row->message_id, "item") !== false;
+	if ($is_item_message && module_exists("vibio_item")) //this nid is for a node
 	{
 		$image = _vibio_item_get_image($row->nid);
 	}

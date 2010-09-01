@@ -88,6 +88,9 @@ function offer2buy_change_list_type_submit($form, &$state)
 {
 	$node = node_load($state['values']['o2b_nid']);
 	$node->field_posting_type[0]['value'] = VIBIO_ITEM_TYPE_SELL;
+	$node->o2b_price = $state['values']['o2b_price'];
+	$node->o2b_is_negotiable = $state['values']['o2b_is_negotiable'];
+	$node->o2b_allow_offer_views = $state['values']['o2b_allow_offer_views'];
 	node_save($node);
 	
 	drupal_set_message(t("!title has been updated", array("!title" => l($node->title, "node/{$node->nid}"))));

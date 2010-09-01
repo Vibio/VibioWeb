@@ -7,7 +7,8 @@ function privacy_install()
 			`type` varchar(255),
 			`type_id` varchar(255),
 			`setting` int unsigned not null,
-			primary key (`uid`, `type`, `type_id`)
+			primary key (`uid`, `type`, `type_id`),
+			INDEX (`uid`)
 		)Engine=InnoDB"
 	);
 	
@@ -15,5 +16,14 @@ function privacy_install()
 	{
 		db_query($s);
 	}
+}
+
+function privacy_update_1()
+{
+	return array(
+		update_sql(
+			"ALTER TABLE {privacy_settings} ADD INDEX (`uid`)"
+		),
+	);
 }
 ?>

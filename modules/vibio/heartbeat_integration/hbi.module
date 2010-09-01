@@ -1,4 +1,25 @@
 <?php
+function hbi_nodeapi(&$node, $op, $a3=null, $a4=null)
+{
+	if ($node->type != "vibio_item")
+	{
+		return;
+	}
+	
+	switch ($op)
+	{
+		case "update":
+			$u = user_load($node->uid);
+			
+			$args = array(
+				"@user"			=> l($u->name, "user/{$u->uid}"),
+				"@node_title"	=> l($node->title, "node/{$node->nid}"),
+			);
+			$params = array("heartbeat_edit_node", $node->uid, 0, $node->nid, 0, $args);
+			break;
+	}
+}
+
 function hbi_views_api()
 {
 	return array(
@@ -49,7 +70,7 @@ function hbi_collections_insert($collection)
 		"@collection"	=> l($collection['title'], "collections/{$collection['cid']}"),
 	);
 	
-	heartbeat_api_log("heartbeat_add_collection", $u->uid, $collection['cid'], 0, 0, $args);
+	heartbeat_api_log("heartbeat_add_collection", $u->uid, 0, $collection['cid'], 0, $args);
 }
 
 function hbi_privacy_update_user($form, $user, $category)
@@ -99,5 +120,45 @@ function _hbi_hidden_messages()
 		"heartbeat_cancel_friendship",
 		"heartbeat_edit_account",
 	);
+}
+
+/*
+ the last_resort param should be used for messages that should only get logged only if there are no other messages
+ for nid. This is useful for node updating, where the messages "X is selling Y", "X bought Y", etc can be used in place
+ of generic "X has just updated Y"
+*/
+function hbi_node_log_update_queue($nid=false, $hb_message_params=array(), $last_resort=false, $clear=false)
+{
+	static $message_queue = array();
+	
+	if ($nid)
+	{
+		if ($clear)
+		{
+			$message_queue[$nid] = array();
+		}
+		
+		$message_queue[$nid][] = array(
+			"message"		=> $hb_message_params,
+			"last_resort"	=> $last_resort,
+		);
+	}
+	
+	return $message_queue;
+}
+
+//should be called on exit :\
+function hbi_node_log_update()
+{
+	$message_queue = hbi_node_log_update_queue();
+	foreach ($message_queue as $nid => $message_data)
+	{
+		if ($message_array['last_resort'] && count($message_data))
+		{
+			continue;
+		}
+		
+		call_user_func_array("heartbeat_api_log", $message_data($message_data['message']));
+	}
 }
 ?>

@@ -377,8 +377,8 @@ function offer2buy_offer2buy_make_offer($node, $offerer, $owner, $offer)
 		"item"		=> $node,
 	);
 	
-	//drupal_mail("offer2buy", "offer_make", $owner->mail, $language, $params);
-	//drupal_mail("offer2buy", "offer_make_confirm", $offerer->mail, $language, $params);
+	drupal_mail("offer2buy", "offer_make", $owner->mail, $language, $params);
+	drupal_mail("offer2buy", "offer_make_confirm", $offerer->mail, $language, $params);
 }
 
 function offer2buy_offerbuy_accept_offer($node, $offerer, $owner, $offer)
@@ -390,8 +390,8 @@ function offer2buy_offerbuy_accept_offer($node, $offerer, $owner, $offer)
 		"offer"		=> $offer,
 	);
 	
-	//drupal_mail("offer2buy", "offer_accept", $offerer->mail, $language, $params);
-	//drupal_mail("offer2buy", "offer_accept_confirm", $owner->mail, $language, $params);
+	drupal_mail("offer2buy", "offer_accept", $offerer->mail, $language, $params);
+	drupal_mail("offer2buy", "offer_accept_confirm", $owner->mail, $language, $params);
 }
 
 function offer2buy_mail($key, &$message, $params)

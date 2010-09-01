@@ -148,4 +148,23 @@ $(document).ready(function()
 		vibio_dialog.create($("#facebook_prompt_account_link").html());
 		vibio_dialog.set_options({"dialogClass": "fb_popup"});
 	}
+	
+	if (typeof fb_share_prompts != "undefined")
+	{
+		if (!fb_settings.fb_uid)
+		{
+			return;
+		}
+		
+		$.each (fb_share_prompts, function(i, share_params)
+		{
+			FB.getLoginStatus(function(res)
+			{
+				if (res.session && res.session.uid == fb_settings.fb_uid)
+				{
+					share(share_params);
+				}
+			});
+		});
+	}
 });

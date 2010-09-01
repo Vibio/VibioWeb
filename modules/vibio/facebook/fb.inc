@@ -20,9 +20,27 @@ function fb_add_js()
 	
 	drupal_set_html_head("<script type='text/javascript' src='http://connect.facebook.net/en_US/all.js'></script>");
 	drupal_add_js("var fb_settings = $fb_vars;", "inline");
+	fb_add_prompt_js();
 	drupal_add_js("sites/all/themes/vibio/js/facebook.js");
 	
 	return true;
+}
+
+function fb_add_prompt_js()
+{
+	if (!($prompts = fb_get_prompts()))
+	{
+		return;
+	}
+	
+	$prompt_data = array();
+	foreach ($prompts as $nid => $prompt)
+	{
+		$prompt_data[] = fb_get_share_params(node_load($prompt->nid), $prompt->action);
+	}
+	
+	$prompt_data = json_encode($prompt_data);
+	drupal_add_js("var fb_share_prompts = $prompt_data;", "inline");
 }
 
 function fb_get_cookie()
@@ -135,5 +153,68 @@ function fb_user_has_fb($uid)
 	$fb_user_has_fb[$uid] = db_result(db_query($sql, $uid));
 	
 	return $fb_user_has_fb[$uid];
+}
+
+function fb_get_share_params($node, $action="share_item")
+{
+	$picture = _vibio_item_get_image($node->nid);
+	$t_params = array(
+		"!item"		=> $node->title,
+	);
+	$href = url("node/{$node->nid}", array("absolute" => true,));
+	$default_message = t("wants to share \"!item\" with you on Vibio!", $t_params);
+	
+	if ($action == "share_item")
+	{
+		$message = $node->field_posting_type[0]['value'] == VIBIO_ITEM_TYPE_OWN ?
+			$default_message : t("is selling \"!item\" on Vibio and would like to share it with you!", $t_params);
+	}
+	elseif ($action == "buy_item")
+	{
+		$message = t("just bought \"!item\" on Vibio", $t_params);
+	}
+	else
+	{
+		$message = $default_message;
+	}
+	
+	return array(
+		"message"		=> $message,
+		"attachment"	=> array(
+			"name"		=> $node->title,
+			"href"		=> $href,
+			"media"		=> array(array(
+				"type"	=> "image",
+				"src"	=> $picture,
+				"href"	=> $href,
+			)),
+		),
+	);
+}
+
+function fb_register_prompt($action, $nid)
+{	
+	$prompt = new stdClass;
+	$prompt->action = $action;
+	$prompt->nid = $nid;
+	
+	$_SESSION['fb_prompts'][$node->nid] = $prompt;
+}
+
+function fb_get_prompts($clear=true)
+{
+	$prompts = $_SESSION['fb_prompts'];
+	
+	if ($clear)
+	{
+		fb_clear_prompts();
+	}
+	
+	return $prompts;
+}
+
+function fb_clear_prompts()
+{
+	unset($_SESSION['fb_prompts']);
 }
 ?>

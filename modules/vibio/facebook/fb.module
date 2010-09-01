@@ -59,6 +59,34 @@ function fb_user($op, &$edit, &$u, $category=null)
 	}
 }
 
+function fb_nodeapi(&$node, $op, $a3=null, $a4=null)
+{
+	if ($node->type != "vibio_item")
+	{
+		return;
+	}
+	
+	module_load_include("inc", "fb");
+	
+	switch ($op)
+	{
+		case "insert":
+			fb_register_prompt("share_item", $node->nid);
+			break;
+	}
+}
+
+function fb_offer2buy_set_item_on_sale($nid)
+{
+	module_load_include("inc", "fb");
+	fb_register_prompt("share_item", $nid);
+}
+
+function fb_offer2buy_complete_actions($old_uid, $node)
+{
+	fb_register_prompt("buy_item", $node->nid);
+}
+
 function fb_block($op="list", $delta=0, $edit=array())
 {
 	switch ($op)

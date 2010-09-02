@@ -13,8 +13,16 @@ switch ($tab)
 		$view = views_embed_view("user_relationships_browser", "default", $uid);
 		break;
 	case "inventory":
-		$view = module_exists("collection") ? views_embed_view("user_collections", "default", $uid, $access) : views_embed_view("user_inventory", "default", $uid, $access);
-		//$view = views_embed_view("user_inventory", "default", $uid, $access);
+		if (module_exists("collection"))
+		{
+			drupal_add_css("sites/all/themes/vibio/css/collections.css");
+			$view = views_embed_view("user_collections", "default", $uid, $access);
+		}
+		else
+		{
+			$view = views_embed_view("user_inventory", "default", $uid, $access);
+		}
+
 		break;
 	case "activity":
 		$view = views_embed_view("user_heartbeat_activity", "block_1", $uid, $access);

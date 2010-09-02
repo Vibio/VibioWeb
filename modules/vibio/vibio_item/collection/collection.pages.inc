@@ -15,6 +15,7 @@ function collection_manage()
 	global $user;
 	
 	module_load_include("inc", "collection");
+	drupal_add_css("sites/all/themes/vibio/css/collections.css");
 	$collections = collection_get_collections();
 	
 	if (empty($collections))

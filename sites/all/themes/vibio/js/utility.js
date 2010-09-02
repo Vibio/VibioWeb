@@ -2,6 +2,7 @@ var vibio_utility = {};
 
 $(document).ready(function()
 {
+	//get the GET args on an anchor tag
 	vibio_utility.get_a_get_arg = function(a, target_arg)
 	{
 		var get_args = a.attr("href").split("?")[1].split("&");
@@ -18,4 +19,10 @@ $(document).ready(function()
 		
 		return value;
 	}
+	
+	$("a[rel^='prettyphoto']").prettyPhoto({
+		allowResize: false,
+		showTitle: false,
+		theme: "facebook"
+	});
 });

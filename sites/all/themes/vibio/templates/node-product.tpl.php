@@ -12,8 +12,8 @@ else
 if ($image = _product_get_image($node->nid, true))
 {
 	$image = "
-		<a href='/node/{$node->nid}'>
-			<img src='$image' style='float: left; padding: 0 10px 10px 0;' />
+		<a href='$image' rel='prettyphoto[product]'>
+			<img src='$image' class='product_main_image' />
 		</a>
 	";
 }

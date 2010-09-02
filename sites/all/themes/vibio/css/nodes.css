@@ -86,3 +86,9 @@
   float: left;
   max-height: 70px;
 }
+
+.product_main_image {
+	float: left;
+	max-height: 120px;
+	padding: 0 10px 10px 0;
+}

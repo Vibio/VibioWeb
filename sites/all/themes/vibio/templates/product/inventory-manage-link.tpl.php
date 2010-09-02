@@ -13,5 +13,10 @@ elseif (!$item_id) // user doesn't own this product, always show this.
 	$manage_link = theme("product_inventory_add", $product->nid, $searchcrumb);
 }
 
+if (!$is_product_page)
+{
+	$manage_link .= l(t("See who else owns this"), "node/{$product->nid}");
+}
+
 echo $manage_link;
 ?>

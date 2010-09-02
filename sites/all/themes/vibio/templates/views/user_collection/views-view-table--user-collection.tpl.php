@@ -6,7 +6,16 @@ if ($user->uid == $view->args[0])
 {
 	module_load_include("inc", "fb");
 	$share[] = "fb_share";
+	$collections_link_text = t("View your collections");
 }
+else
+{
+	$u = user_load($view->args[0]);
+	$collections_link_text = t("View !user's collections", array("!user" => $u->name));
+}
+
+echo l($collections_link_text, "user/{$view->args[0]}/inventory");
+
 ?>
 
 <table class="<?php print $class; ?>">

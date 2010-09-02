@@ -84,7 +84,7 @@ function _vibio_amazon_add_images(&$state, $item)
 	
 	//download the image somewhere...
 	$path = file_directory_path();
-	$item_image = $item['imagesets']['mediumimage']['url'];
+	$item_image = $item['imagesets']['largeimage']['url'];
 	$extension = preg_match('/\.([^\.]+)$/', $item_image, $matches);
 	$extension = $matches[1] ? $matches[1] : "jpg";
 	$file_destination = "{$path}/products/{$item['asin']}.{$extension}";

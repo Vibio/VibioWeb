@@ -1,3 +1,7 @@
 .vibio_item_views_image {
 	float: left;
 }
+
+td.views-field-field-main-image-fid img {
+	height: 100px;
+}

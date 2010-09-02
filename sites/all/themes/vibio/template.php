@@ -60,3 +60,25 @@ function vibio_menu_item_link($link)
 	
 	return zen_menu_item_link($link);
 }
+
+function vibio_preprocess_page(&$vars, $hook)
+{
+	zen_preprocess_page($vars, $hook);
+	
+	$css = "";
+	
+	foreach (drupal_add_css() as $media => $types)
+	{
+		$css .= "<style type='text/css' rel='stylesheet' media='$media'>";
+		foreach ($types as $type => $files)
+		{
+			foreach ($files as $file => $preprocess)
+			{
+				$css .= "@import \"/{$file}\";\n";
+			}
+		}
+		$css .= "</style>";
+	}
+	
+	$vars['styles'] = $css;
+}

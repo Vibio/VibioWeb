@@ -11,9 +11,10 @@ if ($relationships) {
 
     $row = array(
       theme('username', $this_user),
-      ur_tt("user_relationships:rtid:$relationship->rtid:name", $relationship->name) . ($relationship->is_oneway ? ($this_user_str == 'requestee' ? t(' (You to Them)') : t(' (Them to You)')) : NULL),
+      //ur_tt("user_relationships:rtid:$relationship->rtid:name", $relationship->name) . ($relationship->is_oneway ? ($this_user_str == 'requestee' ? t(' (You to Them)') : t(' (Them to You)')) : NULL),
       $relationship->extra_for_display,
       $edit_access ? theme('user_relationships_remove_link', $account->uid, $relationship->rid) : '&nbsp;',
+      module_exists("uri") ? "<img class='uri_edit_busy_indicator' src='/sites/all/themes/vibio/images/ajax-loader.gif' />" : "",
     );
     if (variable_get('user_relationships_show_user_pictures', 0)) {
       array_unshift($row, theme('user_picture', $this_user)); 
@@ -21,9 +22,11 @@ if ($relationships) {
     $rows[] = $row;
   }
 
+  $edit_form = module_exists("uri") ? "<div id='uri_elaborations_edit'>".drupal_get_form("uri_edit_elaboration_form")."</div>" : "";
   print
     theme('table', array(), $rows, array('class' => 'user-relationships-listing-table')) .
-    theme('pager', NULL, $relationships_per_page);
+    theme('pager', NULL, $relationships_per_page).
+    $edit_form;
 }
 else {
   print t('No relationships found');

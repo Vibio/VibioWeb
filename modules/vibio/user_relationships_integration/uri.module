@@ -1,0 +1,69 @@
+<?php
+function uri_menu()
+{
+	return array(
+		"relationships/edit-elaboration/%"	=> array(
+			"title"				=> "Edit Friend Details",
+			"page callback"		=> "uri_edit_elaboration",
+			"page arguments"	=> array(2),
+			"access arguments"	=> array("can have relationships"),
+			"file"				=> "uri.pages.inc",
+			"type"				=> MENU_CALLBACK,
+		),
+	);
+}
+
+function uri_menu_alter(&$menu)
+{
+	$menu['relationships/list']['title'] = 'Connections';
+	
+	foreach (user_relationships_types_load() as $rtid => $relationship)
+	{
+		$menu["relationships/{$rtid}"]['type'] = MENU_CALLBACK;
+	}
+}
+
+function uri_preprocess_user_relationships(&$vars)
+{
+	drupal_add_js("sites/all/themes/vibio/js/uri.js");
+	drupal_add_css("sites/all/themes/vibio/css/uri.css");
+	
+	$link_options = array(
+		"attributes"	=> array(
+			"class"	=> "uri_edit_elaboartion",
+		),
+	);
+	
+	foreach ($vars['relationships'] as $rid => $rel)
+	{
+		$link = l(t("edit details"), "relationships/edit-elaboration/$rid", $link_options);
+		$vars['relationships'][$rid]->extra_for_display = "
+			<span class='uri_elaboration'>{$rel->extra_for_display}</span>
+			($link)
+		";
+	}
+}
+
+function uri_edit_elaboration_form()
+{
+	return array(
+		"#attributes"	=> array(
+			"class"	=> "uri_edit_elaborations_form",
+		),
+		"container"		=> array(
+			"#type"			=> "fieldset",
+			"#title"		=> t("Edit Friend Details"),
+			"#collapsible"	=> false,
+			"elaboration"	=> array(
+				"#title"		=> t("Elaboration"),
+				"#description"	=> t("How do you know !user? Keep in mind that both you and !user are able to view this.", array("!user" => "<span class='uri_elaboration_target'></span>")),
+				"#type"			=> "textarea",
+			),
+			"submit"		=> array(
+				"#type"	=> "submit",
+				"#value"=> t("Save"),
+			),
+		),
+	);
+}
+?>

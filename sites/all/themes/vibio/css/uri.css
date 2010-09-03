@@ -1,0 +1,11 @@
+img.uri_edit_busy_indicator {
+	display: none;
+}
+
+#uri_elaborations_edit {
+	display: none;
+}
+
+#uri_elaborations_edit fieldset {
+	width: 480px;
+}

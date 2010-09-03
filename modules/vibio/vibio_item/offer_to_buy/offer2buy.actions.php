@@ -36,13 +36,16 @@ function offer2buy_dashboard($uid=false)
 	drupal_add_js("sites/all/themes/vibio/js/offer2buy_actions.js");
 	drupal_add_css("sites/all/themes/vibio/css/offer2buy.css");
 	
-	$items_selling = _offer2buy_get_item_offers($uid);
-	$required = _offer2buy_dashboard_get_required_actions($uid);
-	$pending = _offer2buy_dashboard_get_pending_actions($uid);
 	
-	$out  = theme("offer2buy_list_all_offers", $items_selling);
-	$out .= theme("offer2buy_actions_list", $required, "required");
-	$out .= theme("offer2buy_actions_list", $pending, "pending");
+	$incoming_offers = _offer2buy_get_user_incoming_offers($uid);
+	$outgoing_offers = _offer2buy_get_user_outgoing_offers($uid);
+	$required_actions = _offer2buy_dashboard_get_required_actions($uid);
+	$pending_actions = _offer2buy_dashboard_get_pending_actions($uid);
+	
+	$out  = theme("offer2buy_list_all_offers", $incoming_offers);
+	$out .= theme("offer2buy_list_outgoing_offers", $outgoing_offers);
+	$out .= theme("offer2buy_actions_list", $required_actions, "required");
+	$out .= theme("offer2buy_actions_list", $pending_actions, "pending");
 	
 	return $out;
 }
@@ -102,7 +105,7 @@ function offer2buy_action_complete_form_submit($form, &$state)
 	}
 }
 
-function _offer2buy_get_item_offers($uid)
+function _offer2buy_get_user_incoming_offers($uid)
 {
 	$sql = "SELECT o.*, u.name
 			FROM {offer2buy_offers} o JOIN {users} u ON o.`uid`=u.`uid`
@@ -123,6 +126,25 @@ function _offer2buy_get_item_offers($uid)
 		}
 		
 		$offers[$row['nid']]['offers'][] = $row;
+	}
+	
+	return $offers;
+}
+
+function _offer2buy_get_user_outgoing_offers($uid)
+{
+	$sql = "SELECT *
+			FROM {offer2buy_offers}
+			WHERE `uid`=%d";
+	$res = db_query($sql, $uid);
+	
+	$offers = array();
+	while ($row = db_fetch_object($res))
+	{
+		$offer = new stdClass;
+		$offer->offer = $row;
+		$offer->item = node_load($row->nid);
+		$offers[$row->nid] = $offer;
 	}
 	
 	return $offers;

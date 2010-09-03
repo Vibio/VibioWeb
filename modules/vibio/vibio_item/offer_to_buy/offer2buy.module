@@ -210,6 +210,11 @@ function offer2buy_theme(&$existing, $type, $theme, $path)
 			"template"	=> "templates/offer2buy/all-offers",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+		"offer2buy_list_outgoing_offers" => array(
+			"arguments"	=> array("offers" => array()),
+			"template"	=> "templates/offer2buy/outgoing-offers",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
 		"offer2buy_offer_list"	=> array(
 			"arguments"	=> array("offers" => array(), "is_owner" => false),
 			"template"	=> "templates/offer2buy/list",

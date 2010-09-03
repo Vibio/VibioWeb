@@ -1,9 +1,11 @@
 <?php
-echo "<h2>Offers on Your Items</h2>";
+$header = t("Offers on Your Items");
+echo "<h2>$header</h2>";
 
 if (empty($items))
 {
-	echo "<small>There are no offers on any of your items</small>";
+	$empty_message = t("There are no offers on any of your items");
+	echo "<small>$empty_message</small>";
 }
 foreach ($items as $i)
 {

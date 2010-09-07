@@ -14,8 +14,13 @@ else
 	$collections_link_text = t("View !user's collections", array("!user" => $u->name));
 }
 
-echo l($collections_link_text, "user/{$view->args[0]}/inventory");
-
+$display_args = array(
+	"!start"	=> $view->pager['items_per_page']*$view->pager['current_page'] + 1,
+	"!end"		=> min($view->total_rows, $view->pager['items_per_page']*($view->pager['current_page']+1)),
+	"!total"	=> $view->total_rows,
+);
+echo l($collections_link_text, "user/{$view->args[0]}/inventory")."<br />";
+echo t("Viewing !start - !end of !total", $display_args);
 ?>
 
 <table class="<?php print $class; ?>">

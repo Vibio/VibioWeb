@@ -47,6 +47,14 @@ function collection_menu()
 			"file"				=> "collection.pages.inc",
 			"type"				=> MENU_CALLBACK,
 		),
+		"collections/%/view-all"	=> array(
+			"title"				=> "All Items",
+			"page callback"		=> "collection_view_all_user_items",
+			"page arguments"	=> array(1),
+			"access arguments"	=> array("collections user"),
+			"file"				=> "collection.pages.inc",
+			"type"				=> MENU_CALLBACK,
+		),
 	);
 }
 

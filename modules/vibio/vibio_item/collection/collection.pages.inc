@@ -1,4 +1,16 @@
 <?php
+function collection_view_all_user_items($uid)
+{
+	$sql = "SELECT `name`
+			FROM {users}
+			WHERE `uid`=%d";
+	$name = db_result(db_query($sql, $uid));
+	
+	drupal_set_title(t("All !name's items", array("!name" => $name)));
+	
+	return views_embed_view("user_inventory", "default", $uid, privacy_get_access_level($uid));
+}
+
 function collection_view_collection($collection)
 {
 	drupal_add_js("sites/all/themes/vibio/js/offer2buy_actions.js");

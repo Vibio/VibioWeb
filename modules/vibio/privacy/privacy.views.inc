@@ -86,24 +86,24 @@ function privacy_views_query_alter(&$view, &$query)
 		
 		$sql = "CASE
 					WHEN heartbeat_activity.`nid`=0 THEN 1
-					WHEN heartbeat_activity.`message_id` != 'heartbeat_add_collection' THEN %d >= (
+					WHEN heartbeat_activity.`nid` > 0 AND heartbeat_activity.`message_id` != 'heartbeat_add_collection' THEN %d >= (
 						SELECT `setting`
 						FROM {privacy_settings}
 						WHERE `type_id`=heartbeat_activity.`nid`
 							AND `type`='node'
-							AND `uid`=uid
+							AND `uid`=users.`uid`
 					)
-					WHEN heartbeat_activity.`message_id`='heartbeat_add_collection' THEN %d >= (
+					WHEN heartbeat_activity.`nid` > 0 AND heartbeat_activity.`message_id`='heartbeat_add_collection' THEN %d >= (
 						SELECT `setting`
 						FROM {privacy_settings}
 						WHERE `type_id`=heartbeat_activity.`nid`
 							AND `type`='collection'
-							AND `uid`=uid
+							AND `uid`=users.`uid`
 					)
 					ELSE 1
 					END > 0
 		";
-		$query->add_where(0, $sql, PRIVACY_CONNECTION);
+		$query->add_where(0, $sql, PRIVACY_CONNECTION, PRIVACY_CONNECTION);
 	}
 }
 ?>

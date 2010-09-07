@@ -231,7 +231,13 @@ function collection_load($cid)
 
 function collection_access_collection($collection)
 {
-	if (isset($collection['privacy']) && module_exists("privacy"))
+	global $user;
+	
+	if ($user->uid == $collection['uid'])
+	{
+		return true;
+	}
+	elseif (isset($collection['privacy']) && module_exists("privacy"))
 	{
 		return privacy_get_access_level($collection['uid']) >= $collection['privacy'] && user_access("collections user");
 	}

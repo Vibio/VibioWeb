@@ -57,11 +57,6 @@ function hbi_user_relationships($op, &$relationship)
 
 function hbi_privacy_new_user($form, $account, $category)
 {
-	if ($category != "privacy_settings")
-	{
-		return;
-	}
-	
 	$hidden_messages = _hbi_hidden_messages();
 	
 	$sql = "SELECT `message_id`

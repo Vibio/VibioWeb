@@ -45,7 +45,20 @@ function offer2buy_install()
 			`timestamp` INT UNSIGNED NOT NULL,
 			INDEX (`buyer`),
 			INDEX (`seller`)
-		) Engine=InnoDB"
+		) Engine=InnoDB",
+		"CREATE TABLE IF NOT EXISTS {offer2buy_cancelled_transactions} (
+			`nid` INT UNSIGNED NOT NULL,
+			`buyer` INT UNSIGNED NOT NULL,
+			`seller` INT UNSIGNED NOT NULL,
+			`canceller` INT UNSIGNED NOT NULL,
+			`stage` INT UNSIGNED NOT NULL,
+			`price` DOUBLE(9,2) UNSIGNED NOT NULL,
+			`timestamp` INT UNSIGNED NOT NULL,
+			INDEX(`buyer`),
+			INDEX(`seller`),
+			INDEX(`nid`),
+			INDEX(`canceller`)
+		)",
 	);
 	
 	foreach ($sql as $s)
@@ -78,9 +91,32 @@ function offer2buy_update_2()
 	);
 }
 
+function offer2buy_update_3()
+{
+	return array(
+		update_sql(
+			"CREATE TABLE IF NOT EXISTS {offer2buy_cancelled_transactions} (
+				`nid` INT UNSIGNED NOT NULL,
+				`buyer` INT UNSIGNED NOT NULL,
+				`seller` INT UNSIGNED NOT NULL,
+				`canceller` INT UNSIGNED NOT NULL,
+				`stage` INT UNSIGNED NOT NULL,
+				`price` DOUBLE(9,2) UNSIGNED NOT NULL,
+				`timestamp` INT UNSIGNED NOT NULL,
+				INDEX(`buyer`),
+				INDEX(`seller`),
+				INDEX(`nid`),
+				INDEX(`canceller`)
+			)"
+		),
+	);
+}
+
 function offer2buy_uninstall()
 {
 	$sql = array(
+		"DROP TABLE IF EXISTS {offer2buy_cancelled_transactions}",
+		"DROP TABLE IF EXISTS {offer2buy_completed_transactions}",
 		"DROP TABLE IF EXISTS {offer2buy_action_history}",
 		"DROP TABLE IF EXISTS {offer2buy_pending_action}",
 		"DROP TABLE IF EXISTS {offer2buy_offers}",

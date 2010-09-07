@@ -2,7 +2,7 @@
 	display: none;
 }
 
-.offer2buy_action_complete_form {
+.offer2buy_action_complete_form, .offer2buy_transaction_cancel_form {
 	float: left;
 	margin-right: 15px;
 }

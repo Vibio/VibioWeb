@@ -172,14 +172,20 @@ function offer2buy_nodeapi(&$node, $op, $a3=null, $a4=null)
 				if ($on_sale)
 				{
 					$price = number_format($node->o2b_price, 2);
-				
-					$sql = "REPLACE INTO {offer2buy}
-							SET `nid`=%d, `price`=%f, `is_negotiable`=%d, `allow_offer_views`=%d, `is_on_sale`=1";
-					db_query($sql, $node->nid, $price, $node->o2b_is_negotiable, $node->o2b_allow_offer_views);
 					
 					if (!$current_settings['is_on_sale'])
 					{
 						module_invoke_all("offer2buy_set_item_on_sale", $node->nid);
+						$sql = "REPLACE INTO {offer2buy}
+								SET `nid`=%d, `price`=%f, `is_negotiable`=%d, `allow_offer_views`=%d, `is_on_sale`=1";
+						db_query($sql, $node->nid, $price, $node->o2b_is_negotiable, $node->o2b_allow_offer_views);
+					}
+					else
+					{
+						$sql = "UPDATE {offer2buy}
+								SET `price`=%f, `is_negotiable`=%d, `allow_offer_views`=%d, `is_on_sale`=1
+								WHERE `nid`=%d";
+						db_query($sql, $price, $node->o2b_is_negotiable, $node->o2b_allow_offer_views, $node->nid);
 					}
 				}
 				else
@@ -478,6 +484,45 @@ function offer2buy_forms($id, $args)
 		
 		return $forms;
 	}
+	elseif (strpos($id, "offer2buy_transaction_cancel_") !== false)
+	{
+		$forms[$id] = array(
+			"callback"	=> "offer2buy_transaction_cancel_form",
+		);
+		
+		return $forms;
+	}
+}
+
+function offer2buy_transaction_cancel_form(&$state, $nid)
+{
+	global $user;
+	
+	return array(
+		"nid"		=> array(
+			"#type"	=> "value",
+			"#value"=> $nid,
+		),
+		"canceller"	=> array(
+			"#type"	=> "value",
+			"#value"=> $user->uid,
+		),
+		"submit"	=> array(
+			"#type"	=> "submit",
+			"#value"=> t("Cancel"),
+		),
+		"#submit"	=> array(
+			"offer2buy_transaciton_cancel_form_submit",
+		),
+		"#attributes"	=> array(
+			"class"	=> "offer2buy_transaction_cancel_form",
+		),
+	);
+}
+
+function offer2buy_transaciton_cancel_form_submit($form, &$state)
+{
+	_offer2buy_cancel_transaction($state['values']['nid'], $state['values']['canceller']);
 }
 
 function offer2buy_offer_accept_form(&$state, $uid, $nid)

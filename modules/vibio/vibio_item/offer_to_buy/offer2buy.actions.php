@@ -67,7 +67,6 @@ function offer2buy_action_complete_form(&$state, $action)
 		"#attributes"	=> array(
 			"class"	=> "offer2buy_action_complete_form",
 		),
-		
 	);
 }
 
@@ -182,5 +181,56 @@ function _offer2buy_dashboard_get_pending_actions($uid)
 	}
 	
 	return $actions;
+}
+
+function _offer2buy_cancel_transaction($nid, $canceller_uid, $message=true)
+{
+	$sql = "SELECT *
+			FROM {offer2buy_pending_action}
+			WHERE `nid`=%d";
+	$current = db_fetch_object(db_query($sql, $nid));
+	$node = node_load($nid);
+	
+	$seller = $node->uid;
+	$buyer = $current->uid == $node->uid ? $current->target_uid : $current->uid;
+	
+	if ($canceller_uid != $current->uid && $canceller_uid != $current->target_uid)
+	{
+		drupal_set_message(t("You are not allowed to cancel that transaction."), "error");
+	}
+	
+	$sql = "SELECT `offer`
+			FROM {offer2buy_offers}
+			WHERE `uid`=%d
+				AND `nid`=%d";
+	$offer = db_result(db_query($sql, $buyer, $nid));
+	
+	$sql = "DELETE FROM {offer2buy_pending_action}
+			WHERE `nid`=%d";
+	db_query($sql, $nid);
+	
+	$sql = "INSERT INTO {offer2buy_cancelled_transactions}
+			SET `nid`=%d, `buyer`=%d, `seller`=%d, `canceller`=%d, `stage`=%d, `price`=%f, `timestamp`=%d";
+	db_query($sql, $nid, $buyer, $seller, $canceller_uid, $current->required_action, $offer, time());
+	
+	_offer2buy_cancel_offer($nid, $buyer, false);
+	
+	if ($message)
+	{
+		drupal_set_message(t("The transaction has been cancelled"));
+	}
+}
+
+function _offer2buy_cancel_offer($nid, $buyer, $message=true)
+{
+	$sql = "DELETE FROM {offer2buy_offers}
+			WHERE `nid`=%d
+				AND `uid`=%d";
+	db_query($sql, $nid, $buyer);
+	
+	if ($message)
+	{
+		drupal_set_message("Your offer has been cancelled");
+	}
 }
 ?>

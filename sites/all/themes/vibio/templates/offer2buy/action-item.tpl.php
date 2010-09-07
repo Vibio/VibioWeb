@@ -34,5 +34,7 @@ else
 	$message = t("!user needs to !action you for !item", $message_params);
 }
 
-echo $message.$action_complete_form."<div style='clear: both;'></div>";
+$transaction_cancel_form = drupal_get_form("offer2buy_transaction_cancel_{$action['nid']}", $action['nid']);
+
+echo $message.$action_complete_form.$transaction_cancel_form."<div style='clear: both;'></div>";
 ?>

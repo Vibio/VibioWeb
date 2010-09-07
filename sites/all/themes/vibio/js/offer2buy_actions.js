@@ -5,6 +5,11 @@ $(document).ready(function()
 		return confirm("are you sure you want to mark this action as done?");
 	});
 	
+	$(".offer2buy_transaction_cancel_form").submit(function()
+	{
+		return confirm("are you sure you want to cancel this transaction?");
+	});
+	
 	$(".offer2buy_edit_post_type").live("click", function()
 	{
 		$.ajax({

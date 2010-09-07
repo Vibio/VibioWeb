@@ -156,7 +156,7 @@ function collection_form_vibio_item_node_form_alter(&$form, &$state)
 	
 	$form['collection_info'] = array(
 		"#title"		=> t("Collection"),
-		"#description"	=> "Some help text.",
+		"#description"	=> t("Select which collections to add this item to. Choose all that apply."),
 		"#type"			=> "fieldset",
 		"#collapsible"	=> true,
 		"#collapsed"	=> false,

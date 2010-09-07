@@ -531,6 +531,15 @@ function offer2buy_transaciton_cancel_form_submit($form, &$state)
 
 function offer2buy_offer_accept_form(&$state, $uid, $nid)
 {
+	if (offer2buy_offer_is_pending($uid, $nid))
+	{
+		return array(
+			"pending"	=> array(
+				"#value"	=> "<span class='offer2buy_pending_offer'>".t("(pending)")."</span>",
+			),
+		);
+	}
+	
 	return array(
 		"uid"		=> array(
 			"#type"	=> "value",

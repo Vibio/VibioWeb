@@ -238,4 +238,13 @@ function _offer2buy_cancel_offer($nid, $buyer, $message=true)
 		drupal_set_message("Your offer has been cancelled");
 	}
 }
+
+function offer2buy_offer_is_pending($uid, $nid)
+{
+	$sql = "SELECT `nid`
+			FROM {offer2buy_pending_action}
+			WHERE `nid`=%d
+				AND (`uid`=%d XOR `target_uid`=%d)";
+	return db_result(db_query($sql, $nid, $uid, $uid));
+}
 ?>

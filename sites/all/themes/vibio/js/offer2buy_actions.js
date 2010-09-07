@@ -10,6 +10,11 @@ $(document).ready(function()
 		return confirm("are you sure you want to cancel this transaction?");
 	});
 	
+	$(".offer2buy_offer_accept_form").submit(function()
+	{
+		return confirm("Accepting an offer will cancel all pending transactions for that item. Are you sure you want to accept this offer?")
+	});
+	
 	$(".offer2buy_edit_post_type").live("click", function()
 	{
 		$.ajax({

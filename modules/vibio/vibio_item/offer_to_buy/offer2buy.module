@@ -394,6 +394,10 @@ function offer2buy_offer2buy_make_offer($node, $offerer, $owner, $offer)
 
 function offer2buy_offerbuy_accept_offer($node, $offerer, $owner, $offer)
 {
+	global $user;
+	
+	_offer2buy_cancel_transaction($node->nid, $user->uid, false);
+	
 	$params = array(
 		"item"		=> $node,
 		"offerer"	=> $offerer,
@@ -542,6 +546,9 @@ function offer2buy_offer_accept_form(&$state, $uid, $nid)
 		),
 		"#submit"	=> array(
 			"offer2buy_offer_accept_form_submit",
+		),
+		"#attributes"	=> array(
+			"class"	=> "offer2buy_offer_accept_form",
 		),
 	);
 }

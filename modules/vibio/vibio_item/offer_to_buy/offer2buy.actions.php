@@ -188,7 +188,11 @@ function _offer2buy_cancel_transaction($nid, $canceller_uid, $message=true)
 	$sql = "SELECT *
 			FROM {offer2buy_pending_action}
 			WHERE `nid`=%d";
-	$current = db_fetch_object(db_query($sql, $nid));
+	if (!($current = db_fetch_object(db_query($sql, $nid))))
+	{
+		return;
+	}
+	
 	$node = node_load($nid);
 	
 	$seller = $node->uid;
@@ -197,6 +201,7 @@ function _offer2buy_cancel_transaction($nid, $canceller_uid, $message=true)
 	if ($canceller_uid != $current->uid && $canceller_uid != $current->target_uid)
 	{
 		drupal_set_message(t("You are not allowed to cancel that transaction."), "error");
+		return;
 	}
 	
 	$sql = "SELECT `offer`

@@ -125,6 +125,11 @@ function product_nodeapi(&$node, $op, $a3=null, $a4=null)
 function product_theme()
 {
 	return array(
+		"product_add_product_link"	=> array(
+			"arguments"	=> array(),
+			"template"	=> "templates/product/add-product-link",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
 		"product_amazon_display"	=> array(
 			"arguments"	=> array("node"	=> false, "page" => false),
 			"template"	=> "templates/product/amazon-display",

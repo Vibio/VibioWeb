@@ -7,9 +7,9 @@ echo "
 	</table>
 ";
 
-if (user_access("create product content"))
+if (module_exists("product"))
 {
-	echo t("Can't find your product? !create_link to Vibio!", array("!create_link" => l(t("Add it"), "product/add")));
+	echo theme("product_add_product_link");
 }
 
 echo $pager;

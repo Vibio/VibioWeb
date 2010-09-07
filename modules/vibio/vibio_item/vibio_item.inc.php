@@ -28,7 +28,7 @@ function _vibio_item_search($keys)
 	
 	if ($is_product_search)
 	{
-		if ((!variable_get("product_local_search", false) || $_GET['external']) && ($results = product_external_search($keys)))
+		if ((!variable_get("product_local_search", false) || $_GET['external_product_search']) && ($results = product_external_search($keys)))
 		{
 			$keys = _product_remove_options($keys);
 			return $results;

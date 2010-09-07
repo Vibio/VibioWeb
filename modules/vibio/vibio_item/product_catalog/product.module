@@ -246,4 +246,12 @@ function product_user_owns_product($product_id, $uid=false)
 				AND pi.`product_nid`=%d";
 	return db_result(db_query($sql, $uid, $product_id));
 }
+
+function product_preprocess_box(&$vars)
+{
+	if ($vars['title'] == t("Your search yielded no results") && arg(0) == "search" && arg(1) == "vibio_item")
+	{
+		$vars['content'] .= theme("product_add_product_link");
+	}
+}
 ?>

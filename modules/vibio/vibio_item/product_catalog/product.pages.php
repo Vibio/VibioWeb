@@ -66,6 +66,7 @@ function product_add_new()
 	
 	node_object_prepare($node);
 	
+	drupal_set_message(t("This is a generic product, with generic info all users will be able to edit and see. Info that should go here might be a book's ISBN, a DVDs runtime, etc. It's definitive information about the product."), "notice");
 	return drupal_get_form($form_id, $node);
 }
 

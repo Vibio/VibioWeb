@@ -106,7 +106,7 @@ function uri_pending_request_action_do_submit($action, $account, $rid, $extra)
 			else
 			{
 				user_relationships_delete_relationship($relationship, $user, $action);
-				$message = user_relationships_ui_get_message($action, $relationship);
+				$message = t("You have ignored the friend request.");
 			}
 			break;
 		default:

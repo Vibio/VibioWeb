@@ -86,8 +86,21 @@ function vibio_preprocess_page(&$vars, $hook)
 function phptemplate_user_relationships_pending_request_approve_link($uid, $rid)
 {
 	return l(
-		t("Approve"),
+		t("Accept"),
 		"relationships/{$uid}/{$rid}/approve",
+		array(
+			"attributes"	=> array(
+				"class"	=> "uri_popup_link",
+			),
+		)
+	);
+}
+
+function phptemplate_user_relationships_pending_request_disapprove_link($uid, $rid)
+{
+	return l(
+		t("Ignore"),
+		"relationships/{$uid}/{$rid}/disapprove",
 		array(
 			"attributes"	=> array(
 				"class"	=> "uri_popup_link",
@@ -101,6 +114,19 @@ function phptemplate_user_relationships_remove_link($uid, $rid)
 	return l(
 		t("Remove"),
 		"relationships/{$uid}/{$rid}/remove",
+		array(
+			"attributes"	=> array(
+				"class"	=> "uri_popup_link",
+			),
+		)
+	);
+}
+
+function phptemplate_user_relationships_pending_request_cancel_link($uid, $rid)
+{
+	return l(
+		t("Cancel"),
+		"relationships/{$uid}/{$rid}/cancel",
 		array(
 			"attributes"	=> array(
 				"class"	=> "uri_popup_link",

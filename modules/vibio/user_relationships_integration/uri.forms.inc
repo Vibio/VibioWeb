@@ -1,18 +1,17 @@
 <?php
 function uri_elaborations_form($relationship=false)
 {
-	if (!$relationship)
+	if ($relationship)
 	{
-		return "";
+		$sql = "SELECT `elaboration`
+				FROM {user_relationship_elaborations}
+				WHERE `rid`=%d";
+		$elaboration = db_result(db_query($sql, $relationship->rid));
 	}
-	
-	$sql = "SELECT `elaboration`
-			FROM {user_relationship_elaborations}
-			WHERE `rid`=%d";
-	$elaboration = db_result(db_query($sql, $relationship->rid));
 	
 	return array(
 		"#type"			=> "textarea",
+		"#title"		=> t("Elaboration"),
 		"#description"	=> t("How do you know !user? Keep in mind that both you and !user are able to view this.", array("!user" => "nelson")),
 		"#default_value"=> $elaboration,
 	);
@@ -81,7 +80,7 @@ function uri_pending_request_action_form(&$state, $action, $account, $rid)
 		),
 	);
 	
-	if ($action == "approve" && module_exists("user_relationships_elaborations"))
+	if ($action == "approve" && module_exists("user_relationship_elaborations"))
 	{
 		$form['container']['uri_pending_elaboration'] = uri_elaborations_form($relationship);
 	}
@@ -248,7 +247,12 @@ function uri_request_relationship_form(&$state, $requestee, $relationship)
 		$description = $relationship->requires_approval ?
 			t('Are you sure you wish to send a new %rel_name request to !name?', array('!name' => $requestee->name, '%rel_name' => ur_tt("user_relationships:rtid:$relationship->rtid:name", $relationship->name), '%rel_plural_name' => ur_tt("user_relationships:rtid:$relationship->rtid:plural_name", $relationship->plural_name), '!name' => theme('username', $requestee))) :
 			t("Are you sure you want to become !name's %rel_name?", array('!name' => $requestee->name, '%rel_name' => ur_tt("user_relationships:rtid:$relationship->rtid:name", $relationship->name)));
-			
+		
+		if (module_exists("user_relationship_elaborations"))
+		{
+			$form['container']['uri_pending_elaboration'] = uri_elaborations_form();
+		}
+		
 		$form = array_merge_recursive($form, array(
 			"container"	=> array(
 				"#description" => $description,
@@ -268,11 +272,6 @@ function uri_request_relationship_form(&$state, $requestee, $relationship)
 				),
 			),
 		));
-		
-		if (module_exists("user_relationship_elaborations"))
-		{
-			$form['container']['uri_pending_elaboration'] = uri_elaborations_form();
-		}
 	}
 	
 	return array_merge_recursive($form, array(

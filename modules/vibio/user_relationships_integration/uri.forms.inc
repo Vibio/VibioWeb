@@ -186,4 +186,134 @@ function uri_remove_relationship_do_submit($account, $relationship)
 		"message"	=> $message,
 	));
 }
+
+function uri_request_relationship($requestee, $relationship)
+{
+	if ($_POST['submit'])
+	{
+		$out = uri_request_relationship_do_submit($requestee, $relationship, $_POST);
+	}
+	else
+	{
+		$out = json_encode(array(
+			"html"		=> drupal_get_form("uri_request_relationship_form", $requestee, $relationship),
+			"callback"	=> "request_relationship",
+		));
+	}
+	
+	exit($out);
+}
+
+function uri_request_relationship_form(&$state, $requestee, $relationship)
+{
+	global $user;
+	$requester = $user;
+	$error = uri_request_relationship_form_is_valid_request($requestee, $requester, $relationship);
+	
+	$form = array(
+		"container" => array(
+			"#type"			=> "fieldset",
+			"#title"		=> t("%rel_name Request", array("!name" => $requestee->name, "%rel_name" => $relationship->name)),
+		),			
+	);
+	
+	if (!$error)
+	{
+		$description = $relationship->requires_approval ?
+			t('Are you sure you wish to send a new %rel_name request to !name?', array('!name' => $requestee->name, '%rel_name' => ur_tt("user_relationships:rtid:$relationship->rtid:name", $relationship->name), '%rel_plural_name' => ur_tt("user_relationships:rtid:$relationship->rtid:plural_name", $relationship->plural_name), '!name' => theme('username', $requestee))) :
+			t("Are you sure you want to become !name's %rel_name?", array('!name' => $requestee->name, '%rel_name' => ur_tt("user_relationships:rtid:$relationship->rtid:name", $relationship->name)));
+			
+		$form = array_merge_recursive($form, array(
+			"container"	=> array(
+				"#description" => $description,
+				"uri_request_relationship_confirm" => array(
+					"#type"	=> "submit",
+					"#value"=> t("Send"),
+				),
+			),
+		));
+	}
+	else
+	{
+		$form = array_merge_recursive($form, array(
+			"container" => array(
+				"error" => array(
+					"#value" => $error,
+				),
+			),
+		));
+	}
+	
+	return array_merge_recursive($form, array(
+		"container" => array(
+			"uri_request_relationship_cancel" => array(
+				"#type"	=> "submit",
+				"#value"=> t("Cancel"),
+			),
+		),
+	));
+}
+
+function uri_request_relationship_form_is_valid_request($requestee, $requester, $relationship)
+{
+	$error = false;
+	
+	if (!$relationship)
+	{
+		$error = t("Invalid relationship type");
+	}
+	elseif (empty($requestee->name))
+	{
+		$error = user_relationships_ui_get_message('non_existent_user');
+	}
+	elseif (!user_access("can have relationships", $requestee))
+	{
+		$error = user_relationships_ui_get_message('not_accepting_requests');
+	}
+	elseif ($user->uid == $requestee->uid)
+	{
+		$error = user_relationships_ui_get_message('self_request');
+	}
+	elseif (!variable_get('user_relationships_allow_multiple', TRUE) && $relationships_count = user_relationships_load(array('between' => array($requester->uid, $requestee->uid)), array('count' => TRUE)))
+	{
+		$error = user_relationships_ui_get_message('too_many_relationships');
+	}
+	
+	return $error;
+}
+
+function uri_request_relationship_do_submit($requestee, $relationship, $extra)
+{
+	global $user;
+	$requester = $user;
+	$error = uri_request_relationship_form_is_valid_request($requestee, $requester, $relationship);
+	$saved = true;
+	
+	if ($error)
+	{
+		$saved = false;
+		$message = $error;
+	}
+	else
+	{
+		$relationship->requester = $requester;
+		$relationship->requestee = $requestee;
+		$relationship->type = $relationship; // zomg :O
+		
+		if (($relationship = user_relationships_request_relationship($relationship)) === false)
+		{
+			$saved = false;
+			$message = user_relationships_ui_get_message('unknown_error', $relationship);
+		}
+		else
+		{
+			$message = user_relationships_ui_get_message(($relationship->approved ? 'pre_approved' : 'submitted'), $relationship);
+		}
+	}
+	
+	return json_encode(array(
+		"saved"		=> $saved,
+		"message"	=> $message,
+	));
+}
 ?>

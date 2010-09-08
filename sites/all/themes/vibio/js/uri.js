@@ -65,6 +65,17 @@ $(document).ready(function()
 		bind_callbacks(elements, rid, href);
 	}
 	
+	bind_request_relationship = function(rid, href)
+	{
+		var elements = {
+			form: $("#uri-request-relationship-form"),
+			confirm: $("#edit-uri-request-relationship-confirm"),
+			cancel: $("#edit-uri-request-relationship-cancel")
+		};
+		
+		bind_callbacks(elements, rid, href);
+	}
+	
 	var bind_callbacks = function(elements, rid, href)
 	{
 		elements.form

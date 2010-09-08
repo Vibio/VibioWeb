@@ -36,6 +36,16 @@ function uri_menu()
 		"type"				=> MENU_CALLBACK,
 	);
 	
+	$menu["relationships/%user/%user_relationships_type/request"] = array(
+		"title"				=> "Request Relationship",
+		"access callback"	=> "user_relationships_ui_check_access",
+		"access arguments"	=> array("edit"),
+		"page callback"		=> "uri_request_relationship",
+		"page arguments"	=> array(1, 2),
+		"file"				=> "uri.forms.inc",
+		"type"				=> MENU_CALLBACK,
+	);
+	
 	return $menu;
 }
 
@@ -71,6 +81,27 @@ function uri_preprocess_page(&$vars)
 {
 	drupal_add_js("sites/all/themes/vibio/js/uri.js");
 	drupal_add_css("sites/all/themes/vibio/css/uri.css");
+}
+
+function uri_preprocess_user_profile(&$vars)
+{
+	global $user;
+	
+	if ($action_links = _user_relationships_ui_actions_between($user, $vars['account']))
+	{
+		$vars['profile']['uri_actions']['actions'] = theme("uri_action_list", $action_links);
+	}
+}
+
+function uri_theme()
+{
+	return array(
+		"uri_action_list"	=> array(
+			"arguments"	=> array("list" => array()),
+			"template"	=> "templates/uri/action-list",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+	);
 }
 
 function uri_edit_elaboration_form()

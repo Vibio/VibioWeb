@@ -15,7 +15,7 @@ function vibio_theme(&$existing, $type, $theme, $path) {
 	return $hooks;
 }
 
-function vibio_preprocess_search_result(&$vars)
+/*function vibio_preprocess_search_result(&$vars)
 {
 	if ($vars['type'] == "user")
 	{
@@ -26,18 +26,18 @@ function vibio_preprocess_search_result(&$vars)
 
 		if (module_exists("user_relationship_blocks"))
 		{
-			/*
+			
 			not considering any other roles atm, since 
 			$res = db_query('SELECT r.rid, r.name FROM {role} r INNER JOIN {users_roles} ur ON ur.rid = r.rid WHERE ur.uid = %d', $account->uid);
 			while ($role = db_fetch_object($res))
 			{
 				$account->roles[$role->uid] = $role->name;
-			}*/
+			}
 			$account->roles[2] = "authenticated user"; //hack, but every account viewed here MUST be authenticated.
 			$vars['ur_actions'] = theme("user_relationships_actions_block", $account);
 		}
 	}
-}
+}*/
 
 function vibio_preprocess_user_profile(&$vars)
 {
@@ -131,6 +131,20 @@ function phptemplate_user_relationships_pending_request_cancel_link($uid, $rid)
 			"attributes"	=> array(
 				"class"	=> "uri_popup_link",
 			),
+		)
+	);
+}
+
+function phptemplate_user_relationships_request_relationship_direct_link($relate_to, $relationship_type)
+{
+	return l(
+		t("Send !name a %rel_name request", array('!name' => $relate_to->name, '%rel_name' => ur_tt("user_relationships:rtid:$relationship_type->rtid:name", $relationship_type->name))),
+		"relationships/{$relate_to->uid}/{$relationship_type->rtid}/request",
+		array(
+			"attributes"=> array(
+				"class"	=> "uri_popup_link",
+			),
+			"html"		=> true,
 		)
 	);
 }

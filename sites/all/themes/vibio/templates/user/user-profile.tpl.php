@@ -1,12 +1,12 @@
 <div class="profile">
   <?php
   echo $profile['user_picture'];
-  echo $profile['user_relationships_ui'];
   ?>
 </div>
 
 <?php
 echo "profile completeness: {$profile['profile_progress']}%";
+echo $profile['uri_actions']['actions'];
 ?>
 
 <div id="user_dos">

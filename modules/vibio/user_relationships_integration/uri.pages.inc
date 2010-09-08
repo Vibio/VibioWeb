@@ -20,11 +20,17 @@ function uri_edit_elaboration($rid)
 	{
 		$out = t("Elaborations are disabled.");
 	}
-	else
+	elseif (!empty(trim($_POST['elaboration'])))
 	{
 		$sql = "REPLACE INTO {user_relationship_elaborations}
 				SET `rid`=%d, `elaboration`='%s'";
 		$status = db_query($sql, $rid, $_POST['elaboration']);
+	}
+	else
+	{
+		$sql = "DELETE FROM {user_relationship_elaborations}
+				WHERE `rid`=%d";
+		$status = db_query($sql, $rid);
 	}
 	
 	if ($status)

@@ -1,7 +1,7 @@
 <?php
 function uri_menu()
 {
-	return array(
+	$menu = array(
 		"relationships/edit-elaboration/%"	=> array(
 			"title"				=> "Edit Friend Details",
 			"page callback"		=> "uri_edit_elaboration",
@@ -11,6 +11,32 @@ function uri_menu()
 			"type"				=> MENU_CALLBACK,
 		),
 	);
+	
+	// user_relationships_ui.module has something similar, but we went everything to be ajax-y fancy pants, so we must provide our own callbacks
+	foreach (array('approve', 'disapprove', 'cancel') as $action)
+	{
+		$menu["relationships/%user/%/{$action}"] = array(
+			"title"				=> "Pending Relationship Action",
+			"access callback"	=> "user_relationships_ui_check_access",
+			"access arguments"	=> array(array("admin", "user"), 1),
+			"page callback"		=> "uri_pending_request_action",
+			"page arguments"	=> array($action, 1, 2),
+			"file"				=> "uri.forms.inc",
+			"type"				=> MENU_CALLBACK,
+		);
+	}
+	
+	$menu["relationships/%user/%user_relationships/remove"] = array(
+		"title"				=> "Remove Relationship",
+		"access callback"	=> "user_relationships_ui_check_access",
+		"access arguments"	=> array(array("admin", "user"), 1),
+		"page callback"		=> "uri_remove_relationship",
+		"page arguments"	=> array(1, 2),
+		"file"				=> "uri.forms.inc",
+		"type"				=> MENU_CALLBACK,
+	);
+	
+	return $menu;
 }
 
 function uri_menu_alter(&$menu)
@@ -24,10 +50,7 @@ function uri_menu_alter(&$menu)
 }
 
 function uri_preprocess_user_relationships(&$vars)
-{
-	drupal_add_js("sites/all/themes/vibio/js/uri.js");
-	drupal_add_css("sites/all/themes/vibio/css/uri.css");
-	
+{	
 	$link_options = array(
 		"attributes"	=> array(
 			"class"	=> "uri_edit_elaboartion",
@@ -42,6 +65,12 @@ function uri_preprocess_user_relationships(&$vars)
 			($link)
 		";
 	}
+}
+
+function uri_preprocess_page(&$vars)
+{
+	drupal_add_js("sites/all/themes/vibio/js/uri.js");
+	drupal_add_css("sites/all/themes/vibio/css/uri.css");
 }
 
 function uri_edit_elaboration_form()

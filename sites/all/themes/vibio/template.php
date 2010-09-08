@@ -82,3 +82,29 @@ function vibio_preprocess_page(&$vars, $hook)
 	
 	$vars['styles'] = $css;
 }
+
+function phptemplate_user_relationships_pending_request_approve_link($uid, $rid)
+{
+	return l(
+		t("Approve"),
+		"relationships/{$uid}/{$rid}/approve",
+		array(
+			"attributes"	=> array(
+				"class"	=> "uri_popup_link",
+			),
+		)
+	);
+}
+
+function phptemplate_user_relationships_remove_link($uid, $rid)
+{
+	return l(
+		t("Remove"),
+		"relationships/{$uid}/{$rid}/remove",
+		array(
+			"attributes"	=> array(
+				"class"	=> "uri_popup_link",
+			),
+		)
+	);
+}

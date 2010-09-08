@@ -1,4 +1,23 @@
 <?php
+function uri_elaborations_form($relationship=false)
+{
+	if (!$relationship)
+	{
+		return "";
+	}
+	
+	$sql = "SELECT `elaboration`
+			FROM {user_relationship_elaborations}
+			WHERE `rid`=%d";
+	$elaboration = db_result(db_query($sql, $relationship->rid));
+	
+	return array(
+		"#type"			=> "textarea",
+		"#description"	=> t("How do you know !user? Keep in mind that both you and !user are able to view this.", array("!user" => "nelson")),
+		"#default_value"=> $elaboration,
+	);
+}
+
 function uri_pending_request_action($action, $account, $rid)
 {
 	if ($_POST['submit'])
@@ -46,7 +65,7 @@ function uri_pending_request_action_form(&$state, $action, $account, $rid)
 			break;
 	}
 	
-	return array(
+	$form = array(
 		"container"		=> array(
 			"#type"			=> "fieldset",
 			"#title"		=> $header,
@@ -61,6 +80,13 @@ function uri_pending_request_action_form(&$state, $action, $account, $rid)
 			),
 		),
 	);
+	
+	if ($action == "approve" && module_exists("user_relationships_elaborations"))
+	{
+		$form['container']['uri_pending_elaboration'] = uri_elaborations_form($relationship);
+	}
+	
+	return $form;
 }
 
 function uri_pending_request_action_do_submit($action, $account, $rid, $extra)
@@ -242,6 +268,11 @@ function uri_request_relationship_form(&$state, $requestee, $relationship)
 				),
 			),
 		));
+		
+		if (module_exists("user_relationship_elaborations"))
+		{
+			$form['container']['uri_pending_elaboration'] = uri_elaborations_form();
+		}
 	}
 	
 	return array_merge_recursive($form, array(

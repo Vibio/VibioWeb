@@ -10,7 +10,7 @@ $(document).ready(function()
 		return false;
 	});
 	
-	$("a.user_relationships_popup_link, a.uri_popup_link")
+	$("a.uri_popup_link")
 		.click(function()
 		{
 			var rid = $(this).closest("tr").attr("id").split("uri_relationship_")[1];
@@ -65,7 +65,7 @@ $(document).ready(function()
 		bind_callbacks(elements, rid, href);
 	}
 	
-	bind_request_relationship = function(rid, href)
+	var bind_request_relationship = function(rid, href)
 	{
 		var elements = {
 			form: $("#uri-request-relationship-form"),
@@ -106,7 +106,8 @@ $(document).ready(function()
 				url: href,
 				type: "post",
 				data: {
-					submit: true
+					submit: true,
+					elaboration: $("#edit-uri-pending-elaboration").length ? $("#edit-uri-pending-elaboration").val() : false
 				},
 				dataType: "json",
 				success: function(json, stat)

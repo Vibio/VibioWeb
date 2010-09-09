@@ -1,18 +1,17 @@
 <?php
-function uri_elaborations_form($relationship=false)
+function uri_elaborations_form($relationship=false, $target_uid=false)
 {
 	if ($relationship)
 	{
-		$sql = "SELECT `elaboration`
-				FROM {user_relationship_elaborations}
-				WHERE `rid`=%d";
-		$elaboration = db_result(db_query($sql, $relationship->rid));
+		$elaboration = user_relationships_get_elaboration($relationship->rid);
 	}
+	
+	$target_user = user_load($target_uid);
 	
 	return array(
 		"#type"			=> "textarea",
 		"#title"		=> t("Elaboration"),
-		"#description"	=> t("How do you know !user? Keep in mind that both you and !user are able to view this.", array("!user" => "nelson")),
+		"#description"	=> t("How do you know !user? Keep in mind that both you and !user are able to view this.", array("!user" => $target_user->name)),
 		"#default_value"=> $elaboration,
 	);
 }
@@ -70,19 +69,21 @@ function uri_pending_request_action_form(&$state, $action, $account, $rid)
 			"#title"		=> $header,
 			"#description"	=> $confirmation_message,
 			"uri_pending_request_confirm"	=> array(
-				"#type"	=> "submit",
-				"#value"=> t("Yes"),
+				"#type"		=> "submit",
+				"#value"	=> t("Yes"),
+				"#weight"	=> 9,
 			),
 			"uri_pending_request_cancel"	=> array(
-				"#type"	=> "button",
-				"#value"=> t("No"),
+				"#type"		=> "button",
+				"#value"	=> t("No"),
+				"#weight"	=> 10,
 			),
 		),
 	);
 	
 	if ($action == "approve" && module_exists("user_relationship_elaborations"))
 	{
-		$form['container']['uri_pending_elaboration'] = uri_elaborations_form($relationship);
+		$form['container']['uri_pending_elaboration'] = uri_elaborations_form($relationship, ($viewed_id == $relationship->requester_id ? $relationship->requestee_id : $relationship->requester_id));
 	}
 	
 	return $form;
@@ -110,6 +111,13 @@ function uri_pending_request_action_do_submit($action, $account, $rid, $extra)
 				$relationship->approved = true;
 				user_relationships_save_relationship($relationship, $action);
 				$message = user_relationships_ui_get_message('accepted', $relationship);
+				
+				if ($extra['elaboration'] && module_exists("user_relationship_elaborations"))
+				{
+					$sql = "REPLACE INTO {user_relationship_elaborations}
+							SET `rid`=%d, `elaboration`='%s'";
+					db_query($sql, $relationship->rid, $extra['elaboration']);
+				}
 			}
 			break;
 		case "cancel":
@@ -250,7 +258,7 @@ function uri_request_relationship_form(&$state, $requestee, $relationship)
 		
 		if (module_exists("user_relationship_elaborations"))
 		{
-			$form['container']['uri_pending_elaboration'] = uri_elaborations_form();
+			$form['container']['uri_pending_elaboration'] = uri_elaborations_form(false, $requestee->uid);
 		}
 		
 		$form = array_merge_recursive($form, array(
@@ -338,6 +346,13 @@ function uri_request_relationship_do_submit($requestee, $relationship, $extra)
 		else
 		{
 			$message = user_relationships_ui_get_message(($relationship->approved ? 'pre_approved' : 'submitted'), $relationship);
+			
+			if ($extra['elaboration'] && module_exists("user_relationship_elaborations"))
+			{
+				$sql = "REPLACE INTO {user_relationship_elaborations}
+						SET `rid`=%d, `elaboration`='%s'";
+				db_query($sql, $relationship->rid, $extra['elaboration']);
+			}
 		}
 	}
 	

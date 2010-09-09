@@ -93,6 +93,22 @@ function uri_preprocess_user_profile(&$vars)
 	}
 }
 
+function uri_preprocess_search_result(&$vars)
+{
+	if ($vars['type'] == "user")
+	{
+		global $user;
+		
+		$args = explode("/user/", $vars['result']['link']);
+		$account = user_load((int) $args[1]);
+		
+		if ($action_links = _user_relationships_ui_actions_between($user, $account))
+		{
+			$vars['uri_actions']['actions'] = theme("uri_action_list", $action_links);
+		}
+	}
+}
+
 function uri_theme()
 {
 	return array(

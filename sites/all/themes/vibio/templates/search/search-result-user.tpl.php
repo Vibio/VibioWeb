@@ -1,4 +1,4 @@
 <?php
 echo "<a href='$url'>$title</a><br />";
-echo $variables['ur_actions'];
+echo $variables['uri_actions']['actions'];
 ?>

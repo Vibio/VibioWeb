@@ -138,7 +138,7 @@ function fb_theme(&$existing, $type, $theme, $path)
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
 		"fb_share"			=> array(
-			"arguments"	=> array("node"	=> false),
+			"arguments"	=> array("share_id" => false, "share_type" => "node"),
 			"template"	=> "templates/facebook/share",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
@@ -172,9 +172,16 @@ function fb_theme(&$existing, $type, $theme, $path)
 
 function fb_preprocess_fb_share(&$vars)
 {
-	if (is_numeric($vars['node']))
+	module_load_include("inc", "fb");
+	$type = $vars['share_type'];
+	
+	if ($type = "node")
 	{
-		$vars['node'] = node_load($vars['node']);
+		$vars['share_params'] = json_encode(fb_get_share_params(node_load($vars['share_id'])));
+	}
+	elseif ($type == "collection" && module_exists("collection"))
+	{
+		$vars['share_params'] = json_encode(fb_get_collection_share_params(collection_load($vars['share_id'])));
 	}
 }
 

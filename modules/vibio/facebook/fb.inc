@@ -192,6 +192,11 @@ function fb_get_share_params($node, $action="share_item")
 	);
 }
 
+function fb_get_collection_share_params($cid)
+{
+	
+}
+
 function fb_register_prompt($action, $nid)
 {	
 	$prompt = new stdClass;

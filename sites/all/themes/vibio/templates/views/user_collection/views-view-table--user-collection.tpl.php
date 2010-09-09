@@ -57,7 +57,11 @@ echo t("Viewing !start - !end of !total", $display_args);
 			echo "<td>";
 			foreach  ($share as $theme)
 			{
-				echo theme($theme, $view->result[$count]->nid);
+				if ($theme == "fb_share")
+				{
+					$out = theme("fb_share", $view->result[$count]->nid, "node");
+				}
+				echo $out;
 			}
 			echo "</td>";
 		}

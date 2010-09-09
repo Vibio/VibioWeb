@@ -175,13 +175,13 @@ function fb_preprocess_fb_share(&$vars)
 	module_load_include("inc", "fb");
 	$type = $vars['share_type'];
 	
-	if ($type = "node")
+	if ($type == "node")
 	{
 		$vars['share_params'] = json_encode(fb_get_share_params(node_load($vars['share_id'])));
 	}
 	elseif ($type == "collection" && module_exists("collection"))
 	{
-		$vars['share_params'] = json_encode(fb_get_collection_share_params(collection_load($vars['share_id'])));
+		$vars['share_params'] = json_encode(fb_get_collection_share_params(collection_load($vars['share_id']), "share_collection"));
 	}
 }
 
@@ -218,5 +218,18 @@ function fb_profile_ext_external_account_data()
 			),
 		),
 	);
+}
+
+function fb_collections_insert($collection)
+{
+	module_load_include("inc", "fb");
+	fb_register_prompt("create_collection", $collection['cid'], "collection");
+}
+
+function fb_collection_update($uid, $cids)
+{
+	$cid = array_shift($cids);
+	module_load_include("inc", "fb");
+	fb_register_prompt("share_collection", $cid, "collection");
 }
 ?>

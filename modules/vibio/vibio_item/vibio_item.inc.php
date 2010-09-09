@@ -266,7 +266,7 @@ function _vibio_item_get_image($nid)
 {
 	if (!($node = node_load($nid)))
 	{
-		return false;
+		return _vibio_item_default_image();
 	}
 	
 	if (!empty($node->field_main_image[0]['filepath']))
@@ -279,6 +279,11 @@ function _vibio_item_get_image($nid)
 		return _product_get_image($nid);
 	}
 	
-	return false;
+	return _vibio_item_default_image();
+}
+
+function _vibio_item_default_image()
+{
+	return "http://beta.vibio.com/mod/snocat/image/biglogo.png";
 }
 ?>

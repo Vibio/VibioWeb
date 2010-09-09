@@ -4,8 +4,13 @@ global $user;
 $extra_columns = array();
 if ($user->uid == $view->args[0])
 {
-	module_load_include("inc", "fb");
-	$share[] = "fb_share";
+	if (module_exists("fb"))
+	{
+		module_load_include("inc", "fb");
+		$share[] = "fb_share";
+		$fb_share = theme("fb_share", $view->args[1], "collection");
+	}
+	
 	$collections_link_text = t("View your collections");
 }
 else
@@ -19,6 +24,8 @@ $display_args = array(
 	"!end"		=> min($view->total_rows, $view->pager['items_per_page']*($view->pager['current_page']+1)),
 	"!total"	=> $view->total_rows,
 );
+
+echo $fb_share;
 echo l($collections_link_text, "user/{$view->args[0]}/inventory")."<br />";
 echo t("Viewing !start - !end of !total", $display_args);
 ?>

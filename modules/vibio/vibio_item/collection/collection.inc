@@ -120,9 +120,14 @@ function collection_get_image($cid)
 			LIMIT 1";
 	if (!$nid = db_result(db_query($sql, $cid)))
 	{
-		return;
+		return collection_default_image();
 	}
 	
 	return _vibio_item_get_image($nid);
+}
+
+function collection_default_image()
+{
+	return "http://beta.vibio.com/mod/snocat/image/biglogo.png";
 }
 ?>

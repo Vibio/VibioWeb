@@ -102,13 +102,19 @@ function collection_edit_submit($form, &$state)
 	global $user;
 	
 	$vals = $state['values'];
+	$vals['title'] = htmlspecialchars($vals['title']);
+	$vals['description'] = htmlspecialchars($vals['description']);
 	
 	if ($vals['cid'])
 	{
+		global $user;
+		
 		$sql = "UPDATE {collection}
 				SET `title`='%s', `description`='%s', `updated`=%d
 				WHERE `cid`=%d";
 		db_query($sql, $vals['title'], $vals['description'], time(), $vals['cid']);
+		
+		module_invoke_all("collection_update", $user->uid, array($vals['cid']));
 	}
 	else
 	{

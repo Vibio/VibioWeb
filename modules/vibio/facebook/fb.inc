@@ -34,9 +34,19 @@ function fb_add_prompt_js()
 	}
 	
 	$prompt_data = array();
-	foreach ($prompts as $nid => $prompt)
+	foreach ($prompts as $prompt)
 	{
-		$prompt_data[] = fb_get_share_params(node_load($prompt->nid), $prompt->action);
+		switch ($prompt->type)
+		{
+			case "node";
+				$data = fb_get_share_params(node_load($prompt->id), $prompt->action);
+				break;
+			case "collection":
+				$data = fb_get_collection_share_params(collection_load($prompt->id), $prompt->action);
+				break;
+		}
+		
+		$prompt_data[] = $data;
 	}
 	
 	$prompt_data = json_encode($prompt_data);
@@ -192,18 +202,49 @@ function fb_get_share_params($node, $action="share_item")
 	);
 }
 
-function fb_get_collection_share_params($cid)
+function fb_get_collection_share_params($collection, $action="share_collection")
 {
+	module_load_include("inc", "collection");
+	$image = collection_get_image($collection['cid']);
 	
+	$t_args = array(
+		"!collection"	=> $collection['title'],
+	);
+	$href = url("collections/{$collection['cid']}", array("absolute" => true,));
+	
+	switch ($action)
+	{
+		case "create_collection":
+			$message = t('just made the "!collection" collection on Vibio', $t_args);
+			break;
+		case "share_collection":
+			$message = t('wants to share their Vibio collection "!collection"', $t_args);
+			break;
+	}
+	
+	return array(
+		"message"	=> $message,
+		"attachment"=> array(
+			"name"			=> $collection['title'],
+			"href"			=> $href,
+			"description"	=> $collection['description'],
+			"media"			=> array(array(
+				"type"	=> "image",
+				"src"	=> $image,
+				"href"	=> $href,
+			)),
+		),
+	);
 }
 
-function fb_register_prompt($action, $nid)
+function fb_register_prompt($action, $id, $type="node")
 {	
 	$prompt = new stdClass;
 	$prompt->action = $action;
-	$prompt->nid = $nid;
+	$prompt->id = $id;
+	$prompt->type = $type;
 	
-	$_SESSION['fb_prompts'][$node->nid] = $prompt;
+	$_SESSION['fb_prompts'][] = $prompt;
 }
 
 function fb_get_prompts($clear=true)

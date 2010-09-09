@@ -114,7 +114,7 @@ $(document).ready(function()
 		{
 			if (response && response.post_id)
 			{
-				share_success();
+				//share_success();
 			}
 			else
 			{

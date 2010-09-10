@@ -284,4 +284,17 @@ function fb_network_find_friends($uid, &$potentials, $existing)
 		$potentials[$friend_uid] = $potential;
 	}
 }
+
+function fb_preprocess_network_potential_friend(&$vars)
+{
+	if ($vars['friend']->src == "fb")
+	{
+		$link = t("View !user's Facebook profile", array("!user" => $vars['friend']->info['name']));
+		$vars['friend_src_link'] = "
+			<a href='{$vars['friend']->link}' target='_blank'>
+				$link
+			</a>
+		";
+	}
+}
 ?>

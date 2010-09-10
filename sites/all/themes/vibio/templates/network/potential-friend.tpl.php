@@ -8,6 +8,7 @@ echo "
 			{$friend->info['name']}
 		</a>
 		{$uri_links}
+		{$friend_src_link}
 	</div>
 ";
 ?>

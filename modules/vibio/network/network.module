@@ -22,6 +22,11 @@ function network_theme()
 			"template"	=> "templates/network/potential-friend",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+		"network_potential_friends"=> array(
+			"arguments"	=> array("friends_list" => ""),
+			"template"	=> "templates/network/potential-friends",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
 	);
 }
 

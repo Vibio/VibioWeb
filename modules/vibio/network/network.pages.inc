@@ -34,7 +34,6 @@ function network_find_friends($uid=false)
 		$out .= theme("network_potential_friend", $friend, file_create_url($friend_user->picture), $actions);
 	}
 	
-	return $out;
-	//return theme("network_potential_friends", $out);
+	return theme("network_potential_friends", $out);
 }
 ?>

@@ -137,4 +137,33 @@ function _product_default_image()
 {
 	return "http://beta.vibio.com/mod/snocat/image/biglogo.png";
 }
+
+function product_images($node, $get_main=false)
+{
+	if (is_numeric($node))
+	{
+		$node = node_load($node);
+	}
+	if (!$node)
+	{
+		return array();
+	}
+	
+	$images = array();
+	if ($get_main && !empty($node->field_main_image[0]['filepath']))
+	{
+		$images[] = file_create_url($node->field_main_image[0]['filepath']);
+	}
+	
+	if (!empty($node->field_images))
+	foreach ($node->field_images as $image)
+	{
+		if (file_exists($image['filepath']))
+		{
+			$images[] = file_create_url($image['filepath']);
+		}
+	}
+	
+	return $images;
+}
 ?>

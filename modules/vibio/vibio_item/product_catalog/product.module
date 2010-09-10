@@ -254,4 +254,16 @@ function product_preprocess_box(&$vars)
 		$vars['content'] .= theme("product_add_product_link");
 	}
 }
+
+function product_vibio_item_images($item_nid)
+{
+	module_load_include("inc", "product");
+	
+	if (!($nid = _product_nid_from_item($item_nid)))
+	{
+		return array();
+	}
+	
+	return product_images($nid);
+}
 ?>

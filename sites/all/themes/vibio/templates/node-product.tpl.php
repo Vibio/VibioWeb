@@ -12,7 +12,7 @@ else
 if ($image = _product_get_image($node->nid, true))
 {
 	$image = "
-		<a href='$image' rel='prettyphoto[product]'>
+		<a href='$image' rel='prettyphoto[item_image]'>
 			<img src='$image' class='product_main_image' />
 		</a>
 	";
@@ -49,6 +49,7 @@ if ($page)
 {
 	module_load_include("inc", "product");
 	
+	$product_images = theme("vibio_item_images", product_images($node));
 	$owners_header = t("People who have !title in their inventory", array("!title" => $node->title));
 	$product_owners = "<h3>$owners_header</h3>";
 	
@@ -69,6 +70,7 @@ echo "
 	$image
 	$manage_link
 	$product_content
+	$product_images
 	$product_owners
 	<p>$external_link</p>
 ";

@@ -27,6 +27,7 @@ echo "
 	{$product_data}
 	{$title}
 	{$node->body}
+	{$item_extra_images}
 	{$user_other_items}
 ";
 ?>

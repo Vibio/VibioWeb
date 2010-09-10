@@ -15,9 +15,14 @@ function vibio_item_exit($destination=null)
 function vibio_item_theme(&$existing)
 {
 	return array(
-		"vibio_item_user_other_items" => array(
+		"vibio_item_user_other_items"	=> array(
 			"arguments" => array("node" => false, "display" => array()),
 			"template"	=> "templates/vibio_item/other-items",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"vibio_item_images"				=> array(
+			"arguments"	=> array("images"	=> array()),
+			"template"	=> "templates/vibio_item/additional-images",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
 	);
@@ -98,11 +103,36 @@ function vibio_item_search_submit($form, &$state)
 
 function vibio_item_preprocess_node(&$vars)
 {
-	if (!$vars['teaser'] && $vars['node']->type == "vibio_item" && !_vibio_item_access($vars['node']))
+	if (!$vars['teaser'] && $vars['node']->type == "vibio_item")
 	{
-		$referrer = !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
-		drupal_set_message(t("The owner has decided not to show that item"), "error");
-		drupal_goto($referrer);
+		if (!_vibio_item_access($vars['node']))
+		{
+			$referrer = !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+			drupal_set_message(t("The owner has decided not to show that item"), "error");
+			drupal_goto($referrer);
+		}
+		else
+		{
+			$node = $vars['node'];
+			$images = array();
+			if (!empty($node->field_main_image[0]['filepath']))
+			{
+				$images[] = file_create_url($node->field_main_image[0]['filepath']);
+			}
+			
+			if (!empty($node->field_images))
+			foreach ($node->field_images as $image)
+			{
+				if (file_exists($image['filepath']))
+				{
+					$images[] = file_create_url($image['filepath']);
+				}
+			}
+			
+			$extra_images = module_invoke_all("vibio_item_images", $node->nid);
+			$images = array_merge($extra_images, $images);
+			$vars['item_extra_images'] = theme("vibio_item_images", $images);
+		}
 	}
 }
 

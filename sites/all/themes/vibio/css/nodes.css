@@ -88,7 +88,14 @@
 }
 
 .product_main_image {
-	float: left;
-	max-height: 120px;
-	padding: 0 10px 10px 0;
+  float: left;
+  padding: 0 10px 10px 0;
+}
+
+.product_main_image, .node_view_item_image {
+  max-height: 120px;
+}
+
+.node_view_item_image {
+  margin-right: 15px;
 }

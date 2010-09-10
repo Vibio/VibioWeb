@@ -215,10 +215,11 @@ function _vibio_item_unset(&$form, $type="vibio_item")
 	{
 		unset($form['revision_information']);
 	}
-	
 	unset($form['path']);
 	unset($form['menu']);
 	unset($form['attachments']);
+	unset($form['body_field']['teaser_include']);
+	unset($form['body_field']['teaser_js']);
 }
 
 function _vibio_item_defaults(&$form, $type="vibio_item")

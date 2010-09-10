@@ -124,3 +124,16 @@ function phptemplate_user_relationships_request_relationship_direct_link($relate
 		)
 	);
 }
+
+function phptemplate_node_preview($node)
+{
+	drupal_set_message(t("Please note that images are not saved or displayed in the preview until the 'save' button is clicked"));
+	
+	$node_view = node_view($node);
+	
+	return "
+		<div class='preview'>
+			$node_view
+		</div>
+	";
+}

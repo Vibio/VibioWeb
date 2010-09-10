@@ -232,4 +232,56 @@ function fb_collection_update($uid, $cids)
 	module_load_include("inc", "fb");
 	fb_register_prompt("share_collection", $cid, "collection");
 }
+
+function fb_network_find_friends($uid, &$potentials, $existing)
+{
+	module_load_include("inc", "fb");
+	
+	if (!(fb_user_has_fb($uid)))
+	{
+		$link_account_args = array(
+			"attributes"	=> array(
+				"class"	=> "fb_link_account",
+			),
+		);
+		
+		$t_args = array(
+			"!fb_link" => l(t("link your Facebook account"), "fb/add-account", $link_account_args),
+		);
+		
+		drupal_set_message(t("Please !fb_link to see which of your Facebook friends are using Vibio", $t_args));
+		return false;
+	}
+	elseif (!($friends = fb_get_friends($uid)))
+	{
+		$fb_login_refresh = array(
+			"attributes"	=> array(
+				"class"	=> "fb_login fb_refresh fb_reload",
+			),
+		);
+		$t_args = array(
+			"!fb_refresh" => l(t("refresh your Facebook session"), "user/{$uid}/external-accounts", $fb_login_refresh),
+		);
+		
+		drupal_set_message(t("Your Facebook session has expired, please !fb_refresh to see which of your Facebook friends are using Vibio", $t_args));
+		return false;
+	}
+	
+	$friends = $friends->data;
+	foreach ($friends as $friend)
+	{
+		if (!($friend_uid = fb_user_exists($friend->id)) || // not on Vibio
+			in_array($friend_uid, $existing) || // already friends
+			array_key_exists($friend_uid, $potentials)) // already in the list of potential friends
+		{
+			continue;
+		}
+		
+		$potential = new stdClass;
+		$potential->info = _network_get_userinfo($friend_uid);
+		$potential->src = "fb";
+		$potential->link = fb_profile_link($friend->id);
+		$potentials[$friend_uid] = $potential;
+	}
+}
 ?>

@@ -1,6 +1,30 @@
 <?php
 define("NETWORK_DEFAULT_DEPTH", 3);
 
+function network_menu()
+{
+	return array(
+		"relationships/friend-finder"	=> array(
+			"title"				=> "Friend Finder",
+			"page callback"		=> "network_find_friends",
+			"access arguments"	=> array("can have relationships"),
+			"file"				=> "network.pages.inc",
+			"type"				=> MENU_LOCAL_TASK,
+		),
+	);
+}
+
+function network_theme()
+{
+	return array(
+		"network_potential_friend" => array(
+			"arguments"	=> array("friend" => false, "photo" => "", "uri_links" => ""),
+			"template"	=> "templates/network/potential-friend",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+	);
+}
+
 /**
  * note that this returns a user's network in a flat format. it's up to the consumer of this
  * function to manipulate the data into a useful format (degree of separation format may not

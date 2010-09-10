@@ -94,12 +94,32 @@ function fb_del_cookie()
 
 function fb_get_user($cookie=false)
 {
-	if (!$cookie)
+	if (!$cookie && !($cookie = fb_verify_cookie($uid)))
 	{
-		$cookie = fb_verify_cookie();
+		return false;
 	}
 	
-	return json_decode(file_get_contents("https://graph.facebook.com/me?access_token={$cookie['access_token']}"));
+	return fb_graph_error(json_decode(file_get_contents("https://graph.facebook.com/me?access_token={$cookie['access_token']}")));
+}
+
+function fb_get_friends($uid, $cookie=false)
+{
+	if (!$cookie && !($cookie = fb_verify_cookie($uid)))
+	{
+		return false;
+	}
+	
+	return fb_graph_error(json_decode(file_get_contents("https://graph.facebook.com/me/friends?access_token={$cookie['access_token']}")));
+}
+
+function fb_graph_error($fb_return)
+{
+	if ($fb_return->error)
+	{
+		return false;
+	}
+	
+	return $fb_return;
 }
 
 function fb_save_user(&$u, $fb_uid)
@@ -130,7 +150,10 @@ function fb_verify_cookie($uid=false)
 		return false;
 	}
 	
-	$cookie = fb_get_cookie();
+	if (!($cookie = fb_get_cookie()))
+	{
+		return false;
+	}
 	
 	$sql = "SELECT `fb_id`
 			FROM {fb_users}
@@ -235,6 +258,11 @@ function fb_get_collection_share_params($collection, $action="share_collection")
 			)),
 		),
 	);
+}
+
+function fb_profile_link($fb_id)
+{
+	return "http://www.facebook.com/profile.php?id={$fb_id}";
 }
 
 function fb_register_prompt($action, $id, $type="node")

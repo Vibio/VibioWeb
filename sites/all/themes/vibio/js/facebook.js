@@ -7,7 +7,7 @@ $(document).ready(function()
 		xfbml: true
 	});
 	
-	var fb_next_action;
+	var fb_next_action, fb_next_action_args, fb_do_reload = false;
 	var fb_next_action_args;
 	var fb_login_callbacks = {
 		"signup": function(res)
@@ -26,13 +26,20 @@ $(document).ready(function()
 		},
 		"refresh": function(res)
 		{
-			vibio_dialog.dialog.dialog("close");
+			if (vibio_dialog.dialog)
+			{
+				vibio_dialog.dialog.dialog("close");
+			}
 			
 			if (res.session)
 			{
 				if (res.session.uid == fb_settings.fb_uid)
 				{
-					if (typeof fb_next_action != "undefined")
+					if (fb_do_reload)
+					{
+						window.location.reload();
+					}
+					else if (typeof fb_next_action != "undefined")
 					{
 						fb_next_action(fb_next_action_args);
 					}
@@ -49,6 +56,12 @@ $(document).ready(function()
 	$(".fb_login").live("click", function()
 	{
 		var fb_callback = $(this).hasClass("fb_refresh") ? fb_login_callbacks.refresh : fb_login_callbacks.signup;
+		
+		if ($(this).hasClass("fb_reload"))
+		{
+			fb_do_reload = true;
+		}
+		
 		FB.login(fb_callback, { perms: fb_settings.perms });
 		return false;
 	});

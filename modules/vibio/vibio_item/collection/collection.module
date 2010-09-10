@@ -62,7 +62,7 @@ function collection_theme(&$existing)
 {
 	return array(
 		"collection_list_item" => array(
-			"arguments"	=> array("collection" => array(), "viewer_uid" => false),
+			"arguments"	=> array("collection" => array(), "access" => false),
 			"template"	=> "templates/collections/collection",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
@@ -77,7 +77,7 @@ function collection_preprocess_collection_list_item(&$vars)
 	}
 	
 	module_load_include("inc", "collection");
-	$vars['collection']->is_owner = $vars['collection']->collection_uid == $vars['viewer_uid'];
+	$vars['collection']->is_owner = module_exists("privacy") ? $vars['access'] == PRIVACY_ONLYME : true;
 	$vars['collection']->image = collection_get_image($vars['collection']->cid);
 }
 

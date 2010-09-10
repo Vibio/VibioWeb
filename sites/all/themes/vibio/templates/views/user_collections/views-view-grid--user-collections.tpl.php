@@ -26,7 +26,7 @@ echo l(t("View All Items"), "collections/{$view->args[0]}/view-all");
 		{
 			$result_index = count($cols)*$i + $j;
 			$col_class = "col-".($j + 1);
-			$output = theme("collection_list_item", $view->result[$result_index], $view->args[0]);
+			$output = theme("collection_list_item", $view->result[$result_index], $view->args[1]);
 			
 			echo "
 				<td class='$col_class'>

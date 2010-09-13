@@ -15,7 +15,21 @@
  */
 body {
   margin: 0;
-  padding: 10px 0;
+  padding: 0;
+  background-color: #304B5E;
+  background-image: url(/sites/all/themes/vibio/images/page/header.png), url(/sites/all/themes/vibio/images/page/footer.png);
+  background-position: top left, bottom left;
+  background-repeat: repeat-x;
+  min-height: 800px;
+  padding-bottom: 50px;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 #page-wrapper {
@@ -94,8 +108,11 @@ div#site-name /* The name of the website */ {
   text-decoration: underline;
 }
 
-#site-slogan /* The slogan (or tagline) of a website */ {
+#site-slogan {
   display: inline;
+  position: relative;
+  top: -17px;
+  left: 10px;
 }
 
 .region-header /* Wrapper for any blocks placed in the header region */ {
@@ -183,18 +200,15 @@ div.tabs /* See also the tabs.css file. */ {
 
 ul.links /* List of links */ {
   margin: 1em 0;
-  padding: 0;
 }
 
 ul.links.inline {
-  margin: 0;
   display: inline;
 }
 
 ul.links li {
   display: inline;
   list-style-type: none;
-  padding: 0 0.5em;
 }
 
 .pager /* A list of page numbers when more than 1 page of content is available */ {
@@ -317,4 +331,58 @@ ul.links li {
   position: absolute !important;
   clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
   clip: rect(1px, 1px, 1px, 1px);
+}
+
+.rounded_container {
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  background-color: rgba(4, 172, 238, 0.3);
+  padding: 5px !important;
+}
+
+.rounded_content {
+  background: white;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  margin: 0;
+  padding: 10px;
+}
+
+#block-fb-fb_api_init, #block-fb-fb_dialogs {
+  padding: 0;
+}
+
+.image_reflection {
+  -webkit-box-reflect: below 0 -webkit-gradient(linear, 0 0, 0 100%, color-stop(.75, transparent), to(white));
+}
+
+#content.reflection {
+  -webkit-box-reflect: below 5px -webkit-gradient(linear, 0 0, 0 100%, color-stop(.85, transparent), to(white));
+}
+
+.sidebar .rounded_content {
+  background: #262F34;
+  color: white;
+}
+
+.sidebar .rounded_content a {
+  color: #B9D9F0;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.sidebar .item-list ul, .sidebar ul.menu {
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar .item-list ul li, .sidebar ul.menu li {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  list-style-image: none;
+}
+
+.sidebar #user-login-form li.openid-link a, #user-login li.openid-link a {
+  background: none;
 }

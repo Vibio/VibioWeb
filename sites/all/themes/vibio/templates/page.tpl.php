@@ -12,6 +12,10 @@
   <link rel="stylesheet" href="/sites/all/themes/vibio/css/vibio_dialog.css" />
   <link rel="stylesheet" href="/sites/all/themes/vibio/prettyphoto/css/prettyPhoto.css" />
   
+  <!--[if IE]>
+  <link rel="stylesheet" href="/sites/all/themes/vibio/css/ie.css" />
+  <![endif]-->
+  
   <?php print $scripts; ?>
   <script type="text/javascript" src="/sites/all/themes/vibio/js/jquery-ui-1.8.2.custom.min.js"></script>
   <script type="text/javascript" src="/sites/all/themes/vibio/js/vibio_dialog.js"></script>
@@ -25,7 +29,7 @@
 			<div class="section clearfix">
 				<div id="name-and-slogan">
 					<a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home">
-						<img src='/sites/all/themes/vibio/vibio.png' />
+						<img src='/sites/all/themes/vibio/vibio.png' class="image_reflection" />
 					</a>
 					<?php
 					if ($site_slogan)
@@ -47,36 +51,22 @@
 
 	<div id="main-wrapper"><div id="main" class="clearfix<?php if ($primary_links || $navigation) { print ' with-navigation'; } ?>">
 
-	  <div id="content" class="column"><div class="section">
-
-		<?php if ($mission): ?>
-		  <div id="mission"><?php print $mission; ?></div>
-		<?php endif; ?>
-
-		<?php print $highlight; ?>
-
-		<?php print $breadcrumb; ?>
-		<?php if ($title): ?>
-		  <h1 class="title"><?php print $title; ?></h1>
-		<?php endif; ?>
-		<?php print $messages; ?>
-		<?php if ($tabs): ?>
-		  <div class="tabs"><?php print $tabs; ?></div>
-		<?php endif; ?>
-		<?php print $help; ?>
-
-		<?php print $content_top; ?>
-
+	  <div id="content" class="column reflection"><div class="section rounded_container">
 		<div id="content-area">
-		  <?php print $content; ?>
+		  <div class="rounded_content">
+			<div id="js_messages_container"></div>
+			<?php
+			  echo $title ? "<h1 class='title'>$title</h1>" : "";
+			  echo $tabs ? "<div class='tabs'>$tabs</div>" : "";
+			  echo $help;
+			  echo $messages;
+			  echo $content_top;
+			  echo $content;
+			  echo $content_bottom;
+			  echo $feed_icons ? "<div class='feed-icons'>$feed_icons</div>" : "";
+			?>
+		  </div>
 		</div>
-
-		<?php print $content_bottom; ?>
-
-		<?php if ($feed_icons): ?>
-		  <div class="feed-icons"><?php print $feed_icons; ?></div>
-		<?php endif; ?>
-
 	  </div></div> <!-- /.section, /#content -->
 
 	  <?php if ($primary_links || $navigation): ?>

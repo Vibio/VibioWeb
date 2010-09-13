@@ -62,7 +62,18 @@ $(document).ready(function()
 			fb_do_reload = true;
 		}
 		
-		FB.login(fb_callback, { perms: fb_settings.perms });
+		FB.getLoginStatus(function(res)
+		{
+			if (res.session)
+			{
+				fb_callback(res);
+			}
+			else
+			{
+				FB.login(fb_callback, { perms: fb_settings.perms });
+			}
+		});
+		
 		return false;
 	});
 	

@@ -28,6 +28,10 @@
  * @see zen_process()
  */
 ?>
-<div class="<?php print $classes; ?>"><div class="section">
-  <?php print $content; ?>
-</div></div> <!-- /.section, /.region -->
+<div class="<?php echo $classes; ?>">
+	<div class="section rounded_container">
+		<div class="rounded_content">
+			<?php echo $content; ?>
+		</div>
+	</div>
+</div>

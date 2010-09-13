@@ -2,7 +2,7 @@ var vibio_utility = {};
 
 $(document).ready(function()
 {
-	var messages_container = $("<div id='js_messages_container'></div>").prependTo("#content-area");
+	var messages_container = $("#js_messages_container").length ? $("#js_messages_container") : $("<div id='js_messages_container'></div>").prependTo("#content-area");
 	
 	//get the GET args on an anchor tag
 	vibio_utility.get_a_get_arg = function(a, target_arg)

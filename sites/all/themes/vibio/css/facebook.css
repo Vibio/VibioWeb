@@ -18,3 +18,7 @@
 .fb_share_params {
 	display: none;
 }
+
+.fb_login_button:hover {
+	cursor: pointer;
+}

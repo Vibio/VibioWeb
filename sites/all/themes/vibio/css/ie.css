@@ -49,3 +49,12 @@ tr.odd td {
 .clearfix {
   zoom: 1;
 }
+
+.rounded_container {
+  background-color: rgb(4, 172, 238);
+}
+
+#footer {
+  background: url(/sites/all/themes/vibio/images/page/footer.png) repeat-x;
+  height: 155px;
+}

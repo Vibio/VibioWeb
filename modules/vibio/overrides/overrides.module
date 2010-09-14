@@ -24,4 +24,9 @@ function overrides_file_url_alter(&$path)
 		$path = str_replace($upload_dir, $file_url, $path);
 	}
 }
+
+function overrides_form_search_theme_form_alter(&$form, &$state)
+{
+	$form['submit']['#value'] = " ";
+}
 ?>

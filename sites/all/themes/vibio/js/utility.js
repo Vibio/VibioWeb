@@ -55,4 +55,12 @@ $(document).ready(function()
 		showTitle: false,
 		theme: "facebook"
 	});
+	
+	//should probably make a file for these types of things...
+	$("#edit-search-theme-form-1").addClass("rounded_left_side")
+		
+	if ($.browser.safari)
+	{
+		$("#search input[type='submit']").css("top", "2px");
+	}
 });

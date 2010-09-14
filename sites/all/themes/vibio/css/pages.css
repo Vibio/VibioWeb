@@ -351,6 +351,15 @@ ul.links li {
   padding: 10px;
 }
 
+.rounded_left_side {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  -moz-border-radius-topleft: 4px;
+  -moz-border-radius-bottomleft: 4px;
+  margin: 0;
+  padding: 0 0 0 5px;
+}
+
 #block-fb-fb_api_init, #block-fb-fb_dialogs {
   padding: 0;
 }

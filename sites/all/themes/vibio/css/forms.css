@@ -61,6 +61,26 @@
   margin: 4px 0 0 10px;
 }
 
+#edit-search-theme-form-1 {
+  background: black;
+  color: #eee;
+  border: 0;
+  height: 19px;
+  width: 170px;
+  position: relative;
+  top: 2px;
+}
+
+#search input[type="submit"] {
+  background: url(/sites/all/themes/vibio/images/search_button.png) no-repeat;
+  width: 25px;
+  height: 21px;
+  border: 0;
+  position: relative;
+  left: -5px;
+  top: 3px;
+}
+
 #edit-search-theme-form-1-wrapper label /* Label that says "Search this site:" */ {
   display: none;
 }

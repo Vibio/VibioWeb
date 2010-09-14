@@ -21,7 +21,7 @@ function fb_add_js()
 	drupal_set_html_head("<script type='text/javascript' src='http://connect.facebook.net/en_US/all.js'></script>");
 	drupal_add_js("var fb_settings = $fb_vars;", "inline");
 	fb_add_prompt_js();
-	drupal_add_js("sites/all/themes/vibio/js/facebook.js");
+	drupal_add_js("themes/vibio/js/facebook.js");
 	
 	return true;
 }

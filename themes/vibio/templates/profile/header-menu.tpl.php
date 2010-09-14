@@ -10,7 +10,7 @@ $logout_link = l(t("Logout"), "logout");
 	<td id="profile_ext_headermenu">
 		<table class="rootVoices"><tr>
 			<td class="rootVoice {menu: 'profile_ext_submenu'}">
-				<img src="/sites/all/themes/vibio/images/icons/acct_dropdown.png" />
+				<img src="/themes/vibio/images/icons/acct_dropdown.png" />
 			</td>
 		</tr></table>
 	</td>

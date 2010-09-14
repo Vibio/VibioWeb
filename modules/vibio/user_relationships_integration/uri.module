@@ -79,8 +79,8 @@ function uri_preprocess_user_relationships(&$vars)
 
 function uri_preprocess_page(&$vars)
 {
-	drupal_add_js("sites/all/themes/vibio/js/uri.js");
-	drupal_add_css("sites/all/themes/vibio/css/uri.css");
+	drupal_add_js("themes/vibio/js/uri.js");
+	drupal_add_css("themes/vibio/css/uri.css");
 }
 
 function uri_preprocess_user_profile(&$vars)

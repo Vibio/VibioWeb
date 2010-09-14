@@ -69,7 +69,7 @@ function product_external_search($args)
 		$args = array("keywords"	=> $args);
 	}
 	
-	drupal_add_js("sites/all/themes/vibio/js/product.js");
+	drupal_add_js("themes/vibio/js/product.js");
 	
 	$func = "{$provider}_product_search";
 	$args['keywords'] = _product_remove_options($args['keywords']);
@@ -165,8 +165,8 @@ function product_theme()
 
 function product_preprocess_product_display(&$vars)
 {
-	drupal_add_css("sites/all/themes/vibio/css/product.css");
-	drupal_add_js("sites/all/themes/vibio/js/product.js");
+	drupal_add_css("themes/vibio/css/product.css");
+	drupal_add_js("themes/vibio/js/product.js");
 }
 
 function product_preprocess_node(&$vars)

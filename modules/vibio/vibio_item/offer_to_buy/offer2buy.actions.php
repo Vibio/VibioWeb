@@ -33,8 +33,8 @@ function offer2buy_dashboard($uid=false)
 		$uid = $user->uid;
 	}
 	
-	drupal_add_js("sites/all/themes/vibio/js/offer2buy_actions.js");
-	drupal_add_css("sites/all/themes/vibio/css/offer2buy.css");
+	drupal_add_js("themes/vibio/js/offer2buy_actions.js");
+	drupal_add_css("themes/vibio/css/offer2buy.css");
 	
 	
 	$incoming_offers = _offer2buy_get_user_incoming_offers($uid);

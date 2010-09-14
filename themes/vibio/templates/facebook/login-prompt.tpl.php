@@ -4,7 +4,7 @@ $message = t("Your Facebook session has expired! Please use the link below to re
 
 <div id="facebook_login_prompt" class="fb_dialog">
 	<div class="fb_header">
-		<img src="/sites/all/themes/vibio/images/facebook/logo.png" />
+		<img src="/themes/vibio/images/facebook/logo.png" />
 	</div>
 	<div class="fb_body">
 		<div class="fb_login_message">

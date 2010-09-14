@@ -35,7 +35,7 @@
         $row   = array(t('@rel_name to !requestee', array('@rel_name' => ur_tt("user_relationships:rtid:$relationship->rtid:name", $relationship->name), '!requestee' => theme('username', $relationship->requestee))), $links);
         if (module_exists("uri"))
         {
-          $row[] = "<img class='uri_edit_busy_indicator' src='/sites/all/themes/vibio/images/ajax-loader.gif' />";
+          $row[] = "<img class='uri_edit_busy_indicator' src='/themes/vibio/images/ajax-loader.gif' />";
         }
         $rows[] = $row;
       }
@@ -44,7 +44,7 @@
         
         if (module_exists("uri"))
         {
-          $row[] = "<img class='uri_edit_busy_indicator' src='/sites/all/themes/vibio/images/ajax-loader.gif' />";
+          $row[] = "<img class='uri_edit_busy_indicator' src='/themes/vibio/images/ajax-loader.gif' />";
         }
         
         $rows[] = $row;

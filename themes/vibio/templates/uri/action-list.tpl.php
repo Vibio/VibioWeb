@@ -6,7 +6,7 @@ foreach ($list as $link)
 		<tr>
 			<td>{$link}</td>
 			<td>
-				<img class='uri_edit_busy_indicator' src='/sites/all/themes/vibio/images/ajax-loader.gif' />
+				<img class='uri_edit_busy_indicator' src='/themes/vibio/images/ajax-loader.gif' />
 			</td>
 		</tr>";
 }

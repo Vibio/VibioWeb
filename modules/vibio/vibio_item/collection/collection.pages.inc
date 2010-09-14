@@ -13,7 +13,7 @@ function collection_view_all_user_items($uid)
 
 function collection_view_collection($collection)
 {
-	drupal_add_js("sites/all/themes/vibio/js/offer2buy_actions.js");
+	drupal_add_js("themes/vibio/js/offer2buy_actions.js");
 	
 	$access = module_exists("privacy") ? privacy_get_access_level($collection['uid']) : 1;
 	$output = $collection['description'];
@@ -27,7 +27,7 @@ function collection_manage()
 	global $user;
 	
 	module_load_include("inc", "collection");
-	drupal_add_css("sites/all/themes/vibio/css/collections.css");
+	drupal_add_css("themes/vibio/css/collections.css");
 	$collections = collection_get_collections();
 	
 	if (empty($collections))

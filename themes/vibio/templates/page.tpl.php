@@ -8,19 +8,19 @@
   <meta name="keywords" content="social commerce, inventory, buy, sell, share, social graph, friends, trade, collections" />
 
   <?php print $styles; ?>
-  <link rel="stylesheet" href="/sites/all/themes/vibio/css/jquery-ui.tabs.css" />
-  <link rel="stylesheet" href="/sites/all/themes/vibio/css/vibio_dialog.css" />
-  <link rel="stylesheet" href="/sites/all/themes/vibio/prettyphoto/css/prettyPhoto.css" />
+  <link rel="stylesheet" href="/themes/vibio/css/jquery-ui.tabs.css" />
+  <link rel="stylesheet" href="/themes/vibio/css/vibio_dialog.css" />
+  <link rel="stylesheet" href="/themes/vibio/prettyphoto/css/prettyPhoto.css" />
   
   <!--[if IE]>
-  <link rel="stylesheet" href="/sites/all/themes/vibio/css/ie.css" />
+  <link rel="stylesheet" href="/themes/vibio/css/ie.css" />
   <![endif]-->
   
   <?php print $scripts; ?>
-  <script type="text/javascript" src="/sites/all/themes/vibio/js/jquery-ui-1.8.2.custom.min.js"></script>
-  <script type="text/javascript" src="/sites/all/themes/vibio/js/vibio_dialog.js"></script>
-  <script type="text/javascript" src="/sites/all/themes/vibio/js/utility.js"></script>
-  <script type="text/javascript" src="/sites/all/themes/vibio/prettyphoto/js/jquery.prettyPhoto.js"></script>
+  <script type="text/javascript" src="/themes/vibio/js/jquery-ui-1.8.2.custom.min.js"></script>
+  <script type="text/javascript" src="/themes/vibio/js/vibio_dialog.js"></script>
+  <script type="text/javascript" src="/themes/vibio/js/utility.js"></script>
+  <script type="text/javascript" src="/themes/vibio/prettyphoto/js/jquery.prettyPhoto.js"></script>
 </head>
 <body class="<?php print $classes; ?>">
 <div id="page-wrapper">
@@ -29,7 +29,7 @@
 			<div class="section clearfix">
 				<div id="name-and-slogan">
 					<a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home">
-						<img src='/sites/all/themes/vibio/vibio-logo.png' />
+						<img src='/themes/vibio/vibio-logo.png' />
 					</a>
 				</div>
 				

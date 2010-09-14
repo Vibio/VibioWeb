@@ -15,7 +15,7 @@ switch ($tab)
 	case "inventory":
 		if (module_exists("collection"))
 		{
-			drupal_add_css("sites/all/themes/vibio/css/collections.css");
+			drupal_add_css("themes/vibio/css/collections.css");
 			$view = views_embed_view("user_collections", "default", $uid, $access);
 		}
 		else
@@ -73,7 +73,7 @@ foreach ($tasks as $url => $title)
 {
 	echo "<li><a href='/user/{$uid}/{$url}'>$title</a></li>";
 }
-echo "<li><img id='social_loading_div' src='/sites/all/themes/vibio/images/ajax-loader.gif' /></li>";
+echo "<li><img id='social_loading_div' src='/themes/vibio/images/ajax-loader.gif' /></li>";
 echo "</ul><div style='clear: both;'></div>";
 
 echo $view;

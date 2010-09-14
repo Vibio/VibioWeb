@@ -4,7 +4,7 @@ $message = t("The Facebook account you logged in with is not the account you hav
 
 <div id="facebook_wrong_login" class="fb_dialog">
 	<div class="fb_header">
-		<img src="/sites/all/themes/vibio/images/facebook/logo.png" />
+		<img src="/themes/vibio/images/facebook/logo.png" />
 	</div>
 	<div class="fb_body">
 		<div class="fb_login_message">

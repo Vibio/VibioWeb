@@ -114,7 +114,7 @@ function fb_block($op="list", $delta=0, $edit=array())
 						"content"	=> theme("fb_login_block"),
 					);
 				case "fb_api_init":
-					drupal_add_css("sites/all/themes/vibio/css/facebook.css");
+					drupal_add_css("themes/vibio/css/facebook.css");
 					module_load_include("inc", "fb");
 					fb_add_js();
 					

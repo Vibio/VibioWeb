@@ -130,6 +130,6 @@ function collection_get_image($cid)
 
 function collection_default_image()
 {
-	return "/sites/all/themes/vibio/images/collections/box.png";
+	return "/themes/vibio/images/collections/box.png";
 }
 ?>

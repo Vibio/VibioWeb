@@ -17,7 +17,7 @@ body {
   margin: 0;
   padding: 0;
   background-color: #304B5E;
-  background-image: url(/sites/all/themes/vibio/images/page/header.png), url(/sites/all/themes/vibio/images/page/footer.png);
+  background-image: url(/themes/vibio/images/page/header.png), url(/themes/vibio/images/page/footer.png);
   background-position: top left, bottom left;
   background-repeat: repeat-x;
   min-height: 800px;
@@ -71,7 +71,7 @@ a:hover {
  */
 
 #header_quick_actions {
-  background: url(/sites/all/themes/vibio/images/page/top_bar.png) no-repeat;
+  background: url(/themes/vibio/images/page/top_bar.png) no-repeat;
   width: 457px;
   height: 33px;
   float: right;

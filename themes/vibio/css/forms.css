@@ -72,7 +72,7 @@
 }
 
 #search input[type="submit"] {
-  background: url(/sites/all/themes/vibio/images/search_button.png) no-repeat;
+  background: url(/themes/vibio/images/search_button.png) no-repeat;
   width: 25px;
   height: 21px;
   border: 0;

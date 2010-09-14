@@ -56,10 +56,10 @@
 		  <div class="rounded_content">
 			<div id="js_messages_container"></div>
 			<?php
+			  echo $messages;
 			  echo $title ? "<h1 class='title'>$title</h1>" : "";
 			  echo $tabs ? "<div class='tabs'>$tabs</div>" : "";
 			  echo $help;
-			  echo $messages;
 			  echo $content_top;
 			  echo $content;
 			  echo $content_bottom;

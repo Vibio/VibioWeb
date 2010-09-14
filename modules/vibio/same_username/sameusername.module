@@ -27,8 +27,16 @@ function sameusername_form_alter(&$form, &$state, $id)
 			array_unshift($form['#validate'], "sameusername_validate_user_pass_reset");
 			break;
 		case "user_register":
-			$form['account']['name']['#title'] = t("Name");
-			$form['account']['name']['#description'] = t("This is the public name of your account. Please use your real name.");
+			if (isset($form['account'])) // if we are asking for stuff besides just your account infos
+			{
+				$form['account']['name']['#title'] = t("Name");
+				$form['account']['name']['#description'] = t("This is the public name of your account. Please use your real name.");
+			}
+			else
+			{
+				$form['name']['#title'] = t("Name");
+				$form['name']['#description'] = t("This is the public name of your account. Please use your real name.");
+			}
 			break;
 		case 'user_login':
 		case 'user_login_block':

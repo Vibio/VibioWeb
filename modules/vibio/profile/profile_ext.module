@@ -109,13 +109,16 @@ function profile_ext_theme(&$existing, $type, $theme, $path)
 			"template"	=> "templates/profile/display-block-item",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+		"profile_ext_header"			=> array(
+			"arguments"	=> array("profile_ext_user" => false),
+			"template"	=> "templates/profile/header",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
 	);
 }
 
 function profile_ext_display_block($u)
-{
-	drupal_add_css("sites/all/themes/vibio/css/profile.css");
-	
+{	
 	$cache_key = "profile_display_block:{$u->uid}";
 	$cache_time = 60*5; // 5 minutes
 	
@@ -245,6 +248,14 @@ function profile_ext_preprocess_user_profile(&$vars)
 	$uid = $args[1];
 	
 	$vars['profile']['profile_progress'] = profile_ext_get_progress($uid);
+}
+
+function profile_preprocess_page(&$vars)
+{
+	global $user;
+	
+	drupal_add_css("sites/all/themes/vibio/css/profile.css");
+	$vars['profile_ext_header'] = theme("profile_ext_header", $user);
 }
 
 function profile_ext_access_profile($user, $category)

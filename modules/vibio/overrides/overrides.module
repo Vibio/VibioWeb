@@ -28,5 +28,6 @@ function overrides_file_url_alter(&$path)
 function overrides_form_search_theme_form_alter(&$form, &$state)
 {
 	$form['submit']['#value'] = " ";
+	$form['search_theme_form']['#attributes']['class'] .= " rounded_left_side";
 }
 ?>

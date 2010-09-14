@@ -5,6 +5,20 @@
 	background: #eee;
 }
 
+#profile_ext_header {
+	border-left: 1px solid #345162;
+	float: right;
+	margin: 7px 10px 0px 0px;
+	text-align: right;
+	width: 227px;
+	color: #BEE9FF;
+}
+
+#profile_ext_header a {
+	color: white;
+	font-weight: bold;
+}
+
 .profile_ext_displayblock_item:first-child {
 	margin-right: 5px;
 }

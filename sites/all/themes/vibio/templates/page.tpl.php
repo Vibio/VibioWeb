@@ -39,6 +39,7 @@
 				{
 					echo "<div id='search-box'>{$search_box}</div>";
 				}
+				echo $profile_ext_header;
 				echo "</div>";
 				
 				echo $header;

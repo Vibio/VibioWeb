@@ -113,7 +113,9 @@ function collection_set_user_default($uid, $cid)
 
 function collection_get_image($cid)
 {
-	$sql = "SELECT n.`nid`
+	return collection_default_image();
+	
+	/*$sql = "SELECT n.`nid`
 			FROM {node} n JOIN {collection_items} ci ON n.`nid`=ci.`item_nid`
 			WHERE ci.`cid`=%d
 			ORDER BY n.`changed` DESC
@@ -123,11 +125,11 @@ function collection_get_image($cid)
 		return collection_default_image();
 	}
 	
-	return _vibio_item_get_image($nid);
+	return _vibio_item_get_image($nid);*/
 }
 
 function collection_default_image()
 {
-	return "http://beta.vibio.com/mod/snocat/image/biglogo.png";
+	return "/sites/all/themes/vibio/images/collections/box.png";
 }
 ?>

@@ -98,9 +98,11 @@ function fb_block($op="list", $delta=0, $edit=array())
 				),
 				"fb_dialogs"	=> array(
 					"info"	=> t("Facebook Dialogs"),
+					"cache"	=> BLOCK_CACHE_GLOBAL,
 				),
 				"fb_api_init"		=> array( // this block is REQUIRED for any fb things to work.
 					"info"	=> t("Facebook API Init"),
+					"cache"	=> BLOCK_NO_CACHE,
 				),
 			);
 		case "view":

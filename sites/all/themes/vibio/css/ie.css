@@ -51,7 +51,8 @@ tr.odd td {
 }
 
 .rounded_container {
-  background-color: rgb(4, 172, 238);
+  background-color: #23698A;
+  padding: 3px !important;
 }
 
 #footer {

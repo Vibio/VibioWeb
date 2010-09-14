@@ -29,21 +29,18 @@
 			<div class="section clearfix">
 				<div id="name-and-slogan">
 					<a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home">
-						<img src='/sites/all/themes/vibio/vibio.png' class="image_reflection" />
+						<img src='/sites/all/themes/vibio/vibio-logo.png' />
 					</a>
-					<?php
-					if ($site_slogan)
-					{
-						echo "<div id='site-slogan'>{$site_slogan}</div>";
-					}
-					?>
 				</div>
 				
 				<?php
+				echo "<div id='header_quick_actions'>";
 				if ($search_box)
 				{
 					echo "<div id='search-box'>{$search_box}</div>";
 				}
+				echo "</div>";
+				
 				echo $header;
 				?>
 			</div>

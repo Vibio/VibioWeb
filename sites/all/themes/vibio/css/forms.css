@@ -57,7 +57,8 @@
  * Search (search-theme-form.tpl.php)
  */
 #search-box /* Wrapper for the search form */ {
-  float: right;
+  float: left;
+  margin: 4px 0 0 10px;
 }
 
 #edit-search-theme-form-1-wrapper label /* Label that says "Search this site:" */ {

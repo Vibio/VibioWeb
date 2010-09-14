@@ -39,6 +39,14 @@ function profile_ext_menu()
 	return $menu;
 }
 
+function profile_ext_menu_alter(&$menu)
+{
+	if (module_exists("privatemsg"))
+	{
+		$menu['messages']['title callback'] = "t";
+	}
+}
+
 function profile_ext_user($op, &$edit, &$u, $category=null)
 {
 	switch ($op)
@@ -49,6 +57,33 @@ function profile_ext_user($op, &$edit, &$u, $category=null)
 				$_GET['destination'] = $_REQUEST['destination'] = "user/{$u->uid}";
 			}
 			break;
+	}
+}
+
+function profile_ext_block($op="list", $delta=0, $edit=array())
+{
+	switch ($op)
+	{
+		case "list":
+			return array(
+				"navigation_profile_display"	=> array(
+					"info"	=> t("Profile Navigation"),
+					"cache"	=> BLOCK_NO_CACHE, // i'll handle caching on my own, kthx.
+				)
+			);
+		case "view":
+			switch ($delta)
+			{
+				case "navigation_profile_display":
+					global $user;
+					
+					$content = $user->uid ? profile_ext_display_block($user) : "";
+					
+					return array(
+						"subject"	=> "",
+						"content"	=> $content,
+					);
+			}
 	}
 }
 
@@ -64,7 +99,49 @@ function profile_ext_theme(&$existing, $type, $theme, $path)
 			"template"	=> "templates/profile/external-accounts",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+		"profile_ext_displayblock"		=> array(
+			"arguments"	=> array("display_user" => false, "profile_picture" => false, "sub_items" => array()),
+			"template"	=> "templates/profile/display-block",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"profile_ext_displayblock_item"	=> array(
+			"arguments"	=> array("item_data" => array()),
+			"template"	=> "templates/profile/display-block-item",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
 	);
+}
+
+function profile_ext_display_block($u)
+{
+	drupal_add_css("sites/all/themes/vibio/css/profile.css");
+	
+	$cache_key = "profile_display_block:{$u->uid}";
+	$cache_time = 60*5; // 5 minutes
+	
+	if ($cache = cache_get($cache_key, "cache"))
+	{
+		$items = $cache->data;
+	}
+	else
+	{
+		$items = "";
+		
+		if (module_exists("privatemsg"))
+		{
+			$theme_args = array(
+				"image"	=> "/sites/all/themes/vibio/images/icons/mail.png",
+				"count"	=> privatemsg_unread_count($u),
+				"href"	=> url("messages"),
+			);
+			$items .= theme("profile_ext_displayblock_item", $theme_args);
+		}
+		
+		cache_set($cache_key, $items, "cache", time() + $cache_time);
+	}
+	
+	$pic = $u->picture ? file_create_url($u->picture) : false;
+	return theme("profile_ext_displayblock", $u, $pic, $items);
 }
 
 function profile_ext_manage_external_accounts($uid)

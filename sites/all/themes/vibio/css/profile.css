@@ -1,0 +1,23 @@
+#profile_ext_displayblock_image {
+	width: 140px;
+	padding: 3px;
+	border: 2px solid black;
+	background: #eee;
+}
+
+.profile_ext_displayblock_item:first-child {
+	margin-right: 5px;
+}
+
+.profile_ext_displayblock_item {
+	background: #36434C;
+	padding: 3px 3px 0;
+	float: left;
+	width: 66px;
+}
+
+.profile_ext_displayblock_item span {
+	color: #ADC435;
+	float: right;
+	font-size: 14px;
+}

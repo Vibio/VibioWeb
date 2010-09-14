@@ -14,9 +14,37 @@
 	color: #BEE9FF;
 }
 
-#profile_ext_header a {
+#profile_ext_header a, .menuContainer a {
 	color: white;
 	font-weight: bold;
+}
+
+.menuContainer {
+	text-align: right;
+}
+
+.menuContainer table {
+	margin: 3px 0;
+}
+
+.menuContainer a {
+	color: #B9D9F0;
+	font-size: 10px;
+}
+
+#profile_ext_header table {
+	margin: 0;
+	float: right;
+}
+
+#profile_ext_headermenu img {
+	position: relative;
+	top: -2px;
+	margin-left: 10px;
+}
+
+#profile_ext_submenu {
+	display: none;
 }
 
 .profile_ext_displayblock_item:first-child {
@@ -34,4 +62,10 @@
 	color: #ADC435;
 	float: right;
 	font-size: 14px;
+}
+
+.menuContainer {
+	background: #304B5E;
+	border: 2px solid black;
+	padding: 0 10px;
 }

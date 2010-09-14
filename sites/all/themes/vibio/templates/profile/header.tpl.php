@@ -1,7 +1,7 @@
 <?php
 if ($profile_ext_user->uid)
 {
-	$message = l($profile_ext_user->name, "user/{$profile_ext_user->uid}");
+	$message = theme("profile_ext_header_menu", $profile_ext_user);
 }
 else
 {

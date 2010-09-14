@@ -114,6 +114,11 @@ function profile_ext_theme(&$existing, $type, $theme, $path)
 			"template"	=> "templates/profile/header",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+		"profile_ext_header_menu"		=> array(
+			"arguments"	=> array("profile_ext_user" => false),
+			"template"	=> "templates/profile/header-menu",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
 	);
 }
 
@@ -250,12 +255,20 @@ function profile_ext_preprocess_user_profile(&$vars)
 	$vars['profile']['profile_progress'] = profile_ext_get_progress($uid);
 }
 
-function profile_preprocess_page(&$vars)
+function profile_ext_preprocess_page(&$vars)
 {
 	global $user;
 	
 	drupal_add_css("sites/all/themes/vibio/css/profile.css");
 	$vars['profile_ext_header'] = theme("profile_ext_header", $user);
+}
+
+function profile_ext_preprocess_profile_ext_header_menu(&$vars)
+{
+	drupal_add_js("sites/all/themes/vibio/js/mbMenu/inc/jquery.hoverIntent.js");
+	drupal_add_js("sites/all/themes/vibio/js/mbMenu/inc/jquery.metadata.js");
+	drupal_add_js("sites/all/themes/vibio/js/mbMenu/inc/mbMenu.js");
+	drupal_add_js("sites/all/themes/vibio/js/mb_menu.js");
 }
 
 function profile_ext_access_profile($user, $category)

@@ -88,7 +88,7 @@
 }
 
 .product_main_image, .node_view_item_image {
-  max-height: 120px;
+  max-width: 100px;
 }
 
 .node_view_item_image {

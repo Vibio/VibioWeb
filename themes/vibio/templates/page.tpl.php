@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php print $language->language; ?>" lang="<?php print $language->language; ?>" dir="<?php print $language->dir; ?>">
 
 <head>
+  <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
   <title><?php print $head_title; ?></title>
   <?php print $head; ?>
   <meta name="description" content="Vibio is a social commerce tool that lets you buy, sell, and share items within your social graph" />

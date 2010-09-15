@@ -53,6 +53,7 @@
  * @see zen_preprocess_comment()
  * @see zen_process()
  */
+$x = 1;
 ?>
 <div class="<?php print $classes; ?> clearfix">
   <?php print $picture; ?>

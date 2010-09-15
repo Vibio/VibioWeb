@@ -1,4 +1,5 @@
 <?php
+$offer2buy = "";
 if ($node->field_posting_type[0]['value'] == VIBIO_ITEM_TYPE_SELL)
 {
 	global $user;

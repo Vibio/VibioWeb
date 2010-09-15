@@ -409,3 +409,7 @@ ul.links li {
 .clear {
   clear: both;
 }
+
+.picture img {
+	max-height: 40px;
+}

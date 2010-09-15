@@ -26,6 +26,7 @@ body {
 
 a {
   text-decoration: none;
+  color: #0092c9;
 }
 
 #page-wrapper {
@@ -38,10 +39,6 @@ a {
 
 a.collection_link, a.vitem_link, a.product_link {
   color: #8e9e30;
-}
-
-a.user_link {
-  color: #4DAAD1;
 }
 
 /*

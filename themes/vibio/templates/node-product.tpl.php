@@ -65,21 +65,33 @@ if ($page)
 		
 		$product_owners .= "</div></div>";
 	}
+	
+	$extra_data = "
+		<div class='product_extra_data'>
+			$product_images
+			$product_owners
+			<p>$external_link</p>
+		</div>
+	";
+}
+else
+{
+	$extra_data = "";
 }
 
 echo "
 	$searchcrumb
-	$image
+	<div class='product_image'>
+		$image<br />
+		$manage_link
+	</div>
 	<div class='product_node_data'>
 		<a href='/node/{$node->nid}'>
 			$title
 		</a>
-		$manage_link
 		$product_content
 	</div>
 	<div class='clear'></div>
-	$product_images
-	$product_owners
-	<p>$external_link</p>
+	$extra_data
 ";
 ?>

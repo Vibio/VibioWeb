@@ -87,17 +87,13 @@
   max-height: 70px;
 }
 
-.product_main_image {
-  float: left;
-  padding: 5px 30px 0 0;
-}
-
 .product_main_image, .node_view_item_image {
   max-height: 120px;
 }
 
 .node_view_item_image {
   margin-right: 15px;
+  max-height: 54px;
 }
 
 .product_node_data {
@@ -107,4 +103,18 @@
 
 .product_description {
   color: #2b363d;
+}
+
+.product_extra_data {
+  margin-top: 10px;
+  background: #f9f9f9;
+  border: 2px solid #eaeaea;
+  padding: 5px 20px;
+  color: #727272;
+}
+
+.product_image {
+  float: left;
+  margin: 5px 25px 0 0;
+  text-align: center;
 }

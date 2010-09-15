@@ -33,7 +33,7 @@ ul.primary li {
 
 ul.primary li a {
   display: block;
-  height: 24px;
+  height: 19px;
   margin: 0;
   padding: 0 0 0 5px; /* width of tab-left.png */
   border-width: 0;
@@ -41,40 +41,40 @@ ul.primary li a {
   text-decoration: none;
   color: #777;
   background-color: transparent;
-  background: url(../images/tab-left.png) no-repeat left -38px;
 }
 
 ul.primary li a .tab {
   display: block;
-  height: 20px; /* 24px (parent) - 4px (padding) */
+  height: 19px;
   margin: 0;
-  padding: 4px 13px 0 6px;
+  padding: 0 8px 0 5px;
   border-width: 0;
   line-height: 20px;
-  background: url(../images/tab-right.png) no-repeat right -38px;
+  font-size: 12px;
+  font-weight: normal;
+  color: black;
 }
 
 ul.primary li a:hover {
-  border-width: 0;
-  background-color: transparent;
-  background: url(../images/tab-left.png) no-repeat left -76px;
+	border-width: 0;
+	background-color: transparent;
 }
 
 ul.primary li a:hover .tab {
-  background: url(../images/tab-right.png) no-repeat right -76px;
+	color: #0092C9;
 }
 
 ul.primary li.active a,
 ul.primary li.active a:hover {
   border-width: 0;
-  color: #000;
-  background-color: transparent;
-  background: url(../images/tab-left.png) no-repeat left 0;
+  color: black;
+  background: transparent url(../images/tab_left.png) no-repeat;
 }
 
 ul.primary li.active a .tab,
 ul.primary li.active a:hover .tab {
-  background: url(../images/tab-right.png) no-repeat right 0;
+	background: transparent url(../images/tab_end.png) no-repeat right top;
+	color: black;
 }
 
 ul.secondary {

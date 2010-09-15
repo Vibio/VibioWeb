@@ -270,7 +270,7 @@ function _vibio_item_get_image($nid)
 		return _vibio_item_default_image();
 	}
 	
-	if (!empty($node->field_main_image[0]['filepath']))
+	if (!empty($node->field_main_image[0]['filepath']) && file_exists($node->field_main_image[0]['filepath']))
 	{
 		return file_create_url($node->field_main_image[0]['filepath']);
 	}
@@ -285,6 +285,6 @@ function _vibio_item_get_image($nid)
 
 function _vibio_item_default_image()
 {
-	return "http://beta.vibio.com/mod/snocat/image/biglogo.png";
+	return file_create_url("themes/vibio/images/icons/default_item.png");
 }
 ?>

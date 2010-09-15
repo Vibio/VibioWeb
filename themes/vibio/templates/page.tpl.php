@@ -50,7 +50,7 @@
 
 	<div id="main-wrapper"><div id="main" class="clearfix<?php if ($primary_links || $navigation) { print ' with-navigation'; } ?>">
 
-	  <div id="content" class="column reflection"><div class="section rounded_container">
+	  <div id="content" class="column"><div class="section rounded_container">
 		<div id="content-area">
 		  <div class="rounded_content">
 			<div id="js_messages_container"></div>

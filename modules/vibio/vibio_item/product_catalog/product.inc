@@ -119,7 +119,7 @@ function _product_get_image($nid, $is_product=false)
 	
 	$product = node_load($search_nid);
 	
-	if (!empty($product->field_main_image[0]['filepath']))
+	if (!empty($product->field_main_image[0]['filepath']) && file_exists($product->field_main_image[0]['filepath']))
 	{
 		$url = file_create_url($product->field_main_image[0]['filepath']);
 	}
@@ -135,7 +135,7 @@ function _product_get_image($nid, $is_product=false)
 
 function _product_default_image()
 {
-	return "http://beta.vibio.com/mod/snocat/image/biglogo.png";
+	return file_create_url("themes/vibio/images/icons/default_item.png");
 }
 
 function product_images($node, $get_main=false)

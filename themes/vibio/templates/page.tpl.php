@@ -55,7 +55,7 @@
 			<div id="js_messages_container"></div>
 			<?php
 			  echo $messages;
-			  echo $title ? "<h1 class='title'>$title</h1>" : "";
+			  echo $title ? "<h1 id='page_title' class='title'>$title</h1>" : "";
 			  echo $tabs ? "<div class='tabs'>$tabs</div>" : "";
 			  echo $help;
 			  echo $content_top;

@@ -89,7 +89,7 @@
 
 .product_main_image {
   float: left;
-  padding: 0 10px 10px 0;
+  padding: 5px 30px 0 0;
 }
 
 .product_main_image, .node_view_item_image {
@@ -98,4 +98,13 @@
 
 .node_view_item_image {
   margin-right: 15px;
+}
+
+.product_node_data {
+  float: left;
+  width: 595px;
+}
+
+.product_description {
+  color: #2b363d;
 }

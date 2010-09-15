@@ -1,3 +1,12 @@
+#page_title {
+	display: none;
+}
+
+.product_title {
+	color: #8e9e30;
+	margin: 0;
+}
+
 .product_owners_results {
 	margin-left: 25px;
 }

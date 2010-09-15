@@ -163,6 +163,12 @@ function product_theme()
 	);
 }
 
+function product_preprocess_product_amazon_display(&$vars)
+{
+	drupal_add_css("themes/vibio/css/product.css");
+	drupal_add_js("themes/vibio/js/product.js");
+}
+
 function product_preprocess_product_display(&$vars)
 {
 	drupal_add_css("themes/vibio/css/product.css");

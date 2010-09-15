@@ -2,7 +2,7 @@
 if ($details)
 {
 	echo "
-		<h4>Details</h4>
+		<h4 class='product_description'>Details</h4>
 		$details
 	";
 }

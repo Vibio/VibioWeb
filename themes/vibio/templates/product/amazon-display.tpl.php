@@ -33,7 +33,7 @@ else
 $details = theme("vibio_amazon_item_details", $node);
 
 echo "
-	<h4>Description</h4>
+	<h4 class='product_description'>Description</h4>
 	$description
 	<div style='clear: left;'></div>
 	$details

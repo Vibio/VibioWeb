@@ -104,7 +104,7 @@ function vibio_item_search_submit($form, &$state)
 function vibio_item_preprocess_node(&$vars)
 {
 	if (!$vars['teaser'] && $vars['node']->type == "vibio_item")
-	{
+	{	
 		if (!_vibio_item_access($vars['node']))
 		{
 			$referrer = !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';

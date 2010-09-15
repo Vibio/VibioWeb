@@ -1,4 +1,6 @@
 <?php
+$title = "<h3 class='product_title'>".check_plain($node->title)."</h3>";
+
 if ($_GET['searchcrumb'])
 {
 	$searchcrumb = t("Back to search results");
@@ -57,7 +59,7 @@ if ($page)
 	{
 		$type_title = $type == "network" ? t("In your network") : t("On Vibio");
 		$product_owners .= "<div class='product_owners_type_container' id='product_type_{$type}'>";
-		$product_owners .= "<h4>$type_title</h4>";
+		$product_owners .= "<h4 class='product_description'>$type_title</h4>";
 		$product_owners .= "<div class='product_owners_results'>";
 		$product_owners .= theme("product_owners", $type, $data);
 		
@@ -68,8 +70,14 @@ if ($page)
 echo "
 	$searchcrumb
 	$image
-	$manage_link
-	$product_content
+	<div class='product_node_data'>
+		<a href='/node/{$node->nid}'>
+			$title
+		</a>
+		$manage_link
+		$product_content
+	</div>
+	<div class='clear'></div>
 	$product_images
 	$product_owners
 	<p>$external_link</p>

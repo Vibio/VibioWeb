@@ -53,41 +53,22 @@
  * @see zen_preprocess_comment()
  * @see zen_process()
  */
-$x = 1;
 ?>
 <div class="<?php print $classes; ?> clearfix">
-  <?php print $picture; ?>
-
-  <?php if ($title): ?>
-    <h3 class="title">
-      <?php print $title; ?>
-      <?php if ($new): ?>
-        <span class="new"><?php print $new; ?></span>
-      <?php endif; ?>
-    </h3>
-  <?php elseif ($new): ?>
-    <div class="new"><?php print $new; ?></div>
-  <?php endif; ?>
-
-  <?php if ($unpublished): ?>
-    <div class="unpublished"><?php print t('Unpublished'); ?></div>
-  <?php endif; ?>
-
-  <div class="submitted">
-    <?php
-      print t('Submitted by !username on !datetime.',
-        array('!username' => $author, '!datetime' => $created));
-    ?>
-  </div>
-
-  <div class="content">
-    <?php print $content; ?>
-    <?php if ($signature): ?>
-      <div class="user-signature clearfix">
-        <?php print $signature; ?>
-      </div>
-    <?php endif; ?>
-  </div>
-
-  <?php print $links; ?>
-</div> <!-- /.comment -->
+	<table>
+		<tr>
+			<td class="picture_container" valign="top">
+				<?php echo $picture; ?>
+			</td>
+			<td class="content">
+				<?php echo $content; ?>
+				<div class="comment_details">
+					<?php
+					echo t("by !user !interval ago", array("!user" => $author, "!interval" => format_interval(time() - $comment->timestamp)));
+					echo $links;
+					?>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>

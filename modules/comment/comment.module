@@ -1443,7 +1443,7 @@ function comment_form_add_preview($form, &$form_state) {
 
     // Attach the user and time information.
     if (!empty($edit['author'])) {
-      $account = user_load(array('name' => $edit['author']));
+      $account = user_load($edit['author']);
     }
     elseif ($user->uid && !isset($edit['is_anonymous'])) {
       $account = $user;

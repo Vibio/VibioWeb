@@ -18,3 +18,26 @@
 .offer2buy_pending_offer {
 	font-style: italic;
 }
+
+.offer2buy_node_display {
+	float: right;
+	font-weight: bold;
+	color: black;
+}
+
+.offer2buy_popup {
+	float: right;
+	font-size: 10px;
+}
+
+.offer2buy_popup a:hover {
+	cursor: pointer;
+}
+
+.offer2buy_offer_view_popup {
+	display: none;
+}
+
+.node_offer2buy_price {
+	float: right;
+}

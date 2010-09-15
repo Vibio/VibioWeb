@@ -27,4 +27,9 @@ $(document).ready(function()
 		
 		return false;
 	});
+	
+	$(".offer2buy_offer_view_popup_init").click(function()
+	{
+		vibio_dialog.create($(this).siblings(".offer2buy_offer_view_popup").html());
+	});
 });

@@ -1,4 +1,4 @@
-<div class='offer2buy'>
+<div class='offer2buy offer2buy_popup'>
 	<span class='offer2buy_nid'><?php echo $nid; ?></span>
-	<button class='offer2buy_init'><?php echo t("Offer2Buy"); ?></button>
+	&nbsp;- <a class='offer2buy_init'><?php echo t("make offer"); ?></a>
 </div>

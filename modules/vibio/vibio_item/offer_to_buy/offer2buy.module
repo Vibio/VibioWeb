@@ -241,6 +241,11 @@ function offer2buy_theme(&$existing, $type, $theme, $path)
 			"template"	=> "templates/offer2buy/action-item",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+		"offer2buy_existing_offers_popup" => array(
+			"arguments"	=> array("offer_list"	=> array()),
+			"template"	=> "templates/offer2buy/offer-popup",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
 	);
 }
 

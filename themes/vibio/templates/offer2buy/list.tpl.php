@@ -1,5 +1,4 @@
 <?php
-echo "current offers: <br />";
 if (empty($offers))
 {
 	echo t("There are currently no offers for this item.");

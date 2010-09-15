@@ -11,6 +11,6 @@ $quick_add = l("Quick add", "product/{$nid}/add-to-inventory/quick", $link_param
 
 echo "
 	$slow_add<br />
-	$quick_add
+	$quick_add<br />
 ";
 ?>

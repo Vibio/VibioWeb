@@ -95,3 +95,7 @@
 .user-collection-preview tr.row-last {
 	height: auto;
 }
+
+.collection_categories {
+	color: #A5A5A5;
+}

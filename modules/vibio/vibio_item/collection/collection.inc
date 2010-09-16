@@ -140,4 +140,30 @@ function collection_get_num_items($cid)
 			WHERE `cid`=%d";
 	return db_result(db_query($sql, $cid));
 }
+
+function collection_get_categories($cid)
+{
+	if (!module_exists("taxonomy") || !module_exists("product"))
+	{
+		return array();
+	}
+	
+	$categories = array();
+	$sql = "SELECT pi.`product_nid`
+			FROM {collection_items} ci JOIN {product_items} pi
+				ON ci.`item_nid`=pi.`item_nid`
+			WHERE `cid`=%d";
+	$res = db_query($sql, $cid);
+	
+	while ($row = db_fetch_object($res))
+	{
+		$product = node_load($row->product_nid);
+		foreach (taxonomy_node_get_terms_by_vocabulary($product, variable_get("vibio_amazon_category_id", 1)) as $tid => $term)
+		{
+			$categories[$tid] = $term->name;
+		}
+	}
+	
+	return $categories;
+}
 ?>

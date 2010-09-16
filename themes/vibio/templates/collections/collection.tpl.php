@@ -15,9 +15,9 @@ echo "
 			<a href='$collection_url'>
 				<h3>{$collection->collection_title}</h3>
 			</a>
-			<span>$total_items</span>
+			<span>$total_items</span> <span class='manage_collection_link'>$manage_link</small>
 			<p>{$collection->collection_description}</p>
-			<small>$manage_link</small>
+			{$collection->collection_categories}
 		</div>
 		<div class='clear'></div>
 		<div class='collection_preview'>

@@ -22,7 +22,14 @@ function collection_view_collection($collection)
 	}
 	else
 	{
-		$output = $collection['description'].views_embed_view("user_collection", "default", $collection['uid'], $collection['cid'], $access);
+		drupal_add_css("themes/vibio/css/collections.css");
+		
+		$collection_object = (object) $collection;
+		$collection_object->collection_description = $collection['description'];
+		$collection_object->collection_title = $collection['title'];
+		
+		$output = theme("collection_list_item", $collection_object, $access, false);
+		$output .= views_embed_view("user_collection", "default", $collection['uid'], $collection['cid'], $access);
 	}
 
 	if ($_GET['ajax'])

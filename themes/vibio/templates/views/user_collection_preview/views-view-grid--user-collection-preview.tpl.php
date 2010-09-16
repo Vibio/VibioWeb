@@ -1,5 +1,5 @@
 <?php
-$total_items = collection_get_num_items($view->args[1]);
+$total_items = collection_get_num_items($view->args[1], $view->args[2]);
 $unshown_items = $total_items - count($view->result);
 
 if ($unshown_items)

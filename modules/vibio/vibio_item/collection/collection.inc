@@ -133,8 +133,22 @@ function collection_default_image()
 	return "/themes/vibio/images/collections/box.png";
 }
 
-function collection_get_num_items($cid)
+function collection_get_num_items($cid, $access=false)
 {
+	if (module_exists("privacy") && $access)
+	{
+		$collection = collection_load($cid);
+		
+		$sql = "SELECT COUNT(*)
+				FROM {collection_items} ci JOIN {privacy_settings} p
+					ON ci.`item_nid`=p.`type_id`
+				WHERE `cid`=%d
+					AND p.`type`='node'
+					AND p.`uid`=%d
+					AND p.`setting` <= %d";
+		return db_result(db_query($sql, $collection['cid'], $collection['uid'], $access));
+	}
+	
 	$sql = "SELECT COUNT(*)
 			FROM {collection_items}
 			WHERE `cid`=%d";

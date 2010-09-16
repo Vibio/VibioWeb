@@ -1,6 +1,7 @@
 <?php
 define("COLLECTION_DESCRIPTION_MAX_LENGTH", 65535);
 define("COLLECTION_TITLE_MAX_LENGTH", 255);
+define("COLLECTION_ITEM_PREVIEW_MAX_TITLE_LENGTH", 16);
 
 function collection_perm()
 {
@@ -62,7 +63,7 @@ function collection_theme(&$existing)
 {
 	return array(
 		"collection_list_item" => array(
-			"arguments"	=> array("collection" => array(), "access" => false),
+			"arguments"	=> array("collection" => array(), "access" => false, "show_preview" => true),
 			"template"	=> "templates/collections/collection",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
@@ -85,7 +86,12 @@ function collection_preprocess_collection_list_item(&$vars)
 	
 	$vars['collection']->is_owner = module_exists("privacy") ? $vars['access'] == PRIVACY_ONLYME : true;
 	$vars['collection']->image = collection_get_image($vars['collection']->cid);
-	$vars['collection']->total_items = collection_get_num_items($vars['collection']->cid);
+	$vars['collection']->total_items = collection_get_num_items($vars['collection']->cid, $vars['access']);
+	
+	if ($vars['collection']->is_owner && module_exists("fb"))
+	{
+		$vars['collection']->fb_share = theme("fb_share", $vars['collection']->cid, "collection");
+	}
 	
 	$categories = collection_get_categories($vars['collection']->cid);
 	if (!empty($categories))
@@ -97,9 +103,16 @@ function collection_preprocess_collection_list_item(&$vars)
 
 function collection_preprocess_collection_list_item_preview(&$vars)
 {
+	global $user;
+	
 	$vars['item']->image = _vibio_item_get_image($vars['item']->nid);
 	$vars['item']->for_sale = $vars['item']->node_data_field_posting_type_field_posting_type_value == VIBIO_ITEM_TYPE_SELL;
-	$vars['item']->node_title = strlen($vars['item']->node_title) > 16 ? substr($vars['item']->node_title, 0, 16)."..." : $vars['item']->node_title;
+	$vars['item']->node_title = strlen($vars['item']->node_title) > COLLECTION_ITEM_PREVIEW_MAX_TITLE_LENGTH ? substr($vars['item']->node_title, 0, COLLECTION_ITEM_PREVIEW_MAX_TITLE_LENGTH)."..." : $vars['item']->node_title;
+	
+	if ($vars['item']->users_uid == $user->uid && module_exists("fb"))
+	{
+		$vars['item']->fb_share = theme("fb_share", $vars['item']->nid);
+	}
 	
 	if (!$vars['item']->for_sale)
 	{

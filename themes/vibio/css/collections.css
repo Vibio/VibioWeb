@@ -27,8 +27,12 @@
 }
 
 .collection_summary span {
-	color: #a4b5e6d;
+	color: #4b5e6d;
 	font-size: 12px;
+	float: left;
+}
+.collection_summary span.manage_collection_link {
+	margin-left: 10px;
 }
 
 .collection_preview {
@@ -76,6 +80,10 @@
 }
 
 .collection_list_item_summary {
+	float: left;
+}
+
+.collection_list_item_summary span.item_price {
 	float: left;
 }
 

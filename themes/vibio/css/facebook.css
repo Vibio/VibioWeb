@@ -22,3 +22,8 @@
 .fb_login_button:hover {
 	cursor: pointer;
 }
+
+.fb_share_container {
+	float: left;
+	margin-left: 10px;
+}

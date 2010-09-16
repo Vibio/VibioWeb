@@ -10,7 +10,7 @@
 
 .views_message {
 	float: left;
-	width: 465px;
+	max-width: 450px;
 }
 
 .views_message p {

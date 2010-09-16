@@ -54,8 +54,3 @@ tr.odd td {
   background-color: #23698A;
   padding: 3px !important;
 }
-
-#footer {
-  background: url(/themes/vibio/images/page/footer.png) repeat-x;
-  height: 155px;
-}

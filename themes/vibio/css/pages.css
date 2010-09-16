@@ -16,12 +16,7 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #304B5E;
-  background-image: url(/themes/vibio/images/page/header.png), url(/themes/vibio/images/page/footer.png);
-  background-position: top left, bottom left;
-  background-repeat: repeat-x;
-  min-height: 800px;
-  padding-bottom: 50px;
+  background: #304B5E url(/themes/vibio/images/page/header.png) top left repeat-x;
 }
 
 a {
@@ -235,53 +230,13 @@ ul.links li {
   text-align: right; /* LTR */
 }
 
-.region-content-bottom /* Wrapper for any blocks placed in the "content bottom" region */ {
-}
-
-/*
- * First sidebar (on left in LTR languages, on right in RTL)
- *
- * Remember to NOT add padding or margin to your .region-sidebar-first
- * (see the layout.css file.)
- */
-.region-sidebar-first {
-}
-
-.region-sidebar-first .section {
-}
-
-/*
- * Second sidebar (on right in LTR languages, on left in RTL)
- *
- * Remember to NOT add padding or margin to your .region-sidebar-second
- * (see the layout.css file.)
- */
-.region-sidebar-second {
-}
-
-.region-sidebar-second .section {
-}
-
-/*
- * Footer
- */
-#footer {
-}
-
-#footer .section {
-}
-
-#footer-message /* Wrapper for the footer message from Drupal's "Site information"
-                   and for any blocks placed in the footer region */ {
-}
-
-.region-footer {
-}
-
 /*
  * Closure
  */
-.region-page-closure /* Wrapper for any blocks placed in the closure region */ {
+.region-page-closure {
+	background: #2d3741 url(/themes/vibio/images/page/footer.png) repeat-x;
+	min-height: 155px;
+	width: 100%;
 }
 
 /*
@@ -374,6 +329,10 @@ ul.links li {
   -webkit-box-reflect: below 5px -webkit-gradient(linear, 0 0, 0 100%, color-stop(.85, transparent), to(white));
 }
 
+#content-area .rounded_content {
+	min-height: 700px;
+}
+
 /*#content-area .rounded_content {
   background: #f9f9f9;
   border: 1px solid #eaeaea;
@@ -412,4 +371,28 @@ ul.links li {
 
 .comment .picture img, .view .picture img  {
 	max-height: 40px;
+}
+
+#block-menu-secondary-links {
+	position: relative;
+	top: 25px;
+}
+
+#block-menu-secondary-links h2 {
+	display: none;
+}
+
+#block-menu-secondary-links ul.menu {
+	margin: 0;
+}
+
+#block-menu-secondary-links ul.menu li {
+	list-style-image: none;
+	list-style-type: none;
+	float: left;
+	margin-right: 30px;
+}
+
+#block-menu-secondary-links ul.menu li a.active {
+	color: #0092C9;
 }

@@ -94,21 +94,8 @@
 
 	</div></div> <!-- /#main, /#main-wrapper -->
 
-	<?php if ($footer || $footer_message || $secondary_links): ?>
+	<?php if ($footer || $footer_message): ?>
 	  <div id="footer"><div class="section">
-
-		<?php print theme(array('links__system_secondary_menu', 'links'), $secondary_links,
-		  array(
-			'id' => 'secondary-menu',
-			'class' => 'links clearfix',
-		  ),
-		  array(
-			'text' => t('Secondary menu'),
-			'level' => 'h2',
-			'class' => 'element-invisible',
-		  ));
-		?>
-
 		<?php if ($footer_message): ?>
 		  <div id="footer-message"><?php print $footer_message; ?></div>
 		<?php endif; ?>

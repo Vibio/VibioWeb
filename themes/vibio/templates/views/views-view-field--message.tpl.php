@@ -1,6 +1,7 @@
 <?php
 $row = $view->result[$view->row_index];
 
+$message = "";
 if ($row->nid)
 {
 	$is_item_message = strpos($row->message_id, "node") !== false || strpos($row->message_id, "item") !== false;
@@ -13,14 +14,26 @@ if ($row->nid)
 		module_load_include("inc", "collection");
 		$image = collection_get_image($row->nid);
 	}
+	else
+	{
+		$image = _vibio_item_get_image($row->nid); // dunno what else to do here.. just assume it's an nid
+	}
 	
-	$output = "
-		<a href='/node/{$row->nid}'>
-			<img class='vibio_item_views_image' src='$image' />
-		</a>
-		$output
+	$message .= "
+		<div class='views_node_image_container'>
+			<a href='/node/{$row->nid}'>
+				<img src='$image' />
+			</a>
+		</div>
 	";
 }
 
-echo $output;
+$message .= "
+	<div class='views_message'>
+		$output
+	</div>
+	<div class='clear'></div>
+";
+
+echo $message;
 ?>

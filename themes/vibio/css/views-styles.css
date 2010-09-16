@@ -1,7 +1,22 @@
-.vibio_item_views_image {
-	float: left;
+.views_node_image_container img {
+	max-height: 40px;
+	max-width: 80px;
 }
 
-td.views-field-field-main-image-fid img {
-	height: 100px;
+.views_node_image_container {
+	float: left;
+	margin-right: 10px;
 }
+
+.views_message {
+	float: left;
+	width: 465px;
+}
+
+.views_message p {
+	margin: 0;
+}
+
+/*td.views-field-field-main-image-fid img {
+	height: 100px;
+}*/

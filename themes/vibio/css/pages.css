@@ -410,6 +410,6 @@ ul.links li {
   clear: both;
 }
 
-.picture img {
+.comment .picture img, .view .picture img  {
 	max-height: 40px;
 }

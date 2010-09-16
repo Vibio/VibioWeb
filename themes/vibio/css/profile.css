@@ -49,9 +49,13 @@
 
 .profile_ext_displayblock_item {
 	background: #36434C;
-	padding: 3px 3px 0;
+	padding: 3px;
 	float: left;
 	width: 66px;
+}
+
+.profile_ext_displayblock_item img {
+	float: left;
 }
 
 .profile_ext_displayblock_item span {

@@ -54,3 +54,7 @@ tr.odd td {
   background-color: #23698A;
   padding: 3px !important;
 }
+
+#profile_ext_header {
+  margin-top: -20px;
+}

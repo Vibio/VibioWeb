@@ -10,11 +10,19 @@
 
 .views_message {
 	float: left;
-	max-width: 450px;
+	max-width: 435px;
 }
 
 .views_message p {
 	margin: 0;
+}
+
+#views-exposed-form-user-collection-default #edit-order-by-wrapper {
+	display: inline;
+}
+
+#views-exposed-form-user-collection-default #edit-submit-user-collection {
+	margin-top: 0;
 }
 
 /*td.views-field-field-main-image-fid img {

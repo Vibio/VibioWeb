@@ -240,6 +240,34 @@ function collection_offer2buy_complete_actions($old_uid, $node)
 	module_invoke_all("collection_update", $old_uid, $old_cid);
 }
 
+function collection_form_views_exposed_form_alter(&$form, &$state)
+{
+	if ($form['#id'] != "views-exposed-form-user-collection-default")
+	{
+		return;
+	}
+	
+	$form['order_by'] = array(
+		"#type"		=> "select",
+		"#title"	=> t("Sort"),
+		"#weight"	=> 9,
+		"#options"	=> array(
+			"changed_desc"	=> t("Newest First"),
+			"changed_asc"	=> t("Oldest First"),
+		),
+	);
+	$form['order'] = array(
+		"#type" => "hidden",
+		"#value"=> "changed",
+	);
+	$form['sort'] = array(
+		"#type" => "hidden",
+		"#value"=> "desc",
+	);
+	
+	$form['submit']['#weight'] = 10;
+}
+
 function collection_load($cid)
 {
 	if (!is_numeric($cid))

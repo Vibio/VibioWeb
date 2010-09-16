@@ -75,4 +75,17 @@ $(document).ready(function()
 			});
 		}
 	});
+	
+	$("#views-exposed-form-user-collection-default #edit-order-by").change(function()
+	{
+		var sort_args = $(this).val().split("_");
+		
+		$(this)
+			.closest("#views-exposed-form-user-collection-default")
+				.find("#edit-order")
+					.val(sort_args[0])
+					.end()
+				.find("#edit-sort")
+					.val(sort_args[1]);
+	});
 });

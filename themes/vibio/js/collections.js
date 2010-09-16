@@ -76,7 +76,7 @@ $(document).ready(function()
 		}
 	});
 	
-	$("#views-exposed-form-user-collection-default #edit-order-by").change(function()
+	$("#views-exposed-form-user-collection-default #edit-collection-order-by").live("change", function()
 	{
 		var sort_args = $(this).val().split("_");
 		

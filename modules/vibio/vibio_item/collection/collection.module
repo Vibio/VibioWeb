@@ -247,7 +247,7 @@ function collection_form_views_exposed_form_alter(&$form, &$state)
 		return;
 	}
 	
-	$form['order_by'] = array(
+	$form['collection_order_by'] = array(
 		"#type"		=> "select",
 		"#title"	=> t("Sort"),
 		"#weight"	=> 9,

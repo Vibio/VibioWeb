@@ -80,4 +80,15 @@ function collection_views_data_alter(&$data)
 		"field"			=> "type_id",
 	);
 }
+
+function collection_views_query_alter(&$view, &$query)
+{
+	if ($view->name == "user_collection")
+	{
+		$order_by = isset($_GET['order']) ? $_GET['order'] : "node_changed";
+		$order_sort = isset($_GET['sort']) ? $_GET['sort'] : "desc";
+		$query->orderby = array("$order_by $order_sort");
+	}
+	
+}
 ?>

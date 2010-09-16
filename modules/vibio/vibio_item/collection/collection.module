@@ -286,17 +286,17 @@ function collection_form_views_exposed_form_alter(&$form, &$state)
 		"#title"	=> t("Sort"),
 		"#weight"	=> 9,
 		"#options"	=> array(
-			"changed_desc"	=> t("Newest First"),
-			"changed_asc"	=> t("Oldest First"),
+			"node_changed-desc"	=> t("Newest First"),
+			"node_changed-asc"	=> t("Oldest First"),
 		),
 	);
 	$form['order'] = array(
 		"#type" => "hidden",
-		"#value"=> "changed",
+		"#value"=> isset($_GET['order']) ? $_GET['order'] : "node_changed",
 	);
 	$form['sort'] = array(
 		"#type" => "hidden",
-		"#value"=> "desc",
+		"#value"=> isset($_GET['sort']) ? $_GET['sort'] : "node_changed",
 	);
 	
 	$form['submit']['#weight'] = 10;

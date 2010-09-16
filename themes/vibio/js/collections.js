@@ -78,7 +78,7 @@ $(document).ready(function()
 	
 	$("#views-exposed-form-user-collection-default #edit-collection-order-by").live("change", function()
 	{
-		var sort_args = $(this).val().split("_");
+		var sort_args = $(this).val().split("-");
 		
 		$(this)
 			.closest("#views-exposed-form-user-collection-default")

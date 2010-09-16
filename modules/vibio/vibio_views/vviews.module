@@ -42,7 +42,7 @@ function vviews_nodeapi(&$node, $op, $a3=null, $a4=null)
 		{
 			case "insert":
 				$event = "create/modify item";
-				_vviews_clear_cache($node->uid, "user_collections", $event);
+				_vviews_clear_cache($node->uid, "user_collections", $event); // clear to update item counts
 			case "update":
 				_vviews_clear_cache($node->uid, "user_heartbeat_activity", $event);
 				_vviews_clear_cache($node->uid, "user_inventory", $event); // want to clear since they might have changed the privacy settings

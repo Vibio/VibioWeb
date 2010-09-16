@@ -271,7 +271,7 @@ function offer2buy_preprocess_node(&$vars)
 	}
 }
 
-function offer2buy_preprocess_user_profile(&$vars)
+function offer2buy_preprocess_page(&$vars)
 {
 	drupal_add_js("themes/vibio/js/offer2buy_actions.js");
 }

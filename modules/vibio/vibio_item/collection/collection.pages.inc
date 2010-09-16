@@ -30,7 +30,6 @@ function collection_view_collection($collection)
 		exit($output);
 	}
 
-	drupal_add_js("themes/vibio/js/offer2buy_actions.js");
 	return $output;
 }
 

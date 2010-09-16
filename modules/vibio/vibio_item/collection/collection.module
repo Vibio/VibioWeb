@@ -100,6 +100,20 @@ function collection_preprocess_collection_list_item_preview(&$vars)
 	$vars['item']->image = _vibio_item_get_image($vars['item']->nid);
 	$vars['item']->for_sale = $vars['item']->node_data_field_posting_type_field_posting_type_value == VIBIO_ITEM_TYPE_SELL;
 	$vars['item']->node_title = strlen($vars['item']->node_title) > 16 ? substr($vars['item']->node_title, 0, 16)."..." : $vars['item']->node_title;
+	
+	if (!$vars['item']->for_sale)
+	{
+		$options = array(
+			"attributes"	=> array(
+				"class"	=> "offer2buy_edit_post_type",
+			),
+		);
+		$vars['item']->offer2buy_price = l(t("Sell"), "offer2buy/ajax/edit-post-type/{$vars['item']->nid}", $options);
+	}
+	else
+	{
+		$vars['item']->offer2buy_price = "$".$vars['item']->offer2buy_price;
+	}
 }
 
 function collection_preprocess_page(&$vars)

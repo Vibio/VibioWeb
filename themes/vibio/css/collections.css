@@ -66,10 +66,17 @@
 	padding: 0 15px;
 }
 
-.user-collection-preview img {
+.collection_list_image {
 	float: left;
 	margin-right: 10px;
+}
+
+.collection_list_image img {
 	max-width: 40px;
+}
+
+.collection_list_item_summary {
+	float: left;
 }
 
 .user-collection-preview h5 {
@@ -98,4 +105,8 @@
 
 .collection_categories {
 	color: #A5A5A5;
+}
+
+.item_updated {
+	display: block;
 }

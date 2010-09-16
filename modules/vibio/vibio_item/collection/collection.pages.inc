@@ -12,13 +12,25 @@ function collection_view_all_user_items($uid)
 }
 
 function collection_view_collection($collection)
-{
-	drupal_add_js("themes/vibio/js/offer2buy_actions.js");
-	
+{	
 	$access = module_exists("privacy") ? privacy_get_access_level($collection['uid']) : 1;
-	$output = $collection['description'];
-	$output .= views_embed_view("user_collection", "default", $collection['uid'], $collection['cid'], $access);
-	
+
+	if ($_GET['preview'])
+	{
+		module_load_include("inc", "collection");
+		$output = views_embed_view("user_collection_preview", "default", $collection['uid'], $collection['cid'], $access);
+	}
+	else
+	{
+		$output = $collection['description'].views_embed_view("user_collection", "default", $collection['uid'], $collection['cid'], $access);
+	}
+
+	if ($_GET['ajax'])
+	{
+		exit($output);
+	}
+
+	drupal_add_js("themes/vibio/js/offer2buy_actions.js");
 	return $output;
 }
 

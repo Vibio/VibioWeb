@@ -132,4 +132,12 @@ function collection_default_image()
 {
 	return "/themes/vibio/images/collections/box.png";
 }
+
+function collection_get_num_items($cid)
+{
+	$sql = "SELECT COUNT(*)
+			FROM {collection_items}
+			WHERE `cid`=%d";
+	return db_result(db_query($sql, $cid));
+}
 ?>

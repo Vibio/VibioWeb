@@ -180,4 +180,101 @@ function collection_get_categories($cid)
 	
 	return $categories;
 }
+
+function collection_get_sidebar($uid, $max_collections=4, $as_uid=false)
+{
+	if (!$as_uid)
+	{
+		global $user;
+		$as_uid = $user->uid;
+	}
+	
+	if (module_exists("privacy"))
+	{
+		$access = privacy_get_access_level($uid, $as_uid);
+		$sql = "SELECT c.`cid`, c.`title`, c.`description`, COUNT(*) AS num_items
+				FROM {collection} c JOIN {privacy_settings} p JOIN {collection_items} ci
+					ON c.`cid`=p.`type_id`
+						AND c.`uid`=p.`uid`
+						AND c.`cid`=ci.`cid`
+				WHERE p.`type`='collection'
+					AND p.`setting` <= %d
+					AND c.`uid`=%d
+				GROUP BY c.`cid`
+				ORDER BY RAND()
+				LIMIT %d";
+		$res = db_query($sql, $access, $uid, $max_collections);
+	}
+	else
+	{
+		$sql = "SELECT c.`cid`, c.`title`, c.`description`, COUNT(*) AS num_items
+				FROM {collection} c JOIN {collection_items} ci
+					ON c.`cid`=ci.`cid`
+				WHERE `uid`=%d
+				GROUP BY c.`cid`
+				ORDER BY RAND()
+				LIMIT %d";
+		$res = db_query($sql, $uid, $max_collections);
+	}
+	
+	$collections = array();
+	while ($c = db_fetch_object($res))
+	{
+		$c->items = collection_get_sidebar_items($c->cid, $uid, $as_uid);
+		$c->image = collection_get_image($cid);
+		$collections[] = $c;
+	}
+	
+	return $collections;
+}
+
+function collection_get_sidebar_items($cid, $owner=false, $as_uid=false, $num_items=3)
+{
+	if (!$as_uid)
+	{
+		global $user;
+		$as_uid = $user->uid;
+	}
+	
+	if (module_exists("privacy"))
+	{
+		if (!$owner)
+		{
+			$collection = collection_load($cid);
+			$owner = $collection['cid'];
+		}
+		
+		$access = privacy_get_access_level($owner, $as_uid);
+		$sql = "SELECT ci.`item_nid`, n.`title`
+				FROM {collection_items} ci JOIN {node} n JOIN {privacy_settings} p
+					ON ci.`item_nid`=n.`nid`
+						AND n.`nid`=p.`type_id`
+				WHERE ci.`cid`=%d
+					AND p.`type`='node'
+					AND p.`uid`=%d
+					AND p.`setting` <= %d
+				ORDER BY RAND()
+				LIMIT %d";
+		$res = db_query($sql, $cid, $owner, $access, $num_items);
+	}
+	else
+	{
+		$sql = "SELECT ci.`item_nid` AS nid, n.`title`
+				FROM {collection_items} ci JOIN {node} n
+					ON ci.`item_nid`=n.`nid`
+				WHERE ci.`cid`=%d
+				ORDER BY RAND()
+				LIMIT %d";
+		$res = db_fetch_object($sql, $cid, $num_items);
+	}
+	
+	$items = array();
+	while ($item = db_fetch_object($res))
+	{
+		$item->image = _vibio_item_get_image($item->nid);
+		$items[] = $item;
+	}
+	
+	return $items;
+}
 ?>

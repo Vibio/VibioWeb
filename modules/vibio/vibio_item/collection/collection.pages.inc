@@ -14,10 +14,10 @@ function collection_view_all_user_items($uid)
 function collection_view_collection($collection)
 {	
 	$access = module_exists("privacy") ? privacy_get_access_level($collection['uid']) : 1;
+	module_load_include("inc", "collection");
 
 	if ($_GET['preview'])
 	{
-		module_load_include("inc", "collection");
 		$output = views_embed_view("user_collection_preview", "default", $collection['uid'], $collection['cid'], $access);
 	}
 	else
@@ -28,8 +28,11 @@ function collection_view_collection($collection)
 		$collection_object->collection_description = $collection['description'];
 		$collection_object->collection_title = $collection['title'];
 		
-		$output = theme("collection_list_item", $collection_object, $access, false);
-		$output .= views_embed_view("user_collection", "default", $collection['uid'], $collection['cid'], $access);
+		$collection_display = theme("collection_list_item", $collection_object, $access, false);
+		$collection_display .= views_embed_view("user_collection", "default", $collection['uid'], $collection['cid'], $access);
+		
+		$sidebar = collection_get_sidebar($collection['uid']);
+		$output = theme("collection_view_collection", $collection_object->uid, $collection_display, $sidebar);
 	}
 
 	if ($_GET['ajax'])

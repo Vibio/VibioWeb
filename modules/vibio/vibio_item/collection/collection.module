@@ -72,7 +72,39 @@ function collection_theme(&$existing)
 			"template"	=> "templates/collections/collection-item-preview",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+		"collection_view_collection"	=> array(
+			"arguments"	=> array("collection_owner" => 1, "collection_display"	=> "", "collection_sidebar" => array()),
+			"template"	=> "templates/collections/collection-view",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"collection_sidebar_item"		=> array(
+			"arguments"	=> array("collection_item" => array()),
+			"template"	=> "templates/collections/sidebar-item",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"collection_sidebar_collection"	=> array(
+			"arguments"	=> array("collection" => array(), "item_html" => ""),
+			"template"	=> "templates/collections/sidebar-collection",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
 	);
+}
+
+function collection_preprocess_collection_view_collection(&$vars)
+{
+	$collection_html = "";
+	foreach ($vars['collection_sidebar'] as $c)
+	{
+		$item_html = "";
+		foreach($c->items as $item)
+		{
+			$item_html .= theme("collection_sidebar_item", $item);
+		}
+		
+		$collection_html .= theme("collection_sidebar_collection", $c, $item_html);
+	}
+	
+	$vars['collection_sidebar_output'] = $collection_html;
 }
 
 function collection_preprocess_collection_list_item(&$vars)

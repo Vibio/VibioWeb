@@ -87,7 +87,7 @@
 	float: left;
 }
 
-.user-collection-preview h5 {
+.user-collection-preview h5, #collection_sidebar .collection_sidebar_collection h5 {
 	margin: 0;
 	color: #8e9e30;
 	font-size: 14px;
@@ -117,4 +117,44 @@
 
 .item_updated {
 	display: block;
+}
+
+#collection_main, #collection_sidebar {
+	float: left;
+}
+
+#collection_main {
+	width: 550px;
+}
+
+#collection_sidebar {
+	width: 175px;
+}
+
+#collection_sidebar h5 {
+	margin: 0;
+}
+
+.collection_sidebar_collection {
+	margin-top: 25px;
+	width: 135px;
+}
+
+.collection_sidebar_collection_image {
+	float: left;
+	margin-right: 5px;
+}
+
+.collection_sidebar_collection_image img {
+	max-width: 80px;
+}
+
+.collection_sidebar_collection_items {
+	float: left;
+}
+
+.collection_sidebar_collection_items img {
+	display: block;
+	margin-bottom: 2px;
+	max-height: 25px;
 }

@@ -46,11 +46,12 @@ function vibio_amazon_amazon_item_insert($item)
 	module_load_include("inc", "node", "node.pages");
 	$vid = variable_get("vibio_amazon_category_id", 1);
 	$tid = _vibio_amazon_get_vibio_term_from_asin($item['asin'], $vid);
+	$product_title = strlen($item['title']) > 255 ? substr($item['title'], 0, 255) : $item['title'];
 	
 	$publisher = user_load(1);
 	$node = array("type" => "product");
 	$state['values'] = array(
-		"title"	=> $item['title'],
+		"title"	=> $product_title,
 		"name"	=> $publisher->name,
 		"op"	=> t("Save"),
 		"field_amazon_asin"	=> array(

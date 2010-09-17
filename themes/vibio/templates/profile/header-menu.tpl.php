@@ -1,5 +1,6 @@
 <?php
-$profile_link = l(t("View your profile"), "user/{$profile_ext_user->uid}");
+$dashboard_link = l(t("My Dashboard"), "my-dashboard");
+$profile_link = l(t("My Profile"), "user/{$profile_ext_user->uid}");
 $logout_link = l(t("Logout"), "logout");
 ?>
 
@@ -17,5 +18,5 @@ $logout_link = l(t("Logout"), "logout");
 </tr></table>
 
 <div id="profile_ext_submenu">
-	<?php echo $profile_link.$logout_link; ?>
+	<?php echo $dashboard_link.$profile_link.$logout_link; ?>
 </div>

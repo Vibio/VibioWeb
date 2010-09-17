@@ -2,7 +2,7 @@
 if ($profile_picture)
 {
 	echo "
-		<a href='/user/{$display_user->uid}'>
+		<a href='/my-dashboard'>
 			<img id='profile_ext_displayblock_image' src='$profile_picture' />
 		</a>
 	";

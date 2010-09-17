@@ -1,3 +1,8 @@
+<style>
+#page_title {
+	display: none;
+}
+</style>
 <?php
 $sidebar_header = t("My Collections");
 $collections_link = l(t("View Complete List"), "user/{$collection_owner}/inventory");

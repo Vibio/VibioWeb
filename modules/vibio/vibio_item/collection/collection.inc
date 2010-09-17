@@ -181,7 +181,7 @@ function collection_get_categories($cid)
 	return $categories;
 }
 
-function collection_get_sidebar($uid, $max_collections=4, $as_uid=false)
+function collection_get_sidebar($uid, $ignore_cid=0, $max_collections=4, $as_uid=false)
 {
 	if (!$as_uid)
 	{
@@ -200,10 +200,11 @@ function collection_get_sidebar($uid, $max_collections=4, $as_uid=false)
 				WHERE p.`type`='collection'
 					AND p.`setting` <= %d
 					AND c.`uid`=%d
+					AND c.`cid` != %d
 				GROUP BY c.`cid`
 				ORDER BY RAND()
 				LIMIT %d";
-		$res = db_query($sql, $access, $uid, $max_collections);
+		$res = db_query($sql, $access, $uid, $ignore_cid, $max_collections);
 	}
 	else
 	{
@@ -211,10 +212,11 @@ function collection_get_sidebar($uid, $max_collections=4, $as_uid=false)
 				FROM {collection} c JOIN {collection_items} ci
 					ON c.`cid`=ci.`cid`
 				WHERE `uid`=%d
+					AND c.`cid` != %d
 				GROUP BY c.`cid`
 				ORDER BY RAND()
 				LIMIT %d";
-		$res = db_query($sql, $uid, $max_collections);
+		$res = db_query($sql, $uid, $ignore_cid, $max_collections);
 	}
 	
 	$collections = array();

@@ -31,7 +31,7 @@ function collection_view_collection($collection)
 		$collection_display = theme("collection_list_item", $collection_object, $access, false);
 		$collection_display .= views_embed_view("user_collection", "default", $collection['uid'], $collection['cid'], $access);
 		
-		$sidebar = collection_get_sidebar($collection['uid']);
+		$sidebar = collection_get_sidebar($collection['uid'], $collection['cid']);
 		$output = theme("collection_view_collection", $collection_object->uid, $collection_display, $sidebar);
 	}
 

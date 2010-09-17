@@ -370,7 +370,7 @@ ul.links li {
   clear: both;
 }
 
-.comment .picture img, .view .picture img  {
+.comment .picture img, .view .picture img, .uri_notification .picture img  {
 	max-height: 40px;
 }
 

@@ -65,14 +65,20 @@ ul.primary li a:hover .tab {
 }
 
 ul.primary li.active a,
-ul.primary li.active a:hover {
+ul.primary li.active a:hover,
+ul.primary li.ui-state-active a,
+ul.primary li.ui-state-active a:hover
+{
   border-width: 0;
   color: black;
   background: transparent url(../images/tab_left.png) no-repeat;
 }
 
 ul.primary li.active a .tab,
-ul.primary li.active a:hover .tab {
+ul.primary li.active a:hover .tab,
+ul.primary li.ui-state-active a .tab,
+ul.primary li.ui-state-active a:hover .tab
+{
 	background: transparent url(../images/tab_end.png) no-repeat right top;
 	color: black;
 }

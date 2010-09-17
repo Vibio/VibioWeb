@@ -51,7 +51,7 @@ function uri_menu()
 
 function uri_menu_alter(&$menu)
 {
-	$menu['relationships/list']['title'] = 'Connections';
+	$menu['relationships/list']['title'] = 'Friends';
 	
 	foreach (user_relationships_types_load() as $rtid => $relationship)
 	{
@@ -109,12 +109,49 @@ function uri_preprocess_search_result(&$vars)
 	}
 }
 
+function uri_preprocess_uri_dashboard_notification(&$vars)
+{
+	$rel_actions = "";
+	if ($vars['rel_type'] == "pending")
+	{
+		$approve = t("Approve");
+		$ignore = t("Ignore");
+		
+		$rel_actions = "
+			<table>
+				<tr>
+					<td>
+						<a class='uri_popup_link' href='/relationships/{$vars['relationship']->requestee_id}/{$vars['relationship']->rid}/approve'>
+							<button>$approve</button>
+						</a>
+					</td>
+					<td>
+						<a class='uri_popup_link' href='/relationships/{$vars['relationship']->requestee_id}/{$vars['relationship']->rid}/disapprove'>
+							<button>$ignore</button>
+						</a>
+					</td>
+					<td>
+						<img class='uri_edit_busy_indicator' src='/themes/vibio/images/ajax-loader.gif' />
+					</td>
+				</tr>
+			</table>
+		";
+	}
+	
+	$vars['rel_actions'] = $rel_actions;
+}
+
 function uri_theme()
 {
 	return array(
 		"uri_action_list"	=> array(
 			"arguments"	=> array("list" => array()),
 			"template"	=> "templates/uri/action-list",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"uri_dashboard_notification"	=> array(
+			"arguments"	=> array("rel_type" => "pending", "relationship" => false),
+			"template"	=> "templates/uri/dashboard-notification",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
 	);
@@ -140,6 +177,25 @@ function uri_edit_elaboration_form()
 				"#value"=> t("Save"),
 			),
 		),
+	);
+}
+
+function uri_profile_ext_dashboard($uid)
+{
+	global $user;
+	
+	$output = "";
+	$num_notifications = 0;
+	
+	foreach (user_relationships_load(array('requestee_id' => $uid, 'approved' => false), array("include_user_info" => true)) as $pending_relationship)
+	{
+		++$num_notifications;
+		$output .= theme("uri_dashboard_notification", "pending", $pending_relationship);
+	}
+	
+	$title = t("Notifications !num", array("!num" => $num_notifications > 0 ? "($num_notifications)" : ""));
+	return array(
+		$title	=> $output,
 	);
 }
 ?>

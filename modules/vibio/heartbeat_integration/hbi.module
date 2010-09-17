@@ -112,7 +112,7 @@ function _hbi_set_relationship($op, &$relationship)
 	$message_id = $op == "approve" ? "heartbeat_become_friends" : "heartbeat_cancel_friendship";
 	$variables = array(
 		"@user1" 		=> l($relationship->requestee->name, "user/".$relationship->requestee->uid),
-		"@relation_type"=> $relationship->name,
+		"@relation_type"=> $relationship->plural_name,
 		"@user2"		=> l($relationship->requester->name, "user/".$relationship->requester->uid),
 		"duplicate"		=> 1,
 	);

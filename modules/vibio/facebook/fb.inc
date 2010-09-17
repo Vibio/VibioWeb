@@ -228,7 +228,7 @@ function fb_get_share_params($node, $action="share_item")
 function fb_get_collection_share_params($collection, $action="share_collection")
 {
 	module_load_include("inc", "collection");
-	$image = collection_get_image($collection['cid']);
+	$image = collection_get_image($collection['cid'], true);
 	
 	$t_args = array(
 		"!collection"	=> $collection['title'],

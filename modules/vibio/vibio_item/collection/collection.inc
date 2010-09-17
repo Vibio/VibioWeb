@@ -111,9 +111,9 @@ function collection_set_user_default($uid, $cid)
 	return db_query($sql, $uid, $cid);
 }
 
-function collection_get_image($cid)
+function collection_get_image($cid, $absolute=false)
 {
-	return collection_default_image();
+	return collection_default_image($absolute);
 	
 	/*$sql = "SELECT n.`nid`
 			FROM {node} n JOIN {collection_items} ci ON n.`nid`=ci.`item_nid`
@@ -128,9 +128,10 @@ function collection_get_image($cid)
 	return _vibio_item_get_image($nid);*/
 }
 
-function collection_default_image()
+function collection_default_image($absolute=false)
 {
-	return "/themes/vibio/images/collections/box.png";
+	$default_image = "themes/vibio/images/collections/box.png";
+	return $absolute ? url($default_image, array("absolute" => true)) : "/$default_image";
 }
 
 function collection_get_num_items($cid, $access=false)

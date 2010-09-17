@@ -615,6 +615,22 @@ function offer2buy_change_list_type_access($nid)
 	return $uid == $user->uid;
 }
 
+function offer2buy_profile_ext_dashboard($uid)
+{
+	drupal_add_css("themes/vibio/css/offer2buy.css");
+	
+	$required_actions = _offer2buy_dashboard_get_required_actions($uid);
+	$pending_actions = _offer2buy_dashboard_get_pending_actions($uid);
+	
+	$required_title = t("Required Actions !num", array("!num" => count($required_actions) ? "(".count($required_actions).")" : ""));
+	$pending_title = t("Pending Actions !num", array("!num" => count($pending_actions) ? "(".count($pending_actions).")" : ""));
+	
+	return array(
+		$required_title	=> theme("offer2buy_actions_list", $required_actions, "required"),
+		$pending_title	=> theme("offer2buy_actions_list", $pending_actions, "pending"),
+	);
+}
+
 function offer2buy_reports_daily_cron($last_run)
 {
 	$sql = "SELECT COUNT(*) total_transactions, SUM(`price`) amount_transacted

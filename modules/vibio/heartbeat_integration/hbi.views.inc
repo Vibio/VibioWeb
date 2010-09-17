@@ -19,5 +19,12 @@ function hbi_views_query_alter(&$view, &$query)
 		$sql = "uid_target != %d";
 		$query->add_where(0, $sql, $view->args[0]);
 	}
+	elseif ($view->name == "user_hb_incoming_activity")
+	{
+		global $user;
+		
+		$sql = "heartbeat_activity.`uid_target`=%d";
+		$query->add_where(0, $sql, $user->uid);
+	}
 }
 ?>

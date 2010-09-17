@@ -9,3 +9,27 @@ img.uri_edit_busy_indicator {
 #uri_elaborations_edit fieldset {
 	width: 480px;
 }
+
+.uri_notifications_summary {
+	float: left;
+}
+
+.uri_notifications_actions {
+	margin-top: 10px;
+}
+
+.uri_notifications_actions table {
+	margin: 0;
+}
+
+.uri_notification {
+	background: #E0F2FF !important;
+	border: 1px solid #C7E5FD;
+	padding: 5px !important;
+	min-height: 0 !important;
+}
+
+.uri_notification .picture {
+  float: left;
+  margin-right: 10px;
+}

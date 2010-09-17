@@ -112,7 +112,7 @@
 }
 
 .collection_categories {
-	color: #A5A5A5;
+	color: #a5a5a5;
 }
 
 .item_updated {
@@ -124,11 +124,17 @@
 }
 
 #collection_main {
-	width: 550px;
+	width: 515px;
+}
+
+#collection_main .collection_summary {
+	width: 400px;
 }
 
 #collection_sidebar {
-	width: 175px;
+	width: 185px;
+	border-left: 1px solid #a5a5a5;
+	padding-left: 20px;
 }
 
 #collection_sidebar h5 {
@@ -157,4 +163,5 @@
 	display: block;
 	margin-bottom: 2px;
 	max-height: 25px;
+	max-width: 50px;
 }

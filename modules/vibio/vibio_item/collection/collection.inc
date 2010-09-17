@@ -259,7 +259,7 @@ function collection_get_sidebar_items($cid, $owner=false, $as_uid=false, $num_it
 	}
 	else
 	{
-		$sql = "SELECT ci.`item_nid` AS nid, n.`title`
+		$sql = "SELECT ci.`item_nid`, n.`title`
 				FROM {collection_items} ci JOIN {node} n
 					ON ci.`item_nid`=n.`nid`
 				WHERE ci.`cid`=%d
@@ -271,7 +271,7 @@ function collection_get_sidebar_items($cid, $owner=false, $as_uid=false, $num_it
 	$items = array();
 	while ($item = db_fetch_object($res))
 	{
-		$item->image = _vibio_item_get_image($item->nid);
+		$item->image = _vibio_item_get_image($item->item_nid);
 		$items[] = $item;
 	}
 	

@@ -1289,13 +1289,15 @@ function comment_form(&$form_state, $edit, $title = NULL) {
       if ($edit['registered_name'] != '') {
         // The comment is by a registered user
         $form['admin']['author'] = array(
-          '#type' => 'textfield',
+		  '#type'	=> 'value',
+		  '#value'	=> $edit['uid'],
+          /*'#type' => 'textfield',
           '#title' => t('Authored by'),
           '#size' => 30,
           '#maxlength' => 60,
           '#autocomplete_path' => 'user/autocomplete',
           '#default_value' => $author,
-          '#weight' => -1,
+          '#weight' => -1,*/
         );
       }
       else {

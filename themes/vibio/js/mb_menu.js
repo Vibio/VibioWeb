@@ -6,8 +6,8 @@ $(document).ready(function()
 		fadeInTime: 150,
 		fadeOutTime: 150,
 		shadow: true,
-		//openOnClick: false,
-		//closeOnMouseOut: true,
+		openOnClick: false,
+		closeOnMouseOut: true,
 		closeAfter: 400
 	});
 });

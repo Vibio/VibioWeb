@@ -90,6 +90,13 @@ function privacy_views_query_alter(&$view, &$query)
 		$uid = $view->args[0];
 		
 		$sql = "CASE
+					WHEN heartbeat_activity.`message_id`='heartbeat_add_comment' THEN %d >= (
+						SELECT `setting`
+						FROM {privacy_settings}
+						WHERE `type_id`=heartbeat_activity.`message_id`
+							AND type='heartbeat_messages'
+							AND `uid`=heartbeat_activity.`uid`
+					)
 					WHEN heartbeat_activity.`nid`=0 THEN %d >= (
 						SELECT `setting`
 						FROM {privacy_settings}

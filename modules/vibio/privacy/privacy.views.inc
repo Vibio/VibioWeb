@@ -121,7 +121,7 @@ function privacy_views_query_alter(&$view, &$query)
 					ELSE 1
 					END > 0
 		";
-		$query->add_where(0, $sql, PRIVACY_CONNECTION, PRIVACY_CONNECTION);
+		$query->add_where(0, $sql, PRIVACY_CONNECTION, PRIVACY_CONNECTION, PRIVACY_CONNECTION);
 	}
 }
 

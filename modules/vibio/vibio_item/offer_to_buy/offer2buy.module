@@ -54,6 +54,42 @@ function offer2buy_menu()
 	);
 }
 
+function offer2buy_menu_title($type, $uid=false, $return_actions=false, $normal_menu=true)
+{
+	if (!$uid)
+	{
+		global $user;
+		$uid = $user->uid;
+	}
+	
+	switch ($type)
+	{
+		case "required-actions":
+			$actions = _offer2buy_dashboard_get_required_actions($uid);
+			$title = t("Required Actions !num", array("!num" => count($actions) ? "(".count($actions).")" : ""));
+			break;
+		case "pending-actions":
+			$actions = _offer2buy_dashboard_get_pending_actions($uid);
+			$title = t("Pending Actions !num", array("!num" => count($actions) ? "(".count($actions).")" : ""));
+			break;
+		case "item-offers":
+			$actions = _offer2buy_get_user_incoming_offers($uid);
+			$title = t("Item Offers !num", array("!num" => count($actions) ? "(".count($actions).")" : ""));
+			break;
+		case "my-offers":
+			$actions = _offer2buy_get_user_outgoing_offers($uid);
+			$title = t("My Offers !num", array("!num" => count($actions) ? "(".count($actions).")" : ""));
+			break;
+	}
+	
+	if ($normal_menu)
+	{
+		$title = preg_replace('/^([^\(]*)\(([\d]+)\)/', '<span class="menu_with_count_text">\1</span><span class="menu_with_count_count">\2</span><div class="clear"></div>', $title);
+	}
+	
+	return $return_actions ? array("actions" => $actions, "title" => $title) : $title;
+}
+
 function offer2buy_views_api()
 {
 	return array(
@@ -619,21 +655,26 @@ function offer2buy_profile_ext_dashboard($uid)
 {
 	drupal_add_css("themes/vibio/css/offer2buy.css");
 	
-	$required_actions = _offer2buy_dashboard_get_required_actions($uid);
-	$pending_actions = _offer2buy_dashboard_get_pending_actions($uid);
-	$incoming_offers = _offer2buy_get_user_incoming_offers($uid);
-	$outgoing_offers = _offer2buy_get_user_outgoing_offers($uid);
-	
-	$required_title = t("Required Actions !num", array("!num" => count($required_actions) ? "(".count($required_actions).")" : ""));
-	$pending_title = t("Pending Actions !num", array("!num" => count($pending_actions) ? "(".count($pending_actions).")" : ""));
-	$incoming_title = t("Item Offers !num", array("!num" => count($incoming_offers) ? "(".count($incoming_offers).")" : ""));
-	$outgoing_title = t("My Offers !num", array("!num" => count($outgoing_offers) ? "(".count($outgoing_offers).")" : ""));
+	$required = offer2buy_menu_title("required-actions", $uid, true);
+	$pending = offer2buy_menu_title("pending-actions", $uid, true);
+	$incoming = offer2buy_menu_title("item-offers", $uid, true);
+	$outgoing = offer2buy_menu_title("my-offers", $uid, true);
 	
 	return array(
-		$incoming_title => theme("offer2buy_list_all_offers", $incoming_offers),
-		$outgoing_title => theme("offer2buy_list_outgoing_offers", $outgoing_offers),
-		$required_title	=> theme("offer2buy_actions_list", $required_actions, "required"),
-		$pending_title	=> theme("offer2buy_actions_list", $pending_actions, "pending"),
+		$incoming['title']	=> theme("offer2buy_list_all_offers", $incoming['actions']),
+		$outgoing['title']	=> theme("offer2buy_list_outgoing_offers", $outgoing['actions']),
+		$required['title']	=> theme("offer2buy_actions_list", $required['actions'], "required"),
+		$pending['title']	=> theme("offer2buy_actions_list", $pending['actions'], "pending"),
+	);
+}
+
+function offer2buy_profile_ext_menuitems()
+{
+	return array(
+		"required-actions"	=> "offer2buy_menu_title",
+		"pending-actions"	=> "offer2buy_menu_title",
+		"item-offers"		=> "offer2buy_menu_title",
+		"my-offers"			=> "offer2buy_menu_title",
 	);
 }
 

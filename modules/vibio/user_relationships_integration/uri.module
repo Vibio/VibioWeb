@@ -57,6 +57,16 @@ function uri_menu_alter(&$menu)
 	{
 		$menu["relationships/{$rtid}"]['type'] = MENU_CALLBACK;
 	}
+	
+	$menu['relationships']['title callback'] = "uri_menu_title";
+}
+
+function uri_menu_title()
+{
+	global $user;
+	$friend_count = module_exists("network") ? count(_network_get_friends($user->uid, 1)) : 0;
+	
+	return t("Friends (!count)", array("!count" => $friend_count));
 }
 
 function uri_preprocess_user_relationships(&$vars)

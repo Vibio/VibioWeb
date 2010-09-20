@@ -33,6 +33,10 @@ function vibio_menu_item_link($link)
 	{
 		return "";
 	}
+	elseif (strpos($link['router_path'], "my-dashboard/") !== false)
+	{
+		$link['localized_options']['html'] = true;
+	}
 	
 	return zen_menu_item_link($link);
 }

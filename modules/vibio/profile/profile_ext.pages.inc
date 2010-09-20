@@ -54,16 +54,22 @@ function profile_ext_manage_external_accounts($uid)
 	return $out;
 }
 
-function profile_ext_dashboard()
+function profile_ext_dashboard($selected_tab=false)
 {
 	global $user;
 	
 	drupal_add_js("themes/vibio/js/profile.js");
+	drupal_set_title(t("My Dashboard"));
 	
 	$tabs = array(t("Everything") => views_embed_view("user_hb_incoming_activity"));
 	foreach (module_invoke_all("profile_ext_dashboard", $user->uid) as $title => $tab)
 	{
 		$tabs[$title] = $tab;
+	}
+	
+	if ($selected_tab)
+	{
+		drupal_add_js(array("profile_ext" => array("selected_tab" => str_replace("-", "_", $selected_tab))), "setting");
 	}
 	
 	return theme("profile_ext_dashboard", $tabs);

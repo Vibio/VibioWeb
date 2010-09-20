@@ -397,3 +397,22 @@ ul.links li {
 #block-menu-secondary-links ul.menu li a.active {
 	color: #0092C9;
 }
+
+.region-sidebar-first h2.title {
+  display: none;
+}
+
+#block-user-1 {
+  border-bottom: 1px solid #313D45;
+  margin-bottom: 2px;
+  padding-bottom: 5px;
+}
+
+.menu_with_count_text {
+  float: left;
+}
+
+.menu_with_count_count {
+  float: right;
+  color: #B5CA3E;
+}

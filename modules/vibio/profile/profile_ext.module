@@ -46,6 +46,20 @@ function profile_ext_menu()
 		"type"				=> MENU_SUGGESTED_ITEM,
 	);
 	
+	foreach (module_invoke_all("profile_ext_menuitems") as $href => $title_callback)
+	{
+		$menu["my-dashboard/{$href}"] = array(
+			"title"				=> "My Dashboard",
+			"title callback" 	=> $title_callback,
+			"title arguments"	=> array($href),
+			"page callback"		=> "profile_ext_dashboard",
+			"page arguments"	=> array(1),
+			"access callback"	=> "profile_ext_access_dashboard",
+			"file"				=> "profile_ext.pages.inc",
+			"type"				=> MENU_SUGGESTED_ITEM,
+		);
+	}
+	
 	return $menu;
 }
 
@@ -142,7 +156,7 @@ function profile_ext_display_block($u)
 	$cache_key = "profile_display_block:{$u->uid}";
 	$cache_time = 60*5; // 5 minutes
 	
-	if (false && $cache = cache_get($cache_key, "cache"))
+	if ($cache = cache_get($cache_key, "cache"))
 	{
 		$items = $cache->data;
 	}
@@ -163,7 +177,7 @@ function profile_ext_display_block($u)
 		$theme_args = array(
 			"image" => "/themes/vibio/images/icons/messages.png",
 			"count"	=> array_sum(module_invoke_all("uri_profile_ext_dashboard", $u->uid, "count")),
-			"href"	=> url("my-dashboard", array("query" => "selectedtab=notifications")),
+			"href"	=> url("my-dashboard/notifications"),
 		);
 		$items .= theme("profile_ext_displayblock_item", $theme_args);
 		

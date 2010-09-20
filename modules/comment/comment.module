@@ -219,7 +219,8 @@ function comment_menu() {
   $items['comment/delete'] = array(
     'title' => 'Delete comment',
     'page callback' => 'comment_delete',
-    'access arguments' => array('administer comments'),
+	'access callback'	=> "comment_access",
+    'access arguments' => array("delete", 2),
     'type' => MENU_CALLBACK,
     'file' => 'comment.admin.inc',
   );
@@ -661,9 +662,24 @@ function comment_user($type, $edit, &$user, $category = NULL) {
  */
 function comment_access($op, $comment) {
   global $user;
+  
+  if (is_numeric($comment))
+  {
+	$comment = _comment_load($comment);
+  }
+  
+  if (user_access("administer comments"))
+  {
+	return true;
+  }
 
   if ($op == 'edit') {
     return ($user->uid && $user->uid == $comment->uid && comment_num_replies($comment->cid) == 0) || user_access('administer comments');
+  }
+  elseif ($op == "delete")
+  {
+	$node = node_load($comment->nid);
+	return $node->uid == $user->uid;
   }
 }
 
@@ -836,6 +852,13 @@ function comment_links($comment, $return = 1) {
       );
     }
     else if (user_access('post comments')) {
+		if (comment_access("delete", $comment))
+		{
+			$links['comment_delete'] = array(
+				'title' => t('delete'),
+				'href'	=> "comment/delete/{$comment->cid}",
+			);
+		}
       if (comment_access('edit', $comment)) {
         $links['comment_edit'] = array(
           'title' => t('edit'),

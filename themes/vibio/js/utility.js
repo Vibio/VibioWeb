@@ -1,11 +1,5 @@
-var vibio_utility = {};
-
-$(document).ready(function()
-{
-	var messages_container = $("#js_messages_container").length ? $("#js_messages_container") : $("<div id='js_messages_container'></div>").prependTo("#content-area");
-	
-	//get the GET args on an anchor tag
-	vibio_utility.get_a_get_arg = function(a, target_arg)
+var vibio_utility = {
+	get_a_get_arg: function(a, target_arg)
 	{
 		var get_args = a.attr("href").split("?")[1].split("&");
 		var value = 0;
@@ -20,7 +14,39 @@ $(document).ready(function()
 		});
 		
 		return value;
+	},
+	get_get_arg: function(target_arg)
+	{
+		var get_args = vibio_utility.get_args();
+		var result = false;
+		
+		$.each(get_args, function(arg, value)
+		{
+			if (arg == target_arg)
+			{
+				result = value;
+			}
+		});
+		
+		return result;
+	},
+	get_args: function()
+	{
+		var args = window.location.search.substring(1).split("&");
+		var get_args = {};
+		
+		$.each(args, function(i, e)
+		{
+			get_args[e.split("=")[0]] = e.split("=")[1];
+		});
+		
+		return get_args;
 	}
+};
+
+$(document).ready(function()
+{
+	var messages_container = $("#js_messages_container").length ? $("#js_messages_container") : $("<div id='js_messages_container'></div>").prependTo("#content-area");
 	
 	vibio_utility.set_message = function(message, type, clear_type, clear_all)
 	{

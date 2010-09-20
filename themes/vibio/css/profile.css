@@ -24,7 +24,7 @@
 }
 
 .menuContainer a {
-	color: #B9D9F0;
+	color: #70818B;
 	font-size: 10px;
 }
 
@@ -33,14 +33,21 @@
 	float: right;
 }
 
+#profile_ext_headermenu {
+	color: white;
+}
+
 #profile_ext_headermenu img {
 	position: relative;
 	top: -2px;
-	margin-left: 10px;
 }
 
 #profile_ext_submenu {
 	display: none;
+}
+
+#profile_ext_headermenu:hover {
+	cursor: pointer;
 }
 
 .profile_ext_displayblock_item:first-child {
@@ -65,9 +72,25 @@
 }
 
 .menuContainer {
-	background: #304B5E;
-	border: 2px solid black;
+	background: white;
+	border: 1px solid black;
 	padding: 0 10px;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	background: white;
+	opacity: 0.85 !important;
+	filter: alpha(opacity=85) !important;
+}
+
+.menuContainer p.separator {
+	background-color: #A0A5A9;
+	height: 1px;
+	margin: 10px 0px 0px;
+	width: 100%;
+}
+
+.menuContainer a {
+	color: #70818B;
 }
 
 #profile_tabs {

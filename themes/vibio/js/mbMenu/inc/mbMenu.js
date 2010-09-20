@@ -364,7 +364,7 @@
           }
 
           if(!(isText || isTitle || isDisabled ||isBoxmenu)){
-            menuLine.css({cursor:"pointer"});
+            //menuLine.css({cursor:"pointer"});
 
             menuLine.bind("mouseover",function(){
               clearTimeout($.mbMenu.deleteOnMouseOut);

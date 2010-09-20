@@ -1,5 +1,10 @@
 $(document).ready(function()
 {
+	if (typeof FB == "undefinged")
+	{
+		return;
+	}
+	
 	FB.init({
 		appId: fb_settings.app_id,
 		status: true,

@@ -7,6 +7,22 @@ class views_plugin_cache_argument extends views_plugin_cache {
 		return t("Simple Argument Based");
 	}
 	
+	function cache_set($type)
+	{
+		if (!$this->view->no_cache)
+		{
+			parent::cache_set($type);
+		}
+	}
+	
+	function cache_get($type)
+	{
+		if (!$this->view->no_cache)
+		{
+			parent::cache_get($type);
+		}
+	}
+	
 	function get_results_key()
 	{
 		if (!isset($this->_results_key))

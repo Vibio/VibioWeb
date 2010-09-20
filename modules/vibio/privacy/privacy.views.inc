@@ -54,7 +54,12 @@ function privacy_views_data()
 
 function privacy_views_query_alter(&$view, &$query)
 {
-	if ($view->name == "user_heartbeat_activity")
+	if (!privacy_views_ensure_privacy($view->args))
+	{
+		$query->add_where(0, "0"); // can't see it, DAWG!
+		$view->no_cache = true;
+	}
+	elseif ($view->name == "user_heartbeat_activity")
 	{
 		$uid = $view->args[0];
 		$access = $view->args[1];
@@ -111,5 +116,22 @@ function privacy_views_query_alter(&$view, &$query)
 		";
 		$query->add_where(0, $sql, PRIVACY_CONNECTION, PRIVACY_CONNECTION);
 	}
+}
+
+/*
+ if a view has multiple arguments, the first argument is a uid, last arg is a privacy setting
+*/
+function privacy_views_ensure_privacy($args)
+{
+	if (count($args) <= 1)
+	{
+		return true;
+	}
+	
+	$uid = $args[0];
+	$index = count($args) - 1;
+	$privacy_setting = $args[$index];
+	
+	return $privacy_setting <= privacy_get_access_level($args[0]);
 }
 ?>

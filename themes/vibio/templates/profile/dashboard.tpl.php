@@ -11,7 +11,7 @@ foreach ($profile_tabs as $title => $tab)
 			</a>
 		</li>
 	";
-	$tab_content .= "<div id='$tab_id'>{$tab}</div>";
+	$tab_content .= "<div id='$tab_id'>{$tab}</div><div class='clear'></div>";
 }
 ?>
 

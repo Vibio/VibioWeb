@@ -164,6 +164,7 @@ function collection_preprocess_collection_list_item_preview(&$vars)
 function collection_preprocess_page(&$vars)
 {
 	drupal_add_js("themes/vibio/js/collections.js");
+	drupal_add_css("themes/vibio/css/collections.css");
 }
 
 function collection_nodeapi(&$node, $op, $a3=null, $a4=null)

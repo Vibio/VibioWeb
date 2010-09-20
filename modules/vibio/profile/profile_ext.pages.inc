@@ -62,6 +62,11 @@ function profile_ext_dashboard($selected_tab=false)
 	drupal_set_title(t("My Dashboard"));
 	
 	$tabs = array(t("Activity Feed") => views_embed_view("user_hb_incoming_activity"));
+	if (module_exists("collection"))
+	{
+		$tabs[t("Inventory")] = views_embed_view("user_collections", "default", $user->uid, PRIVACY_ONLYME);
+	}
+	
 	foreach (module_invoke_all("profile_ext_dashboard", $user->uid) as $title => $tab)
 	{
 		$tabs[$title] = $tab;

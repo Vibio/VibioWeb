@@ -43,7 +43,7 @@ function profile_ext_menu()
 		"page callback"		=> "profile_ext_dashboard",
 		"access callback"	=> "profile_ext_access_dashboard",
 		"file"				=> "profile_ext.pages.inc",
-		"type"				=> MENU_CALLBACK,
+		"type"				=> MENU_SUGGESTED_ITEM,
 	);
 	
 	return $menu;

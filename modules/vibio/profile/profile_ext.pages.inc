@@ -61,7 +61,7 @@ function profile_ext_dashboard($selected_tab=false)
 	drupal_add_js("themes/vibio/js/profile.js");
 	drupal_set_title(t("My Dashboard"));
 	
-	$tabs = array(t("Everything") => views_embed_view("user_hb_incoming_activity"));
+	$tabs = array(t("Activity Feed") => views_embed_view("user_hb_incoming_activity"));
 	foreach (module_invoke_all("profile_ext_dashboard", $user->uid) as $title => $tab)
 	{
 		$tabs[$title] = $tab;

@@ -64,6 +64,26 @@ function offer2buy_menu_title($type, $uid=false, $return_actions=false, $normal_
 	
 	switch ($type)
 	{
+		case "offers":
+			$incoming = _offer2buy_get_user_incoming_offers($uid);
+			$outgoing = _offer2buy_get_user_outgoing_offers($uid);
+			$total = count($incoming) + count($outgoing);
+			$actions = array(
+				"incoming"	=> $incoming,
+				"outgoing"	=> $outgoing,
+			);
+			$title = t("Offers !num", array("!num" => $total ? "($total)" : ""));
+			break;
+		case "actions":
+			$required = _offer2buy_dashboard_get_required_actions($uid);
+			$pending = _offer2buy_dashboard_get_pending_actions($uid);
+			$total = count($required) + count($pending);
+			$actions = array(
+				"pending"	=> $pending,
+				"required"	=> $required,
+			);
+			$title = t("Actions !num", array("!num" => $total ? "($total)" : ""));
+			break;
 		case "required-actions":
 			$actions = _offer2buy_dashboard_get_required_actions($uid);
 			$title = t("Required Actions !num", array("!num" => count($actions) ? "(".count($actions).")" : ""));
@@ -655,26 +675,24 @@ function offer2buy_profile_ext_dashboard($uid)
 {
 	drupal_add_css("themes/vibio/css/offer2buy.css");
 	
-	$required = offer2buy_menu_title("required-actions", $uid, true);
-	$pending = offer2buy_menu_title("pending-actions", $uid, true);
-	$incoming = offer2buy_menu_title("item-offers", $uid, true);
-	$outgoing = offer2buy_menu_title("my-offers", $uid, true);
+	$offers = offer2buy_menu_title("offers", $uid, true, false);
+	$actions = offer2buy_menu_title("actions", $uid, true, false);
 	
 	return array(
-		$incoming['title']	=> theme("offer2buy_list_all_offers", $incoming['actions']),
-		$outgoing['title']	=> theme("offer2buy_list_outgoing_offers", $outgoing['actions']),
-		$required['title']	=> theme("offer2buy_actions_list", $required['actions'], "required"),
-		$pending['title']	=> theme("offer2buy_actions_list", $pending['actions'], "pending"),
+		$offers['title'] 	=> theme("offer2buy_list_all_offers", $offers['actions']['incoming']).theme("offer2buy_list_outgoing_offers", $offers['actions']['outgoing']),
+		$actions['title']	=> theme("offer2buy_actions_list", $actions['actions']['required'], "required").theme("offer2buy_actions_list", $actions['actions']['pending'], "pending"),
 	);
 }
 
 function offer2buy_profile_ext_menuitems()
 {
 	return array(
-		"required-actions"	=> "offer2buy_menu_title",
-		"pending-actions"	=> "offer2buy_menu_title",
 		"item-offers"		=> "offer2buy_menu_title",
 		"my-offers"			=> "offer2buy_menu_title",
+		"required-actions"	=> "offer2buy_menu_title",
+		"pending-actions"	=> "offer2buy_menu_title",
+		"offers"			=> "offer2buy_menu_title",
+		"actions"			=> "offer2buy_menu_title",
 	);
 }
 

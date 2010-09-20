@@ -15,16 +15,11 @@ foreach ($profile_tabs as $title => $tab)
 }
 ?>
 
-<div id='dashboard_main'>
-	<div id='profile_tabs' class='tabs'>
-		<div class='tabs'>
-			<ul class='tabs primary clearfix'>
-				<?php echo $tab_html; ?>
-			</ul>
-		</div>
-		<?php echo $tab_content; ?>
+<div id='profile_tabs' class='tabs'>
+	<div class='tabs'>
+		<ul class='tabs primary clearfix'>
+			<?php echo $tab_html; ?>
+		</ul>
 	</div>
+	<?php echo $tab_content; ?>
 </div>
-<div id='dashboard_sidebar'>
-</div>
-<div class='clear'></div>

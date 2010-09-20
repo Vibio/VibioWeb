@@ -69,21 +69,3 @@
 	border: 2px solid black;
 	padding: 0 10px;
 }
-
-#dashboard_main, #dashboard_sidebar {
-	float: left;
-	margin-top: 25px;
-}
-
-#dashboard_main {
-	margin-right: 20px;
-	width: 515px;
-}
-
-#dashboard_main .views_message {
-	max-width: 315px;
-}
-
-#dashboard_sidebar {
-	width: 185px;
-}

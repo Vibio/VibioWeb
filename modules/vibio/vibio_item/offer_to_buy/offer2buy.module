@@ -621,11 +621,17 @@ function offer2buy_profile_ext_dashboard($uid)
 	
 	$required_actions = _offer2buy_dashboard_get_required_actions($uid);
 	$pending_actions = _offer2buy_dashboard_get_pending_actions($uid);
+	$incoming_offers = _offer2buy_get_user_incoming_offers($uid);
+	$outgoing_offers = _offer2buy_get_user_outgoing_offers($uid);
 	
 	$required_title = t("Required Actions !num", array("!num" => count($required_actions) ? "(".count($required_actions).")" : ""));
 	$pending_title = t("Pending Actions !num", array("!num" => count($pending_actions) ? "(".count($pending_actions).")" : ""));
+	$incoming_title = t("Item Offers !num", array("!num" => count($incoming_offers) ? "(".count($incoming_offers).")" : ""));
+	$outgoing_title = t("My Offers !num", array("!num" => count($outgoing_offers) ? "(".count($outgoing_offers).")" : ""));
 	
 	return array(
+		$incoming_title => theme("offer2buy_list_all_offers", $incoming_offers),
+		$outgoing_title => theme("offer2buy_list_outgoing_offers", $outgoing_offers),
 		$required_title	=> theme("offer2buy_actions_list", $required_actions, "required"),
 		$pending_title	=> theme("offer2buy_actions_list", $pending_actions, "pending"),
 	);

@@ -146,7 +146,7 @@ function collection_preprocess_collection_list_item_preview(&$vars)
 		$vars['item']->fb_share = theme("fb_share", $vars['item']->nid);
 	}
 	
-	if (!$vars['item']->for_sale)
+	if (!$vars['item']->for_sale && $vars['item']->users_uid == $user->uid)
 	{
 		$options = array(
 			"attributes"	=> array(
@@ -155,9 +155,13 @@ function collection_preprocess_collection_list_item_preview(&$vars)
 		);
 		$vars['item']->offer2buy_price = l(t("Sell"), "offer2buy/ajax/edit-post-type/{$vars['item']->nid}", $options);
 	}
-	else
+	elseif ($vars['item']->for_sale)
 	{
 		$vars['item']->offer2buy_price = "$".$vars['item']->offer2buy_price;
+	}
+	else
+	{
+		$vars['item']->offer2buy_price = "";
 	}
 }
 

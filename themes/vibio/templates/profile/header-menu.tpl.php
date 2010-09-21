@@ -9,8 +9,10 @@ $logout_link = l(t("Logout"), "logout");
 	<td id="profile_ext_headermenu">
 		<table class="rootVoices"><tr>
 			<td class="rootVoice {menu: 'profile_ext_submenu'}">
-				<img src="/themes/vibio/images/icons/acct_dropdown.png" />
-				<?php echo $profile_ext_user->name; ?>
+				<div class='mbmenu_arrow_icon'> </div>
+				<div class='mbmenu_title'>
+					<?php echo $profile_ext_user->name; ?>
+				</div>
 			</td>
 		</tr></table>
 	</td>
@@ -18,6 +20,7 @@ $logout_link = l(t("Logout"), "logout");
 
 <div id="profile_ext_submenu">
 	<?php
+	echo "<a rel='separator'> </a>";
 	echo $edit_account_link;
 	echo $privacy_settings_link;
 	echo $faq_link;

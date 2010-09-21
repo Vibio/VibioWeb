@@ -15,7 +15,7 @@ $display_args = array(
 	"!total"	=> $view->total_rows,
 );
 
-echo l($collections_link_text, "user/{$view->args[0]}/inventory")."<br />";
+//echo l($collections_link_text, "user/{$view->args[0]}/inventory")."<br />";
 echo t("Viewing !start - !end of !total", $display_args);
 ?>
 

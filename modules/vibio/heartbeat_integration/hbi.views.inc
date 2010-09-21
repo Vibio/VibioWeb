@@ -14,17 +14,12 @@ function hbi_views_data_alter(&$data)
 
 function hbi_views_query_alter(&$view, &$query)
 {
-	if ($view->name == "user_relational_activity")
-	{
-		$sql = "uid_target != %d";
-		$query->add_where(0, $sql, $view->args[0]);
-	}
-	elseif ($view->name == "user_hb_incoming_activity")
+	if ($view->name == "user_hb_incoming_activity")
 	{
 		global $user;
 		
-		$sql = "heartbeat_activity.`uid_target`=%d";
-		$query->add_where(0, $sql, $user->uid);
+		$sql = "heartbeat_activity.`uid_target`=%d OR heartbeat_activity.`uid`=%d";
+		$query->add_where(0, $sql, $view->args[0], $view->args[0]);
 	}
 }
 ?>

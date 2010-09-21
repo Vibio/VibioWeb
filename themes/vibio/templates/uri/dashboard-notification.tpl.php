@@ -7,11 +7,11 @@ switch ($rel_type)
 
 $requester_image = theme("user_picture", $relationship->requester);
 echo "
-	<div class='uri_notification rounded_content'>
+	<div class='profile_notification rounded_content'>
 		$requester_image
-		<div class='uri_notifications_summary'>
+		<div class='profile_notifications_summary'>
 			$message
-			<div class='uri_notifications_actions'>
+			<div class='profile_notifications_actions'>
 				$rel_actions
 			</div>
 		</div>

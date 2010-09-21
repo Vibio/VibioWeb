@@ -190,7 +190,7 @@ function uri_edit_elaboration_form()
 	);
 }
 
-function uri_profile_ext_dashboard($uid, $get="output")
+function uri_profile_ext_dashboard_notifications($uid)
 {
 	global $user;
 	
@@ -203,14 +203,11 @@ function uri_profile_ext_dashboard($uid, $get="output")
 		$output .= theme("uri_dashboard_notification", "pending", $pending_relationship);
 	}
 	
-	if ($get == "count")
-	{
-		return $num_notifications;
-	}
-	
-	$title = t("Notifications !num", array("!num" => $num_notifications > 0 ? "($num_notifications)" : ""));
 	return array(
-		$title	=> $output,
+		"uri"	=> array(
+			"count"		=> $num_notifications,
+			"display"	=> $output,
+		),
 	);
 }
 ?>

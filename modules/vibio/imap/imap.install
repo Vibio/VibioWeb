@@ -1,0 +1,53 @@
+<?php
+function imap_schema()
+{
+	return array(
+		"imap_images"	=> array(
+			"fields"	=> array(
+				"imap_id"	=> array(
+					"type"		=> "serial",
+					"unsigned"	=> true,
+					"not null"	=> true,
+				),
+				"uid"		=> array(
+					"type"		=> "int",
+					"unsigned"	=> true,
+					"not null"	=> true,
+					"default"	=> 0,
+				),
+				"filepath"	=> array(
+					"type"		=> "text",
+					"size"		=> "normal",
+					"not null"	=> false,
+				),
+				"timestamp"	=> array(
+					"type"		=> "int",
+					"unsigned"	=> true,
+					"not null"	=> true,
+					"default"	=> 0,
+				),
+				"pending"	=> array(
+					"type"		=> "int",
+					"unsigned"	=> true,
+					"not null"	=> true,
+					"default"	=> 0,
+				),
+			),
+			"indexes"	=> array(
+				"uid"	=> array("uid"),
+			),
+			"primary key" => array("imap_id"),
+		),
+	);
+}
+
+function imap_install()
+{
+	drupal_install_schema("imap");
+}
+
+function imap_uninstall()
+{
+	drupal_uninstall_schema("imap");
+}
+?>

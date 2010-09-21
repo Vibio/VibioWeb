@@ -60,8 +60,11 @@ function profile_ext_dashboard($selected_tab=false)
 	
 	drupal_add_js("themes/vibio/js/profile.js");
 	drupal_set_title(t("My Dashboard"));
+	module_load_include("inc", "profile_ext");
 	
 	$tabs = array(t("Activity Feed") => views_embed_view("user_hb_incoming_activity"));
+	profile_ext_get_dashboard_notifications($user->uid, $tabs);
+	
 	if (module_exists("collection"))
 	{
 		$tabs[t("Inventory")] = views_embed_view("user_collections", "default", $user->uid, PRIVACY_ONLYME);

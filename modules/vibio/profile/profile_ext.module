@@ -162,6 +162,7 @@ function profile_ext_display_block($u)
 	}
 	else
 	{
+		module_load_include("inc", "profile_ext");
 		$items = "";
 		
 		if (module_exists("privatemsg"))
@@ -176,7 +177,7 @@ function profile_ext_display_block($u)
 		
 		$theme_args = array(
 			"image" => "/themes/vibio/images/icons/messages.png",
-			"count"	=> array_sum(module_invoke_all("uri_profile_ext_dashboard", $u->uid, "count")),
+			"count"	=> profile_ext_get_dashboard_notifications($u->uid, $tabs),
 			"href"	=> url("my-dashboard/notifications"),
 		);
 		$items .= theme("profile_ext_displayblock_item", $theme_args);

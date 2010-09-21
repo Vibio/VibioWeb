@@ -137,3 +137,27 @@
 .mbmenu_title {
 	float: right;
 }
+
+.profile_notifications_summary {
+	float: left;
+}
+
+.profile_notifications_actions {
+	margin-top: 10px;
+}
+
+.profile_notifications_actions table {
+	margin: 0;
+}
+
+.profile_notification {
+	background: #E0F2FF !important;
+	border: 1px solid #C7E5FD;
+	padding: 5px !important;
+	min-height: 0 !important;
+}
+
+.profile_notification .picture {
+  float: left;
+  margin-right: 10px;
+}

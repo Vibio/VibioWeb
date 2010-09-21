@@ -1,0 +1,60 @@
+<?php
+function imap_perm()
+{
+	return array(
+		"imap admin",
+	);
+}
+
+function imap_cron()
+{
+	module_load_include("inc", "imap");
+	imap_get_attachments();
+}
+
+function imap_menu()
+{
+	return array(
+		"admin/settings/imap-image-fetch"	=> array(
+			"title"				=> "IMAP Image Fetch",
+			"page callback"		=> "drupal_get_form",
+			"page arguments"	=> array("imap_admin"),
+			"access arguments"	=> array("imap admin"),
+			"file"				=> "imap.forms.inc",
+			"type"				=> MENU_NORMAL_ITEM,
+		),
+	);
+}
+
+function imap_theme()
+{
+	return array(
+		"imap_dashboard_notification"	=> array(
+			"arguments"	=> array("imap_image" => array()),
+			"template"	=> "templates/imap/dashboard-notification",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+	);
+}
+
+function imap_profile_ext_dashboard_notifications($uid)
+{
+	module_load_include("inc", "imap");
+	
+	$count = 0;
+	$output = "";
+	
+	foreach (imap_user_pending_images($uid) as $image)
+	{
+		++$count;
+		$output .= theme("imap_dashboard_notification", $image);
+	}
+	
+	return array(
+		"imap"	=> array(
+			"count"		=> $count,
+			"display"	=> $output,
+		),
+	);
+}
+?>

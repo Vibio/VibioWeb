@@ -11,7 +11,7 @@ class views_plugin_cache_argument extends views_plugin_cache {
 	{
 		if (!$this->view->no_cache)
 		{
-			parent::cache_set($type);
+			return parent::cache_set($type);
 		}
 	}
 	
@@ -19,7 +19,7 @@ class views_plugin_cache_argument extends views_plugin_cache {
 	{
 		if (!$this->view->no_cache)
 		{
-			parent::cache_get($type);
+			return parent::cache_get($type);
 		}
 	}
 	

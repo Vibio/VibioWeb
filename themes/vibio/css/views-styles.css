@@ -5,16 +5,32 @@
 
 .views_node_image_container {
 	float: left;
-	margin-right: 10px;
+}
+
+.views-field-picture {
+	padding: 5px 0;
 }
 
 .views_message {
 	float: left;
-	max-width: 435px;
+	margin-left: 10px;
+	max-width: 615px;
 }
 
 .views_message p {
 	margin: 0;
+}
+
+.view_activity_timestamp {
+	display: block;
+	font-size: 10px;
+	color: #838383;
+}
+
+.view-content tr {
+	background-color: white;
+	border-bottom: 1px solid #E2E6E9;
+	padding-bottom: 5px;
 }
 
 #views-exposed-form-user-collection-default #edit-collection-order-by-wrapper {

@@ -85,7 +85,7 @@ function privacy_views_query_alter(&$view, &$query)
 		";
 		$query->add_where(0, $sql, $access, $uid, $access, $uid);
 	}
-	elseif ($view->name == "user_relational_activity" && module_exists("user_relationships_api"))
+	elseif (in_array($view->name, array("user_relational_activity")) && module_exists("user_relationships_api"))
 	{
 		$uid = $view->args[0];
 		
@@ -121,7 +121,7 @@ function privacy_views_query_alter(&$view, &$query)
 					ELSE 1
 					END > 0
 		";
-		$query->add_where(0, $sql, PRIVACY_CONNECTION, PRIVACY_CONNECTION, PRIVACY_CONNECTION);
+		$query->add_where(0, $sql, PRIVACY_CONNECTION, PRIVACY_CONNECTION, PRIVACY_CONNECTION, PRIVACY_CONNECTION);
 	}
 }
 

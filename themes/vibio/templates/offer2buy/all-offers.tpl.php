@@ -5,18 +5,12 @@ echo "<h2>$header</h2>";
 if (empty($items))
 {
 	$empty_message = t("There are no offers on any of your items");
-	echo "<small>$empty_message</small>";
+	echo "<div class='indent'><small>$empty_message</small></div>";
 }
+echo "<div class='view-content indent'><table>";
 foreach ($items as $i)
 {
-	$item_link = l($i['item']->title, "node/{$i['item']->nid}");
-	$offer_list = theme("offer2buy_offer_list", $i['offers'], true);
-	
-	echo "
-		$item_link
-		<div style='margin: 0 0 10px 30px;'>
-			$offer_list
-		</div>
-	";
+	echo theme("offer2buy_offer_list", $i['offers'], true);
 }
+echo "</table></div>";
 ?>

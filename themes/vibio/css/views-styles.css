@@ -12,10 +12,14 @@
 	vertical-align: top;
 }
 
+.views-field-picture .picture {
+	margin-right: 5px;
+}
+
 .views_message {
 	float: left;
 	margin-left: 10px;
-	max-width: 615px;
+	max-width: 585px;
 }
 
 .views_message p {

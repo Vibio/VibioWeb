@@ -203,7 +203,6 @@ function imap_attach_image($image, $node)
 		$node->field_images[] = array("fid" => $file->fid);
 	}
 	
-	$_SESSION['imap']['temp_file_fid'] = $file->fid;
 	node_save($node);
 	imap_mark_image_as_saved($image);
 }

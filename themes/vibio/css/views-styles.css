@@ -26,6 +26,10 @@
 	margin: 0;
 }
 
+.views_actions {
+	margin: 10px 0;
+}
+
 .view_activity_timestamp {
 	display: block;
 	font-size: 10px;

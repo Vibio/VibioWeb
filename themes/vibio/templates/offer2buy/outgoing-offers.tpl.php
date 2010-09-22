@@ -17,7 +17,7 @@ foreach ($offers as $o)
 	$pending = offer2buy_offer_is_pending($user->uid, $o->item->nid) ? t("(pending)") : "";
 	$date = date("z") == date("z", $o->offer->timestamp) ? date("g:iA", $o->offer->timestamp) : date("M j", $o->offer->timestamp);
 	$profile_pic = $o->item->picture ? file_create_url($o->item->picture) : "/themes/vibio/images/icons/default_user.png";
-	$message = t("$!amount on !user's !item !comment", array(
+	$message = t("$!amount on !user's !item!comment", array(
 		"!amount"	=> $o->offer->offer,
 		"!user"		=> l($o->item->name, "user/{$o->item->uid}"),
 		"!item"		=> l($o->item->title, "node/{$o->item->nid}"),

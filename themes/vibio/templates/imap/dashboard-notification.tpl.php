@@ -4,7 +4,9 @@ $message = t("You have a pending image");
 echo "
 	<div class='profile_notification rounded_content'>
 		<div class='picture'>
-			<img src='{$imap_image->url}' />
+			<a href='{$imap_image->url}' rel='prettyphoto'>
+				<img src='{$imap_image->url}' />
+			</a>
 		</div>
 		<div class='profile_notifications_summary'>
 			$message

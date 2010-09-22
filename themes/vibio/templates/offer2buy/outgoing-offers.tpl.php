@@ -28,7 +28,7 @@ foreach ($offers as $o)
 		<tr>
 			<td class='views-field views-field-picture'>
 				<div class='picture'>
-					<a href='/user/{$o->item->nid}'>
+					<a href='/user/{$o->item->uid}'>
 						<img src='$profile_pic' alt='{$o->item->name}' title='{$o->item->name}' />
 					</a>
 					<span class='view_activity_timestamp'>$date</span>

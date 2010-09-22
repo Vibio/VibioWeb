@@ -156,7 +156,7 @@ function profile_ext_display_block($u)
 	$cache_key = "profile_display_block:{$u->uid}";
 	$cache_time = 60*5; // 5 minutes
 	
-	if ($cache = cache_get($cache_key, "cache"))
+	if (false && $cache = cache_get($cache_key, "cache"))
 	{
 		$items = $cache->data;
 	}
@@ -169,6 +169,7 @@ function profile_ext_display_block($u)
 		{
 			$theme_args = array(
 				"image"	=> "/themes/vibio/images/icons/mail.png",
+				"title"	=> t("Messages"),
 				"count"	=> privatemsg_unread_count($u),
 				"href"	=> url("messages"),
 			);
@@ -177,6 +178,7 @@ function profile_ext_display_block($u)
 		
 		$theme_args = array(
 			"image" => "/themes/vibio/images/icons/messages.png",
+			"title"	=> t("Notifications"),
 			"count"	=> profile_ext_get_dashboard_notifications($u->uid, $tabs),
 			"href"	=> url("my-dashboard/notifications"),
 		);

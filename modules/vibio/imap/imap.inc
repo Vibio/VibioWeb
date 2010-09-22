@@ -203,6 +203,11 @@ function imap_attach_image($image, $node)
 		$node->field_images[] = array("fid" => $file->fid);
 	}
 	
+	foreach (module_invoke_all("imap_node_image_attach", $image, $node) as $field_name => $field_val)
+	{
+		$node->$field_name = $field_val;
+	}
+	
 	node_save($node);
 	imap_mark_image_as_saved($image);
 }

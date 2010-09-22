@@ -157,7 +157,7 @@ function _offer2buy_fields_form($nid, $settings)
 			"#type"			=> "checkbox",
 			"#title"		=> t("Allow Offer Views"),
 			"#description"	=> t("Should people viewing your item be able to see the offers on the item?"),
-			"#default_value"=> $settings['allow_offer_views'],
+			"#default_value"=> isset($settings['allow_offer_views']) ? $settings['allow_offer_views'] : true,
 		),
 		"o2b_nid"				=> array(
 			"#type"	=> "value",
@@ -708,5 +708,19 @@ function offer2buy_reports_daily_cron($last_run)
 		reports_log("total transactions", $row->total_transactions);
 		reports_log("amount transacted", $row->amount_transacted);
 	}
+}
+
+function offer2buy_imap_node_image_attach($image, $node)
+{
+	if (!isset($node->offer2buy))
+	{
+		return false;
+	}
+	
+	return array(
+		"o2b_is_negotiable"		=> $node->offer2buy['settings']['is_negotiable'],
+		"o2b_allow_offer_views"	=> $node->offer2buy['settings']['allow_offer_views'],
+		"o2b_price"				=> $node->offer2buy['settings']['price'],
+	);
 }
 ?>

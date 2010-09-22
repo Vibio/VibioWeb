@@ -64,6 +64,9 @@ function privacy_nodeapi(&$node, $op, $a3=null, $a4=null)
 		
 		switch ($op)
 		{
+			case "load":
+				$node->privacy_setting = privacy_get($user->uid, "node", $node->nid);
+				break;
 			case "delete":
 				privacy_del($user->uid, "node", $node->nid);
 				break;

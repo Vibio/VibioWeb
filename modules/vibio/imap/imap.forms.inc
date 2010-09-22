@@ -64,4 +64,33 @@ function imap_delete_form_submit($form, &$state)
 	imap_delete_image($state['values']['image']);
 	drupal_set_message(t("The image has been deleted"));
 }
+
+function imap_attach_form(&$state, $image)
+{
+	global $user;
+	
+	$collection_options = array(-1 => t("-- Collection --"));
+	foreach (collection_get_collections($user->uid) as $c)
+	{
+		$collection_options[$c['cid']] = $c['title'];
+	}
+	
+	return array(
+		"cid"		=> array(
+			"#type"		=> "select",
+			"#options"	=> $collection_options,
+		),
+		"nid"		=> array(
+			"#type"		=> "select",
+			"#options"	=> array(-1 => t("-- Item --")),
+		),
+		"submit"	=> array(
+			"#type"	=> "submit",
+			"#value"=> t("Attach"),
+		),
+		"#attributes"	=> array(
+			"class"	=> "imap_attach_form",
+		),
+	);
+}
 ?>

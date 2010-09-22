@@ -59,6 +59,14 @@ function imap_forms($id, $args)
 		
 		return $forms;
 	}
+	elseif (strpos($id, "imap_attach_form_") !== false)
+	{
+		$forms[$id] = array(
+			"callback"	=> "imap_attach_form",
+		);
+		
+		return $forms;
+	}
 }
 
 function imap_profile_ext_dashboard_notifications($uid)
@@ -85,10 +93,12 @@ function imap_profile_ext_dashboard_notifications($uid)
 function imap_preprocess_imap_dashboard_notification(&$vars)
 {
 	drupal_add_js("themes/vibio/js/imap.js");
+	drupal_add_css("themes/vibio/css/imap.css");
 	module_load_include("inc", "imap", "imap.forms");
 	
 	$image = $vars['imap_image'];
 	$vars['image_delete_form'] = drupal_get_form("imap_delete_form_{$image->imap_id}", $image);
+	$vars['image_attach_form'] = drupal_get_form("imap_attach_form_{$image->imap_id}", $image);
 }
 
 function imap_access()

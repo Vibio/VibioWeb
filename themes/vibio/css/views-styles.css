@@ -39,6 +39,10 @@
 	padding-bottom: 5px;
 }
 
+.view-content .views-view-grid tr {
+	border-bottom: none;
+}
+
 #views-exposed-form-user-collection-default #edit-collection-order-by-wrapper {
 	display: inline;
 }

@@ -140,7 +140,7 @@
 
 .profile_notifications_summary {
 	float: left;
-	width: 455px;
+	width: 550px;
 }
 
 .profile_busy_indicator {
@@ -166,6 +166,10 @@
 	padding: 5px !important;
 	min-height: 0 !important;
 	margin-top: 10px !important;
+}
+
+.profile_notification .picture img {
+	max-width: 40px;
 }
 
 .profile_notification .picture {

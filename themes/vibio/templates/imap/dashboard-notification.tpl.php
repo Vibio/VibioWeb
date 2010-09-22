@@ -12,6 +12,7 @@ echo "
 			$message
 			<div class='profile_notifications_actions'>
 				$image_delete_form
+				$image_attach_form
 			</div>
 		</div>
 		<div class='profile_busy_indicator'>

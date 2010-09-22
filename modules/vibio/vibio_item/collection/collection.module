@@ -377,6 +377,14 @@ function collection_manage_collection_access($collection)
 {
 	global $user;
 	
+	if (is_numeric($collection))
+	{
+		$sql = "SELECT `uid`
+				FROM {collection}
+				WHERE `cid`=%d";
+		$collection = db_fetch_array(db_query($sql, $collection));
+	}
+	
 	return $user->uid == $collection['uid'];
 }
 

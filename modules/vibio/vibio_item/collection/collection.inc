@@ -1,24 +1,32 @@
 <?php
 function collection_get_collections($uid=false)
 {
+	static $user_collections = array();
+	
 	if (!$uid)
 	{
 		global $user;
 		$uid = $user->uid;
 	}
 	
-	$sql = "SELECT `cid`
-			FROM {collection}
-			WHERE `uid`=%d";
-	$res = db_query($sql, $uid);
-	
-	$collections = array();
-	while ($row = db_fetch_array($res))
+	if (!isset($user_collections[$uid]))
 	{
-		$collections[$row['cid']] = collection_load($row['cid']);
+		$sql = "SELECT `cid`
+				FROM {collection}
+				WHERE `uid`=%d
+				ORDER BY `title` ASC";
+		$res = db_query($sql, $uid);
+		
+		$collections = array();
+		while ($row = db_fetch_array($res))
+		{
+			$collections[$row['cid']] = collection_load($row['cid']);
+		}
+		
+		$user_collections[$uid] = $collections;
 	}
 	
-	return $collections;
+	return $user_collections[$uid];
 }
 
 function collection_insert($vals)

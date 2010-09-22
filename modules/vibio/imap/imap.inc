@@ -105,6 +105,20 @@ function imap_delete_image($image)
 	file_delete($image->filepath);
 }
 
+function imap_mark_image_as_saved($image)
+{
+	if (is_numeric($image))
+	{
+		$image = imap_get_image($image);
+	}
+	
+	$sql = "UPDATE {imap_images}
+			SET `status`=%d
+			WHERE `imap_id`=%d";
+	db_query($sql, IMAP_STATUS_SAVED, $image->imap_id);
+	file_delete($image->filepath);
+}
+
 function imap_get_mime_type(&$struct)
 {
 	$primary_mime_type = array("TEXT", "MULTIPART","MESSAGE", "APPLICATION", "AUDIO","IMAGE", "VIDEO", "OTHER");
@@ -149,5 +163,48 @@ function imap_image_owner($imap_id)
 			FROM {imap_images}
 			WHERE `imap_id`=%d";
 	return db_result(db_query($sql, $imap_id));
+}
+
+function imap_attach_image($image, $node)
+{
+	if (is_numeric($image))
+	{
+		$image = imap_get_image($image);
+	}
+	if (is_numeric($node))
+	{
+		$node = node_load($node);
+	}
+	
+	$upload_path = file_directory_path();
+	$file_destination = "$upload_path/".basename($image->filepath);
+	$image_data = image_get_info($image->filepath);
+	$mime_type = $image_data['mime_type'] ? $image_data['mime_type'] : "image/jpeg";
+	
+	file_put_contents($file_destination, file_get_contents($image->filepath));
+	
+	$file = new stdClass();
+	$file->filename = basename($image->filepath);
+	$file->filepath = $file_destination;
+	$file->filemime = $mime_type;
+	$file->filesize = filesize($file_destination);
+	$file->uid = $user->uid;
+	$file->status = FILE_STATUS_PERMANENT;
+	$file->timestamp = time();
+	drupal_write_record("files", $file);
+	$file->fid = db_result(db_query("SELECT `fid` FROM {files} WHERE `filepath`='%s'", $file->filepath));
+	
+	if (count($node->field_images) == 1 && empty($node->field_images[0]))
+	{
+		$node->field_images = array(array("fid" => $file->fid));
+	}
+	else
+	{
+		$node->field_images[] = array("fid" => $file->fid);
+	}
+	
+	$_SESSION['imap']['temp_file_fid'] = $file->fid;
+	node_save($node);
+	imap_mark_image_as_saved($image);
 }
 ?>

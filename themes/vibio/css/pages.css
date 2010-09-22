@@ -376,7 +376,21 @@ ul.links li {
 
 #block-menu-secondary-links {
 	position: relative;
-	top: 25px;
+	top: 75px;
+}
+
+#block-menu-secondary-links .content {
+  text-align: center;
+}
+
+#block-menu-secondary-links .content a {
+  padding: 0 15px;
+  border-left: 1px solid #5C6C79;
+}
+
+#block-menu-secondary-links .content a:first-child {
+  padding-left: 0;
+  border-left: none;
 }
 
 #block-menu-secondary-links h2 {

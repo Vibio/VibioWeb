@@ -4,6 +4,7 @@ function imap_get_attachments()
 	$server = variable_get("imap_serv", false);
 	$user = variable_get("imap_user", false);
 	$pass = variable_get("imap_pass", false);
+	$max_images_saved = variable_get("imap_max_images", 30);
 	
 	if (!$server || !$user || !$pass)
 	{
@@ -13,17 +14,27 @@ function imap_get_attachments()
 	{
 		return false;
 	}
-	elseif (!($headers = @imap_headers($mbox)))
+	elseif (!($headers = @imap_check($mbox)))
 	{
 		return false;
 	}
 	
-	$num_messages = count($headers);
+	$num_messages = $headers->Nmsgs;
+	if ($num_messages == 0)
+	{
+		return 0;
+	}
+	
 	$messages = imap_fetch_overview($mbox, "1:$num_messages", 0);
+	$images_saved = 0;
 	
 	foreach ($messages as $i => $message)
 	{
-		if (!(preg_match('/[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i', $message->from, $matches)))
+		if ($images_saved >= $max_images_saved)
+		{
+			break;
+		}
+		elseif (!(preg_match('/[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i', $message->from, $matches)))
 		{
 			continue;
 		}
@@ -45,6 +56,7 @@ function imap_get_attachments()
 				if (strpos($mime_type, "IMAGE/") !== false)
 				{
 					imap_save_image($uid, $mbox, $message->msgno, $j, $attachment);
+					++$images_saved;
 				}
 			}
 		}
@@ -55,7 +67,7 @@ function imap_get_attachments()
 	imap_expunge($mbox);
 	imap_close($mbox);
 	
-	return true;
+	return $images_saved;
 }
 
 function imap_save_image($uid, $mbox, $message_num, $message_part, &$attachment)
@@ -73,10 +85,24 @@ function imap_save_image($uid, $mbox, $message_num, $message_part, &$attachment)
 	file_put_contents($filepath, $image);
 	
 	$sql = "INSERT INTO {imap_images}
-			SET `uid`=%d, `filepath`='%s', `timestamp`=%d, `pending`=%d";
-	db_query($sql, $uid, $filepath, $time, 1);
+			SET `uid`=%d, `filepath`='%s', `timestamp`=%d, `status`=%d";
+	db_query($sql, $uid, $filepath, $time, IMAP_STATUS_PENDING);
 	
 	return true;
+}
+
+function imap_delete_image($image)
+{
+	if (is_numeric($image))
+	{
+		$image = imap_get_image($image);
+	}
+	
+	$sql = "UPDATE {imap_images}
+			SET `status`=%d
+			WHERE `imap_id`=%d";
+	db_query($sql, IMAP_STATUS_DELETED, $image->imap_id);
+	file_delete($image->filepath);
 }
 
 function imap_get_mime_type(&$struct)
@@ -95,8 +121,9 @@ function imap_user_pending_images($uid)
 {
 	$sql = "SELECT `imap_id`, `filepath`
 			FROM {imap_images}
-			WHERE `uid`=%d";
-	$res = db_query($sql, $uid);
+			WHERE `uid`=%d
+				AND `status`=%d";
+	$res = db_query($sql, $uid, IMAP_STATUS_PENDING);
 	
 	$images = array();
 	while ($row = db_fetch_object($res))
@@ -106,5 +133,21 @@ function imap_user_pending_images($uid)
 	}
 	
 	return $images;
+}
+
+function imap_get_image($imap_id)
+{
+	$sql = "SELECT *
+			FROM {imap_images}
+			WHERE `imap_id`=%d";
+	return db_fetch_object(db_query($sql, $imap_id));
+}
+
+function imap_image_owner($imap_id)
+{
+	$sql = "SELECT `uid`
+			FROM {imap_images}
+			WHERE `imap_id`=%d";
+	return db_result(db_query($sql, $imap_id));
 }
 ?>

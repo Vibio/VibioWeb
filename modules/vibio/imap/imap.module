@@ -1,15 +1,14 @@
 <?php
+define("IMAP_STATUS_PENDING", 1);
+define("IMAP_STATUS_DELETED", 2);
+define("IMAP_STATUS_SAVED", 3);
+
 function imap_perm()
 {
 	return array(
 		"imap admin",
+		"imap user",
 	);
-}
-
-function imap_cron()
-{
-	module_load_include("inc", "imap");
-	imap_get_attachments();
 }
 
 function imap_menu()
@@ -23,6 +22,17 @@ function imap_menu()
 			"file"				=> "imap.forms.inc",
 			"type"				=> MENU_NORMAL_ITEM,
 		),
+		"imap/fetch"	=> array(
+			"page callback"		=> "imap_fetch_images",
+			"access callback"	=> "imap_access",
+			"type"				=> MENU_CALLBACK,
+		),
+		"imap/ajax"		=> array(
+			"page callback"		=> "imap_ajax_service",
+			"access arguments"	=> array("imap user"),
+			"file"				=> "imap.pages.inc",
+			"type"				=> MENU_CALLBACK,
+		),
 	);
 }
 
@@ -35,6 +45,20 @@ function imap_theme()
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
 	);
+}
+
+function imap_forms($id, $args)
+{
+	module_load_include("inc", "imap", "imap.forms");
+	
+	if (strpos($id, "imap_delete_form_") !== false)
+	{
+		$forms[$id] = array(
+			"callback"	=> "imap_delete_form",
+		);
+		
+		return $forms;
+	}
 }
 
 function imap_profile_ext_dashboard_notifications($uid)
@@ -56,5 +80,29 @@ function imap_profile_ext_dashboard_notifications($uid)
 			"display"	=> $output,
 		),
 	);
+}
+
+function imap_preprocess_imap_dashboard_notification(&$vars)
+{
+	drupal_add_js("themes/vibio/js/imap.js");
+	module_load_include("inc", "imap", "imap.forms");
+	
+	$image = $vars['imap_image'];
+	$vars['image_delete_form'] = drupal_get_form("imap_delete_form_{$image->imap_id}", $image);
+}
+
+function imap_access()
+{
+	return true;
+}
+
+function imap_fetch_images()
+{
+	$start = microtime(true);
+	module_load_include("inc", "imap");
+	$count = imap_get_attachments();
+	$time_taken = microtime(true) - $start;
+	
+	exit("Done. Took $time_taken seconds for $count images");
 }
 ?>

@@ -140,6 +140,16 @@
 
 .profile_notifications_summary {
 	float: left;
+	width: 455px;
+}
+
+.profile_busy_indicator {
+	float: right;
+	margin-right: 25px;
+}
+
+.profile_busy_indicator img {
+	display: none;
 }
 
 .profile_notifications_actions {

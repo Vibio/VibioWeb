@@ -2,13 +2,20 @@
 $offer2buy = "";
 if ($node->field_posting_type[0]['value'] == VIBIO_ITEM_TYPE_SELL)
 {
-	global $user;
+	global $user;	
 	
-	$offer2buy = t("Price: \$!price", array("!price" => $node->offer2buy['settings']['price']));
-	
-	if ($node->offer2buy['settings']['is_negotiable'])
+	if ($node->offer2buy['settings']['price'] == 0 && $node->offer2buy['settings']['is_negotiable'])
 	{
-		$offer2buy .= " (".t("Negotiable").")";
+		$offer2buy = t("Price: Best Offer");
+	}
+	else
+	{
+		$offer2buy = t("Price: \$!price", array("!price" => $node->offer2buy['settings']['price']));
+		
+		if ($node->offer2buy['settings']['is_negotiable'])
+		{
+			$offer2buy .= " (".t("Negotiable").")";
+		}
 	}
 	
 	$offer2buy = "<div class='node_offer2buy_price'>$offer2buy</div>";

@@ -26,6 +26,17 @@ function dos_menu()
 	);
 }
 
+function dos_theme()
+{
+	return array(
+		"dos_display"	=> array(
+			"arguments"	=> array("dos"	=> false),
+			"template"	=> "templates/dos/display",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+	);
+}
+
 //dijkstra
 function dos_get($target_uid, $type=false, $max_depth=false)
 {
@@ -85,6 +96,6 @@ function dos_preprocess_user_profile(&$vars)
 	$args = explode("/", $_GET['q']);
 	$uid = (int) $args[1];
 	
-	$vars['profile']['dos'] = dos_get($uid);
+	$vars['profile']['dos'] = theme("dos_display", dos_get($uid));
 }
 ?>

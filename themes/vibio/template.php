@@ -17,14 +17,9 @@ function vibio_theme(&$existing, $type, $theme, $path) {
 
 function vibio_preprocess_user_profile(&$vars)
 {
-	drupal_add_css("themes/vibio/css/user.css");
-
-	$vars['profile']['social_info'] = theme("user_social_info", arg(1));
-}
-
-function vibio_preprocess_user_social_info(&$vars)
-{
 	drupal_add_js("themes/vibio/js/user.js");
+	drupal_add_css("themes/vibio/css/user.css");
+	$vars['profile']['social_info'] = theme("user_social_info", arg(1));
 }
 
 function vibio_menu_item_link($link)

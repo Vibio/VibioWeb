@@ -123,6 +123,21 @@ function profile_ext_theme(&$existing, $type, $theme, $path)
 			"template"	=> "templates/profile/external-accounts",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+		"profile_ext_view_fields"	=> array(
+			"arguments"	=> array("target_user" => false, "fields_category" => array()),
+			"template"	=> "templates/profile/view-fields",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"profile_ext_profile_info"	=> array(
+			"arguments"	=> array("uid"	=> 0, "access"	=> PRIVACY_PUBLIC),
+			"template"	=> "templates/profile/profile-info",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"profile_ext_edit_link"		=> array(
+			"arguments" => array("url"	=> ""),
+			"template"	=> "templates/profile/edit-link",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
 		"profile_ext_displayblock"		=> array(
 			"arguments"	=> array("display_user" => false, "profile_picture" => false, "sub_items" => array()),
 			"template"	=> "templates/profile/display-block",
@@ -253,10 +268,15 @@ function profile_ext_profile_ext_progress($uid)
 
 function profile_ext_preprocess_user_profile(&$vars)
 {
+	global $user;
+	
 	$args = explode("/", $_GET['q']);
 	$uid = $args[1];
+	$target_user = user_load($uid);
 	
 	$vars['profile']['profile_progress'] = profile_ext_get_progress($uid);
+	$vars['profile']['user'] = $target_user;
+	$vars['profile']['demographics'] = theme("profile_ext_view_fields", $target_user, "demographics");
 }
 
 function profile_ext_preprocess_page(&$vars)
@@ -302,8 +322,8 @@ function profile_ext_form_user_profile_form_alter(&$form, &$state)
 	$category = _profile_ext_format_string($form['_category']['#value']);
 	
 	$profile_categories = array(
-		//"about_me",
-		"demographics",
+		"about_me",
+		//"demographics",
 	);
 	
 	if (in_array($category, $profile_categories))

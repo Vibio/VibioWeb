@@ -15,6 +15,10 @@ div.tabs {
   margin: 0 0 5px 0;
 }
 
+div.tabs_big ul.primary {
+  background-image: url(../images/tabs/bigtab_bar.png)
+}
+
 ul.primary {
   margin: 0;
   padding: 0 0 0 10px; /* LTR */
@@ -31,6 +35,10 @@ ul.primary li {
   padding: 0;
 }
 
+div.tabs_big ul.primary li a {
+  height: 31px;
+}
+
 ul.primary li a {
   display: block;
   height: 19px;
@@ -41,6 +49,13 @@ ul.primary li a {
   text-decoration: none;
   color: #777;
   background-color: transparent;
+}
+
+div.tabs_big ul.primary li a .tab {
+  height: 31px;
+  padding-top: 5px;
+  padding-right: 11px;
+  font-weight: bold;
 }
 
 ul.primary li a .tab {
@@ -64,6 +79,14 @@ ul.primary li a:hover .tab {
 	color: #0092C9;
 }
 
+div.tabs_big ul.primary li.active a,
+div.tabs_big ul.primary li.active a:hover,
+div.tabs_big ul.primary li.ui-state-active a,
+div.tabs_big ul.primary li.ui-state-active a:hover
+{
+  background-image: url(../images/tabs/bigtab_left.png);
+}
+
 ul.primary li.active a,
 ul.primary li.active a:hover,
 ul.primary li.ui-state-active a,
@@ -72,6 +95,14 @@ ul.primary li.ui-state-active a:hover
   border-width: 0;
   color: black;
   background: transparent url(../images/tab_left.png) no-repeat;
+}
+
+div.tabs_big ul.primary li.active a .tab,
+div.tabs_big ul.primary li.active a:hover .tab,
+div.tabs_big ul.primary li.ui-state-active a .tab,
+div.tabs_big ul.primary li.ui-state-active a:hover .tab
+{
+  background-image: url(../images/tabs/bigtab_end.png);
 }
 
 ul.primary li.active a .tab,

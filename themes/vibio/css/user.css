@@ -1,3 +1,24 @@
+#page_title {
+	display: none;
+}
+
+#content-area #profile_user_summary.rounded_content {
+	background: #B5CFDE;
+	padding: 45px 15px 60px;
+	-moz-border-radius-bottomleft: 0;
+	-moz-border-radius-bottomright: 0;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+#content-area .rounded_content {
+	padding: 0;
+}
+
+#content-area .rounded_content .rounded_content {
+	min-height: 0 !important;
+}
+
 .profile .picture {
 	float: none;
 }
@@ -10,4 +31,93 @@
 #social_tabs li {
 	float: left;
 	margin-right: 10px;
+}
+
+#profile_user_summary .profile_data {
+	padding: 10px 20px;
+	margin-bottom: 5px;
+}
+
+#profile_user_summary .profile_data > div:first-child {
+	margin-left: 300px;
+	float: left;
+}
+
+#profile_summary {
+	background: #E9F0F6;
+}
+
+#profile_username h5 {
+	color: #464F54;
+	margin: 0;
+	font-size: 1.5em;
+}
+
+#profile_username table {
+	margin: 0;
+}
+
+.profile_picture_display {
+	position: absolute;
+	top: 30px;
+	left: 255px;
+	background: white;
+	padding: 5px;
+	-moz-box-shadow: 3px 3px 3px #666;
+	-webkit-box-shadow: 3px 3px 3px #666;
+	box-shadow: 3px 3px 3px #666;
+	border: 1px solid black;
+}
+
+#profile_picture_bg {
+	display: none;
+	z-index: 1;
+}
+
+#profile_picture_bg > div {
+	background: #ddd;
+	width: 100%;
+	height: 100%;
+}
+
+#profile_picture {
+	z-index: 5;
+}
+
+#profile_picture img {
+	max-width: 225px;
+	border: 1px solid black;
+}
+
+table.profile_fields td.field_name {
+	width: 200px;
+	font-weight: bold;
+	color: #414C52;
+	vertical-align: top;
+}
+
+table.profile_fields td {
+	padding-bottom: 7px;
+}
+
+#profile_user_tabs {
+	margin-top: -31px;
+}
+
+#profile_user_tabs ul.tabs li:first-child {
+	margin-left: 40px;
+}
+
+.profile_info_container {
+	padding: 0 15px 10px;
+}
+
+.profile_edit_link {
+	float: right;
+	display: none;
+	font-size: 10px;
+}
+
+#profile_about_me {
+	float: left;
 }

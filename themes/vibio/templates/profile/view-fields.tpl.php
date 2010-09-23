@@ -5,14 +5,13 @@ $offset = strlen("profile_") - 1;
 echo "<table class='profile_fields'>";
 while ($row = db_fetch_object($res))
 {
-	$title = ucwords(str_replace("_", " ", substr($row->name, $offset)));
 	$field = is_array($target_user->{$row->name}) ? implode("-", $target_user->{$row->name}) : $target_user->{$row->name};
 	$list = implode("<br />", explode("\n", trim($field)));
 	
 	echo "
 		<tr>
 			<td class='field_name'>
-				{$title}
+				{$row->title}
 			</td>
 			<td class='field_val'>
 				{$list}

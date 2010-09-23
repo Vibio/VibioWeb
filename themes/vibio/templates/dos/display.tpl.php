@@ -1,7 +1,7 @@
 <?php
 if ($dos === false)
 {
-	echo t("This is you");
+	$out = t("This is you");
 }
 elseif (!empty($dos))
 {
@@ -18,6 +18,12 @@ elseif (!empty($dos))
 		$links[] = l($name, "user/{$uid}");
 	}
 	
-	echo implode(" -> ", $links);
+	$out = implode(" -> ", $links);
 }
+
+echo "
+	<div class='dos_display'>
+		$out
+	</div>
+";
 ?>

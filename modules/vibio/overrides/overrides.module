@@ -1,6 +1,13 @@
 <?php
 define("OVERRIDES_FILE_DOWNLOAD_DIRECT", 5);
 
+function overrides_menu_alter(&$menu)
+{
+	$menu['user/%/messages']['type'] = MENU_CALLBACK;
+	$menu['user/%user_category/edit']['type'] = MENU_CALLBACK;
+	$menu['user/%user/openid']['type'] = MENU_CALLBACK;
+}
+
 function overrides_form_system_file_system_settings_alter(&$form, &$state)
 {
 	$form['file_downloads']['#options'][OVERRIDES_FILE_DOWNLOAD_DIRECT] = t("Separate server");

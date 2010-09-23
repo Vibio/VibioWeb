@@ -9,7 +9,7 @@ function profile_ext_perm()
 function profile_ext_menu()
 {
 	$menu = array();
-	$sql = "SELECT DISTINCT(`category`)
+	/*$sql = "SELECT DISTINCT(`category`)
 			FROM {profile_fields}";
 	$res = db_query($sql);
 	
@@ -36,7 +36,7 @@ function profile_ext_menu()
 		"access arguments"	=> array("profile_ext manage external_accounts"),
 		"file"				=> "profile_ext.pages.inc",
 		"type"				=> MENU_LOCAL_TASK,
-	);
+	);*/
 	
 	$menu['my-dashboard'] = array(
 		"title"				=> "My Dashboard",
@@ -302,7 +302,7 @@ function profile_ext_form_user_profile_form_alter(&$form, &$state)
 	$category = _profile_ext_format_string($form['_category']['#value']);
 	
 	$profile_categories = array(
-		"about_me",
+		//"about_me",
 		"demographics",
 	);
 	

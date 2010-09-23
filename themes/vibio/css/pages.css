@@ -346,7 +346,11 @@ ul.links li {
 
 .sidebar .rounded_content a {
   color: #B9D9F0;
-  font-size: 10px;
+  font-size: 13px;
+  font-family: Helvetica;
+}
+
+.sidebar .rounded_content a.active {
   font-weight: bold;
 }
 
@@ -357,7 +361,7 @@ ul.links li {
 
 .sidebar .item-list ul li, .sidebar ul.menu li {
   padding: 0;
-  margin: 0;
+  margin: 5px 0 0;
   list-style-type: none;
   list-style-image: none;
 }
@@ -429,6 +433,7 @@ ul.links li {
 .menu_with_count_count {
   float: right;
   color: #B5CA3E;
+  font-weight: bold;
 }
 
 .indent {

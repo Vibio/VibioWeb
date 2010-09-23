@@ -20,12 +20,12 @@
 }
 
 .menuContainer table {
-	margin: 3px 0;
+	margin: -3px 0;
 }
 
 .menuContainer a {
 	color: #70818B;
-	font-size: 10px;
+	font-size: 12px;
 }
 
 #profile_ext_header table {
@@ -70,6 +70,7 @@
 	color: #b5ca3e;
 	float: right;
 	font-size: 14px;
+	font-weight: bold;
 }
 
 #profile_ext_headermenu .rootVoice {
@@ -99,7 +100,7 @@
 	border-left: 1px solid black;
 	border-right: 1px solid black;
 	border-bottom: 1px solid black;
-	padding: 0 10px;
+	padding: 0 10px 10px;
 	border-bottom-left-radius: 4px;
 	border-bottom-right-radius: 4px;
 	-moz-border-radius-bottomleft: 4px;
@@ -114,10 +115,6 @@
 	height: 1px;
 	margin: 10px 0px 0px;
 	width: 100%;
-}
-
-.menuContainer a {
-	color: #70818B;
 }
 
 #profile_tabs {

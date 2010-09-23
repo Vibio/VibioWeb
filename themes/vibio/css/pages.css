@@ -32,7 +32,7 @@ a {
   color: grey;
 }
 
-a.collection_link, a.vitem_link, a.product_link {
+a.item_link {
   color: #8e9e30;
 }
 

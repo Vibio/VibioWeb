@@ -76,6 +76,8 @@ $(document).ready(function()
 		messages_container.append("<div class='js_message_"+type+"'>"+message+"</div>");
 	}
 	
+	$("a[href^='/node/']").addClass("item_link");
+	
 	$("a[rel^='prettyphoto']").prettyPhoto({
 		allowResize: false,
 		showTitle: false,

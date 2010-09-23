@@ -720,7 +720,7 @@ function offer2buy_reports_daily_cron($last_run)
 	}
 }
 
-function offer2buy_imap_node_image_attach($image, $node)
+function offer2buy_imap_fetch_node_image_attach($image, $node)
 {
 	if (!isset($node->offer2buy))
 	{

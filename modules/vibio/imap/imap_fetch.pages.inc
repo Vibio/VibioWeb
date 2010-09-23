@@ -1,7 +1,7 @@
 <?php
-function imap_ajax_service()
+function imap_fetch_ajax_service()
 {
-	module_load_include("inc", "imap");
+	module_load_include("inc", "imap_fetch");
 	
 	$p = $_POST;
 	$result = array(
@@ -9,7 +9,7 @@ function imap_ajax_service()
 		"message"	=> t("There was an error."),
 	);
 	
-	$function = "imap_ajax_service_{$p['action']}";
+	$function = "imap_fetch_ajax_service_{$p['action']}";
 	if (function_exists($function) && ($message = $function($p)))
 	{
 		$result = array(
@@ -21,20 +21,20 @@ function imap_ajax_service()
 	exit(json_encode($result));
 }
 
-function imap_ajax_service_delete($post)
+function imap_fetch_ajax_service_delete($post)
 {
 	global $user;
 	
-	if ($user->uid != imap_image_owner($post['id']))
+	if ($user->uid != imap_fetch_image_owner($post['id']))
 	{
 		return false;
 	}
 	
-	imap_delete_image($post['id']);
+	imap_fetch_delete_image($post['id']);
 	return t("Image has been deleted!");
 }
 
-function imap_ajax_service_get_collection_items($post)
+function imap_fetch_ajax_service_get_collection_items($post)
 {
 	if (!collection_manage_collection_access($post['cid']))
 	{
@@ -56,16 +56,16 @@ function imap_ajax_service_get_collection_items($post)
 	return empty($items) ? array(-1 => "") : $items;
 }
 
-function imap_ajax_service_attach_image($post)
+function imap_fetch_ajax_service_attach_image($post)
 {
 	global $user;
 	
-	if ($user->uid != imap_image_owner($post['id']) || !($node = node_load($post['nid'])) || $user->uid != $node->uid)
+	if ($user->uid != imap_fetch_image_owner($post['id']) || !($node = node_load($post['nid'])) || $user->uid != $node->uid)
 	{
 		return false;
 	}
 	
-	imap_attach_image($post['id'], $node);
+	imap_fetch_attach_image($post['id'], $node);
 	return t("The image has been attached to !item", array("!item" => $node->title));
 }
 ?>

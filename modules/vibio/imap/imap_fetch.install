@@ -1,5 +1,5 @@
 <?php
-function imap_schema()
+function imap_fetch_schema()
 {
 	return array(
 		"imap_images"	=> array(
@@ -41,13 +41,13 @@ function imap_schema()
 	);
 }
 
-function imap_install()
+function imap_fetch_install()
 {
-	drupal_install_schema("imap");
+	drupal_install_schema("imap_fetch");
 }
 
-function imap_uninstall()
+function imap_fetch_uninstall()
 {
-	drupal_uninstall_schema("imap");
+	drupal_uninstall_schema("imap_fetch");
 }
 ?>

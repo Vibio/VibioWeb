@@ -64,7 +64,7 @@ function vibio_item_form_alter(&$form, &$state, $id)
 	}
 	elseif ($id == "search_theme_form")
 	{
-		$form['#submit'][] = "vibio_item_search_submit";
+		//$form['#submit'][] = "vibio_item_search_submit";
 	}
 }
 

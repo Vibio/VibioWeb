@@ -1,5 +1,5 @@
 <?php
-function imap_admin()
+function imap_fetch_admin()
 {
 	return system_settings_form(array(
 		"imap_serv"	=> array(
@@ -38,7 +38,7 @@ function imap_admin()
 	));
 }
 
-function imap_delete_form(&$state, $image)
+function imap_fetch_delete_form(&$state, $image)
 {
 	return array(
 		"imap_image"	=> array(
@@ -58,14 +58,14 @@ function imap_delete_form(&$state, $image)
 	);
 }
 
-function imap_delete_form_submit($form, &$state)
+function imap_fetch_delete_form_submit($form, &$state)
 {
 	module_load_include("inc", "imap");
-	imap_delete_image($state['values']['image']);
+	imap_fetch_delete_image($state['values']['image']);
 	drupal_set_message(t("The image has been deleted"));
 }
 
-function imap_attach_form(&$state, $image)
+function imap_fetch_attach_form(&$state, $image)
 {
 	global $user;
 	

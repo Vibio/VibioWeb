@@ -3,7 +3,7 @@ define("IMAP_STATUS_PENDING", 1);
 define("IMAP_STATUS_DELETED", 2);
 define("IMAP_STATUS_SAVED", 3);
 
-function imap_perm()
+function imap_fetch_perm()
 {
 	return array(
 		"imap admin",
@@ -11,32 +11,32 @@ function imap_perm()
 	);
 }
 
-function imap_menu()
+function imap_fetch_menu()
 {
 	return array(
 		"admin/settings/imap-image-fetch"	=> array(
 			"title"				=> "IMAP Image Fetch",
 			"page callback"		=> "drupal_get_form",
-			"page arguments"	=> array("imap_admin"),
+			"page arguments"	=> array("imap_fetch_admin"),
 			"access arguments"	=> array("imap admin"),
-			"file"				=> "imap.forms.inc",
+			"file"				=> "imap_fetch.forms.inc",
 			"type"				=> MENU_NORMAL_ITEM,
 		),
 		"imap/fetch"	=> array(
-			"page callback"		=> "imap_fetch_images",
-			"access callback"	=> "imap_access",
+			"page callback"		=> "imap_fetch_fetch_images",
+			"access callback"	=> "imap_fetch_access",
 			"type"				=> MENU_CALLBACK,
 		),
 		"imap/ajax"		=> array(
-			"page callback"		=> "imap_ajax_service",
+			"page callback"		=> "imap_fetch_ajax_service",
 			"access arguments"	=> array("imap user"),
-			"file"				=> "imap.pages.inc",
+			"file"				=> "imap_fetch.pages.inc",
 			"type"				=> MENU_CALLBACK,
 		),
 	);
 }
 
-function imap_theme()
+function imap_fetch_theme()
 {
 	return array(
 		"imap_dashboard_notification"	=> array(
@@ -47,36 +47,36 @@ function imap_theme()
 	);
 }
 
-function imap_forms($id, $args)
+function imap_fetch_forms($id, $args)
 {
-	module_load_include("inc", "imap", "imap.forms");
+	module_load_include("inc", "imap_fetch", "imap_fetch.forms");
 	
-	if (strpos($id, "imap_delete_form_") !== false)
+	if (strpos($id, "imap_fetch_delete_form_") !== false)
 	{
 		$forms[$id] = array(
-			"callback"	=> "imap_delete_form",
+			"callback"	=> "imap_fetch_delete_form",
 		);
 		
 		return $forms;
 	}
-	elseif (strpos($id, "imap_attach_form_") !== false)
+	elseif (strpos($id, "imap_fetch_attach_form_") !== false)
 	{
 		$forms[$id] = array(
-			"callback"	=> "imap_attach_form",
+			"callback"	=> "imap_fetch_attach_form",
 		);
 		
 		return $forms;
 	}
 }
 
-function imap_profile_ext_dashboard_notifications($uid)
+function imap_fetch_profile_ext_dashboard_notifications($uid)
 {
-	module_load_include("inc", "imap");
+	module_load_include("inc", "imap_fetch");
 	
 	$count = 0;
 	$output = "";
 	
-	foreach (imap_user_pending_images($uid) as $image)
+	foreach (imap_fetch_user_pending_images($uid) as $image)
 	{
 		++$count;
 		$output .= theme("imap_dashboard_notification", $image);
@@ -90,27 +90,27 @@ function imap_profile_ext_dashboard_notifications($uid)
 	);
 }
 
-function imap_preprocess_imap_dashboard_notification(&$vars)
+function imap_fetch_preprocess_imap_dashboard_notification(&$vars)
 {
 	drupal_add_js("themes/vibio/js/imap.js");
 	drupal_add_css("themes/vibio/css/imap.css");
-	module_load_include("inc", "imap", "imap.forms");
+	module_load_include("inc", "imap_fetch", "imap_fetch.forms");
 	
 	$image = $vars['imap_image'];
-	$vars['image_delete_form'] = drupal_get_form("imap_delete_form_{$image->imap_id}", $image);
-	$vars['image_attach_form'] = drupal_get_form("imap_attach_form_{$image->imap_id}", $image);
+	$vars['image_delete_form'] = drupal_get_form("imap_fetch_delete_form_{$image->imap_id}", $image);
+	$vars['image_attach_form'] = drupal_get_form("imap_fetch_attach_form_{$image->imap_id}", $image);
 }
 
-function imap_access()
+function imap_fetch_access()
 {
 	return true;
 }
 
-function imap_fetch_images()
+function imap_fetch_fetch_images()
 {
 	$start = microtime(true);
-	module_load_include("inc", "imap");
-	$count = imap_get_attachments();
+	module_load_include("inc", "imap_fetch");
+	$count = imap_fetch_get_attachments();
 	$time_taken = microtime(true) - $start;
 	
 	exit("Done. Took $time_taken seconds for $count images");

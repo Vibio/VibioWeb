@@ -10,7 +10,7 @@ $(document).ready(function()
 		}
 		
 		var form = $(this);
-		var imap_id = form.attr("id").split("imap-delete-form-")[1];
+		var imap_id = form.attr("id").split("imap-fetch-delete-form-")[1];
 		
 		profile_actions.show_busy(form);
 		
@@ -111,7 +111,7 @@ $(document).ready(function()
 			var cid_select = form.find("select[name='cid']");
 			var nid_select = alter_element(form, "nid", "disable");
 			var submit = alter_element(form, "submit", "disable");
-			var imap_id = form.attr("id").split("imap-attach-form-")[1];
+			var imap_id = form.attr("id").split("imap-fetch-attach-form-")[1];
 			cid_select.attr("disabled", "disabled");
 			
 			profile_actions.show_busy(form);

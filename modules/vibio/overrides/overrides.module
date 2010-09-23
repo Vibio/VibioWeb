@@ -28,6 +28,14 @@ function overrides_file_url_alter(&$path)
 function overrides_form_search_theme_form_alter(&$form, &$state)
 {
 	$form['submit']['#value'] = " ";
+	$form['#submit'][] = "overrides_search_submit";
 	$form['search_theme_form']['#attributes']['class'] .= " rounded_left_side";
+}
+
+function overrides_search_submit($form, &$state)
+{
+	$allowed_searches = array("vibio_item", "user");
+	$search_term = trim($state['values'][$form['form_id']['#value']]);
+	$state['redirect'] = "search/vibio_item/$search_term";
 }
 ?>

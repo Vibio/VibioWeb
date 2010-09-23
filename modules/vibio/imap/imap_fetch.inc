@@ -1,5 +1,5 @@
 <?php
-function imap_get_attachments()
+function imap_fetch_get_attachments()
 {
 	$server = variable_get("imap_serv", false);
 	$user = variable_get("imap_user", false);
@@ -51,11 +51,11 @@ function imap_get_attachments()
 			for ($j = 2; $j <= $numparts; ++$j)
 			{
 				$attachment = imap_bodystruct($mbox, $message->msgno, $j);
-				$mime_type = imap_get_mime_type($attachment);
+				$mime_type = imap_fetch_get_mime_type($attachment);
 				
 				if (strpos($mime_type, "IMAGE/") !== false)
 				{
-					imap_save_image($uid, $mbox, $message->msgno, $j, $attachment);
+					imap_fetch_save_image($uid, $mbox, $message->msgno, $j, $attachment);
 					++$images_saved;
 				}
 			}
@@ -70,7 +70,7 @@ function imap_get_attachments()
 	return $images_saved;
 }
 
-function imap_save_image($uid, $mbox, $message_num, $message_part, &$attachment)
+function imap_fetch_save_image($uid, $mbox, $message_num, $message_part, &$attachment)
 {
 	if (!($file_dir = variable_get("imap_files", false)))
 	{
@@ -91,11 +91,11 @@ function imap_save_image($uid, $mbox, $message_num, $message_part, &$attachment)
 	return true;
 }
 
-function imap_delete_image($image)
+function imap_fetch_delete_image($image)
 {
 	if (is_numeric($image))
 	{
-		$image = imap_get_image($image);
+		$image = imap_fetch_get_image($image);
 	}
 	
 	$sql = "UPDATE {imap_images}
@@ -105,11 +105,11 @@ function imap_delete_image($image)
 	file_delete($image->filepath);
 }
 
-function imap_mark_image_as_saved($image)
+function imap_fetch_mark_image_as_saved($image)
 {
 	if (is_numeric($image))
 	{
-		$image = imap_get_image($image);
+		$image = imap_fetch_get_image($image);
 	}
 	
 	$sql = "UPDATE {imap_images}
@@ -119,7 +119,7 @@ function imap_mark_image_as_saved($image)
 	file_delete($image->filepath);
 }
 
-function imap_get_mime_type(&$struct)
+function imap_fetch_get_mime_type(&$struct)
 {
 	$primary_mime_type = array("TEXT", "MULTIPART","MESSAGE", "APPLICATION", "AUDIO","IMAGE", "VIDEO", "OTHER");
 	
@@ -131,7 +131,7 @@ function imap_get_mime_type(&$struct)
 	return "TEXT/PLAIN";
 }
 
-function imap_user_pending_images($uid)
+function imap_fetch_user_pending_images($uid)
 {
 	$sql = "SELECT `imap_id`, `filepath`
 			FROM {imap_images}
@@ -149,7 +149,7 @@ function imap_user_pending_images($uid)
 	return $images;
 }
 
-function imap_get_image($imap_id)
+function imap_fetch_get_image($imap_id)
 {
 	$sql = "SELECT *
 			FROM {imap_images}
@@ -157,7 +157,7 @@ function imap_get_image($imap_id)
 	return db_fetch_object(db_query($sql, $imap_id));
 }
 
-function imap_image_owner($imap_id)
+function imap_fetch_image_owner($imap_id)
 {
 	$sql = "SELECT `uid`
 			FROM {imap_images}
@@ -165,11 +165,11 @@ function imap_image_owner($imap_id)
 	return db_result(db_query($sql, $imap_id));
 }
 
-function imap_attach_image($image, $node)
+function imap_fetch_attach_image($image, $node)
 {
 	if (is_numeric($image))
 	{
-		$image = imap_get_image($image);
+		$image = imap_fetch_get_image($image);
 	}
 	if (is_numeric($node))
 	{
@@ -203,12 +203,12 @@ function imap_attach_image($image, $node)
 		$node->field_images[] = array("fid" => $file->fid);
 	}
 	
-	foreach (module_invoke_all("imap_node_image_attach", $image, $node) as $field_name => $field_val)
+	foreach (module_invoke_all("imap_fetch_node_image_attach", $image, $node) as $field_name => $field_val)
 	{
 		$node->$field_name = $field_val;
 	}
 	
 	node_save($node);
-	imap_mark_image_as_saved($image);
+	imap_fetch_mark_image_as_saved($image);
 }
 ?>

@@ -76,7 +76,11 @@ $(document).ready(function()
 		messages_container.append("<div class='js_message_"+type+"'>"+message+"</div>");
 	}
 	
-	$("a[href^='/node/']").addClass("item_link");
+	$("a[href^='/node/']").removeClass("item_link").addClass("item_link");
+	$(document).ajaxComplete(function()
+	{
+		$("a[href^='/node/']").removeClass("item_link").addClass("item_link");
+	});
 	
 	$("a[rel^='prettyphoto']").prettyPhoto({
 		allowResize: false,

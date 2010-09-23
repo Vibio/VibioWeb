@@ -93,11 +93,11 @@ table.profile_fields td.field_name {
 	width: 200px;
 	font-weight: bold;
 	color: #414C52;
-	vertical-align: top;
 }
 
 table.profile_fields td {
 	padding-bottom: 7px;
+	vertical-align: top;
 }
 
 #profile_user_tabs {
@@ -120,4 +120,5 @@ table.profile_fields td {
 
 #profile_about_me {
 	float: left;
+	width: 690px;
 }

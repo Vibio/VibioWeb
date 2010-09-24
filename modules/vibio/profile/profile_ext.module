@@ -6,37 +6,15 @@ function profile_ext_perm()
 	);
 }
 
+function profile_init()
+{
+	drupal_set_message(t("This is a message"));
+	drupal_set_message(t("This is a message"), "error");
+}
+
 function profile_ext_menu()
 {
 	$menu = array();
-	/*$sql = "SELECT DISTINCT(`category`)
-			FROM {profile_fields}";
-	$res = db_query($sql);
-	
-	while ($row = db_fetch_array($res))
-	{
-		$category = _profile_ext_format_string($row['category'], true);
-		
-		$menu["user/%user/profile/$category"] = array(
-			"title"				=> $row['category'],
-			"page callback" 	=> "profile_ext_view_profile_category",
-			"page arguments"	=> array(1, $row['category']),
-			"access callback"	=> "profile_ext_access_profile",
-			"access arguments"	=> array(1, _profile_ext_format_string($row['category'])),
-			"file"				=> "profile_ext.pages.inc",
-			"type"				=> MENU_LOCAL_TASK,
-		);
-	}
-	
-	$menu['user/%/linked-accounts'] = array(
-		"title"				=> "External Accounts",
-		"page callback"		=> "profile_ext_manage_external_accounts",
-		"page arguments"	=> array(1),
-		"access callback"	=> "profile_ext_access",
-		"access arguments"	=> array("profile_ext manage external_accounts"),
-		"file"				=> "profile_ext.pages.inc",
-		"type"				=> MENU_LOCAL_TASK,
-	);*/
 	
 	$menu['my-dashboard'] = array(
 		"title"				=> "My Dashboard",

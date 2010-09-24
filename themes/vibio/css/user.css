@@ -57,10 +57,14 @@
 	margin: 0;
 }
 
+#profile_picture_container {
+	position: relative;
+	top: -330px;
+	left: 60px;
+}
+
 .profile_picture_display {
 	position: absolute;
-	top: 30px;
-	left: 255px;
 	background: white;
 	padding: 5px;
 	-moz-box-shadow: 3px 3px 3px #666;

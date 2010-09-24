@@ -36,10 +36,12 @@ if ($user->uid && $user->uid != $u->uid && module_exists("privatemsg"))
 	</div>
 </div>
 
-<div id="profile_picture" class='profile_picture_display'>
-	<?php echo $profile['user_picture']; ?>
+<div id="profile_picture_container">
+	<div id="profile_picture" class='profile_picture_display'>
+		<?php echo $profile['user_picture']; ?>
+	</div>
+	<div id="profile_picture_bg" class='profile_picture_display'><div></div></div>
 </div>
-<div id="profile_picture_bg" class='profile_picture_display'><div></div></div>
 
 <?php echo $profile['social_info']; ?>
 <div class="clear"></div>

@@ -50,23 +50,25 @@
 
 	<div id="main-wrapper"><div id="main" class="clearfix<?php if ($primary_links || $navigation) { print ' with-navigation'; } ?>">
 
-	  <div id="content" class="column"><div class="section rounded_container">
-		<div id="content-area">
-		  <div class="rounded_content">
-			<div id="js_messages_container"></div>
-			<?php
-			  echo $messages;
-			  echo $title ? "<h1 id='page_title' class='title'>$title</h1>" : "";
-			  echo $tabs ? "<div class='tabs'>$tabs</div>" : "";
-			  echo $help;
-			  echo $content_top;
-			  echo $content;
-			  echo $content_bottom;
-			  echo $feed_icons ? "<div class='feed-icons'>$feed_icons</div>" : "";
-			?>
-		  </div>
+	  <div id="content" class="column">
+	  	<?php echo $messages; ?>
+	  	<div class="section rounded_container">
+			<div id="content-area">
+				<div class="rounded_content">
+					<div id="js_messages_container"></div>
+					<?php
+					echo $title ? "<h1 id='page_title' class='title'>$title</h1>" : "";
+					echo $tabs ? "<div class='tabs'>$tabs</div>" : "";
+					echo $help;
+					echo $content_top;
+					echo $content;
+					echo $content_bottom;
+					echo $feed_icons ? "<div class='feed-icons'>$feed_icons</div>" : "";
+					?>
+				</div>
+			</div>
 		</div>
-	  </div></div> <!-- /.section, /#content -->
+	  </div> <!-- /.section, /#content -->
 
 	  <?php if ($primary_links || $navigation): ?>
 		<div id="navigation"><div class="section clearfix">

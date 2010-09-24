@@ -6,12 +6,6 @@ function profile_ext_perm()
 	);
 }
 
-function profile_init()
-{
-	drupal_set_message(t("This is a message"));
-	drupal_set_message(t("This is a message"), "error");
-}
-
 function profile_ext_menu()
 {
 	$menu = array();

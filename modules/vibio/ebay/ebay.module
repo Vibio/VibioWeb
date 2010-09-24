@@ -234,6 +234,7 @@ function ebay_profile_ext_external_account_data()
 			"name"		=> "eBay",
 			"title"		=> t("eBay Accounts"),
 			"js"		=> "themes/vibio/js/ebay-account.js",
+			"image"		=> "ebay.gif",
 			"remove"	=> array(
 				"class"	=> "ebay_remove_account",
 			),

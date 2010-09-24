@@ -4,7 +4,10 @@ if (!empty($user_accounts))
 	$accounts = "<ul class='user_external_account_list'>";
 	foreach ($user_accounts as $account)
 	{
-		$accounts .= "<li><span class='account_id'>$account</span>";
+		$display_as = is_array($account) && $account['display'] ? $account['display'] : $account;
+		$remove_id = is_array($account) && $account['id'] ? $account['id'] : $account;
+		
+		$accounts .= "<li><span class='account_id'>$display_as</span>";
 		if ($admin_external_account)
 		{
 			$options = array(
@@ -12,8 +15,8 @@ if (!empty($user_accounts))
 					"class"	=> $partner_data['remove']['class'],
 				),
 			);
-			$link = l(t("remove"), "{$partner_data['id']}/remove-account/{$account}", $options);
-			$accounts .= "($link)";
+			$link = l(t("remove"), "{$partner_data['id']}/remove-account/{$remove_id}", $options);
+			$accounts .= " $link";
 		}
 		$accounts .= "</li>";
 	}
@@ -33,8 +36,14 @@ if ($admin_external_account && $add_account)
 }
 
 echo "
-	<h2>{$partner_data['title']}</h2>
-	$accounts
-	$add_account
+	<tr>
+		<td class='external_accounts_image'>
+			<img src='/themes/vibio/images/thirdparty/{$partner_data['image']}' />
+		</td>
+		<td class='external_accounts_account_list'>
+			$accounts
+			$add_account
+		</td>
+	</tr>
 ";
 ?>

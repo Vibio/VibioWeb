@@ -29,7 +29,7 @@ function profile_ext_manage_external_accounts($uid)
 	$is_admin = $user->uid == $uid;
 	
 	drupal_add_js("var external_accounts = {}", "inline");
-	$out = "";
+	$out = "<table class='user_external_accounts'>";
 	foreach ($external_accounts as $type => $data)
 	{
 		if ($data['js'])
@@ -48,10 +48,23 @@ function profile_ext_manage_external_accounts($uid)
 			drupal_add_js($data['js']);
 		}
 		
-		$out .= theme("profile_ext_external_accounts", $data, $info[$type], $is_admin);
+		$display_func = "{$data['id']}_external_account_display";
+		$out .= function_exists($display_func) && ($output = $display_func($uid, $data, $info[$type], $is_admin)) ?
+			$output : theme("profile_ext_external_accounts", $data, $info[$type], $is_admin);
 	}
+	$out .= "</table>";
 	
-	return $out;
+	$title = t("Linked Accounts");
+	return "
+		<table class='profile_fields'>
+			<tr>
+				<td class='field_name section_title'>
+					$title
+				</td>
+				<td>$out</td>
+			</tr>
+		</table>
+	";
 }
 
 function profile_ext_dashboard($selected_tab=false)

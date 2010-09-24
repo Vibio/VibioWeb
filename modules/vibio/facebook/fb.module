@@ -211,6 +211,7 @@ function fb_profile_ext_external_account_data()
 			"id"	=> "fb",
 			"name"	=> "Facebook",
 			"title"	=> t("Facebook Account"),
+			"image"	=> "facebook.png",
 			"remove"=> array(
 				"class"	=> "fb_remove_account",
 			),
@@ -298,5 +299,22 @@ function fb_preprocess_network_potential_friend(&$vars)
 			</a>
 		";
 	}
+}
+
+function fb_external_account_display($uid, $fb_data, &$user_fb_data, $is_admin)
+{
+	if (!$user_fb_data)
+	{
+		return false;
+	}
+	
+	module_load_include("inc", "fb");
+	$profile_link = l(t("View Facebook Profile"), fb_profile_link($user_fb_data[0]))."<br />";
+	$user_fb_data = array(array(
+		"id"		=> $user_fb_data[0],
+		"display"	=> $profile_link,
+	));
+	
+	return false;
 }
 ?>

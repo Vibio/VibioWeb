@@ -6,7 +6,9 @@ echo "
 			$text
 		</a>
 		<div class='offer2buy_offer_view_popup'>
-			$offer_list
+			<div class='view-content'><table>
+				$offer_list
+			</table></div>
 		</div>
 	</div>
 ";

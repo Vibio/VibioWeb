@@ -31,7 +31,7 @@ $(document).ready(function()
 				resizeable: false,
 				draggable: false,
 				autoOpen: false,
-				width: 450
+				width: 550,
 			};
 		},
 		set_options: function(options)

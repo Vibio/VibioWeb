@@ -16,8 +16,8 @@ function vviews_user_relationships($op, &$rel)
 			_vviews_clear_cache($rel->requester_id, "user_heartbeat_activity", $event);
 		case "remove": //note the intentional omission of a break statement, since we also want to clear these on additions
 			$event = "remove friend";
-			_vviews_clear_cache($rel->requestee_id, "user_relationships_browser", $event);
-			_vviews_clear_cache($rel->requester_id, "user_relationships_browser", $event);
+//			_vviews_clear_cache($rel->requestee_id, "user_relationships_browser", $event);
+//			_vviews_clear_cache($rel->requester_id, "user_relationships_browser", $event);
 			break;
 		default:
 			break;

@@ -8,6 +8,8 @@ function uri_edit_elaboration($rid)
 			FROM {user_relationships}
 			WHERE (`requester_id`=%d OR `requestee_id`=%d)
 				AND `rid`=%d";
+	$_POST['elaboration'] = trim($_POST['elaboration']);
+
 	if (!(db_result(db_query($sql, $user->uid, $user->uid, $rid))))
 	{
 		$out = t("You are not allowed to edit that elaboration");
@@ -20,7 +22,7 @@ function uri_edit_elaboration($rid)
 	{
 		$out = t("Elaborations are disabled.");
 	}
-	elseif (!empty(trim($_POST['elaboration'])))
+	elseif (!empty($_POST['elaboration']))
 	{
 		$sql = "REPLACE INTO {user_relationship_elaborations}
 				SET `rid`=%d, `elaboration`='%s'";
@@ -47,5 +49,13 @@ function uri_edit_elaboration($rid)
 		"status"	=> $status,
 		"message"	=> $out,
 	)));
+}
+
+function uri_user_friends()
+{
+	global $user;
+
+	$pending = uri_profile_ext_dashboard_notifications($user->uid);
+	return theme("uri_user_friends", $pending['uri']['display'], theme('user_relationships', $user, null));
 }
 ?>

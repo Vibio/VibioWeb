@@ -82,16 +82,16 @@ $(document).ready(function()
 		return false;
 	});
 	
-	$(".fb_link_account").click(function()
+	$(".fb_link_account").live("click", function()
 	{
 		FB.login(fb_login_callbacks.link, { perms: fb_settings.perms });
 		return false;
 	});
 	
-	$(".fb_remove_account").click(function()
+	$(".fb_remove_account").live("click", function()
 	{
-		var fb_id = $(this).siblings(".account_id").html();
-		window.location = "/facebook/remove-account/"+fb_id+"?destination="+window.location.pathname.substring(1);
+		var href = $(this).attr("href")+"?destination="+window.location.pathname.substring(1);
+		window.location = href;
 		return false;
 	});
 	

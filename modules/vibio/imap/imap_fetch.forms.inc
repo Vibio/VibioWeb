@@ -69,6 +69,8 @@ function imap_fetch_attach_form(&$state, $image)
 {
 	global $user;
 	
+	module_load_include("inc", "collection");
+
 	$collection_options = array(-1 => t("-- Collection --"));
 	foreach (collection_get_collections($user->uid) as $c)
 	{

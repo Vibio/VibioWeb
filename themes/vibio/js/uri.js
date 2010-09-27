@@ -2,6 +2,10 @@ $(document).ready(function()
 {
 	var active_rid = false, form_html = false;
 	
+	$("#friends_tabs").tabs({
+//		cache: true,
+	});
+
 	$("a.uri_edit_elaboartion").click(function()
 	{
 		active_rid = $(this).closest("tr").attr("id").split("uri_relationship_")[1];
@@ -10,37 +14,36 @@ $(document).ready(function()
 		return false;
 	});
 	
-	$("a.uri_popup_link")
-		.click(function()
+	$("a.uri_popup_link").live("click", function()
+	{
+		var rid = $(this).closest("tr").attr("id").split("uri_relationship_")[1];
+		var href = $(this).attr("href");
+
+		if (!rid)
 		{
-			var rid = $(this).closest("tr").attr("id").split("uri_relationship_")[1];
-			var href = $(this).attr("href");
-			
-			busy_indicator.show(rid);
-			
-			$.ajax({
-				url: href,
-				dataType: "json",
-				success: function(json, stat)
-				{
-					vibio_dialog.create(json.html);
-					eval("bind_"+json.callback+"("+rid+", '"+href+"')");
-				},
-				complete: function()
-				{
-					busy_indicator.hide(rid);
-				}
-			});
-			
-			return false;
-		})
-		.each(function(i, e)
-		{
-			var href = $(this).attr("href").split("/");
-			var rid = href[href.length - 2];
-			
+			var href_args = href.split("/");
+			rid = href_args[href_args.length - 2];
 			$(this).closest("tr").attr("id", "uri_relationship_"+rid);
+		}
+		
+		busy_indicator.show(rid);
+		
+		$.ajax({
+			url: href,
+			dataType: "json",
+			success: function(json, stat)
+			{
+				vibio_dialog.create(json.html);
+				eval("bind_"+json.callback+"("+rid+", '"+href+"')");
+			},
+			complete: function()
+			{
+				busy_indicator.hide(rid);
+			}
 		});
+		
+		return false;
+	});
 	
 	var bind_pending_request = function(rid, href)
 	{

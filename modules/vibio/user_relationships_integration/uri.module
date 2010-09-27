@@ -58,7 +58,18 @@ function uri_menu_alter(&$menu)
 		$menu["relationships/{$rtid}"]['type'] = MENU_CALLBACK;
 	}
 	
-	$menu['relationships']['title callback'] = "uri_menu_title";
+	$menu['relationships/requests']['type'] = MENU_CALLBACK;
+
+	$menu['friends'] = array(
+		"title"				=> "Friends",
+		"title callback"	=> "uri_menu_title",
+		"access callback"	=> "user_relationships_ui_check_access",
+		"access arguments"	=> array("edit"),
+		"page callback"		=> "uri_user_friends",
+		"file"				=> "uri.pages.inc",
+		"file path"			=> drupal_get_path("module", "uri"),
+		"type"				=> MENU_SUGGESTED_ITEM,
+	);
 }
 
 function uri_menu_title()
@@ -124,12 +135,15 @@ function uri_preprocess_uri_dashboard_notification(&$vars)
 	$rel_actions = "";
 	if ($vars['rel_type'] == "pending")
 	{
-		$approve = t("Approve");
+		$approve = t("Accept");
 		$ignore = t("Ignore");
 		
 		$rel_actions = "
 			<table>
 				<tr>
+					<td>
+						<img class='uri_edit_busy_indicator' src='/themes/vibio/images/ajax-loader.gif' />
+					</td>
 					<td>
 						<a class='uri_popup_link' href='/relationships/{$vars['relationship']->requestee_id}/{$vars['relationship']->rid}/approve'>
 							<button>$approve</button>
@@ -139,9 +153,6 @@ function uri_preprocess_uri_dashboard_notification(&$vars)
 						<a class='uri_popup_link' href='/relationships/{$vars['relationship']->requestee_id}/{$vars['relationship']->rid}/disapprove'>
 							<button>$ignore</button>
 						</a>
-					</td>
-					<td>
-						<img class='uri_edit_busy_indicator' src='/themes/vibio/images/ajax-loader.gif' />
 					</td>
 				</tr>
 			</table>
@@ -162,6 +173,11 @@ function uri_theme()
 		"uri_dashboard_notification"	=> array(
 			"arguments"	=> array("rel_type" => "pending", "relationship" => false),
 			"template"	=> "templates/uri/dashboard-notification",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"uri_user_friends"	=> array(
+			"arguments"	=> array("notifications" => "", "friends" => ""),
+			"template"	=> "templates/uri/friends",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
 	);

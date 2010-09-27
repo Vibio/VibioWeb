@@ -27,3 +27,16 @@
 	float: left;
 	margin-left: 10px;
 }
+
+.fb_ff_message {
+	margin-bottom: 10px;
+}
+
+.fb_ff_message .fb_message {
+	float: left;
+	width: 500px;
+}
+
+.fb_ff_message .fb_link {
+	float: right;
+}

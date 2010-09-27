@@ -4,12 +4,12 @@ define("NETWORK_DEFAULT_DEPTH", 3);
 function network_menu()
 {
 	return array(
-		"relationships/friend-finder"	=> array(
+		"network/find-friends"	=> array(
 			"title"				=> "Friend Finder",
 			"page callback"		=> "network_find_friends",
 			"access arguments"	=> array("can have relationships"),
 			"file"				=> "network.pages.inc",
-			"type"				=> MENU_LOCAL_TASK,
+			"type"				=> MENU_CALLBACK,
 		),
 	);
 }
@@ -26,6 +26,11 @@ function network_theme()
 			"arguments"	=> array("friends_list" => ""),
 			"template"	=> "templates/network/potential-friends",
 			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"network_friend_finder_messages" => array(
+			"arguments"	=> array("errors" => ""),
+			"template"	=> "templates/network/friend-finder-messages",
+			"path"		=> drupal_geT_path("theme", "vibio"),
 		),
 	);
 }
@@ -94,6 +99,11 @@ function network_user_relationships($op, &$rel)
 			cache_clear_all("friends:{$rel->requestee_id}", "cache_network", true);
 			break;
 	}
+}
+
+function network_preprocess_uri_user_friends(&$vars)
+{
+	drupal_add_css("themes/vibio/css/network.css");
 }
 
 function network_fb_link_account($user)

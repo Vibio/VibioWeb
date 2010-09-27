@@ -37,6 +37,12 @@ function fb_menu()
 			"file"				=> "fb.pages.inc",
 			"type"				=> MENU_CALLBACK,
 		),
+		"fb/remove-account"		=> array(
+			"page callback"		=> "fb_user_remove_account",
+			"access arguments"	=> array("fb user"),
+			"file"				=> "fb.pages.inc",
+			"type"				=> MENU_CALLBACK,
+		),
 	);
 }
 
@@ -169,6 +175,11 @@ function fb_theme(&$existing, $type, $theme, $path)
 			"template"	=> "templates/facebook/prompt-account-link",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+		"fb_ff_message"		=> array(
+			"arguments"	=> array("message" => "", "href" => false, "message_type" => "link_account"),
+			"template"	=> "templates/facebook/ff-link-account",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
 	);
 }
 
@@ -185,6 +196,20 @@ function fb_preprocess_fb_share(&$vars)
 	{
 		$vars['share_params'] = json_encode(fb_get_collection_share_params(collection_load($vars['share_id']), "share_collection"));
 	}
+}
+
+function fb_preprocess_fb_ff_message(&$vars)
+{
+	switch ($vars['message_type'])
+	{
+		case "link_account":
+			$vars['fb_image'] = "/themes/vibio/images/facebook/link-account.png";
+	}
+}
+
+function fb_preprocess_uri_user_friends(&$vars)
+{
+	drupal_add_css("themes/vibio/css/facebook.css");
 }
 
 function fb_network_get_userinfo($uid)
@@ -236,23 +261,16 @@ function fb_collection_update($uid, $cids)
 	fb_register_prompt("share_collection", $cid, "collection");
 }
 
-function fb_network_find_friends($uid, &$potentials, $existing)
+function fb_network_find_friends($uid, &$potentials, $existing, &$errors)
 {
 	module_load_include("inc", "fb");
 	
 	if (!(fb_user_has_fb($uid)))
 	{
-		$link_account_args = array(
-			"attributes"	=> array(
-				"class"	=> "fb_link_account",
-			),
-		);
+		$message = t("Connect your Facebook account to see which friends are on Vibio");
+		$href = array("url" => url("fb/add-account"), "class" => "fb_link_account");
+		$errors[] = theme("fb_ff_message", $message, (object) $href, "link_account");
 		
-		$t_args = array(
-			"!fb_link" => l(t("link your Facebook account"), "fb/add-account", $link_account_args),
-		);
-		
-		drupal_set_message(t("Please !fb_link to see which of your Facebook friends are using Vibio", $t_args));
 		return false;
 	}
 	elseif (!($friends = fb_get_friends($uid)))
@@ -265,8 +283,8 @@ function fb_network_find_friends($uid, &$potentials, $existing)
 		$t_args = array(
 			"!fb_refresh" => l(t("refresh your Facebook session"), "user/{$uid}/external-accounts", $fb_login_refresh),
 		);
-		
-		drupal_set_message(t("Your Facebook session has expired, please !fb_refresh to see which of your Facebook friends are using Vibio", $t_args));
+
+		$errors[] = t("Your Facebook session has expired, please !fb_refresh to see which of your Facebook friends are using Vibio", $t_args);
 		return false;
 	}
 	
@@ -292,7 +310,7 @@ function fb_preprocess_network_potential_friend(&$vars)
 {
 	if ($vars['friend']->src == "fb")
 	{
-		$link = t("View !user's Facebook profile", array("!user" => $vars['friend']->info['name']));
+		$link = t("Facebook profile");
 		$vars['friend_src_link'] = "
 			<a href='{$vars['friend']->link}' target='_blank'>
 				$link

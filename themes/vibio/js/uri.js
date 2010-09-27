@@ -3,12 +3,21 @@ $(document).ready(function()
 	var active_rid = false, form_html = false;
 	
 	$("#friends_tabs").tabs({
-//		cache: true,
+		cache: true,
 	});
 
 	$("a.uri_edit_elaboartion").click(function()
 	{
-		active_rid = $(this).closest("tr").attr("id").split("uri_relationship_")[1];
+		var rid = $(this).closest("tr").attr("id").split("uri_relationship_")[1];
+
+		if (!rid)
+		{
+			var href_args = $(this).attr("href").split("/");
+			rid = href_args[href_args.length - 1];
+			$(this).closest("tr").attr("id", "uri_relationship_"+rid);
+		}
+
+		active_rid = rid;
 		show_details_form(active_rid);
 		
 		return false;

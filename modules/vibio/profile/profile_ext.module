@@ -174,7 +174,7 @@ function profile_ext_display_block($u)
 		cache_set($cache_key, $items, "cache", time() + $cache_time);
 	}
 	
-	$pic = $u->picture ? file_create_url($u->picture) : false;
+	$pic = $u->picture ? file_create_url($u->picture) : "/themes/vibio/images/icons/default_user_large.png";
 	return theme("profile_ext_displayblock", $u, $pic, $items);
 }
 

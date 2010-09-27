@@ -12,6 +12,18 @@ if ($user->uid && $user->uid != $u->uid && module_exists("privatemsg"))
 {
 	$message_link = l(t("Send !user a message", array("!user" => $u->name)), "messages/new/{$u->uid}");
 }
+
+if (!$u->picture)
+{
+	$profile['user_picture'] = "
+		<div class='picture'>
+			<a href='/user/{$u->uid}'>
+				<img src='/themes/vibio/images/icons/default_user_large.png' />
+			</a>
+		</div>
+	";
+}
+
 ?>
 
 <div id='profile_user_summary' class='rounded_content'>

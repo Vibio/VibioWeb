@@ -32,8 +32,8 @@ if (!$u->picture)
 			<?php
 			echo "<h5>$u->name</h5>";
 			echo $profile['dos'];
-			echo $profile['uri_actions']['actions'];
 			echo $message_link;
+			echo $profile['uri_actions']['actions'];
 			?>
 		</div>
 		<?php echo $account_edit_link; ?>

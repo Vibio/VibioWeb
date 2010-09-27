@@ -135,8 +135,8 @@ function uri_preprocess_uri_dashboard_notification(&$vars)
 	$rel_actions = "";
 	if ($vars['rel_type'] == "pending")
 	{
-		$approve = t("Accept");
-		$ignore = t("Ignore");
+		$approve= theme("user_relationships_pending_request_approve_link", $vars['relationship']->requestee_id, $vars['relationship']->rid);
+		$ignore = theme("user_relationships_pending_request_disapprove_link", $vars['relationship']->requestee_id, $vars['relationship']->rid);
 		
 		$rel_actions = "
 			<table>
@@ -144,16 +144,8 @@ function uri_preprocess_uri_dashboard_notification(&$vars)
 					<td>
 						<img class='uri_edit_busy_indicator' src='/themes/vibio/images/ajax-loader.gif' />
 					</td>
-					<td>
-						<a class='uri_popup_link' href='/relationships/{$vars['relationship']->requestee_id}/{$vars['relationship']->rid}/approve'>
-							<button>$approve</button>
-						</a>
-					</td>
-					<td>
-						<a class='uri_popup_link' href='/relationships/{$vars['relationship']->requestee_id}/{$vars['relationship']->rid}/disapprove'>
-							<button>$ignore</button>
-						</a>
-					</td>
+					<td>$approve</td>
+					<td>$ignore</td>						
 				</tr>
 			</table>
 		";

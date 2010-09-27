@@ -1,14 +1,14 @@
 <?php
-echo "<table>";
-foreach ($list as $link)
-{
-	echo "
+echo "
+	<table>
 		<tr>
-			<td>{$link}</td>
 			<td>
 				<img class='uri_edit_busy_indicator' src='/themes/vibio/images/ajax-loader.gif' />
 			</td>
-		</tr>";
+";
+foreach ($list as $link)
+{
+	echo "<td>{$link}</td>";
 }
-echo "</table>";
+echo "</tr></table>";
 ?>

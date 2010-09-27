@@ -154,6 +154,10 @@
 	margin-top: 10px;
 }
 
+.uri_notification .profile_notifications_actions {
+	margin-top: 0;
+}
+
 .profile_notifications_actions table {
 	margin: 0;
 }

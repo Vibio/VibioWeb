@@ -39,20 +39,11 @@ function network_find_friends($uid=false)
 		$friend_user = user_load($friend_uid);
 		$friend->info['uid'] = $friend_uid;
 		$picture = theme("user_picture", $friend_user);
-		$actions = "
-			<table>
-				<tr>
-					<td>
-						<img class='uri_edit_busy_indicator' src='/themes/vibio/images/ajax-loader.gif' />
-					</td>
-					<td>
-						<a href='/relationships/{$friend_user->uid}/1/request' class='uri_popup_link'>
-							<button>Invite to be friends</button>
-						</a>
-					</td>
-				</tr>
-			</table>
-		";
+
+		if ($action_links = _user_relationships_ui_actions_between($u, $friend_user))
+		{
+			$actions = theme("uri_action_list", $action_links);
+		}
 		
 		$out .= theme("network_potential_friend", $friend, $picture, $actions);
 	}

@@ -65,7 +65,7 @@ img.uri_edit_busy_indicator {
 	border-top: none;
 }
 
-.user-relationships-listing-table .picture {
+.user-relationships-listing-table .picture img {
 	max-width: 40px;
 }
 

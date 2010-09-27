@@ -87,12 +87,13 @@ function phptemplate_user_relationships_pending_request_disapprove_link($uid, $r
 function phptemplate_user_relationships_remove_link($uid, $rid)
 {
 	return l(
-		t("Remove"),
+		"<img src='/themes/vibio/images/close_button.png' />",
 		"relationships/{$uid}/{$rid}/remove",
 		array(
-			"attributes"	=> array(
+			"attributes"=> array(
 				"class"	=> "uri_popup_link",
 			),
+			"html"		=> true,
 		)
 	);
 }

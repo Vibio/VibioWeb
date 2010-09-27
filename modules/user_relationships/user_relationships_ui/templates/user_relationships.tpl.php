@@ -1,34 +1,49 @@
 <?php
-// $Id: user_relationships.tpl.php,v 1.1.2.10 2009/10/15 15:23:26 aufumy Exp $
+if ($relationships) 
+{
+	$table = "<table class='user-relationships-listing-table'>";
+	foreach ($relationships as $relationship) 
+	{
+		$edit_access = ($user->uid == $account->uid && user_access('maintain own relationships')) || user_access('administer users');
+		$this_user_str  = $account->uid == $relationship->requestee_id ? 'requester' : 'requestee';
+		$this_user      = $relationship->{$this_user_str};
+		$username = theme("username", $this_user);
+		$remove_link = $edit_access ? theme('user_relationships_remove_link', $account->uid, $relationship->rid) : false;
+		$busy_indicator = module_exists("uri") ? "<img class='uri_edit_busy_indicator' src='/themes/vibio/images/ajax-loader.gif' />" : "";
 
-//$relationships array is loaded in template_preprocess_user_relationships()
-if ($relationships) {
-  foreach ($relationships as $relationship) {
-    $edit_access = ($user->uid == $account->uid && user_access('maintain own relationships')) || user_access('administer users');
+		$row = "
+			<td class='ur_friend_info'>
+				$username
+				<div class='relationship_extra'>
+					{$relationship->extra_for_display}
+				</div>
+			</td>
+		";
 
-    $this_user_str  = $account->uid == $relationship->requestee_id ? 'requester' : 'requestee';
-    $this_user      = $relationship->{$this_user_str};
+		if (variable_get("user_relationships_show_user_pictures", false))
+		{
+			$row = "<td>".theme("user_picture", $this_user)."</td>".$row;
+		}
 
-    $row = array(
-      theme('username', $this_user),
-      //ur_tt("user_relationships:rtid:$relationship->rtid:name", $relationship->name) . ($relationship->is_oneway ? ($this_user_str == 'requestee' ? t(' (You to Them)') : t(' (Them to You)')) : NULL),
-      $relationship->extra_for_display,
-      $edit_access ? theme('user_relationships_remove_link', $account->uid, $relationship->rid) : '&nbsp;',
-      module_exists("uri") ? "<img class='uri_edit_busy_indicator' src='/themes/vibio/images/ajax-loader.gif' />" : "",
-    );
-    if (variable_get('user_relationships_show_user_pictures', 0)) {
-      array_unshift($row, theme('user_picture', $this_user)); 
-    }
-    $rows[] = $row;
-  }
+		$row .= "<td class='ur_friend_busy'>$busy_indicator</td>";
 
-  $edit_form = module_exists("uri") ? "<div id='uri_elaborations_edit'>".drupal_get_form("uri_edit_elaboration_form")."</div>" : "";
-  print
-    theme('table', array(), $rows, array('class' => 'user-relationships-listing-table')) .
-    theme('pager', NULL, $relationships_per_page).
-    $edit_form;
+		if ($remove_link)
+		{
+			$row .= "<td class='ur_friend_remove'>$remove_link</td>";
+		}
+
+		$row = "<tr>$row</tr>";
+		$table .= $row;
+	}
+
+	$table .= "</table>";
+	$pager = theme("pager", null, $relationships_per_page);
+	$edit_form = module_exists("uri") ? "<div id='uri_elaborations_edit'>".drupal_get_form("uri_edit_elaboration_form")."</div>" : "";
+
+	echo $table.$pager.$edit_form;
 }
-else {
-  print t('No relationships found');
+else 
+{
+  echo t('No relationships found');
 }
 ?>

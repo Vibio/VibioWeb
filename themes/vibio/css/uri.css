@@ -2,6 +2,14 @@ img.uri_edit_busy_indicator {
 	display: none;
 }
 
+.uri_edit_elaboartion {
+	color: #9AA753;
+}
+
+.relationship_extra {
+	font-size: 11px;
+}
+
 #uri_elaborations_edit {
 	display: none;
 }
@@ -46,4 +54,40 @@ img.uri_edit_busy_indicator {
 
 .uri_notification.profile_notification .profile_notifications_summary {
 	width: 500px;
+}
+
+.user-relationships-listing-table tr {
+	background: inherit;
+	border-top: 1px solid #E6EAED;
+}
+
+.user-relationships-listing-table tr:first-child {
+	border-top: none;
+}
+
+.user-relationships-listing-table .picture {
+	max-width: 40px;
+}
+
+.user-relationships-listing-table td {
+	vertical-align: top;
+	padding-bottom: 5px;
+	padding-top: 5px;
+}
+
+.user-relationships-listing-table .ur_friend_info {
+	padding-left: 5px;
+	width: 535px;
+}
+
+.ur_friend_remove {
+	width: 30px;
+}
+
+.ur_friend_remove img {
+	display: none;
+}
+
+.ur_friend_busy {
+	width: 15px;
 }

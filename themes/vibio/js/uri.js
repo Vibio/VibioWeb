@@ -4,7 +4,19 @@ $(document).ready(function()
 	
 	$("#friends_tabs").tabs({
 		cache: true,
+		spinner: "<img src='/themes/vibio/images/ajax-loader.gif' />"
 	});
+
+	$("table.user-relationships-listing-table tr").hover(
+		function()
+		{
+			$(this).find("td.ur_friend_remove img").show();
+		},
+		function()
+		{
+			$(this).find("td.ur_friend_remove img").hide();
+		}
+	);
 
 	$("a.uri_edit_elaboartion").click(function()
 	{

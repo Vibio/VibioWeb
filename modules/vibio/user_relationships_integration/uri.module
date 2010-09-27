@@ -90,10 +90,10 @@ function uri_preprocess_user_relationships(&$vars)
 	
 	foreach ($vars['relationships'] as $rid => $rel)
 	{
-		$link = l(t("edit details"), "relationships/edit-elaboration/$rid", $link_options);
+		$link = l(t("Edit"), "relationships/edit-elaboration/$rid", $link_options);
 		$vars['relationships'][$rid]->extra_for_display = "
 			<span class='uri_elaboration'>{$rel->extra_for_display}</span>
-			($link)
+			$link
 		";
 	}
 }

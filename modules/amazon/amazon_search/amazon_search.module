@@ -58,7 +58,7 @@ function amazon_search_simple_search($keywords = '', $parameters = array()) {
   $results = amazon_http_request('ItemSearch', $parameters);
   
   $pager_page_array[$pager_element] = $current_page;
-  $pager_total[$pager_element] = (int) $results->Items->TotalPages;
+  $pager_total[$pager_element] = (int) $results->Items->TotalPages > 5 ? 5 : (int) $results->Items->TotalPages;
   
   foreach($results->Items->Item as $xml) {
     $item = amazon_item_clean_xml($xml);

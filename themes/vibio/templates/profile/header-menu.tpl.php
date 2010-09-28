@@ -3,6 +3,7 @@ $edit_account_link = l(t("Account Settings"), "user/{$profile_ext_user->uid}/edi
 $privacy_settings_link = l(t("Privacy Settings"), "user/{$profile_ext_user->uid}/edit/privacy_settings");
 $faq_link = l(t("Help"), "faq");
 $logout_link = l(t("Logout"), "logout");
+$menu_title = strlen($profile_ext_user->name) > 20 ? substr($profile_ext_user->name, 0, 20)."..." : $profile_ext_user->name
 ?>
 
 <table><tr>
@@ -11,7 +12,7 @@ $logout_link = l(t("Logout"), "logout");
 			<td class="rootVoice {menu: 'profile_ext_submenu'}">
 				<div class='mbmenu_arrow_icon'> </div>
 				<div class='mbmenu_title'>
-					<?php echo $profile_ext_user->name; ?>
+					<?php echo $menu_title; ?>
 				</div>
 			</td>
 		</tr></table>

@@ -23,6 +23,10 @@
   <script type="text/javascript" src="/themes/vibio/js/utility.js"></script>
   <script type="text/javascript" src="/themes/vibio/prettyphoto/js/jquery.prettyPhoto.js"></script>
   <script type='text/javascript' src='/themes/vibio/js/jquery.livequery.min.js'></script>
+  <script type="text/javascript" src="/themes/vibio/js/mbMenu/inc/jquery.hoverIntent.js"></script>
+  <script type="text/javascript" src="/themes/vibio/js/mbMenu/inc/jquery.metadata.js"></script>
+  <script type="text/javascript" src="/themes/vibio/js/mbMenu/inc/mbMenu.js"></script>
+  <script type="text/javascript" src="/themes/vibio/js/mb_menu.js"></script>
 </head>
 <body class="<?php print $classes; ?>">
 <div id="page-wrapper">

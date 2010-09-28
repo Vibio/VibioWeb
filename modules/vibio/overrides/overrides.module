@@ -8,6 +8,17 @@ function overrides_menu_alter(&$menu)
 	$menu['user/%user/openid']['type'] = MENU_CALLBACK;
 }
 
+function overrides_theme()
+{
+	return array(
+		"overrides_search_type_select"	=> array(
+			"arguments"	=> array("search_types" => array()),
+			"template"	=> "templates/overrides/search-type-select",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+	);
+}
+
 function overrides_form_system_file_system_settings_alter(&$form, &$state)
 {
 	$form['file_downloads']['#options'][OVERRIDES_FILE_DOWNLOAD_DIRECT] = t("Separate server");
@@ -36,13 +47,40 @@ function overrides_form_search_theme_form_alter(&$form, &$state)
 {
 	$form['submit']['#value'] = " ";
 	$form['#submit'][] = "overrides_search_submit";
-	$form['search_theme_form']['#attributes']['class'] .= " rounded_left_side";
+
+	$form['search_type'] = array(
+		"#type"			=> "hidden",
+		"#default_value"=> "vibio_item",
+	);
+
+	$form['search_type_select'] = array(
+		"#type"		=> "markup",
+		"#value"	=> theme("overrides_search_type_select", overrides_allowed_search_types()),
+		"#weight"	=> -10,
+	);
 }
 
 function overrides_search_submit($form, &$state)
 {
-	$allowed_searches = array("vibio_item", "user");
+	$allowed_searches = overrides_allowed_search_types();
+	$default_search = "vibio_item";
+	$search_type = array_key_exists($state['values']['search_type'], $allowed_searches) ? $state['values']['search_type'] : $default_search;
 	$search_term = trim($state['values'][$form['form_id']['#value']]);
-	$state['redirect'] = "search/vibio_item/$search_term";
+
+	$state['redirect'] = "search/$search_type/$search_term";
+}
+
+function overrides_allowed_search_types()
+{
+	return array(
+		"vibio_item"=> array(
+			"title"	=> t("Search Items"),
+			"image"	=> "/themes/vibio/images/icons/default_item.png",
+		),
+		"user"		=> array(
+			"title"	=> t("Search Users"),
+			"image"	=> "/themes/vibio/images/icons/default_user.png",
+		),
+	);
 }
 ?>

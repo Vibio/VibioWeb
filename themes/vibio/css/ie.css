@@ -56,5 +56,10 @@ tr.odd td {
 }
 
 #profile_ext_header {
-  margin-top: -20px;
+  margin-top: -23px;
+}
+
+#search_type_menu_container {
+	margin-right: -6px;
+	top: 2px;
 }

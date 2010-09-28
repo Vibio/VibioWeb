@@ -62,10 +62,6 @@ function vibio_item_form_alter(&$form, &$state, $id)
 		
 		$form["#validate"][] = "vibio_item_search_validate";
 	}
-	elseif ($id == "search_theme_form")
-	{
-		//$form['#submit'][] = "vibio_item_search_submit";
-	}
 }
 
 function vibio_item_form_node_delete_confirm_alter(&$form, &$state)
@@ -121,13 +117,6 @@ function vibio_item_search($op="search", $keys=null)
 		case "search":
 			return _vibio_item_search($keys);
 	}
-}
-
-//this is how i change the default tab
-function vibio_item_search_submit($form, &$state)
-{
-	$form_id = $form['form_id']['#value'];
-	$state['redirect'] = 'search/vibio_item/'.trim($state['values'][$form_id]);
 }
 
 function vibio_item_preprocess_node(&$vars)

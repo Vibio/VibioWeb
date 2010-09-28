@@ -278,14 +278,6 @@ function profile_ext_preprocess_profile_ext_profile_info(&$vars)
 	}
 }
 
-function profile_ext_preprocess_profile_ext_header_menu(&$vars)
-{
-	drupal_add_js("themes/vibio/js/mbMenu/inc/jquery.hoverIntent.js");
-	drupal_add_js("themes/vibio/js/mbMenu/inc/jquery.metadata.js");
-	drupal_add_js("themes/vibio/js/mbMenu/inc/mbMenu.js");
-	drupal_add_js("themes/vibio/js/mb_menu.js");
-}
-
 function profile_ext_access_dashboard()
 {
 	global $user;

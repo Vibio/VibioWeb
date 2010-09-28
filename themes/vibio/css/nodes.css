@@ -124,3 +124,21 @@
   font-weight: bold;
   color: black;
 }
+
+.vibio_item_delete_summary {
+	margin: 5px 0 10px;
+}
+
+.vibio_item_delete_summary img {
+	max-width: 80px;
+	max-height: 80px;
+}
+
+.vibio_item_delete_summary tbody {
+	border-top: none;
+}
+
+.vibio_item_delete_summary .node_info {
+	width: 500px;
+	padding-left: 10px;
+}

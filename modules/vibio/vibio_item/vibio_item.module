@@ -68,6 +68,35 @@ function vibio_item_form_alter(&$form, &$state, $id)
 	}
 }
 
+function vibio_item_form_node_delete_confirm_alter(&$form, &$state)
+{
+	$node = node_load($form['nid']['#value']);
+
+	if ($node->type != "vibio_item")
+		return;
+
+	$image = _vibio_item_get_image($node->nid);
+	drupal_set_title(t("Are you sure you want to delete?"));
+
+	$form['description']['#value'] = "
+		<table class='vibio_item_delete_summary'>
+			<tr>
+				<td>
+					<a href='/node/{$node->nid}'>
+						<img src='$image' />
+					</a>
+				</td>
+				<td class='node_info'>
+					<a href='/node/{$node->nid}'>
+						{$node->title}
+					</a>
+				</td>
+			</tr>
+		</table>
+		{$form['description']['#value']}
+	";
+}
+
 function vibio_item_search_validate($form, &$state)
 {
 	$vals = &$state['values'];

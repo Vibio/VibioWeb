@@ -258,6 +258,14 @@ function offer2buy_nodeapi(&$node, $op, $a3=null, $a4=null)
 				}
 				
 				break;
+			case "delete":
+				$sql = "DELETE FROM {offer2buy_offers}
+						WHERE `nid`=%d";
+				db_query($sql, $node->nid);
+
+				$sql = "DELETE FROM  {offer2buy}
+						WHERE `nid`=%d";
+				db_query($sql, $node->nid);
 			default:
 				break;
 		}

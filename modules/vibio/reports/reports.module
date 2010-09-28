@@ -21,7 +21,7 @@ function reports_cron()
 	
 	module_invoke_all("reports_cron");
 	
-	if (date("G") == variable_get("reports_hour", 0))
+	if (date("G") == variable_get("reports_hour", 0) && $now - $last_daily_run > REPORT_RUN_INTERVAL - REPORT_ONE_HOUR) // make sure this is only run once a day
 	{
 		module_invoke_all("reports_daily_cron", $last_daily_run);
 		variable_set("reports_last_daily_run", $now);

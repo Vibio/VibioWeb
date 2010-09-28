@@ -21,6 +21,11 @@ $(document).ready(function()
 			$(this).find(".profile_edit_link").fadeOut(200);
 		}
 	);
+
+	if (Drupal.settings.profile_settings.default_tab != false)
+	{
+		$("a[href='"+Drupal.settings.profile_settings.default_tab+"']").click();
+	}
 	
 	function user_profile_set_bg()
 	{

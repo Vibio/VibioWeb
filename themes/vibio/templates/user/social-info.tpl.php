@@ -1,6 +1,14 @@
 <?php
 global $user;
 
+$default_tab = false;
+if (arg(2) == "inventory")
+{
+	$default_tab = "#user_inventory";
+}
+
+drupal_add_js(array("profile_settings" => array("default_tab" => $default_tab)), "setting");
+
 $access = module_exists("privacy") ? privacy_get_access_level($uid) : 1;
 $activity_feed = views_embed_view("user_heartbeat_activity", "block_1", $uid, $access);
 $activity_feed_title = t("Activity Feed");

@@ -5,7 +5,6 @@ if ($view->args[1] == PRIVACY_ONLYME)
 {
 	echo l("<button>".t("Create New Collection")."</button>", "collections/new", array("html" => true))."<br />";
 }
-echo l(t("View All Items"), "collections/{$view->args[0]}/view-all");
 echo "</div>";
 
 foreach ($view->result as $collection)

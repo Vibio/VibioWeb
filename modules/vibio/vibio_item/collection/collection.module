@@ -7,6 +7,7 @@ function collection_perm()
 {
 	return array(
 		"collections user",
+		"collections viewer",
 	);
 }
 
@@ -52,7 +53,7 @@ function collection_menu()
 			"title"				=> "All Items",
 			"page callback"		=> "collection_view_all_user_items",
 			"page arguments"	=> array(1),
-			"access arguments"	=> array("collections user"),
+			"access arguments"	=> array("collections viewer"),
 			"file"				=> "collection.pages.inc",
 			"type"				=> MENU_CALLBACK,
 		),
@@ -313,30 +314,49 @@ function collection_offer2buy_complete_actions($old_uid, $node)
 
 function collection_form_views_exposed_form_alter(&$form, &$state)
 {
-	if ($form['#id'] != "views-exposed-form-user-collection-default")
+	if ($form['#id'] == "views-exposed-form-user-collection-default")
 	{
-		return;
+		$form['collection_order_by'] = array(
+			"#type"		=> "select",
+			"#title"	=> t("Sort"),
+			"#weight"	=> 9,
+			"#options"	=> array(
+				"node_changed-desc"	=> t("Newest First"),
+				"node_changed-asc"	=> t("Oldest First"),
+			),
+		);
+		$form['order'] = array(
+			"#type" => "hidden",
+			"#value"=> isset($_GET['order']) ? $_GET['order'] : "node_changed",
+		);
+		$form['sort'] = array(
+			"#type" => "hidden",
+			"#value"=> isset($_GET['sort']) ? $_GET['sort'] : "node_changed",
+		);
+		
+		$form['submit']['#weight'] = 10;
+	}
+	elseif (in_array($form['#id'], array("views-exposed-form-user-collections-default", "views-exposed-form-user-inventory-default")))
+	{
+		$label = t("View");
+		$uid = $form['#parameters'][1]['view']->args[0];
+		$collection = t("Collections");
+		$all_items = t("All Items");
+		$collection_default = $form['#id'] == "views-exposed-form-user-collections-default" ? "selected='selected'" : "";
+		$items_default = $form['#id'] == "views-exposed-form-user-inventory-default" ? "selected='selected'" : "";
+
+		$form['#suffix'] = "
+			<div class='inventory_view_type'>
+				<span>$label</span>
+				<select class='inventory_view_type_select'>
+					<option value='/user/{$uid}/inventory' $collection_default>$collection</option>
+					<option value='/collections/{$uid}/view-all' $items_default>$all_items</option>
+				</select>
+			</div>
+			<div class='clear'></div>
+		";
 	}
 	
-	$form['collection_order_by'] = array(
-		"#type"		=> "select",
-		"#title"	=> t("Sort"),
-		"#weight"	=> 9,
-		"#options"	=> array(
-			"node_changed-desc"	=> t("Newest First"),
-			"node_changed-asc"	=> t("Oldest First"),
-		),
-	);
-	$form['order'] = array(
-		"#type" => "hidden",
-		"#value"=> isset($_GET['order']) ? $_GET['order'] : "node_changed",
-	);
-	$form['sort'] = array(
-		"#type" => "hidden",
-		"#value"=> isset($_GET['sort']) ? $_GET['sort'] : "node_changed",
-	);
-	
-	$form['submit']['#weight'] = 10;
 }
 
 function collection_load($cid)
@@ -365,7 +385,7 @@ function collection_access_collection($collection)
 	}
 	elseif (isset($collection['privacy']) && module_exists("privacy"))
 	{
-		return privacy_get_access_level($collection['uid']) >= $collection['privacy'] && user_access("collections user");
+		return privacy_get_access_level($collection['uid']) >= $collection['privacy'] && user_access("collections viewer");
 	}
 	else
 	{

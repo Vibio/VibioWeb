@@ -76,7 +76,7 @@ $(document).ready(function()
 		}
 	});
 	
-	$("#views-exposed-form-user-collection-default #edit-collection-order-by").live("change", function()
+	$("#views-exposed-form-user-collection-default #edit-collection-order-by").livequery("change", function()
 	{
 		var sort_args = $(this).val().split("-");
 		
@@ -87,5 +87,10 @@ $(document).ready(function()
 					.end()
 				.find("#edit-sort")
 					.val(sort_args[1]);
+	});
+
+	$("select.inventory_view_type_select").livequery("change", function()
+	{
+		window.location = $(this).val();
 	});
 });

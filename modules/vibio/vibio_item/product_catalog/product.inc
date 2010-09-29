@@ -76,10 +76,8 @@ function _product_get_owners($nid, $as_uid, $type="network", $page=0)
 		$results[] = array(
 			"node"	=> l($row['title'], "node/{$row['nid']}"),
 			"user"	=> array(
-				"picture"	=> file_create_url($row['picture']),
-				"name"		=> $row['name'],
-				"uid"		=> $row['uid'],
-				"dos"		=> $as_uid && $type == "network" && module_exists("dos") ? dos_get($row['uid'], false, $depth) : array(),
+				"picture"	=> theme("user_picture", (object) $row),
+				"dos"		=> $as_uid && $type == "network" && module_exists("dos") ? theme("dos_display", dos_get($row['uid'], false, $depth)) : "",
 			),
 		);
 	}

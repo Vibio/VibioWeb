@@ -1365,7 +1365,7 @@ function user_authenticate($form_values = array()) {
   // Load the account to check if the e-mail is denied by an access rule.
   // Doing this check here saves us a user_load() in user_login_name_validate()
   // and introduces less code change for a security fix.
-  $account = user_load(array('name' => $form_values['name'], 'pass' => trim($form_values['pass']), 'status' => 1));
+  $account = user_load(array('mail' => $form_values['name'], 'pass' => trim($form_values['pass']), 'status' => 1));
   if ($account && drupal_is_denied('mail', $account->mail)) {
     form_set_error('name', t('The name %name is registered using a reserved e-mail address and therefore could not be logged in.', array('%name' => $account->name)));
   }

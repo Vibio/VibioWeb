@@ -55,8 +55,10 @@ function collection_manage()
 	{
 		return t("You currently have no collections. !create", array("!create" => l(t("Create a collection"), "collections/new")));
 	}
-	
-	return views_embed_view("user_collections", "default", $user->uid, PRIVACY_ONLYME);
+	else
+	{
+		drupal_goto("user/{$user->uid}/inventory");
+	}
 }
 
 function collection_edit(&$state, $collection=false)

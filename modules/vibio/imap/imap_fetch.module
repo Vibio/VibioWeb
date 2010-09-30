@@ -113,6 +113,7 @@ function imap_fetch_fetch_images()
 	$count = imap_fetch_get_attachments();
 	$time_taken = microtime(true) - $start;
 	
-	exit("Done. Took $time_taken seconds for $count images");
+	exit();
+//	exit("Done. Took $time_taken seconds for $count images");
 }
 ?>

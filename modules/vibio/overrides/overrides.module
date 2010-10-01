@@ -58,6 +58,8 @@ function overrides_form_search_theme_form_alter(&$form, &$state)
 		"#value"	=> theme("overrides_search_type_select", overrides_allowed_search_types()),
 		"#weight"	=> -10,
 	);
+
+	$form['search_theme_form']['#title'] = "";
 }
 
 function overrides_search_submit($form, &$state)

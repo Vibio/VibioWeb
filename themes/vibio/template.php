@@ -139,3 +139,72 @@ function phptemplate_node_preview($node)
 		</div>
 	";
 }
+
+/*function vibio_fieldset($ele)
+{
+	if (!empty($ele['#collapsible']))
+	{
+		drupal_add_js("misc/collapse.js");
+
+		if (!isset($ele['#attributes']['class']))
+			$element['#attributes']['class'] = "";
+
+		$element['#attributes']['class'] .= " collapsible";
+
+		if (!empty($ele['#collapsed']))
+			$element['#attributes']['class'] .= " collapsed";
+	}
+
+	$ele['#attributes']['class'] .= " rounded_content";
+
+	$attributes = drupal_attributes($ele['#attributes']);
+	$title = $ele['#title'] ? "<div class='title'>{$ele['#title']}</div>" : "";
+	$description = $ele['#description'] ? "<div class='description'>{$ele['#description']}</div>" : "";
+	$children = !empty($ele['#children']) ? "<table>{$ele['#children']}</table>" : "";
+	$value = isset($ele['#value']) ? $ele['#value'] : "";
+
+	return "
+		<fieldset $attributes>
+			$title
+			$description
+			$children
+			$value
+		</fieldset>
+	";
+
+}
+
+function vibio_form_element($ele, $val)
+{
+	$out = "<tr class='form-item'";
+	if (!empty($ele['#id']))
+		$out .= " id='{$ele['#id']}-wrapper'";
+	$out .= ">";
+
+	$required = !empty($ele['#required']) ? "<span class='form-required'>*</span>" : "";
+
+	$out .= "<td class='form-item-label'>";
+	if (!empty($ele['#title']))
+		$out .= t("!title!required", array("!title" => filter_xss_admin($ele['#title']), "!required" => $required));
+	$out .= "</td>";
+
+	$out .= "<td class='form-item-value'>$val";
+	if (!empty($ele['#description']))
+		$out .= "<div class='description'>{$ele['#description']}</div>";
+	$out .= "</td>";
+
+	$out .= "</tr>";
+	return $out;
+}
+
+function vibio_radios($ele)
+{
+	$ele['#children'] = "<table>{$ele['#children']}</table>";
+	return theme_radios($ele);
+}
+
+function vibio_checkboxes($ele)
+{
+	$ele['#children'] = "<table>{$ele['#children']}</table>";
+	return theme_checkboxes($ele);
+}*/

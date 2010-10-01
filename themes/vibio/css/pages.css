@@ -494,3 +494,17 @@ img#search_type_current {
 	max-height: 30px;
 	margin-bottom: -5px;
 }
+
+#content-area fieldset.rounded_content {
+	min-height: 0 !important;
+	background: #e0f2ff;
+	border: 1px solid #c7e5fd;
+	padding: 15px;
+	margin-bottom: 10px;
+}
+
+fieldset > div.title {
+	color: #464f54;
+	font-size: 1.5em;
+	margin: 0;
+}

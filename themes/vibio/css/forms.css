@@ -142,10 +142,6 @@
  * section of the site.
  */
 
-form tbody {
-  border-top: 1px solid #ccc;
-}
-
 form th,
 form thead th {
   text-align: left; /* LTR */
@@ -155,4 +151,24 @@ form thead th {
 
 form tbody th {
   border-bottom: 1px solid #ccc;
+}
+
+form fieldset td {
+	vertical-align: top;
+	padding-bottom: 5px;
+}
+
+td.form-item-label {
+	text-align: right;
+	padding-right: 10px;
+	width: 150px;
+	font-weight: bold;
+}
+
+div.form-radios, div.form-checkboxes, div.form-radios > table, div.form-checkboxes > table {
+	margin: 0;
+}
+
+div.form-radios td.form-item-label, div.form-checkboxes td.form-item-label {
+	display: none;
 }

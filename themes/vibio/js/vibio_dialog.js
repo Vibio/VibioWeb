@@ -31,7 +31,11 @@ $(document).ready(function()
 				resizeable: false,
 				draggable: false,
 				autoOpen: false,
-				width: 550
+				width: 550,
+				open: function()
+				{
+					$(".ui-dialog-titlebar span.ui-icon").html("<img src='/themes/vibio/images/close_button.png' />");
+				}
 			};
 		},
 		set_options: function(options)

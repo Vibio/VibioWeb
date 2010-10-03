@@ -509,3 +509,33 @@ fieldset > div.title {
 	font-size: 1.5em;
 	margin: 0;
 }
+
+h5.menu_header {
+	margin: 5px 0 0;
+	color: white;
+}
+
+.region-sidebar-first span.menu_description {
+	color: #c6e4ef;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+#user-login-form {
+	background: #333f47;
+	padding: 2px 5px;
+	margin-top: 10px;
+}
+
+#user-login-form span.form-required {
+	display: none;
+}
+
+#user-login-form input[type='text'], #user-login-form input[type="password"] {
+	border: 1px solid black;
+	width: 135px;
+}
+
+#user-login-form div.form-item#edit-name-wrapper {
+	margin-top: 0;
+}

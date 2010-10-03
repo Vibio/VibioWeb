@@ -40,3 +40,12 @@
 .fb_ff_message .fb_link {
 	float: right;
 }
+
+#block-fb-fb_login {
+	margin-top: 10px;
+}
+
+#block-fb-fb_login .fb_login {
+	text-align: center;
+	margin-top: 10px;
+}

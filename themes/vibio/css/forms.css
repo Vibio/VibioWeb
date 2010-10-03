@@ -134,6 +134,15 @@
   margin-left: -2em; /* LTR */ /* Un-do all of the padding on the ul list. */
 }
 
+#user-login-form input[type="submit"] {
+	background: url(/themes/vibio/images/submit-small.png) no-repeat 0 0;
+	border: none;
+	width: 109px;
+	height: 29px;
+	position: relative;
+	left: 15px;
+}
+
 
 /*
  * Drupal admin tables

@@ -19,6 +19,19 @@ function overrides_theme()
 	);
 }
 
+function overrides_form_user_login_block_alter(&$form, &$state)
+{
+	$title = t("Returning user?");
+	$description = t("Login to Vibio");
+
+	$form['#prefix'] .= "
+		<h5 class='menu_header'>$title</h5>
+		<span class='menu_description'>$description</span>
+	";
+
+	$form['submit']['#value'] = " ";
+}
+
 function overrides_form_system_file_system_settings_alter(&$form, &$state)
 {
 	$form['file_downloads']['#options'][OVERRIDES_FILE_DOWNLOAD_DIRECT] = t("Separate server");

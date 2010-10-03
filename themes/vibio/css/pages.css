@@ -372,6 +372,7 @@ ul.links li {
 
 .clear {
   clear: both;
+  height: 0;
 }
 
 .comment .picture img, .view .picture img, .view-content .picture img  {

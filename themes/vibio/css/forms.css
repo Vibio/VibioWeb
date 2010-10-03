@@ -172,3 +172,14 @@ div.form-radios, div.form-checkboxes, div.form-radios > table, div.form-checkbox
 div.form-radios td.form-item-label, div.form-checkboxes td.form-item-label {
 	display: none;
 }
+
+#user-register div.form-item label {
+	float: left;
+	text-align: right;
+	width: 150px;
+	margin-right: 10px;
+}
+
+#user-register div.form-item div.description {
+	margin-left: 160px;
+}

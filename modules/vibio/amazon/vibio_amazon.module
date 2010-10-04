@@ -66,6 +66,7 @@ function vibio_amazon_amazon_item_insert($item)
 	
 	_vibio_amazon_add_images($state, $item);
 	drupal_execute("product_node_form", $state, (object) $node);
+	drupal_get_messages(); // don't want the messages to get set
 	
 	//save the relationship between these items
 	$nid = $state['nid'];

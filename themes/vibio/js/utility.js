@@ -93,4 +93,8 @@ $(document).ready(function()
 	{
 		$("#search input[type='submit']").css("top", "2px");
 	}
+
+	$("#user-login-form")
+		.find("div.item-list:eq(0)")
+			.addClass("login_form_separator");
 });

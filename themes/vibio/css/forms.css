@@ -141,6 +141,7 @@
 	height: 29px;
 	position: relative;
 	left: 15px;
+	margin-bottom: 10px;
 }
 
 #user-login-form div.item-list {
@@ -150,8 +151,19 @@
 	line-height: 17px;
 }
 
-#user-login-form div.item-list li.openid-processed {
+#user-login-form div.item-list.login_form_separator {
+	padding-top: 1px;
+}
+
+#user-login-form div.item-list.login_form_separator li.openid-processed {
+	margin-left: 0;
+	border-top: 4px double #3c4b55;
 	padding-top: 10px;
+	margin-top: 10px;
+}
+
+#user-login-form div.item-list.login_form_separator li.openid-processed a {
+	padding: 0;
 }
 
 #user-login-form div.item-list li.last {

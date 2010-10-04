@@ -143,6 +143,20 @@
 	left: 15px;
 }
 
+#user-login-form div.item-list {
+	margin: 0 -5px -5px;
+	background: #252F35;
+	font-size: 11px;
+	line-height: 17px;
+}
+
+#user-login-form div.item-list li.openid-processed {
+	padding-top: 10px;
+}
+
+#user-login-form div.item-list li.last {
+	margin-top: 0;
+}
 
 /*
  * Drupal admin tables

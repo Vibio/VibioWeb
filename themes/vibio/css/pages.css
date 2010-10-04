@@ -536,6 +536,10 @@ h5.menu_header {
 	width: 135px;
 }
 
+#user-login-form #edit-openid-identifier {
+	width: 115px;
+}
+
 #user-login-form div.form-item#edit-name-wrapper {
 	margin-top: 0;
 }

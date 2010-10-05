@@ -15,7 +15,7 @@ function profile_ext_get_dashboard_notifications($uid, &$tabs)
 	return $num_notifications;
 }
 
-function profile_ext_initial_steps($u, $force_show=true)
+function profile_ext_initial_steps($u, $force_show=false)
 {
 	$steps = array();
 	if (module_exists("network") && ($force_show || !count(_network_get_friends($u->uid, 1))))

@@ -58,10 +58,25 @@ function fb_user($op, &$edit, &$u, $category=null)
 				$edit['fb_id'] = null;
 			}
 			break;
-		case "delete";
+		case "delete":
 			$sql = "DELETE FROM {fb_users}
 					WHERE `uid`=%d";
 			db_query($sql, $u->uid);
+			break;
+		case "login":
+			if (!$u->picture)
+			{
+				module_load_include("inc", "fb");
+				if (($pic = fb_get_user_image($u->uid)))
+				{
+					$u->picture = $pic;
+					$sql = "UPDATE {users}
+							SET `picture`='%s'
+							WHERE `uid`=%d";
+					db_query($sql, $pic, $u->uid);
+				}
+			}
+			break;
 	}
 }
 

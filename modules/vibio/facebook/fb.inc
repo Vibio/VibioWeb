@@ -102,6 +102,22 @@ function fb_get_user($cookie=false)
 	return fb_graph_error(json_decode(file_get_contents("https://graph.facebook.com/me?access_token={$cookie['access_token']}")));
 }
 
+function fb_get_user_image($uid, $save=true)
+{
+	if (!($fb_id = fb_user_has_fb($uid)))
+		return false;
+
+	$image_url = "http://graph.facebook.com/{$fb_id}/picture?type=large";
+
+	if (!$save)
+		return $image_url;
+
+	$image = file_get_contents($image_url);
+	$target_file = file_directory_path()."/pictures/picture-{$uid}.jpg";
+
+	return file_put_contents($target_file, $image) ? $target_file : false;
+}
+
 function fb_get_friends($uid, $cookie=false)
 {
 	if (!$cookie && !($cookie = fb_verify_cookie($uid)))

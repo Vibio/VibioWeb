@@ -22,7 +22,7 @@ function _product_get_owners($nid, $as_uid, $type="network", $page=0)
 	$offset = $page*PRODUCT_OWNER_DISPLAY_PER_PAGE;
 	
 	$cache_key = "product_owners:{$nid}:{$as_uid}:{$type}:{$page}";
-	if ($cache = cache_get($cache_key, "cache_content"))
+	if (false && $cache = cache_get($cache_key, "cache_content"))
 	{
 		return $cache->data;
 	}
@@ -77,7 +77,7 @@ function _product_get_owners($nid, $as_uid, $type="network", $page=0)
 			"node"	=> l($row['title'], "node/{$row['nid']}"),
 			"user"	=> array(
 				"picture"	=> theme("user_picture", (object) $row),
-				"dos"		=> $as_uid && $type == "network" && module_exists("dos") ? theme("dos_display", dos_get($row['uid'], false, $depth)) : "",
+				"link"		=> $as_uid && $type == "network" && module_exists("dos") ? theme("dos_display", dos_get($row['uid'], false, $depth)) : "<br />".l($row['name'], "user/{$row['uid']}"),
 			),
 		);
 	}

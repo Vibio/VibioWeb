@@ -131,7 +131,7 @@ function profile_ext_theme(&$existing, $type, $theme, $path)
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
 		"profile_ext_dashboard"			=> array(
-			"arguments"	=> array("profile_tabs" => array()),
+			"arguments"	=> array("profile_tabs" => array(), "profile_actions" => array()),
 			"template"	=> "templates/profile/dashboard",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),

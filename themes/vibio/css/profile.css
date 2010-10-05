@@ -174,7 +174,29 @@
 	max-width: 40px;
 }
 
-.profile_notification .picture {
-  float: left;
-  margin-right: 10px;
+#profile_call_to_action > h3{
+	margin-bottom: 0;
+}
+
+#profile_call_to_action > span {
+	margin-bottom: 10px;
+	font-size: 12px;
+}
+
+.profile_action_image, .profile_action {
+	padding-bottom: 10px;
+}
+
+.profile_action_image {
+	width: 100px;
+	text-align: center;
+}
+
+.profile_action_image img {
+	max-height: 100px;
+	max-width: 85px;
+}
+
+.profile_action {
+	padding-left: 15px;
 }

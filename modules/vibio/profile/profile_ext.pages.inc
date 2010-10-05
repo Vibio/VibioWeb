@@ -76,6 +76,8 @@ function profile_ext_dashboard($selected_tab=false)
 	module_load_include("inc", "profile_ext");
 	
 	$tabs = array(t("Activity Feed") => views_embed_view("user_hb_incoming_activity"));
+	$steps = profile_ext_initial_steps($user);
+
 	profile_ext_get_dashboard_notifications($user->uid, $tabs);
 	
 	if (module_exists("collection"))
@@ -93,6 +95,6 @@ function profile_ext_dashboard($selected_tab=false)
 		drupal_add_js(array("profile_ext" => array("selected_tab" => str_replace("-", "_", $selected_tab))), "setting");
 	}
 	
-	return theme("profile_ext_dashboard", $tabs);
+	return theme("profile_ext_dashboard", $tabs, $steps);
 }
 ?>

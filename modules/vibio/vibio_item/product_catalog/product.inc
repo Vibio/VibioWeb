@@ -22,7 +22,7 @@ function _product_get_owners($nid, $as_uid, $type="network", $page=0)
 	$offset = $page*PRODUCT_OWNER_DISPLAY_PER_PAGE;
 	
 	$cache_key = "product_owners:{$nid}:{$as_uid}:{$type}:{$page}";
-	if (false && $cache = cache_get($cache_key, "cache_content"))
+	if ($cache = cache_get($cache_key, "cache_content"))
 	{
 		return $cache->data;
 	}

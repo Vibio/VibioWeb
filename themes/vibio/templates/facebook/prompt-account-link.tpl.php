@@ -1,5 +1,6 @@
 <?php
-$message = t("You currently do not have your Facebook account linked to Vibio. Please !link and follow the instructions to link your Facebook account.", array("!link" => l(t("click here"), "user/{$user->uid}/linked-accounts")));
+$t_args = array("!link" => l(t("click here"), "fb/add-account", array("attributes" => array("class" => "fb_link_account"))));
+$message = t("You currently do not have your Facebook account linked to Vibio. Please !link to link your Facebook account.", $t_args);
 ?>
 
 <div id="facebook_prompt_account_link" class="fb_dialog">

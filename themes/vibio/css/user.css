@@ -90,6 +90,7 @@
 
 #profile_picture img {
 	max-width: 225px;
+	max-height: 250px;
 	border: 1px solid black;
 }
 

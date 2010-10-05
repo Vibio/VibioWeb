@@ -194,7 +194,7 @@ function fb_get_share_params($node, $action="share_item")
 	$t_params = array(
 		"!item"		=> $node->title,
 	);
-	$href = url("node/{$node->nid}", array("absolute" => true,));
+	$href = str_replace("https://", "http://", url("node/{$node->nid}", array("absolute" => true,)));
 	$default_message = t("wants to share \"!item\" with you on Vibio!", $t_params);
 	
 	if ($action == "share_item")
@@ -233,7 +233,7 @@ function fb_get_collection_share_params($collection, $action="share_collection")
 	$t_args = array(
 		"!collection"	=> $collection['title'],
 	);
-	$href = url("collections/{$collection['cid']}", array("absolute" => true,));
+	$href = str_replace("https://", "http://", url("collections/{$collection['cid']}", array("absolute" => true,)));
 	
 	switch ($action)
 	{

@@ -1,5 +1,5 @@
 <?php
-// $Id: memcache-session.inc,v 1.1.2.2.2.10 2009/07/14 22:07:11 jeremy Exp $
+// $Id: memcache-session.inc,v 1.1.2.2.2.13 2010/09/29 12:47:07 robertDouglass Exp $
 
 require_once dirname(__FILE__) . '/dmemcache.inc';
 
@@ -9,6 +9,17 @@ require_once dirname(__FILE__) . '/dmemcache.inc';
  *
  * An alternative to includes/session.inc.
  */
+
+/**
+ * Implement hook_user() using a required module's namespace since memcache is 
+ * not a module and thus can't implement hooks directly.
+ */
+function filter_user($op, &$edit, &$account, $category = NULL) {
+  if ($op == 'update') {
+    // Invalidate cached user object.
+    cache_clear_all($account->uid, 'users');
+  }
+}
 
 function sess_open($save_path, $session_name) {
   return TRUE;
@@ -87,7 +98,11 @@ function sess_write($key, $value) {
   $session->cache = isset($user->cache) ? $user->cache : '';
   $session->hostname = ip_address();
   $session->session = $value;
-  $session->timestamp = time();
+  $session->timestamp = $_SERVER['REQUEST_TIME'];
+
+  // Be sure that we have the latest user object.  If user_save() has been
+  // called, we need to refresh the object from the database.
+  $user = sess_user_load($session);
 
   // If this is an authenticated user, or there is something to save in the
   // session, or this is an anonymous user who currently has nothing in the 
@@ -123,7 +138,7 @@ function sess_regenerate() {
   // regardless of the Drupal configuration.
   // TODO: remove this when we require at least PHP 4.4.0
   if (isset($_COOKIE[session_name()])) {
-    setcookie(session_name(), '', time() - 42000, '/');
+    setcookie(session_name(), '', $_SERVER['REQUEST_TIME'] - 42000, '/');
   }
 
   // Store the current (anonymous) session id.
@@ -223,25 +238,29 @@ function sess_user_load($session) {
     // In either of these cases, the user must be retrieved from the database.
     if (!$user->uid && isset($session->uid) && $session->uid != 0) {
       $user = db_fetch_object(db_query('SELECT u.* FROM {users} u WHERE u.uid = %d', $session->uid));
+      if (!$user->status) {
+        $user = drupal_anonymous_user($session->session);
+      }
+      else {
+        $user = drupal_unpack($user);
+        // Normally we would join the session and user tables. But we already
+        // have the session information. So add that in.
+        $user->sid = $session->sid;
+        $user->cache = $session->cache;
+        $user->hostname = $session->hostname;
+        $user->timestamp = $session->timestamp;
+        $user->session = empty($session->session) ? '' : $session->session;
 
-      $user = drupal_unpack($user);
-      // Normally we would join the session and user tables. But we already
-      // have the session information. So add that in.
-      $user->sid = $session->sid;
-      $user->cache = $session->cache;
-      $user->hostname = $session->hostname;
-      $user->timestamp = $session->timestamp;
-      $user->session = empty($session->session) ? '' : $session->session;
-
-      // Add roles element to $user
-      $user->roles = array();
-      $user->roles[DRUPAL_AUTHENTICATED_RID] = 'authenticated user';
-      $result = db_query("SELECT r.rid, r.name FROM {role} r INNER JOIN {users_roles} ur ON ur.rid = r.rid WHERE ur.uid = %d", $user->uid);
-      while ($role = db_fetch_object($result)) {
-        $user->roles[$role->rid] = $role->name;
+        // Add roles element to $user
+        $user->roles = array();
+        $user->roles[DRUPAL_AUTHENTICATED_RID] = 'authenticated user';
+        $result = db_query("SELECT r.rid, r.name FROM {role} r INNER JOIN {users_roles} ur ON ur.rid = r.rid WHERE ur.uid = %d", $user->uid);
+        while ($role = db_fetch_object($result)) {
+          $user->roles[$role->rid] = $role->name;
+        }
       }
     }
-    else if ($user->uid) {
+    else if ($user->uid && $user->status) {
       // Got a user object from 'users' memcache bin. Mark it in case modules
       // want to know that this user was created from memcache.
       $user->from_cache = TRUE;

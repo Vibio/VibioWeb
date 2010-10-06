@@ -1,5 +1,5 @@
 <?php
-// $Id: memcache_admin.module,v 1.3.2.10.2.2 2008/11/21 15:18:32 jvandyk Exp $
+// $Id: memcache_admin.module,v 1.3.2.10.2.4 2010/09/29 12:47:07 robertDouglass Exp $
 
 /**
  * For the collection of memcache stats. This small .js file makes sure that the
@@ -232,13 +232,14 @@ function memcache_admin_shutdown() {
   }
 
   if (variable_get('show_memcache_statistics', TRUE) && function_exists('user_access') && user_access('access memcache statistics')) {
-    $stats = array();
+    if (!empty($_memcache_statistics)) {
+      foreach ($_memcache_statistics as $row => $stats) {
+        $_memcache_statistics[$row][1] = check_plain($stats[1]);
+        $_memcache_statistics[$row][2] = check_plain($stats[2]);
+      }
 
-    foreach ($_memcache_statistics as $stat => $value) {
-      $stats[] = "<strong>$stat:</strong> ". theme('item_list', $value);
-    }
-    if (!empty($stats)) {
-      $output = theme('item_list', $stats);
+      $headers = array(t('Operation'), t('Bin'), t('Key'), t('Hit'));
+      $output = theme('table', $headers, $_memcache_statistics);
 
       // this makes sure all of the HTML is within the <body> even though this <script> is outside it
       print '<div id="memcache-devel"><h2>'. t('Memcache statistics'). '</h2>'. $output. '</div>';

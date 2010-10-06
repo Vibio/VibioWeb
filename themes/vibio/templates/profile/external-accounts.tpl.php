@@ -22,6 +22,8 @@ if (!empty($user_accounts))
 	}
 	$accounts .= "</ul>";
 }
+else
+	$accounts = t("none");
 
 $add_account = $partner_data['add']['multiple'] ? true : empty($user_accounts);
 
@@ -34,6 +36,8 @@ if ($admin_external_account && $add_account)
 	);
 	$add_account = l(t("Add an account!"), "{$partner_data['id']}/add-account", $options);
 }
+else
+	$add_account = "";
 
 echo "
 	<tr>

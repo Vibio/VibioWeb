@@ -136,6 +136,11 @@
 	float: right;
 }
 
+.profile_notification > .picture {
+	float: left;
+	margin-right: 15px;
+}
+
 .profile_notifications_summary {
 	float: left;
 	width: 550px;

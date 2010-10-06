@@ -64,3 +64,7 @@
 	display: block;
 	font-weight: bold;
 }
+
+.view-user-inventory td.views-field-field-main-image-fid img {
+	max-width: 80px;
+}

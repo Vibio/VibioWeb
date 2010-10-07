@@ -238,6 +238,8 @@ function _vibio_item_defaults(&$form, $type="vibio_item")
 		),
 	);
 	
+	$form['body_field']['body']['#rows'] = 5;
+	
 	$form['options'] = array(
 		"status"	=> array(
 			"#type"	=> "value",
@@ -253,6 +255,13 @@ function _vibio_item_defaults(&$form, $type="vibio_item")
 				"#value"=> true,
 			),
 		);
+	}
+	else
+	{
+		/*$form['title'] = array(
+			"#type"	=> "value",
+			"#value"=> $form['#title']['#default_value'],
+		);*/
 	}
 }
 

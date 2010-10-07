@@ -124,10 +124,10 @@ function offer2buy_form_vibio_item_node_form_alter(&$form, &$state)
 	
 	$form['offer2buy'] = array(
 		"#type"				=> "fieldset",
-		"#title"			=> t("Offer to Buy Settings"),
+		"#title"			=> t("Price"),
 		"#description"		=> t('These options only affect your posting if this item is set to type "selling"'),
 		"#collapsible"		=> true,
-		"#collapsed"		=> false,
+		"#collapsed"		=> true,
 		"#weight"			=> -8,
 	);
 	

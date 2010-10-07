@@ -26,3 +26,7 @@
 	top: 2px;
 	right: 5px;
 }
+
+#vibio_dialog .views_message {
+	max-width: 390px;
+}

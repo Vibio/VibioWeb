@@ -27,7 +27,8 @@ if ($node->field_posting_type[0]['value'] == VIBIO_ITEM_TYPE_SELL)
 	
 	if ($node->offer2buy['settings']['allow_offer_views'] || $user->uid == $node->uid)
 	{
-		$offer2buy_extra .= theme("offer2buy_existing_offers_popup", theme("offer2buy_offer_list", $node->offer2buy['offers'], $user->uid == $node->uid));
+		$popup_content = empty($node->offer2buy['offers']) ? t("There are currently no offers on this item") : theme("offer2buy_offer_list", $node->offer2buy['offers'], $user->uid == $node->uid);
+		$offer2buy_extra .= theme("offer2buy_existing_offers_popup", $popup_content);
 	}
 	
 	$offer2buy = $offer2buy_extra.$offer2buy;

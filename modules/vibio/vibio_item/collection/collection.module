@@ -158,7 +158,7 @@ function collection_preprocess_collection_list_item_preview(&$vars)
 	}
 	elseif ($vars['item']->for_sale)
 	{
-		$vars['item']->offer2buy_price = "$".$vars['item']->offer2buy_price;
+		$vars['item']->offer2buy_price = $vars['item']->offer2buy_price > 0 ? "$".$vars['item']->offer2buy_price : t("Best Offer");
 	}
 	else
 	{

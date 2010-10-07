@@ -56,6 +56,7 @@ function product_add_new()
 {
 	global $user;
 	
+	product_set_autoadd();
 	module_load_include("inc", "node", "node.pages");
 	
 	$form_id = "product_node_form";

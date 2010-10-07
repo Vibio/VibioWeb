@@ -110,6 +110,14 @@ function product_nodeapi(&$node, $op, $a3=null, $a4=null)
 	{
 		switch ($op)
 		{
+			case "insert":
+				if (product_get_autoadd())
+				{
+					module_load_include("php", "product", "product.pages");
+					drupal_get_messages();
+					product_add_to_inventory($node, true);
+				}
+				break;
 			case "update index":
 				return theme("product_display", $node);
 			case 'search result':
@@ -271,5 +279,20 @@ function product_vibio_item_images($item_nid)
 	}
 	
 	return product_images($nid);
+}
+
+function product_set_autoadd($val=true)
+{
+	$_SESSION['product']['auto_add'] = $val;
+}
+
+function product_get_autoadd($clear=true)
+{
+	$val = $_SESSION['product']['auto_add'];
+
+	if ($clear)
+		unset($_SESSION['product']['auto_add']);
+
+	return $val;
 }
 ?>

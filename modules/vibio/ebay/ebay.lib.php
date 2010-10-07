@@ -53,7 +53,7 @@ function _ebay_xml_affiliate_details($xml)
 	
 	$affiliate = $xml->addChild("affiliate");
 	$affiliate->addChild("networkId", 9); //9 is ebay partner network
-	$addiliate->addChild("trackingId", $campaign_id);
+	$affiliate->addChild("trackingId", $campaign_id);
 	
 	return $xml;
 }

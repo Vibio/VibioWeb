@@ -258,6 +258,7 @@ function profile_ext_preprocess_page(&$vars)
 	global $user;
 	
 	drupal_add_css("themes/vibio/css/profile.css");
+	drupal_add_js(array("profile_ext" => array("time_offset" => $user->timezone, "utc_date" => array("y" => gmdate("Y"), "m" => gmdate("n") - 1, "d" => gmdate("j")))), "setting");
 	$vars['profile_ext_header'] = theme("profile_ext_header", $user);
 }
 

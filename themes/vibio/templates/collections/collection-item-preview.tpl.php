@@ -1,5 +1,5 @@
 <?php
-$updated = t("Updated !date", array("!date" => date("M j", $item->node_changed)));
+$updated = t("Updated !date", array("!date" => "<span class='timestamp_uncalculated'>{$item->node_changed}</span>"));
 
 echo "
 	<div class='collection_list_image'>

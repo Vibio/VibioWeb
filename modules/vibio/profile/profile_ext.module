@@ -241,6 +241,7 @@ function profile_ext_profile_ext_progress($uid)
 function profile_ext_preprocess_user_profile(&$vars)
 {
 	global $user;
+	module_load_include("inc", "profile_ext");
 	
 	$args = explode("/", $_GET['q']);
 	$uid = $args[1];
@@ -249,6 +250,7 @@ function profile_ext_preprocess_user_profile(&$vars)
 	$vars['profile']['profile_progress'] = profile_ext_get_progress($uid);
 	$vars['profile']['user'] = $target_user;
 	$vars['profile']['demographics'] = theme("profile_ext_view_fields", $target_user, "demographics");
+	$vars['profile']['public_info'] = profile_ext_public_info($uid);
 }
 
 function profile_ext_preprocess_page(&$vars)
@@ -272,9 +274,18 @@ function profile_ext_preprocess_profile_ext_profile_info(&$vars)
 		$vars['profile_external_accounts'] = profile_ext_manage_external_accounts($vars['uid']);
 	}
 	
+	if ($vars['access'] >= privacy_get($vars['uid'], "profile", "profile_demographics"))
+	{
+		module_load_include("inc", "profile_ext", "profile_ext.pages");
+		
+		$u = user_load($vars['uid']);
+		$vars['profile_demographics'] = theme("profile_ext_view_fields", $u, "demographics");
+	}
+	
 	if ($vars['uid'] == $user->uid || user_access("administer users"))
 	{
-		$vars['edit_link'] = theme("profile_ext_edit_link", "user/{$vars['uid']}/edit/About Me");
+		$vars['about_edit_link'] = theme("profile_ext_edit_link", "user/{$vars['uid']}/edit/About Me");
+		$vars['demographics_edit_link'] = theme("profile_ext_edit_link", "user/{$vars['uid']}/edit/Demographics");
 	}
 }
 
@@ -315,6 +326,20 @@ function profile_ext_form_user_profile_form_alter(&$form, &$state)
 		$form[$form_category]['privacy_settings_fieldset'] = _privacy_fieldset($form['_account']['#value']->uid, "profile", "profile_{$category}");
 		$form['#submit'][] = "_privacy_form_submit";
 	}
+}
+
+function profile_ext_profile_ext_public_info($uid)
+{
+	$u = user_load($uid);
+	$join_date_format = date("Y") == date("Y", $u->created) ? "M j" : "M j, Y";
+	$join_date = date($join_date_format, $u->created);
+	$join_date_interval = format_interval(time() - $u->created, 1);
+	
+	return array(array(
+		"weight"=> 10,
+		"title"	=> t("Member Since"),
+		"data"	=> "$join_date ($join_date_interval)"
+	));
 }
 
 function _profile_ext_format_string($string, $for_url=false)

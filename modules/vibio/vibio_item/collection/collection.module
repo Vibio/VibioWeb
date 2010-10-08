@@ -356,7 +356,27 @@ function collection_form_views_exposed_form_alter(&$form, &$state)
 			<div class='clear'></div>
 		";
 	}
+}
+
+function collection_profile_ext_public_info($uid)
+{
+	module_load_include("inc", "collection");
+	$collections = collection_get_collections($uid);
+	$access = privacy_get_access_level($uid);
 	
+	foreach ($collections as $cid => $c)
+	{
+		if ($c['privacy'] > $access)
+		{
+			unset($collections[$cid]);
+		}
+	}
+	
+	return array(array(
+		"weight"=> 0,
+		"title"	=> t("Number of Collections"),
+		"data"	=> count($collections),
+	));
 }
 
 function collection_load($cid)

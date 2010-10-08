@@ -182,6 +182,56 @@ function vibio_item_preprocess_vibio_item_user_other_items(&$vars)
 	$vars['display'] = $display;
 }
 
+function vibio_item_profile_ext_public_info($uid)
+{
+	$access = privacy_get_access_level($uid);
+	
+	$sql = "SELECT COUNT(*)
+			FROM {node} n JOIN {privacy_settings} p
+				ON n.`nid`=p.`type_id`
+					AND n.`uid`=p.`uid`
+			WHERE n.`uid`=%d
+				AND p.`type`='node'
+				AND p.`setting` <= %d";
+	$total_items = db_result(db_query($sql, $uid, $access));
+	
+	$sql = "SELECT n.`nid`
+			FROM {node} n JOIN {privacy_settings} p
+				ON n.`nid`=p.`type_id`
+					AND n.`uid`=p.`uid`
+			WHERE n.`uid`=%d
+				AND n.`type`='vibio_item'
+				AND p.`type`='node'
+				AND p.`setting` <= %d
+			ORDER BY n.`created` DESC
+			LIMIT 1";
+	$nid = db_result(db_query($sql, $uid, $access));
+	
+	if ($node = node_load($nid))
+	{
+		$image = _vibio_item_get_image($nid);
+		$link = $image == _vibio_item_default_image() ? $node->title : "<img class='user_latest_item' src='$image' title='{$node->title}' alt='{$node->title}' />";
+		$latest_item = l($link, "node/{$node->nid}", array("html" => true));
+	}
+	else
+	{
+		$latest_item = "-";
+	}
+	
+	return array(
+		array(
+			"weight"=> -10,
+			"title"	=> t("Number of items"),
+			"data"	=> $total_items,
+		),
+		array(
+			"weight"=> 100,
+			"title"	=> t("Latest Item"),
+			"data"	=> $latest_item,
+		),
+	);
+}
+
 function vibio_item_views_api()
 {
 	return array(

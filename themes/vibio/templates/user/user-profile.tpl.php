@@ -5,7 +5,6 @@ $u = $profile['user'];
 if ($user->uid == $u->uid || user_access("administer users"))
 {
 	$account_edit_link = theme("profile_ext_edit_link", "user/{$u->uid}/edit");
-	$demographics_edit_link = theme("profile_ext_edit_link", "user/{$u->uid}/edit/Demographics");
 }
 
 if ($user->uid && $user->uid != $u->uid && module_exists("privatemsg"))
@@ -41,9 +40,8 @@ if (!$u->picture)
 	</div>
 	<div id='profile_summary' class='profile_data profile_editable rounded_content'>
 		<div>
-			<?php echo $profile['demographics']; ?>
+			<?php echo $profile['public_info']; ?>
 		</div>
-		<?php echo $demographics_edit_link; ?>
 		<div class='clear'></div>
 	</div>
 </div>

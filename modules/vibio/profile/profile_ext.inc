@@ -51,4 +51,27 @@ function profile_ext_initial_steps($u, $force_show=false)
 
 	return $steps;
 }
+
+function profile_ext_public_info($uid)
+{
+	$info = module_invoke_all("profile_ext_public_info", $uid);
+	usort($info, function($a, $b)
+	{
+		return $a['weight'] > $b['weight'] ? 1 : -1;
+	});
+	
+	$out = "<table class='profile_fields'>";
+	foreach ($info as $i)
+	{
+		$out .= "
+			<tr>
+				<td class='field_name'>{$i['title']}</td>
+				<td class='field_val'>{$i['data']}</td>
+			</tr>
+		";
+	}
+	$out .= "</table>";
+	
+	return $out;
+}
 ?>

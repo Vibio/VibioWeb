@@ -119,21 +119,28 @@ function collection_set_user_default($uid, $cid)
 	return db_query($sql, $uid, $cid);
 }
 
-function collection_get_image($cid, $absolute=false)
+function collection_get_image($cid, $absolute=false, $access=false)
 {
-	return collection_default_image($absolute);
-	
-	/*$sql = "SELECT n.`nid`
-			FROM {node} n JOIN {collection_items} ci ON n.`nid`=ci.`item_nid`
+	if (!$access)
+		$access =PRIVACY_ONLYME;
+		
+	$sql = "SELECT n.`nid`
+			FROM {node} n JOIN {collection_items} ci JOIN {privacy_settings} p
+				ON n.`nid`=ci.`item_nid`
+					AND n.`nid`=p.`type_id`
+					AND n.`uid`=p.`uid`
 			WHERE ci.`cid`=%d
+				AND p.`type`='node'
+				AND p.`setting` <= %d
 			ORDER BY n.`changed` DESC
 			LIMIT 1";
-	if (!$nid = db_result(db_query($sql, $cid)))
+	if (!$nid = db_result(db_query($sql, $cid, $access)))
 	{
 		return collection_default_image();
 	}
 	
-	return _vibio_item_get_image($nid);*/
+	$image = _vibio_item_get_image($nid);
+	return $image == _vibio_item_default_image() ? collection_default_image() : $image;
 }
 
 function collection_default_image($absolute=false)

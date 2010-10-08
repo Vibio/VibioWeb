@@ -8,7 +8,12 @@
 
 .collection_image {
 	float: left;
-	margin-right: 15px;
+	margin-right: 10px;
+	width: 85px;
+}
+
+.collection_image img {
+	max-width: 80px;
 }
 
 .collection_summary {

@@ -118,7 +118,7 @@ function collection_preprocess_collection_list_item(&$vars)
 	module_load_include("inc", "collection");
 	
 	$vars['collection']->is_owner = module_exists("privacy") ? $vars['access'] == PRIVACY_ONLYME : true;
-	$vars['collection']->image = collection_get_image($vars['collection']->cid);
+	$vars['collection']->image = collection_get_image($vars['collection']->cid, false, $vars['access']);
 	$vars['collection']->total_items = collection_get_num_items($vars['collection']->cid, $vars['access']);
 	
 	if ($vars['collection']->is_owner && module_exists("fb"))

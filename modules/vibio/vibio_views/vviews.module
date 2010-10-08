@@ -41,14 +41,15 @@ function vviews_nodeapi(&$node, $op, $a3=null, $a4=null)
 		switch ($op)
 		{
 			case "insert":
-				$event = "create/modify item";
-				_vviews_clear_cache($node->uid, "user_collections", $event); // clear to update item counts
 			case "update":
+				$event = "create/modify item";
+				_vviews_clear_cache($node->uid, "user_collections", $event);
 				_vviews_clear_cache($node->uid, "user_heartbeat_activity", $event);
-				_vviews_clear_cache($node->uid, "user_inventory", $event); // want to clear since they might have changed the privacy settings
+				_vviews_clear_cache($node->uid, "user_inventory", $event);
 				break;
 			case "delete":
 				_vviews_clear_cache($node->uid, "user_inventory", "delete item");
+				_vviews_clear_cache($node->uid, "user_collections", "delete item");
 				break;
 			default:
 				break;
@@ -110,7 +111,8 @@ function vviews_offer2buy_complete_actions($old_owner_uid, $node)
 	$event = "offer2buy transfer item";
 	
 	//only have to clear the old owners cache, the new owners cache will be cleared through hook_nodeapi
-	_vviews_clear_cache($old_owner_uid, "user_inventory", $event); 
+	_vviews_clear_cache($old_owner_uid, "user_inventory", $event);
+	_vviews_clear_cache($old_owner_uid, "user_collections", $event);
 }
 
 function _vviews_clear_cache($args, $view_name, $event="")

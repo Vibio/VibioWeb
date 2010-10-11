@@ -6,6 +6,19 @@ function reports_total_users()
 	$total = db_result(db_query($sql));
 	
 	reports_log("total users", $total);
+	
+	if ($employee_role = variable_get("reports_employee_role", false))
+	{
+		$sql = "SELECT COUNT(*)
+				FROM {users}
+				WHERE `uid` NOT IN (
+					SELECT `uid`
+					FROM {users_roles}
+					WHERE `rid`=%d
+				)";
+		$total = db_result(db_query($sql, $employee_role));
+		reports_log("total users noemployee", $total);
+	}
 }
 
 function reports_new_users($since=0)
@@ -16,6 +29,20 @@ function reports_new_users($since=0)
 	$new = db_result(db_query($sql, $since));
 	
 	reports_log("new users", $new);
+	
+	if ($employee_role = variable_get("reports_employee_role", false))
+	{
+		$sql = "SELECT COUNT(*)
+				FROM {users}
+				WHERE `created` >= %d
+					AND `uid` NOT IN (
+						SELECT `uid`
+						FROM {users_roles}
+						WHERE `rid`=%d
+					)";
+		$total = db_result(db_query($sql, $since, $employee_role));
+		reports_log("new users noemployee", $total);
+	}
 }
 
 function reports_add_js($name, $data)
@@ -179,6 +206,11 @@ function reports_report_selector(&$state, $name, $from, $to, $collapsed=true)
 				"#title"		=> t("End Date"),
 				"#default_value"=> $to,
 			),
+			"hide_employees"=> array(
+				"#type"			=> "checkbox",
+				"#title"		=> t("Hide Employee Data"),
+				"#default_value"=> $_GET['hide_employees'],
+			),
 			"submit"		=> array(
 				"#type"	=> "submit",
 				"#value"=> t("View Report"),
@@ -192,7 +224,8 @@ function reports_report_selector_submit($form, &$state)
 	$vals = $state['values'];
 	$from = strtotime("{$vals['report_start']['year']}-{$vals['report_start']['month']}-{$vals['report_start']['day']}");
 	$to = strtotime("{$vals['report_end']['year']}-{$vals['report_end']['month']}-{$vals['report_end']['day']}");
+	$hide_employees = $vals['hide_employees'] ? 1 : 0;
 	
-	drupal_goto("reports/{$vals['report_name']}", "from=$from&to=$to");
+	drupal_goto("reports/{$vals['report_name']}", "from=$from&to=$to&hide_employees=$hide_employees");
 }
 ?>

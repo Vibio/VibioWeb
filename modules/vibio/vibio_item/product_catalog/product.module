@@ -245,6 +245,30 @@ function product_reports_daily_cron($last_run)
 	{
 		reports_log("items", $row->items_created, $row->category);
 	}
+	
+	if ($employee_role = variable_get("reports_employee_role", false))
+	{
+		$sql = "SELECT td.`name` category, COUNT(*) items_created
+				FROM {term_data} td JOIN {term_node} tn JOIN {product_items} pi JOIN {node} n
+					ON td.`tid`=tn.`tid`
+					AND pi.`product_nid`=tn.`nid`
+					AND pi.`item_nid`=n.`nid`
+				WHERE n.`type`='vibio_item'
+					AND n.`created` >= %d
+					AND n.`uid` NOT IN (
+						SELECT `uid`
+						FROM {users_roles}
+						WHERE `rid`=%d
+					)
+				GROUP BY td.`name`
+				ORDER BY COUNT(*) DESC";
+		$res = db_query($sql, $last_run, $employee_role);
+		
+		while ($row = db_fetch_object($res))
+		{
+			reports_log("items noemployee", $row->items_created, $row->category);
+		}
+	}
 }
 
 function _product_remove_options($keys)

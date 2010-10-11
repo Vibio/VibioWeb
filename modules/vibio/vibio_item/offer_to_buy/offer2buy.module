@@ -727,6 +727,31 @@ function offer2buy_reports_daily_cron($last_run)
 		reports_log("total transactions", $row->total_transactions);
 		reports_log("amount transacted", $row->amount_transacted);
 	}
+	
+	if ($employee_role = variable_get("reports_employee_role", false))
+	{
+		$sql = "SELECT COUNT(*) total_transactions, SUM(`price`) amount_transacted
+				FROM {offer2buy_completed_transactions}
+				WHERE `timestamp` > %d
+					AND `buyer` NOT IN (
+						SELECT `uid`
+						FROM {users_roles}
+						WHERE `rid`=%d
+					)
+					AND `seller` NOT IN (
+						SELECT `uid`
+						FROM {users_roles}
+						WHERE `rid`=%d
+					)
+				";
+		$res = db_query($sql, $last_run, $employee_role, $employee_role);
+		
+		if ($row = db_fetch_object($res))
+		{
+			reports_log("total transactions noemployee", $row->total_transactions);
+			reports_log("amount transacted noemployee", $row->amount_transacted);
+		}
+	}
 }
 
 function offer2buy_imap_fetch_node_image_attach($image, $node)

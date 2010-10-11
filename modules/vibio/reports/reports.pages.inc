@@ -8,7 +8,27 @@ function reports_settings()
 		$options[$i] = $i;
 	}
 	
+	// rid 1 is anon user, 2 is authenticated user
+	$sql = "SELECT `rid`, `name`
+			FROM {role}
+			WHERE `rid` > 2
+			ORDER BY `name` ASC";
+	$res = db_query($sql);
+	
+	$role_options = array();
+	while ($row = db_fetch_object($res))
+	{
+		$role_options[$row->rid] = $row->name;
+	}
+	
 	return system_settings_form(array(
+		"reports_employee_role" => array(
+			"#type"			=> "select",
+			"#title"		=> t("Employee Role"),
+			"#description"	=> t("What role do all Vibio employees have?"),
+			"#options"		=> $role_options,
+			"#default_value"=> variable_get("reports_employee_role", false),
+		),
 		"reports_hour" 	=> array(
 			"#type"			=> "select",
 			"#title"		=> t("Reports Hour"),
@@ -45,8 +65,7 @@ function reports_view_report($name)
 	drupal_set_title("Report: $name from $start to $end");
 	
 	$select_form = drupal_get_form("reports_report_selector", $name, $from, $to);
-	
-	$report = reports_load($name, $from, $to);
+	$report = reports_load($name, $from, $to, $_GET['hide_employees']);
 	
 	if (empty($report))
 	{

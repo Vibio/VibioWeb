@@ -32,4 +32,59 @@ $(document).ready(function()
 		
 		$(this).attr("href", href);
 	});
+	
+	$(".inventory_add").live("click", function()
+	{
+		var nid = $(this).attr("id").split("inventory_add_")[1];
+		vibio_utility.dialog_busy();
+		
+		$.ajax({
+			url: "/product/ajax/inventory-add",
+			type: "post",
+			data: { nid: nid },
+			success: function(html, stat)
+			{
+				vibio_dialog.dialog.dialog("close");
+				vibio_dialog.create(html);
+			}
+		});
+		
+		return false;
+	});
+	
+	$("#product-ajax-add-form #edit-posting-type").livequery("change", function()
+	{
+		var val = $(this).val();
+		var e = $("#product-ajax-add-form .inventory_add_price");
+		
+		val == 1 ? e.hide() : e.show();
+	});
+	
+	$("#product-ajax-add-form").livequery("submit", function()
+	{
+		var node_vals = {}
+		$(this).find(":input").each(function()
+		{
+			var e = $(this);
+			var name = e.attr("name");
+			var val = e.val();
+			node_vals[name] = val;
+		});
+		
+		vibio_dialog.dialog.dialog("close");
+		vibio_utility.dialog_busy();
+		
+		$.ajax({
+			url: "/product/ajax/inventory-add/save",
+			type: "post",
+			data: node_vals,
+			success: function(html, stat)
+			{
+				vibio_dialog.dialog.dialog("close");
+				vibio_dialog.create(html);
+			}
+		});
+		
+		return false;
+	});
 });

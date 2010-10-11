@@ -1,4 +1,110 @@
 <?php
+function product_ajax_add()
+{
+	if (!($product = node_load($_POST['nid'])))
+	{
+		exit(t("Invalid product"));
+	}
+	elseif (product_user_owns_product($product->nid))
+	{
+		exit(t("You already own this item!"));
+	}
+	
+	module_load_include("php", "product", "product.forms");
+	module_load_include("inc", "product");
+	$image = _product_get_image($product->nid, true);
+	
+	$out = "
+		<table class='inventory_add_pinfo'><tr>
+			<td class='inventory_add_image'>
+				<img src='$image' />
+			</td>
+			<td>
+				{$product->title}
+			</td>
+		</tr></table>
+	";
+	$out .= drupal_get_form("product_ajax_add_form", $product);
+	
+	exit($out);
+}
+
+function product_ajax_add_complete()
+{
+	global $user;
+	$p = $_POST;
+	
+	if (product_user_owns_product($p['nid'], $user->uid))
+	{
+		exit(t("You already own this product"));
+	}
+	elseif (!($product = node_load($p['nid'])))
+	{
+		exit(t("Invalid product"));
+	}
+	
+	module_load_include("inc", "node", "node.pages");
+	
+	$form_id = "vibio_item_node_form";
+	$node = new stdClass;
+	$node->uid = $user->uid;
+	$node->name = $user->name;
+	$node->type = "vibio_item";
+	$node->product_nid = $product->nid;
+	
+	$state['values'] = array(
+		"title"				=> $product->title,
+		"body"				=> $p['body'],
+		"name"				=> $user->name,
+		"op"				=> t("Save"),
+		"field_posting_type"=> array(array(
+			"value"	=> $p['posting_type'],
+		)),
+		"privacy_setting"	=> $p['privacy'],
+	);
+	
+	if (module_exists("offer2buy") && $p['posting_type'] == VIBIO_ITEM_TYPE_SELL)
+	{
+		$state['values']['o2b_price'] = $p['node_price'];
+		$state['values']['o2b_is_negotiable'] = false;
+		$state['values']['o2b_allow_offer_views'] = true;
+	}
+	
+	if (module_exists("collection"))
+	{
+		$cids = array();
+		foreach ($p['collections'] as $cid)
+		{
+			$cids[$cid] = $cid;
+		}
+		if (empty($cids))
+		{
+			module_load_include("inc", "collection");
+			$default = collection_get_user_default($user->uid, true);
+			$cids[$default] = $default;
+		}
+		
+		$state['values']['collection_info']['cid'] = $cids;
+	}
+	
+	node_object_prepare($node);
+	drupal_execute($form_id, $state, $node);
+	$messages = drupal_get_messages();
+	
+	$item_nid = $state['nid'];
+	$t_args = array(
+		"!title"		=> $product->title,
+		"!view_link"	=> l(t("view the item"), "node/{$item_nid}"),
+		"!close_link"	=> l(t("close this window"), "", array("attributes" => array("class" => "vibio_dialog_close_link"))),
+		
+	);
+	
+	if ($item_nid)
+		exit(t("\"!title\" has been added to your inventory! You can !view_link or !close_link", $t_args));
+	
+	exit(t("There was an error adding the item to your inventory. Please try again later. !close_link", $t_args));
+}
+
 function product_add_to_inventory($product, $quick_add=false)
 {
 	global $user;

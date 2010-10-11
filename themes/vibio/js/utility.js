@@ -75,6 +75,16 @@ var vibio_utility = {
 			
 			e.text(display).removeClass("timestamp_uncalculated");
 		});
+	},
+	busy: function(id, action)
+	{
+		var e = $("#busy_indicator_"+id);
+		action == "show" ? e.show() : e.hide();
+	},
+	dialog_busy: function()
+	{
+		var busy_indicator = $("#dialog_busy_indicator_container").length ? $("#dialog_busy_indicator_container") : $("<div id='dialog_busy_indicator_container'><div id='dialog_busy_indicator'><img src='/themes/vibio/images/ajax-loader.gif' /></div></div>").prependTo("body");
+		vibio_dialog.create(busy_indicator.html());
 	}
 };
 
@@ -112,11 +122,20 @@ $(document).ready(function()
 	
 	$("a[href^='/node/']").removeClass("item_link").addClass("item_link");
 	vibio_utility.set_time_offset();
-	$(document).ajaxComplete(function()
-	{
-		$("a[href^='/node/']").removeClass("item_link").addClass("item_link");
-		vibio_utility.set_time_offset();
-	});
+	$(document)
+		.ajaxComplete(function()
+		{
+			$("a[href^='/node/']").removeClass("item_link").addClass("item_link");
+			vibio_utility.set_time_offset();
+		})
+		.ajaxError(function(event, xhr, options, error)
+		{
+			if (xhr.status == 403)
+			{
+				vibio_dialog.dialog.dialog("close");
+				vibio_dialog.create(Drupal.t("You must log in to do this"));
+			}
+		});
 	
 	$("a[rel^='prettyphoto']").prettyPhoto({
 		allowResize: false,

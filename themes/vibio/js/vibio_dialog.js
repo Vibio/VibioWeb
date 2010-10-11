@@ -43,4 +43,11 @@ $(document).ready(function()
 			this.dialog.dialog("option", options);
 		}
 	};
+	
+	$(".vibio_dialog_close_link").live("click", function()
+	{
+		vibio_dialog.dialog.dialog("close");
+		
+		return false;
+	});
 });

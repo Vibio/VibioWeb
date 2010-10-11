@@ -123,6 +123,7 @@
   float: left;
   font-weight: bold;
   color: black;
+  max-width: 475px;
 }
 
 .vibio_item_delete_summary {

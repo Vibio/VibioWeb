@@ -55,6 +55,18 @@ function product_menu()
 			"file"				=> "product.pages.php",
 			"type"				=> MENU_CALLBACK,
 		),
+		"product/ajax/inventory-add" => array(
+			"page callback"		=> "product_ajax_add",
+			"access arguments"	=> array("create vibio_item content"),
+			"file"				=> "product.pages.php",
+			"type"				=> MENU_CALLBACK,
+		),
+		"product/ajax/inventory-add/save" => array(
+			"page callback"		=> "product_ajax_add_complete",
+			"access arguments"	=> array("create vibio_item content"),
+			"file"				=> "product.pages.php",
+			"type"				=> MENU_CALLBACK,
+		),
 	);
 }
 
@@ -266,6 +278,23 @@ function product_preprocess_box(&$vars)
 	if ($vars['title'] == t("Your search yielded no results") && arg(0) == "search" && arg(1) == "vibio_item")
 	{
 		$vars['content'] .= theme("product_add_product_link");
+	}
+}
+
+function product_preprocess_search_results(&$vars)
+{
+	if ($vars['type'] == "vibio_item")
+	{
+		drupal_add_css("themes/vibio/css/product.css");
+		drupal_add_js("themes/vibio/js/product.js");
+	}
+}
+
+function product_preprocess_search_result(&$vars)
+{
+	if ($vars['type'] == "vibio_item" && !product_user_owns_product($vars['result']['node']->nid))
+	{
+		$vars['search_links'] .= theme("product_inventory_add", $vars['result']['node']->nid);
 	}
 }
 

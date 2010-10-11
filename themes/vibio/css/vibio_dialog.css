@@ -30,3 +30,12 @@
 #vibio_dialog .views_message {
 	max-width: 390px;
 }
+
+#dialog_busy_indicator_container {
+	display: none;
+}
+
+#dialog_busy_indicator {
+	padding: 10px 0;
+	text-align: center;
+}

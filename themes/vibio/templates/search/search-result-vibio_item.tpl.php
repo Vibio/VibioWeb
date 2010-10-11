@@ -7,7 +7,8 @@ echo "
 			</a>
 		</td>
 		<td valign='middle' style='padding-left: 20px;'>
-			<a href='$url'>$title</a>
+			<a href='$url'>$title</a><br />
+			$search_links
 		</td>
 	</tr>
 ";

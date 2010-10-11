@@ -24,4 +24,70 @@ function product_admin(&$state)
 		),
 	));
 }
+
+function product_ajax_add_form($state, $product)
+{
+	global $user;
+	
+	$form = array(
+		"nid"	=> array(
+			"#type"	=> "hidden",
+			"#value"=> $product->nid,
+		),
+	);
+	
+	if (module_exists("collection"))
+	{
+		module_load_include("inc", "collection");
+		
+		$form['collections'] = array(
+			"#type"			=> "select",
+			"#title"		=> t("Collection(s)"),
+			"#multiple"		=> true,
+			"#options"		=> collection_options(),
+			"#default_value"=> collection_get_user_default($user->uid, true),
+		);
+	}
+	
+	if (module_exists("offer2buy"))
+	{
+		$form['posting_type'] = array(
+			"#type"			=> "select",
+			"#title"		=> t("For Sale?"),
+			"#options"		=> array(
+				VIBIO_ITEM_TYPE_SELL	=> t("Yes"),
+				VIBIO_ITEM_TYPE_OWN		=> t("No"),
+			),
+		);
+		
+		$form['node_price'] = array(
+			"#type"		=> "textfield",
+			"#title"	=> t("Price"),
+			"#size"		=> 10,
+			"#prefix"	=> "<div class='inventory_add_price'>",
+			"#suffix"	=> "</div>",
+		);
+	}
+	
+	$form['body'] = array(
+		"#type"		=> "textarea",
+		"#title"	=> t("Description"),
+		"#rows"		=> 5,
+		"#cols"		=> 50,
+	);
+	
+	$form['privacy'] = array(
+		"#title"		=> t("Privacy Settings"),
+		"#type"			=> "select",
+		"#options"		=> _privacy_options(),
+		"#default_value"=> privacy_get($user->uid, "account_setting", "item_default"),
+	);
+	
+	$form['submit'] = array(
+		"#type"	=> "submit",
+		"#value"=> t("Add Item"),
+	);
+	
+	return $form;
+}
 ?>

@@ -36,7 +36,7 @@ if ($node->field_posting_type[0]['value'] == VIBIO_ITEM_TYPE_SELL)
 
 $product = node_load($node->product_nid);
 $product->item =& $node;
-$product_data = $node->product_nid ? theme("node", $product) : "";
+$product_data = $node->product_nid ? node_view($product) : "";
 $user_other_items = theme("vibio_item_user_other_items", $node);
 
 echo "

@@ -161,7 +161,7 @@ function fb_theme(&$existing, $type, $theme, $path)
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
 		"fb_share"			=> array(
-			"arguments"	=> array("share_id" => false, "share_type" => "node"),
+			"arguments"	=> array("share_id" => false, "share_type" => "node", "button_type" => "icon"),
 			"template"	=> "templates/facebook/share",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
@@ -210,6 +210,15 @@ function fb_preprocess_fb_share(&$vars)
 	elseif ($type == "collection" && module_exists("collection"))
 	{
 		$vars['share_params'] = json_encode(fb_get_collection_share_params(collection_load($vars['share_id']), "share_collection"));
+	}
+
+	switch ($vars['button_type'])
+	{
+		case "icon":
+			$vars['share_image'] = "/themes/vibio/images/facebook/share.png";
+			break;
+		case "button":
+			$vars['share_image'] = "/themes/vibio/images/facebook/share_button.png";
 	}
 }
 

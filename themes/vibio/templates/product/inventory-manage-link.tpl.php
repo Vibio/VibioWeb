@@ -18,5 +18,10 @@ if (!$is_product_page)
 	$manage_link .= l(t("View product"), "node/{$product->nid}");
 }
 
+if (!$is_product_page && $item_id && $product->item->uid == $user->uid && module_exists("fb")) // loooking at your own item
+{
+	$manage_link .= "<br />".theme("fb_share", $item_id, "node", "button")."<div class='clear'></div>";
+}
+
 echo $manage_link;
 ?>

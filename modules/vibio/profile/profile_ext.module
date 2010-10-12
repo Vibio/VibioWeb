@@ -143,7 +143,7 @@ function profile_ext_display_block($u)
 	$cache_key = "profile_display_block:{$u->uid}";
 	$cache_time = 60*5; // 5 minutes
 	
-	if (false && $cache = cache_get($cache_key, "cache"))
+	if ($cache = cache_get($cache_key, "cache"))
 	{
 		$items = $cache->data;
 	}

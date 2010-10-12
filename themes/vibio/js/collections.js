@@ -93,4 +93,9 @@ $(document).ready(function()
 	{
 		window.location = $(this).val();
 	});
+
+	$("#collection-edit #edit-delete").click(function()
+	{
+		return confirm(Drupal.t("Are you sure you want to delete this collection?"));
+	});
 });

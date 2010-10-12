@@ -107,6 +107,15 @@ function collection_edit(&$state, $collection=false)
 		"#value"	=> t("Save"),
 		"#weight"	=> 10,
 	);
+
+	if ($collection)
+	{
+		$form['delete'] = array(
+			"#type"		=> "submit",
+			"#value"	=> t("Delete"),
+			"#weight"	=> 11,
+		);
+	}
 	
 	return $form;
 }
@@ -114,7 +123,9 @@ function collection_edit(&$state, $collection=false)
 function collection_edit_validate($form, &$state)
 {
 	$vals = $state['values'];
-	if (strlen($vals['description']) > COLLECTION_DESCRIPTION_MAX_LENGTH)
+	$op = $state['clicked_button']['#value'];
+
+	if ($op != t("Delete") && strlen($vals['description']) > COLLECTION_DESCRIPTION_MAX_LENGTH)
 	{
 		form_set_error("description", t("Description cannot be longer than !maxlength characters", array("!maxlength" => COLLECTION_DESCRIPTION_MAX_LENGTH)));
 	}
@@ -127,6 +138,15 @@ function collection_edit_submit($form, &$state)
 	$vals = $state['values'];
 	$vals['title'] = htmlspecialchars($vals['title']);
 	$vals['description'] = htmlspecialchars($vals['description']);
+	$op = $state['clicked_button']['#value'];
+
+	if ($op == t("Delete") && $vals['cid'])
+	{
+		module_load_include("inc", "collection");
+		collection_delete($vals['cid']);
+		drupal_goto("collections/manage");
+		return;
+	}
 	
 	if ($vals['cid'])
 	{

@@ -101,6 +101,13 @@ function vviews_collection_update($uid, $cids)
 	}
 }
 
+function vviews_collection_delete($uid, $new_cid, $deleted_cid)
+{
+	$event = "collection delete";
+	_vviews_clear_cache(array($uid, $new_cid), "user_collection", $event);
+	_vviews_clear_cache($uid, "user_collections", $event);
+}
+
 function vviews_collection_delete_item($uid, $cid, $nid)
 {
 	_vviews_clear_cache(array($uid, $cid), "user_collection", "deleting an item.");

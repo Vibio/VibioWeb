@@ -47,6 +47,54 @@ function collection_insert($vals)
 	return $vals['cid'];
 }
 
+function collection_delete($cid)
+{
+	$collection = collection_load($cid);
+
+	$sql = "SELECT `item_nid`
+			FROM {collection_items}
+			WHERE `cid`=%d";
+	$res = db_query($sql, $cid);
+	$num_items = db_affected_rows();
+
+	$sql = "DELETE FROM {collection_user_defaults}
+			WHERE `cid`=%d";
+	db_query($sql, $cid);
+
+	if ($num_items)
+	{
+		$new_cid = collection_get_user_default($collection['uid'], true);
+		$items = array();
+
+		while ($row = db_fetch_object($res))
+		{
+			$item_cids = collection_get_item_cid($row->item_nid);
+			if (count($item_cids) == 1) // if an item is only in more than one cid, don't transfer it
+			{
+				$items[] = $row->item_nid;
+			}
+		}
+
+		collection_transfer_items($items, $new_cid);
+	}
+
+	$sql = "DELETE FROM {collection}
+			WHERE `cid`=%d";
+	db_query($sql, $cid);
+
+	module_invoke_all("collection_delete", $collection['uid'], $new_cid, $cid);
+	drupal_set_message(t('The collection !title has been deleted', array("!title" => $collection['title'])));
+}
+
+function collection_transfer_items($items, $to_cid)
+{
+	$items = implode(",", $items);
+	$sql = "UPDATE {collection_items}
+			SET `cid`=%d
+			WHERE `item_nid` IN ($items)";
+	db_query($sql, $to_cid);
+}
+
 function collection_get_item_cid($nid)
 {
 	$sql = "SELECT `cid`

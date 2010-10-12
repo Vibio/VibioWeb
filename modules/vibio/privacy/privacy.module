@@ -302,6 +302,15 @@ function privacy_collection_load($collection)
 	);
 }
 
+function privacy_collection_delete($uid, $new_cid, $deleted_cid)
+{
+	$sql = "DELETE FROM {privacy_settings}
+			WHERE `uid`=%d 
+				AND `type`='collection'
+				AND `type_id`=%d";
+	db_query($sql, $uid, $deleted_cid);
+}
+
 function _privacy_options()
 {
 	return array(

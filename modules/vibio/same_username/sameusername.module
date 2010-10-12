@@ -27,16 +27,34 @@ function sameusername_form_alter(&$form, &$state, $id)
 			array_unshift($form['#validate'], "sameusername_validate_user_pass_reset");
 			break;
 		case "user_register":
+			$name = array(
+				"#type"	=> "value",
+				"#value"=> "",
+			);
+			
 			if (isset($form['account'])) // if we are asking for stuff besides just your account infos
 			{
-				$form['account']['name']['#title'] = t("Name");
-				$form['account']['name']['#description'] = t("This is the public name of your account. Please use your real name.");
+				$form['account']['name'] = $name;
 			}
 			else
 			{
-				$form['name']['#title'] = t("Name");
-				$form['name']['#description'] = t("This is the public name of your account. Please use your real name.");
+				$form['name'] = $name;
 			}
+			
+			$form['fname'] = array(
+				"#type"		=> "textfield",
+				"#title"	=> t("First Name"),
+				"#weight"	=> -2,
+				"#required"	=> true,
+			);
+			$form['lname'] = array(
+				"#type"		=> "textfield",
+				"#title"	=> t("Last Name"),
+				"#weight"	=> -1,
+				"#required"	=> true,
+			);
+			
+			array_unshift($form['#validate'], "sameusername_get_username");
 			break;
 		case 'user_login':
 		case 'user_login_block':
@@ -44,6 +62,16 @@ function sameusername_form_alter(&$form, &$state, $id)
 			$form['#validate'][] = "sameusername_validate_login";
 			break;
 	}
+}
+
+function sameusername_get_username($form, &$state)
+{
+	$vals = $state['values'];
+	$full_name = trim("{$vals['fname']} {$vals['lname']}");
+	unset($state['values']['fname']);
+	unset($state['values']['lname']);
+	
+	form_set_value($form['name'], $full_name, $state);
 }
 
 function sameusername_validate_username($edit)

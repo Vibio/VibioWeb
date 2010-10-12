@@ -166,6 +166,7 @@ function _vibio_amazon_search_result($item)
 		'title'		=> $node->title,
 		'link'		=> $node->path ? url($node->path) : url("node/{$node->nid}"),
 		'extra' 	=> node_invoke_nodeapi($node, 'search result'),
+		'node'		=> $node,
 	);
 }
 

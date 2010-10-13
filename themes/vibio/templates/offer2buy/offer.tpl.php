@@ -1,6 +1,5 @@
 <?php
 $accept_form = $is_owner ? drupal_get_form("offer2buy_offer_accept_form_{$offer['uid']}", $offer['uid'], $offer['nid']) : "";
-$date = date("z") == date("z", $offer['timestamp']) ? date("g:iA", $offer['timestamp']) : date("M j", $offer['timestamp']);
 $item_image = _vibio_item_get_image($offer['nid']);
 $offerer = user_load($offer['uid']);
 $node = node_load($offer['nid']);
@@ -21,7 +20,7 @@ echo "
 				<a href='/user/{$offerer->uid}'>
 					<img src='$profile_pic' alt='$alt' title='$alt' />
 				</a>
-				<span class='view_activity_timestamp'>$date</span>
+				<span class='view_activity_timestamp timestamp_uncalculated'>{$offer['timestamp']}</span>
 			</div>
 		</td>
 		<td class='views-field views-field-message'>

@@ -59,3 +59,7 @@
 .offer2buy_notification .view-content tr {
 	background-color: #e0f2ff;
 }
+
+#profiletab_offers .offer2buy_popup {
+	float: none;
+}

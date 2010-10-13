@@ -84,7 +84,16 @@ var vibio_utility = {
 	dialog_busy: function()
 	{
 		var busy_indicator = $("#dialog_busy_indicator_container").length ? $("#dialog_busy_indicator_container") : $("<div id='dialog_busy_indicator_container'><div id='dialog_busy_indicator'><img src='/themes/vibio/images/ajax-loader.gif' /></div></div>").prependTo("body");
+		if (vibio_dialog.dialog)
+		{
+			vibio_dialog.dialog.dialog("close");
+		}		
 		vibio_dialog.create(busy_indicator.html());
+	},
+	dialog_unbusy: function(content)
+	{
+		vibio_dialog.dialog.dialog("close");
+		vibio_dialog.create(content);
 	}
 };
 

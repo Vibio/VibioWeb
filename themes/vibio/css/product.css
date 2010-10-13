@@ -38,15 +38,3 @@
 	max-width: 100px;
 	max-height: 100px;
 }
-
-form#product-ajax-add-form .form-item label {
-	float: left;
-	margin-right: 10px;
-	width: 150px;
-	text-align: right;
-	color: #2B363D;
-}
-
-form#product-ajax-add-form select[multiple] {
-	max-height: 120px;
-}

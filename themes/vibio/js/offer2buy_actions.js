@@ -10,9 +10,55 @@ $(document).ready(function()
 		return confirm("are you sure you want to cancel this transaction?");
 	});
 	
-	$(".offer2buy_offer_accept_form").submit(function()
+	$(".offer2buy_offer_accept_form #edit-submit").live("click", function()
 	{
 		return confirm("Accepting an offer will cancel all pending transactions for that item. Are you sure you want to accept this offer?")
+	});
+	
+	$(".offer2buy_offer_accept_form #edit-reject").live("click", function()
+	{
+		var classes = $(this).attr("class").split(/\s+/);
+		var uid = false;
+		var nid = false;
+		
+		$.each(classes, function(i, e)
+		{
+			if (uid && nid)
+			{
+				return;
+			}
+			
+			var args = e.split("reject_offer_");
+			if (args.length == 2)
+			{
+				args = args[1].split("_");
+				uid = args[0];
+				nid = args[1];
+			}
+		});
+		
+		if (!uid && !uid)
+		{
+			return false;
+		}
+		
+		vibio_utility.dialog_busy();
+		
+		$.ajax({
+			url: "/offer2buy/ajax/reject/"+uid+"/"+nid,
+			success: function(html, stat)
+			{
+				vibio_utility.dialog_unbusy(html);
+			}
+		});
+		
+		return false;
+	});
+	
+	$(".offer2buy_offer_reject_form #edit-cancel").live("click", function()
+	{
+		vibio_dialog.dialog.dialog("close");
+		return false;
 	});
 	
 	$(".offer2buy_edit_post_type").live("click", function()

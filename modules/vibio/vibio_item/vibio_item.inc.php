@@ -265,6 +265,15 @@ function _vibio_item_defaults(&$form, $type="vibio_item")
 	}
 }
 
+function _vibio_item_owner($nid)
+{
+	$sql = "SELECT `uid`
+			FROM {node}
+			WHERE `nid`=%d
+				AND `type`='vibio_item'";
+	return db_result(db_query($sql, $nid));
+}
+
 function _vibio_item_user_options()
 {
 	return array(

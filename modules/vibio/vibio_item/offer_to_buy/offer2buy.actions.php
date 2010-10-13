@@ -107,11 +107,12 @@ function _offer2buy_get_user_incoming_offers($uid)
 {
 	$sql = "SELECT o.*, u.name
 			FROM {offer2buy_offers} o JOIN {users} u ON o.`uid`=u.`uid`
-			WHERE o.`nid` IN (
-				SELECT `nid`
-				FROM {node}
-				WHERE `uid`=%d
-			)
+			WHERE o.`rejection_note` IS NULL
+				AND o.`nid` IN (
+					SELECT `nid`
+					FROM {node}
+					WHERE `uid`=%d
+				)
 			ORDER BY o.`offer` DESC, o.`timestamp` ASC";
 	$res = db_query($sql, $uid);
 	

@@ -133,6 +133,16 @@ function offer2buy_update_4()
 	return array(update_sql("SELECT 'all items entered into {offer2buy}'"));
 }
 
+function offer2buy_update_5()
+{
+	return array(
+		update_sql("
+			ALTER TABLE {offer2buy_offers}
+			ADD COLUMN `rejection_note` VARCHAR(255)
+		"),
+	);
+}
+
 function offer2buy_uninstall()
 {
 	$sql = array(

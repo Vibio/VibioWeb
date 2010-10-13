@@ -39,3 +39,26 @@
 	padding: 10px 0;
 	text-align: center;
 }
+
+#vibio_dialog form .form-item label {
+	float: left;
+	margin-right: 10px;
+	width: 150px;
+	text-align: right;
+	color: #2B363D;
+}
+
+#vibio_dialog form select[multiple] {
+	max-height: 120px;
+}
+
+#vibio_dialog form input[type="text"], #vibio_dialog form textarea {
+	max-width: 350px;
+	max-height: 60px;
+}
+
+#vibio_dialog form .description {
+	margin-left: 163px;
+	font-size: 12px;
+	color: #2B363D;
+}

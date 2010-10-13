@@ -11,13 +11,14 @@ $(document).ready(function()
 		
 		var nid = $(this).siblings(".offer2buy_nid").html();
 		in_progress = true;
+		vibio_utility.dialog_busy();
 		
 		$.ajax({
 			url: "/offer2buy/ajax/offer/"+nid+"?destination="+window.location.pathname.substring(1),
 			type: "post",
 			success: function(html, stat)
 			{
-				vibio_dialog.create(html);
+				vibio_utility.dialog_unbusy(html);
 			},
 			complete: function()
 			{

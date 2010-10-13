@@ -35,6 +35,13 @@ function offer2buy_menu()
 			"access arguments"	=> array("offer2buy offer"),
 			"type"				=> MENU_CALLBACK,
 		),
+		"offer2buy/ajax/reject/%/%"	=> array(
+			"page callback"		=> "offer2buy_ajax_reject",
+			"page arguments"	=> array(3, 4),
+			"file"				=> "offer2buy.ajax.php",
+			"access arguments"	=> array("offer2buy offer"),
+			"type"				=> MENU_CALLBACK,
+		),
 		"offer2buy/ajax/edit-post-type/%"	=> array(
 			"page callback"		=> "offer2buy_ajax_edit_post_type",
 			"page arguments"	=> array(3),
@@ -195,7 +202,8 @@ function offer2buy_nodeapi(&$node, $op, $a3=null, $a4=null)
 					$sql = "SELECT o.*, u.`name`
 							FROM {offer2buy_offers} o JOIN {users} u
 								ON o.`uid`=u.`uid`
-							WHERE `nid`=%d
+							WHERE o.`rejection_note` IS NULL
+								AND o.`nid`=%d
 							ORDER BY `offer` DESC, `timestamp` ASC";
 					$res = db_query($sql, $node->nid);
 					
@@ -278,7 +286,7 @@ function offer2buy_theme(&$existing, $type, $theme, $path)
 {
 	return array(
 		"offer2buy_init"		=> array(
-			"arguments"	=> array("nid" => false),
+			"arguments"	=> array("nid" => false, "offer_type" => "new"),
 			"template"	=> "templates/offer2buy/init",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
@@ -345,6 +353,7 @@ function offer2buy_preprocess_node(&$vars)
 function offer2buy_preprocess_page(&$vars)
 {
 	drupal_add_js("themes/vibio/js/offer2buy_actions.js");
+	drupal_add_js("themes/vibio/js/offer2buy.js");
 }
 
 function offer2buy_get_offer($uid, $nid)
@@ -558,23 +567,28 @@ function offer2buy_forms($id, $args)
 		$forms[$id] = array(
 			"callback"	=> "offer2buy_offer_accept_form",
 		);
-		
-		return $forms;
 	}
 	elseif (strpos($id, "offer2buy_action_complete_") !== false)
 	{
 		$forms[$id] = array(
 			"callback"	=> "offer2buy_action_complete_form",
 		);
-		
-		return $forms;
 	}
 	elseif (strpos($id, "offer2buy_transaction_cancel_") !== false)
 	{
 		$forms[$id] = array(
 			"callback"	=> "offer2buy_transaction_cancel_form",
 		);
-		
+	}
+	elseif (strpos($id, "offer2buy_reject_form_") !== false)
+	{
+		$forms[$id] = array(
+			"callback"	=> "offer2buy_offer_reject_form",
+		);
+	}
+	
+	if ($forms)
+	{
 		return $forms;
 	}
 }
@@ -634,6 +648,13 @@ function offer2buy_offer_accept_form(&$state, $uid, $nid)
 			"#type"	=> "submit",
 			"#value"=> t("Accept Offer"),
 		),
+		"reject"	=> array(
+			"#type"			=> "submit",
+			"#value"		=> t("Reject Offer"),
+			"#attributes"	=> array(
+				"class"	=> "reject_offer_{$uid}_{$nid}",
+			),
+		),
 		"#submit"	=> array(
 			"offer2buy_offer_accept_form_submit",
 		),
@@ -645,6 +666,13 @@ function offer2buy_offer_accept_form(&$state, $uid, $nid)
 
 function offer2buy_offer_accept_form_submit($form, &$state)
 {
+	$op = $state['clicked_button']['#value'];
+	
+	if ($op == t("Reject Offer"))
+	{
+		return;
+	}
+	
 	$vals = $state['values'];
 	$node = node_load($vals['nid']);
 	$offerer = user_load($vals['uid']);
@@ -658,6 +686,69 @@ function offer2buy_offer_accept_form_submit($form, &$state)
 	
 	module_invoke_all("offerbuy_accept_offer", $node, $offerer, $owner, $offer);
 	_offer2buy_init_actions($node->nid, $offerer->uid, $owner->uid);
+}
+
+function offer2buy_offer_reject_form(&$state, $uid, $nid)
+{
+	$offer = offer2buy_get_offer($uid, $nid);
+	$offerer = user_load($uid);
+	$t_args = array(
+		"!amount" 	=> "\${$offer['offer']}",
+		"!user"		=> $offerer->name,
+	);
+	
+	return array(
+		"#prefix"		=> t("Are you sure you want to reject the offer of !amount from !user?", $t_args),
+		"offerer"	=> array(
+			"#type"	=> "value",
+			"#value"=> $offerer,
+		),
+		"nid"			=> array(
+			"#type"	=> "value",
+			"#value"=> $nid,
+		),
+		"destination"	=> array(
+			"#type"	=> "value",
+			"#value"=> $_SERVER['HTTP_REFERER'],
+		),
+		"reason"		=> array(
+			"#type"			=> "textarea",
+			"#title"		=> t("Reason"),
+			"#description"	=> t("Why are you rejecting this offer?"),
+		),
+		"submit"		=> array(
+			"#type"	=> "submit",
+			"#value"=> t("Reject Offer"),
+		),
+		"cancel"		=> array(
+			"#type"	=> "submit",
+			"#value"=> t("Cancel"),
+		),
+		"#submit"		=> array(
+			"offer2buy_offer_reject_form_submit",
+		),
+		"#attributes"	=> array(
+			"class"	=> "offer2buy_offer_reject_form",
+		),
+	);
+}
+
+function offer2buy_offer_reject_form_submit($form, &$state)
+{
+	if ($state['clicked_button']['#value'] == t("Cancel"))
+	{
+		return;
+	}
+	
+	$vals = $state['values'];
+	
+	$sql = "UPDATE {offer2buy_offers}
+			SET `rejection_note`='%s'
+			WHERE `uid`=%d
+				AND `nid`=%d";
+	db_query($sql, substr($vals['reason'], 0, 255), $vals['offerer']->uid, $vals['nid']);
+	drupal_set_message(t("The offer from !user has been rejected", array("!user" => $vals['offerer']->name)));
+	drupal_goto($vals['destination']);
 }
 
 function offer2buy_offer2buy_complete_actions($old_owner_uid, $node)

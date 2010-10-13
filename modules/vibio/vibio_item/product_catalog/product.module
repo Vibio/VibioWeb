@@ -301,7 +301,14 @@ function product_preprocess_box(&$vars)
 {
 	if ($vars['title'] == t("Your search yielded no results") && arg(0) == "search" && arg(1) == "vibio_item")
 	{
-		$vars['content'] .= theme("product_add_product_link");
+		if (!$_GET['external_product_search'])
+		{
+			drupal_goto(substr(urldecode(request_uri()), 1), "external_product_search=1");
+		}
+		else
+		{
+			$vars['content'] .= theme("product_add_product_link");
+		}
 	}
 }
 
@@ -309,8 +316,31 @@ function product_preprocess_search_results(&$vars)
 {
 	if ($vars['type'] == "vibio_item")
 	{
+		static $external_products_searched = false;
+		
 		drupal_add_css("themes/vibio/css/product.css");
 		drupal_add_js("themes/vibio/js/product.js");
+		
+		if (!$external_products_searched)
+		{
+			$vars['search_footer'] = theme("product_add_product_link");
+		}
+		
+		if (!$external_products_searched && !$_GET['external_product_search'] && variable_get("product_append_external", false) && variable_get("product_local_search", false))
+		{	
+			$external_products_searched = true;
+			$external_header = t("Amazon Results");
+			$results = theme("search_results", product_external_search(_vibio_item_search_keys()), "vibio_item");
+			$vars['external_products'] = "
+				<h4>$external_header</h4>
+				$results
+			";
+		}
+		elseif ($external_products_searched)
+		{
+			global $external_product_pager_element;
+			$vars['pager'] = theme("pager", array(), 10, $external_product_pager_element);
+		}
 	}
 }
 

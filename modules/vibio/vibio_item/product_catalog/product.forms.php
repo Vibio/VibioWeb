@@ -9,13 +9,19 @@ function product_admin(&$state)
 	$source_options = module_invoke_all("product_source");
 	
 	return system_settings_form(array(
-		"product_local_search"	=> array(
+		"product_local_search"		=> array(
 			"#type"			=> "checkbox",
 			"#title"		=> t("Local Search Enabled"),
 			"#description"	=> t("Whether or not to try and grab information from the local product catalog."),
 			"#default_value"=> variable_get("product_local_search", false),
 		),
-		"product_source"		=> array(
+		"product_append_external"	=> array(
+			"#type"			=> "checkbox",
+			"#title"		=> t("Append External Search Results"),
+			"#description"	=> t("Show external search results in addition to local search results when searching local products"),
+			"#default_value"=> variable_get("product_append_external", false),
+		),
+		"product_source"			=> array(
 			"#type"			=> "select",
 			"#title"		=> t("Source"),
 			"#description"	=> t("The source of external product information when local information is either not available, or searching locally is disabled."),

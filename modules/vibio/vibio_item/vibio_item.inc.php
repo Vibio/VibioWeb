@@ -24,6 +24,7 @@ function _vibio_item_search($keys)
 	$keys = preg_replace('/(\s+)users:([a-z,0-9]+)/i', '', $keys);
 	$keys = preg_replace('/(\s+)dos:([0-9]+)/i', '', $keys);
 	
+	_vibio_item_search_keys($keys);
 	$is_product_search = !$target_user && module_exists("product");
 	
 	if ($is_product_search)
@@ -185,7 +186,7 @@ function _vibio_item_search($keys)
 	  
 		$extra = node_invoke_nodeapi($node, 'search result');
 		$results[] = array(
-			'link' => url('node/'. $item->sid, array('absolute' => TRUE)),
+			'link' => url('node/'. $item->sid),
 			'type' => check_plain(node_get_types('name', $node)),
 			'title' => $node->title,
 			'user' => theme('username', $node),
@@ -305,5 +306,17 @@ function _vibio_item_get_image($nid)
 function _vibio_item_default_image()
 {
 	return file_create_url("themes/vibio/images/icons/default_item.png");
+}
+
+function _vibio_item_search_keys($keys=false)
+{
+	static $search_keys = false;
+	
+	if ($keys !== false)
+	{
+		$search_keys = $keys;
+	}
+	
+	return $search_keys;
 }
 ?>

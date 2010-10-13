@@ -85,6 +85,7 @@
 .search_result_image {
   float: left;
   max-height: 70px;
+  max-width: 50px;
 }
 
 .product_main_image, .node_view_item_image {
@@ -142,4 +143,9 @@
 .vibio_item_delete_summary .node_info {
 	width: 500px;
 	padding-left: 10px;
+}
+
+table.search-results.vibio_item td {
+  vertical-align: top;
+  padding-bottom: 10px;
 }

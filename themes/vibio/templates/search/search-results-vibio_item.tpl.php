@@ -7,10 +7,12 @@ echo "
 	</table>
 ";
 
-if (module_exists("product"))
+echo $pager;
+
+if ($external_products)
 {
-	echo theme("product_add_product_link");
+	echo $external_products;
 }
 
-echo $pager;
+echo $search_footer;
 ?>

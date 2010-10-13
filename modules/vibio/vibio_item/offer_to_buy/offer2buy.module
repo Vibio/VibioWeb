@@ -167,12 +167,7 @@ function _offer2buy_fields_form($nid, $settings)
 }
 
 function _offer2buy_node_validate($form, &$state)
-{
-	if ($state['values']['field_posting_type'][0]['value'] != VIBIO_ITEM_TYPE_SELL)
-	{
-		return; //only care about validating input if the posting type is "sell"
-	}
-	
+{	
 	if (!_offer2buy_valid_price($state['values']['o2b_price']))
 	{
 		form_set_error("o2b_price", t("Invalid price definition."));
@@ -224,11 +219,11 @@ function offer2buy_nodeapi(&$node, $op, $a3=null, $a4=null)
 			case "insert":
 				$on_sale = $node->field_posting_type[0]['value'] == VIBIO_ITEM_TYPE_SELL;
 				$current_settings = offer2buy_get_settings($node->nid);
+				$price = preg_replace('/([^\d\.]+)/', "", $node->o2b_price);
+				$price = !is_numeric($price) || empty($price) ? 0 : number_format($price, 2, ".", "");
 				
 				if ($on_sale)
 				{
-					$price = preg_replace('/([^\d\.]+)/', "", $node->o2b_price);
-					$price = !is_numeric($price) || empty($price) ? 0 : number_format($price, 2, ".", "");
 					if ($price == 0)
 					{
 						$price = 0;
@@ -249,6 +244,12 @@ function offer2buy_nodeapi(&$node, $op, $a3=null, $a4=null)
 								WHERE `nid`=%d";
 						db_query($sql, $price, $node->o2b_is_negotiable, $node->o2b_allow_offer_views, $node->nid);
 					}
+				}
+				elseif (!$current_settings)
+				{
+					$sql = "REPLACE INTO {offer2buy}
+							SET `nid`=%d, `price`=%f, `is_negotiable`=%d, `allow_offer_views`=%d, `is_on_sale`=0";
+					db_query($sql, $node->nid, $price, 1, 1);
 				}
 				else
 				{
@@ -673,7 +674,8 @@ function offer2buy_offer2buy_complete_actions($old_owner_uid, $node)
 			(%d, %d, %d, %f, %d)";
 	db_query($sql, $node->nid, $node->uid, $old_owner_uid, $price, time());
 	
-	$sql = "DELETE FROM {offer2buy}
+	$sql = "UPDATE {offer2buy}
+			SET `is_negotiable`=1, `allow_offer_views`=1, `is_on_sale`=0
 			WHERE `nid`=%d";
 	db_query($sql, $node->nid);
 }

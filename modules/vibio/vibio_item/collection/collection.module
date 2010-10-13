@@ -156,13 +156,13 @@ function collection_preprocess_collection_list_item_preview(&$vars)
 		);
 		$vars['item']->offer2buy_price = l(t("Sell"), "offer2buy/ajax/edit-post-type/{$vars['item']->nid}", $options);
 	}
-	elseif ($vars['item']->for_sale)
+	elseif ($vars['item']->for_sale && $vars['item']->offer2buy_price > 0)
 	{
-		$vars['item']->offer2buy_price = $vars['item']->offer2buy_price > 0 ? "$".$vars['item']->offer2buy_price : t("Best Offer");
+		$vars['item']->offer2buy_price =  "$".$vars['item']->offer2buy_price;
 	}
 	else
 	{
-		$vars['item']->offer2buy_price = "";
+		$vars['item']->offer2buy_price = t("Best Offer");
 	}
 }
 

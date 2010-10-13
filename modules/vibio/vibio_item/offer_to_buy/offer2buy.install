@@ -112,6 +112,27 @@ function offer2buy_update_3()
 	);
 }
 
+function offer2buy_update_4()
+{
+	$sql = "SELECT `nid`
+			FROM {node}
+			WHERE `type`='vibio_item'
+				AND `nid` NOT IN (
+					SELECT `nid`
+					FROM {offer2buy}
+				)";
+	$res = db_query($sql);
+	
+	while ($row = db_fetch_object($res))
+	{
+		$sql = "REPLACE INTO {offer2buy}
+				SET `nid`=%d, `allow_offer_views`=1";
+		db_query($sql, $row->nid);
+	}
+	
+	return array(update_sql("SELECT 'all items entered into {offer2buy}'"));
+}
+
 function offer2buy_uninstall()
 {
 	$sql = array(

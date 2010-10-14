@@ -28,6 +28,10 @@
 	margin-left: 10px;
 }
 
+.collection_list_item_summary .fb_share_container {
+	margin-left: 5px;
+}
+
 .fb_ff_message {
 	margin-bottom: 10px;
 }

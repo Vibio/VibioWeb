@@ -156,7 +156,7 @@ function collection_preprocess_collection_list_item_preview(&$vars)
 	
 	if ($vars['item']->users_uid == $user->uid && module_exists("fb"))
 	{
-		$vars['item']->fb_share = theme("fb_share", $vars['item']->nid);
+		$vars['item']->fb_share = theme("fb_share", $vars['item']->nid, "node", "icon");
 	}
 	
 	if (!$vars['item']->for_sale && $vars['item']->users_uid == $user->uid)

@@ -287,7 +287,7 @@ function collection_get_sidebar($uid, $ignore_cid=0, $max_collections=4, $as_uid
 	while ($c = db_fetch_object($res))
 	{
 		$c->items = collection_get_sidebar_items($c->cid, $uid, $as_uid);
-		$c->image = collection_get_image($cid);
+		$c->image = collection_get_image($c->cid);
 		$collections[] = $c;
 	}
 	

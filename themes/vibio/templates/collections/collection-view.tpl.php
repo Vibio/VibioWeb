@@ -4,7 +4,7 @@
 }
 </style>
 <?php
-$sidebar_header = t("My Collections");
+$sidebar_header = t("!user Collections", array("!user" => $collection_owner_name));
 $collections_link = l(t("View Complete List"), "user/{$collection_owner}/inventory");
 
 echo "

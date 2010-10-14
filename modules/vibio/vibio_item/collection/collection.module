@@ -93,6 +93,8 @@ function collection_theme(&$existing)
 
 function collection_preprocess_collection_view_collection(&$vars)
 {
+	global $user;
+	
 	$collection_html = "";
 	foreach ($vars['collection_sidebar'] as $c)
 	{
@@ -106,6 +108,16 @@ function collection_preprocess_collection_view_collection(&$vars)
 	}
 	
 	$vars['collection_sidebar_output'] = $collection_html;
+	
+	if ($vars['collection_owner'] == $user->uid)
+	{
+		$vars['collection_owner_name'] = t("Your");
+	}
+	else
+	{
+		$owner = user_load($vars['collection_owner']);
+		$vars['collection_owner_name'] = "{$owner->name}'s";
+	}
 }
 
 function collection_preprocess_collection_list_item(&$vars)

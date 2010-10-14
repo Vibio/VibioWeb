@@ -46,6 +46,8 @@ function fb_user_signup()
 	drupal_validate_form("user_register", $form, $state);
 	$success = !form_get_errors();
 	
+	unset($state['values']['']);
+	
 	if (!$success || !($account = user_save("", $state['values'])))
 	{
 		fb_del_cookie();

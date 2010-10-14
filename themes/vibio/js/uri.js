@@ -54,8 +54,13 @@ $(document).ready(function()
 			dataType: "json",
 			success: function(json, stat)
 			{
+				var users = {
+					current: json.users.current,
+					target: json.users.target
+				};
+				
 				vibio_dialog.create(json.html);
-				eval("bind_"+json.callback+"("+rid+", '"+href+"')");
+				eval("bind_"+json.callback+"("+rid+", '"+href+"', users)");
 			},
 			complete: function()
 			{
@@ -66,7 +71,7 @@ $(document).ready(function()
 		return false;
 	});
 	
-	var bind_pending_request = function(rid, href)
+	var bind_pending_request = function(rid, href, users)
 	{
 		var elements = {
 			form: $("#uri-pending-request-action-form"),
@@ -74,11 +79,10 @@ $(document).ready(function()
 			cancel: $("#edit-uri-pending-request-cancel")
 		};
 		
-		
-		bind_callbacks(elements, rid, href);
+		bind_callbacks(elements, rid, href, false, users);
 	}
 	
-	var bind_remove_relationship = function(rid, href)
+	var bind_remove_relationship = function(rid, href, users)
 	{
 		var elements = {
 			form: $("#uri-remove-relationship-form"),
@@ -86,10 +90,10 @@ $(document).ready(function()
 			cancel: $("#edit-uri-remove-relationship-cancel")
 		}
 		
-		bind_callbacks(elements, rid, href);
+		bind_callbacks(elements, rid, href, "remove", users);
 	}
 	
-	var bind_request_relationship = function(rid, href)
+	var bind_request_relationship = function(rid, href, users)
 	{
 		var elements = {
 			form: $("#uri-request-relationship-form"),
@@ -97,17 +101,17 @@ $(document).ready(function()
 			cancel: $("#edit-uri-request-relationship-cancel")
 		};
 		
-		bind_callbacks(elements, rid, href);
+		bind_callbacks(elements, rid, href, "request", users);
 	}
 	
-	var bind_callbacks = function(elements, rid, href)
+	var bind_callbacks = function(elements, rid, href, action_type, users)
 	{
 		elements.form
 			.unbind("submit", callbacks.submit)
 			.bind("submit", callbacks.submit);
 		elements.confirm
 			.unbind("click", callbacks.confirm)
-			.bind("click", {rid: rid, href: href}, callbacks.confirm);
+			.bind("click", {rid: rid, href: href, action: action_type, users: users}, callbacks.confirm);
 		elements.cancel
 			.unbind("click", callbacks.cancel)
 			.bind("click", callbacks.cancel)
@@ -122,8 +126,10 @@ $(document).ready(function()
 		{
 			var rid = e.data.rid;
 			var href = e.data.href;
+			var users = e.data.users;
+			var action = e.data.action ? e.data.action : href.split("/")[href.split("/").length - 1];
+			var message = Drupal.settings.uri.messages[action].replace("!target", "<a href='/user/"+users.target.uid+"'>"+users.target.name+"</a>");
 			
-			busy_indicator.show(rid);
 			vibio_dialog.dialog.dialog("close");
 			
 			$.ajax({
@@ -132,25 +138,11 @@ $(document).ready(function()
 				data: {
 					submit: true,
 					elaboration: $("#edit-uri-pending-elaboration").length ? $("#edit-uri-pending-elaboration").val() : false
-				},
-				dataType: "json",
-				success: function(json, stat)
-				{
-					var message_type = json.saved ? "success" : "error";
-					
-					if (json.saved)
-					{
-						$("#uri_relationship_"+rid).remove();
-					}
-					
-					vibio_utility.set_message(json.message, message_type);
-				},
-				complete: function()
-				{
-					busy_indicator.hide(rid);
 				}
 			});
 			
+			$("#uri_relationship_"+rid).remove();
+			vibio_utility.set_message(message, "success");
 			return false;
 		},
 		cancel: function()

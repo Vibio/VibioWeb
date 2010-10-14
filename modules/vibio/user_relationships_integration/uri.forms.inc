@@ -24,9 +24,25 @@ function uri_pending_request_action($action, $account, $rid)
 	}
 	else
 	{
+		global $user;
+		
+		$relationship = user_relationships_load(array("rid" => $rid), array("include_user_info" => true));
+		$relationship = $relationship[$rid];
+		$target = $relationship->requestee_id == $user->uid ? $relationship->requester : $relationship->requestee;
+		
 		$out = json_encode(array(
 			"html"		=> drupal_get_form("uri_pending_request_action_form", $action, $account, $rid),
 			"callback"	=> "pending_request",
+			"users"		=> array(
+				"target"	=> array(
+					"uid"	=> $target->uid,
+					"name"	=> $target->name,
+				),
+				"current"	=> array(
+					"uid"	=> $user->uid,
+					"name"	=> $user->name,
+				),
+			),
 		));
 	}
 	
@@ -37,7 +53,7 @@ function uri_pending_request_action($action, $account, $rid)
 function uri_pending_request_action_form(&$state, $action, $account, $rid)
 {
 	global $user;
-	$relationship = user_relationships_load(array("rid" => $rid));
+	$relationship = user_relationships_load(array("rid" => $rid), array("include_user_info" => true));
 	$relationship = $relationship[$rid];
 	$viewed_id = $account->uid;
 	
@@ -161,9 +177,26 @@ function uri_remove_relationship($account, $relationship)
 	}
 	else
 	{
+		global $user;
+		
+		$rid = $relationship->rid;
+		$relationship = user_relationships_load(array("rid" => $rid), array("include_user_info" => true));
+		$relationship = $relationship[$rid];
+		$target = $relationship->requestee_id == $user->uid ? $relationship->requester : $relationship->requestee;
+		
 		$out = json_encode(array(
 			"html"		=> drupal_get_form("uri_remove_relationship_form", $account, $relationship),
 			"callback"	=> "remove_relationship",
+			"users"		=> array(
+				"target"	=> array(
+					"uid"	=> $target->uid,
+					"name"	=> $target->name,
+				),
+				"current"	=> array(
+					"uid"	=> $user->uid,
+					"name"	=> $user->name,
+				),
+			),
 		));
 	}
 	
@@ -221,16 +254,28 @@ function uri_remove_relationship_do_submit($account, $relationship)
 }
 
 function uri_request_relationship($requestee, $relationship)
-{
+{	
 	if ($_POST['submit'])
 	{
 		$out = uri_request_relationship_do_submit($requestee, $relationship, $_POST);
 	}
 	else
 	{
+		global $user;
+		
 		$out = json_encode(array(
 			"html"		=> drupal_get_form("uri_request_relationship_form", $requestee, $relationship),
 			"callback"	=> "request_relationship",
+			"users"		=> array(
+				"target"	=> array(
+					"uid"	=> $requestee->uid,
+					"name"	=> $requestee->name,
+				),
+				"current"	=> array(
+					"uid"	=> $user->uid,
+					"name"	=> $user->name,
+				),
+			),
 		));
 	}
 	

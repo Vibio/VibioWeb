@@ -53,7 +53,7 @@
 }
 
 #vibio_dialog form input[type="text"], #vibio_dialog form textarea {
-	max-width: 350px;
+	max-width: 335px;
 	max-height: 60px;
 }
 
@@ -61,4 +61,8 @@
 	margin-left: 163px;
 	font-size: 12px;
 	color: #2B363D;
+}
+
+#vibio_dialog form fieldset > div.description {
+	margin-left: 0;
 }

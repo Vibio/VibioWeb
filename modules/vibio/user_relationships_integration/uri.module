@@ -100,7 +100,18 @@ function uri_preprocess_user_relationships(&$vars)
 
 function uri_preprocess_page(&$vars)
 {
+	$uri_js = array(
+		"uri"	=> array(
+			"messages"	=> array(
+				"approve"	=> t("You are now friends with !target"),
+				"disapprove"=> t("You have ignored a friend request from !target"),
+				"remove"	=> t("You are no longer friends with !target"),
+				"request"	=> t("Friend request sent to !target"),
+			),
+		),
+	);
 	drupal_add_js("themes/vibio/js/uri.js");
+	drupal_add_js($uri_js, "setting");
 	drupal_add_css("themes/vibio/css/uri.css");
 }
 

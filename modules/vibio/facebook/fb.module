@@ -161,7 +161,7 @@ function fb_theme(&$existing, $type, $theme, $path)
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
 		"fb_share"			=> array(
-			"arguments"	=> array("share_id" => false, "share_type" => "node", "button_type" => "icon"),
+			"arguments"	=> array("share_id" => false, "share_type" => "node", "button_type" => "button"),
 			"template"	=> "templates/facebook/share",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),

@@ -543,3 +543,19 @@ h5.menu_header {
 #user-login-form div.form-item#edit-name-wrapper {
 	margin-top: 0;
 }
+
+/* privatemsg */
+img.privatemsg_autocomplete_image {
+	width: 40px;
+	margin: 5px 5px 5px 0;
+}
+
+span.privatemsg_autocomplete_name {
+	position: relative;
+	top: -25px;
+}
+
+.privatemsg-box-fb .left-column .avatar-fb img {
+	max-width: 100px;
+	max-height: 120px;
+}

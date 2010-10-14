@@ -1392,9 +1392,18 @@ function privatemsg_user_name_autocomplete($string) {
     $prefix = count($names) ? implode(", ", $names) .", " : '';
     // 3: Build proper suggestions and print.
     while ($user = db_fetch_object($result)) {
-      $key = module_exists("sameusername") ? $prefix._sameusername_privatemsg_format_username($user).", " : "{$prefix}{$user->name}, ";
-      $display = module_exists("sameusername") ? "<img src='".file_create_url($user->picture)."' /> {$user->name}" : $user->name;
-      $matches[$key] = $display;
+		if (module_exists("sameusername"))
+		{
+			$key = $prefix._sameusername_privatemsg_format_username($user).", ";
+			$picture = $user->picture && file_exists($user->picture) ? file_create_url($user->picture) : "/themes/vibio/images/icons/default_user.png";
+			$display = "<img class='privatemsg_autocomplete_image' src='$picture' /><span class='privatemsg_autocomplete_name'>{$user->name}</span>";
+		}
+		else
+		{
+			$key = "{$prefix}{$user->name}, ";
+			$display = $user->name;
+		}
+		$matches[$key] = $display;
     }
   }
   // convert to object to prevent drupal bug, see http://drupal.org/node/175361

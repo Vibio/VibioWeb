@@ -156,13 +156,14 @@ function collection_edit_submit($form, &$state)
 				SET `title`='%s', `description`='%s', `updated`=%d
 				WHERE `cid`=%d";
 		db_query($sql, $vals['title'], $vals['description'], time(), $vals['cid']);
-		
 		module_invoke_all("collection_update", $user->uid, array($vals['cid']));
+		drupal_set_message(t("!collection has been updated", array("!collection" => l($vals['title'], "collections/{$vals['cid']}"))));
 	}
 	else
 	{
 		module_load_include("inc", "collection");
 		$vals['cid'] = collection_insert($vals);
+		drupal_set_message(t("!collection collection has been created", array("!collection" => l($vals['title'], "collections/{$vals['cid']}"))));
 	}
 	
 	if ($vals['set_default'])
@@ -179,7 +180,6 @@ function collection_edit_submit($form, &$state)
 	
 	$vals['uid'] = $user->uid;
 	module_invoke_all("collection_save", $vals);
-	drupal_set_message(t("The collection \"!name\" has been saved", array("!name" => $vals['title'])));
 	drupal_goto("collections/manage");
 }
 ?>

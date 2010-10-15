@@ -139,6 +139,11 @@ function product_add_to_inventory($product, $quick_add=false)
 			),
 		);
 		
+		if ($product->collection_info && module_exists("collection"))
+		{
+			$state['values']['collection_info']['cid'] = $product->collection_info['cid'];
+		}
+		
 		$state['values'] = array_merge_recursive($state['values'], module_invoke_all("product_inventory_quick_add", $state['values']));
 		drupal_execute($form_id, $state, $node);
 		

@@ -274,6 +274,19 @@ function collection_views_api()
 	);
 }
 
+function collection_form_product_node_form_alter(&$form, &$state)
+{
+	if (module_exists("product") && !product_get_autoadd(false))
+	{
+		return;
+	}
+	
+	if (!$form['#node']->nid) // only on new product nodes
+	{
+		collection_form_vibio_item_node_form_alter(&$form, &$state);
+	}
+}
+
 function collection_form_vibio_item_node_form_alter(&$form, &$state)
 {
 	module_load_include("inc", "collection");
@@ -311,10 +324,10 @@ function collection_product_inventory_quick_add($form_vals)
 	global $user;
 	
 	module_load_include("inc", "collection");
-	
-	if (!$default = collection_get_user_default($user->uid, true))
+
+	if ($form_vals['collection_info']['cid'] || !($default = collection_get_user_default($user->uid, true)))
 	{
-		return false;
+		return array();
 	}
 	
 	return array(

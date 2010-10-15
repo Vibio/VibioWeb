@@ -3,7 +3,7 @@ switch ($offer_type)
 {
 	case "new":
 		$init_text = t("make offer");
-		$init_text = "&nbsp- <a class='offer2buy_init'>$init_text</a>";
+		$init_text = "&nbsp;- <a class='offer2buy_init'>$init_text</a>";
 		break;
 	case "edit":
 		$init_text = t("change offer");

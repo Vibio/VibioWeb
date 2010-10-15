@@ -197,6 +197,32 @@ function collection_nodeapi(&$node, $op, $a3=null, $a4=null)
 	switch ($op)
 	{
 		case "insert":
+			$cids = isset($node->collection_info) ? $node->collection_info['cid'] : false;
+			if ($cids)
+			{
+				$cids = implode(",", $cids);
+				$sql = "SELECT `cid`, `title`
+						FROM {collection}
+						WHERE `cid` IN ($cids)";
+				$res = db_query($sql);
+				
+				$collections = array();
+				while ($row = db_fetch_object($res))
+				{
+					$collections[] = l($row->title, "collections/{$row->cid}");
+				}
+				
+				$t_args = array(
+					"!item" 		=> l($node->title, "node/{$node->nid}"),
+					"!collections"	=> implode(", ", $collections),
+				);
+				
+				$message = count($collections) > 1 ?
+					t("!item has been created and added to the following collections: !collections", $t_args) :
+					t("!item has been created and added to your !collections collection", $t_args);
+				
+				drupal_set_message($message);
+			}
 		case "update":
 			$cids = isset($node->collection_info) ? $node->collection_info['cid'] : collection_get_item_cid($node->nid);
 			unset($node->collection_info);

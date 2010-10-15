@@ -319,4 +319,16 @@ function _vibio_item_search_keys($keys=false)
 	
 	return $search_keys;
 }
+
+function _vibio_item_clear_insert_message()
+{
+	if (!empty($_SESSION['messages']['status']))
+	foreach ($_SESSION['messages']['status'] as $i => $message)
+	{
+		if (preg_match('/vibio item (.*) has been created./i', $message))
+		{
+			unset($_SESSION['messages']['status'][$i]);
+		}
+	}
+}
 ?>

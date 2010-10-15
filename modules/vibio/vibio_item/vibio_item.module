@@ -131,6 +131,8 @@ function vibio_item_preprocess_node(&$vars)
 		}
 		else
 		{
+			_vibio_item_clear_insert_message();
+			
 			$node = $vars['node'];
 			$images = array();
 			if (!empty($node->field_main_image[0]['filepath']))

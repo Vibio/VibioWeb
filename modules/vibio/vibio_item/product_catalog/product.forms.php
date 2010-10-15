@@ -45,13 +45,14 @@ function product_ajax_add_form($state, $product)
 	if (module_exists("collection"))
 	{
 		module_load_include("inc", "collection");
+		$default = collection_get_user_default($user->uid, true);
 		
 		$form['collections'] = array(
 			"#type"			=> "select",
 			"#title"		=> t("Collection(s)"),
 			"#multiple"		=> true,
 			"#options"		=> collection_options(),
-			"#default_value"=> collection_get_user_default($user->uid, true),
+			"#default_value"=> $default,
 		);
 	}
 	

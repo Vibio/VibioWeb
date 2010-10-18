@@ -1,0 +1,10 @@
+; $Id$
+name = Tweet
+description = Builds links to post pages to Twitter and Twitter API sites.
+core = 6.x
+; Information added by drupal.org packaging script on 2010-07-04
+version = "6.x-4.0"
+core = "6.x"
+project = "tweet"
+datestamp = "1278273908"
+

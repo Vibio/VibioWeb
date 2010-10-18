@@ -33,7 +33,7 @@ echo "
 			</a>
 			<span class='collection_item_count'>$total_items</span>
 			<span class='manage_collection_link'>$manage_link</span>
-			{$collection->fb_share}
+			{$collection->share_html}
 			<div class='clear'></div>
 			<p>{$collection->collection_description}</p>
 			{$collection->collection_categories}

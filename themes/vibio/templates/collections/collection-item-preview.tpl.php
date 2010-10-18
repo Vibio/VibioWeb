@@ -13,7 +13,7 @@ echo "
 		</a>
 		<span class='item_updated'>$updated</span>
 		<span class='item_price'>{$item->offer2buy_price}</span>
-		{$item->fb_share}
+		{$share_links}
 	</div>
 ";
 ?>

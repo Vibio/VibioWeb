@@ -1,0 +1,6 @@
+name="Tweet Assist"
+description="Modify some of the functionality provided by the Tweet module, like change the text on outgoing tweets"
+package="Vibio"
+core="6.x"
+dependencies[] = tweet
+dependencies[] = vibio_item

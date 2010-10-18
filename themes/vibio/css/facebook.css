@@ -54,3 +54,8 @@
 	text-align: center;
 	margin-top: 10px;
 }
+
+.product_image .fb_share_container {
+	float: none;
+	margin: 0;
+}

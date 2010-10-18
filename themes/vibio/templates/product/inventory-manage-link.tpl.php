@@ -18,9 +18,14 @@ if (!$is_product_page)
 	$manage_link .= l(t("View product"), "node/{$product->nid}");
 }
 
-if (!$is_product_page && $item_id && $product->item->uid == $user->uid && module_exists("fb")) // loooking at your own item
+$show_share_links = !$is_product_page && $item_id && $product->item->uid == $user->uid; // loooking at your own item on an item page
+if ($show_share_links && module_exists("fb"))
 {
-	$manage_link .= "<br />".theme("fb_share", $item_id, "node", "button")."<div class='clear'></div>";
+	$manage_link .= theme("fb_share", $item_id, "node", "button");
+}
+if ($show_share_links && module_exists("tweetassist"))
+{
+	$manage_link .= theme("tweetassist_tweet", "node", $item_id);
 }
 
 echo $manage_link;

@@ -1,16 +1,6 @@
 <?php
 global $user;
-
-$extra_columns = array();
-if ($user->uid == $view->args[0])
-{
-	module_load_include("inc", "fb");
-	$share[] = "fb_share";
-}
-else
-{
-	$u = user_load($view->args[0]);
-}
+$share = $user->uid == $view->args[0];
 
 $display_args = array(
 	"!start"	=> $view->pager['items_per_page']*$view->pager['current_page'] + 1,
@@ -32,7 +22,7 @@ echo t("Viewing !start - !end of !total", $display_args);
 		</th>
 	  <?php endforeach; ?>
 	  <?php
-	  if (!empty($share))
+	  if ($share)
 	  {
 		$share_text = t("Share");
 		echo "<th>$share_text</th>";
@@ -49,12 +39,17 @@ echo t("Viewing !start - !end of !total", $display_args);
 		  </td>
 		<?php endforeach; ?>
 		<?php
-		if (!empty($share))
+		if ($share)
 		{
 			echo "<td>";
-			foreach  ($share as $theme)
+			if (module_exists("fb"))
 			{
-				echo theme($theme, $view->result[$count]->nid);
+				module_load_include("inc", "fb");
+				echo theme("fb_share", $view->result[$count]->nid);
+			}
+			if (module_exists("tweetassist"))
+			{
+				echo theme("tweetassist_tweet", "node", $view->result[$count]->nid);
 			}
 			echo "</td>";
 		}

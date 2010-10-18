@@ -133,10 +133,17 @@ function collection_preprocess_collection_list_item(&$vars)
 	$vars['collection']->image = collection_get_image($vars['collection']->cid, false, $vars['access']);
 	$vars['collection']->total_items = collection_get_num_items($vars['collection']->cid, $vars['access']);
 	
+	$share_html = "";
 	if ($vars['collection']->is_owner && module_exists("fb"))
 	{
-		$vars['collection']->fb_share = theme("fb_share", $vars['collection']->cid, "collection");
+		$share_html .= theme("fb_share", $vars['collection']->cid, "collection");
 	}
+	if ($vars['collection']->is_owner && module_exists("tweetassist"))
+	{
+		$share_html .= theme("tweetassist_tweet", "collection", $vars['collection']->cid);
+	}
+	
+	$vars['collection']->share_html = $share_html;
 	
 	$categories = collection_get_categories($vars['collection']->cid);
 	if (!empty($categories))
@@ -154,10 +161,18 @@ function collection_preprocess_collection_list_item_preview(&$vars)
 	$vars['item']->for_sale = $vars['item']->node_data_field_posting_type_field_posting_type_value == VIBIO_ITEM_TYPE_SELL;
 	$vars['item']->node_title = strlen($vars['item']->node_title) > COLLECTION_ITEM_PREVIEW_MAX_TITLE_LENGTH ? substr($vars['item']->node_title, 0, COLLECTION_ITEM_PREVIEW_MAX_TITLE_LENGTH)."..." : $vars['item']->node_title;
 	
-	if ($vars['item']->users_uid == $user->uid && module_exists("fb"))
+	$show_share_links = $vars['item']->users_uid == $user->uid;
+	$share_html = "";
+	if ($show_share_links && module_exists("fb"))
 	{
-		$vars['item']->fb_share = theme("fb_share", $vars['item']->nid, "node", "icon");
+		$share_html .= theme("fb_share", $vars['item']->nid, "node", "icon");
 	}
+	if ($show_share_links && module_exists("tweetassist"))
+	{
+		$share_html .= theme("tweetassist_tweet", "node", $vars['item']->nid);
+	}
+	
+	$vars['share_links'] = $share_html ? $share_html : "";
 	
 	if (!$vars['item']->for_sale && $vars['item']->users_uid == $user->uid)
 	{

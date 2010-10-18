@@ -28,7 +28,7 @@ function reports_new_users($since=0)
 			WHERE `created` >= %d";
 	$new = db_result(db_query($sql, $since));
 	
-	reports_log("new users", $new);
+	reports_log("new users", $new, "manual signup");
 	
 	if ($employee_role = variable_get("reports_employee_role", false))
 	{
@@ -41,7 +41,7 @@ function reports_new_users($since=0)
 						WHERE `rid`=%d
 					)";
 		$total = db_result(db_query($sql, $since, $employee_role));
-		reports_log("new users noemployee", $total);
+		reports_log("new users noemployee", $total, "manual signup");
 	}
 }
 
@@ -50,6 +50,7 @@ function reports_add_js($name, $data)
 	drupal_add_js(drupal_get_path("module", "reports")."/js/flot/jquery.flot.js");
 	drupal_add_js(drupal_get_path("module", "reports")."/js/reports.js");
 	
+	$name = str_replace(" noemployee", "", $name);
 	$callback = "reports_add_js_".str_replace(" ", "_", $name);
 	
 	if (function_exists($callback))
@@ -114,33 +115,26 @@ function reports_default_js($name, $data)
 	
 	$flot = array(
 		"flot"	=> array(
-			"data"		=> array(
-				array(
-					"label"	=> $name,
-				),
-			),
 			"merge_defaults"=> true,
 			"is_pie"		=> false,
 		),
 	);
 	
+	$mods = array();
 	foreach ($data as $point)
 	{
-		$flot['flot']['data'][0]['data'][] = array(
+		if (!in_array($point->mod, $mods))
+		{
+			$mods[] = $point->mod;
+		}
+		
+		$key = array_search($point->mod, $mods);
+		$flot['flot']['data'][$key]['data'][] = array(
 			$point->tstamp,
 			$point->value,
 		);
+		$flot['flot']['data'][$key]['label'] = $point->mod;
 	}
-	
-	/*$flot['flot']['data'][0]['data'][] = array(
-		$point->tstamp + REPORT_RUN_INTERVAL*1000,
-		$point->value + 750,
-	);
-	
-	$flot['flot']['data'][0]['data'][] = array(
-		$point->tstamp + REPORT_RUN_INTERVAL*1000*2,
-		$point->value + 200,
-	);*/
 	
 	drupal_add_js($flot, "setting");
 }
@@ -157,6 +151,7 @@ function reports_log($name, $val, $mod="")
 
 function reports_report_selector(&$state, $name, $from, $to, $collapsed=true)
 {
+	$report_name = str_replace(" noemployee", "", $name);
 	$from = $from ? $from : time() - REPORT_DEFAULT_START;
 	$to = $to ? $to : time();
 	
@@ -174,6 +169,7 @@ function reports_report_selector(&$state, $name, $from, $to, $collapsed=true)
 	$db = db_set_active("reports");
 	$sql = "SELECT DISTINCT(`name`)
 			FROM {reports}
+			WHERE `name` NOT LIKE '%%noemployee'
 			ORDER BY `name`";
 	$res = db_query($sql);
 	db_set_active($db);
@@ -194,7 +190,7 @@ function reports_report_selector(&$state, $name, $from, $to, $collapsed=true)
 				"#type"			=> "select",
 				"#title"		=> t("Name"),
 				"#options"		=> $report_options,
-				"#default_value"=> $name,
+				"#default_value"=> $report_name,
 			),
 			"report_start"	=> array(
 				"#type"			=> "date",

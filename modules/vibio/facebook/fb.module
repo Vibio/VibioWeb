@@ -54,7 +54,7 @@ function fb_user($op, &$edit, &$u, $category=null)
 			if ($edit['fb_id'])
 			{
 				module_load_include("inc", "fb");
-				fb_save_user($u, $edit['fb_id']);
+				fb_save_user($u, $edit['fb_id'], true);
 				$edit['fb_id'] = null;
 			}
 			break;
@@ -358,5 +358,31 @@ function fb_external_account_display($uid, $fb_data, &$user_fb_data, $is_admin)
 	));
 	
 	return false;
+}
+
+function fb_reports_daily_cron($last_run)
+{
+	$sql = "SELECT COUNT(*)
+			FROM {fb_users}
+			WHERE `is_signup`=%d
+				AND `time` >= %d";
+	$new = db_result(db_query($sql, 1, $last_run));
+	
+	reports_log("new users", $new, "fb signup");
+	
+	if ($emp_role = variable_get("reports_employee_role", false))
+	{
+		$sql = "SELECT COUNT(*)
+				FROM {fb_users}
+				WHERE `is_signup`=%d
+					AND `time` >= %d
+					AND `uid` NOT IN (
+						SELECT `uid`
+						FROM {users_roles}
+						WHERE `rid`=%d
+					)";
+		$total = db_result(db_query($sql, 1, $last_run, $emp_role));
+		reports_log("new users noemployee", $new, "fb signup");
+	}
 }
 ?>

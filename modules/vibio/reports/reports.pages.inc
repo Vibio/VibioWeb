@@ -55,7 +55,8 @@ function reports_overview()
 }
 
 function reports_view_report($name)
-{	
+{
+	$name = $_GET['hide_employees'] ? $name." noemployee" : $name;
 	$from = $_GET['from'] ? $_GET['from'] : false;
 	$to = $_GET['to'] ? $_GET['to'] : false;
 	$start = date("M j, Y", $from);
@@ -65,7 +66,7 @@ function reports_view_report($name)
 	drupal_set_title("Report: $name from $start to $end");
 	
 	$select_form = drupal_get_form("reports_report_selector", $name, $from, $to);
-	$report = reports_load($name, $from, $to, $_GET['hide_employees']);
+	$report = reports_load($name, $from, $to);
 	
 	if (empty($report))
 	{

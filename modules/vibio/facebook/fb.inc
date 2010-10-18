@@ -140,15 +140,15 @@ function fb_graph_error($fb_return)
 	return $fb_return;
 }
 
-function fb_save_user(&$u, $fb_uid)
+function fb_save_user(&$u, $fb_uid, $signup_save=false)
 {
 	$sql = "DELETE FROM {fb_users}
 			WHERE `uid`=%d";
 	db_query($sql, $u->uid);
 	
 	$sql = "REPLACE INTO {fb_users}
-			SET `uid`=%d, `fb_id`=%d, `time`=%d";
-	db_query($sql, $u->uid, $fb_uid, time());
+			SET `uid`=%d, `fb_id`=%d, `time`=%d, `is_signup`=%d";
+	db_query($sql, $u->uid, $fb_uid, $signup_save ? $u->created : time(), $signup_save);
 	
 	module_invoke_all("fb_link_account", $u);
 }

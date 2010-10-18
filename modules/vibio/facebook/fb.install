@@ -4,22 +4,29 @@ function fb_schema()
 	return array(
 		"fb_users"	=> array(
 			"fields"	=> array(
-				"uid"	=> array(
+				"uid"		=> array(
 					"type"		=> "int",
 					"unsigned"	=> true,
 					"not null"	=> true,
 					"default"	=> 0,
 				),
-				"fb_id"	=> array(
+				"fb_id"		=> array(
 					"type"		=> "int",
 					"size"		=> "big",
 					"unsigned"	=> true,
 					"not null"	=> true,
 					"default"	=> 0,
 				),
-				"time"	=> array(
+				"time"		=> array(
 					"type"		=> "int",
 					"unsigned"	=> true,
+					"not null"	=> true,
+					"default"	=> 0,
+				),
+				"is_signup"	=> array(
+					"type"		=> "int",
+					"unsigned"	=> true,
+					"size"		=> "tiny",
 					"not null"	=> true,
 					"default"	=> 0,
 				),
@@ -30,6 +37,19 @@ function fb_schema()
 			"primary key"	=> array("fb_id"),
 		),
 	);
+}
+
+function fb_update_1()
+{
+	db_add_field($update, "fb_users", "is_signup", array(
+		"type"		=> "int",
+		"unsigned"	=> true,
+		"size"		=> "tiny",
+		"not null"	=> true,
+		"default"	=> 0,
+	));
+	
+	return $update;
 }
 
 function fb_install()

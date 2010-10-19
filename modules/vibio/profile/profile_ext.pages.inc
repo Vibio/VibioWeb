@@ -97,4 +97,112 @@ function profile_ext_dashboard($selected_tab=false)
 	
 	return theme("profile_ext_dashboard", $tabs, $steps);
 }
+
+function profile_ext_change_picture($u)
+{
+	exit(drupal_get_form("profile_ext_edit_picture", $u));
+}
+
+function profile_ext_edit_picture(&$state, $u)
+{
+	$current = $u->picture ? theme("user_picture", $u) : "";
+	
+	$form = array(
+		"#prefix"		=> $current,
+		"#attributes"	=> array(
+			"enctype"	=> "multipart/form-data",
+		),
+		"_account"	=> array(
+			"#type"	=> "value",
+			"#value"=> $u,
+		),
+	);
+	
+	if ($u->picture)
+	{
+		$form['picture_delete'] = array(
+			"#type"			=> "checkbox",
+			"#title"		=> t("Delete Picture"),
+			"#description"	=> t('Check this box to delete your current picture.'),
+		);
+	}
+	else
+	{
+		$form['picture_delete'] = array("#type"	=> "hidden");
+	}
+	
+	$form['picture_upload'] = array(
+		"#type"			=> "file",
+		"#title"		=> t("Upload Picture"),
+		"#description"	=> t('Your virtual face or picture. Maximum dimensions are %dimensions and the maximum size is %size kB.', array('%dimensions' => variable_get('user_picture_dimensions', '85x85'), '%size' => variable_get('user_picture_file_size', '30'))) .' '. variable_get('user_picture_guidelines', ''),
+	);
+	
+	$form['submit'] = array(
+		"#type"	=> "submit",
+		"#value"=> t("Save"),
+	);
+	
+	return $form;
+}
+
+//modified user_validate_picture
+function profile_ext_edit_picture_validate(&$form, &$state)
+{
+	$vals = $state['values'];
+	$u = $vals['_account'];
+	
+	$validators = array(
+		'file_validate_is_image' => array(),
+		'file_validate_image_resolution' => array(variable_get('user_picture_dimensions', '85x85')),
+		'file_validate_size' => array(variable_get('user_picture_file_size', '30') * 1024),
+	);
+	
+	if ($file = file_save_upload("picture_upload", $validators))
+	{
+		if (isset($u->picture) && file_exists($u->picture))
+		{
+			file_delete($u->picture);
+		}
+		
+		$info = image_get_info($file->filepath);
+		$destination = variable_get('user_picture_path', 'pictures')."/picture-{$u->uid}.{$info['extension']}";
+		
+		if (file_copy($file, $destination, FILE_EXISTS_REPLACE))
+		{
+			$state['values']['picture'] = $file->filepath;
+		}
+		else
+		{
+			form_set_error('picture_upload', t("Failed to upload the picture image; the %directory directory doesn't exist or is not writable.", array('%directory' => variable_get('user_picture_path', 'pictures'))));
+		}
+	}
+}
+
+function profile_ext_edit_picture_submit(&$form, &$state)
+{
+	$vals = $state['values'];
+	$u = $vals['_account'];
+	
+	if (!empty($vals['picture_delete']))
+	{
+		if ($u->picture && file_exists($u->picture))
+		{
+			file_delete($u->picture);
+		}
+		
+		$picture = "";
+	}
+	else
+	{
+		$picture = $vals['picture'];
+	}
+	
+	$sql = "UPDATE {users}
+			SET `picture`='%s'
+			WHERE `uid`=%d";
+	db_query($sql, $picture, $u->uid);
+	
+	drupal_set_message(t("Your picture has been saved"));
+	drupal_goto("user/{$u->uid}");
+}
 ?>

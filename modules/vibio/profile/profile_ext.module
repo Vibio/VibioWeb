@@ -18,6 +18,16 @@ function profile_ext_menu()
 		"type"				=> MENU_SUGGESTED_ITEM,
 	);
 	
+	$menu['profile/%user/change-picture'] = array(
+		"title"				=> "Change Picture",
+		"page callback"		=> "profile_ext_change_picture",
+		"page arguments"	=> array(1),
+		"access callback"	=> "profile_ext_access_edit_picture",
+		"access arguments"	=> array(1),
+		"file"				=> "profile_ext.pages.inc",
+		"type"				=> MENU_CALLBACK,
+	);
+	
 	foreach (module_invoke_all("profile_ext_menuitems") as $href => $title_callback)
 	{
 		$menu["my-dashboard/{$href}"] = array(
@@ -347,5 +357,11 @@ function _profile_ext_format_string($string, $for_url=false)
 {
 	$replacement = $for_url ? "-" : "_";
 	return str_replace(array(" ", "-", "+", "_"), $replacement, strtolower($string));
+}
+
+function profile_ext_access_edit_picture($u)
+{
+	global $user;
+	return $u->uid == $user->uid || user_access("administer users");
 }
 ?>

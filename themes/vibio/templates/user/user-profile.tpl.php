@@ -4,7 +4,13 @@ $u = $profile['user'];
 
 if ($user->uid == $u->uid || user_access("administer users"))
 {
+	$text = t("Edit");
 	$account_edit_link = theme("profile_ext_edit_link", "user/{$u->uid}/edit");
+	$picture_edit_link = "
+		<div id='profile_change_picture' class='profile_edit_link'>
+			<a href='/profile/{$u->uid}/change-picture'>$text</a>
+		</div>
+	";
 }
 
 if ($user->uid && $user->uid != $u->uid && module_exists("privatemsg"))
@@ -46,7 +52,8 @@ if (!$u->picture)
 	</div>
 </div>
 
-<div id="profile_picture_container">
+<div id="profile_picture_container" class="profile_editable">
+	<?php echo $picture_edit_link; ?>
 	<div id="profile_picture" class='profile_picture_display'>
 		<?php echo $profile['user_picture']; ?>
 	</div>

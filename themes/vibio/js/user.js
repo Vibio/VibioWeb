@@ -21,6 +21,21 @@ $(document).ready(function()
 			$(this).find(".profile_edit_link").fadeOut(200);
 		}
 	);
+	
+	$("#profile_change_picture a").click(function()
+	{
+		vibio_utility.dialog_busy();
+		
+		$.ajax({
+			url: $(this).attr("href"),
+			success: function(html, stat)
+			{
+				vibio_utility.dialog_unbusy(html);
+			}
+		});
+		
+		return false;
+	});
 
 	if (Drupal.settings.profile_settings.default_tab != false)
 	{

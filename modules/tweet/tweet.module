@@ -188,6 +188,10 @@ function _tweet_to_twitter($site = 'Twitter', $type = '', $format = '', $nid = '
       $teaser = $node->teaser;
     }
   }
+  elseif (!empty($nid))
+  {
+	$q = $nid;
+  }
   $url = $q;
   if (module_exists('shorten')) {
     $url = shorten_url($q);

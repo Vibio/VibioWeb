@@ -645,14 +645,17 @@ function offer2buy_offer_accept_form(&$state, $uid, $nid)
 			"#value"=> $nid,
 		),
 		"submit"	=> array(
-			"#type"	=> "submit",
-			"#value"=> t("Accept Offer"),
+			"#type"			=> "submit",
+			"#value"		=> t("Accept Offer"),
+			"#attributes"	=> array(
+				"class"	=> "offer2buy_accept_init",
+			),
 		),
 		"reject"	=> array(
 			"#type"			=> "submit",
 			"#value"		=> t("Reject Offer"),
 			"#attributes"	=> array(
-				"class"	=> "reject_offer_{$uid}_{$nid}",
+				"class"	=> "reject_offer_{$uid}_{$nid} offer2buy_reject_init",
 			),
 		),
 		"#submit"	=> array(

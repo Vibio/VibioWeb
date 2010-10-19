@@ -10,12 +10,12 @@ $(document).ready(function()
 		return confirm("are you sure you want to cancel this transaction?");
 	});
 	
-	$(".offer2buy_offer_accept_form #edit-submit").live("click", function()
+	$(".offer2buy_offer_accept_form .offer2buy_accept_init").live("click", function()
 	{
 		return confirm("Accepting an offer will cancel all pending transactions for that item. Are you sure you want to accept this offer?")
 	});
 	
-	$(".offer2buy_offer_accept_form #edit-reject").live("click", function()
+	$(".offer2buy_offer_accept_form .offer2buy_reject_init").live("click", function()
 	{
 		var classes = $(this).attr("class").split(/\s+/);
 		var uid = false;

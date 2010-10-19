@@ -44,7 +44,7 @@ function amazon_search_search($op = 'search', $keys = NULL, $skip_access_check =
 function amazon_search_simple_search($keywords = '', $parameters = array()) {
   global $pager_page_array, $pager_total, $external_product_pager_element;
   $external_product_pager_element = is_array($pager_page_array) && !empty($pager_page_array) ? 1 : 0;
-  $current_page = $pager_page_array[$external_product_pager_element];
+  $current_page = isset($pager_page_array[$external_product_pager_element]) ? $pager_page_array[$external_product_pager_element] : $_GET['page'];
   
   $parameters += array(
     'ResponseGroup' => 'Large',

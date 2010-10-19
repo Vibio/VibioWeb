@@ -216,3 +216,25 @@
 	z-index: 10;
 	border: 1px solid #E2E6E9
 }
+
+#profile_ext_change_picture_form_container {
+	float: left;
+	width: 350px;
+}
+
+#profile_ext_change_picture_form_container .description {
+	clear: left;
+	margin-left: 47px !important;
+}
+
+#profile_ext_change_picture_form_container .form-submit {
+	float: right;
+}
+
+#vibio_dialog .picture {
+	float: left;
+}
+
+#vibio_dialog .picture img {
+	max-width: 150px;
+}

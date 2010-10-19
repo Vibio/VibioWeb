@@ -106,9 +106,12 @@ function profile_ext_change_picture($u)
 function profile_ext_edit_picture(&$state, $u)
 {
 	$current = $u->picture ? theme("user_picture", $u) : "";
+	$prefix = $u->picture ? "$current<div id='profile_ext_change_picture_form_container'>" : "";
+	$suffix = $u->picture ? "</div><div class='clear'></div>" : "";
 	
 	$form = array(
-		"#prefix"		=> $current,
+		"#prefix"		=> $prefix,
+		"#suffix"		=> $suffix,
 		"#attributes"	=> array(
 			"enctype"	=> "multipart/form-data",
 		),
@@ -134,6 +137,7 @@ function profile_ext_edit_picture(&$state, $u)
 	$form['picture_upload'] = array(
 		"#type"			=> "file",
 		"#title"		=> t("Upload Picture"),
+		"#size"			=> $u->picture ? $form['picture_upload']['#size'] = 15 : 40,
 		"#description"	=> t('Your virtual face or picture. Maximum dimensions are %dimensions and the maximum size is %size kB.', array('%dimensions' => variable_get('user_picture_dimensions', '85x85'), '%size' => variable_get('user_picture_file_size', '30'))) .' '. variable_get('user_picture_guidelines', ''),
 	);
 	

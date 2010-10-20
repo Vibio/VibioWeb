@@ -330,7 +330,7 @@ function product_preprocess_search_results(&$vars)
 		
 		$is_external = product_set_external_search();
 		
-		if (!$is_external && (count($vars['results']) < PRODUCT_SEARCH_RESULTS_PER_PAGE || $_GET['page'] == $pager_total[0] - 1))
+		if (!$is_external && variable_get("product_append_external", false) && (count($vars['results']) < PRODUCT_SEARCH_RESULTS_PER_PAGE || $_GET['page'] == $pager_total[0] - 1))
 		{
 			product_set_external_search_page_offset($pager_total[0] - 1);
 			$external_results = product_external_search(_vibio_item_search_keys());

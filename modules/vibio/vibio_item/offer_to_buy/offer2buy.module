@@ -689,6 +689,18 @@ function offer2buy_offer_accept_form_submit($form, &$state)
 	
 	module_invoke_all("offerbuy_accept_offer", $node, $offerer, $owner, $offer);
 	_offer2buy_init_actions($node->nid, $offerer->uid, $owner->uid);
+	
+	if (module_exists("profile_ext"))
+	{
+		$message = t("You've accepted !buyer's offer on !item. Now you need to arrange payment with them. !message", array(
+			"!buyer"	=> l($offerer->name, "user/{$offerer->uid}"),
+			"!item"		=> l($node->title, "node/{$node->nid}"),
+			"!message"	=> l(t("Send !user a message", array("!user" => $offerer->name)), "messages/new/{$offerer->uid}"),
+		));
+		
+		drupal_set_message($message);
+		drupal_goto("my-dashboard/actions");
+	}
 }
 
 function offer2buy_offer_reject_form(&$state, $uid, $nid)

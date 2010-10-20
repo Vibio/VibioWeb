@@ -356,9 +356,10 @@ function product_preprocess_search_results(&$vars)
 
 function product_preprocess_search_result(&$vars)
 {
-	if ($vars['type'] == "vibio_item" && !product_user_owns_product($vars['result']['node']->nid))
+	if ($vars['type'] == "vibio_item")
 	{
-		$vars['search_links'] .= theme("product_inventory_add", $vars['result']['node']->nid);
+		$item_nid = product_user_owns_product($vars['result']['node']->nid);
+		$vars['search_links'] .= $item_nid ? l(t("You Own This!"), "node/{$item_nid}") : theme("product_inventory_add", $vars['result']['node']->nid);
 	}
 }
 

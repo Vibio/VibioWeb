@@ -33,4 +33,23 @@ $(document).ready(function()
 	{
 		vibio_dialog.create($(this).siblings(".offer2buy_offer_view_popup").html());
 	});
+	
+	$("#offer2buy-offer-form").livequery("submit", function()
+	{
+		var offer = $(this).find("#edit-offer");
+		var offer_val = offer.val();
+		var replaced_offer = parseFloat(offer_val.replace(/([^\d\.]+)/g, ""));
+		
+		if (isNaN(replaced_offer))
+		{
+			alert(Drupal.t("Invalid offer amount"));
+			offer.focus();
+			return false;
+		}
+		
+		offer.val(replaced_offer);
+		vibio_utility.dialog_busy();
+		
+		return true;
+	});
 });

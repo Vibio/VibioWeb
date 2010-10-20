@@ -145,8 +145,7 @@ function vibio_amazon_product_source()
 
 function vibio_amazon_product_search($args)
 {
-	$items = amazon_search_search("search", $args['keywords'], true);
-	return $items;
+	return amazon_search_search("search", $args['keywords'], true);
 }
 
 function _vibio_amazon_search_result($item)

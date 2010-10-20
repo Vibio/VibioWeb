@@ -164,4 +164,31 @@ function product_images($node, $get_main=false)
 	
 	return $images;
 }
+
+function product_set_external_search($val=-1)
+{
+	static $is_external_search = false;
+	
+	if ($val != -1)
+	{
+		$is_external_search = $val;
+	}
+	
+	return $is_external_search;
+}
+
+function product_set_external_search_page_offset($offset=-1)
+{
+	if (!isset($_SESSION['product']['search_page_offset']))
+	{
+		$_SESSION['product']['search_page_offset'] = 0;
+	}
+	
+	if ($offset != -1)
+	{
+		$_SESSION['product']['search_page_offset'] = $offset;
+	}
+	
+	return $_SESSION['product']['search_page_offset'];
+}
 ?>

@@ -1,4 +1,6 @@
 <?php
+define("PRODUCT_SEARCH_RESULTS_PER_PAGE", 10);
+
 function product_perm()
 {
 	return array(
@@ -81,7 +83,9 @@ function product_external_search($args)
 		$args = array("keywords"	=> $args);
 	}
 	
+	module_load_include("inc", "product");
 	drupal_add_js("themes/vibio/js/product.js");
+	product_set_external_search(true);
 	
 	$func = "{$provider}_product_search";
 	$args['keywords'] = _product_remove_options($args['keywords']);
@@ -303,6 +307,8 @@ function product_preprocess_box(&$vars)
 	{
 		if (!$_GET['external_product_search'])
 		{
+			module_load_include("inc", "product");
+			product_set_external_search_page_offset(0);
 			drupal_goto(substr(urldecode(request_uri()), 1), "external_product_search=1");
 		}
 		else
@@ -316,30 +322,34 @@ function product_preprocess_search_results(&$vars)
 {
 	if ($vars['type'] == "vibio_item")
 	{
-		static $external_products_searched = false;
+		global $pager_page_array, $pager_total;
 		
+		module_load_include("inc", "product");
 		drupal_add_css("themes/vibio/css/product.css");
 		drupal_add_js("themes/vibio/js/product.js");
 		
-		if (!$external_products_searched)
-		{
-			$vars['search_footer'] = theme("product_add_product_link");
-		}
+		$is_external = product_set_external_search();
 		
-		if (!$external_products_searched && !$_GET['external_product_search'] && variable_get("product_append_external", false) && variable_get("product_local_search", false))
-		{	
-			$external_products_searched = true;
-			$external_header = t("Amazon Results");
-			$results = theme("search_results", product_external_search(_vibio_item_search_keys()), "vibio_item");
-			$vars['external_products'] = "
-				<h4>$external_header</h4>
-				$results
-			";
-		}
-		elseif ($external_products_searched)
+		if (!$is_external && (count($vars['results']) < PRODUCT_SEARCH_RESULTS_PER_PAGE || $_GET['page'] == $pager_total[0] - 1))
 		{
-			global $external_product_pager_element;
-			$vars['pager'] = theme("pager", array(), 10, $external_product_pager_element);
+			product_set_external_search_page_offset($pager_total[0] - 1);
+			$external_results = product_external_search(_vibio_item_search_keys());
+			
+			$vars['other_results'] = "";
+			if (!empty($external_results))
+			{	
+				foreach ($external_results as $result)
+				{
+					$vars['other_results'] .= theme("search_result", $result, "vibio_item");
+				}
+				
+				$vars['pager'] = theme("pager");
+			}
+			
+			if ($_GET['page'] > product_set_external_search_page_offset())
+			{
+				$vars['search_results'] = "";
+			}
 		}
 	}
 }

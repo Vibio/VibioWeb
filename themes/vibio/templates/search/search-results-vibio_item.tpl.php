@@ -4,15 +4,10 @@ echo $pager;
 echo "
 	<table class='search-results $type'>
 		$search_results
+		$other_results
 	</table>
 ";
 
 echo $pager;
-
-if ($external_products)
-{
-	echo $external_products;
-}
-
-echo $search_footer;
+echo theme("product_add_product_link");
 ?>

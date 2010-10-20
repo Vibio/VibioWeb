@@ -140,6 +140,31 @@ function phptemplate_node_preview($node)
 	";
 }
 
+function vibio_status_messages($display=null)
+{
+	$out = "";
+	
+	foreach (drupal_get_messages($display) as $type => $messages)
+	{
+		$message_out = "";
+		
+		foreach ($messages as $m)
+		{
+			$message_out = "<li>$m</li>";
+		}
+		
+		$out .= "
+			<div class='messages $type'>
+				<ul>
+					$message_out
+				</ul>
+			</div>
+		";
+	}
+	
+	return $out;
+}
+
 /*function vibio_fieldset($ele)
 {
 	if (!empty($ele['#collapsible']))

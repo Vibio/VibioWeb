@@ -142,7 +142,7 @@ $(document).ready(function()
 			});
 			
 			$("#uri_relationship_"+rid).remove();
-			vibio_utility.set_message(message, "success");
+			vibio_utility.set_message(message, "status");
 			return false;
 		},
 		cancel: function()

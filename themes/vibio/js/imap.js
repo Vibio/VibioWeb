@@ -29,7 +29,7 @@ $(document).ready(function()
 					profile_actions.remove_notification(form);
 				}
 				
-				vibio_utility.set_message(json.message, json.saved ? "success" : "error");
+				vibio_utility.set_message(json.message, json.saved ? "status" : "error");
 			},
 			complete: function()
 			{
@@ -132,7 +132,7 @@ $(document).ready(function()
 						profile_actions.remove_notification(form);
 					}
 					
-					vibio_utility.set_message(json.message, json.saved ? "success" : "error");
+					vibio_utility.set_message(json.message, json.saved ? "status" : "error");
 				},
 				complete: function()
 				{

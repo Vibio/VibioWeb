@@ -99,13 +99,11 @@ var vibio_utility = {
 
 $(document).ready(function()
 {
-	var messages_container = $("#js_messages_container").length ? $("#js_messages_container") : $("<div id='js_messages_container'></div>").prependTo("#content-area");
-	
-	vibio_utility.set_message = function(message, type, clear_type, clear_all)
+	vibio_utility.set_message = function(message, type)
 	{
 		if (typeof type == "undefined")
 		{
-			type = "success";
+			type = "status";
 		}
 		if (typeof clear_type == "undefined")
 		{
@@ -116,17 +114,10 @@ $(document).ready(function()
 			clear_all = false;
 		}
 		
-		if (clear_type)
-		{
-			messages_container.find(".js_message_"+type).remove();
-		}
+		var message_div = $("div.messages."+type).length ? $("div.messages."+type) : $("<div class='messages "+type+"'></div>").prependTo("#content");
+		var message_list = message_div.find("ul").length ? message_div.find("ul") : $("<ul></ul>").prependTo(message_div);
 		
-		if (clear_all)
-		{
-			messages_container.html("");
-		}
-		
-		messages_container.append("<div class='js_message_"+type+"'>"+message+"</div>");
+		message_list.append("<li>"+message+"</li>");
 	}
 	
 	$("a[href^='/node/']").removeClass("item_link").addClass("item_link");

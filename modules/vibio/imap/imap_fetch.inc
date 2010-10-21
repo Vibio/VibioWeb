@@ -72,14 +72,15 @@ function imap_fetch_get_attachments()
 
 function imap_fetch_save_image($uid, $mbox, $message_num, $message_part, &$attachment)
 {
-	if (!($file_dir = variable_get("imap_files", false)))
+	if (!($file_dir = variable_get("imap_files", false)) || (!$attachment->ifparameters && !$attachment->ifdparameters))
 	{
 		return false;
 	}
 	
 	$time = time();
+	$obj_property = $attachment->ifparameters ? "parameters" : "dparameters";
 	$image = imap_base64(imap_fetchbody($mbox, $message_num, $message_part));
-	$filename = "{$uid}_{$time}_{$attachment->parameters[0]->value}";
+	$filename = "{$uid}_{$time}_{$attachment->$obj_property->value}";
 	$filepath = "$file_dir/$filename";
 	
 	file_put_contents($filepath, $image);

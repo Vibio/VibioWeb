@@ -25,6 +25,10 @@
 	width: 500px;
 }
 
+.inventory_add {
+	font-weight: bold;
+}
+
 .inventory_add_pinfo {
 	margin: 0;
 	color: #8E9E30;

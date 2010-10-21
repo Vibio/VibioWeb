@@ -58,6 +58,14 @@ function vibio_preprocess_page(&$vars, $hook)
 	$vars['styles'] = $css;
 }
 
+function vibio_preprocess_comment(&$vars)
+{
+	if (empty($vars['picture']))
+	{
+		$vars['picture'] = theme('user_picture', $vars['comment']);
+	}
+}
+
 function phptemplate_user_relationships_pending_request_approve_link($uid, $rid)
 {
 	return l(

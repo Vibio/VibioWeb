@@ -170,7 +170,7 @@ function collection_set_user_default($uid, $cid)
 function collection_get_image($cid, $absolute=false, $access=false)
 {
 	if (!$access)
-		$access =PRIVACY_ONLYME;
+		$access = PRIVACY_ONLYME;
 		
 	$sql = "SELECT n.`nid`
 			FROM {node} n JOIN {collection_items} ci JOIN {privacy_settings} p

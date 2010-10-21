@@ -176,3 +176,68 @@
 	max-height: 25px;
 	max-width: 50px;
 }
+
+#block-collection-random_collection {
+	margin-top: 15px;
+	font-family: 'Trebuchet MS', Verdana, Tahoma, 'DejaVu Sans', sans-serif !important;
+}
+
+#block-collection-random_collection .content > div {
+	margin-bottom: 2px;
+	background: #2f3942;
+	padding: 5px 10px;
+	line-height: 15px;
+	text-align: center;
+}
+
+#block-collection-random_collection .collection_image {
+	float: none;
+	margin: 0;
+	width: auto;
+}
+
+#block-collection-random_collection .collection_image img {
+	border: 1px solid black;
+}
+
+#block-collection-random_collection .collection_owner a, #block-collection-random_collection .collection_title a {
+	color: #33cadf;
+	font-weight: bold;
+}
+
+#block-collection-random_collection .collection_title a, #block-collection-random_collection .collection_link a {
+	color: #a3be3d;
+}
+
+#block-collection-random_collection .collection_link a {
+	font-size: 12px;
+}
+
+#block-collection-random_collection .collection_item_count,  #block-collection-random_collection .collection_description {
+	font-size: 12px;
+	color: #859cae;
+	margin-top: 2px;
+}
+
+#block-collection-random_collection .collection_categories,
+#block-collection-random_collection .collection_description,
+#block-collection-random_collection .collection_date_added,
+#block-collection-random_collection .collection_link {
+	text-align: left;
+}
+
+#block-collection-random_collection .collection_description {
+	margin-top: 10px;
+	font-size: 13px;
+}
+
+#block-collection-random_collection .collection_categories {
+	font-size: 11px;
+	color: #a2a7ab;
+}
+
+#block-collection-random_collection .collection_date_added {
+	color: #859cae;
+	font-size: 12px;
+	margin-top: 10px;
+}

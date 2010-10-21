@@ -60,6 +60,32 @@ function collection_menu()
 	);
 }
 
+function collection_block($op="list", $delta=0, $edit=array())
+{
+	switch ($op)
+	{
+		case "list":
+			return array(
+				"random_collection"	=> array(
+					"info"	=> t("Random Collection"),
+					"cache"	=> BLOCK_NO_CACHE,
+				),
+			);
+		case "view":
+			switch ($delta)
+			{
+				case "random_collection":
+					global $user;
+					module_load_include("inc", "collection", "collection.pages");
+					
+					return array(
+						"subject"	=> "",
+						"content"	=> collection_random_collection($user),
+					);
+			}
+	}
+}
+
 function collection_theme(&$existing)
 {
 	return array(
@@ -86,6 +112,11 @@ function collection_theme(&$existing)
 		"collection_sidebar_collection"	=> array(
 			"arguments"	=> array("collection" => array(), "item_html" => ""),
 			"template"	=> "templates/collections/sidebar-collection",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"collection_random_collection"	=> array(
+			"arguments"	=> array("collection" => false),
+			"template"	=> "templates/collections/random-collection",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
 	);
@@ -452,8 +483,8 @@ function collection_load($cid)
 		return false;
 	}
 	
-	$sql = "SELECT *
-			FROM {collection}
+	$sql = "SELECT c.*, u.name AS user_name
+			FROM {collection} c JOIN {users} u ON c.`uid`=u.`uid`
 			WHERE `cid`=%d";
 	$collection = db_fetch_array(db_query($sql, $cid));
 	$collection = array_merge($collection, module_invoke_all("collection_load", $collection, $as_uid));

@@ -1,4 +1,6 @@
 <?php
+define("COLLECTION_RANDOM_COLLECTION_DESCRIPTION_MAXLENGTH", 64);
+
 function collection_view_all_user_items($uid)
 {
 	$sql = "SELECT `name`
@@ -181,5 +183,51 @@ function collection_edit_submit($form, &$state)
 	$vals['uid'] = $user->uid;
 	module_invoke_all("collection_save", $vals);
 	drupal_goto("collections/manage");
+}
+
+function collection_random_collection($u)
+{
+	if (module_exists("network") && ($friends = _network_get_friends($u->uid, 1)) && !empty($friends))
+	{
+		$friend_ids = implode(",", $friends);
+		$sql = "SELECT `cid`
+				FROM {collection} c JOIN {privacy_settings} p
+					ON c.`cid`=p.`type_id`
+						AND c.`uid`=p.`uid`
+				WHERE c.`uid` IN ($friend_ids)
+					AND p.`type`='collection'
+					AND p.`setting` <= %d
+				ORDER BY RAND()";
+		$access = PRIVACY_CONNECTION;
+	}
+	else
+	{
+		$sql = "SELECT `cid`
+				FROM {collection} c JOIN {privacy_settings} p
+					ON c.`cid`=p.`type_id`
+						AND c.`uid`=p.`uid`
+				WHERE p.`type`='collection'
+					AND p.`setting` <= %d
+				ORDER BY RAND()";
+		$access = PRIVACY_PUBLIC;
+	}
+	
+	if (!($cid = db_result(db_query($sql, $access))))
+	{
+		return "";
+	}
+	
+	module_load_include("inc", "collection");
+	
+	$collection = (object) collection_load($cid);
+	$collection->tags = implode(", ", collection_get_categories($collection->cid));
+	$collection->description = strlen($collection->description) > COLLECTION_RANDOM_COLLECTION_DESCRIPTION_MAXLENGTH ?
+		substr($collection->description, 0, COLLECTION_RANDOM_COLLECTION_DESCRIPTION_MAXLENGTH)."..." : $collection->description;
+	$collection->user = l($collection->user_name, "user/{$collection->uid}");
+	$collection->title = l($collection->title, "collections/{$collection->cid}");
+	$collection->image = collection_get_image($collection->cid, false, $access);
+	$collection->num_items = collection_get_num_items($collection->cid, $access);
+	
+	return theme("collection_random_collection", $collection);
 }
 ?>

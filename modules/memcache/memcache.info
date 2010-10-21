@@ -3,9 +3,9 @@ name = Memcache
 description = High performance integration with memcache.
 package = Caching
 
-; Information added by drupal.org packaging script on 2010-09-29
-version = "6.x-1.6"
+; Information added by drupal.org packaging script on 2010-10-18
+version = "6.x-1.7"
 core = "6.x"
 project = "memcache"
-datestamp = "1285775162"
+datestamp = "1287442584"
 

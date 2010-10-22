@@ -559,3 +559,22 @@ span.privatemsg_autocomplete_name {
 	max-width: 100px;
 	max-height: 120px;
 }
+
+/* ebay search results */
+.ebay_search_item {
+	margin-bottom: 10px;
+}
+
+.ebay_image {
+	float: left;
+	margin-right: 10px;
+}
+
+.ebay_image img {
+	max-height: 40px;
+}
+
+.ebay_info {
+	float: left;
+	width: 400px;
+}

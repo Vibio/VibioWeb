@@ -208,6 +208,7 @@ div.form-radios td.form-item-label, div.form-checkboxes td.form-item-label {
 	display: none;
 }
 
+/* registration form */
 #user-register div.form-item label {
 	float: left;
 	text-align: right;
@@ -217,4 +218,22 @@ div.form-radios td.form-item-label, div.form-checkboxes td.form-item-label {
 
 #user-register div.form-item div.description {
 	margin-left: 160px;
+}
+
+#user-register span.password-result {
+	padding-left: 125px;
+	background-repeat: no-repeat;
+	background-position: 0 4px;
+}
+
+#user-register span.password-result.error {
+	background-image: url(/themes/vibio/images/progress/progressbar_low.png);
+}
+
+#user-register span.password-result.warning {
+	background-image: url(/themes/vibio/images/progress/progressbar_medium.png);
+}
+
+#user-register span.password-result.ok {
+	background-image: url(/themes/vibio/images/progress/progressbar_high.png);
 }

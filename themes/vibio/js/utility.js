@@ -152,4 +152,9 @@ $(document).ready(function()
 	$("#user-login-form")
 		.find("div.item-list:eq(0)")
 			.addClass("login_form_separator");
+	
+	setTimeout(function()
+	{
+		$("#user-register").find("div.password-description").remove();
+	}, 200);
 });

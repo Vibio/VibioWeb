@@ -19,6 +19,14 @@ function overrides_theme()
 	);
 }
 
+function overrides_form_alter($form, &$state, $id)
+{
+	if ($id == "user_register")
+	{
+		drupal_set_title(t("Create A New Account"));
+	}
+}
+
 function overrides_form_user_login_block_alter(&$form, &$state)
 {
 	$title = t("Returning user?");

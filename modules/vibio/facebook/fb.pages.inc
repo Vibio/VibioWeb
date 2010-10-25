@@ -92,6 +92,60 @@ function fb_user_link_account()
 	drupal_goto($_GET['destination']);
 }
 
+function fb_user_link_account_ajax()
+{
+	global $user;
+	
+	if (!$user->uid)
+	{
+		drupal_json(array("status" => "error", "message" => t("You must be logged in to link an account")));
+		exit();
+	}
+	
+	module_load_include("inc", "fb");
+	if (!($fb_user = fb_get_user(fb_get_cookie())))
+	{
+		drupal_json(array("status" => "error", "message" => t("Uh Ohs.")));
+		exit();
+	}
+	
+	$sql = "SELECT `uid`, `name`
+			FROM {users} 
+			WHERE `uid` IN (
+				SELECT `uid`
+				FROM {fb_users}
+				WHERE `fb_id`=%d
+			)";
+	if ($u = db_fetch_object(db_query($sql, $fb_user->id)))
+	{
+		drupal_json(array(
+			"status"	=> "error",
+			"message"	=> t("That Facebook account is already linked to the Vibio account !account. Please remove the account from !account's account before continuing.", array("!account" => $u->name)),
+		));
+	}
+	
+	fb_save_user($user, $fb_user->id);
+	drupal_json(array(
+		"status"	=> "status",
+		"message"	=> t("Your Facebook account has been linked to Vibio! Now you can share your items and collections to your Facebook wall. You can also find friends faster and easier"),
+		"fb_uid"	=> $fb_user->id,
+	));
+}
+
+function fb_ff_ajax()
+{
+	global $user;
+	
+	$content = "";
+	if (module_exists("network"))
+	{
+		module_load_include("inc", "network", "network.pages");
+		$content = network_find_friends($u->uid, false, "fb");
+	}
+	
+	exit($content);
+}
+
 function fb_user_remove_account()
 {
 	global $user;

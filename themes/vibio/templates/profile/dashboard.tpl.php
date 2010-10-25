@@ -51,3 +51,7 @@ echo $action_html;
 	</div>
 	<?php echo $tab_content; ?>
 </div>
+
+<?php
+echo $newuser_tutorial;
+?>

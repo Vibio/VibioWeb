@@ -1,3 +1,5 @@
+fb_ajax_actions = {};
+
 $(document).ready(function()
 {
 	if (typeof FB == "undefinged")
@@ -27,6 +29,22 @@ $(document).ready(function()
 			if (res.session)
 			{
 				window.location = "/facebook/link-account?destination="+window.location.pathname.substring(1);
+			}
+		},
+		"link_ajax": function(res)
+		{
+			if (res.session)
+			{
+				$.ajax({
+					url: "/facebook/link-account-ajax",
+					dataType: "json",
+					success: function(json, stat)
+					{
+						fb_settings.fb_uid = json.fb_uid;
+						vibio_utility.set_message(json.message, json.status);
+						vibio_utility.invoke(fb_ajax_actions.ajax_link);
+					}
+				});
 			}
 		},
 		"refresh": function(res)
@@ -84,7 +102,8 @@ $(document).ready(function()
 	
 	$(".fb_link_account").live("click", function()
 	{
-		FB.login(fb_login_callbacks.link, { perms: fb_settings.perms });
+		var callback = $(this).hasClass("fb_link_account_ajax") ? "link_ajax" : "link";
+		FB.login(fb_login_callbacks[callback], { perms: fb_settings.perms });
 		return false;
 	});
 	

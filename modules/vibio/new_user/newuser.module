@@ -1,0 +1,71 @@
+<?php
+function newuser_user($op, &$edit, &$account, $category=null)
+{
+	switch ($op)
+	{
+		case "insert":
+			$sql = "INSERT INTO {newuser_user_stage}
+					SET `stage`=%d, `uid`=%d";
+			db_query($sql, 0, $account->uid);
+			break;
+		case "load":
+			$sql = "SELECT `stage`
+					FROM {newuser_user_stage}
+					WHERE `uid`=%d";
+			$account->newuser_stage = db_result(db_query($sql, $account->uid));
+			break;
+	}
+}
+
+function newuser_theme()
+{
+	return array(
+		"newuser_tutorial"			=> array(
+			"arguments"	=> array("stage_html" => ""),
+			"template"	=> "templates/new_user/tutorial",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"newuser_tutorial_stage"	=> array(
+			"arguments"	=> array("stage" => false),
+			"template"	=> "templates/new_user/stage",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+	);
+}
+
+function newuser_preprocess_profile_ext_dashboard(&$vars)
+{
+	global $user;
+	
+	$stages = module_invoke_all("newuser_tutorial", $user);
+	
+	if (empty($stages) || $user->newuser_stage >= count($stages))
+	{
+		return;
+	}
+	
+	usort($stages, function($a, $b)
+	{
+		return $a['stage'] <= $b['stage'] ? -1 : 1;
+	});
+	
+	drupal_add_css("themes/vibio/css/newuser.css");
+	drupal_add_js("themes/vibio/js/newuser.js");
+	drupal_add_js(array(
+		"newuser" => array(
+			"current_stage"	=> $user->newuser_stage,
+			"stages"		=> $stages,
+		)
+	), "setting");
+	
+	$stage_html = "";
+	$header_html = "";
+	foreach ($stages as $stage)
+	{
+		$stage_html .= theme("newuser_tutorial_stage", $stage);
+		$header_html .= theme("newuser_tutorial_stage_header", $stage);
+	}
+	
+	$vars['newuser_tutorial'] = theme("newuser_tutorial", $stage_html);
+}
+?>

@@ -1,0 +1,11 @@
+#newuser_tutorial_container {
+	display: none;
+}
+
+#newuser_tutorial .fb_link {
+	float: none;
+}
+
+h5.unavailable {
+	color: grey;
+}

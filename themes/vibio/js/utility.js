@@ -94,6 +94,21 @@ var vibio_utility = {
 	{
 		vibio_dialog.dialog.dialog("close");
 		vibio_dialog.create(content);
+	},
+	invoke: function(funcs)
+	{
+		if (typeof funcs == "undefined")
+		{
+			return;
+		}
+		
+		$.each(funcs, function(i, func)
+		{
+			if (typeof func == "function")
+			{
+				func();
+			}
+		});
 	}
 };
 

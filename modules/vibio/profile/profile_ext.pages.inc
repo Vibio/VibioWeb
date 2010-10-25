@@ -76,7 +76,7 @@ function profile_ext_dashboard($selected_tab=false)
 	module_load_include("inc", "profile_ext");
 	
 	$tabs = array(t("Activity Feed") => views_embed_view("user_hb_incoming_activity"));
-	$steps = profile_ext_initial_steps($user);
+	$steps = module_exists("newuser") ? array() : profile_ext_initial_steps($user);
 
 	profile_ext_get_dashboard_notifications($user->uid, $tabs);
 	

@@ -31,6 +31,18 @@ function fb_menu()
 			"file"				=> "fb.pages.inc",
 			"type"				=> MENU_CALLBACK,
 		),
+		"facebook/link-account-ajax"	=> array(
+			"page callback"		=> "fb_user_link_account_ajax",
+			"access arguments"	=> array("fb user"),
+			"file"				=> "fb.pages.inc",
+			"type"				=> MENU_CALLBACK,
+		),
+		"facebook/ff_ajax"		=> array(
+			"page callback"		=> "fb_ff_ajax",
+			"file"				=> "fb.pages.inc",
+			"access arguments"	=> array("fb user"),
+			"type"				=> MENU_CALLBACK,
+		),
 		"facebook/remove-account"	=> array(
 			"page callback"		=> "fb_user_remove_account",
 			"access arguments"	=> array("fb user"),
@@ -384,5 +396,45 @@ function fb_reports_daily_cron($last_run)
 		$total = db_result(db_query($sql, 1, $last_run, $emp_role));
 		reports_log("new users noemployee", $new, "fb signup");
 	}
+}
+
+function fb_newuser_tutorial($u)
+{
+	$stage_number = 1;
+	$fb_id = fb_user_has_fb($u->uid);
+	$link_account_href = (object) array(
+		"url"	=> url("fb/add-account"),
+		"class" => "fb_link_account fb_link_account_ajax",
+	);
+	
+	$link_account = (object) array(
+		"header"	=> t("Link your Facebook account to see who is already using Vibio"),
+		"available"	=> true,
+		"complete"	=> $fb_id,
+		"content"	=> $fb_id ? "" : theme("fb_ff_message", "", $link_account_href),
+	);
+	
+	$add_friends = (object) array(
+		"header"	=> t("These friends are already using Vibio!"),
+		"available"	=> $fb_id,
+		"complete"	=> false,
+		"content"	=> "",
+	);
+	
+	if ($u->newuser_stage <= $stage_number && $fb_id && module_exists("network"))
+	{
+		module_load_include("inc", "network", "network.pages");
+		$add_friends->content = network_find_friends($u->uid, false, "fb");
+	}
+	
+	return array(array(
+		"stage"			=> $stage_number,
+		"header"		=> t("Find Friends"),
+		"content_header"=> t("Find your Facebook friends"),
+		"steps"			=> array(
+			$link_account,
+			$add_friends,
+		),
+	));
 }
 ?>

@@ -31,7 +31,7 @@ img.uri_edit_busy_indicator {
 }
 
 .potential_friend .picture img {
-	max-width: 40px;
+	max-width: 40px !important;
 }
 
 .potential_friend .potential_friend_summary {

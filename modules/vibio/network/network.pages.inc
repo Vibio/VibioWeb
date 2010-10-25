@@ -1,5 +1,5 @@
 <?php
-function network_find_friends($uid=false)
+function network_find_friends($uid=false, $ajax=true, $specific_modules=false)
 {
 	if (!$uid)
 	{
@@ -15,10 +15,27 @@ function network_find_friends($uid=false)
 	$potential_friends = array();
 	$errors = array();
 	$existing_friends = _network_get_friends($uid, 1);
-	foreach (module_implements("network_find_friends") as $module)
+	
+	if (empty($specific_modules))
 	{
-		$func = "{$module}_network_find_friends";
-		$func($uid, $potential_friends, $existing_friends, $errors);
+		foreach (module_implements("network_find_friends") as $module)
+		{
+			$func = "{$module}_network_find_friends";
+			$func($uid, $potential_friends, $existing_friends, $errors);
+		}
+	}
+	else
+	{
+		if (!is_array($specific_modules))
+		{
+			$specific_modules = array($specific_modules);
+		}
+		
+		foreach ($specific_modules as $module)
+		{
+			$func = "{$module}_network_find_friends";
+			$func($uid, $potential_friends, $existing_friends, $errors);
+		}
 	}
 	
 	$out = "";
@@ -48,9 +65,16 @@ function network_find_friends($uid=false)
 		$out .= theme("network_potential_friend", $friend, $picture, $actions);
 	}
 
-	$header = empty($potential_friends) ? t("No friends found") : t("You've got friends already on Vibio!");
-	$out = "<h4>$header</h4>$out";
+	$header = empty($potential_friends) ? t("No friends found") : $specific_modules ? "" : t("You've got friends already on Vibio!");
+	$out = $header ? "<h4>$header</h4>$out" : $out;
 	
-	exit(theme("network_potential_friends", $out));
+	$out = theme("network_potential_friends", $out);
+	
+	if ($ajax)
+	{
+		exit($out);
+	}
+	
+	return $out;
 }
 ?>

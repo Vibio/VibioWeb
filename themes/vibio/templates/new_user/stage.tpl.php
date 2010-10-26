@@ -1,7 +1,7 @@
 <?php
 $stage_html = "
 	<div id='tutorial_stage_{$stage['stage']}' class='tutorial_stage'>
-		<h3>{$stage['content_header']}</h4>
+		<h3 class='tutorial_stage_title'>{$stage['content_header']}</h4>
 ";
 foreach ($stage['steps'] as $i => $step)
 {

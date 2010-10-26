@@ -8,6 +8,8 @@ var vibio_dialog = {
 			this.init();
 		}
 		
+		content = "<div class='vibio_dialog_content'><div class='vibio_dialog_close_button vibio_dialog_close_link'><img src='/themes/vibio/images/close_button_dialog.png' /></div>"+content+"</div>";
+		
 		this.dialog
 			.html(content)
 			.dialog("open");
@@ -29,7 +31,7 @@ var vibio_dialog = {
 			width: 550,
 			open: function()
 			{
-				$(".ui-dialog-titlebar span.ui-icon").html("<img src='/themes/vibio/images/close_button.png' />");
+				vibio_dialog.center();
 			}
 		};
 	},
@@ -37,6 +39,12 @@ var vibio_dialog = {
 	{
 		options = $.extend({}, options, { position: "center" });
 		this.dialog.dialog("option", options);
+		this.center();
+	},
+	center: function()
+	{
+		var current_offset = parseInt(this.dialog.closest(".ui-dialog").css("left"));
+		this.dialog.closest(".ui-dialog").css("left", current_offset + 95 + "px");
 	}
 };
 
@@ -45,7 +53,6 @@ $(document).ready(function()
 	$(".vibio_dialog_close_link").live("click", function()
 	{
 		vibio_dialog.dialog.dialog("close");
-		
 		return false;
 	});
 });

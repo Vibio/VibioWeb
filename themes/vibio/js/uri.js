@@ -71,6 +71,49 @@ $(document).ready(function()
 		return false;
 	});
 	
+	$("a.uri_quick_request").live("click", function()
+	{
+		var rid = $(this).closest("tr").attr("id").split("uri_relationship_")[1];
+		var href = $(this).attr("href");
+
+		if (!rid)
+		{
+			var href_args = href.split("/");
+			rid = href_args[href_args.length - 2];
+			$(this).closest("tr").attr("id", "uri_relationship_"+rid);
+		}
+		
+		busy_indicator.show(rid);
+		
+		$.ajax({
+			url: href,
+			dataType: "json",
+			success: function(json, stat)
+			{
+				var users = {
+					current: json.users.current,
+					target: json.users.target
+				};
+				
+				callbacks.confirm({
+					data: {
+						rid: rid,
+						href: href,
+						users: users,
+						action: "request",
+						keep_dialog_open: true
+					}
+				});
+			},
+			complete: function()
+			{
+				busy_indicator.hide(rid);
+			}
+		});
+		
+		return false;
+	});
+	
 	var bind_pending_request = function(rid, href, users)
 	{
 		var elements = {
@@ -130,14 +173,17 @@ $(document).ready(function()
 			var action = e.data.action ? e.data.action : href.split("/")[href.split("/").length - 1];
 			var message = Drupal.settings.uri.messages[action].replace("!target", "<a href='/user/"+users.target.uid+"'>"+users.target.name+"</a>");
 			
-			vibio_dialog.dialog.dialog("close");
+			if (!e.data.keep_dialog_open)
+			{
+				vibio_dialog.dialog.dialog("close");
+			}
 			
 			$.ajax({
 				url: href,
 				type: "post",
 				data: {
 					submit: true,
-					elaboration: $("#edit-uri-pending-elaboration").length ? $("#edit-uri-pending-elaboration").val() : false
+					elaboration: $("#edit-uri-pending-elaboration").length ? $("#edit-uri-pending-elaboration").val() : ""
 				}
 			});
 			

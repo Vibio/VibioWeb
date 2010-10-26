@@ -35,6 +35,7 @@ $(document).ready(function()
 				{
 					content_div.html(html);
 					vibio_dialog.set_options({ position: "center" });
+					newuser_change_friend_links();
 				}
 			})
 		}
@@ -45,5 +46,15 @@ $(document).ready(function()
 		maxHeight: 50,
 		width: 650,
 		position: "center"
-	})
+	});
+	
+	var newuser_change_friend_links = function()
+	{
+		$("#newuser_tutorial")
+			.find(".uri_popup_link")
+				.removeClass("uri_popup_link")
+				.addClass("uri_quick_request");
+	}
+	
+	newuser_change_friend_links();
 });

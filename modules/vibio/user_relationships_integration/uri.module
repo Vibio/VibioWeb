@@ -104,6 +104,7 @@ function uri_preprocess_page(&$vars)
 		"uri"	=> array(
 			"messages"	=> array(
 				"approve"	=> t("You are now friends with !target"),
+				"cancel"	=> t("You have cancelled the friend request to !target"),
 				"disapprove"=> t("You have ignored a friend request from !target"),
 				"remove"	=> t("You are no longer friends with !target"),
 				"request"	=> t("Friend request sent to !target"),

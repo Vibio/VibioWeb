@@ -85,6 +85,14 @@
 	color: #2B363D;
 }
 
+#vibio_dialog form input[type="file"] {
+	width: 170px;
+}
+
+#vibio_dialog #edit-picture-delete-wrapper label {
+	margin-left: 8px;
+}
+
 #vibio_dialog form fieldset > div.description {
 	margin-left: 0;
 }

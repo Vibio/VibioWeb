@@ -25,6 +25,11 @@ function vibio_item_theme(&$existing)
 			"template"	=> "templates/vibio_item/additional-images",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+		"vibio_item_price_image"		=> array(
+			"arguments"	=> array("item" => false, "image_type" => "full"),
+			"template"	=> "templates/vibio_item/price-image",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
 	);
 }
 
@@ -153,6 +158,21 @@ function vibio_item_preprocess_node(&$vars)
 			$images = array_merge($extra_images, $images);
 			$vars['item_extra_images'] = theme("vibio_item_images", $images);
 		}
+	}
+}
+
+function vibio_item_preprocess_vibio_item_price_image(&$vars)
+{
+	if (!$vars['item'])
+	{
+		$item = new stdClass;
+		$item->field_posting_type[0]['value'] = VIBIO_ITEM_TYPE_OWN;
+		$vars['item'] = $item;
+	}
+	elseif (!$vars['item']->field_posting_type)
+	{
+		$vars['item']->field_posting_type[0]['value'] = $vars['item']->node_data_field_posting_type_field_posting_type_value ?
+			$vars['item']->node_data_field_posting_type_field_posting_type_value : VIBIO_ITEM_TYPE_OWN;
 	}
 }
 

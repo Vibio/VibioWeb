@@ -150,3 +150,31 @@ table.search-results.vibio_item td {
   vertical-align: top;
   padding-bottom: 10px;
 }
+
+/* pricetag */
+.item_pricetag {
+	text-align: left;
+	position: absolute;
+	opacity: 0.75;
+	filter: alpha(opacity=75) !important;
+}
+
+.item_pricetag_left {
+	background: transparent url(/themes/vibio/images/item/pricetag_left.png) no-repeat 0 0;
+	height: 26px;
+	width: 25px;
+	float: left;
+}
+
+.item_pricetag_right {
+	background: transparent url(/themes/vibio/images/item/pricetag_right.png) no-repeat right 0;
+	height: 26px;
+	float: left;
+}
+
+.item_pricetag_price {
+	margin: 0 5px 0 2px;
+	font-weight: bold;
+	position: relative;
+	top: 2px;
+}

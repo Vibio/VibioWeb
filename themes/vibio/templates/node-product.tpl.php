@@ -77,11 +77,16 @@ if ($page)
 else
 {
 	$extra_data = "";
+	if ($node->item)
+	{
+		$price_image = theme("vibio_item_price_image", $node->item);
+	}
 }
 
 echo "
 	$searchcrumb
 	<div class='product_image'>
+		$price_image
 		$image<br />
 		$manage_link
 	</div>

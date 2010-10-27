@@ -148,6 +148,17 @@ function vibio_amazon_product_search($args)
 	return amazon_search_search("search", $args['keywords'], true);
 }
 
+function vibio_amazon_product_search_modify_search_query(&$sql)
+{
+	$sql .= "
+		n.`nid` NOT IN (
+			SELECT ain.`nid`
+			FROM {amazon_item_node} ain
+			WHERE ain.`nid`=n.`nid`
+		)
+	";
+}
+
 function _vibio_amazon_search_result($item)
 {
 	$sql = "SELECT `nid`

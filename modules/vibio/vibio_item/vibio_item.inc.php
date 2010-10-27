@@ -152,6 +152,11 @@ function _vibio_item_search($keys)
 		$where1 .= " AND n.`uid` IN ($uids)";
 	}
 	
+	if (module_exists("product") && variable_get("product_append_external", false))
+	{
+		product_external_search_modify_search_query($where1);
+	}
+	
 	// When all search factors are disabled (ie they have a weight of zero), 
 	// the default score is based only on keyword relevance and there is no need to 
 	// adjust the score of each item. 

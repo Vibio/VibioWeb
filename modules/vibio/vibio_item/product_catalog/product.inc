@@ -165,11 +165,11 @@ function product_images($node, $get_main=false)
 	return $images;
 }
 
-function product_set_external_search($val=-1)
+function product_set_external_search($val=false, $set=false)
 {
 	static $is_external_search = false;
 	
-	if ($val != -1)
+	if ($set)
 	{
 		$is_external_search = $val;
 	}

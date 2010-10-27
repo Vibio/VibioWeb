@@ -1,4 +1,5 @@
 <?php
+$next_stage_text = $is_last_stage ? t("Finish") : t("Next");
 $stage_html = "
 	<div id='tutorial_stage_{$stage['stage']}' class='tutorial_stage'>
 		<h3 class='tutorial_stage_title'>{$stage['content_header']}</h4>
@@ -22,7 +23,14 @@ foreach ($stage['steps'] as $i => $step)
 	";
 }
 
-$stage_html .= "</div>";
+$stage_html .= "
+		<div class='tutorial_next_stage'>
+			<a href='#' class='tutorial_init_next_stage'>
+				$next_stage_text
+			</a>
+		</div>
+	</div>
+";
 
 echo $stage_html;
 ?>

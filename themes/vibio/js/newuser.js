@@ -1,6 +1,6 @@
 $(document).ready(function()
 {
-	var fade_time = 500;
+	var fade_time = 250;
 	
 	fb_ajax_actions.ajax_link = $.extend({}, fb_ajax_actions.ajax_link, {
 		newuser_post_link: function()
@@ -39,6 +39,32 @@ $(document).ready(function()
 				}
 			})
 		}
+	});
+	
+	$("a.tutorial_init_next_stage").live("click", function()
+	{
+		var current_stage = Drupal.settings.newuser.current_stage + 1
+		var next_stage = current_stage + 1;
+		
+		$.ajax({
+			url: "/newuser/set-stage/"+current_stage
+		});
+		
+		if (current_stage == Drupal.settings.newuser.stages.length)
+		{
+			vibio_dialog.dialog.dialog("close");
+			return false;
+		}
+		
+		$("#tutorial_stage_"+current_stage)
+			.fadeOut(fade_time, function()
+			{
+				$("#tutorial_stage_"+next_stage).fadeIn(fade_time);
+			});
+			
+		++Drupal.settings.newuser.current_stage;
+		
+		return false;
 	});
 	
 	vibio_dialog.create($("#newuser_tutorial_container").remove().html());

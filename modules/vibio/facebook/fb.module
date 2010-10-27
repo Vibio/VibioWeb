@@ -398,9 +398,17 @@ function fb_reports_daily_cron($last_run)
 	}
 }
 
-function fb_newuser_tutorial($u)
+function fb_newuser_tutorial($u, $user_stage)
 {
 	$stage_number = 1;
+	
+	if ($user_stage >= $stage_number)
+	{
+		return array(array(
+			"stage" => 1,
+		));
+	}
+	
 	$fb_id = fb_user_has_fb($u->uid);
 	$link_account_href = (object) array(
 		"url"	=> url("fb/add-account"),
@@ -421,7 +429,7 @@ function fb_newuser_tutorial($u)
 		"content"	=> "",
 	);
 	
-	if ($u->newuser_stage <= $stage_number && $fb_id && module_exists("network"))
+	if ($fb_id && module_exists("network"))
 	{
 		module_load_include("inc", "network", "network.pages");
 		$add_friends->content = network_find_friends($u->uid, false, "fb");

@@ -405,10 +405,11 @@ function fb_newuser_tutorial($u, $user_stage)
 	if ($user_stage >= $stage_number)
 	{
 		return array(array(
-			"stage" => 1,
+			"stage" => $stage_number,
 		));
 	}
 	
+	module_load_include("inc", "fb");
 	$fb_id = fb_user_has_fb($u->uid);
 	$link_account_href = (object) array(
 		"url"	=> url("fb/add-account"),

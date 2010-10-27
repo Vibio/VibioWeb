@@ -18,6 +18,10 @@ function newuser_user($op, &$edit, &$account, $category=null)
 		case "insert":
 			newuser_set_stage($account->uid);
 			break;
+		case "delete":
+			$sql = "DELETE FROM {newuser_user_stage}
+					WHERE `uid`=%d";
+			db_query($sql, $account->uid);
 	}
 }
 

@@ -87,8 +87,9 @@ var vibio_utility = {
 		if (vibio_dialog.dialog)
 		{
 			vibio_dialog.dialog.dialog("close");
-		}		
+		}
 		vibio_dialog.create(busy_indicator.html());
+		vibio_dialog.set_options();
 	},
 	dialog_unbusy: function(content)
 	{

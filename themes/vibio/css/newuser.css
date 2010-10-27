@@ -13,3 +13,11 @@ h5.unavailable {
 .tutorial_stage_title {
 	margin-top: 0;
 }
+
+.tutorial_stage {
+	display: none;
+}
+
+#newuser_tutorial > div.tutorial_stage:first-child {
+	display: block;
+}

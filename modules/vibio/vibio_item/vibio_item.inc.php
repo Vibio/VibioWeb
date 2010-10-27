@@ -331,4 +331,33 @@ function _vibio_item_clear_insert_message()
 		}
 	}
 }
+
+function vibio_item_newuser_search($form, $uid, $search_stage)
+{
+	return array(
+		"uid"		=> array(
+			"#type"	=> "value",
+			"#value"=> $uid
+		),
+		"stage"			=> array(
+			"#type"	=> "value",
+			"#value"=> $search_stage,
+		),
+		"item_search"	=> array(
+			"#type"			=> "textfield",
+			"#description"	=> t("Examples: Shrek DVD, bicycle, Converse shoes..."),
+		),
+		"submit"		=> array(
+			"#type"	=> "submit",
+			"#value"=> t("Search"),
+		),
+	);
+}
+
+function vibio_item_newuser_search_submit($form, &$state)
+{
+	$vals = $state['values'];
+	newuser_set_stage($vals['uid'], $vals['stage']);
+	drupal_goto("search/vibio_item/{$vals['item_search']}");
+}
 ?>

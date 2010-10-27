@@ -254,6 +254,35 @@ function vibio_item_profile_ext_public_info($uid)
 	);
 }
 
+function vibio_item_newuser_tutorial($u, $user_stage)
+{
+	$stage_number = 2;
+	
+	if ($user_stage >= $stage_number)
+	{
+		return array(array(
+			"stage" => $stage_number,
+		));
+	}
+	
+	module_load_include("php", "vibio_item", "vibio_item.inc");
+	$form = drupal_get_form("vibio_item_newuser_search", $u->uid, $stage_number);
+	
+	return array(array(
+		"stage"			=> $stage_number,
+		"header"		=> t("Add Items"),
+		"content_header"=> t("Add Items to Your Inventory"),
+		"steps"			=> array(
+			(object) array(
+				"header"	=> "",
+				"available"	=> true,
+				"complete"	=> false,
+				"content"	=> $form,
+			),
+		),
+	));
+}
+
 function vibio_item_views_api()
 {
 	return array(

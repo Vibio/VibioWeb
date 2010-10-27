@@ -122,6 +122,7 @@ function fb_user_link_account_ajax()
 			"status"	=> "error",
 			"message"	=> t("That Facebook account is already linked to the Vibio account !account. Please remove the account from !account's account before continuing.", array("!account" => $u->name)),
 		));
+		exit();
 	}
 	
 	fb_save_user($user, $fb_user->id);

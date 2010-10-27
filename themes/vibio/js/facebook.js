@@ -40,9 +40,17 @@ $(document).ready(function()
 					dataType: "json",
 					success: function(json, stat)
 					{
-						fb_settings.fb_uid = json.fb_uid;
 						vibio_utility.set_message(json.message, json.status);
-						vibio_utility.invoke(fb_ajax_actions.ajax_link);
+						
+						if (json.status != "error")
+						{
+							fb_settings.fb_uid = json.fb_uid;
+							vibio_utility.invoke(fb_ajax_actions.ajax_link);
+						}
+						else
+						{
+							FB.logout();
+						}
 					}
 				});
 			}

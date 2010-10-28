@@ -21,7 +21,9 @@ $(document).ready(function()
 		{
 			if (res.session)
 			{
-				window.location = "/facebook/signup?destination="+window.location.pathname.substring(1);
+				var destination = vibio_utility.get_get_arg("destination");
+				destination = destination ? destination : window.location.pathname.substring(1);
+				window.location = "/facebook/signup?destination="+destination
 			}
 		},
 		"link": function(res)

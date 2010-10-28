@@ -212,8 +212,7 @@ function _vibio_item_access($node)
 		$node = node_load($node);
 	}
 	
-	return module_exists("privacy") ?
-		privacy_get($node->uid, "node", $node->nid) <= privacy_get_access_level($node->uid) : true;
+	return privacy_get($node->uid, "node", $node->nid) <= privacy_get_access_level($node->uid);
 }
 
 function _vibio_item_unset(&$form, $type="vibio_item")

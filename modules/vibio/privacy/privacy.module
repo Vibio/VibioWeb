@@ -14,7 +14,7 @@ function privacy_perm()
 function privacy_menu()
 {
 	return array(
-		"admin/settings/privacy/mass-update"	=> array(
+		"admin/settings/privacy/mass-update"=> array(
 			"title"				=> "Set Privacy Settings",
 			"description"		=> "Set the privacy settings for all users",
 			"page callback"		=> "drupal_get_form",
@@ -22,6 +22,25 @@ function privacy_menu()
 			"access arguments"	=> array("privacy admin"),
 			"file"				=> "privacy.pages.inc",
 			"type"				=> MENU_NORMAL_ITEM,
+		),
+		"privacy/restricted/%user/%"		=> array(
+			"title"				=> "Uh Oh",
+			"page callback"		=> "privacy_access_restricted_page",
+			"page arguments"	=> array(2, 3),
+			"access arguments"	=> array("access content"),
+			"file"				=> "privacy.pages.inc",
+			"type"				=> MENU_CALLBACK,
+		),
+	);
+}
+
+function privacy_theme()
+{
+	return array(
+		"privacy_restricted_page"	=> array(
+			"arguments"	=> array("header_message" => "", "available_actions" => ""),
+			"template"	=> "templates/privacy/restricted",
+			"path"		=> drupal_get_path("theme", "vibio"),
 		),
 	);
 }

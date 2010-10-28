@@ -75,4 +75,32 @@ function privacy_mass_set_submit($form, &$state)
 	
 	drupal_set_message(t("The deed has been done."));
 }
+
+function privacy_access_restricted_page($u, $type)
+{
+	global $user;
+	
+	$type = $type == "collection" ? t("collection") : t("item");
+	$t_args = array(
+		"!type"		=> $type,
+		"!user"		=> l($u->name, "user/{$u->uid}"),
+		"!login"	=> l(t("logging in"), "user/login", array("query" => "destination={$_GET['destination']}")),
+		"!signup"	=> l(t("signing up"), "user/register", array("query" => "destination={$_GET['destination']}")),
+		"!view_user"=> l(t("View !user's profile", array("!user" => $u->name)), "user/{$u->uid}")
+	);
+	
+	if (!$user->uid)
+	{
+		$message = t("Looks like the !type's privacy settings are preventing you from looking at this !type", $t_args);
+		$actions = t("Try !login or !signup to look at this !type", $t_args);
+	}
+	else
+	{
+		$message = t("This !type may be restricted only to !user's friends or may be private. Try adding !user as a friend and see if that helps.", $t_args);
+		$actions = t("!view_user", $t_args);
+	}
+	
+	drupal_add_css("themes/vibio/css/privacy.css");
+	return theme("privacy_restricted_page", $message, $actions);
+}
 ?>

@@ -130,9 +130,7 @@ function vibio_item_preprocess_node(&$vars)
 	{	
 		if (!_vibio_item_access($vars['node']))
 		{
-			$referrer = !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
-			drupal_set_message(t("The owner has decided not to show that item"), "error");
-			drupal_goto($referrer);
+			drupal_goto("privacy/restricted/{$vars['node']->uid}/item", "destination=node/{$vars['node']->nid}");
 		}
 		else
 		{

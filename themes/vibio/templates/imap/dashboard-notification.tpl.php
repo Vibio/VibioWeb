@@ -11,6 +11,7 @@ echo "
 		<div class='profile_notifications_summary'>
 			$message
 			<div class='profile_notifications_actions'>
+				$image_create_product
 				$image_delete_form
 				$image_attach_form
 			</div>

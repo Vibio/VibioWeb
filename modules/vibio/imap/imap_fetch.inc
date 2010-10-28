@@ -80,7 +80,8 @@ function imap_fetch_save_image($uid, $mbox, $message_num, $message_part, &$attac
 	$time = time();
 	$obj_property = $attachment->ifparameters ? "parameters" : "dparameters";
 	$image = imap_base64(imap_fetchbody($mbox, $message_num, $message_part));
-	$filename = "{$uid}_{$time}_{$attachment->$obj_property->value}";
+	$filename = str_replace(" ", "_", $attachment->{$obj_property}[0]->value);
+	$filename = "{$uid}_{$time}_{$filename}";
 	$filepath = "$file_dir/$filename";
 	
 	file_put_contents($filepath, $image);
@@ -106,7 +107,7 @@ function imap_fetch_delete_image($image)
 	file_delete($image->filepath);
 }
 
-function imap_fetch_mark_image_as_saved($image)
+function imap_fetch_mark_image_as_saved($image, $save_status=IMAP_STATUS_SAVED)
 {
 	if (is_numeric($image))
 	{
@@ -116,7 +117,7 @@ function imap_fetch_mark_image_as_saved($image)
 	$sql = "UPDATE {imap_images}
 			SET `status`=%d
 			WHERE `imap_id`=%d";
-	db_query($sql, IMAP_STATUS_SAVED, $image->imap_id);
+	db_query($sql, $save_status, $image->imap_id);
 	file_delete($image->filepath);
 }
 
@@ -166,7 +167,7 @@ function imap_fetch_image_owner($imap_id)
 	return db_result(db_query($sql, $imap_id));
 }
 
-function imap_fetch_attach_image($image, $node)
+function imap_fetch_attach_image($image, $node, $field="field_images", $position="last", $save_status=IMAP_STATUS_SAVED)
 {
 	if (is_numeric($image))
 	{
@@ -176,6 +177,34 @@ function imap_fetch_attach_image($image, $node)
 	{
 		$node = node_load($node);
 	}
+	
+	$file = imap_fetch_move_image($image);
+	
+	if (count($node->$field) == 1 && empty($node->$field[0]))
+	{
+		$node->$field = array(array("fid" => $file->fid));
+	}
+	elseif ($position == "last")
+	{
+		$node->{$field}[] = array("fid" => $file->fid);
+	}
+	else
+	{
+		array_unshift($node->$field, array("fid" => $file->fid));
+	}
+	
+	foreach (module_invoke_all("imap_fetch_node_image_attach", $image, $node) as $field_name => $field_val)
+	{
+		$node->$field_name = $field_val;
+	}
+	
+	node_save($node);
+	imap_fetch_mark_image_as_saved($image, $save_status);
+}
+
+function imap_fetch_move_image($image)
+{
+	global $user;
 	
 	$upload_path = file_directory_path();
 	$file_destination = "$upload_path/".basename($image->filepath);
@@ -195,21 +224,6 @@ function imap_fetch_attach_image($image, $node)
 	drupal_write_record("files", $file);
 	$file->fid = db_result(db_query("SELECT `fid` FROM {files} WHERE `filepath`='%s'", $file->filepath));
 	
-	if (count($node->field_images) == 1 && empty($node->field_images[0]))
-	{
-		$node->field_images = array(array("fid" => $file->fid));
-	}
-	else
-	{
-		$node->field_images[] = array("fid" => $file->fid);
-	}
-	
-	foreach (module_invoke_all("imap_fetch_node_image_attach", $image, $node) as $field_name => $field_val)
-	{
-		$node->$field_name = $field_val;
-	}
-	
-	node_save($node);
-	imap_fetch_mark_image_as_saved($image);
+	return $file;
 }
 ?>

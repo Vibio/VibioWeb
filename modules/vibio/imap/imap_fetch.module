@@ -2,6 +2,7 @@
 define("IMAP_STATUS_PENDING", 1);
 define("IMAP_STATUS_DELETED", 2);
 define("IMAP_STATUS_SAVED", 3);
+define("IMAP_STATUS_CREATED", 4);
 
 function imap_fetch_perm()
 {
@@ -45,6 +46,59 @@ function imap_fetch_theme()
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
 	);
+}
+
+function imap_fetch_nodeapi(&$node, $op, $a3=null, $a4=null)
+{
+	if ($node->type != "product")
+	{
+		return;
+	}
+	
+	$x = 1;
+	switch ($op)
+	{
+		case "insert":
+			if ($node->imap_id)
+			{
+				module_load_include("inc", "imap_fetch");
+				imap_fetch_attach_image($node->imap_id, $node->nid, "field_main_image", "last", IMAP_STATUS_CREATED);
+				unset($node->imap_id);
+			}
+			
+			break;
+	}
+}
+
+function imap_fetch_form_alter(&$form, &$state, $id)
+{
+	if ($id != "product_node_form")
+	{
+		return;
+	}
+	
+	global $user;
+	
+	module_load_include("inc", "imap_fetch");
+	if (!($imap_id = $_GET['image_id']) || !($image = imap_fetch_get_image($imap_id)) || $image->uid != $user->uid || !file_exists($image->filepath))
+	{
+		return;
+	}
+	
+	$form['imap_id'] = array(
+		"#type"	=> "value",
+		"#value"=> $imap_id,
+	);
+	
+	$message = t("This product will be created with the following image:");
+	$image_url = file_create_url($image->filepath);
+	
+	unset($form['field_main_image']);
+	
+	$form['field_images']['#prefix'] = "
+		$message<br />
+		<img src='{$image_url}' style='max-height: 100px;' />
+	".$form['field_images']['#prefix'];
 }
 
 function imap_fetch_forms($id, $args)
@@ -97,6 +151,8 @@ function imap_fetch_preprocess_imap_dashboard_notification(&$vars)
 	module_load_include("inc", "imap_fetch", "imap_fetch.forms");
 	
 	$image = $vars['imap_image'];
+	$vars['image_create_product'] = module_exists("product") ?
+		l(t("Create new product"), "product/add", array("query" => "image_id={$image->imap_id}")) : "";
 	$vars['image_delete_form'] = drupal_get_form("imap_fetch_delete_form_{$image->imap_id}", $image);
 	$vars['image_attach_form'] = drupal_get_form("imap_fetch_attach_form_{$image->imap_id}", $image);
 }

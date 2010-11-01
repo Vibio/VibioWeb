@@ -1,0 +1,86 @@
+<?php
+function badge_schema()
+{
+	return array(
+		"badge"				=> array(
+			"fields"		=> array(
+				"bid"			=> array(
+					"type"		=> "serial",
+					"unsigned"	=> true,
+					"not null"	=> true,
+				),
+				"image"			=> array(
+					"type" 		=> "varchar",
+					"size"		=> 255,
+					"not null"	=> true,
+				),
+				"title"			=> array(
+					"type" 		=> "varchar",
+					"size"		=> 255,
+					"not null"	=> true,
+				),
+				"description"	=> array(
+					"type" 		=> "varchar",
+					"size"		=> 255,
+					"not null"	=> true,
+				),
+				"type"			=> array(
+					"type"		=> "int",
+					"size"		=> "tiny",
+					"unsigned"	=> true,
+					"not null"	=> true,
+					"default"	=> 0,
+				),
+				"trigger"		=> array(
+					"type" 		=> "varchar",
+					"size"		=> 255,
+					"not null"	=> true,
+				),
+			),
+			"primary key"	=> array("bid"),
+			"indexes"		=> array(
+				"type"	=> array("type"),
+			),
+		),
+		"badge_user_badges"	=> array(
+			"fields"		=> array(
+				"bid"		=> array(
+					"type"		=> "int",
+					"unsigned"	=> true,
+					"not null"	=> true,
+					"default"	=> 0,
+				),
+				"uid"		=> array(
+					"type"		=> "int",
+					"unsigned"	=> true,
+					"not null"	=> true,
+					"default"	=> 0,
+				),
+				"tstamp"	=> array(
+					"type"		=> "int",
+					"unsigned"	=> true,
+					"not null"	=> true,
+					"default"	=> 0,
+				),
+				"delivered"	=> array(
+					"type"		=> "int",
+					"size"		=> "tiny",
+					"unsigned"	=> true,
+					"not null"	=> true,
+					"default"	=> 0,
+				),
+			),
+			"indexes"		=> array(
+				"uid"	=> array("uid"),
+				"bid"	=> array("bid"),
+			),
+			"primary key"	=> array("uid", "bid"),
+		),
+	);
+}
+
+function badge_install()
+{
+	drupal_install_schema("badge");
+}
+?>

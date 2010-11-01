@@ -1,0 +1,83 @@
+<?php
+define("BADGE_TYPE_SPECIAL", 0);
+define("BADGE_TYPE_ITEM", 1);
+define("BADGE_TYPE_PRODUCT", 2);
+define("BADGE_TYPE_COLLECTION", 3);
+define("BADGE_TYPE_FRIENDS", 4);
+
+define("BADGE_IMAGE_DIR", "badges");
+
+function badge_perm()
+{
+	return array(
+		"badge admin",
+	);
+}
+
+function badge_menu()
+{
+	return array(
+		"admin/settings/badges"			=> array(
+			"title"				=> "Badges",
+			"page callback"		=> "badge_admin",
+			"access arguments"	=> array("badge admin"),
+			"file"				=> "badge.pages.inc",
+			"type"				=> MENU_NORMAL_ITEM,
+		),
+		"admin/settings/badges/list"	=> array(
+			"title"	=> "List",
+			"type"	=> MENU_DEFAULT_LOCAL_TASK,
+			"weight"=> -10,
+		),
+		"admin/settings/badges/new"		=> array(
+			"title"				=> "New Badge",
+			"page callback"		=> "drupal_get_form",
+			"page arguments"	=> array("badge_edit", false),
+			"access arguments"	=> array("badge admin"),
+			"file"				=> "badge.pages.inc",
+			"type"				=> MENU_LOCAL_TASK,
+		),
+		"admin/settings/badges/%badge"	=> array(
+			"title"				=> "Manage Badge",
+			"page callback"		=> "drupal_get_form",
+			"page arguments"	=> array("badge_edit", 3),
+			"access arguments"	=> array("badge admin"),
+			"file"				=> "badge.pages.inc",
+			"type"				=> MENU_CALLBACK,
+		),
+	);
+}
+
+function badge_user($op, &$edit, &$account, $category=null)
+{
+	switch ($op)
+	{
+		case "insert":
+			module_load_include("inc", "badge");
+			if (!($badge = badge_load_special("user_create")))
+			{
+				return;
+			}
+			
+			badge_give_badge($badge->bid, $account->uid, true);
+			break;
+	}
+}
+
+function badge_load($bid)
+{
+	static $badges = array();
+	
+	if (isset($badges[$bid]))
+	{
+		return $badges[$bid];
+	}
+	
+	$sql = "SELECT *
+			FROM {badge}
+			WHERE `bid`=%d";
+	$badges[$bid] = db_fetch_object(db_query($sql, $bid));
+	
+	return $badges[$bid];
+}
+?>

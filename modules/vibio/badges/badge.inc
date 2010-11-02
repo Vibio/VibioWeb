@@ -49,15 +49,67 @@ function badge_get_user_badges($uid)
 				ON b.`bid`=ub.`bid`
 			WHERE ub.`uid`=%d
 			ORDER BY ub.`tstamp` DESC";
-	$res = db_query($sql, $uid, $delivered_state);
+	$res = db_query($sql, $uid);
 	
 	$user_badges[$uid] = array();
-	while ($row = db_query($res))
+	while ($row = db_fetch_object($res))
 	{
 		$user_badges[$uid][$row->bid] = $row;
 	}
 	
 	return $user_badges[$uid];
+}
+
+function badge_user_get_amount($uid, $type)
+{
+	$amount = 0;
+	switch ($type)
+	{
+		case BADGE_TYPE_ITEM:
+			$sql = "SELECT COUNT(*)
+					FROM {node}
+					WHERE `type`='vibio_item'
+						AND `uid`=%d";
+			$amount = db_result(db_query($sql, $uid));
+			break;
+		case BADGE_TYPE_PRODUCT:
+			$sql = "SELECT COUNT(*)
+					FROM {node}
+					WHERE `type`='product'
+						AND `uid`=%d";
+			$amount = db_result(db_query($sql, $uid));
+			break;
+		case BADGE_TYPE_COLLECTION:
+			$sql = "SELECT COUNT(*)
+					FROM {collection}
+					WHERE `uid`=%d";
+			$amount = db_result(db_query($sql, $uid));
+			break;
+		case BADGE_TYPE_FRIENDS:
+			$params = array(
+				"user"		=> $uid,
+				"approved"	=> 1,
+			);
+			$options = array(
+				"include_user_info"	=> true,
+			);
+			
+			$amount = count(user_relationships_load($params, $options));
+			break;
+	}
+	
+	return $amount;
+}
+
+function badge_get_next_badge($type, $current_count)
+{
+	$sql = "SELECT `bid`, `trigger`
+			FROM {badge}
+			WHERE `type`=%d
+				AND `trigger` >= %d
+			ORDER BY `trigger`
+			LIMIT 1";
+	return db_fetch_object(db_query($sql, $type, $current_count));
 }
 
 function badge_load_special($trigger)

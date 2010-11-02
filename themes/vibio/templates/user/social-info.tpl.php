@@ -6,6 +6,10 @@ if (arg(2) == "inventory")
 {
 	$default_tab = "#user_inventory";
 }
+elseif (arg(2) == "badges")
+{
+	$default_tab = "#user_badges";
+}
 
 drupal_add_js(array("profile_settings" => array("default_tab" => $default_tab)), "setting");
 
@@ -16,6 +20,25 @@ $profile_info = theme("profile_ext_profile_info", $uid, $access);
 $profile_info_title = t("Profile Information");
 $inventory = views_embed_view("user_collections", "default", $uid, $access);
 $inventory_title = t("Inventory");
+
+if (module_exists("badge"))
+{
+	$badges_title = t("Badges");
+	$badges_title = "
+		<li>
+			<a href='#user_badges'>
+				<span class='tab'>$badges_title</span>
+			</a>
+		</li>
+	";
+	
+	$badges_html = theme("badge_list", $uid);
+	$badges_html = "
+		<div id='user_badges'>
+			$badges_html
+		</div>
+	";
+}
 
 echo "
 	<div id='profile_user_tabs' class='tabs tabs_big'>
@@ -36,6 +59,7 @@ echo "
 						<span class='tab'>$profile_info_title</span>
 					</a>
 				</li>
+				$badges_title
 			</ul>
 		</div>
 		<div class='profile_info_container'>
@@ -48,6 +72,7 @@ echo "
 			<div id='user_inventory'>
 				$inventory
 			</div>
+			$badges_html
 		</div>
 	</div>
 ";

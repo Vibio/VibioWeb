@@ -18,6 +18,7 @@ function badge_admin()
 					<img style='max-height: 80px;' src='$image' />
 				</td>
 				<td>$link</td>
+				<td>{$row->description}</td>
 			</tr>
 		";
 	}

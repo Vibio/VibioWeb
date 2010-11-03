@@ -364,4 +364,17 @@ function vibio_item_newuser_search_submit($form, &$state)
 	newuser_set_stage($vals['uid'], $vals['stage']);
 	drupal_goto("search/vibio_item/{$vals['item_search']}");
 }
+
+function vibio_item_get_category($item_nid)
+{
+	if (!module_exists("product"))
+	{
+		return 0;
+	}
+	
+	module_load_include("inc", "product");
+	$product = _product_from_item($item_nid);
+	$term = array_shift($product->taxonomy);
+	return $term->tid;
+}
 ?>

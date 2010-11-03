@@ -48,7 +48,11 @@ $(document).ready(function()
 		}
 		
 		offer.val(replaced_offer);
-		vibio_utility.dialog_busy();
+		
+		if ($.browser.safari)
+		{
+			vibio_utility.dialog_busy();
+		}
 		
 		return true;
 	});

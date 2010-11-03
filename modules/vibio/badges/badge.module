@@ -4,6 +4,8 @@ define("BADGE_TYPE_ITEM", 1);
 define("BADGE_TYPE_PRODUCT", 2);
 define("BADGE_TYPE_COLLECTION", 3);
 define("BADGE_TYPE_FRIENDS", 4);
+define("BADGE_TYPE_ITEM_SELL", 5);
+define("BADGE_TYPE_ITEM_BUY_BY_CATEGORYTIME", 6); // format: amount_category_timeframe (10_5_30 = 10 items of category 5 in 30 days)
 
 define("BADGE_IMAGE_DIR", "badges");
 
@@ -137,6 +139,83 @@ function badge_collections_insert($collection)
 	}
 }
 
+function badge_fb_link_account($u, $is_signup)
+{
+	module_load_include("inc", "badge");
+	
+	if ($badge = badge_load_special("fb_link"))
+	{
+		badge_give_badge($badge->bid, $u->uid, $is_signup);
+	}
+}
+
+function badge_ebay_add_account($uid)
+{
+	module_load_include("inc", "badge");
+	
+	if ($badge = badge_load_special("ebay_link"))
+	{
+		badge_give_badge($badge->bid, $uid);
+	}
+}
+
+function badge_offer2buy_complete_actions($seller_uid, $node)
+{
+	module_load_include("inc", "badge");
+	$buyer_uid = $node->uid;
+	
+	// # of items in buyer's inventory
+	$count = badge_user_get_amount($buyer_uid, BADGE_TYPE_ITEM);
+	$next_badge = badge_get_next_badge(BADGE_TYPE_ITEM, $count);
+	
+	if ($next_badge && $count >= $next_badge->trigger)
+	{
+		badge_give_badge($next_badge->bid, $buyer_uid);
+	}
+	
+	// # of items sold by seller
+	$count = badge_user_get_amount($seller_uid, BADGE_TYPE_ITEM_SELL);
+	$next_badge = badge_get_next_badge(BADGE_TYPE_ITEM_SELL, $count);
+	
+	if ($next_badge && $count >= $next_badge->trigger)
+	{
+		badge_give_badge($next_badge->bid, $seller_uid);
+	}
+	
+	// # of items bought by buyer (by category)
+	if (module_exists("product"))
+	{	
+		$params = (object) array(
+			"category"	=> vibio_item_get_category($node->nid),
+		);
+		
+		$sql = "SELECT `bid`, `trigger`
+				FROM {badge}
+				WHERE `type`=%d
+					AND `trigger` LIKE '%%_%d_%%'";
+		$res = db_query($sql, BADGE_TYPE_ITEM_BUY_BY_CATEGORYTIME, $params->category);
+		
+		while ($badge = db_fetch_object($res))
+		{
+			$trigger_params = explode("_", $badge->trigger);
+			if (count($trigger_params) != 3)
+			{
+				continue;
+			}
+			
+			$params->amount = $trigger_params[0];
+			$params->timeframe = $trigger_params[2];
+			
+			$count = badge_user_get_amount($buyer_uid, BADGE_TYPE_ITEM_BUY_BY_CATEGORYTIME, $params);
+			
+			if ($count >= $params->amount)
+			{
+				badge_give_badge($badge->bid, $buyer_uid);
+			}
+		}
+	}
+}
+
 function badge_user_relationships($op, &$rel)
 {
 	if ($op != "approve")
@@ -166,7 +245,7 @@ function badge_user_relationships($op, &$rel)
 function badge_preprocess_page(&$vars)
 {
 	global $user;
-	
+
 	$sql = "SELECT b.bid, b.`image`, b.`title`, b.`description`, ub.`tstamp`
 			FROM {badge} b JOIN {badge_user_badges} ub
 				ON b.`bid`=ub.`bid`

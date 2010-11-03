@@ -99,6 +99,12 @@ function _product_nid_from_item($nid)
 	return db_result(db_query($sql, $nid));
 }
 
+function _product_from_item($item_nid)
+{
+	$product_nid = _product_nid_from_item($item_nid);
+	return node_load($product_nid);
+}
+
 function _product_get_image($nid, $is_product=false)
 {
 	static $product_images = array();

@@ -150,7 +150,7 @@ function fb_save_user(&$u, $fb_uid, $signup_save=false)
 			SET `uid`=%d, `fb_id`=%d, `time`=%d, `is_signup`=%d";
 	db_query($sql, $u->uid, $fb_uid, $signup_save ? $u->created : time(), $signup_save);
 	
-	module_invoke_all("fb_link_account", $u);
+	module_invoke_all("fb_link_account", $u, $signup_save);
 }
 
 function fb_verify_cookie($uid=false)

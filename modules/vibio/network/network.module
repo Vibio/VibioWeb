@@ -106,7 +106,7 @@ function network_preprocess_uri_user_friends(&$vars)
 	drupal_add_css("themes/vibio/css/network.css");
 }
 
-function network_fb_link_account($user)
+function network_fb_link_account($user, $is_signup)
 {
 	cache_clear_all("userinfo:{$user->uid}", "cache_network");
 }

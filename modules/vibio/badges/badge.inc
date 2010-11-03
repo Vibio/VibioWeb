@@ -60,7 +60,7 @@ function badge_get_user_badges($uid)
 	return $user_badges[$uid];
 }
 
-function badge_user_get_amount($uid, $type)
+function badge_user_get_amount($uid, $type, $filter_params=false)
 {
 	$amount = 0;
 	switch ($type)
@@ -96,13 +96,32 @@ function badge_user_get_amount($uid, $type)
 			
 			$amount = count(user_relationships_load($params, $options));
 			break;
+		case BADGE_TYPE_ITEM_SELL:
+			$sql = "SELECT COUNT(*)
+					FROM {offer2buy_completed_transactions}
+					WHERE `seller`=%d";
+			$amount = db_result(db_query($sql, $uid));
+			break;
+		case BADGE_TYPE_ITEM_BUY_BY_CATEGORYTIME:
+			if ($filter_params)
+			{
+				$sql = "SELECT COUNT(*)
+						FROM {offer2buy_completed_transactions} o JOIN {product_items} pi JOIN {term_node} tn
+							ON o.`nid`=pi.`item_nid`
+								AND pi.`product_nid`=tn.`nid`
+						WHERE o.`buyer`=%d
+							AND tn.`tid`=%d
+							AND DATEDIFF(NOW(), FROM_UNIXTIME(o.`timestamp`)) <= %d";
+				$amount = db_result(db_query($sql, $uid, $filter_params->category, $filter_params->timeframe));
+			}
+			break;
 	}
 	
 	return $amount;
 }
 
 function badge_get_next_badge($type, $current_count)
-{
+{	
 	$sql = "SELECT `bid`, `trigger`
 			FROM {badge}
 			WHERE `type`=%d
@@ -133,11 +152,13 @@ function badge_load_special($trigger)
 function badge_type_select()
 {
 	return array(
-		BADGE_TYPE_ITEM			=> t("Items"),
-		BADGE_TYPE_FRIENDS		=> t("Friends"),
-		BADGE_TYPE_COLLECTION	=> t("Collections"),
-		BADGE_TYPE_PRODUCT		=> t("Products"),
-		BADGE_TYPE_SPECIAL		=> t("SPECIAL"),
+		BADGE_TYPE_ITEM					=> t("Items (in inventory)"),
+		BADGE_TYPE_ITEM_SELL			=> t("Items (sell)"),
+		BADGE_TYPE_ITEM_BUY_BY_CATEGORYTIME	=> t("Items (bought by category and time)"),
+		BADGE_TYPE_FRIENDS				=> t("Friends"),
+		BADGE_TYPE_COLLECTION			=> t("Collections"),
+		BADGE_TYPE_PRODUCT				=> t("Products"),
+		BADGE_TYPE_SPECIAL				=> t("SPECIAL"),
 	);
 }
 ?>

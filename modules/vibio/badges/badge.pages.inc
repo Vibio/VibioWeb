@@ -1,10 +1,13 @@
 <?php
 function badge_admin()
 {
+	module_load_include("inc", "badge");
+	
 	$sql = "SELECT *
 			FROM {badge}
 			ORDER BY `title`";
 	$res = db_query($sql);
+	$options = badge_type_select();
 	
 	$out = "<table>";
 	while ($row = db_fetch_object($res))
@@ -19,6 +22,8 @@ function badge_admin()
 				</td>
 				<td>$link</td>
 				<td>{$row->description}</td>
+				<td>{$options[$row->type]}</td>
+				<td>{$row->trigger}</td>
 			</tr>
 		";
 	}
@@ -30,6 +35,18 @@ function badge_admin()
 function badge_edit($form, $badge)
 {
 	module_load_include("inc", "badge");
+	$trigger_description = "
+		This changes depending on the value of 'type':
+		<ul>
+			<li>SPECIAL: The text trigger that the event fires. If you don't know what this is, ask Nelson.</li>
+			<li>
+				Items (bought by category and time): underscore separated amount_categoryid_timeframe (ex: 10_5_30 = 10 items of category id 5 in 30 days).
+				Categories can be found on <a href='/admin/content/taxonomy/2'>this</a> page by clicking on the appropriate category and taking the number from the end of the URL
+				(/taxonomy/term/6 means 6 is the category id).
+			</li>
+			<li>Anything else: The amount (items sold, items added to inventory, collections created, etc.) needed to get the badge</li>
+		</ul>
+	";
 	
 	return array(
 		"#attributes"	=> array(
@@ -64,6 +81,7 @@ function badge_edit($form, $badge)
 		"trigger"		=> array(
 			"#type"			=> "textfield",
 			"#title"		=> t("Trigger"),
+			"#description"	=> $trigger_description,
 			"#default_value"=> $badge->trigger,
 			"#required"		=> true,
 		),
@@ -78,11 +96,7 @@ function badge_edit_validate($form, &$state)
 {
 	$vals = $state['values'];
 	
-	if ($vals['type'] != BADGE_TYPE_SPECIAL && !is_numeric($vals['trigger']))
-	{
-		form_set_error("trigger", t("Trigger value must be numeric"));
-	}
-	elseif (!$vals['badge'] && !$_FILES['files']['name']['image_upload'])
+	if (!$vals['badge'] && !$_FILES['files']['name']['image_upload'])
 	{
 		form_set_error("image_upload", t("You must select an image for this badge"));
 	}

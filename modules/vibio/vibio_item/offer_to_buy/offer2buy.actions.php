@@ -20,6 +20,23 @@ function _offer2buy_complete_actions($nid, $new_owner_uid)
 	$node->field_posting_type[0]['value'] = VIBIO_ITEM_TYPE_OWN;
 	node_save($node);
 	
+	$sql = "SELECT `offer`
+			FROM {offer2buy_offers}
+			WHERE `nid`=%d
+				AND `uid`=%d";
+	$price = db_result(db_query($sql, $node->nid, $node->uid));
+	
+	$sql = "INSERT INTO {offer2buy_completed_transactions}
+			(`nid`, `buyer`, `seller`, `price`, `timestamp`)
+			VALUES
+			(%d, %d, %d, %f, %d)";
+	db_query($sql, $node->nid, $node->uid, $old_owner_uid, $price, time());
+	
+	$sql = "UPDATE {offer2buy}
+			SET `is_negotiable`=1, `allow_offer_views`=1, `is_on_sale`=0
+			WHERE `nid`=%d";
+	db_query($sql, $node->nid);
+	
 	module_invoke_all("offer2buy_complete_actions", $old_owner_uid, $node);
 }
 

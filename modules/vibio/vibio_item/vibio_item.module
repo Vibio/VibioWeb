@@ -260,11 +260,13 @@ function vibio_item_newuser_tutorial($u, $user_stage)
 	{
 		return array(array(
 			"stage" => $stage_number,
+			"header"=> t("Add Items"),
 		));
 	}
 	
 	module_load_include("php", "vibio_item", "vibio_item.inc");
 	$form = drupal_get_form("vibio_item_newuser_search", $u->uid, $stage_number);
+	$content = $form."<div class='clear'></div><div style='text-align: center; margin-top: 25px; position: relative; left: 25px;'>".t("In the future, you can search for items or people using the top search bar")."</div>";
 	
 	return array(array(
 		"stage"			=> $stage_number,
@@ -275,7 +277,7 @@ function vibio_item_newuser_tutorial($u, $user_stage)
 				"header"	=> "",
 				"available"	=> true,
 				"complete"	=> false,
-				"content"	=> $form,
+				"content"	=> $content,
 			),
 		),
 	));

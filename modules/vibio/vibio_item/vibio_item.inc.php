@@ -338,6 +338,14 @@ function _vibio_item_clear_insert_message()
 
 function vibio_item_newuser_search($form, $uid, $search_stage)
 {
+	$default_text = t("What would you like to find?");
+	
+	drupal_add_js(array(
+		"newuser" => array(
+			"search_default_text" => $default_text,
+		)
+	), "setting");
+	
 	return array(
 		"uid"		=> array(
 			"#type"	=> "value",
@@ -349,11 +357,14 @@ function vibio_item_newuser_search($form, $uid, $search_stage)
 		),
 		"item_search"	=> array(
 			"#type"			=> "textfield",
+			"#default_value"=> $default_text,
 			"#description"	=> t("Examples: Shrek DVD, bicycle, Converse shoes..."),
 		),
 		"submit"		=> array(
-			"#type"	=> "submit",
-			"#value"=> t("Search"),
+			"#prefix"	=> "<div class='tutorial_button_left' style='margin-left: 240px;'></div><div class='tutorial_button_mid'>",
+			"#suffix"	=> "</div><div class='tutorial_button_right'></div>",
+			"#type"		=> "submit",
+			"#value"	=> t("Search"),
 		),
 	);
 }

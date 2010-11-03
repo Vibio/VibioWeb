@@ -29,13 +29,18 @@ function newuser_theme()
 {
 	return array(
 		"newuser_tutorial"			=> array(
-			"arguments"	=> array("stage_html" => ""),
+			"arguments"	=> array("stage_html" => "", "header_html" => ""),
 			"template"	=> "templates/new_user/tutorial",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
 		"newuser_tutorial_stage"	=> array(
 			"arguments"	=> array("stage" => false, "is_last_stage" => false),
 			"template"	=> "templates/new_user/stage",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"newuser_tutorial_stage_header"	=> array(
+			"arguments"	=> array("stage" => false, "user_stage" => 0),
+			"template"	=> "templates/new_user/stage-header",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
 	);
@@ -68,19 +73,21 @@ function newuser_preprocess_profile_ext_dashboard(&$vars)
 	), "setting");
 	
 	$stage_html = "";
-	$header_html = "";
+	$header_html = theme("newuser_tutorial_stage_header", array("stage" => -1, "header" => t("Create Account")));
 	foreach ($stages as $i => $stage)
 	{
+		$header_html .= theme("newuser_tutorial_stage_header", $stage, $user_stage + 1);
+		
 		if ($stage['stage'] <= $user_stage)
 		{
 			continue;
 		}
 		
 		$stage_html .= theme("newuser_tutorial_stage", $stage, $i == count($stages) - 1);
-		$header_html .= theme("newuser_tutorial_stage_header", $stage);
 	}
+	$header_html .= theme("newuser_tutorial_stage_header", array("stage" => $i + 2, "header" => t("Use Vibio!")), $user_stage + 1);
 	
-	$vars['newuser_tutorial'] = theme("newuser_tutorial", $stage_html);
+	$vars['newuser_tutorial'] = theme("newuser_tutorial", $stage_html, $header_html);
 }
 
 function newuser_ajax_set_stage($stage)

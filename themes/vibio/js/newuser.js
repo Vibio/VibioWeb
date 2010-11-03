@@ -21,14 +21,14 @@ $(document).ready(function()
 			vibio_dialog.set_options();
 			
 			var content_div = $("#tutorial_stage_"+stage_id+"_"+next_step_id)
-				.find("h5.unavailable")
+				.find("div.tutorial_step_stepnum.unavailable")
 					.removeClass("unavailable")
 				.end()
-				.find(".step_content")
+				.find(".step_step_content")
 					.html("<div style='text-align: center'><img src='/themes/vibio/images/ajax-loader.gif' /></div>");
 					
 			vibio_dialog.set_options();
-					
+			
 			$.ajax({
 				url: "/facebook/ff_ajax",
 				success: function(html, stat)
@@ -57,6 +57,8 @@ $(document).ready(function()
 		$("#tutorial_stage_"+current_stage)
 			.fadeOut(fade_time, function()
 			{
+				$("#stage_header_"+current_stage).removeClass("stage_current_stage").addClass("stage_complete");
+				$("#stage_header_"+next_stage).removeClass("stage_incomplete").addClass("stage_current_stage");
 				$("#tutorial_stage_"+next_stage).fadeIn(fade_time);
 				vibio_dialog.set_options();
 			});
@@ -65,6 +67,22 @@ $(document).ready(function()
 		
 		return false;
 	});
+	
+	$("#edit-item-search")
+		.livequery("blur", function()
+		{
+			if ($(this).val() == "")
+			{
+				$(this).val(Drupal.settings.newuser.search_default_text);
+			}
+		})
+		.livequery("focus", function()
+		{
+			if ($(this).val() == Drupal.settings.newuser.search_default_text)
+			{
+				$(this).val("");
+			}
+		});
 	
 	$("#vibio-item-newuser-search").livequery("submit", function()
 	{

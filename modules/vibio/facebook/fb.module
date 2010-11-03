@@ -406,6 +406,7 @@ function fb_newuser_tutorial($u, $user_stage)
 	{
 		return array(array(
 			"stage" => $stage_number,
+			"header"=> t("Find Friends"),
 		));
 	}
 	

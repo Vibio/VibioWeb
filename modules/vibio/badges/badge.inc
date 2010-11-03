@@ -81,8 +81,13 @@ function badge_user_get_amount($uid, $type, $filter_params=false)
 			break;
 		case BADGE_TYPE_COLLECTION:
 			$sql = "SELECT COUNT(*)
-					FROM {collection}
-					WHERE `uid`=%d";
+					FROM {collection} c
+					WHERE `uid`=%d
+						AND (
+							SELECT COUNT(*)
+							FROM {collection_items} ci
+							WHERE ci.`cid`=c.`cid`
+						) > 0";
 			$amount = db_result(db_query($sql, $uid));
 			break;
 		case BADGE_TYPE_FRIENDS:

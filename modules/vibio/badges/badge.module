@@ -164,6 +164,26 @@ function badge_offer2buy_complete_actions($seller_uid, $node)
 	module_load_include("inc", "badge");
 	$buyer_uid = $node->uid;
 	
+	// SPECIAL: sell/buy from a friend
+	if (module_exists("network") && in_array($node->uid, _network_get_friends($seller_uid, 1)))
+	{
+		if ($badge = badge_load_special("sell_to_friend"))
+		{
+			badge_give_badge($badge->bid, $seller_uid);
+		}
+		
+		if ($badge = badge_load_special("buy_from_friend"))
+		{
+			badge_give_badge($badge->bid, $node->uid);
+		}
+	}
+	
+	// SPECIAL: fast sell (sell within 6 hours)
+	if (time() - $node->created <= 60*60*6 && $badge = badge_load_special("fast_sell"))
+	{
+		badge_give_badge($badge->bid, $seller_uid);
+	}
+	
 	// # of items in buyer's inventory
 	$count = badge_user_get_amount($buyer_uid, BADGE_TYPE_ITEM);
 	$next_badge = badge_get_next_badge(BADGE_TYPE_ITEM, $count);

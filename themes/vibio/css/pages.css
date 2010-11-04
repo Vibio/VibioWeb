@@ -578,3 +578,36 @@ span.privatemsg_autocomplete_name {
 	float: left;
 	width: 400px;
 }
+
+/* button stuff */
+.button_left {
+	background: transparent url(/themes/vibio/images/buttons/blueButton_L.png) no-repeat 0 0;
+	float: left;
+	width: 12px;
+	height: 36px;
+}
+
+.button_mid {
+	background: transparent url(/themes/vibio/images/buttons/blueButton_Mid.png) repeat-x 0 0;
+	float: left;
+	padding: 5px 10px 0;
+	height: 31px;
+	font-weight: bold;
+	color: white;
+}
+
+.button_mid .form-submit {
+	background: transparent;
+	border: none;
+	font-size: 18px;
+	color: white;
+}
+
+.button_right {
+	background: transparent url(/themes/vibio/images/buttons/blueButton_R.png) no-repeat 0 0;
+	float: left;
+	width: 12px;
+	height: 36px;
+	position: relative;
+	left: -1px
+}

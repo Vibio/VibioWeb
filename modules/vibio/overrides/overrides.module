@@ -93,17 +93,69 @@ function overrides_search_submit($form, &$state)
 	$state['redirect'] = "search/$search_type/$search_term";
 }
 
-function overrides_allowed_search_types()
+function overrides_form_search_form_alter(&$form, &$state)
 {
-	return array(
-		"vibio_item"=> array(
-			"title"	=> t("Search Items"),
-			"image"	=> "/themes/vibio/images/icons/default_item.png",
-		),
-		"user"		=> array(
-			"title"	=> t("Search Users"),
-			"image"	=> "/themes/vibio/images/icons/default_user.png",
-		),
+	drupal_add_js("themes/vibio/js/jquery-csb-1.0.js");
+	drupal_add_js("themes/vibio/js/search.js");
+	drupal_add_css("themes/vibio/css/search_page.css");
+	
+	$default = $form['module']['#value'];
+	
+	$form['#prefix'] = "<div id='search_form_container'>";
+	$form['#suffix'] = "</div>";
+	
+	$form['basic']['#title'] = "";
+	$form['basic']['#weight'] = 10;
+	$form['basic']['inline']['submit']['#prefix'] = "<div class='button_left'></div><div class='button_mid'>";
+	$form['basic']['inline']['submit']['#suffix'] = "</div><div class='button_right'></div>";
+	$form['basic']['inline']['#suffix'] .= "<div class='clear'></div>";
+	
+	$form['#submit'][] = "overrides_search_form_submit";
+	$form['search_form_type'] = array(
+		"#type"			=> "select",
+		"#title"		=> t("Search"),
+		"#options"		=> overrides_allowed_search_types(true),
+		"#default_value"=> $default,
+		"#weight"		=> -10,
 	);
+}
+
+function overrides_search_form_submit($form, &$state)
+{
+	$allowed_searches = overrides_allowed_search_types(true);
+	$default_search = "vibio_item";
+	$search_type = array_key_exists($state['values']['search_form_type'], $allowed_searches) ? $state['values']['search_form_type'] : $default_search;
+	$search_term = $state['values']['processed_keys'];
+	
+	$state['redirect'] = "search/$search_type/$search_term";
+}
+
+function overrides_allowed_search_types($show_all_searches=false)
+{
+	if (!$show_all_searches)
+	{
+		return array(
+			"vibio_item"=> array(
+				"title"	=> t("Search Items"),
+				"image"	=> "/themes/vibio/images/icons/default_item.png",
+			),
+			"user"		=> array(
+				"title"	=> t("Search Users"),
+				"image"	=> "/themes/vibio/images/icons/default_user.png",
+			),
+		);
+	}
+	
+	$types = array(
+		"vibio_item"=> t("Vibio"),
+		"user"		=> t("Users"),
+	);
+	
+	if (module_exists("ebay"))
+	{
+		$types['ebay'] = t("eBay");
+	}
+	
+	return $types;
 }
 ?>

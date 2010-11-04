@@ -159,17 +159,11 @@ function ebay_form_alter(&$form, $state, $id)
 			$default_user_option = $default_user_option[$defaults[1]];
 		}
 		
-		$form['ebay_advanced'] = array(
-			"#type"			=> "fieldset",
-			"#title"		=> t("Advanced"),
-			"#collapsible"	=> true,
-			"#collapsed"	=> false,
-			"search_users"	=> array(
-				"#type"				=> "select",
-				"#title"			=> t("Search Users"),
-				"#options"			=> $options,
-				"#default_value"	=> $default_user_option,
-			),
+		$form['search_users'] = array(
+			"#type"				=> "select",
+			"#title"			=> t("Users"),
+			"#options"			=> $options,
+			"#default_value"	=> $default_user_option,
 		);
 		
 		$form["#validate"][] = "ebay_search_validate";

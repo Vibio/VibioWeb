@@ -85,6 +85,10 @@
 	border-left: 1px solid #1e87a7;
 	border-right: 1px solid #1e87a7;
 	border-bottom: 1px solid #1e87a7;
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+	-moz-border-radius-bottomleft: 4px;
+	-moz-border-radius-bottomright: 4px;
 }
 
 .search_dropdown ul li {

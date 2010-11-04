@@ -6,6 +6,7 @@ define("BADGE_TYPE_COLLECTION", 3);
 define("BADGE_TYPE_FRIENDS", 4);
 define("BADGE_TYPE_ITEM_SELL", 5);
 define("BADGE_TYPE_ITEM_BUY_BY_CATEGORYTIME", 6); // format: amount_category_timeframe (10_5_30 = 10 items of category 5 in 30 days)
+define("BADGE_TYPE_MEMBER_SINCE", 7);
 
 define("BADGE_IMAGE_DIR", "badges");
 
@@ -39,6 +40,14 @@ function badge_menu()
 			"file"				=> "badge.pages.inc",
 			"type"				=> MENU_LOCAL_TASK,
 		),
+		"admin/settings/badges/triggers"=> array(
+			"title"				=> "Special Triggers",
+			"description"		=> "These are the special triggers the Vibio code knows about",
+			"page callback"		=> "badge_special_triggers_page",
+			"access arguments"	=> array("badge admin"),
+			"file"				=> "badge.pages.inc",
+			"type"				=> MENU_LOCAL_TASK,
+		),
 		"admin/settings/badges/%badge"	=> array(
 			"title"				=> "Manage Badge",
 			"page callback"		=> "drupal_get_form",
@@ -54,6 +63,17 @@ function badge_user($op, &$edit, &$account, $category=null)
 {
 	switch ($op)
 	{
+		case "login":
+			module_load_include("inc", "badge");
+			$count = badge_user_get_amount($account->uid, BADGE_TYPE_MEMBER_SINCE);
+			$next_badge = badge_get_next_badge(BADGE_TYPE_MEMBER_SINCE, $count);
+			
+			if ($next_badge && $count >= $next_badge->trigger)
+			{
+				badge_give_badge($next_badge->bid, $account->uid);
+			}
+			
+			break;
 		case "insert":
 			module_load_include("inc", "badge");
 			if (!($badge = badge_load_special("user_create")))

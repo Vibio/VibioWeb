@@ -13,7 +13,7 @@
  */
 require_once './includes/bootstrap.inc';
 drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
-//menu_rebuild();
+menu_rebuild();
 $return = menu_execute_active_handler();
 
 // Menu status constants are integers; page content is a string.

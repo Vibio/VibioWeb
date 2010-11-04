@@ -38,12 +38,13 @@ function badge_edit($form, $badge)
 	$trigger_description = "
 		This changes depending on the value of 'type':
 		<ul>
-			<li>SPECIAL: The text trigger that the event fires. If you don't know what this is, ask Nelson.</li>
+			<li>SPECIAL: The text trigger that the event fires. If you don't know what this is, check <a href='/admin/settings/badges/triggers'>this</a> page.</li>
 			<li>
 				Items (bought by category and time): underscore separated amount_categoryid_timeframe (ex: 10_5_30 = 10 items of category id 5 in 30 days).
 				Categories can be found on <a href='/admin/content/taxonomy/2'>this</a> page by clicking on the appropriate category and taking the number from the end of the URL
 				(/taxonomy/term/6 means 6 is the category id).
 			</li>
+			<li>Member for X time: Number of days the user needs to be a member of the site for before receiving the badge</li>
 			<li>Anything else: The amount (items sold, items added to inventory, collections created, etc.) needed to get the badge</li>
 		</ul>
 	";
@@ -151,5 +152,39 @@ function badge_edit_submit($form, &$state)
 	
 	drupal_set_message(t("The badge !title has been saved", array("!title" => $vals['title'])));
 	drupal_goto("admin/settings/badges");
+}
+
+function badge_special_triggers_page()
+{
+	module_load_include("inc", "badge");
+	
+	$triggers = array(
+		"user_create"		=> t("Sign Up for Vibio"),
+		"fb_link"			=> t("Link Facebook Account"),
+		"ebay_link"			=> t("Link eBay Account"),
+		"sell_to_friend"	=> t("Sell to a Friend"),
+		"buy_from_friend"	=> t("Buy from a Friend"),
+		"fast_sell"			=> t("Sell an item within 6 hours of listing it"),
+	);
+	
+	$out = "These are the triggers for type SPECIAL that the Vibio code knows about.";
+	$out .= "<table><tr><th>Trigger</th><th>Description</th><th>Badge Link</th></tr>";
+	
+	foreach ($triggers as $t => $title)
+	{
+		$badge = badge_load_special($t);
+		$badge_link = $badge ? l($badge->title, "admin/settings/badges/{$badge->bid}") : "";
+		
+		$out .= "
+			<tr>
+				<td>$t</td>
+				<td>$title</td>
+				<td>$badge_link</td>
+			</tr>
+		";
+	}
+	$out .= "</table>";
+	
+	return $out;
 }
 ?>

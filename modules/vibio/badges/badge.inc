@@ -120,6 +120,12 @@ function badge_user_get_amount($uid, $type, $filter_params=false)
 				$amount = db_result(db_query($sql, $uid, $filter_params->category, $filter_params->timeframe));
 			}
 			break;
+		case BADGE_TYPE_MEMBER_SINCE:
+			$sql = "SELECT DATEDIFF(NOW(), FROM_UNIXTIME(`created`))
+					FROM {users}
+					WHERE `uid`=%d";
+			$amount = db_result(db_query($sql, $uid));
+			break;
 	}
 	
 	return $amount;
@@ -163,6 +169,7 @@ function badge_type_select()
 		BADGE_TYPE_FRIENDS				=> t("Friends"),
 		BADGE_TYPE_COLLECTION			=> t("Collections"),
 		BADGE_TYPE_PRODUCT				=> t("Products"),
+		BADGE_TYPE_MEMBER_SINCE			=> t("Member for X time"),
 		BADGE_TYPE_SPECIAL				=> t("SPECIAL"),
 	);
 }

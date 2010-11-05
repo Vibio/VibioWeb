@@ -39,6 +39,7 @@ if (!$u->picture)
 			echo $profile['dos'];
 			echo $message_link;
 			echo $profile['uri_actions']['actions'];
+			echo $profile['profile_progress'];
 			?>
 		</div>
 		<?php echo $account_edit_link; ?>

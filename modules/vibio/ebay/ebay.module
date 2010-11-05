@@ -241,7 +241,7 @@ function ebay_profile_ext_external_account_data()
 
 function ebay_profile_ext_progress($uid)
 {
-	$possible_points = 1;
+	$possible_points = 3;
 	
 	$sql = "SELECT count(*)
 			FROM {ebay_users}
@@ -257,7 +257,7 @@ function ebay_profile_ext_progress($uid)
 	if (!$data['complete'])
 	{
 		$data['completion_steps'] = array(
-			t("Link eBay account")	=> "/user/{$uid}/edit/accounts",
+			l(t("Link your eBay account"), "ebay/add-account", array("attributes" => array("class" => "ebay_add_account"))),
 		);
 	}
 	

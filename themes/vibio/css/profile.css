@@ -238,3 +238,17 @@
 #vibio_dialog .picture img {
 	max-width: 150px;
 }
+
+#profile_completion_steps_container {
+	display: none;
+}
+
+#profile_progressbar {
+	position: relative;
+	top: 4px;
+}
+
+.profile_progress {
+	float: left;
+	margin-right: 5px;
+}

@@ -11,17 +11,17 @@ function badge_schema()
 				),
 				"image"			=> array(
 					"type" 		=> "varchar",
-					"size"		=> 255,
+					"length"	=> 255,
 					"not null"	=> true,
 				),
 				"title"			=> array(
 					"type" 		=> "varchar",
-					"size"		=> 255,
+					"length"	=> 255,
 					"not null"	=> true,
 				),
 				"description"	=> array(
 					"type" 		=> "varchar",
-					"size"		=> 255,
+					"length"	=> 255,
 					"not null"	=> true,
 				),
 				"type"			=> array(
@@ -33,7 +33,7 @@ function badge_schema()
 				),
 				"trigger"		=> array(
 					"type" 		=> "varchar",
-					"size"		=> 255,
+					"length"	=> 255,
 					"not null"	=> true,
 				),
 			),
@@ -82,5 +82,10 @@ function badge_schema()
 function badge_install()
 {
 	drupal_install_schema("badge");
+}
+
+function badge_uninstall()
+{
+	drupal_uninstall_schema("badge");
 }
 ?>

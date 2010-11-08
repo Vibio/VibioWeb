@@ -42,11 +42,19 @@ function badge_menu()
 		),
 		"admin/settings/badges/triggers"=> array(
 			"title"				=> "Special Triggers",
-			"description"		=> "These are the special triggers the Vibio code knows about",
 			"page callback"		=> "badge_special_triggers_page",
 			"access arguments"	=> array("badge admin"),
 			"file"				=> "badge.pages.inc",
 			"type"				=> MENU_LOCAL_TASK,
+		),
+		"admin/settings/badges/award"	=> array(
+			"title"				=> "Award Back-Dated Badges",
+			"page callback"		=> "drupal_get_form",
+			"page arguments"	=> array("badge_award_back_dated_badges"),
+			"access arguments"	=> array("badge admin"),
+			"file"				=> "badge.pages.inc",
+			"type"				=> MENU_LOCAL_TASK,
+			"weight"			=> 10,
 		),
 		"admin/settings/badges/%badge"	=> array(
 			"title"				=> "Manage Badge",

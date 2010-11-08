@@ -193,6 +193,66 @@ function badge_special_triggers_page()
 	return $out;
 }
 
+function badge_award_back_dated_badges()
+{
+	module_load_include("inc", "badge");
+	
+	$types = badge_type_select();
+	unset($types[BADGE_TYPE_SPECIAL]);
+	
+	$sql = "SELECT `trigger`
+			FROM {badge}
+			WHERE `type`=%d";
+	$res = db_query($sql, BADGE_TYPE_SPECIAL);
+	
+	while ($row = db_fetch_object($res))
+	{
+		$trigger = str_replace(" ", "_", $row->trigger);
+		$types["SPECIAL_{$trigger}"] = $row->trigger;
+	}
+	
+	return array(
+		"badges"	=> array(
+			"#type"		=> "checkboxes",
+			"#title"	=> t("Select which badge types (or special badges) to calculate and award"),
+			"#options"	=> $types,
+		),
+		"submit"	=> array(
+			"#type"	=> "submit",
+			"#value"=> t("Calculate"),
+		),
+	);
+}
+
+function badge_award_back_dated_badges_submit($form, &$state)
+{
+	module_load_include("inc", "badge");
+	module_load_include("inc", "badge", "badge.award_back_dated_badges");
+	
+	$vals = $state['values'];
+	
+	foreach ($vals['badges'] as $type)
+	{
+		if (!$type)
+		{
+			continue;
+		}
+		
+		$func = "badge_award_back_dated_badges_$type";
+		
+		if (function_exists($func))
+		{
+			$func();
+		}
+		else
+		{
+			drupal_set_message(t("The following function does not exist, so badges weren't awarded in this class: !func", array("!func" => $func)),  "error");
+		}
+	}
+	
+	drupal_set_message(t("Available badges have been awarded"));
+}
+
 function badge_unearned_list()
 {
 	global $user;

@@ -102,6 +102,7 @@ function badge_update_1()
 	));
 	
 	return $update;
+}
 
 function badge_uninstall()
 {

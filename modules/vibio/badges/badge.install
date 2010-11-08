@@ -36,6 +36,13 @@ function badge_schema()
 					"size"		=> 255,
 					"not null"	=> true,
 				),
+				"list_show"		=> array(
+					"type"		=> "int",
+					"size"		=> "tiny",
+					"unsigned"	=> true,
+					"not null"	=> true,
+					"default"	=> 0,
+				),
 			),
 			"primary key"	=> array("bid"),
 			"indexes"		=> array(
@@ -82,5 +89,18 @@ function badge_schema()
 function badge_install()
 {
 	drupal_install_schema("badge");
+}
+
+function badge_update_1()
+{
+	db_add_field($update, "badge", "list_show", array(
+		"type"		=> "int",
+		"unsigned"	=> true,
+		"size"		=> "tiny",
+		"not null"	=> true,
+		"default"	=> 0,
+	));
+	
+	return $update;
 }
 ?>

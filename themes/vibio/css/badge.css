@@ -6,8 +6,14 @@
 	max-height: 150px;
 }
 
+#badge_alert_container .badge_alert_single div.badge_title {
+	font-weight: bold;
+	height: 25px;
+	margin: 5px 0 10px;
+}
+
 #badge_alert_container .badge_alert_single {
-	height: 150px;
+	min-height: 150px;
 }
 
 #badge_alert_container .badge_alert_badge {

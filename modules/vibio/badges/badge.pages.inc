@@ -57,6 +57,11 @@ function badge_edit($form, $badge)
 			"#type"	=> "value",
 			"#value"=> $badge,
 		),
+		"list_show"		=> array(
+			"#type"			=> "checkbox",
+			"#title"		=> t("Show badge on list of badges users can earn"),
+			"#default_value"=> $badge->list_show,
+		),
 		"image_upload"	=> array(
 			"#type"	=> "file",
 			"#title"=> t("Image"),
@@ -139,15 +144,15 @@ function badge_edit_submit($form, &$state)
 	if ($vals['badge'])
 	{
 		$sql = "UPDATE {badge}
-				SET `image`='%s', `title`='%s', `description`='%s', `type`=%d, `trigger`='%s'
+				SET `image`='%s', `title`='%s', `description`='%s', `type`=%d, `trigger`='%s', `list_show`=%d
 				WHERE `bid`=%d";
-		db_query($sql, $vals['image'], $vals['title'], $vals['description'], $vals['type'], $vals['trigger'], $vals['badge']->bid);
+		db_query($sql, $vals['image'], $vals['title'], $vals['description'], $vals['type'], $vals['trigger'], $vals['list_show'], $vals['badge']->bid);
 	}
 	else
 	{
 		$sql = "INSERT INTO {badge}
-				SET `image`='%s', `title`='%s', `description`='%s', `type`=%d, `trigger`='%s'";
-		db_query($sql, $vals['image'], $vals['title'], $vals['description'], $vals['type'], $vals['trigger']);
+				SET `image`='%s', `title`='%s', `description`='%s', `type`=%d, `trigger`='%s', `list_show`=%d";
+		db_query($sql, $vals['image'], $vals['title'], $vals['description'], $vals['type'], $vals['trigger'], $vals['list_show']);
 	}
 	
 	drupal_set_message(t("The badge !title has been saved", array("!title" => $vals['title'])));
@@ -186,5 +191,45 @@ function badge_special_triggers_page()
 	$out .= "</table>";
 	
 	return $out;
+}
+
+function badge_unearned_list()
+{
+	global $user;
+	
+	$sql = "SELECT *
+			FROM {badge}
+			WHERE `list_show`=1
+				AND `bid` NOT IN (
+					SELECT `bid`
+					FROM {badge_user_badges}
+					WHERE `uid`=%d
+				)
+			ORDER BY `type`, `trigger`";
+	$res = db_query($sql, $user->uid);
+	
+	$out = "";
+	while ($badge = db_fetch_object($res))
+	{
+		$badge->image_src = file_create_url($badge->image);
+		$out .= theme("badge_alert_badge_single", $badge);
+	}
+	
+	if (!$out)
+	{
+		$out = t("You've earned all publicly visible badges!");
+	}
+	else
+	{
+		$header = t("Unearned Badges");
+		$out = "
+			<div id='badge_alert_container'>
+				<div style='font-weight: bold; margin-bottom: 10px;'>$header</div>
+				$out
+			</div>
+		";
+	}
+	
+	exit($out);
 }
 ?>

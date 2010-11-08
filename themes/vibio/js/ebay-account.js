@@ -27,8 +27,10 @@ $(document).ready(function()
 		return false;
 	});
 	
-	$(".ebay_add_account").click(function()
+	$(".ebay_add_account").live("click", function()
 	{
+		vibio_utility.dialog_busy();
+		
 		$.ajax({
 			url: "/ebay/ajax/theme",
 			type: "post",

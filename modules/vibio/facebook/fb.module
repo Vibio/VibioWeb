@@ -447,4 +447,27 @@ function fb_newuser_tutorial($u, $user_stage)
 		),
 	));
 }
+
+function fb_profile_ext_progress($uid)
+{
+	$possible_points = 5;
+	
+	module_load_include("inc", "fb");
+	$points = fb_user_has_fb($uid) ? $possible_points : 0;
+	
+	$data = array(
+		"possible_points"	=> $possible_points,
+		"points"			=> $points,
+		"complete"			=> $points == $possible_points,
+	);
+	
+	if (!$points)
+	{
+		$data['completion_steps'] = array(
+			l(t("Link your Facebook Account"), "fb/add-account", array("attributes"	=> array("class" => "fb_link_account")))
+		);
+	}
+	
+	return array(t("fb") => $data);
+}
 ?>

@@ -42,6 +42,19 @@ $(document).ready(function()
 		$("a[href='"+Drupal.settings.profile_settings.default_tab+"']").click();
 	}
 	
+	if (Drupal.settings.profile_ext.profile_progress)
+	{
+		$("#profile_progressbar").progressbar({
+			value: Drupal.settings.profile_ext.profile_progress
+		});
+		
+		$("#profile_completion_steps_init").click(function()
+		{
+			vibio_dialog.create($("#profile_completion_steps_container").html());
+			return false;
+		});
+	}
+	
 	function user_profile_set_bg()
 	{
 		var height = $("#profile_picture").css("height");

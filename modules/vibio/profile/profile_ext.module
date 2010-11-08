@@ -145,6 +145,11 @@ function profile_ext_theme(&$existing, $type, $theme, $path)
 			"template"	=> "templates/profile/dashboard",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+		"profile_ext_profile_progress"	=> array(
+			"arguments"	=> array("completion_steps" => ""),
+			"template"	=> "templates/profile/profile-progress",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
 	);
 }
 
@@ -192,14 +197,29 @@ function profile_ext_get_progress($uid)
 {
 	$total = 0;
 	$completed = 0;
+	$completion_steps = array();
 	
 	foreach (module_invoke_all("profile_ext_progress", $uid) as $category => $data)
 	{
 		$total += $data['possible_points'];
 		$completed += $data['points'];
+		$steps = $data['completion_steps'] ?: array();
+		
+		foreach ($steps as $link)
+		{
+			$completion_steps[] = $link;
+		}
 	}
 	
-	return number_format(100*($completed/$total));
+	$completion_steps = implode("<br />", $completion_steps);
+	
+	drupal_add_js(array(
+		"profile_ext"	=> array(
+			"profile_progress"	=> (int) number_format(100*($completed/$total), 0),
+		),
+	), "setting");
+	
+	return theme("profile_ext_profile_progress", $completion_steps);
 }
 
 function profile_ext_profile_ext_progress($uid)
@@ -241,7 +261,7 @@ function profile_ext_profile_ext_progress($uid)
 			$text = t("Complete !category profile info (!missing items missing)", $params);
 			
 			$data['complete'] = false;
-			$data['completion_steps'][$text] = "/user/{$uid}/edit/{$category}";
+			$data['completion_steps'][] = l($text, "user/$uid/edit/$category");
 		}
 	}
 	
@@ -257,7 +277,11 @@ function profile_ext_preprocess_user_profile(&$vars)
 	$uid = $args[1];
 	$target_user = user_load($uid);
 	
-	$vars['profile']['profile_progress'] = profile_ext_get_progress($uid);
+	if ($user->uid == $uid)
+	{
+		$vars['profile']['profile_progress'] = profile_ext_get_progress($uid);
+	}
+	
 	$vars['profile']['user'] = $target_user;
 	$vars['profile']['demographics'] = theme("profile_ext_view_fields", $target_user, "demographics");
 	$vars['profile']['public_info'] = profile_ext_public_info($uid);

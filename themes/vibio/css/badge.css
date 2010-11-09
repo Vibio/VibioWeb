@@ -4,6 +4,7 @@
 
 #badge_alert_container .badge_alert_single img.badge_image {
 	max-height: 150px;
+	margin-top: 10px;
 }
 
 #badge_alert_container .badge_alert_single div.badge_title {

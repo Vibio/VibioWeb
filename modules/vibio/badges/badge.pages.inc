@@ -292,4 +292,18 @@ function badge_unearned_list()
 	
 	exit($out);
 }
+
+function badge_get_info($badge)
+{
+	$badge->image_src = file_create_url($badge->image);
+	
+	$out = theme("badge_alert_badge_single", $badge);
+	$out = "
+		<div id='badge_alert_container'>
+			$out
+		</div>
+	";
+	
+	exit($out);
+}
 ?>

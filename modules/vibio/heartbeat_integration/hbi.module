@@ -148,6 +148,18 @@ function hbi_offer2buy_set_item_on_sale($nid)
 	hbi_node_log_update_queue($node->nid, $params);
 }
 
+function hbi_badge_give_badge($uid, $badge)
+{
+	$u = user_load($uid);
+	$message_id = "heartbeat_give_badge";
+	$variables = array(
+		"@user"	=> l($u->name, "user/{$u->uid}"),
+		"@badge"=> l($badge->title, "badge/{$badge->bid}/info", array("attributes" => array("class" => "badge_get_info"))),
+	);
+	
+	heartbeat_api_log($message_id, $uid, 0, 0, 0, $variables);
+}
+
 /*
  the last_resort param should be used for messages that should only get logged only if there are no other messages
  for nid. This is useful for node updating, where the messages "X is selling Y", "X bought Y", etc can be used in place

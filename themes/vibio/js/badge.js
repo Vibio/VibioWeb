@@ -30,4 +30,30 @@ $(document).ready(function()
 		
 		return false;
 	});
+	
+	var badge_info = {};
+	$(".badge_get_info").live("click", function()
+	{
+		var href = $(this).attr("href");
+		
+		if (badge_info[href])
+		{
+			vibio_dialog.create(badge_info[href]);
+		}
+		else
+		{
+			vibio_utility.dialog_busy();
+			
+			$.ajax({
+				url: href,
+				success: function(html, stat)
+				{
+					badge_info[href] = html;
+					vibio_utility.dialog_unbusy(badge_info[href]);
+				}
+			})
+		}
+		
+		return false;
+	});
 });

@@ -57,6 +57,11 @@ function vviews_nodeapi(&$node, $op, $a3=null, $a4=null)
 	}
 }
 
+function vviews_badge_give_badge($uid, $badge)
+{
+	_vviews_clear_cache($uid, "user_heartbeat_activity", "badge_give_badge");
+}
+
 function vviews_privacy_update_user($form, $user, $category)
 {
 	if ($category == "account")

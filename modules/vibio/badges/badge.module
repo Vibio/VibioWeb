@@ -70,6 +70,13 @@ function badge_menu()
 			"file"				=> "badge.pages.inc",
 			"type"				=> MENU_CALLBACK,
 		),
+		"badge/%badge/info"				=> array(
+			"page callback"		=> "badge_get_info",
+			"page arguments"	=> array(1),
+			"access arguments"	=> array("access content"),
+			"file"				=> "badge.pages.inc",
+			"type"				=> MENU_CALLBACK,
+		),
 	);
 }
 
@@ -299,6 +306,8 @@ function badge_user_relationships($op, &$rel)
 function badge_preprocess_page(&$vars)
 {
 	global $user;
+	
+	drupal_add_js("themes/vibio/js/badge.js");
 
 	$sql = "SELECT b.bid, b.`image`, b.`title`, b.`description`, ub.`tstamp`
 			FROM {badge} b JOIN {badge_user_badges} ub
@@ -329,7 +338,6 @@ function badge_preprocess_page(&$vars)
 	$popup_html = theme("badge_alert", $badges);
 	
 	drupal_add_css("themes/vibio/css/badge.css");
-	drupal_add_js("themes/vibio/js/badge.js");
 	drupal_add_js(array(
 		"badge"	=> array(
 			"popup_html" => $popup_html,
@@ -343,7 +351,6 @@ function badge_preprocess_badge_list($vars)
 	
 	module_load_include("inc", "badge");
 	drupal_add_css("themes/vibio/css/badge.css");
-	drupal_add_js("themes/vibio/js/badge.js");
 	
 	$out = "";
 	foreach (badge_get_user_badges($vars['uid']) as $bid => $badge)

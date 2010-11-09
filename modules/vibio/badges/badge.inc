@@ -21,6 +21,8 @@ function badge_give_badge($bid, $uid=false, $delivered=false)
 	$sql = "INSERT IGNORE INTO {badge_user_badges}
 			SET `bid`=%d, `uid`=%d, `tstamp`=%d, `delivered`=%d";
 	db_query($sql, $bid, $uid, time(), $delivered);
+	
+	module_invoke_all("badge_give_badge", $uid, badge_load($bid));
 }
 
 function badge_user_has_badge($bid, $uid=false)

@@ -90,15 +90,16 @@ function badge_award_back_dated_badges_4()
 	}
 }
 
-function badge_award_back_dated_badges_SPECIAL_fb_link()
+// sign up for vibio
+function badge_award_back_dated_badges_SPECIAL_user_create()
 {
-	if (!($badge = badge_load_special("fb_link")))
+	if (!($badge = badge_load_special("user_create")))
 	{
 		return false;
 	}
 	
 	$sql = "SELECT `uid`
-			FROM {fb_uid}
+			FROM {users}
 			WHERE `uid` NOT IN (
 				SELECT `uid`
 				FROM {badge_user_badges}
@@ -108,10 +109,34 @@ function badge_award_back_dated_badges_SPECIAL_fb_link()
 	
 	while ($u = db_fetch_object($res))
 	{
-		badge_give_badge($badge->bid, $u->uid);
+		badge_give_badge($badge->bid, $u->uid, true);
 	}
 }
 
+// link fb account
+function badge_award_back_dated_badges_SPECIAL_fb_link()
+{
+	if (!($badge = badge_load_special("fb_link")))
+	{
+		return false;
+	}
+	
+	$sql = "SELECT `uid`
+			FROM {fb_users}
+			WHERE `uid` NOT IN (
+				SELECT `uid`
+				FROM {badge_user_badges}
+				WHERE `bid`=%d
+			)";
+	$res = db_query($sql, $badge->bid);
+	
+	while ($u = db_fetch_object($res))
+	{
+		badge_give_badge($badge->bid, $u->uid, true);
+	}
+}
+
+// link ebay account
 function badge_award_back_dated_badges_SPECIAL_ebay_link()
 {
 	if (!($badge = badge_load_special("ebay_link")))
@@ -130,7 +155,7 @@ function badge_award_back_dated_badges_SPECIAL_ebay_link()
 	
 	while ($u = db_fetch_object($res))
 	{
-		badge_give_badge($badge->bid, $u->uid);
+		badge_give_badge($badge->bid, $u->uid, true);
 	}
 }
 ?>

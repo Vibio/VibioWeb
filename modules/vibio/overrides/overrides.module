@@ -101,14 +101,7 @@ function overrides_search_submit($form, &$state)
 }
 
 function overrides_form_search_form_alter(&$form, &$state)
-{
-	global $theme;
-	
-	if ($theme != "vibio")
-	{
-		return;
-	}
-	
+{	
 	drupal_add_js("themes/vibio/js/jquery-csb-1.0.js");
 	drupal_add_js("themes/vibio/js/search.js");
 	drupal_add_css("themes/vibio/css/search_page.css");

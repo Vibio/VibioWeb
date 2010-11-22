@@ -603,6 +603,11 @@ span.privatemsg_autocomplete_name {
 	color: white;
 }
 
+.button_mid span.form-submit {
+	position: relative;
+	top: 3px;
+}
+
 .button_right {
 	background: transparent url(/themes/vibio/images/buttons/blueButton_R.png) no-repeat 0 0;
 	float: left;

@@ -12,6 +12,7 @@ echo "
 		{$collection_display}
 	</div>
 	<div id='collection_sidebar'>
+		$add_item_link
 		<h5>{$sidebar_header}</h5>
 		{$collections_link}
 		{$collection_sidebar_output}

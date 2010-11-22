@@ -142,7 +142,18 @@ function collection_preprocess_collection_view_collection(&$vars)
 	
 	if ($vars['collection_owner'] == $user->uid)
 	{
+		$add_text = t("Add Item");
 		$vars['collection_owner_name'] = t("Your");
+		$vars['add_item_link'] = "<a href='/search/vibio_item'>
+			<div class='button_left'></div>
+			<div class='button_mid'>
+				<span class='form-submit'>
+					$add_text
+				</span>
+			</div>
+			<div class='button_right'></div>
+			<div class='clear'></div></a>
+		";
 	}
 	else
 	{

@@ -55,7 +55,6 @@ function imap_fetch_nodeapi(&$node, $op, $a3=null, $a4=null)
 		return;
 	}
 	
-	$x = 1;
 	switch ($op)
 	{
 		case "insert":
@@ -123,6 +122,29 @@ function imap_fetch_forms($id, $args)
 	}
 }
 
+// will move this out once i get this working
+function imap_fetch_service()
+{
+	return array(
+		array(
+			"#method"	=> "imap.save_image",
+			"#callback"	=> "imap_fetch_service_save_image",
+			'#access arguments' => array('imap user'),
+			/*"#file"		=> array(
+				"file"	=> "inc",
+				"module"=> "imap_fetch",
+			),*/
+			"#args"		=> array(
+				array(
+					"#name"	=> "data",
+					"#type"	=> "string",
+				),
+			),
+			"#return"	=> "boolean",
+		)
+	);
+}
+
 function imap_fetch_profile_ext_dashboard_notifications($uid)
 {
 	module_load_include("inc", "imap_fetch");
@@ -171,5 +193,11 @@ function imap_fetch_fetch_images()
 	
 	exit();
 //	exit("Done. Took $time_taken seconds for $count images");
+}
+
+function imap_fetch_service_save_image($data)
+{
+	//$data = base64_decode($data);
+	file_put_contents("/var/www/vibio/test.jpg", $data);
 }
 ?>

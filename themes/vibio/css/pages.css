@@ -380,8 +380,7 @@ ul.links li {
 }
 
 #block-menu-secondary-links {
-	position: relative;
-	top: 75px;
+	padding-top: 75px;
 }
 
 #block-menu-secondary-links .content {

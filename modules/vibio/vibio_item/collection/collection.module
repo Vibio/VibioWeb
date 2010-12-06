@@ -453,7 +453,7 @@ function collection_form_views_exposed_form_alter(&$form, &$state)
 		$collection_default = $form['#id'] == "views-exposed-form-user-collections-default" ? "selected='selected'" : "";
 		$items_default = $form['#id'] == "views-exposed-form-user-inventory-default" ? "selected='selected'" : "";
 
-		$form['#suffix'] = "
+		/*$form['#suffix'] = "
 			<div class='inventory_view_type'>
 				<span>$label</span>
 				<select class='inventory_view_type_select'>
@@ -462,7 +462,7 @@ function collection_form_views_exposed_form_alter(&$form, &$state)
 				</select>
 			</div>
 			<div class='clear'></div>
-		";
+		";*/
 	}
 }
 

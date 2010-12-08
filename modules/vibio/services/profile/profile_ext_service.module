@@ -1,0 +1,16 @@
+<?php
+function profile_ext_service_service()
+{
+	return array(
+		array(
+			"#method"	=> "profile_ext.home",
+			"#callback"	=> "profile_ext_service_home",
+			"#file"		=> array(
+				"file"	=> "inc",
+				"module"=> "profile_ext_service",
+			),
+			"#return"	=> "struct",
+		),
+	);
+}
+?>

@@ -1,0 +1,29 @@
+<?php
+function fb_service_perm()
+{
+	return array(
+		"fb_service remote_user",
+	);
+}
+
+function fb_service_service() 
+{
+	return array(
+		array(
+			"#method"			=> "fb.login",
+			"#callback"			=> "fb_service_login",
+			"#access arguments"	=> array("fb_service remote_user"),
+			"#file"				=> array(
+				"file"	=> "inc",
+				"module"=> "fb_service",
+			),
+			"#args"				=> array(
+				array(
+					"#name"	=> "fb_uid",
+					"#type"	=> "string",
+				),
+			),
+			"#return"			=> "struct",
+		),
+	);
+}

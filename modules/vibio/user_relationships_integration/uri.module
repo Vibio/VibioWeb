@@ -212,17 +212,24 @@ function uri_edit_elaboration_form()
 	);
 }
 
-function uri_profile_ext_dashboard_notifications($uid)
+function uri_profile_ext_dashboard_notifications($uid, $html=true)
 {
 	global $user;
 	
-	$output = "";
+	$output = $html ? "" : array();
 	$num_notifications = 0;
 	
 	foreach (user_relationships_load(array('requestee_id' => $uid, 'approved' => false), array("include_user_info" => true)) as $pending_relationship)
 	{
 		++$num_notifications;
-		$output .= theme("uri_dashboard_notification", "pending", $pending_relationship);
+		if ($html)
+		{
+			$output .= theme("uri_dashboard_notification", "pending", $pending_relationship);			
+		}
+		else
+		{
+			$output[] = (object) array("message" => t("You have a pending friend request"));
+		}
 	}
 	
 	return array(

@@ -145,17 +145,24 @@ function imap_fetch_service()
 	);
 }
 
-function imap_fetch_profile_ext_dashboard_notifications($uid)
+function imap_fetch_profile_ext_dashboard_notifications($uid, $html=true)
 {
 	module_load_include("inc", "imap_fetch");
 	
 	$count = 0;
-	$output = "";
+	$output = $html ? "" : array();
 	
 	foreach (imap_fetch_user_pending_images($uid) as $image)
 	{
 		++$count;
-		$output .= theme("imap_dashboard_notification", $image);
+		if ($html)
+		{
+			$output .= theme("imap_dashboard_notification", $image);
+		}
+		else 
+		{
+			$output[] = (object) array("message" => t("You have a pending image"));
+		}
 	}
 	
 	return array(

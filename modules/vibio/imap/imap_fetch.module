@@ -204,7 +204,19 @@ function imap_fetch_fetch_images()
 
 function imap_fetch_service_save_image($data)
 {
-	//$data = base64_decode($data);
-	file_put_contents("/var/www/vibio/test.jpg", $data);
+	global $user;
+	
+	if ($user->uid && $file_dir = variable_get("imap_files", false))
+	{
+		$time = time();
+		$filename = "android_{$user->uid}_{$time}.jpg";
+		$filepath = "$file_dir/$filename";
+		
+		file_put_contents($filepath, $data);
+		
+		$sql = "INSERT INTO {imap_images}
+				SET `uid`=%d, `filepath`='%s', `timestamp`=%d, `status`=%d";
+		db_query($sql, $user->uid, $filepath, $time, IMAP_STATUS_PENDING);
+	}
 }
 ?>

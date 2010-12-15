@@ -99,6 +99,19 @@ function privacy_nodeapi(&$node, $op, $a3=null, $a4=null)
 	}
 }
 
+function privacy_form_product_node_form_alter(&$form, &$state) 
+{
+	if (module_exists("product") && !product_get_autoadd(false))
+	{
+		return;
+	}
+	
+	if (!$form['#node']->nid)
+	{
+		privacy_form_vibio_item_node_form_alter($form, $state);
+	}
+}
+
 function privacy_form_vibio_item_node_form_alter(&$form, &$state)
 {
 	if ($form['#node']->nid)
@@ -307,6 +320,12 @@ function privacy_offer2buy_complete_actions($old_uid, $node)
 function privacy_product_inventory_quick_add($form_vals)
 {
 	global $user;
+	
+	if ($form_vals['privacy_setting'])
+	{
+		return array();
+	}
+	
 	$privacy_setting = privacy_get($user->uid, "account_setting", "item_default");
 	
 	return array(

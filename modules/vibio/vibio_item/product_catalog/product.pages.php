@@ -167,6 +167,11 @@ function product_add_to_inventory($product, $quick_add=false)
 			$state['values']['collection_info']['cid'] = $product->collection_info['cid'];
 		}
 		
+		if ($product->privacy_setting && module_exists("privacy"))
+		{
+			$state['values']['privacy_setting'] = $product->privacy_setting;
+		}
+		
 		$state['values'] = array_merge_recursive($state['values'], module_invoke_all("product_inventory_quick_add", $state['values']));
 		drupal_execute($form_id, $state, $node);
 		

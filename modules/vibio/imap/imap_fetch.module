@@ -34,6 +34,12 @@ function imap_fetch_menu()
 			"file"				=> "imap_fetch.pages.inc",
 			"type"				=> MENU_CALLBACK,
 		),
+		"imap/receive-image" => array(
+			"page callback"		=> "imap_fetch_receive_image",
+			"access arguments"	=> array("access content"),
+			"file"				=> "imap_fetch.pages.inc",
+			"type"				=> MENU_CALLBACK,
+		),
 	);
 }
 

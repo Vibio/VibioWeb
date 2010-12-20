@@ -68,4 +68,33 @@ function imap_fetch_ajax_service_attach_image($post)
 	imap_fetch_attach_image($post['id'], $node);
 	return t("The image has been attached to !item", array("!item" => $node->title));
 }
+
+function imap_fetch_receive_image()
+{
+	$sessid = $_SERVER['HTTP_SESSION_ID'];
+	$image = file_get_contents("php://input");
+	
+	if (!$sessid || !$image || !($file_dir = variable_get("imap_files", false)))
+	{
+		exit();
+	}
+	
+	$sql = "SELECT `uid`
+			FROM {sessions}
+			WHERE `sid`='%s'";
+	if (!($uid = db_result(db_query($sql, $sessid))))
+	{
+		exit();
+	}
+	
+	$time = time();
+	$filename = "android_{$user->uid}_{$time}.jpg";
+	$filepath = "$file_dir/$filename";
+	
+	file_put_contents($filepath, $image);
+	
+	$sql = "INSERT INTO {imap_images}
+			SET `uid`=%d, `filepath`='%s', `timestamp`=%d, `status`=%d";
+	db_query($sql, $uid, $filepath, $time, IMAP_STATUS_PENDING);
+}
 ?>

@@ -21,7 +21,7 @@ else
 	
 	if (!($description = _vibio_amazon_clean_content($review)))
 	{
-		$description = _vibio_amazon_clean_content_allowhtml($review);
+		//$description = _vibio_amazon_clean_content_allowhtml($review);
 	}
 	
 	if (empty($description))

@@ -239,7 +239,7 @@ function _vibio_amazon_clean_content($text, $tags=array(), $invert=false)
 	$text = nl2br(trim(preg_replace('/<br([ \/]*)>/i', "\n", $text))); //trim leading and trailing br tags
 	$text = preg_replace('/\(([^\)]*)\)/', "", $text); //remove text in ( and ), since it might be something like "click here to find out more!"
 	
-	return $text;
+	return strip_tags($text); // i hope changing this now doesn't break anything...
 }
 
 function _vibio_amazon_clean_content_allowhtml($text)

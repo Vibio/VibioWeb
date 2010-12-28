@@ -190,6 +190,11 @@ function product_theme()
 			"template"	=> "templates/product/inventory-add",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+		"product_inventory_want"=> array(
+			"arguments"	=> array("nid"	=> false),
+			"template"	=> "templates/product/inventory-want",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
 		"product_inventory_manage_link"	=> array(
 			"arguments"	=> array("product"	=> false, "searchcrumb" => ""),
 			"template"	=> "templates/product/inventory-manage-link",
@@ -375,6 +380,7 @@ function product_preprocess_search_result(&$vars)
 	{
 		$item_nid = product_user_owns_product($vars['result']['node']->nid);
 		$vars['search_links'] .= $item_nid ? l(t("You Own This!"), "node/{$item_nid}") : theme("product_inventory_add", $vars['result']['node']->nid);
+		$vars['search_links'] .= $item_nid ? "" : theme("product_inventory_want", $vars['result']['node']->nid); 
 	}
 }
 

@@ -1,14 +1,19 @@
 <?php
+$make_offer = t("make offer");
+$change_offer = t("change offer");
+
 switch ($offer_type)
 {
+	case "button":
+		$init_text = "<button class='offer2buy_init'>$make_offer</button>";
+		break; 
 	case "new":
-		$init_text = t("make offer");
-		$init_text = "&nbsp;- <a class='offer2buy_init'>$init_text</a>";
+		$init_text = "&nbsp;- <a class='offer2buy_init'>$make_offer</a>";
 		break;
 	case "edit":
-		$init_text = t("change offer");
-		$init_text = "<a class='offer2buy_init'>$init_text</a>";
+		$init_text = "&nbsp;- <a class='offer2buy_init'>$change_offer</a>";
 		break;
+	
 }
 ?>
 

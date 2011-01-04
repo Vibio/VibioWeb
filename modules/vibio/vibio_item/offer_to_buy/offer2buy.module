@@ -341,17 +341,13 @@ function offer2buy_get_settings($nid=false)
 	return db_fetch_array(db_query($sql, $nid));
 }
 
-function offer2buy_preprocess_node(&$vars)
-{
-	if (!$vars['teaser'] && $vars['node']->type == "vibio_item")
-	{
-		drupal_add_css("themes/vibio/css/offer2buy.css");
-		drupal_add_js("themes/vibio/js/offer2buy.js");
-	}
+function offer2buy_preprocess_product_owner(&$vars) {
+	$vars['offer2buy'] = theme("offer2buy_init", $vars['item']['node']['nid'], "button");
 }
 
 function offer2buy_preprocess_page(&$vars)
 {
+	drupal_add_css("themes/vibio/css/offer2buy.css");
 	drupal_add_js("themes/vibio/js/offer2buy_actions.js");
 	drupal_add_js("themes/vibio/js/offer2buy.js");
 }

@@ -2,7 +2,7 @@ $(document).ready(function()
 {
 	var in_progress = false;
 	
-	$(".offer2buy_init").click(function()
+	$(".offer2buy_init").live("click", function()
 	{
 		if (in_progress)
 		{

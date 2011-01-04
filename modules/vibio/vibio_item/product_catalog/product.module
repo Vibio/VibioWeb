@@ -1,5 +1,6 @@
 <?php
 define("PRODUCT_SEARCH_RESULTS_PER_PAGE", 10);
+define("PRODUCT_DETAIL_SNIPPET_LENGTH", 256);
 
 function product_perm()
 {

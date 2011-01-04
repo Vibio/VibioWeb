@@ -94,6 +94,7 @@ echo "
 		<a href='/node/{$node->nid}'>
 			$title
 		</a>
+		<h4 class='product_description'>Description</h4>
 		$product_content
 	</div>
 	<div class='clear'></div>

@@ -87,4 +87,10 @@ $(document).ready(function()
 		
 		return false;
 	});
+	
+	$(".product_snippet_link").click(function() {
+	  $(".product_snippet").toggle();
+	  
+	  return false;
+	});
 });

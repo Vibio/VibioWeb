@@ -32,10 +32,30 @@ else
 
 $details = theme("vibio_amazon_item_details", $node);
 
-echo "
-	<h4 class='product_description'>Description</h4>
-	$description
-	<div style='clear: left;'></div>
-	$details
-";	
+if (strlen($description) > PRODUCT_DETAIL_SNIPPET_LENGTH)
+{
+	$snippet = strip_tags(substr($description, 0, PRODUCT_DETAIL_SNIPPET_LENGTH))."...";
+	
+	$body = "
+		<div class='product_snippet'>
+			$snippet <a href='#' class='product_snippet_link'>more</a>
+		</div>
+		<div class='product_snippet product_snippet_expand'>
+			$description 
+			<div class='clear'></div>
+			$details<br />
+			<a href='#' class='product_snippet_link'>less</a>
+		</div>
+	";
+}
+else
+{
+	$body = "
+		$description
+		<div class='clear'></div>
+		$details
+	";
+}
+
+echo $body;
 ?>

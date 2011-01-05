@@ -130,6 +130,16 @@ function fb_get_friends($uid, $cookie=false)
 	return fb_graph_error(json_decode(file_get_contents("https://graph.facebook.com/me/friends?access_token={$cookie['access_token']}")));
 }
 
+function fb_graph_api($path="me", $uid=false) {
+	global $user;
+	
+	if ((!$uid && !($uid = $user->uid)) || !($cookie = fb_verify_cookie($uid))) {
+		return false;
+	}
+	
+	return fb_graph_error(json_decode(file_get_contents("https://graph.facebook.com/{$path}?access_token={$cookie['access_token']}")));
+}
+
 function fb_graph_error($fb_return)
 {
 	if ($fb_return->error)

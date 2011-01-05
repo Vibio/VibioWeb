@@ -470,4 +470,23 @@ function fb_profile_ext_progress($uid)
 	
 	return array(t("fb") => $data);
 }
+
+function fb_badge_user_login($uid) {
+	module_load_include("inc", "fb");
+	
+	$app_id = variable_get("fb_app_id", false);
+	
+	if (!$app_id ||
+		!($badge = badge_load_special("fb_fan")) ||
+		badge_user_has_badge($badge->bid, $uid) ||
+		!($likes = fb_graph_api("me/likes", $uid))) {
+			return;
+	}
+	
+	foreach ($likes->data as $like) {
+		if ($like->id == $app_id) {
+			badge_give_badge($badge->bid, $uid);
+		}
+	}
+}
 ?>

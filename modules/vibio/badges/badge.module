@@ -94,6 +94,8 @@ function badge_user($op, &$edit, &$account, $category=null)
 				badge_give_badge($next_badge->bid, $account->uid);
 			}
 			
+			module_invoke_all("badge_user_login", $account->uid);
+			
 			break;
 		case "insert":
 			module_load_include("inc", "badge");

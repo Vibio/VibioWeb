@@ -487,6 +487,21 @@ function collection_profile_ext_public_info($uid)
 	));
 }
 
+function collection_badge_user_login($uid) {
+	if (!($badge = badge_load_special("100_collections_6_months")) || badge_user_has_badge($badge->bid, $uid)) {
+		return false;
+	}
+	
+	$sql = "SELECT COUNT(*)
+			FROM {collection}
+			WHERE `uid`=%d";
+	$total_collections = db_result(db_query($sql, $uid));
+	
+	if ($total_collections >= 100) {
+		badge_give_badge($badge->bid, $uid);
+	}
+}
+
 function collection_load($cid)
 {
 	if (!is_numeric($cid))

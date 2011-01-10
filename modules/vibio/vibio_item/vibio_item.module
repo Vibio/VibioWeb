@@ -284,10 +284,9 @@ function vibio_item_newuser_tutorial($u, $user_stage)
 }
 
 function vibio_item_badge_user_login($uid) {
-	$badge = badge_load_special("500_items_6_months");
 	$date_diff_tstamp = time() - 60*60*24*30*6; // 6 months
 	
-	if (badge_user_has_badge($badge->bid, $uid)) {
+	if (!($badge = badge_load_special("500_items_6_months")) || badge_user_has_badge($badge->bid, $uid)) {
 		return;
 	}
 	

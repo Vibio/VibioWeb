@@ -171,6 +171,7 @@ function badge_special_triggers_page()
 		"buy_from_friend"	=> t("Buy from a Friend"),
 		"fast_sell"			=> t("Sell an item within 6 hours of listing it"),
 		"fb_fan"			=> t("Become a fan of the Vibio page on Facebook"),
+		"500_items_6_months"=> t("Maintain 500 items listed in your inventory for 6 months"),
 	);
 	
 	$out = "These are the triggers for type SPECIAL that the Vibio code knows about.";

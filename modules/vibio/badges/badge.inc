@@ -128,6 +128,13 @@ function badge_user_get_amount($uid, $type, $filter_params=false)
 					WHERE `uid`=%d";
 			$amount = db_result(db_query($sql, $uid));
 			break;
+		case BADGE_TYPE_SET_ITEM_ON_SALE:
+			$sql = "SELECT COUNT(*)
+					FROM {offer2buy} o JOIN {node} n
+						ON o.`nid`=n.`nid`
+					WHERE n.`uid`=%d
+						AND o.`is_on_sale`=%d";
+			$amount = db_result(db_query($sql, $uid, 1));
 	}
 	
 	return $amount;
@@ -168,6 +175,7 @@ function badge_type_select()
 		BADGE_TYPE_ITEM					=> t("Items (in inventory)"),
 		BADGE_TYPE_ITEM_SELL			=> t("Items (sell)"),
 		BADGE_TYPE_ITEM_BUY_BY_CATEGORYTIME	=> t("Items (bought by category and time)"),
+		BADGE_TYPE_SET_ITEM_ON_SALE		=> t("Set an item for sale"),
 		BADGE_TYPE_FRIENDS				=> t("Friends"),
 		BADGE_TYPE_COLLECTION			=> t("Collections"),
 		BADGE_TYPE_PRODUCT				=> t("Products"),

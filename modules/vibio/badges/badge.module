@@ -7,6 +7,7 @@ define("BADGE_TYPE_FRIENDS", 4);
 define("BADGE_TYPE_ITEM_SELL", 5);
 define("BADGE_TYPE_ITEM_BUY_BY_CATEGORYTIME", 6); // format: amount_category_timeframe (10_5_30 = 10 items of category 5 in 30 days)
 define("BADGE_TYPE_MEMBER_SINCE", 7);
+define("BADGE_TYPE_SET_ITEM_ON_SALE", 8);
 
 define("BADGE_IMAGE_DIR", "badges");
 
@@ -276,6 +277,18 @@ function badge_offer2buy_complete_actions($seller_uid, $node)
 				badge_give_badge($badge->bid, $buyer_uid);
 			}
 		}
+	}
+}
+
+function badge_offer2buy_set_item_on_sale($nid) {
+	module_load_include("inc", "badge");
+	
+	$node = node_load($nid);
+	$count = badge_user_get_amount($node->uid, BADGE_TYPE_SET_ITEM_ON_SALE);
+	$next_badge = badge_get_next_badge(BADGE_TYPE_SET_ITEM_ON_SALE, $count);
+	
+	if ($next_badge && $count >= $next_badge->trigger && !badge_user_has_badge($next_badge->bid, $node->uid)) {
+		badge_give_badge($next_badge->bid, $node->uid);
 	}
 }
 

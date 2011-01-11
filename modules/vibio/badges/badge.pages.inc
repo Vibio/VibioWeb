@@ -267,7 +267,7 @@ function badge_unearned_list()
 					FROM {badge_user_badges}
 					WHERE `uid`=%d
 				)
-			ORDER BY `type`, `trigger`";
+			ORDER BY `type`, CAST(`trigger` AS UNSIGNED INTEGER)";
 	$res = db_query($sql, $user->uid);
 	
 	$out = "";

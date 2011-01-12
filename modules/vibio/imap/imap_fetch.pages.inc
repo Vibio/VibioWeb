@@ -71,8 +71,8 @@ function imap_fetch_ajax_service_attach_image($post)
 
 function imap_fetch_receive_image()
 {
-	$sessid = $_SERVER['HTTP_SESSION_ID'];
-	$image = file_get_contents("php://input");
+	$sessid = $_POST['session_id'];
+	$image = file_get_contents($_FILES['image']['tmp_name']);
 	
 	if (!$sessid || !$image || !($file_dir = variable_get("imap_files", false)))
 	{
@@ -88,7 +88,7 @@ function imap_fetch_receive_image()
 	}
 	
 	$time = time();
-	$filename = "android_{$user->uid}_{$time}.jpg";
+	$filename = "android_{$uid}_{$time}.jpg";
 	$filepath = "$file_dir/$filename";
 	
 	file_put_contents($filepath, $image);

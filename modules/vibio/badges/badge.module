@@ -318,6 +318,15 @@ function badge_user_relationships($op, &$rel)
 	}
 }
 
+function badge_profile_ext_complete_profile($uid) {
+	module_load_include("inc", "badge");
+	
+	if (($badge = badge_load_special("profile_100")) &&
+		!badge_user_has_badge($badge->bid, $uid)) {
+		badge_give_badge($badge->bid, $uid);
+	}
+}
+
 function badge_preprocess_page(&$vars)
 {
 	global $user;

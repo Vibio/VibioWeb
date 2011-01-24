@@ -173,6 +173,7 @@ function badge_special_triggers_page()
 		"fb_fan"			=> t("Become a fan of the Vibio page on Facebook"),
 		"500_items_6_months"=> t("Maintain 500 items listed in your inventory for 6 months"),
 		"100_collections_6_months" => t("Maintain 100 collections for 6 months"),
+		"profile_100"		=> t("Obtain 100% profile completeness"),
 	);
 	
 	$out = "These are the triggers for type SPECIAL that the Vibio code knows about.";

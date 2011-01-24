@@ -213,6 +213,10 @@ function profile_ext_get_progress($uid)
 	
 	$completion_steps = implode("<br />", $completion_steps);
 	
+	if ($total == $completed) {
+		module_invoke_all("profile_ext_complete_profile", $uid);
+	}
+	
 	drupal_add_js(array(
 		"profile_ext"	=> array(
 			"profile_progress"	=> (int) number_format(100*($completed/$total), 0),

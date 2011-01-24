@@ -323,6 +323,7 @@ function badge_preprocess_page(&$vars)
 	global $user;
 	
 	drupal_add_js("themes/vibio/js/badge.js");
+	drupal_add_css("themes/vibio/css/badge.css");
 
 	$sql = "SELECT b.bid, b.`image`, b.`title`, b.`description`, ub.`tstamp`
 			FROM {badge} b JOIN {badge_user_badges} ub
@@ -352,7 +353,6 @@ function badge_preprocess_page(&$vars)
 	
 	$popup_html = theme("badge_alert", $badges);
 	
-	drupal_add_css("themes/vibio/css/badge.css");
 	drupal_add_js(array(
 		"badge"	=> array(
 			"popup_html" => $popup_html,

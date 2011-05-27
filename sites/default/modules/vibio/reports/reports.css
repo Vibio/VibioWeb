@@ -1,0 +1,17 @@
+#reports_flot {
+	width: 800px;
+	height: 600px;
+}
+
+#reports_clear_selection {
+	display: none;
+}
+
+#reports_tooltip {
+	display: none;
+	position: absolute;
+	border: 1px solid #fdd;
+	padding: 2px;
+	background-color: #fee;
+	opacity: 0.8;
+}

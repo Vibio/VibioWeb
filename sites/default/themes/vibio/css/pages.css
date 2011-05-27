@@ -1,0 +1,617 @@
+/* $Id: pages.css,v 1.18.2.3 2010/06/26 17:18:58 johnalbin Exp $ */
+
+/**
+ * @file
+ * Page Styling
+ *
+ * Style the markup found in page.tpl.php. Also includes some styling of
+ * miscellaneous Drupal elements that appear in the $content variable, such as
+ * ul.links, .pager, .more-link, etc.
+ */
+
+
+/*
+ * Body
+ */
+body {
+  margin: 0;
+  padding: 0;
+  background: #304B5E url(/themes/vibio/images/page/header.png) top left repeat-x;
+}
+
+a {
+  text-decoration: none;
+  color: #0092c9;
+}
+
+#page-wrapper {
+  padding: 15px 10px;
+}
+
+#page_title {
+  color: grey;
+}
+
+a.item_link {
+  color: #8e9e30;
+}
+
+/*
+ * The skip navigation link will be completely hidden until a user tabs to the
+ * link. See http://www.webaim.org/techniques/skipnav/
+ */
+#skip-link a,
+#skip-link a:visited {
+  position: absolute;
+  display: block;
+  left: 0;
+  top: -500px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  text-align: center;
+  background-color: #666;
+  color: #fff;
+}
+
+#skip-link a:hover,
+#skip-link a:active,
+#skip-link a:focus {
+  position: static;
+  width: 100%;
+  height: auto;
+  padding: 2px 0 3px 0;
+}
+
+/*
+ * Header
+ */
+
+#header_quick_actions {
+  background: url(/themes/vibio/images/page/top_bar.png) no-repeat;
+  width: 457px;
+  height: 33px;
+  float: right;
+  position: relative;
+  top: 15px;
+}
+
+#logo /* Wrapping link for logo */ {
+  float: left; /* LTR */
+  margin: 0;
+  padding: 0;
+}
+
+#logo img {
+  vertical-align: bottom;
+}
+
+#name-and-slogan /* Wrapper for website name and slogan */ {
+  float: left;
+}
+
+h1#site-name,
+div#site-name /* The name of the website */ {
+  margin: 0;
+  font-size: 2em;
+  line-height: 1.3em;
+}
+
+#site-name a:link,
+#site-name a:visited {
+  color: #000;
+  text-decoration: none;
+}
+
+#site-name a:hover,
+#site-name a:focus {
+  text-decoration: underline;
+}
+
+#site-slogan {
+  display: inline;
+  position: relative;
+  top: -17px;
+  left: 10px;
+}
+
+.region-header /* Wrapper for any blocks placed in the header region */ {
+}
+
+/*
+ * Main (container for everything else)
+ */
+#main-wrapper {
+}
+
+#main {
+}
+
+/*
+ * Content
+ */
+#content {
+}
+
+#content .section {
+}
+
+#mission /* The mission statement of the site (displayed on homepage) */ {
+}
+
+.region-content-top /* Wrapper for any blocks placed in the "content top" region */ {
+}
+
+.breadcrumb /* The path to the current page in the form of a list of links */ {
+  padding-bottom: 0; /* Undo system.css */
+}
+
+h1.title, /* The title of the page */
+h2.title, /* Block title or the title of a piece of content when it is given in a list of content */
+h3.title /* Comment title */ {
+  margin: 0;
+}
+
+tr.even /* Some tables have rows marked even or odd. */ {
+  /* background-color: #eee; */ /* Drupal core uses a #eee background */
+}
+
+tr.odd {
+  /* background-color: #eee; */ /* Drupal core uses a #eee background */
+}
+
+div.messages /* Important messages (status, warning, and error) for the user. See also the declarations in messages.css. */ {
+}
+
+div.status /* Normal priority messages */ {
+}
+
+div.warning,
+tr.warning /* Medium priority messages */ {
+  /* border: 1px solid #f0c020; */ /* Drupal core uses: 1px solid #f0c020 */
+}
+
+div.error,
+tr.error /* High priority messages. See also the .error declaration below. */ {
+}
+
+.error /* Errors that are separate from div.messages status messages. */ {
+  /* color: #e55; */ /* Drupal core uses a #e55 background */
+}
+
+.warning /* Warnings that are separate from div.messages status messages. */ {
+  /* color: #e09010; */ /* Drupal core uses a #e09010 background */
+}
+
+div.tabs /* See also the tabs.css file. */ {
+}
+
+.help /* Help text on a page */ {
+  margin: 1em 0;
+}
+
+.more-help-link /* Link to more help */ {
+  font-size: 0.85em;
+  text-align: right;
+}
+
+#content-area /* Wrapper for the actual page content */ {
+}
+
+ul.links /* List of links */ {
+  margin: 1em 0;
+}
+
+ul.links.inline {
+  display: inline;
+}
+
+ul.links li {
+  display: inline;
+  list-style-type: none;
+}
+
+.pager /* A list of page numbers when more than 1 page of content is available */ {
+  clear: both;
+  margin: 1em 0;
+  text-align: center;
+}
+
+.pager a,
+.pager strong.pager-current /* Each page number in the pager list */ {
+  padding: 0.5em;
+}
+
+.feed-icons /* The links to the RSS or Atom feeds for the current list of content */ {
+  margin: 1em 0;
+}
+
+.more-link /* Aggregator, blog, and forum more link */ {
+  text-align: right; /* LTR */
+}
+
+/*
+ * Closure
+ */
+.region-page-closure {
+	background: #2d3741 url(/themes/vibio/images/page/footer.png) repeat-x;
+	min-height: 155px;
+	width: 100%;
+	margin-top: -75px;
+}
+
+/*
+ * Drupal boxes
+ *
+ * Wrapper for Comment form, Comment viewing options, Menu admin, and
+ * Search results.
+ */
+.box /* Wrapper for box */ {
+}
+
+.box h2 /* Box title */ {
+}
+
+.box .content /* Box's content wrapper */ {
+}
+
+/*
+ * Markup free clearing (See: http://www.positioniseverything.net/easyclearing.html )
+ */
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+/**
+ * Hide elements from all users.
+ *
+ * Used for elements which should not be immediately displayed to any user. An
+ * example would be a collapsible fieldset that will be expanded with a click
+ * from a user. The effect of this class can be toggled with the jQuery show()
+ * and hide() functions.
+ */
+.element-hidden {
+  display: none;
+}
+
+/**
+ * Hide elements visually, but keep them available for screen-readers.
+ *
+ * Used for information required for screen-reader users to understand and use
+ * the site where visual display is undesirable. Information provided in this
+ * manner should be kept concise, to avoid unnecessary burden on the user. Must
+ * not be used for focusable elements (such as links and form elements) as this
+ * causes issues for keyboard only or voice recognition users. "!important" is
+ * used to prevent unintentional overrides.
+ */
+.element-invisible {
+  position: absolute !important;
+  clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+  clip: rect(1px, 1px, 1px, 1px);
+}
+
+.rounded_container {
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  background-color: rgba(183, 226, 255, 0.15);
+  padding: 5px !important;
+}
+
+.rounded_content {
+  background: white;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  margin: 0;
+  padding: 10px;
+}
+
+.rounded_left_side {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  -moz-border-radius-topleft: 4px;
+  -moz-border-radius-bottomleft: 4px;
+  margin: 0;
+  padding: 0 0 0 5px;
+}
+
+#block-fb-fb_api_init, #block-fb-fb_dialogs {
+  padding: 0;
+}
+
+.image_reflection {
+  -webkit-box-reflect: below 0 -webkit-gradient(linear, 0 0, 0 100%, color-stop(.75, transparent), to(white));
+}
+
+#content.reflection {
+  -webkit-box-reflect: below 5px -webkit-gradient(linear, 0 0, 0 100%, color-stop(.85, transparent), to(white));
+}
+
+#content-area .rounded_content {
+	min-height: 700px;
+}
+
+/*#content-area .rounded_content {
+  background: #f9f9f9;
+  border: 1px solid #eaeaea;
+}*/
+
+.sidebar .rounded_content {
+  background: #252f35;
+  color: white;
+}
+
+.sidebar .rounded_content a {
+  color: #B9D9F0;
+  font-size: 13px;
+  font-family: Helvetica;
+}
+
+.sidebar .rounded_content a.active {
+  font-weight: bold;
+}
+
+.sidebar .item-list ul, .sidebar ul.menu {
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar .item-list ul li, .sidebar ul.menu li {
+  padding: 0;
+  margin: 5px 0 0;
+  list-style-type: none;
+  list-style-image: none;
+}
+
+.sidebar #user-login-form li.openid-link a, #user-login li.openid-link a {
+  background: none;
+}
+
+.clear {
+  clear: both;
+  height: 0;
+}
+
+.comment .picture img, .view .picture img, .view-content .picture img  {
+	max-height: 40px;
+}
+
+#block-menu-secondary-links {
+	padding-top: 75px;
+}
+
+#block-menu-secondary-links .content {
+  text-align: center;
+}
+
+#block-menu-secondary-links .content a {
+  padding: 0 15px;
+  border-left: 1px solid #5C6C79;
+}
+
+#block-menu-secondary-links .content a:first-child {
+  padding-left: 0;
+  border-left: none;
+}
+
+#block-menu-secondary-links h2 {
+	display: none;
+}
+
+#block-menu-secondary-links ul.menu {
+	margin: 0;
+}
+
+#block-menu-secondary-links ul.menu li {
+	list-style-image: none;
+	list-style-type: none;
+	float: left;
+	margin-right: 30px;
+}
+
+#block-menu-secondary-links ul.menu li a.active {
+	color: #0092C9;
+}
+
+.region-sidebar-first h2.title {
+  display: none;
+}
+
+#block-user-1 {
+  border-bottom: 1px solid #313D45;
+  margin-bottom: 2px;
+  padding-bottom: 5px;
+}
+
+.menu_with_count_text {
+  float: left;
+}
+
+.menu_with_count_count {
+  float: right;
+  color: #B5CA3E;
+  font-weight: bold;
+}
+
+.indent {
+  margin-left: 25px;
+}
+
+.search-results.user .picture img {
+	max-width: 40px;
+}
+
+.search-results.user .search_user_info {
+	padding-left: 5px;
+	width: 500px;
+}
+
+/* search type selector */
+#search_type_menu_container {
+	float: left;
+	margin-right: -2px;
+	position: relative;
+	top: 1px;
+}
+
+#search_type_menu_container:hover {
+	cursor: pointer;
+}
+
+#search_type_menu_container table {
+	margin: 0;
+}
+
+#search_type_menu_container table tbody {
+	border-top: 0;
+}
+
+img#search_type_current {
+	width: 19px;
+	height: 19px;
+}
+
+#search_type_submenu {
+	display: none;
+}
+
+.search_type_submenu_container {
+	background: white;
+	border: 1px solid black;
+	opacity: 0.85 !important;
+	filter: alpha(opacity=85) !important;
+}
+
+.search_type_submenu_container table {
+	margin: 0;
+}
+
+.search_type_submenu_container .searchtype_image {
+	max-width: 30px;
+	max-height: 30px;
+	margin-bottom: -5px;
+}
+
+#content-area fieldset.rounded_content {
+	min-height: 0 !important;
+	background: #e0f2ff;
+	border: 1px solid #c7e5fd;
+	padding: 15px;
+	margin-bottom: 10px;
+}
+
+fieldset > div.title {
+	color: #464f54;
+	font-size: 1.5em;
+	margin: 0;
+}
+
+h5.menu_header {
+	margin: 5px 0 0;
+	color: white;
+}
+
+.region-sidebar-first span.menu_description {
+	color: #c6e4ef;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+#user-login-form {
+	background: #333f47;
+	padding: 2px 5px;
+	margin-top: 10px;
+}
+
+#user-login-form span.form-required {
+	display: none;
+}
+
+#user-login-form input[type='text'], #user-login-form input[type="password"] {
+	border: 1px solid black;
+	width: 135px;
+}
+
+#user-login-form #edit-openid-identifier {
+	width: 115px;
+}
+
+#user-login-form div.form-item#edit-name-wrapper {
+	margin-top: 0;
+}
+
+/* privatemsg */
+img.privatemsg_autocomplete_image {
+	width: 40px;
+	margin: 5px 5px 5px 0;
+}
+
+span.privatemsg_autocomplete_name {
+	position: relative;
+	top: -25px;
+}
+
+.privatemsg-box-fb .left-column .avatar-fb img {
+	max-width: 100px;
+	max-height: 120px;
+}
+
+/* ebay search results */
+.ebay_search_item {
+	margin-bottom: 10px;
+}
+
+.ebay_image {
+	float: left;
+	margin-right: 10px;
+}
+
+.ebay_image img {
+	max-height: 40px;
+}
+
+.ebay_info {
+	float: left;
+	width: 400px;
+}
+
+/* button stuff */
+.button_left {
+	background: transparent url(/themes/vibio/images/buttons/blueButton_L.png) no-repeat 0 0;
+	float: left;
+	width: 12px;
+	height: 36px;
+}
+
+.button_mid {
+	background: transparent url(/themes/vibio/images/buttons/blueButton_Mid.png) repeat-x 0 0;
+	float: left;
+	padding: 5px 10px 0;
+	height: 31px;
+	font-weight: bold;
+	color: white;
+}
+
+.button_mid .form-submit {
+	background: transparent;
+	border: none;
+	font-size: 18px;
+	color: white;
+}
+
+.button_mid span.form-submit {
+	position: relative;
+	top: 3px;
+}
+
+.button_right {
+	background: transparent url(/themes/vibio/images/buttons/blueButton_R.png) no-repeat 0 0;
+	float: left;
+	width: 12px;
+	height: 36px;
+	position: relative;
+	left: -1px
+}

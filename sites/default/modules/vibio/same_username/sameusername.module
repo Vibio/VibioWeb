@@ -1,0 +1,138 @@
+<?php
+define("SAMEUSERNAME_VALIDATION_REGEX", '/the name (.*) is already taken./i');
+
+function sameusername_user($op, &$edit, &$account, $category = NULL)
+{
+	if ($category != "account")
+	{
+		return;
+	}
+	
+	switch ($op)
+	{
+		case "validate":
+			sameusername_validate_username($edit);
+			break;
+	}
+}
+
+function sameusername_form_alter(&$form, &$state, $id)
+{
+	switch ($id)
+	{
+		case "user_pass":
+			$form['name']['#title'] = t("E-mail Address");
+			
+			$form['#validate'] = is_array($form['#validate']) && !empty($form['#validate']) ? $form['#validate'] : array();
+			array_unshift($form['#validate'], "sameusername_validate_user_pass_reset");
+			break;
+		case "user_register":
+			$name = array(
+				"#type"	=> "value",
+				"#value"=> "",
+			);
+			
+			if (isset($form['account'])) // if we are asking for stuff besides just your account infos
+			{
+				$form['account']['name'] = $name;
+			}
+			else
+			{
+				$form['name'] = $name;
+			}
+			
+			$form['fname'] = array(
+				"#type"		=> "textfield",
+				"#title"	=> t("First Name"),
+				"#weight"	=> -2,
+				"#required"	=> true,
+			);
+			$form['lname'] = array(
+				"#type"		=> "textfield",
+				"#title"	=> t("Last Name"),
+				"#weight"	=> -1,
+				"#required"	=> true,
+			);
+			
+			array_unshift($form['#validate'], "sameusername_get_username");
+			break;
+		case 'user_login':
+		case 'user_login_block':
+			$form['name']['#title'] = t("E-mail Address");
+			$form['#validate'][] = "sameusername_validate_login";
+			break;
+	}
+}
+
+function sameusername_get_username($form, &$state)
+{
+	$vals = $state['values'];
+	$full_name = trim("{$vals['fname']} {$vals['lname']}");
+	unset($state['values']['fname']);
+	unset($state['values']['lname']);
+	
+	form_set_value($form['name'], $full_name, $state);
+}
+
+function sameusername_validate_username($edit)
+{
+	if (valid_email_address($edit['name']))
+	{
+		form_set_error("name", t("Your username cannot be an email address"));
+	}
+	
+	if (!($errors = form_get_errors()))
+	{
+		return false;
+	}
+	
+	foreach ($errors as $name => $message)
+	{
+		if (preg_match(SAMEUSERNAME_VALIDATION_REGEX, $message))
+		{
+			form_set_error(null, '', true);
+			unset($_SESSION['messages']['error']); //form_set_error will take care of repopulating this.
+			
+			foreach ($errors as $name => $message)
+			{
+				if (!preg_match(SAMEUSERNAME_VALIDATION_REGEX, $message))
+				{
+					form_set_error($name, $message);
+				}
+			}
+			
+			break;
+		}
+	}
+}
+
+function sameusername_validate_user_pass_reset($form, &$state)
+{
+	if (!valid_email_address($state['values']['name']))
+	{
+		form_set_error("name", t("Invalid E-mail address."));
+	}
+}
+
+function sameusername_privatemsg_sql_autocomplete_alter(&$fragments, $search, $names)
+{
+	$fragments['select'][] = "u.uid";
+	$fragments['select'][] = "u.picture";
+}
+
+function sameusername_privatemsg_name_lookup($str)
+{
+	if (preg_match('/([a-z ]+)\(([\d]+)\)/i', $str, $matches))
+	{
+		$uid = $matches[2];
+		return user_load($uid);
+	}
+	
+	return false;
+}
+
+function _sameusername_privatemsg_format_username($u)
+{
+	return "{$u->name} ({$u->uid})";
+}
+?>

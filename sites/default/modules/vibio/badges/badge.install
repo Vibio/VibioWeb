@@ -1,0 +1,111 @@
+<?php
+function badge_schema()
+{
+	return array(
+		"badge"				=> array(
+			"fields"		=> array(
+				"bid"			=> array(
+					"type"		=> "serial",
+					"unsigned"	=> true,
+					"not null"	=> true,
+				),
+				"image"			=> array(
+					"type" 		=> "varchar",
+					"length"	=> 255,
+					"not null"	=> true,
+				),
+				"title"			=> array(
+					"type" 		=> "varchar",
+					"length"	=> 255,
+					"not null"	=> true,
+				),
+				"description"	=> array(
+					"type" 		=> "varchar",
+					"length"	=> 255,
+					"not null"	=> true,
+				),
+				"type"			=> array(
+					"type"		=> "int",
+					"size"		=> "tiny",
+					"unsigned"	=> true,
+					"not null"	=> true,
+					"default"	=> 0,
+				),
+				"trigger"		=> array(
+					"type" 		=> "varchar",
+					"length"	=> 255,
+					"not null"	=> true,
+				),
+				"list_show"		=> array(
+					"type"		=> "int",
+					"size"		=> "tiny",
+					"unsigned"	=> true,
+					"not null"	=> true,
+					"default"	=> 0,
+				),
+			),
+			"primary key"	=> array("bid"),
+			"indexes"		=> array(
+				"type"	=> array("type"),
+			),
+		),
+		"badge_user_badges"	=> array(
+			"fields"		=> array(
+				"bid"		=> array(
+					"type"		=> "int",
+					"unsigned"	=> true,
+					"not null"	=> true,
+					"default"	=> 0,
+				),
+				"uid"		=> array(
+					"type"		=> "int",
+					"unsigned"	=> true,
+					"not null"	=> true,
+					"default"	=> 0,
+				),
+				"tstamp"	=> array(
+					"type"		=> "int",
+					"unsigned"	=> true,
+					"not null"	=> true,
+					"default"	=> 0,
+				),
+				"delivered"	=> array(
+					"type"		=> "int",
+					"size"		=> "tiny",
+					"unsigned"	=> true,
+					"not null"	=> true,
+					"default"	=> 0,
+				),
+			),
+			"indexes"		=> array(
+				"uid"	=> array("uid"),
+				"bid"	=> array("bid"),
+			),
+			"primary key"	=> array("uid", "bid"),
+		),
+	);
+}
+
+function badge_install()
+{
+	drupal_install_schema("badge");
+}
+
+function badge_update_1()
+{
+	db_add_field($update, "badge", "list_show", array(
+		"type"		=> "int",
+		"unsigned"	=> true,
+		"size"		=> "tiny",
+		"not null"	=> true,
+		"default"	=> 0,
+	));
+	
+	return $update;
+}
+
+function badge_uninstall()
+{
+	drupal_uninstall_schema("badge");
+}
+?>

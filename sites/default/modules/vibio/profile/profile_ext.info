@@ -1,0 +1,6 @@
+name = "Profile Extension"
+description = "Extends user profile functionality with privacy settings"
+core = 6.x
+package = "Vibio"
+dependencies[] = privacy
+dependencies[] = profile

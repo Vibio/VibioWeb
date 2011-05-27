@@ -1,0 +1,6 @@
+name="Amazon Ext."
+description="Additional functionality on top of the Amazon module"
+package="Vibio"
+core=6.x
+dependencies[]=amazon
+dependencies[]=amazon_search

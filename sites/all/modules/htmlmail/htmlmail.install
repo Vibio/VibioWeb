@@ -1,0 +1,143 @@
+<?php
+
+/**
+ * @file
+ * Installation for HTML Mail module.
+ */
+
+/**
+ * Implements hook_requirements().
+ *
+ * Ensures that the newly-required autoload module is available, or else
+ * disables the htmlmail module and returns an informative error message.
+ */
+function htmlmail_requirements($phase) {
+  $result = array();
+  if ($phase === 'install') {
+    return $result;
+  }
+  if ( module_exists('autoload')
+    && function_exists('mailsystem_create_class') ) {
+    // Ensure that the HTMLMailSystem class is used by
+    // (at least) the htmlmail module, so that it always
+    // shows up on the admin/settings/mailsystem page.
+    mailsystem_set(array('htmlmail' => 'HTMLMailSystem'));
+    return $result;
+  }
+  $args = array(
+    '!autoload' => url('http://drupal.org/project/autoload'),
+    '%autoload' => 'Autoload',
+    '!htmlmail' => url('http://drupal.org/project/htmlmail'),
+    '%htmlmail' => 'HTML Mail',
+    '!mailsystem' => url('http://drupal.org/project/mailsystem'),
+    '%mailsystem' => 'Mail System',
+  );
+  if (!module_exists('autoload')) {
+    if ( module_enable(array('autoload'))
+      && module_load_include('module', 'autoload')
+    ) {
+      autoload_boot();
+      autoload_registry_rebuild();
+      drupal_set_message(
+        t('The %autoload module has been enabled because the %htmlmail module now requires it.', $args)
+      );
+      return $result;
+    }
+    $result['htmlmail_autoload'] = array(
+      'title' => t('%autoload module', $args),
+      'value' => t('Not installed'),
+      'description' => t(
+        'The <a href="!htmlmail">%htmlmail</a> module dependencies have changed.  Please download and install the required <a href="!autoload">%autoload</a> module, then re-enable the <a href="!htmlmail">%htmlmail</a> module.', $args
+      ),
+      'severity' => REQUIREMENT_ERROR,
+    );
+  }
+  if (!function_exists('mailsystem_create_class')) {
+    $result['htmlmail_mailsystem'] = array(
+      'title' => t('%mailsystem module', $args),
+      'value' => t('6.x-1.x'),
+      'description' => t(
+        '<a href="!htmlmail">&htmlmail</a> new requires <a href="!mailsystem">%mailsystem</a> 6.x-2.2 or later.  Please download and install a recent version of <a href+"!mailsystem">%mailsystem</a>, then re-enable the <a href="!htmlmail">%htmlmail</a> module.', $args
+      ),
+      'severity' => REQUIREMENT_ERROR,
+    );
+  }
+  return $result;
+}
+
+/**
+ * Implements hook_update_N().
+ *
+ * Removes variables that are no longer used.
+ */
+function htmlmail_update_6200() {
+  variable_del('htmlmail_header');
+  variable_del('htmlmail_footer');
+  variable_del('htmlmail_css');
+  return array();
+}
+
+/**
+ * Implements hook_update_N().
+ *
+ * Increase module weight so dependent modules get loaded first.
+ */
+function htmlmail_update_6202() {
+  return update_sql("UPDATE {system} SET weight = 10 WHERE type = 'module' AND name = 'htmlmail'");
+}
+
+/**
+ * Implements hook_update_N().
+ *
+ * @see htmlmail_requirements()
+ */
+function htmlmail_update_6204() {
+  if ($requirements = htmlmail_requirements('runtime')) {
+    $requirement = array_shift($requirements);
+    return array(
+      '#abort' => array(
+        'success' => FALSE,
+        'query' => $requirement['description'],
+      )
+    );
+  }
+  return array();
+}
+
+/**
+ * Implements hook_enable().
+ */
+function htmlmail_enable() {
+  // Make sure the class include file gets listed in the registry.
+  autoload_registry_update();
+  // Load mailsystem if necessary.
+  module_load_include('module', 'mailsystem');
+  mailsystem_set(array('htmlmail' => 'HTMLMailSystem'));
+  mailsystem_get_classes(TRUE);
+}
+
+/**
+ * Implements hook_disable().
+ */
+function htmlmail_disable() {
+  // Check is necessary because a 6.x-1.x to 6.x-2.x upgrade
+  // may not have mailsystem installed.
+  if (function_exists('mailsystem_clear')) {
+    mailsystem_clear(array('htmlmail' => 'HTMLMailSystem'));
+  }
+}
+
+/**
+ * Implements hook_install().
+ */
+function htmlmail_install() {
+  htmlmail_update_6202();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function htmlmail_uninstall() {
+  db_query("DELETE FROM {variable} WHERE name LIKE 'htmlmail_%'");
+  cache_clear_all('variables', 'cache');
+}

@@ -1,0 +1,19 @@
+<?php
+function product_install()
+{
+	$sql = array(
+		"CREATE TABLE IF NOT EXISTS {product_items} (
+			`product_nid` INT UNSIGNED NOT NULL,
+			`item_nid` INT UNSIGNED NOT NULL,
+			PRIMARY KEY (`product_nid`, `item_nid`),
+			INDEX (`product_nid`),
+			INDEX (`item_nid`)
+		)",
+	);
+	
+	foreach ($sql as $s)
+	{
+		db_query($s);
+	}
+}
+?>

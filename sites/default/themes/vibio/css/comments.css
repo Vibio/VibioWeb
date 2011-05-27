@@ -1,0 +1,47 @@
+/* $Id: comments.css,v 1.5 2009/11/01 20:54:20 johnalbin Exp $ */
+
+/**
+ * @file
+ * Comment Styling
+ */
+
+
+#comments /* Wrapper for the list of comments and its title */ {
+  margin: 1em 0;
+}
+
+.comment {
+	padding: 10px 20px;
+	border-bottom: 1px solid #dbe7eb;
+}
+
+.new /* "New" marker for comments that are new for the current user */ {
+  color: #c00;
+}
+
+.comment .user-signature /* The user's signature */ {
+}
+
+.comment ul.links /* Comment links. See also the ul.links declaration in the pages.css. */ {
+}
+
+.comment .picture_container {
+	width: 75px;
+}
+
+.comment .content {
+	padding-left: 10px;
+	border-left: 1px solid #dbe7eb;
+}
+
+.comment p {
+	margin-top: 0;
+}
+
+.comment .comment_details {
+	font-size: 11px;
+}
+
+.comment table {
+	margin: 0;
+}

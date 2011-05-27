@@ -1,0 +1,242 @@
+<?php
+function uri_menu()
+{
+	$menu = array(
+		"relationships/edit-elaboration/%"	=> array(
+			"title"				=> "Edit Friend Details",
+			"page callback"		=> "uri_edit_elaboration",
+			"page arguments"	=> array(2),
+			"access arguments"	=> array("can have relationships"),
+			"file"				=> "uri.pages.inc",
+			"type"				=> MENU_CALLBACK,
+		),
+	);
+	
+	// user_relationships_ui.module has something similar, but we went everything to be ajax-y fancy pants, so we must provide our own callbacks
+	foreach (array('approve', 'disapprove', 'cancel') as $action)
+	{
+		$menu["relationships/%user/%/{$action}"] = array(
+			"title"				=> "Pending Relationship Action",
+			"access callback"	=> "user_relationships_ui_check_access",
+			"access arguments"	=> array(array("admin", "user"), 1),
+			"page callback"		=> "uri_pending_request_action",
+			"page arguments"	=> array($action, 1, 2),
+			"file"				=> "uri.forms.inc",
+			"type"				=> MENU_CALLBACK,
+		);
+	}
+	
+	$menu["relationships/%user/%user_relationships/remove"] = array(
+		"title"				=> "Remove Relationship",
+		"access callback"	=> "user_relationships_ui_check_access",
+		"access arguments"	=> array(array("admin", "user"), 1),
+		"page callback"		=> "uri_remove_relationship",
+		"page arguments"	=> array(1, 2),
+		"file"				=> "uri.forms.inc",
+		"type"				=> MENU_CALLBACK,
+	);
+	
+	$menu["relationships/%user/%user_relationships_type/request"] = array(
+		"title"				=> "Request Relationship",
+		"access callback"	=> "user_relationships_ui_check_access",
+		"access arguments"	=> array("edit"),
+		"page callback"		=> "uri_request_relationship",
+		"page arguments"	=> array(1, 2),
+		"file"				=> "uri.forms.inc",
+		"type"				=> MENU_CALLBACK,
+	);
+	
+	return $menu;
+}
+
+function uri_menu_alter(&$menu)
+{
+	$menu['relationships/list']['title'] = 'Friends';
+	
+	foreach (user_relationships_types_load() as $rtid => $relationship)
+	{
+		$menu["relationships/{$rtid}"]['type'] = MENU_CALLBACK;
+	}
+	
+	$menu['relationships/requests']['type'] = MENU_CALLBACK;
+
+	$menu['friends'] = array(
+		"title"				=> "Friends",
+		"title callback"	=> "uri_menu_title",
+		"access callback"	=> "user_relationships_ui_check_access",
+		"access arguments"	=> array("edit"),
+		"page callback"		=> "uri_user_friends",
+		"file"				=> "uri.pages.inc",
+		"file path"			=> drupal_get_path("module", "uri"),
+		"type"				=> MENU_SUGGESTED_ITEM,
+	);
+}
+
+function uri_menu_title()
+{
+	global $user;
+	$friend_count = module_exists("network") ? count(_network_get_friends($user->uid, 1)) : 0;
+	
+	return t("Friends (!count)", array("!count" => $friend_count));
+}
+
+function uri_preprocess_user_relationships(&$vars)
+{	
+	$link_options = array(
+		"attributes"	=> array(
+			"class"	=> "uri_edit_elaboartion",
+		),
+	);
+	
+	foreach ($vars['relationships'] as $rid => $rel)
+	{
+		$link = l(t("Edit"), "relationships/edit-elaboration/$rid", $link_options);
+		$vars['relationships'][$rid]->extra_for_display = "
+			<span class='uri_elaboration'>{$rel->extra_for_display}</span>
+			$link
+		";
+	}
+}
+
+function uri_preprocess_page(&$vars)
+{
+	$uri_js = array(
+		"uri"	=> array(
+			"messages"	=> array(
+				"approve"	=> t("You are now friends with !target"),
+				"cancel"	=> t("You have cancelled the friend request to !target"),
+				"disapprove"=> t("You have ignored a friend request from !target"),
+				"remove"	=> t("You are no longer friends with !target"),
+				"request"	=> t("Friend request sent to !target"),
+			),
+		),
+	);
+	drupal_add_js("themes/vibio/js/uri.js");
+	drupal_add_js($uri_js, "setting");
+	drupal_add_css("themes/vibio/css/uri.css");
+}
+
+function uri_preprocess_user_profile(&$vars)
+{
+	global $user;
+	
+	if ($action_links = _user_relationships_ui_actions_between($user, $vars['account']))
+	{
+		$vars['profile']['uri_actions']['actions'] = theme("uri_action_list", $action_links, "after");
+	}
+}
+
+function uri_preprocess_search_result(&$vars)
+{
+	if ($vars['type'] == "user")
+	{
+		global $user;
+		
+		$args = explode("/user/", $vars['result']['link']);
+		$account = user_load((int) $args[1]);
+
+		$vars['search_user_picture'] = theme("user_picture", $account);
+		
+		if ($action_links = _user_relationships_ui_actions_between($user, $account))
+		{
+			$vars['uri_actions']['actions'] = theme("uri_action_list", $action_links, "after");
+		}
+	}
+}
+
+function uri_preprocess_uri_dashboard_notification(&$vars)
+{
+	$rel_actions = "";
+	if ($vars['rel_type'] == "pending")
+	{
+		$approve= theme("user_relationships_pending_request_approve_link", $vars['relationship']->requestee_id, $vars['relationship']->rid);
+		$ignore = theme("user_relationships_pending_request_disapprove_link", $vars['relationship']->requestee_id, $vars['relationship']->rid);
+		
+		$rel_actions = "
+			<table>
+				<tr>
+					<td>
+						<img class='uri_edit_busy_indicator' src='/themes/vibio/images/ajax-loader.gif' />
+					</td>
+					<td>$approve</td>
+					<td>$ignore</td>						
+				</tr>
+			</table>
+		";
+	}
+	
+	$vars['rel_actions'] = $rel_actions;
+}
+
+function uri_theme()
+{
+	return array(
+		"uri_action_list"	=> array(
+			"arguments"	=> array("list" => array(), "busy_indicator_align" => "before"),
+			"template"	=> "templates/uri/action-list",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"uri_dashboard_notification"	=> array(
+			"arguments"	=> array("rel_type" => "pending", "relationship" => false),
+			"template"	=> "templates/uri/dashboard-notification",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"uri_user_friends"	=> array(
+			"arguments"	=> array("notifications" => "", "friends" => ""),
+			"template"	=> "templates/uri/friends",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+	);
+}
+
+function uri_edit_elaboration_form()
+{
+	return array(
+		"#attributes"	=> array(
+			"class"	=> "uri_edit_elaborations_form",
+		),
+		"container"		=> array(
+			"#type"			=> "fieldset",
+			"#title"		=> t("Edit Friend Details"),
+			"#collapsible"	=> false,
+			"elaboration"	=> array(
+				"#title"		=> t("Elaboration"),
+				"#description"	=> t("How do you know !user? Keep in mind that both you and !user are able to view this.", array("!user" => "<span class='uri_elaboration_target'></span>")),
+				"#type"			=> "textarea",
+			),
+			"submit"		=> array(
+				"#type"	=> "submit",
+				"#value"=> t("Save"),
+			),
+		),
+	);
+}
+
+function uri_profile_ext_dashboard_notifications($uid, $html=true)
+{
+	global $user;
+	
+	$output = $html ? "" : array();
+	$num_notifications = 0;
+	
+	foreach (user_relationships_load(array('requestee_id' => $uid, 'approved' => false), array("include_user_info" => true)) as $pending_relationship)
+	{
+		++$num_notifications;
+		if ($html)
+		{
+			$output .= theme("uri_dashboard_notification", "pending", $pending_relationship);			
+		}
+		else
+		{
+			$output[] = (object) array("message" => t("You have a pending friend request"));
+		}
+	}
+	
+	return array(
+		"uri"	=> array(
+			"count"		=> $num_notifications,
+			"display"	=> $output,
+		),
+	);
+}
+?>

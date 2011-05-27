@@ -1,0 +1,5 @@
+name = "Vibio Views"
+description = "Adds functionality to the default views module"
+core = 6.x
+package = "Vibio"
+dependencies[] = views

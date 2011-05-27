@@ -1,0 +1,9 @@
+name = Tweet
+description = Builds links to post pages to Twitter and Twitter API sites.
+core = 6.x
+; Information added by drupal.org packaging script on 2011-05-19
+version = "6.x-4.2"
+core = "6.x"
+project = "tweet"
+datestamp = "1305839516"
+

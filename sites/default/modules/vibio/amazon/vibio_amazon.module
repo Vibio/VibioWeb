@@ -1,0 +1,335 @@
+<?php
+function vibio_amazon_nodeapi(&$node, $op, $a3=null, $a4=null)
+{
+	if ($node->type != "product")
+	{
+		return;
+	}
+
+	switch ($op)
+	{
+		case "presave":
+			if (!empty($node->field_amazon_asin[0]['asin']) && empty($node->taxonomy))
+			{
+				$vid = variable_get("vibio_amazon_category_id", 1);
+				if ($tid = _vibio_amazon_get_vibio_term_from_asin($node->field_amazon_asin[0]['asin'], $vid))
+				{
+					$node->taxonomy[$vid] = $tid;
+				}
+			}
+			break;
+		case "load":
+			return array(
+				"amazon_data"	=> array_shift(amazon_item_lookup_from_db($node->field_amazon_asin[0]['asin'])),
+			);
+			break;
+		case "delete":
+			$sql = "DELETE FROM {amazon_item_node}
+					WHERE `nid`=%d";
+			db_query($sql, $node->nid);
+			break;
+		default:
+			break;
+	}
+}
+
+function vibio_amazon_amazon_item_insert($item)
+{
+	$sql = "SELECT `nid`
+			FROM {amazon_item_node}
+			WHERE `asin`='%s'";
+	if ($nid = db_result(db_query($sql, $item['asin'])))
+	{
+		return $nid;
+	}
+	
+	module_load_include("inc", "node", "node.pages");
+	$vid = variable_get("vibio_amazon_category_id", 1);
+	$tid = _vibio_amazon_get_vibio_term_from_asin($item['asin'], $vid);
+	$product_title = strlen($item['title']) > 255 ? substr($item['title'], 0, 255) : $item['title'];
+	
+	$publisher = user_load(1);
+	$node = array("type" => "product");
+	$state['values'] = array(
+		"title"	=> $product_title,
+		"name"	=> $publisher->name,
+		"op"	=> t("Save"),
+		"field_amazon_asin"	=> array(
+			array(
+				"asin"	=> $item['asin'],
+			),
+		),
+		"taxonomy"	=> array(
+			$vid => $tid,
+		),
+	);
+	
+	_vibio_amazon_add_images($state, $item);
+	drupal_execute("product_node_form", $state, (object) $node);
+	drupal_get_messages(); // don't want the messages to get set
+	
+	//save the relationship between these items
+	$nid = $state['nid'];
+	$sql = "REPLACE INTO {amazon_item_node}
+			SET `nid`=%d, `asin`='%s', `module`='%s'";
+	db_query($sql, $nid, $item['asin'], 'amazon');
+	
+	return $nid;
+}
+
+function _vibio_amazon_add_images(&$state, $item)
+{	
+	if (!isset($item['imagesets']['mediumimage']))
+	{
+		return;
+	}
+	
+	//download the image somewhere...
+	$path = file_directory_path();
+	$item_image = $item['imagesets']['largeimage']['url'];
+	$extension = preg_match('/\.([^\.]+)$/', $item_image, $matches);
+	$extension = $matches[1] ? $matches[1] : "jpg";
+	$file_destination = "{$path}/products/{$item['asin']}.{$extension}";
+	file_put_contents($file_destination, file_get_contents($item_image));
+	
+	//save in {files}..
+	$image_data = image_get_info($file_destination);
+	$mime_type = $image_data['mime_type'] ? $image_data['mime_type'] : "image/jpeg";
+	
+	$file = new stdClass();
+	$file->filename = basename($file_destination);
+	$file->filepath = $file_destination;
+	$file->filemime = $mime_type;
+	$file->filesize = filesize($file_destination);
+	$file->uid = 1;
+	$file->status = FILE_STATUS_PERMANENT;
+	$file->timestamp = time();
+	drupal_write_record("files", $file);
+	$file->fid = db_result(db_query("SELECT `fid` FROM {files} WHERE `filepath`='%s'", $file->filepath));
+	
+	//hax
+	$_SESSION['amazon']['temp_file_fid'] = $file->fid;
+	
+	//add to state
+	$state['values']['field_main_image'] = array(
+		array(
+			"fid"			=> $file->fid,
+			"title"			=> basename($file->filename),
+			"filename"		=> $file->filename,
+			"filepath"		=> $file->filepath,
+			"filesize"		=> $file->filesize,
+			"mimetype"		=> $file->filemime,
+			"description"	=> basename($file->filename),
+			"list"			=> 1,
+		),
+	);
+}
+
+function vibio_amazon_file_references($file)
+{
+	if ($file->fid == $_SESSION['amazon']['temp_file_fid'])
+	{
+		unset($_SESSION['amazon']['temp_file_fid']);
+		return array(
+			"vibio_amazon"	=> 1,
+		);
+	}
+}
+
+function vibio_amazon_product_source()
+{
+	return array(
+		"vibio_amazon" => "Amazon",
+	);
+}
+
+function vibio_amazon_product_search($args)
+{
+	return amazon_search_search("search", $args['keywords'], true);
+}
+
+function vibio_amazon_product_search_modify_search_query(&$sql)
+{
+	$sql .= "
+		n.`nid` NOT IN (
+			SELECT ain.`nid`
+			FROM {amazon_item_node} ain
+			WHERE ain.`nid`=n.`nid`
+		)
+	";
+}
+
+function _vibio_amazon_search_result($item)
+{
+	$sql = "SELECT `nid`
+			FROM {amazon_item_node}
+			WHERE `asin`='%s'";
+	if (!($nid = db_result(db_query($sql, $item['asin']))))
+	{
+		return array();
+	}
+	
+	$node = node_load($nid);
+	$item['node'] = $node;
+	
+	return array(
+		'title'		=> $node->title,
+		'link'		=> $node->path ? url($node->path) : url("node/{$node->nid}"),
+		'extra' 	=> node_invoke_nodeapi($node, 'search result'),
+		'node'		=> $node,
+	);
+}
+
+function vibio_amazon_theme()
+{
+	return array(
+		"vibio_amazon_item_details" => array(
+			"arguments"	=> array("node" => false, "details" => ""),
+			"template"	=> "templates/amazon/amazon-item-details",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"vibio_amazon_item_dvd"	=> array(
+			"arguments"	=> array("item" => array()),
+			"template"	=> "templates/amazon/amazon-item-dvd",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"vibio_amazon_item_games"	=> array(
+			"arguments"	=> array("item" => array()),
+			"template"	=> "templates/amazon/amazon-item-games",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"vibio_amazon_item_software"	=> array(
+			"arguments"	=> array("item" => array()),
+			"template"	=> "templates/amazon/amazon-item-software",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"vibio_amazon_item_music"	=> array(
+			"arguments"	=> array("item" => array()),
+			"template"	=> "templates/amazon/amazon-item-music",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"vibio_amazon_item_book"	=> array(
+			"arguments"	=> array("item" => array()),
+			"template"	=> "templates/amazon/amazon-item-book",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+	);
+}
+
+function vibio_amazon_preprocess_vibio_amazon_item_details(&$vars)
+{
+	$node = $vars['node'];
+	$theme = "vibio_amazon_item_"._amazon_clean_type($node->amazon_data['producttypename']);
+	$vars['details'] = theme($theme, $node->amazon_data);
+}
+
+function _vibio_amazon_clean_content($text, $tags=array(), $invert=false)
+{	
+	if (!empty($tags))
+	{
+		$text = $invert ?
+			preg_replace('@<('. implode('|', $tags) .')\b.*?>.*?</\1>@i', '', $text) :
+			preg_replace('@<(?!(?:'. implode('|', $tags) .')\b)(\w+)\b.*?>.*?</\1>@i', '', $text);
+	}
+	else
+	{
+		$text = $invert ? $text : preg_replace('@<(\w+)\b.*?>.*?</\1>@i', '', $text);
+	}
+	
+	$text = nl2br(trim(preg_replace('/<br([ \/]*)>/i', "\n", $text))); //trim leading and trailing br tags
+	$text = preg_replace('/\(([^\)]*)\)/', "", $text); //remove text in ( and ), since it might be something like "click here to find out more!"
+	
+	return strip_tags($text); // i hope changing this now doesn't break anything...
+}
+
+function _vibio_amazon_clean_content_allowhtml($text)
+{
+	$allowed_tags = array(
+		"b",
+		"br",
+		"h2",
+		"i",
+		"li",
+		"p",
+		"strong",
+		"sub",
+		"sup",
+		"span",
+		"ul",
+		"div",
+	);
+	
+	return _vibio_amazon_clean_content($text, $allowed_tags);
+}
+
+function _vibio_amazon_get_vibio_term_from_asin($asin, $vid)
+{
+	$category_map = array(
+		"Wireless"					=> "Electronics",
+		"CE"						=> "Electronics",
+		"Apparel"					=> "Apparel",
+		"Kitchen"					=> "Kitchen",
+		"DVD"						=> "DVD",
+		"Single Detail Page Misc"	=> "Other",
+		"Personal Computer"			=> "Computers",
+		"Software"					=> "Software",
+		"Office Product"			=> "Office",
+		"Book"						=> "Books",
+		"Digital Music Album"		=> "Music",
+		"eBooks"					=> "eBooks",
+		"Music"						=> "Music",
+		"Beauty"					=> "Health and Beauty",
+		"Magazine"					=> "Magazine",
+		"Toy"						=> "Toy",
+		"Video"						=> "Video",
+		"Baby Product"				=> "Baby",
+		"Sports"					=> "Sports",
+		"Digital Music Track"		=> "Music",
+		"Video Games"				=> "Video Games",
+		"Movie"						=> "Movie",
+		"TV Series Episode Video on Demand" => "TV Series",
+		"Health and Beauty"			=> "Health and Beauty",
+		"Lighting"					=> "Lighting",
+		"Home Improvement"			=> "Home Improvement",
+		"Shoes"						=> "Shoes",
+		"Watch"						=> "Jewelry",
+		"Furniture"					=> "Furniture",
+		"Pet Products"				=> "Pet",
+		"Photography"				=> "Photography",
+		"Lawn & Patio"				=> "Lawn & Patio",
+		"Automotive Parts and Accessories" => "Automotive Parts and Accessories",
+		"Car Audio or Theater" 		=> "Automotive Parts and Accessories",
+		"Home Theater"				=> "Home Theater",
+		"Grocery"					=> "Grocery",
+		"Musical Instruments"		=> "Musical Instruments",
+	);
+	
+	$sql = "SELECT `productgroup`
+			FROM {amazon_item}
+			WHERE `asin`='%s'";
+	if (!($group = db_result(db_query($sql, $asin))))
+	{
+		return false;
+	}
+	
+	if (isset($category_map[trim($group)]))
+	{
+		$sql = "SELECT `tid`
+				FROM {term_data}
+				WHERE `vid`=%d
+					AND `name` LIKE '%s'";
+		$tid = db_result(db_query($sql, $vid, $category_map[trim($group)]));
+	}
+	
+	if (!$tid)
+	{
+		$sql = "SELECT `tid`
+				FROM {term_data}
+				WHERE `vid`=%d
+					AND `name` LIKE 'other'";
+		$tid = db_result(db_query($sql, $vid));
+	}
+	
+	return $tid;
+}
+?>

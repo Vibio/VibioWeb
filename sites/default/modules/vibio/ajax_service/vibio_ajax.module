@@ -1,0 +1,53 @@
+<?php
+function vibio_ajax_perm()
+{
+	return array(
+		"vibio_ajax access",
+	);
+}
+
+function vibio_ajax_menu()
+{
+	return array(
+		"vibio-ajax"	=> array(
+			"page callback"		=> "_vibio_ajax_service",
+			"access arguments"	=> array("vibio_ajax access"),
+			"type"				=> MENU_CALLBACK,
+		),
+	);
+}
+
+function _vibio_ajax_service($func, $arg)
+{
+	$service_function = "_vibio_ajax_".str_replace("-", "_", $func);
+	if (function_exists($service_function))
+	{
+		$service_function($arg);
+	}
+}
+
+function _vibio_ajax_get_friends($uid)
+{
+	$access = module_exists("privacy") ? privacy_get_access_level($uid) : 1;
+	exit(views_embed_view("user_relationships_browser", "default", $uid));
+}
+
+function _vibio_ajax_get_inventory($uid)
+{
+	$access = module_exists("privacy") ? privacy_get_access_level($uid) : 1;
+	exit(views_embed_view("user_inventory", "default", $uid, $access));
+}
+
+function _vibio_ajax_get_relational_activity($uid, $ajax=true)
+{
+	global $user;
+	$return = $user->uid == $uid ? views_embed_view("user_relational_activity", "default", $uid) : t("You are not authorized to view this data.");
+	
+	if ($ajax)
+	{
+		exit($return);
+	}
+	
+	return $return;
+}
+?>

@@ -1,0 +1,168 @@
+<?php
+define("OVERRIDES_FILE_DOWNLOAD_DIRECT", 5);
+
+function overrides_menu_alter(&$menu)
+{
+	$menu['user/%/messages']['type'] = MENU_CALLBACK;
+	$menu['user/%user_category/edit']['type'] = MENU_CALLBACK;
+	$menu['user/%user/openid']['type'] = MENU_CALLBACK;
+}
+
+function overrides_theme()
+{
+	return array(
+		"overrides_search_type_select"	=> array(
+			"arguments"	=> array("search_types" => array()),
+			"template"	=> "templates/overrides/search-type-select",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+	);
+}
+
+function overrides_form_alter($form, &$state, $id)
+{
+	if ($id == "user_register")
+	{
+		drupal_set_title(t("Create A New Account"));
+	}
+}
+
+function overrides_form_user_login_block_alter(&$form, &$state)
+{
+	$title = t("Returning user?");
+	$description = t("Login to Vibio");
+
+	$form['#prefix'] .= "
+		<h5 class='menu_header'>$title</h5>
+		<span class='menu_description'>$description</span>
+	";
+
+	$form['submit']['#value'] = " ";
+}
+
+function overrides_form_system_file_system_settings_alter(&$form, &$state)
+{
+	$form['file_downloads']['#options'][OVERRIDES_FILE_DOWNLOAD_DIRECT] = t("Separate server");
+	$form['file_downloads']['#description'] .= " ".t("Choosing Separate vhost requires that the File URL is filled in with a valid url that will take you to the File system path.");
+	$form['overrides_file_url'] = array(
+		"#type"			=> "textfield",
+		"#title"		=> t("File URL"),
+		"#description"	=> t("The URL to access the file system path. No trailing slash plz."),
+		"#default_value"=> variable_get("overrides_file_url", ""),
+		"#weight"		=> -5,
+	);
+}
+
+function overrides_file_url_alter(&$path)
+{
+	$upload_dir = file_directory_path();
+	$file_url = variable_get("overrides_file_url", false);
+	
+	if ($file_url && variable_get('file_downloads', FILE_DOWNLOADS_PUBLIC) == OVERRIDES_FILE_DOWNLOAD_DIRECT && strpos($path, $upload_dir) === 0)
+	{
+		$path = str_replace($upload_dir, $file_url, $path);
+	}
+}
+
+function overrides_form_search_theme_form_alter(&$form, &$state)
+{
+	global $theme;
+	
+	if ($theme != "vibio")
+	{
+		return;
+	}
+	
+	$form['submit']['#value'] = " ";
+	$form['#submit'][] = "overrides_search_submit";
+
+	$form['search_type'] = array(
+		"#type"			=> "hidden",
+		"#default_value"=> "vibio_item",
+	);
+
+	$form['search_type_select'] = array(
+		"#type"		=> "markup",
+		"#value"	=> theme("overrides_search_type_select", overrides_allowed_search_types()),
+		"#weight"	=> -10,
+	);
+
+	$form['search_theme_form']['#title'] = "";
+}
+
+function overrides_search_submit($form, &$state)
+{
+	$allowed_searches = overrides_allowed_search_types();
+	$default_search = "vibio_item";
+	$search_type = array_key_exists($state['values']['search_type'], $allowed_searches) ? $state['values']['search_type'] : $default_search;
+	$search_term = trim($state['values'][$form['form_id']['#value']]);
+
+	$state['redirect'] = "search/$search_type/$search_term";
+}
+
+function overrides_form_search_form_alter(&$form, &$state)
+{	
+	drupal_add_js("themes/vibio/js/jquery-csb-1.0.js");
+	drupal_add_js("themes/vibio/js/search.js");
+	drupal_add_css("themes/vibio/css/search_page.css");
+	
+	$default = $form['module']['#value'];
+	
+	$form['#prefix'] = "<div id='search_form_container'>";
+	$form['#suffix'] = "</div>";
+	
+	$form['basic']['#title'] = "";
+	$form['basic']['#weight'] = 10;
+	$form['basic']['inline']['submit']['#prefix'] = "<div class='button_left'></div><div class='button_mid'>";
+	$form['basic']['inline']['submit']['#suffix'] = "</div><div class='button_right'></div>";
+	$form['basic']['inline']['#suffix'] .= "<div class='clear'></div>";
+	
+	$form['#submit'][] = "overrides_search_form_submit";
+	$form['search_form_type'] = array(
+		"#type"			=> "select",
+		"#title"		=> t("Search"),
+		"#options"		=> overrides_allowed_search_types(true),
+		"#default_value"=> $default,
+		"#weight"		=> -10,
+	);
+}
+
+function overrides_search_form_submit($form, &$state)
+{
+	$allowed_searches = overrides_allowed_search_types(true);
+	$default_search = "vibio_item";
+	$search_type = array_key_exists($state['values']['search_form_type'], $allowed_searches) ? $state['values']['search_form_type'] : $default_search;
+	$search_term = $state['values']['processed_keys'];
+	
+	$state['redirect'] = "search/$search_type/$search_term";
+}
+
+function overrides_allowed_search_types($show_all_searches=false)
+{
+	if (!$show_all_searches)
+	{
+		return array(
+			"vibio_item"=> array(
+				"title"	=> t("Search Items"),
+				"image"	=> "/themes/vibio/images/icons/default_item.png",
+			),
+			"user"		=> array(
+				"title"	=> t("Search Users"),
+				"image"	=> "/themes/vibio/images/icons/default_user.png",
+			),
+		);
+	}
+	
+	$types = array(
+		"vibio_item"=> t("Vibio"),
+		"user"		=> t("Users"),
+	);
+	
+	if (module_exists("ebay"))
+	{
+		$types['ebay'] = t("eBay");
+	}
+	
+	return $types;
+}
+?>

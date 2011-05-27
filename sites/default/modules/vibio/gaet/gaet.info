@@ -1,0 +1,5 @@
+name = "Google Analytics Event Tracking"
+description = "Hooks into Drupal events to track events using GA"
+package="Statistics"
+core=6.x
+dependencies[] = googleanalytics

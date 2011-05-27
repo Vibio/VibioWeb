@@ -1,0 +1,22 @@
+<?php
+function ebay_install()
+{
+	$sql = array(
+		"CREATE TABLE IF NOT EXISTS {ebay_pending} (
+			`uid` INT UNSIGNED NOT NULL PRIMARY KEY,
+			`session_id` VARCHAR(255) NOT NULL
+		)",
+		"CREATE TABLE IF NOT EXISTS {ebay_users} (
+			`uid` INT UNSIGNED NOT NULL,
+			`ebay_id` VARCHAR(255),
+			`token` TEXT,
+			PRIMARY KEY(`uid`, `ebay_id`)
+		)",
+	);
+	
+	foreach ($sql as $s)
+	{
+		db_query($s);
+	}
+}
+?>

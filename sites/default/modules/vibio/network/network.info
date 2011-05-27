@@ -1,0 +1,5 @@
+name = "Network"
+description = "Stores information on a user's network"
+core = 6.x
+package = "Vibio"
+dependencies[] = user_relationships_api

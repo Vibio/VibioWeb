@@ -1,0 +1,492 @@
+<?php
+function fb_perm()
+{
+	return array(
+		"fb admin",
+		"fb user",
+	);
+}
+
+function fb_menu()
+{
+	return array(
+		"admin/settings/facebook"	=> array(
+			"title"				=> "Facebook Settings",
+			"page callback"		=> "drupal_get_form",
+			"page arguments"	=> array("facebook_admin"),
+			"access arguments"	=> array("fb admin"),
+			"file"				=> "fb.admin.inc",
+			"type"				=> MENU_NORMAL_ITEM,
+		),
+		"facebook/signup"		=> array(
+			"title"				=> "Sign Up Using Facebook",
+			"page callback"		=> "fb_user_signup",
+			"access arguments"	=> array("fb user"),
+			"file"				=> "fb.pages.inc",
+			"type"				=> MENU_CALLBACK,
+		),
+		"facebook/link-account"	=> array(
+			"page callback"		=> "fb_user_link_account",
+			"access arguments"	=> array("fb user"),
+			"file"				=> "fb.pages.inc",
+			"type"				=> MENU_CALLBACK,
+		),
+		"facebook/link-account-ajax"	=> array(
+			"page callback"		=> "fb_user_link_account_ajax",
+			"access arguments"	=> array("fb user"),
+			"file"				=> "fb.pages.inc",
+			"type"				=> MENU_CALLBACK,
+		),
+		"facebook/ff_ajax"		=> array(
+			"page callback"		=> "fb_ff_ajax",
+			"file"				=> "fb.pages.inc",
+			"access arguments"	=> array("fb user"),
+			"type"				=> MENU_CALLBACK,
+		),
+		"facebook/remove-account"	=> array(
+			"page callback"		=> "fb_user_remove_account",
+			"access arguments"	=> array("fb user"),
+			"file"				=> "fb.pages.inc",
+			"type"				=> MENU_CALLBACK,
+		),
+		"fb/remove-account"		=> array(
+			"page callback"		=> "fb_user_remove_account",
+			"access arguments"	=> array("fb user"),
+			"file"				=> "fb.pages.inc",
+			"type"				=> MENU_CALLBACK,
+		),
+	);
+}
+
+function fb_user($op, &$edit, &$u, $category=null)
+{
+	switch ($op)
+	{
+		case "insert":
+			if ($edit['fb_id'])
+			{
+				module_load_include("inc", "fb");
+				fb_save_user($u, $edit['fb_id'], true);
+				$edit['fb_id'] = null;
+			}
+			break;
+		case "delete":
+			$sql = "DELETE FROM {fb_users}
+					WHERE `uid`=%d";
+			db_query($sql, $u->uid);
+			break;
+		case "login":
+			if (!$u->picture)
+			{
+				module_load_include("inc", "fb");
+				if (($pic = fb_get_user_image($u->uid)))
+				{
+					$u->picture = $pic;
+					$sql = "UPDATE {users}
+							SET `picture`='%s'
+							WHERE `uid`=%d";
+					db_query($sql, $pic, $u->uid);
+				}
+			}
+			break;
+	}
+}
+
+function fb_nodeapi(&$node, $op, $a3=null, $a4=null)
+{
+	if ($node->type != "vibio_item")
+	{
+		return;
+	}
+	
+	module_load_include("inc", "fb");
+	
+	switch ($op)
+	{
+		case "insert":
+			fb_register_prompt("share_item", $node->nid);
+			break;
+	}
+}
+
+function fb_offer2buy_set_item_on_sale($nid)
+{
+	module_load_include("inc", "fb");
+	fb_register_prompt("share_item", $nid);
+}
+
+function fb_offer2buy_complete_actions($old_uid, $node)
+{
+	fb_register_prompt("buy_item", $node->nid);
+}
+
+function fb_block($op="list", $delta=0, $edit=array())
+{
+	switch ($op)
+	{
+		case "list":
+			return array(
+				"fb_login"			=> array(
+					"info"	=> t("Facebook Login"),
+				),
+				"fb_dialogs"	=> array(
+					"info"	=> t("Facebook Dialogs"),
+					"cache"	=> BLOCK_CACHE_GLOBAL,
+				),
+				"fb_api_init"		=> array( // this block is REQUIRED for any fb things to work.
+					"info"	=> t("Facebook API Init"),
+					"cache"	=> BLOCK_NO_CACHE,
+				),
+			);
+		case "view":
+			switch ($delta)
+			{
+				case "fb_login":
+					return array(
+						"subject"	=> "",
+						"content"	=> theme("fb_login_block"),
+					);
+				case "fb_api_init":
+					drupal_add_css("themes/vibio/css/facebook.css");
+					module_load_include("inc", "fb");
+					fb_add_js();
+					
+					return array(
+						"subject"	=> "",
+						"content"	=> "<div id='fb-root'></div>",
+					);
+				case "fb_dialogs":
+					return array(
+						"subject"	=> "",
+						"content"	=> theme("fb_dialogs"),
+					);
+			}
+	}
+}
+
+function fb_theme(&$existing, $type, $theme, $path)
+{
+	return array(
+		"fb_login_block"	=> array(
+			"arguments"	=> array(),
+			"template"	=> "templates/facebook/login-block",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"fb_share"			=> array(
+			"arguments"	=> array("share_id" => false, "share_type" => "node", "button_type" => "button"),
+			"template"	=> "templates/facebook/share",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"fb_dialogs"		=> array(
+			"arguments"	=> array(),
+			"template"	=> "templates/facebook/dialogs",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"fb_wrong_login"	=> array(
+			"arguments"	=> array(),
+			"template"	=> "templates/facebook/wrong-login",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"fb_login_prompt"	=> array(
+			"arguments"	=> array(),
+			"template"	=> "templates/facebook/login-prompt",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"fb_share_success"	=> array(
+			"arguments"	=> array(),
+			"template"	=> "templates/facebook/share-success",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"fb_prompt_account_link"	=> array(
+			"arguments"	=> array(),
+			"template"	=> "templates/facebook/prompt-account-link",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"fb_ff_message"		=> array(
+			"arguments"	=> array("message" => "", "href" => false, "message_type" => "link_account"),
+			"template"	=> "templates/facebook/ff-link-account",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+	);
+}
+
+function fb_preprocess_fb_share(&$vars)
+{
+	module_load_include("inc", "fb");
+	$type = $vars['share_type'];
+	
+	if ($type == "node")
+	{
+		$vars['share_params'] = json_encode(fb_get_share_params(node_load($vars['share_id'])));
+	}
+	elseif ($type == "collection" && module_exists("collection"))
+	{
+		$vars['share_params'] = json_encode(fb_get_collection_share_params(collection_load($vars['share_id']), "share_collection"));
+	}
+
+	switch ($vars['button_type'])
+	{
+		case "icon":
+			$vars['share_image'] = "/themes/vibio/images/facebook/share.png";
+			break;
+		case "button":
+			$vars['share_image'] = "/themes/vibio/images/facebook/share_button.png";
+	}
+}
+
+function fb_preprocess_fb_ff_message(&$vars)
+{
+	switch ($vars['message_type'])
+	{
+		case "link_account":
+			$vars['fb_image'] = "/themes/vibio/images/facebook/link-account.png";
+	}
+}
+
+function fb_preprocess_uri_user_friends(&$vars)
+{
+	drupal_add_css("themes/vibio/css/facebook.css");
+}
+
+function fb_network_get_userinfo($uid)
+{
+	$sql = "SELECT `fb_id`
+			FROM {fb_users}
+			WHERE `uid`=%d";
+	if (!($fb_id = db_result(db_query($sql, $uid))))
+	{
+		return array();
+	}
+	
+	return array(
+		"fb_id"	=> array(
+			$fb_id,
+		)
+	);
+}
+
+function fb_profile_ext_external_account_data()
+{
+	return array(
+		"fb_id"	=> array(
+			"id"	=> "fb",
+			"name"	=> "Facebook",
+			"title"	=> t("Facebook Account"),
+			"image"	=> "facebook.png",
+			"remove"=> array(
+				"class"	=> "fb_remove_account",
+			),
+			"add"	=> array(
+				"multiple"	=> false,
+				"class"		=> "fb_link_account",
+			),
+		),
+	);
+}
+
+function fb_collections_insert($collection)
+{
+	module_load_include("inc", "fb");
+	fb_register_prompt("create_collection", $collection['cid'], "collection");
+}
+
+function fb_collection_update($uid, $cids)
+{
+	$cid = array_shift($cids);
+	module_load_include("inc", "fb");
+	fb_register_prompt("share_collection", $cid, "collection");
+}
+
+function fb_network_find_friends($uid, &$potentials, $existing, &$errors)
+{
+	module_load_include("inc", "fb");
+	
+	if (!(fb_user_has_fb($uid)))
+	{
+		$message = t("Connect your Facebook account to see which friends are on Vibio");
+		$href = array("url" => url("fb/add-account"), "class" => "fb_link_account");
+		$errors[] = theme("fb_ff_message", $message, (object) $href, "link_account");
+		
+		return false;
+	}
+	elseif (!($friends = fb_get_friends($uid)))
+	{
+		$fb_login_refresh = array(
+			"attributes"	=> array(
+				"class"	=> "fb_login fb_refresh fb_reload",
+			),
+		);
+		$t_args = array(
+			"!fb_refresh" => l(t("refresh your Facebook session"), "user/{$uid}/external-accounts", $fb_login_refresh),
+		);
+
+		$errors[] = t("Your Facebook session has expired, please !fb_refresh to see which of your Facebook friends are using Vibio", $t_args);
+		return false;
+	}
+	
+	$friends = $friends->data;
+	foreach ($friends as $friend)
+	{
+		if (!($friend_uid = fb_user_exists($friend->id)) || // not on Vibio
+			in_array($friend_uid, $existing) || // already friends
+			array_key_exists($friend_uid, $potentials)) // already in the list of potential friends
+		{
+			continue;
+		}
+		
+		$potential = new stdClass;
+		$potential->info = _network_get_userinfo($friend_uid);
+		$potential->src = "fb";
+		$potential->link = fb_profile_link($friend->id);
+		$potentials[$friend_uid] = $potential;
+	}
+}
+
+function fb_preprocess_network_potential_friend(&$vars)
+{
+	if ($vars['friend']->src == "fb")
+	{
+		$link = t("Facebook profile");
+		$vars['friend_src_link'] = "
+			<a href='{$vars['friend']->link}' target='_blank'>
+				$link
+			</a>
+		";
+	}
+}
+
+function fb_external_account_display($uid, $fb_data, &$user_fb_data, $is_admin)
+{
+	if (!$user_fb_data)
+	{
+		return false;
+	}
+	
+	module_load_include("inc", "fb");
+	$profile_link = l(t("View Facebook Profile"), fb_profile_link($user_fb_data[0]))."<br />";
+	$user_fb_data = array(array(
+		"id"		=> $user_fb_data[0],
+		"display"	=> $profile_link,
+	));
+	
+	return false;
+}
+
+function fb_reports_daily_cron($last_run)
+{
+	$sql = "SELECT COUNT(*)
+			FROM {fb_users}
+			WHERE `is_signup`=%d
+				AND `time` >= %d";
+	$new = db_result(db_query($sql, 1, $last_run));
+	
+	reports_log("new users", $new, "fb signup");
+	
+	if ($emp_role = variable_get("reports_employee_role", false))
+	{
+		$sql = "SELECT COUNT(*)
+				FROM {fb_users}
+				WHERE `is_signup`=%d
+					AND `time` >= %d
+					AND `uid` NOT IN (
+						SELECT `uid`
+						FROM {users_roles}
+						WHERE `rid`=%d
+					)";
+		$total = db_result(db_query($sql, 1, $last_run, $emp_role));
+		reports_log("new users noemployee", $new, "fb signup");
+	}
+}
+
+function fb_newuser_tutorial($u, $user_stage)
+{
+	$stage_number = 1;
+	
+	if ($user_stage >= $stage_number)
+	{
+		return array(array(
+			"stage" => $stage_number,
+			"header"=> t("Find Friends"),
+		));
+	}
+	
+	module_load_include("inc", "fb");
+	$fb_id = fb_user_has_fb($u->uid);
+	$link_account_href = (object) array(
+		"url"	=> url("fb/add-account"),
+		"class" => "fb_link_account fb_link_account_ajax",
+	);
+	
+	$link_account = (object) array(
+		"header"	=> t("Link your Facebook account to see who is already using Vibio"),
+		"available"	=> true,
+		"complete"	=> $fb_id,
+		"content"	=> $fb_id ? "" : theme("fb_ff_message", "", $link_account_href),
+	);
+	
+	$add_friends = (object) array(
+		"header"	=> t("These friends are already using Vibio!"),
+		"available"	=> $fb_id,
+		"complete"	=> false,
+		"content"	=> "",
+	);
+	
+	if ($fb_id && module_exists("network"))
+	{
+		module_load_include("inc", "network", "network.pages");
+		$add_friends->content = network_find_friends($u->uid, false, "fb");
+	}
+	
+	return array(array(
+		"stage"			=> $stage_number,
+		"header"		=> t("Find Friends"),
+		"content_header"=> t("Find your Facebook friends"),
+		"steps"			=> array(
+			$link_account,
+			$add_friends,
+		),
+	));
+}
+
+function fb_profile_ext_progress($uid)
+{
+	$possible_points = 5;
+	
+	module_load_include("inc", "fb");
+	$points = fb_user_has_fb($uid) ? $possible_points : 0;
+	
+	$data = array(
+		"possible_points"	=> $possible_points,
+		"points"			=> $points,
+		"complete"			=> $points == $possible_points,
+	);
+	
+	if (!$points)
+	{
+		$data['completion_steps'] = array(
+			l(t("Link your Facebook Account"), "fb/add-account", array("attributes"	=> array("class" => "fb_link_account")))
+		);
+	}
+	
+	return array(t("fb") => $data);
+}
+
+function fb_badge_user_login($uid) {
+	module_load_include("inc", "fb");
+	
+	$app_id = variable_get("fb_app_id", false);
+	
+	if (!$app_id ||
+		!($badge = badge_load_special("fb_fan")) ||
+		badge_user_has_badge($badge->bid, $uid) ||
+		!($likes = fb_graph_api("me/likes", $uid))) {
+			return;
+	}
+	
+	foreach ($likes->data as $like) {
+		if ($like->id == $app_id) {
+			badge_give_badge($badge->bid, $uid);
+		}
+	}
+}
+?>

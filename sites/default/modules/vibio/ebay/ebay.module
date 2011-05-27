@@ -1,0 +1,299 @@
+<?php
+require_once("ebay.lib.php");
+require_once("ebay.api.php");
+require_once("ebay_comm.lib.php");
+
+define("EBAY_SEARCH_NETWORK", 1);
+define("EBAY_SEARCH_VIBIO", 2);
+define("EBAY_SEARCH_ALL", 3);
+
+function ebay_perm()
+{
+	return array(
+		"ebay admin",
+		"ebay link_account",
+	);
+}
+
+function ebay_menu()
+{
+	return array(
+		"admin/settings/ebay"	=> array(
+			"title"				=> "eBay Integration",
+			"description"		=> "Manage eBay integration settings: keys, api urls, api versions, etc.",
+			"page callback"		=> "drupal_get_form",
+			"access arguments"	=> array("ebay admin"),
+			"page arguments"	=> array("ebay_admin"),
+			"file"				=> "ebay.forms.php",
+		),
+		"ebay/ajax/service"		=> array(
+			"page callback"		=> "ebay_ajax",
+			"access callback"	=> "ebay_access",
+			"access arguments"	=> array("ebay ajax"),
+			"file"				=> "ebay.ajax.php",
+			"type"				=> MENU_CALLBACK,
+		),
+		"ebay/ajax/theme"		=> array(
+			"page callback"		=> "ebay_ajax_theme",
+			"access callback"	=> "ebay_access",
+			"access arguments"	=> array("ebay ajax"),
+			"file"				=> "ebay.ajax.php",
+			"type"				=> MENU_CALLBACK,
+		),
+	);
+}
+
+function ebay_theme(&$existing, $type, $theme, $path)
+{
+	return array(
+		"ebay_link_account_init"	=> array(
+			"arguments"	=> array("session_id" => false),
+			"template"	=> "templates/ebay/link-account",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"ebay_search_results"		=> array(
+			"arguments"	=> array("search_result" => false, 'data' => array()),
+			"template"	=> "templates/ebay/ebay-search-results",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"ebay_search_result_item"	=> array(
+			"arguments"	=> array("item" => false),
+			"template"	=> "templates/ebay/ebay-search-result-item",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+		"ebay_empty_search"			=> array(
+			"template"	=> "templates/ebay/empty-search",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+	);
+}
+
+function ebay_preprocess_ebay_search_results(&$vars)
+{	
+	// set these to have our custom ebay pager output to use the same theme as drupal
+	global $pager_page_array, $pager_total;
+	
+	$pager_element = is_array($pager_page_array) && !empty($pager_page_array) ? count($pager_page_array) : 0;
+	
+	
+	$pager_page_array[$pager_element] = (int) $vars['search_result']->paginationOutput->pageNumber - 1;
+	$pager_total[$pager_element] = (int) $vars['search_result']->paginationOutput->totalPages;
+	
+	$vars['data']['pager'] = theme("pager", array(), variable_get("ebayapi_entriesperpage", 20), $pager_element);
+}
+
+function ebay_preprocess_user_profile(&$vars)
+{
+	$args = explode("/", $_GET['q']);
+	$uid = $args[1];
+	
+	drupal_add_js("var user_profile_uid = $uid;", "inline");
+	drupal_add_js("themes/vibio/js/ebay-search.js");
+}
+
+function ebay_preprocess_ebay_link_account_init(&$vars)
+{
+	global $user;
+	
+	if (!$vars['session_id'])
+	{
+		$vars['session_id'] = ebay_get_session_id();
+	}
+	
+	$sql = "REPLACE INTO {ebay_pending}
+			(`uid`, `session_id`)
+			VALUES
+			(%d, '%s')";
+	db_query($sql, $user->uid, $vars['session_id']);
+}
+
+function ebay_network_get_userinfo($uid)
+{
+	$sql = "SELECT `ebay_id`
+			FROM {ebay_users}
+			WHERE `uid`=%d";
+	$res = db_query($sql, $uid);
+	
+	$ids = array();
+	while ($row = db_fetch_array($res))
+	{
+		$ids[] = $row['ebay_id'];
+	}
+	
+	return array(
+		"ebay_ids"	=> $ids,
+	);
+}
+
+function ebay_search($op="search", $keys=null)
+{
+	switch ($op)
+	{
+		case "search":
+			drupal_add_js("themes/vibio/js/ebay-search.js");
+			return _ebay_search($keys);
+		case "name":
+			return t("eBay");
+		default:
+			break;
+	}
+}
+
+function ebay_search_page($results)
+{
+	return empty($results[0]) ? theme("ebay_empty_search") : theme("ebay_search_results", $results[0]);
+}
+
+function ebay_form_alter(&$form, $state, $id)
+{
+	global $user;
+	
+	if ($id == "search_form" && $form['module']['#value'] == "ebay" && $user->uid > 0)
+	{
+		$options = _ebay_search_user_options();
+		if (isset($form['#parameters'][3]))
+		{
+			preg_match('/users:([a-z]+)/i', $form['#parameters'][3], $defaults);
+			
+			$default_user_option = array_flip($options);
+			$default_user_option = $default_user_option[$defaults[1]];
+		}
+		
+		$form['search_users'] = array(
+			"#type"				=> "select",
+			"#title"			=> t("Users"),
+			"#options"			=> $options,
+			"#default_value"	=> $default_user_option,
+		);
+		
+		$form["#validate"][] = "ebay_search_validate";
+	}
+}
+
+function ebay_search_validate($form, &$state)
+{
+	$vals = &$state['values'];
+	$keys = $vals['processed_keys'];
+	$user_options = _ebay_search_user_options();
+	
+	if (array_key_exists($vals['search_users'], $user_options))
+	{
+		$keys = preg_replace('/(\s+)users:([a-z]+)/i', '', $keys); //remove any existing value
+		$keys .= " users:{$user_options[$vals['search_users']]} ";
+	}
+	
+	form_set_value($form['basic']['inline']['processed_keys'], urldecode(trim($keys)), $state);
+}
+
+function ebay_user_social_info($uid)
+{
+	$sql = "SELECT COUNT(*)
+			FROM {ebay_users}
+			WHERE `uid`=%d";
+	if (!db_result(db_query($sql, $uid)))
+	{
+		return array();
+	}
+	
+	return array(
+		"ebay_inventory"	=> array(
+			"title"	=> t("eBay Listings"),
+			"url"	=> "ebay-items",
+		),
+	);
+}
+
+function ebay_items_user_data($uid)
+{
+	drupal_add_js("themes/vibio/js/ebay-search.js");
+	
+	$args = array(
+		"users"	=> $uid,
+	);
+	
+	$items = ebay_find_items_advanced($args);
+	return theme("ebay_search_results", $items);
+}
+
+function ebay_access($perm)
+{
+	return true;
+}
+
+function ebay_profile_ext_external_account_data()
+{
+	return array(
+		"ebay_ids"	=> array(
+			"id"		=> "ebay",
+			"name"		=> "eBay",
+			"title"		=> t("eBay Accounts"),
+			"js"		=> "themes/vibio/js/ebay-account.js",
+			"image"		=> "ebay.gif",
+			"remove"	=> array(
+				"class"	=> "ebay_remove_account",
+			),
+			"add"		=> array(
+				"class"	=> "ebay_add_account",
+			),
+		),
+	);
+}
+
+function ebay_profile_ext_progress($uid)
+{
+	$possible_points = 3;
+	
+	$sql = "SELECT count(*)
+			FROM {ebay_users}
+			WHERE `uid`=%d";
+	$points = db_result(db_query($sql, $uid)) > 0 ? $possible_points : 0;
+			
+	$data = array(
+		"possible_points"	=> $possible_points,
+		"points"			=> $points,
+	);
+	
+	$data['complete'] = $possible_points == $points;
+	if (!$data['complete'])
+	{
+		$data['completion_steps'] = array(
+			l(t("Link your eBay account"), "ebay/add-account", array("attributes" => array("class" => "ebay_add_account"))),
+		);
+	}
+	
+	return array(t("eBay") => $data);
+}
+
+function _ebay_is_owner($account_name)
+{
+	global $user;
+	
+	$sql = "SELECT COUNT(*)
+			FROM {ebay_users}
+			WHERE `ebay_id`='%s'
+				AND `uid`=%d";
+	return db_result(db_query($sql, $account_name, $user->uid));
+}
+
+/*
+ disabled.
+ function ebay_product_source()
+{
+	return array(
+		"ebay"	=> "eBay",
+	);
+}*/
+
+function ebay_product_search($args)
+{
+	$products = ebay_find_products($args);
+	$results = array();
+	
+	foreach ($products->Product as $p)
+	{
+		$x = $p->ItemSpecifics;
+	}
+	
+	return $results;
+}
+?>

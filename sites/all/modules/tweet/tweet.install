@@ -1,0 +1,46 @@
+<?php
+
+/**
+ * @file
+ *   Builds links to post pages to twitter.
+ */
+
+/**
+ * Implementation of hook_update_N().
+ *
+ * The format of [node-tags] is improved so it doesn't include a leading space.
+ * As a result, we need to fix old formats that expect the leading space.
+ * This doesn't fix every case, but it fixes most.
+ */
+function tweet_update_6400() {
+  //Update to new icon path.
+  $path = drupal_get_path('module', 'tweet');
+  $old = $path .'/icon.png';
+  $new = $path .'/twitter.png';
+  if (variable_get('tweet_image', $new) == $old) {
+    variable_set('tweet_image', $new);
+  }
+
+  $format = variable_get('tweet_format', '[url] [title] [node-tags]');
+  if (strpos($format, '][node-tags]') !== FALSE) {
+    str_replace('][node-tags]', '] [node-tags]', $format);
+    variable_set('tweet_format', $format);
+  }
+  return array();
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function tweet_uninstall() {
+  variable_del('tweet_node_vocabs');
+  variable_del('tweet_new_window');
+  variable_del('tweet_exclude');
+  variable_del('tweet_format');
+  variable_del('tweet_teaser');
+  variable_del('tweet_image');
+  variable_del('tweet_sites');
+  variable_del('tweet_types');
+  variable_del('tweet_node');
+  variable_del('tweet_text');
+}

@@ -1,0 +1,22 @@
+<?php
+function network_install()
+{
+	$sql = array(
+		"CREATE TABLE IF NOT EXISTS {cache_network} (
+			`cid` varchar(255) NOT NULL,
+			`data` longblob,
+			`expire` int(11) NOT NULL DEFAULT 0,
+			`created` int(11) NOT NULL DEFAULT 0,
+			`headers` text,
+			`serialized` smallint(6) NOT NULL DEFAULT 0,
+			PRIMARY KEY (`cid`),
+			KEY `expire` (`expire`)
+		) Engine=MyISAM",
+	);
+	
+	foreach ($sql as $s)
+	{
+		db_query($s);
+	}
+}
+?>

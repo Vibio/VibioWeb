@@ -1,0 +1,56 @@
+<?php
+function gaet_user($op, &$edit, &$u, $category=null)
+{
+	switch ($op)
+	{
+		case "login":
+			gaet_track("user", "login", $u->uid);
+			return;
+	}
+}
+
+function gaet_track($category=null, $action=null, $label=null, $value=null)
+{
+	$gaet_track = "";
+	
+	if (isset($category) && isset($action))
+	{
+		$gaet_track .= "pageTracker._trackEvent('$category', '$action'";
+		
+		if (isset($label))
+		{
+			$gaet_track .= ", '$label'";
+		}
+		if (isset($value))
+		{
+			$gaet_track .= ", '$value'";
+		}
+		
+		$gaet_track .= ");";
+	}
+	
+	$_SESSION['gaet'][] = $gaet_track;
+}
+
+function gaet_get($unset=true)
+{
+	if (empty($_SESSION['gaet']))
+	{
+		return "";
+	}
+	
+	$output = "";
+	
+	foreach ($_SESSION['gaet'] as $gaet)
+	{
+		$output .= $gaet;
+	}
+	
+	if ($unset)
+	{
+		unset($_SESSION['gaet']);
+	}
+	
+	return $output;
+}
+?>

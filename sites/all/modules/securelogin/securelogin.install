@@ -1,0 +1,16 @@
+<?php
+
+/**
+* Delete variables on uninstall
+*/
+function securelogin_uninstall() {
+
+  variable_del('securelogin_redirect');
+  variable_del('securelogin_secure_forms');
+  variable_del('securelogin_loginform');
+  variable_del('securelogin_profileform');
+  variable_del('securelogin_registerform');
+  variable_del('securelogin_original_baseurl');
+} // function securelogin_uninstall
+
+?>

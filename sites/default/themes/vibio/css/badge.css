@@ -1,0 +1,45 @@
+#badge_alert_container {
+	text-align: center;
+}
+
+#badge_alert_container .badge_alert_single img.badge_image {
+	max-height: 150px;
+	margin-top: 10px;
+}
+
+#badge_alert_container .badge_alert_single div.badge_title {
+	font-weight: bold;
+	height: 25px;
+	margin: 5px 0 10px;
+}
+
+#badge_alert_container .badge_alert_single {
+	min-height: 150px;
+}
+
+#badge_alert_container .badge_alert_badge {
+	display: inline;
+	margin-right: 15px;
+	height: 80px;
+}
+
+#badge_alert_container .badge_alert_badge img.badge_image {
+	max-height: 80px;
+}
+
+.badge_list_badge {
+	margin-bottom: 10px;
+}
+
+.badge_list_badge .badge_image_container {
+	float: left;
+	margin-right: 15px;
+}
+
+.badge_list_badge .badge_info {
+	float: left;
+}
+
+.badge_list_badge img.badge_image {
+	max-width: 80px;
+}

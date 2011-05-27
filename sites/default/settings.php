@@ -89,7 +89,7 @@
  *   $db_url = 'mysqli://username:password@localhost/databasename';
  *   $db_url = 'pgsql://username:password@localhost/databasename';
  */
-$db_url = 'mysqli://root:vibio@localhost/vibio';
+$db_url = 'mysql://conferen_4:ZA6fgddA@db140d.pair.com/conferen_vibio';
 $db_prefix = 'drupal_';
 
 /**
@@ -238,6 +238,8 @@ ini_set('url_rewriter.tags',        '');
 #   '@count min' => '@count minutes',
 # );
 
-//override any settings
-$settings_file = dirname(__FILE__)."/../../../local/settings.php";
-require_once($settings_file);
+
+	/* override any settings */
+	$settings_file = dirname(__FILE__)."/../../../local/settings.php";
+	//LIVE live only!!! require_once($settings_file);
+

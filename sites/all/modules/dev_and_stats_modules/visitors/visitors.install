@@ -1,0 +1,132 @@
+<?php
+
+
+/**
+ * @file
+ * Install/uninstall visitors module.
+ */
+
+/**
+ * Install the module with a new database table.
+ */
+function visitors_install() {
+  drupal_set_message(st('Installing visitors module'));
+  drupal_install_schema('visitors');
+}
+
+/**
+ * Uninstall the module with database table and module settings.
+ */
+function visitors_uninstall() {
+  drupal_uninstall_schema('visitors');
+
+  variable_del('visitors_exclude_administer_users');
+  variable_del('visitors_graph_height');
+  variable_del('visitors_graph_width');
+  variable_del('visitors_flush_log_timer');
+  variable_del('visitors_last_registered_user');
+  variable_del('visitors_lines_per_page');
+  variable_del('visitors_published_nodes');
+  variable_del('visitors_registered_user');
+  variable_del('visitors_show_total_visitors');
+  variable_del('visitors_show_unique_visitor');
+  variable_del('visitors_since_date');
+  variable_del('visitors_user_ip');
+}
+
+function visitors_update_6021() {
+  $ret = array();
+
+  switch ($GLOBALS['db_type']) {
+    case 'mysql':
+    case 'mysqli':
+      $ret[] = update_sql("ALTER TABLE {visitors} CHANGE COLUMN visitors_uid visitors_uid int NOT NULL default 0");
+      $ret[] = update_sql("ALTER TABLE {visitors} CHANGE COLUMN visitors_date_time visitors_date_time int NOT NULL default 0");
+      $ret[] = update_sql("ALTER TABLE {visitors} CHANGE COLUMN visitors_url visitors_url varchar(255) NOT NULL default ''");
+      break;
+    case 'pgsql':
+      db_change_column($ret, 'visitors', 'visitors_uid', 'visitors_uid', 'int', array('not null' => TRUE, 'default' => "0"));
+      db_change_column($ret, 'visitors', 'visitors_date_time', 'visitors_date_time', 'int', array('not null' => TRUE, 'default' => "0"));
+      db_change_column($ret, 'visitors', 'visitors_url', 'visitors_url', 'varchar(255)', array('not null' => TRUE, 'default' => "''"));
+      break;
+  }
+
+  return $ret;
+}
+
+function visitors_update_6031() {
+  $ret = array();
+
+  switch ($GLOBALS['db_type']) {
+    case 'mysql':
+    case 'mysqli':
+      $ret[] = update_sql("ALTER TABLE {visitors} CHANGE COLUMN visitors_url visitors_url text NOT NULL");
+      $ret[] = update_sql("ALTER TABLE {visitors} CHANGE COLUMN visitors_referer visitors_referer text NOT NULL");
+      $ret[] = update_sql("ALTER TABLE {visitors} CHANGE COLUMN visitors_user_agent visitors_user_agent text NOT NULL");
+      break;
+    case 'pgsql':
+      db_change_column($ret, 'visitors', 'visitors_url', 'visitors_url', 'text', array('not null' => TRUE));
+      db_change_column($ret, 'visitors', 'visitors_referer', 'visitors_referer', 'text', array('not null' => TRUE));
+      db_change_column($ret, 'visitors', 'visitors_user_agent', 'visitors_user_agent', 'text', array('not null' => TRUE));
+      break;
+  }
+
+  return $ret;
+}
+
+/**
+ * Implementation of hook_schema().
+ */
+function visitors_schema() {
+  $schema['visitors'] = array(
+    'fields' => array(
+      'visitors_id' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+      ),
+      'visitors_uid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'visitors_ip' => array(
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'visitors_date_time' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'visitors_url' => array(
+        'type' => 'text',
+        'not null' => TRUE,
+      ),
+      'visitors_referer' => array(
+        'type' => 'text',
+        'not null' => TRUE,
+      ),
+      'visitors_path' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'visitors_title' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'visitors_user_agent' => array(
+        'type' => 'text',
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('visitors_id'),
+  );
+
+  return $schema;
+}

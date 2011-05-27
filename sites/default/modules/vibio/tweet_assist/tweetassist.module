@@ -1,0 +1,23 @@
+<?php
+function tweetassist_theme()
+{
+	return array(
+		"tweetassist_tweet" => array(
+			"arguments"	=> array("tweet_type" => "node", "type_id" => false),
+			"template"	=> "templates/tweetassist/tweet",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+	);
+}
+
+function tweetassist_preprocess_page(&$vars)
+{
+	drupal_add_css("modules/vibio/tweet_assist/tweetassist.css");
+}
+
+function tweetassist_preprocess_tweetassist_tweet(&$vars)
+{
+	module_load_include("inc", "tweetassist");
+	$vars['tweet_link'] = $vars['tweet_type'] == "node" ? tweetassist_tweet_item($vars['type_id']) : tweetassist_tweet_collection($vars['type_id']);
+}
+?>

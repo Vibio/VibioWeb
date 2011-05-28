@@ -1,5 +1,0 @@
-name = "User Relationship Generation"
-description = "Generates user relationships"
-package = "Development"
-dependencies[] = user_relationships_api
-core = 6.x

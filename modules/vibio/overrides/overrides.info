@@ -1,4 +1,0 @@
-name="Drupal Overrides"
-description="Provides functionality to override drupal functions"
-package="Vibio"
-core="6.x"

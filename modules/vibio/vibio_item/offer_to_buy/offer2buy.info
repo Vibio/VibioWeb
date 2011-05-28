@@ -1,5 +1,0 @@
-name = "Offer to Buy"
-description = "Handles price and offer-to-buy on vibio_item nodes"
-core = 6.x
-package = "Vibio"
-dependencies[] = vibio_item

@@ -1,5 +1,0 @@
-name = "eBay Integration"
-description = "Integrates with eBay"
-core = 6.x
-package = "Vibio"
-dependencies[] = network

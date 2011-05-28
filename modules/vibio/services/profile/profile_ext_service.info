@@ -1,7 +1,0 @@
-name="Profile Ext Service"
-description="Provides an interface for working with the profile_ext module"
-core=6.x
-package="Services - services"
-dependencies[]=user_relationship_service
-dependencies[]=views_service
-dependencies[]=profile_ext

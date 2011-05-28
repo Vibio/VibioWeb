@@ -1,6 +1,0 @@
-name="Collection"
-description="A collection is a set of Vibio Items in a user's inventory with similar characteristics"
-package="Vibio"
-core=6.x
-dependencies[] = vibio_item
-dependencies[] = views

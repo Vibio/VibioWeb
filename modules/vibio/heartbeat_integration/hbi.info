@@ -1,5 +1,0 @@
-name = "Heartbeat Integration"
-description = "Integration between Heartbeat and other things on the site. Provides functionality not supported out-of-the-box"
-core = 6.x
-package = "Vibio"
-dependencies[] = heartbeat

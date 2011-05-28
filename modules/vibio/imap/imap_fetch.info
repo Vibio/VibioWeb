@@ -1,6 +1,0 @@
-name="IMAP Image Fetch"
-description="Downloads new images for users during cron and stores those images for future use"
-dependencies[] = vibio_item
-dependencies[] = collection
-core=6.x
-package="Vibio"

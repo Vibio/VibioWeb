@@ -1,5 +1,0 @@
-name="User Relationships Integration"
-description="Added functionality to user_relationships"
-package="Vibio"
-core=6.x
-dependencies[]=user_relationships_api

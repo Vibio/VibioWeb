@@ -1,7 +1,0 @@
-name="Facebook Service"
-description="Allow users to log in using FB remotely
-core=6.x
-package="Services - services"
-dependencies[]=fb
-dependencies[]=services
-dependencies[]=user

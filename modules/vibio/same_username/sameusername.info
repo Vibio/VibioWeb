@@ -1,5 +1,0 @@
-name="Same Username"
-description="Allow multiple users to have the same username"
-package="Vibio"
-core="6.x"
-dependencies[] = logintoboggan

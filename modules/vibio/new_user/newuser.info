@@ -1,5 +1,0 @@
-name = "New User Tutorial"
-description = "Provides a tutorial for new users on how to use the site"
-core = 6.x
-package = "Vibio"
-dependencies[] = profile_ext

@@ -49,7 +49,7 @@ function _ebay_ajax_remove_account($args)
 {
 	global $user;
 	
-	if (!user_access("administer users") || !_ebay_is_owner($args['account']))
+	if (!user_access("administer users") && !_ebay_is_owner($args['account']))
 	{
 		exit(json_encode(array(
 			"status"	=> false,

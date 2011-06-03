@@ -17,6 +17,7 @@ body {
   margin: 0;
   padding: 0;
   background: #304B5E url(/themes/vibio/images/page/header.png) top left repeat-x;
+			  background: #800000; /* staging only */
 }
 
 a {
@@ -475,7 +476,10 @@ img#search_type_current {
 }
 
 #search_type_submenu {
-	display: none;
+/* stephen-remove-hidden-menu	
+weird, these are larger images, not the ones we want,
+go back to hiding them */
+display: none; 
 }
 
 .search_type_submenu_container {

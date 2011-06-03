@@ -1,0 +1,151 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: BSC\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2010-02-22 13:58+0100\n"
+"Last-Translator: Kirsten Langholz <kirsten.langholz@googlemail.com>\n"
+"Language-Team: Kirsten Langholz <kirsten.langholz@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: Germany\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: visitors.module:16
+msgid "The visitors module used for displaying site visitors."
+msgstr "Das Besucher Modul wird zur Darstellung der Sitebesucher benutzt."
+
+#: visitors.module:19
+msgid "The visitors module used for displaying visitors"
+msgstr "Das Besucher Modul wird für die Darstellung der Besucher benutzt"
+
+#: visitors.module:40
+msgid "Visitors settings"
+msgstr "Besucher Einstellungen"
+
+#: visitors.module:41
+msgid "Configure visitors settings."
+msgstr "Besucher Einstellungen konfigurieren."
+
+#: visitors.module:50
+msgid "Visitors"
+msgstr "Besucher"
+
+#: visitors.module:51
+msgid "View visitors reports from system logs."
+msgstr "Betrachte den Besucherbericht, der durch den Systemlog erstellt wird."
+
+#: visitors.module:61
+msgid "Recent hits"
+msgstr "Aktuelleste Treffer"
+
+#: visitors.module:62
+msgid "View pages that have recently been visited."
+msgstr "Betrachte Seiten, die regelmäßig besucht wurden."
+
+#: visitors.module:70
+msgid "Top pages"
+msgstr "Beliebteste Seiten"
+
+#: visitors.module:71
+msgid "View pages that have been hit frequently."
+msgstr "Betrachte Seiten, die regelmäßig betrachtet wurden."
+
+#: visitors.module:79
+msgid "Monthly history"
+msgstr "Monatliche Chronik"
+
+#: visitors.module:80
+msgid "View pages count per month."
+msgstr "Betrachte Seitenzähler pro Monat."
+
+#: visitors.module:97
+msgid "Days of month"
+msgstr "Tage des Monats"
+
+#: visitors.module:98
+msgid "View pages count per day of month."
+msgstr "Betrachte Seitenzähler pro Tag eines Monats."
+
+#: visitors.module:115
+msgid "Days of week"
+msgstr "Wochentage"
+
+#: visitors.module:116
+msgid "View pages count per day of week."
+msgstr "Betrachte Seitenzähler pro Wochentag."
+
+#: visitors.module:132
+msgid "Hours"
+msgstr "Stunden"
+
+#: visitors.module:133
+msgid "View pages count per hour."
+msgstr "Betrachte Seitenzähler pro Stunde."
+
+#: visitors.module:150
+msgid "Hosts"
+msgstr "Hosts"
+
+#: visitors.module:151
+msgid "View pages count per host."
+msgstr "Betrachte Seitenzähler per Host."
+
+#: visitors.module:159
+msgid "User activity"
+msgstr "Benutzer Aktivität"
+
+#: visitors.module:160
+msgid "View user activity report (hits, nodes, comments)."
+msgstr "Betrachte den Benutzeraktivitäten Bericht (Treffen, Nodes, Kommentare)."
+
+#: visitors.module:168
+msgid "Hits"
+msgstr "Treffer"
+
+#: visitors.module:169
+msgid "View host access log."
+msgstr "Host Zugangslog betrachten."
+
+#: visitors.module:178
+msgid "Details"
+msgstr "Details"
+
+#: visitors.module:179
+msgid "View access log."
+msgstr "Zugangslog betrachten."
+
+#: visitors.module:290
+msgid "Current visitor"
+msgstr "Aktueller Benutzer"
+
+#: visitors.module:302
+msgid "Total Visitors"
+msgstr "Gesamte Besucher"
+
+#: visitors.module:316
+msgid "Unique Visitor"
+msgstr "Eindeutige Benutzer"
+
+#: visitors.module:327
+msgid "Registered Users"
+msgstr "Registrierte Benutzer"
+
+#: visitors.module:338
+msgid "Last Registered User"
+msgstr "Letzter registrierter Benutzer"
+
+#: visitors.module:347
+msgid "Published Nodes"
+msgstr "Veröffentlichte Nodes"
+
+#: visitors.module:351
+msgid "Your IP"
+msgstr "Eigene IP"
+
+#: visitors.module:364
+msgid "Since"
+msgstr "Seit dem"
+

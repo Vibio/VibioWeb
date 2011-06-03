@@ -1,0 +1,14 @@
+; $Id: hacked.info,v 1.4 2010/01/14 21:23:09 darthsteven Exp $
+name = "Hacked!"
+description = "Shows if drupal or any of its modules have been changed"
+package = Development
+core = 6.x
+;dependencies[] = diff
+dependencies[] = update
+
+; Information added by drupal.org packaging script on January 1, 1970 - 00:00
+version = "6.x-2.0-beta1"
+core = "6.x"
+project = "hacked"
+datestamp = "1296212635"
+

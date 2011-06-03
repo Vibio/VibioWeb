@@ -1,0 +1,443 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-08-06 14:48+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: visitors.admin.inc:74 visitors.admin.inc:137 visitors.admin.inc:205
+#: visitors.admin.inc:253 visitors.admin.inc:293 visitors.admin.inc:369
+#: visitors.admin.inc:468 visitors.admin.inc:554 visitors.admin.inc:699
+#: visitors.admin.inc:748 visitors.pages.inc:21
+msgid "#"
+msgstr ""
+
+#: visitors.admin.inc:75 visitors.admin.inc:138 visitors.pages.inc:22
+msgid "ID"
+msgstr ""
+
+#: visitors.admin.inc:76 visitors.admin.inc:139 visitors.admin.inc:664
+#: visitors.pages.inc:23
+msgid "Date"
+msgstr ""
+
+#: visitors.admin.inc:77 visitors.admin.inc:140 visitors.admin.inc:649
+#: visitors.admin.inc:700
+msgid "URL"
+msgstr ""
+
+#: visitors.admin.inc:78 visitors.admin.inc:141 visitors.admin.inc:669
+#: visitors.admin.inc:749 visitors.pages.inc:25
+msgid "User"
+msgstr ""
+
+#: visitors.admin.inc:79 visitors.admin.inc:142 visitors.admin.inc:208
+#: visitors.pages.inc:26
+msgid "Operations"
+msgstr ""
+
+#: visitors.admin.inc:114 visitors.admin.inc:185 visitors.pages.inc:55
+msgid "details"
+msgstr ""
+
+#: visitors.admin.inc:193
+msgid "Hits from"
+msgstr ""
+
+#: visitors.admin.inc:206
+msgid "Host"
+msgstr ""
+
+#: visitors.admin.inc:207 visitors.admin.inc:295 visitors.admin.inc:369
+#: visitors.admin.inc:470 visitors.admin.inc:556
+msgid "Pages"
+msgstr ""
+
+#: visitors.admin.inc:227 visitors.admin.inc:674
+msgid "Whois lookup"
+msgstr ""
+
+#: visitors.admin.inc:235
+msgid "hits"
+msgstr ""
+
+#: visitors.admin.inc:254 visitors.admin.inc:659 visitors.pages.inc:24
+msgid "Referer"
+msgstr ""
+
+#: visitors.admin.inc:255 visitors.admin.inc:701
+msgid "Count"
+msgstr ""
+
+#: visitors.admin.inc:294
+msgid "Hour"
+msgstr ""
+
+#: visitors.admin.inc:369 visitors.admin.inc:469
+msgid "Day"
+msgstr ""
+
+#: visitors.admin.inc:398 visitors.admin.inc:457
+msgid "Sun"
+msgstr ""
+
+#: visitors.admin.inc:399 visitors.admin.inc:457
+msgid "Mon"
+msgstr ""
+
+#: visitors.admin.inc:400 visitors.admin.inc:457
+msgid "Tue"
+msgstr ""
+
+#: visitors.admin.inc:401 visitors.admin.inc:457
+msgid "Wed"
+msgstr ""
+
+#: visitors.admin.inc:402 visitors.admin.inc:458
+msgid "Thu"
+msgstr ""
+
+#: visitors.admin.inc:403 visitors.admin.inc:458
+msgid "Fri"
+msgstr ""
+
+#: visitors.admin.inc:404 visitors.admin.inc:458
+msgid "Sat"
+msgstr ""
+
+#: visitors.admin.inc:555
+msgid "Month"
+msgstr ""
+
+#: visitors.admin.inc:654
+msgid "Title"
+msgstr ""
+
+#: visitors.admin.inc:678
+msgid "Hostname"
+msgstr ""
+
+#: visitors.admin.inc:683
+msgid "User Agent"
+msgstr ""
+
+#: visitors.admin.inc:750
+msgid "Hits"
+msgstr ""
+
+#: visitors.admin.inc:751
+msgid "Nodes"
+msgstr ""
+
+#: visitors.admin.inc:752
+msgid "Comments"
+msgstr ""
+
+#: visitors.date_filter.inc:120
+msgid "Date filter"
+msgstr ""
+
+#: visitors.date_filter.inc:123
+msgid "Choose date range"
+msgstr ""
+
+#: visitors.date_filter.inc:128
+msgid "From"
+msgstr ""
+
+#: visitors.date_filter.inc:135
+msgid "To"
+msgstr ""
+
+#: visitors.date_filter.inc:142
+msgid "Submit"
+msgstr ""
+
+#: visitors.date_filter.inc:165 visitors.date_filter.inc:169
+msgid "The specified date is invalid."
+msgstr ""
+
+#: visitors.date_filter.inc:173
+msgid "The specified date range is invalid."
+msgstr ""
+
+#: visitors.module:16
+msgid "Visitors info."
+msgstr ""
+
+#: visitors.module:37
+msgid "Visitors settings"
+msgstr ""
+
+#: visitors.module:38
+msgid "Configure visitors settings."
+msgstr ""
+
+#: visitors.module:47
+msgid "Visitors"
+msgstr ""
+
+#: visitors.module:48
+msgid "Visitors info."
+msgstr ""
+
+#: visitors.module:57
+msgid "Recent hits"
+msgstr ""
+
+#: visitors.module:58
+msgid "View pages that have recently been visited."
+msgstr ""
+
+#: visitors.module:66
+msgid "Top pages"
+msgstr ""
+
+#: visitors.module:67
+msgid "View pages that have been hit frequently."
+msgstr ""
+
+#: visitors.module:75
+msgid "Monthly history"
+msgstr ""
+
+#: visitors.module:76
+msgid "View pages count per month."
+msgstr ""
+
+#: visitors.module:93
+msgid "Days of month"
+msgstr ""
+
+#: visitors.module:94
+msgid "View pages count per day of month."
+msgstr ""
+
+#: visitors.module:111
+msgid "Days of week"
+msgstr ""
+
+#: visitors.module:112
+msgid "View pages count per day of week."
+msgstr ""
+
+#: visitors.module:128
+msgid "Hours"
+msgstr ""
+
+#: visitors.module:129
+msgid "View pages count per hour."
+msgstr ""
+
+#: visitors.module:146
+msgid "Hosts"
+msgstr ""
+
+#: visitors.module:147
+msgid "View pages count per host."
+msgstr ""
+
+#: visitors.module:155
+msgid "User activity"
+msgstr ""
+
+#: visitors.module:156
+msgid "View user activity report (hits, nodes, comments)."
+msgstr ""
+
+#: visitors.module:164
+msgid "Referers"
+msgstr ""
+
+#: visitors.module:165
+msgid "View referer list."
+msgstr ""
+
+#: visitors.module:173
+msgid "Hits"
+msgstr ""
+
+#: visitors.module:174
+msgid "View host access log."
+msgstr ""
+
+#: visitors.module:183
+msgid "Details"
+msgstr ""
+
+#: visitors.module:184
+msgid "View access log."
+msgstr ""
+
+#: visitors.module:307
+msgid "Current visitor"
+msgstr ""
+
+#: visitors.module:312
+msgid "Visitors"
+msgstr ""
+
+#: visitors.module:325
+msgid "Total Visitors: %visitors"
+msgstr ""
+
+#: visitors.module:328
+#, php-format
+msgid "Unique Visitors: %unique_visitors"
+msgstr ""
+
+#: visitors.module:331
+msgid "Registered Users: %registered_user"
+msgstr ""
+
+#: visitors.module:335
+msgid "Last Registered User: !last_user"
+msgstr ""
+
+#: visitors.module:338
+msgid "Published Nodes: %nodes"
+msgstr ""
+
+#: visitors.module:341
+#, php-format
+msgid "Your IP: %user_ip"
+msgstr ""
+
+#: visitors.module:345
+#, php-format
+msgid "Since: %since_date"
+msgstr ""
+
+#: visitors.settings.inc:21
+msgid "Visitors block"
+msgstr ""
+
+#: visitors.settings.inc:24
+msgid "Visitors block settings"
+msgstr ""
+
+#: visitors.settings.inc:29
+msgid "Show Total Visitors"
+msgstr ""
+
+#: visitors.settings.inc:31
+msgid "Show Total Visitors."
+msgstr ""
+
+#: visitors.settings.inc:36
+msgid "Show Unique Visitors"
+msgstr ""
+
+#: visitors.settings.inc:38
+msgid "Show Unique Visitors based on their IP."
+msgstr ""
+
+#: visitors.settings.inc:43
+msgid "Show Registered Users"
+msgstr ""
+
+#: visitors.settings.inc:45
+msgid "Show Registered Users."
+msgstr ""
+
+#: visitors.settings.inc:50
+msgid "Show Last Registered User"
+msgstr ""
+
+#: visitors.settings.inc:52
+msgid "Show Last Registered User."
+msgstr ""
+
+#: visitors.settings.inc:57
+msgid "Show Published Nodes"
+msgstr ""
+
+#: visitors.settings.inc:59
+msgid "Show Published Nodes."
+msgstr ""
+
+#: visitors.settings.inc:64
+msgid "Show User IP"
+msgstr ""
+
+#: visitors.settings.inc:66
+msgid "Show User IP."
+msgstr ""
+
+#: visitors.settings.inc:71
+msgid "Show Since Date"
+msgstr ""
+
+#: visitors.settings.inc:73
+msgid "Show Since Date."
+msgstr ""
+
+#: visitors.settings.inc:79
+msgid "Visitors statistics"
+msgstr ""
+
+#: visitors.settings.inc:82
+msgid "Visitors statistics settings"
+msgstr ""
+
+#: visitors.settings.inc:87
+msgid "Exclude administer users from statistics"
+msgstr ""
+
+#: visitors.settings.inc:89
+msgid "Exclude hits of administer users from statistics."
+msgstr ""
+
+#: visitors.settings.inc:97
+msgid "The default maximum number of lines to display per page."
+msgstr ""
+
+#: visitors.settings.inc:101
+msgid "Never"
+msgstr ""
+
+#: visitors.settings.inc:105
+msgid "Discard visitors logs older than"
+msgstr ""
+
+#: visitors.settings.inc:108
+msgid ""
+"Older visitors log entries (including referrer statistics) will be "
+"automatically discarded. (Requires a correctly configured <a href=\"@cron"
+"\">cron maintenance task</a>.)"
+msgstr ""
+
+#: visitors.settings.inc:115
+msgid "Graph settings"
+msgstr ""
+
+#: visitors.settings.inc:118
+msgid "Visitors graph settings"
+msgstr ""
+
+#: visitors.settings.inc:123
+msgid "Width"
+msgstr ""
+
+#: visitors.settings.inc:125
+msgid "Graph width."
+msgstr ""
+
+#: visitors.settings.inc:130
+msgid "Height"
+msgstr ""
+
+#: visitors.settings.inc:132
+msgid "Graph height."
+msgstr ""

@@ -1,0 +1,16 @@
+This *appears* to be a heavily cut and rewritten[?] version of the fb
+or Drupal for Facebook module.  Many pieces are missing, including
+the very helpful README.  I[stephen] downloaded that module to 
+mylaptop/Downloads/fb
+as a reference.
+
+No, although this uses Drupal for Facebook's module naming convention,
+	for example fb.admin.inc is in common, it seems completely rewritten
+	or done from scratch.  I don't know what I'm looking at.  Why name
+	the module facebook and then use fb as the module name unless you're
+	copying from fb module?  But this looks as if that were open in 
+	another window and used as an educational tool to write something
+	from scratch.  Or could it be an older version was used as a reference?
+
+
+	-stephen, spending too much time and moving on

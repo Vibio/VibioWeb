@@ -1,4 +1,9 @@
 <?php
+
+/* stephen thinks this alters heartbeat based on the friends privacy
+settings, after a quick glance (not sure I'm right, or what else
+is going on) */
+
 function hbi_views_data_alter(&$data)
 {
 	$data['user_relationships']['table']['join']['heartbeat_activity'] = array(

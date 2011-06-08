@@ -7,6 +7,10 @@ function uri_elaborations_form($relationship=false, $target_uid=false)
 	}
 	
 	$target_user = user_load($target_uid);
+
+
+	/* stephen, remove_elaborations */
+	return array();
 	
 	return array(
 		"#type"			=> "textarea",

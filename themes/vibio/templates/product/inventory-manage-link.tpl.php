@@ -10,6 +10,8 @@ if ($is_product_page && $item_id || // PRODUCT page where user owns the product
 }
 elseif (!$item_id) // user doesn't own this product, always show this.
 {
+	// originally unsanitized though maybe theme fixed. fix 20110609
+	$searchcrumb = htmlentities ( trim ( $searchcrumb ) , ENT_QUOTES )  ;
 	$manage_link = theme("product_inventory_add", $product->nid, $searchcrumb)."<br />";
 }
 

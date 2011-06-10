@@ -1,4 +1,11 @@
 <?php
+/* stephen: what about a teaser view, similar but cleaner, for new themes? 
+ *	It looks like the new themes are product-driven, rather than item-driven
+ *	most but not all the time.  vibio_wires 4/11 #11 could use a teaser?
+ *  	Confusing because the new designs are product-centric, v1.0 
+ *	item-centric.
+ */
+
 global $user;
 $offer2buy = "";
 
@@ -31,11 +38,13 @@ if ($node->offer2buy['settings']['allow_offer_views'] || $user->uid == $node->ui
 
 $offer2buy = $offer2buy_extra.$offer2buy;
 
+/* product info may be from an external source like Amazon */
 $product = node_load($node->product_nid);
 $product->item =& $node;
 $product_data = $node->product_nid ? node_view($product) : "";
 $user_other_items = theme("vibio_item_user_other_items", $node);
 
+/* $node->title and body are specific to the owner of the item */
 echo "
 	{$product_data}
 	<div class='product_extra_data'>

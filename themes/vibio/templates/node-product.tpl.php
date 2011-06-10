@@ -3,8 +3,9 @@ $title = "<h3 class='product_title'>".check_plain($node->title)."</h3>";
 
 if ($_GET['searchcrumb'])
 {
-	$searchcrumb = t("Back to search results");
-	$searchcrumb = "<a href='{$_GET['searchcrumb']}'>$searchcrumb</a><br />";
+	$sanitary = htmlspecialchars ( $_GET['searchcrumb'],   ENT_QUOTES );
+  	$searchcrumb = t("Back to search results");
+	$searchcrumb = "<a href='{$sanitary}'>$searchcrumb</a><br />";
 }
 else
 {
@@ -20,7 +21,8 @@ if ($image = _product_get_image($node->nid, true))
 	";
 }
 
-$manage_link = theme("product_inventory_manage_link", $node, $_GET['searchcrumb']);
+$sanitary = htmlspecialchars ( $_GET['searchcrumb'],   ENT_QUOTES );
+$manage_link = theme("product_inventory_manage_link", $node, $sanitary);
 
 if (isset($node->amazon_data))
 {

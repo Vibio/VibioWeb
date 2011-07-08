@@ -4,6 +4,15 @@
 settings, after a quick glance (not sure I'm right, or what else
 is going on) */
 
+/* looking at the user_hb_incoming_activity I think the author just didn't
+ * understand views, and put things that could have been in the interface
+ * here?  Instead of putting 'relatinship' in the relationship interface... */
+
+/* The complexity comes from the Privacy settings, which I'm guessing
+ * aren't views-friendly.  Be warned that the view is pretty thoroughly
+ * re-written here, ignore what you see in the online interface.
+ */
+
 function hbi_views_data_alter(&$data)
 {
 	$data['user_relationships']['table']['join']['heartbeat_activity'] = array(

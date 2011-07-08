@@ -318,9 +318,13 @@ function product_user_owns_product($product_id, $uid=false)
 	return db_result(db_query($sql, $uid, $product_id));
 }
 
+/* warning: this uses search text for functional if
+ * The point of this is something to do with searches with no results. 
+ * Experiment when time
+ */
 function product_preprocess_box(&$vars)
 {
-	if ($vars['title'] == t("Your search yielded no results") && arg(0) == "search" && arg(1) == "vibio_item")
+	if ($vars['title'] == t("Your search yielded no results") /* ouch */ && arg(0) == "search" && arg(1) == "vibio_item")
 	{
 		if (!$_GET['external_product_search'])
 		{

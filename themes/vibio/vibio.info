@@ -4,6 +4,11 @@ screenshot = screenshot.png
 core       = 6.x
 base theme = zen
 
+   ; Stephen making quick edits in various places, better
+   ;  to separate my work than integrate with each file here 
+stylesheets[all][]   = css/stephen.css
+ 
+
 stylesheets[all][]   = css/html-reset.css
 stylesheets[all][]   = css/layout-fixed.css
 stylesheets[all][]   = css/tabs.css

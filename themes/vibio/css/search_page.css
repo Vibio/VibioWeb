@@ -1,3 +1,32 @@
+/* stephen, prefix section */
+#search_page_prefix {
+	text-align: right;
+	height: 20px;
+	overflow: none;
+}
+#search_page_prefix_additional {
+	position: relative;
+	display: none;
+}	
+#search_page_prefix:hover #search_page_prefix_additional {
+	z-index: 5;
+	display: block;
+}
+#search_form_container {
+	/*position: absolute; /* ignore additional image above  */
+}
+
+
+
+
+
+.box h2 { 
+	display: none;
+}
+
+
+
+
 #page_title {
 	display: none;
 }

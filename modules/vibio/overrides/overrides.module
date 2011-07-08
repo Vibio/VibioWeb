@@ -100,15 +100,21 @@ function overrides_search_submit($form, &$state)
 	$state['redirect'] = "search/$search_type/$search_term";
 }
 
+/* This produces the main search form */
 function overrides_form_search_form_alter(&$form, &$state)
 {	
+	$search_prefix = "<div id='search_page_prefix'><h3>Add an Item?</h3>
+		<div id='search_page_prefix_additional'><img src='/themes/vibio/images/Add_an_Item.png'></div>
+	</div>";
+
 	drupal_add_js("themes/vibio/js/jquery-csb-1.0.js");
 	drupal_add_js("themes/vibio/js/search.js");
 	drupal_add_css("themes/vibio/css/search_page.css");
 	
 	$default = $form['module']['#value'];
 	
-	$form['#prefix'] = "<div id='search_form_container'>";
+	$form['#prefix'] = $search_prefix .
+		"<div id='search_form_container'>";
 	$form['#suffix'] = "</div>";
 	
 	$form['basic']['#title'] = "";
@@ -154,11 +160,11 @@ function overrides_allowed_search_types($show_all_searches=false)
 	}
 	
 	$types = array(
-		"vibio_item"=> t("Vibio"),
+		"vibio_item"=> t("Items"), /* Vibio-Item-search */
 		"user"		=> t("Users"),
 	);
 	
-	if (module_exists("ebay"))
+	if (module_exists("ebay"))     /* as of 201106, disabling module */
 	{
 		$types['ebay'] = t("eBay");
 	}

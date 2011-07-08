@@ -943,10 +943,14 @@ function system_modules_submit($form, &$form_state) {
     drupal_set_message(t('The configuration options have been saved.'));
   }
 
+/* stephen adding this if ... ok if overwritten, efficiency hack */
+//Possibly creates problems when moving modules around
+//if ($form_state['post']) {
   drupal_rebuild_theme_registry();
   node_types_rebuild();
   menu_rebuild();
   cache_clear_all('schema', 'cache');
+//}
   drupal_clear_css_cache();
   drupal_clear_js_cache();
 

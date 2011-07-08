@@ -151,6 +151,9 @@ function imap_fetch_service()
 	);
 }
 
+/* maybe this lets a user know the status of their image fetching? 
+ *  I don't see hat it's producing on my account.
+ *  No effect when removing it (tried once) */
 function imap_fetch_profile_ext_dashboard_notifications($uid, $html=true)
 {
 	module_load_include("inc", "imap_fetch");

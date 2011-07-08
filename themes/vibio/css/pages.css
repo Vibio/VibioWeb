@@ -428,7 +428,7 @@ ul.links li {
 }
 
 .menu_with_count_text {
-  float: left;
+  /*stephen: float: left; */
 }
 
 .menu_with_count_count {

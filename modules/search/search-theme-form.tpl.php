@@ -1,6 +1,9 @@
 <?php
 // $Id: search-theme-form.tpl.php,v 1.1 2007/10/31 18:06:38 dries Exp $
 
+/* This displays the top search mini-form.  Doesn't seem to do the other
+ *  search form -- stephen (ok if this note gets erased on upgrade) */
+
 /**
  * @file search-theme-form.tpl.php
  * Default theme implementation for displaying a search form directly into the

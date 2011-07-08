@@ -118,7 +118,7 @@ function vibio_item_search($op="search", $keys=null)
 	switch ($op)
 	{
 		case "name":
-			return t("Vibio");
+			return t("Item"); /* grep: Vibio-Item-search */
 		case "search":
 			return _vibio_item_search($keys);
 	}

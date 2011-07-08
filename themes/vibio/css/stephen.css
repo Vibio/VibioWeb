@@ -1,0 +1,54 @@
+/* selling page */
+body.page-selling div.picture {
+        float: left;
+	padding-right: 6px;
+}
+body.page-selling div.picture img {
+	height: 60px;
+	width: 60px;
+	max-height: 60px; /* undoing other css */
+}
+body.page-selling h4 {
+	margin-bottom: .1em;
+}
+
+/* meus */
+#block-menu-primary-links li ul li {
+	margin-left: 8px;
+}
+
+/* product page */
+.action_button_link {
+	margin: 4px;
+	background: #ddd;
+}
+
+/* search results, items in an image-square in multiple places */
+.item-square {
+	width: 180px;
+	height: 180px;
+	padding: 7px;
+	margin: 6px;
+	border: 1px solid #999;
+	background: #eee;
+	float: left; /* intend 3col? */
+	position: relative; /* make it the parent */
+}
+img.item-square-image {  /* should be done with imagecache */
+	height: 180px;
+	width: 180px;
+}	
+div.over-item {
+	position: absolute;
+	top: 10px;
+}
+.item-square div.over-item a {
+	color: #eee;
+}
+.item-square:hover div.over-item a {
+	color: black;
+}
+div.search-links {
+        position: absolute;
+        bottom: 10px;
+}

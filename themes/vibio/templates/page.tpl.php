@@ -78,7 +78,29 @@
 	  <?php if ($primary_links || $navigation): ?>
 		<div id="navigation"><div class="section clearfix">
 
-		  <?php print theme(array('links__system_main_menu', 'links'), $primary_links,
+<?php if (isset($secondary_links)): ?>
+  <div id="secondary">
+    <?php //print theme('links', $secondary_links); ?>
+<?php vibio_secondary_menu_ad_hoc($secondary_links); /* in template.php */ ?>
+
+  </div>
+<?php endif; ?>
+		  <?php 
+//print_r($secondary_links);
+/*print theme(array(/*'links__system_secondary_menu'x/ 'vibio_secondary_menu_theme', 'links'), $secondary_links,
+           array(
+             'id' => 'secondary-menu',
+             'class' => 'links clearfix',
+           ),
+           array(
+             'text' => t('Second level of current primary menu choice'),
+             'level' => 'h2',
+             'class' => 'element-invisible',
+           ));
+*/
+
+
+/* switch to blocks print theme(array('links__system_main_menu', 'links'), $primary_links,
 			array(
 			  'id' => 'main-menu',
 			  'class' => 'links clearfix',
@@ -89,6 +111,23 @@
 			  'class' => 'element-invisible',
 			));
 		  ?>
+<?php /* stephen, quick 
+	//test: $secondary_links = $primary_links;
+          print theme(array('links__system_secondary_menu', 'links'), $secondary_links,
+           array(
+             'id' => 'secondary-menu',
+             'class' => 'links clearfix',
+           ),
+           array(
+             'text' => t('Secondary menu'),
+             'level' => 'h2',
+             'class' => 'element-invisible',
+           ));
+*/
+         ?>
+
+
+
 
 		  <?php print $navigation; ?>
 

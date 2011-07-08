@@ -63,7 +63,8 @@ function template_preprocess_search_results(&$variables) {
   foreach ($variables['results'] as $result) {
     $variables['search_results'] .= theme('search_result', $result, $variables['type']);
   }
-  $variables['pager'] = theme('pager', NULL, 10, 0);
+	/* stephen: was 10, not sure good idea check what happens */
+  $variables['pager'] = theme('pager', NULL, 8, 0);
   // Provide alternate search results template.
   $variables['template_files'][] = 'search-results-'. $variables['type'];
 }

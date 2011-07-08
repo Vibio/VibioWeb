@@ -1,4 +1,6 @@
+Currently secondary menus not used, this used to display on the footer.
 <?php
+print "Make it useful.";
 $menu_html = "";
 foreach (menu_tree_page_data("secondary-links") as $menu_item)
 {

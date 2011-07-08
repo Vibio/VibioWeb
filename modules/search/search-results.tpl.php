@@ -21,6 +21,7 @@
  * @see template_preprocess_search_results()
  */
 ?>
+When does this fire, in search directory wgauop
 <dl class="search-results <?php print $type; ?>-results">
   <?php print $search_results; ?>
 </dl>

@@ -1,5 +1,6 @@
 <?php
-require_once("dijkstra.class.php");
+//set_include_path('.');
+require_once("/var/www/vibio/src/modules/vibio/degree_of_separation/dijkstra.class.php");
 
 define("DOS_DEFAULT_DEPTH", 3);
 define("DOS_INFINITY", 5000);

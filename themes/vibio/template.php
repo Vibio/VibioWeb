@@ -1,4 +1,28 @@
 <?php
+
+/* stephen:  */
+
+/* simple secondary menu link cleanup, for weird secondary menu links
+ *  ! not sure where the menu_with_count_text comes from, being careful
+ *    not to filter it out.
+ *
+ * We probably want the primary menu which is a parent, so this isn't right yet!
+ */
+function vibio_secondary_menu_ad_hoc($secondary_links) {
+	$menu_html = "";
+	foreach ($secondary_links as $link)
+	{
+		//print_r($link);
+//		$menu_html .= l($link['link_title'], $link['link_path']);
+		$menu_html .= '<a href="' . $link['href'] . '">' . $link['title'] . '</a>&nbsp;|&nbsp;';	
+	}
+	print $menu_html;
+}
+
+
+
+
+
 /**
  * Implementation of HOOK_theme().
  */
@@ -172,6 +196,15 @@ function vibio_status_messages($display=null)
 	
 	return $out;
 }
+
+
+
+
+
+
+
+
+
 
 /*function vibio_fieldset($ele)
 {

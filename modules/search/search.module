@@ -955,7 +955,10 @@ function do_search($keywords, $type, $join1 = '', $where1 = '1 = 1', $arguments1
   $arguments = array_merge($arguments2, $arguments1, array($query[4]));
 
   // Do actual search query
-  $result = pager_query("$select $sort_parameters", 10, 0, $count_select, $arguments);
+	/* stephen: first number should be the number per page...
+	 * not working on first try, cache or another module?		
+	 */
+  $result = pager_query("$select $sort_parameters", 6, 0, $count_select, $arguments);
   $results = array();
   while ($item = db_fetch_object($result)) {
     $results[] = $item;

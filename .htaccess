@@ -1,3 +1,5 @@
+# php memory limit is somewhere set to 512M, should be lots (tons, why?)
+
 #
 # Apache/PHP/Drupal settings:
 #

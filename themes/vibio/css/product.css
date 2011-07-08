@@ -1,3 +1,7 @@
+.external_short_link {
+	float: right;
+}
+
 #page_title {
 	display: none;
 }

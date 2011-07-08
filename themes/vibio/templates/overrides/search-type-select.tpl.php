@@ -1,4 +1,5 @@
 <?php
+/*seems to print the upper search bar, not the search page */
 $default = false;
 $submenu = "";
 

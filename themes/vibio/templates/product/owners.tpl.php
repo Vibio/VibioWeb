@@ -1,4 +1,9 @@
 <?php
+/* Prints the owners on the product page that comes in searches,
+ *  called by node-product.tpl.php.  Seems to stephen too complex,
+ *  returning things like "No items found" instead of just returning
+ *  what is found 
+ */
 global $pager_page_array, $pager_total;
 
 $pager_element = 0;//is_array($pager_page_array) && !empty($pager_page_array) ? count($pager_page_array) : 0;
@@ -12,7 +17,7 @@ $pager = theme("pager", array(), PRODUCT_OWNER_DISPLAY_PER_PAGE, $pager_element)
 
 if (empty($data['results']))
 {
-	$owners = t("No items found.");
+	//$owners = t("No items found.");
 }
 else
 {

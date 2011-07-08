@@ -341,8 +341,31 @@ function offer2buy_get_settings($nid=false)
 	return db_fetch_array(db_query($sql, $nid));
 }
 
+// horrible!  sneakily calls the init tpl to spaghetti a straightforward owner tpl
 function offer2buy_preprocess_product_owner(&$vars) {
-	$vars['offer2buy'] = theme("offer2buy_init", $vars['item']['node']['nid'], "button");
+	//	$vars['offer2buy'] = theme("offer2buy_init", $vars['item']['node']['nid'], "button");
+	dpm($vars);
+	$nid = $vars['item']['node']['nid'];
+	$text = t("make offer");
+
+	// Need the nid of an offer for this node, by this logged in user,
+	//  if one exists.  Can do this with views, or simple mysql
+	global $user;
+	$result = db_query('SELECT nid FROM {node} WHERE type = "offers" AND uid = %d AND status = 1',  $user->uid);
+	$row = db_fetch_array($res);  // the point of this is there be just one
+//SELECT node.uid from , node where uid=%d AND course_nid=. $user->uid 
+	$offer_nid = $row[0]['nid'];
+
+	if ( 'edit' == 'get edit button' ) {
+	} else {
+		// Offer url includes current user id, for bookmarking -- 
+		//  you'll still be you after you click this link, but the
+		//  seller can use the same url this way.
+		$uid = $user->uid;
+		$vars['offer2buy'] = l($text, "offer/$nid/$uid", array('class'=> 'action_button_link'));
+/* "improve on $offer_nid: <a class='offer2buy_init_v1_2 popupsTOOSLOW action_button_link'                        href='offer/$nid/$uid'>$text</a>";*/
+	}
+
 }
 
 function offer2buy_preprocess_page(&$vars)
@@ -451,13 +474,16 @@ function offer2buy_offer_form_submit($form, &$state)
 		"comment"	=> $vals['comment'],
 		"amount"	=> $offer,
 	);
-	
+
+	/* stephen: heartbeat and this module invoke the following hook... */
 	module_invoke_all("offer2buy_make_offer", $node, $offerer, $item_owner, $offer);
 	
 	drupal_set_message(t("Your offer has been sent to !user", array("!user" => $item_owner->name)));
 	drupal_goto($vals['destination']);
 }
 
+/* When someone makes an offer, both they and the owner they made the offer to receive emails.
+	This responds to the offer2buy_make_offer hook, also in this module  */
 function offer2buy_offer2buy_make_offer($node, $offerer, $owner, $offer)
 {
 	global $language;
@@ -649,7 +675,7 @@ function offer2buy_offer_accept_form(&$state, $uid, $nid)
 		),
 		"reject"	=> array(
 			"#type"			=> "submit",
-			"#value"		=> t("Reject Offer"),
+			"#value"		=> t("Reject Offer or Negotiate"),
 			"#attributes"	=> array(
 				"class"	=> "reject_offer_{$uid}_{$nid} offer2buy_reject_init",
 			),
@@ -667,7 +693,7 @@ function offer2buy_offer_accept_form_submit($form, &$state)
 {
 	$op = $state['clicked_button']['#value'];
 	
-	if ($op == t("Reject Offer"))
+	if ($op == t("Reject Offer or Negotiate"))
 	{
 		return;
 	}
@@ -709,7 +735,7 @@ function offer2buy_offer_reject_form(&$state, $uid, $nid)
 	);
 	
 	return array(
-		"#prefix"		=> t("Are you sure you want to reject the offer of !amount from !user?", $t_args),
+		"#prefix"		=> t("Send <em>!user</em> a reason for rejecting the offer of !amount, or suggest a new agreement.", $t_args),
 		"offerer"	=> array(
 			"#type"	=> "value",
 			"#value"=> $offerer,
@@ -725,11 +751,11 @@ function offer2buy_offer_reject_form(&$state, $uid, $nid)
 		"reason"		=> array(
 			"#type"			=> "textarea",
 			"#title"		=> t("Reason"),
-			"#description"	=> t("Why are you rejecting this offer?"),
+			"#description"	=> '', // too wordy? t("Why are you rejecting this offer?"),
 		),
 		"submit"		=> array(
 			"#type"	=> "submit",
-			"#value"=> t("Reject Offer"),
+			"#value"=> t("Reject Offer or Negotiate"),
 		),
 		"cancel"		=> array(
 			"#type"	=> "submit",

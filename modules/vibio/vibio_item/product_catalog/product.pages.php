@@ -122,7 +122,7 @@ function product_ajax_add_complete()
 		}
 		
 		$t_args['!collection'] = implode(", ", $collection_names);
-		exit(t('"!title" has been created and added to your !collection collection. You can !view_link or !close_link', $t_args));
+		exit(t('"!title" has been added to your !collection collection. You can !view_link or !close_link', $t_args));
 	}
 	
 	exit(t("There was an error adding the item to your inventory. Please try again later. !close_link", $t_args));
@@ -219,7 +219,8 @@ function _product_get_owners_page()
 	{
 		return;
 	}
-	
+
+	// This looks very similar to node-product.tpl	
 	module_load_include("inc", "product");
 	$data = _product_get_owners($p['product'], $user->uid, $p['type'], $p['page']);
 	$output = theme("product_owners", $p['type'], $data);

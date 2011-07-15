@@ -1,9 +1,12 @@
-<h1>Note: using the node-offer template</h1>
-
 <?php
 // $Id: node.tpl.php,v 1.10 2009/11/02 17:42:27 johnalbin Exp $
-dpm(array("node-offer.tpl node" => $node));
 
+// Main display is presented ideally as a popup
+// Also, people see their offers either as seller or buyer... these are
+//  like teaser variants (but two for every offer, buy or sell).
+//  This can be determined by teaser + node-by-viewer
+
+// dpm(array("node-offer.tpl node" => $node));
 
 /**
  * @file
@@ -78,24 +81,24 @@ dpm(array("node-offer.tpl node" => $node));
  */
 ?>
 
-  <?php /* we need the conversation/negotiation */
-$viewName = 'offer_conversation';
-$display_id = 'default';
-$myArgs = array($node->nid); // node is this offer
+<?php /* we need the conversation/negotiation */
+	// some of this move to pre_process or similar? 
+  $viewName = 'offer_conversation';
+  $display_id = 'default';
+  $myArgs = array($node->nid); // node is this offer
 	// below is much like views_embed_view
   $view_neg = views_get_view($viewName);
   $view_neg->set_arguments($myArgs);
 	// access could get complicated, not wireframed yet!
 	$chit_chat = $view_neg->preview($display_id, $args);
-				print "<h1>Result</h1>";
-						//dpr( $view_neg->result );
-				/* looks like this, sorts by date:
-						[0] => stdClass Object
-								(
-										[nid] => 20029
-										[node_created] => 1309999051
-								)
-				*/
+  //dpr( $view_neg->result );
+	/* looks like this, sorts by date:
+			[0] => stdClass Object
+				(
+					[nid] => 20029
+					[node_created] => 1309999051
+				)
+	*/
 
 	/* Need the most recent buyer and seller node from the communications */
 	foreach ( $view_neg->result as $neg ) {
@@ -114,13 +117,12 @@ $myArgs = array($node->nid); // node is this offer
 	$item_nid = $node->field_item_sought[0][nid];
 	$item = node_load($item_nid);
 	$item_owner = $item->uid;
-	print "<h3>Owned by $item_owner, I am $user->uid</h3>";
 	//dpr(array("item for sale is" => $item));
 	//dpr(array("this offer node is" => $node));
 
 
-	print "<p>{admin}Most recent buyer neg is " . $current_buyer->nid . " uid " . $current_buyer->uid . " ... buyer is this user if no buyer set " . $user->uid;
-	print "<p>{admin}Most recent seller neg is " . $current_seller->nid  . " uid " . $current_seller->uid . " which always (unless blank) matches item owner " . $item_owner;
+	//print "<p>{admin}Most recent buyer neg is " . $current_buyer->nid . " uid " . $current_buyer->uid . " ... buyer is this user if no buyer set " . $user->uid;
+	//print "<p>{admin}Most recent seller neg is " . $current_seller->nid  . " uid " . $current_seller->uid . " which always (unless blank) matches item owner " . $item_owner;
 
 
 	// Permissions are based on who this is 
@@ -133,35 +135,80 @@ $myArgs = array($node->nid); // node is this offer
 	if ( $item_owner == $user->uid ) { $perm_seller = 1; }
 
 ?>
-</pre>
+
 
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix popthis">
 
- <div id="product_info_in_offer" style="border: 1px solid black;">
-  <?php /* product picture (name in title) */ ?>
-   <div class="item_title"><?php print $item->title; ?></div>
-   <div class="item_picture" style="height: 60px; widht: 60px;"><?php print $item->picture; ?></div>
+ <div id="product_info_in_offer">
+  <?php /* product picture (name in title) */ 
+//dpr($item);
+	// get the product this item is a part of.  This is some of the worst
+	// code I can imagine... it's not a node reference, there's nothing
+  // but internal functions for an item to load it's parent product.
+	module_load_include('inc', 'product', 'product');  
+	//include "~/www/vibio/src/modules/vibio/vibio_item/product_catalog/product.inc";
+	
+	if ( ( $product_nid = $item->product_nid ) ||  /* never set? */
+  $product_nid = _product_nid_from_item($item_nid) ) {
+		$product = node_load( $product_nid );
+//dsm($product);
+	} else { /* improve code later */ }
+	$product_link = "/node/$product_nid";
+ ?>
+  <div class="item_title"><a href="<?php print $product_link; ?>"><?php print $product->title; ?></a></div>
+	<?php /* does the item have an image, or just the product? 
+				 * In next iteration, grab $item->field_images[0] if it exists.
+				 */
+	//$image_filepath = $product->field_main_image[0]['filepath'];
+	//$alt = "Picture of Item";
+  ?>	
+   <div class="item_picture" style="height: 60px; widht: 60px;"><a href="<?php print $product_link; ?>"><img src="<?php print _product_get_image($item->nid); ?>" alt="Picture of Item, or Product"></a>
+  <?php 
+
+
+//print theme('imagecache', 'item_base_square', $image_filepath, $alt, $title, $attributes);  /* imagecache is failing, and error log is full of garbage
+ //(which desperately needs to be fixed ) */
+//print "imagepath is $image_filepath"; ?>
+</div>
+
  </div>
 
  <?php /* render cck fields?  drupal_render($node->content); 
 		field_myfield[0]['view']; */ ?>
 
 
- <div id="seller_info_in_offer" style="border: 1px solid black;">
-  <?php print "Picture and name of $item_owner"; ?>
+ <div id="seller_info_in_offer" >
+	<?php 
+	$item_owner_user = user_load($item_owner); //($node->uid); //($item_owner); 
+	$offer_user
+		// go back and rename vars? ?>
+	<div class="person_pic"><?php print theme('user_picture', $item_owner_user); ?></div>
+  <?php 
+	print "<a href='user/" . $item_owner_user->uid . "'>" .
+		$item_owner_user->name . "</a>" ; 
+//d5 print theme("user_picture",$user);
+?>
   <br>Requested price: <?php print $item->offer2buy[settings][price]; ?>
-  get the most recent seller post from a view?
 <?php print content_view_field(content_fields("field_sale_status"), $current_seller, FALSE, FALSE);?>
 <?php print content_view_field(content_fields("field_sale_actions"), $current_seller, FALSE, FALSE);?>
 
 
  </div>
- 
- <div id="buyer_info_in_offer" style="border: 1px solid black;">
-  <?php print "Picture and name of " . $node->uid; ?>
-  <br><?php print "Last offer (get last offer post info)"; ?>
+
+ <div id="buyer_info_in_offer" >
+<?php
+	$offer_user = user_load($node->uid);
+	//dsm($offer_user);?>
+   <div class="person_pic"><?php print theme('user_picture', $offer_user); 
+			 ?></div>
+		<?php print "<a href='user/" . $offer_user->uid . "'>" .  
+			$offer_user->name . "</a>" ; ?>
+<?php dsm($current_buyer); ?>
+<?php print content_view_field(content_fields("field_offer_price"), $current_buyer, FALSE, FALSE);?>
 <?php print content_view_field(content_fields("field_offer_expires"), $current_buyer, FALSE, FALSE);?>
 <?php print content_view_field(content_fields("field_city"), $current_buyer, FALSE, FALSE);?>
+<?php print content_view_field(content_fields("field_actions"), $current_buyer, FALSE, FALSE);?>
+
 
 
  </div>
@@ -191,7 +238,7 @@ $myArgs = array($node->nid); // node is this offer
   }
 
 		if ( $perm_seller ) { /* permissions of seller true */
-			echo '<h3>Negotiate Your Sale</h3>';
+			echo '<h3>Discuss This Offer</h3>';
 
 			// Add 1st add node form
 			// title?
@@ -207,7 +254,7 @@ $myArgs = array($node->nid); // node is this offer
 			$output = drupal_get_form('offer_neg_seller_node_form', $first_node);
   	}
 		if ( $perm_buyer ) { 
-      echo '<h3>Negotiate to Buy</h3>';
+      echo '<h3>Make or Update Your Offer</h3>';
 
 			$second_node = new stdClass();
 			$second_node->type = 'offer_neg_buyer';
@@ -223,11 +270,16 @@ $myArgs = array($node->nid); // node is this offer
 print $output;
 ?>
 
-<h3>Chit Chat</h3>
   <?php /* print the conversation, view defined (and cache loaded) above */
 //print views_embed_view($viewName, $display_id, $myArgs);
-print $chit_chat;
+	if ( $perm_buyer || $perm_seller ) { // you  are buyer or seller
+		print "<h3>Past Discussions</h3>";
+		print $chit_chat;
+	} else {
+		print "<h3>Discussions are private to the participants.</h3>";
+	}
   ?>
 
-  <?php print $links; ?>
+  <?php // print $links; Links contains: Archive, Decline, Decline (huh?)  ?>
 </div> <!-- /.node -->
+

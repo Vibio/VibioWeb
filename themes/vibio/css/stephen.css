@@ -1,4 +1,14 @@
-/* selling page */
+/* offers page, see also selling page */
+.person_pic img {
+	height: 36px;
+	width: 36px;
+}
+.popups-box .title { display: none; }
+
+/* selling page (and then similar components elsewhere) */
+
+/* user pics in various places, rename thorughout? */
+.person_pic,
 body.page-selling div.picture {
         float: left;
 	padding-right: 6px;

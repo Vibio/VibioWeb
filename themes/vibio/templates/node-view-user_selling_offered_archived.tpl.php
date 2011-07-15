@@ -1,0 +1,1 @@
+node-view-user_selling_offered.tpl.php

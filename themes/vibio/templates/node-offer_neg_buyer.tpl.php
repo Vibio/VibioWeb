@@ -3,6 +3,12 @@
 
 /**
  * @file
+
+ * node-offer-neg-buyer.tpl.php and node-offer-neg-seller.tpl.php
+ * are super-similar.  
+ * Remove the title, remove the fact that it is unpublished,
+ * Make minor wording changes, 
+
  * Theme implementation to display a node.
  *
  * Available variables:
@@ -74,39 +80,28 @@
  */
 ?>
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix">
+  <?php print $user_picture; ?>
 
-<h4><!--Item Sought: --><?php print $node->field_item_sought[0][view]; ?>:</h4>
+  <?php if ($display_submitted || $terms): ?>
+    <div class="meta">
+      <?php if ($display_submitted): ?>
+        <span class="submitted">
+          <?php
+            print t("!username sent this offer on !datetime",
+              array('!username' => $name, '!datetime' => $date));
+          ?>
+        </span>
+      <?php endif; ?>
 
-  <?php print $user_picture; /* vibiosity will go here
- * Watch out -- weird css here: themes/vibio/css/pages.css
- * imagecache on next revision	
- */ ?>
-
-<?php /* create a tpl just for this? */ 
-/* ANOTHER POSSIBLE STYLE, but these are just notes, trying popups module first:
-       <div class='offer2buy_popup'>
-               &nbsp;- <a class='offer2buy_offer_view_popup_init'>
-                      Negotiate as a popup
-               </a>
-               <div class='offer2buy_offer_view_popup'>
-                       <div class='view-content'>whatever goes in the popup</div>
-               </div>
-       </div>
-*/
-?>
-<div class="negotiation_block" style="float: right; width: 200px;">
-	<a  class="popups" href="/node/<?php print $node->nid; ?>">Review Offer</a>
-</div>
-
-  <?php if ($unpublished): ?>
-    <div class="unpublished"><?php print t('Unpublished'); ?></div>
+      <?php if ($terms): ?>
+        <div class="terms terms-inline"><?php print $terms; ?></div>
+      <?php endif; ?>
+    </div>
   <?php endif; ?>
 
   <div class="content">
-    <?php print $name;  /* v2: connection level */ ?>
-    <br>Offer: <strong><?php print $node->field_price[0][view] ?></strong> (<?php print $date; ?>)&nbsp;&nbsp;&nbsp;Expires: <?php print $node->field_offer_expires[0][view]; ?>
-    <br>Ship to: <?php print $node->field_city[0][view]; ?>
+    <?php print $content; ?>
   </div>
-<?php print $links; //should just be archive flag link ?>
 
+  <?php print $links; ?>
 </div> <!-- /.node -->

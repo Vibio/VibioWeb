@@ -82,6 +82,8 @@ function vibio_preprocess_page(&$vars, $hook)
 	$vars['styles'] = $css;
 }
 
+/* this seems weird to me, don't you have to tell user_picture
+ * whose user picture you want?  -- Stephen */
 function vibio_preprocess_comment(&$vars)
 {
 	if (empty($vars['picture']))

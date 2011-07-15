@@ -196,7 +196,10 @@ function vibio_offer_form_alter(&$form, $form_state, $form_id) {
 
 		// just clean up unneeded options
 		_simplify_form($form, TRUE);	
-
+		unset ($form['buttons']['preview']);
+		//dpr(array("form" => $form));	
+		//print '<pre>';
+		//print_r($form);	
 		// stay on page
 //$_SERVER['REQUEST_URI']
 //request_uri()

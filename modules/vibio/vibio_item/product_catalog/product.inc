@@ -109,6 +109,10 @@ function _product_from_item($item_nid)
 	return node_load($product_nid);
 }
 
+/* Does this get the product or item image, prefering one over the other? 
+ * With imagecache, this would be real code?
+ * Returns the URL of the image
+ */ 
 function _product_get_image($nid, $is_product=false)
 {
 	static $product_images = array();

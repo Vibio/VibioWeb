@@ -64,16 +64,50 @@ if ($page)
 	$product_images = theme("vibio_item_images", product_images($node));
 	$any_collectors = ''; // boolean	
 
+	// 20110715 We need to highlight one product based on URL
+	// Might also think about adding your product to the list.
+	// Nelson's style is to call the database for eachsuch search
+	// My pref would be a hashreturned from database.
+	// Yeah -- his approach breaks down... every call has to remove
+	// the highlighted product, icky. Not going to do that..
+	// All this code should be moved (mine, plus what was already here)
+	// out of tpl.	
+
+	// deal with [network]->those owners, [vibio]->those owners	
 	foreach (_product_get_product_owners($node->nid, $user->uid) as $type => $data)
 	{
 		// $data are [count] => 0 [page] => 0 [results] =>
 		if ( $data[count] ) { 
 			$any_collectors = 1;
 		}
+
+		// Deal with highlighting
+		$uid_highlight=$_GET['highlight']; // no security, passing to boolean ONLY
+		// warning: $data is an array, not well crafted object.
+		foreach ( $data['results'] as $i => $result ) {
+			//print_r($result);
+			if ( $result['user']['uid'] == $uid_highlight ) {
+				// !!! cut, and move to top of $data['results']
+				// add clas for highlight
+				//$data['results']["highlight"] = " highlight"; // boolean, and css class
+				$data['results'][$i]["user"]['highlight'] = " highlight";
+
+
+				$hold = $data['results'][$i];
+				unset($data['results'][$i]);
+				array_unshift($data['results'], $hold); // work despite non-object?
+
+			}
+		}
+
 		$type_title = $type == "network" ? t("In your network") : t("On Vibio");
 		$product_owners .= "<div class='product_owners_type_container' id='product_type_{$type}'>";
 		//$product_owners .= "<h4 class='product_description'>$type_title</h4>";
 		$product_owners .= "<div class='product_owners_results'>";
+		// is this really theming a custom, non-node data structure?
+		// do to make design changes, have to go back to 
+		// product_catalog/product.inc which is formating the
+		// links, for example.	
 		$product_owners .= theme("product_owners", $type, $data);
 		
 		$product_owners .= "</div></div>";
@@ -142,3 +176,5 @@ echo "
 	$extra_data
 ";
 ?>
+ 
+<?php print flag_create_link('feature', $node->nid); /* could easily do this for items, with $product->nid*/ ?>

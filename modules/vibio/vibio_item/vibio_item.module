@@ -8,7 +8,7 @@ function vibio_item_exit($destination=null)
 {
 	if ($destination && !empty($_GET['searchcrumb']) && strpos($destination, "?") === false && preg_match('/node\/([0-9]+)$/i', $destination, $matches))
 	{
-		drupal_goto($matches[0], "searchcrumb={$_GET['searchcrumb']}"); //hopefully i don't endlessly loop here...
+		drupal_goto($matches[0], "searchcrumb={$_GET['searchcrumb']}"); //hopefully i don't endlessly loop here...[Nelson's comment].... Does this ever fire or do anything at all? --Stephen
 	}
 }
 
@@ -134,9 +134,37 @@ function vibio_item_preprocess_node(&$vars)
 		}
 		else
 		{
+			$node = $vars['node'];
+
+
+			//--> It's a page you have access to
+			/* Stephen: no longer want to biew item pages. Jump to Product */
+			// Would be good to understand what was being doen
+			// with searchcrumb in
+			//  drupal_goto($matches[0], "searchcrumb={$_GET['searchcrumb']}");			
+
+			// Ack, what do we do if you click on your own item?  Really want product
+			//  page?  Will need some if's here:
+			//  Maybe you never see your own item, except as an edit?
+			//  Maybe you only goto if a highlight is set <--- current style
+			//  Maybe you goto unless a &stay=item is set?
+
+
+			module_load_include('inc', 'product', 'product');
+			$product_nid = _product_nid_from_item($node->nid);
+			//dsm($node);
+			$uid_highlight = $node->uid; // this works for collections pages.  Fear it may get
+							// complicated before all is done.	
+			//$product = node_load( $product_nid );			
+			//$uid_highlight=$_GET['highlight'];
+			//if ( !is_numeric($uid_highlight) ) {	Always true if we pull it from $node
+			if ( !$_GET['manage'] ) {
+				drupal_goto("node/$product_nid", "highlight=$uid_highlight");
+			} 
+
+
 			_vibio_item_clear_insert_message();
 			
-			$node = $vars['node'];
 			$images = array();
 			if (!empty($node->field_main_image[0]['filepath']))
 			{

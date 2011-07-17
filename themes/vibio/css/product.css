@@ -49,3 +49,9 @@
 
 .product_snippet_expand {
   display: none;
+}
+
+.highlight {  /* parallel to item_owner */
+	background: purple;	/* doesn't show up */
+	border: 2px solid yellow;
+}

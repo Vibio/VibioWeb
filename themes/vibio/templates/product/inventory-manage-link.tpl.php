@@ -6,7 +6,7 @@ $is_product_page = !isset($product->item);
 if ($is_product_page && $item_id || // PRODUCT page where user owns the product
 	(!$is_product_page && $item_id && $product->item->uid != $user->uid)) // ITEM page where the current user owns the product, but isn't looking at their own item page
 {
-	$manage_link = l(t("View yours"), "node/$item_id")."<br />";
+	$manage_link = l(t("View yours"), "node/$item_id", array('query'=>'manage=1'))."<br />";
 }
 elseif (!$item_id) // user doesn't own this product, always show this.
 {

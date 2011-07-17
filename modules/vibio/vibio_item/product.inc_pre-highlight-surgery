@@ -57,7 +57,6 @@ function _product_get_owners($nid, $as_uid, $type="network", $page=0)
 
 	$network_check = $network ? " AND u.`uid` $network_op ($network)" : "";
 	
-
 	$sql = "SELECT n.`nid`, n.`title`, u.`uid`, u.`name`, u.`picture`
 			FROM {node} n JOIN {users} u JOIN {privacy_settings} p
 				ON n.`uid`=u.`uid` AND p.`uid`=n.`uid`
@@ -72,7 +71,6 @@ function _product_get_owners($nid, $as_uid, $type="network", $page=0)
 					WHERE `product_nid`=%d
 				)
 			ORDER BY n.`changed` DESC
-         $highlight
 			LIMIT $offset, %d";
 	$count_sql = preg_replace(array('/SELECT.*?FROM /As', '/ORDER BY .*/', '/LIMIT .*/'), array('SELECT COUNT(*) FROM ', '', ''), $sql);
 	$total_results = db_result(db_query($count_sql, $privacy_check, $as_uid, $nid));
@@ -89,7 +87,7 @@ function _product_get_owners($nid, $as_uid, $type="network", $page=0)
 			"user"	=> array(
 				"picture"	=> theme("user_picture", (object) $row),
 				"link"		=> $as_uid && $type == "network" && module_exists("dos") ? theme("dos_display", dos_get($row['uid'], false, $depth)) : "<br />".l($row['name'], "user/{$row['uid']}"),
-				"uid"     => $row['uid'],  // stephen adds, to highlight
+				"uid"     => $row['uid'];  // stephen adds, to highlight
 			),
 		);
 	}

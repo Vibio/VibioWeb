@@ -72,6 +72,18 @@ function imagecache_menu() {
     'access callback' => '_imagecache_menu_access_public_files',
     'type' => MENU_CALLBACK
   );
+  // stephen: redirect from secondary server to main (staging)
+	// this didn't immediately work.  Ok to erase if never get it going.
+	// with this: You are not logged in.
+	// the access callback isn't working.  Who can't access?
+	// I think anyone can access, so I'm locking it accessable.
+  $items['cachedimages/imagecache'] = array(
+    'page callback' => 'imagecache_cache',
+    'access callback' => '_imagecache_menu_access_public_files',
+    'type' => MENU_CALLBACK
+  );
+
+
   // private downloads imagecache callback
   $items['system/files/imagecache'] = array(
     'page callback' => 'imagecache_cache_private',
@@ -86,6 +98,10 @@ function imagecache_menu() {
  * Menu access callback for public file transfers.
  */
 function _imagecache_menu_access_public_files() {
+	// not sure what Nelson coded... let's kill this problem -- stephen
+	return 1;
+	//die(FILE_DOWNLOADS_PUBLIC);
+	//die(variable_get('file_downloads', FILE_DOWNLOADS_PUBLIC));
   return (FILE_DOWNLOADS_PUBLIC == variable_get('file_downloads', FILE_DOWNLOADS_PUBLIC));
 }
 
@@ -394,7 +410,8 @@ function _imagecache_strip_file_directory($path) {
  * callback for handling public files imagecache requests.
  */
 function imagecache_cache() {
-  $args = func_get_args();
+  $args = func_get_args(); // Returns an array comprising a function's argument list
+
   $preset = check_plain(array_shift($args));
   $path = implode('/', $args);
   _imagecache_cache($preset, $path);

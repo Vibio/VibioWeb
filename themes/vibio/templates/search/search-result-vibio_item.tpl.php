@@ -1,23 +1,24 @@
-<?php /* print '<pre>'. check_plain(print_r($info_split, 1)) .'</pre>'; */ ?>
-<?php
-/* this section is a bunch of efforts to get imagecache working.
-All failed, I'm in a rush, so leaving notes and moving on...
-	print_r($result[node]->field_main_image[0][fid]);
-   $file = field_file_load($result[node]->field_main_image[0][fid]); 
-   $img = theme('imagecache', 'item_base_square', $file['filepath']); 
-print $img;
-   $filepath = '/home/ubuntu/www/vibio/src/sites/default/files/uploads/products/B0018C8STO.jpg'; 
-//imagecache_image_flush($file);
-//$img = more than image theme('imagecache', 'item_base_square', $file); 
-  // $output .= theme('imagecache', 'product', $first['filepath'], $first['alt'], $first['title']);
-$presetname = 'item_base_square';
+<?php /* print '<pre>'. check_plain(print_r($info_split, 1)) .'</pre>'; */ 
+//print $result[node]->nid;
+$node = $result[node]; //!!! Different from node-view-flag_featured.tpl.php
+		// !!! Also, $search_links is set here, not there.
 
-$image = theme('imagecache', $presetname, $filepath); //, $alt, $title, $attributes);
-$img = imagecache_create_url($presetname, $filepath);
-print "image:" . $image;
-*/
+$flag = flag_create_link('feature', $node->nid);
+$img = theme('imagecache', 'product_fixed_width', $node->field_main_image[0]['filepath']);
 
-echo "
+$second = "
+	<div class='item-rectangle'> 
+		<a href='$url' title='$title' alt='$title'>
+			 $img
+		</a>
+		<div class='title-item'>
+			<a class='item-title' href='$url'>$title</a><br/>
+		</div>                        $flag
+	<div class='search-links'>$search_links</div>
+	</div>
+";
+
+$first= "
 		<div class='item-square'>
 			<a href='$url' title='$title' alt='$title'>
 				<img class='item-square-image' srcimagecache='$img' src='{$info_split['image']}' />
@@ -28,4 +29,8 @@ echo "
 			<div class='search-links'>$search_links</div>
 		</div>
 ";
+
+
+print $second;
+
 ?>

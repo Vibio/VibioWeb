@@ -1,5 +1,4 @@
 <?php
-// $Id: search-results.tpl.php,v 1.1 2007/10/31 18:06:38 dries Exp $
 
 /**
  * @file search-results.tpl.php
@@ -21,7 +20,6 @@
  * @see template_preprocess_search_results()
  */
 ?>
-When does this fire, in search directory wgauop
 <dl class="search-results <?php print $type; ?>-results">
   <?php print $search_results; ?>
 </dl>

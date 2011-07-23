@@ -1,5 +1,4 @@
 <?php
-// $Id: search.pages.inc,v 1.4 2007/12/06 09:51:01 goba Exp $
 
 /**
  * @file
@@ -63,8 +62,7 @@ function template_preprocess_search_results(&$variables) {
   foreach ($variables['results'] as $result) {
     $variables['search_results'] .= theme('search_result', $result, $variables['type']);
   }
-	/* stephen: was 10, not sure good idea check what happens */
-  $variables['pager'] = theme('pager', NULL, 8, 0);
+  $variables['pager'] = theme('pager', NULL, 10, 0);
   // Provide alternate search results template.
   $variables['template_files'][] = 'search-results-'. $variables['type'];
 }

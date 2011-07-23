@@ -1,4 +1,10 @@
 <?php
+/* stephen: this "overrides" module reorganizes the filesystem,
+ *  returned as overrides_file_url
+ * and i think many other things.
+ * It's blocking imagecache
+ */
+
 define("OVERRIDES_FILE_DOWNLOAD_DIRECT", 5);
 
 function overrides_menu_alter(&$menu)
@@ -57,7 +63,18 @@ function overrides_file_url_alter(&$path)
 {
 	$upload_dir = file_directory_path();
 	$file_url = variable_get("overrides_file_url", false);
-	
+
+	//stephen: what about getting out of here for imagecache?
+/*
+No. This isn't the right place.  This alters urls being printed,
+not when they are returned.
+grep 'stephen' in imagecache for solution [?]
+	if ( preg_match("sites/default/files/uploads/imagecache", $file_url)) {
+die ($file_url);
+		return;
+	}
+*/	
+
 	if ($file_url && variable_get('file_downloads', FILE_DOWNLOADS_PUBLIC) == OVERRIDES_FILE_DOWNLOAD_DIRECT && strpos($path, $upload_dir) === 0)
 	{
 		$path = str_replace($upload_dir, $file_url, $path);

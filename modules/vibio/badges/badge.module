@@ -78,8 +78,32 @@ function badge_menu()
 			"file"				=> "badge.pages.inc",
 			"type"				=> MENU_CALLBACK,
 		),
+		// stephen, v1.1
+		"user/%uid/badges"				=> array(
+			"page callback"		=> "badge_list",
+			"page arguments"	=> array(1),
+			"access arguments"	=> array("access content"),
+			//? "file"				=> "badge.pages.inc",
+			"type"				=> MENU_CALLBACK,
+		),
+
+
 	);
 }
+
+/* function badge_list
+ * a quick hack to get Nelson's code in the right place
+ * want it at user/uid/badge instead of nonmenuable internal nav
+ */
+function badge_list($uid) {
+
+	print "<div id='user_badges'>";
+	/* yanked from illogical <mes/vibio/templates/user/social-info.tpl.php */
+	print theme("badge_list", $uid); 
+	print  '</div>';
+
+}
+
 
 function badge_user($op, &$edit, &$account, $category=null)
 {

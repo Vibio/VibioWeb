@@ -26,7 +26,6 @@ Need to go up-code to change that.
 */
 
 // why do they all say "item_owner"  as a class? 
-dsm($item);
 
 echo "
 	<div class='item_owner {$item['user']['highlight']}'>

@@ -1,5 +1,4 @@
 <?php
-// $Id: comment.module,v 1.617.2.16 2010/05/28 16:23:15 goba Exp $
 
 /**
  * @file
@@ -219,8 +218,7 @@ function comment_menu() {
   $items['comment/delete'] = array(
     'title' => 'Delete comment',
     'page callback' => 'comment_delete',
-	'access callback'	=> "comment_access",
-    'access arguments' => array("delete", 2),
+    'access arguments' => array('administer comments'),
     'type' => MENU_CALLBACK,
     'file' => 'comment.admin.inc',
   );
@@ -662,24 +660,9 @@ function comment_user($type, $edit, &$user, $category = NULL) {
  */
 function comment_access($op, $comment) {
   global $user;
-  
-  if (is_numeric($comment))
-  {
-	$comment = _comment_load($comment);
-  }
-  
-  if (user_access("administer comments"))
-  {
-	return true;
-  }
 
   if ($op == 'edit') {
-    return ($user->uid && $user->uid == $comment->uid && comment_num_replies($comment->cid) == 0) || user_access('administer comments');
-  }
-  elseif ($op == "delete")
-  {
-	$node = node_load($comment->nid);
-	return $node->uid == $user->uid;
+    return ($user->uid && $user->uid == $comment->uid && comment_num_replies($comment->cid) == 0 && $comment->status == COMMENT_PUBLISHED) || user_access('administer comments');
   }
 }
 
@@ -852,13 +835,6 @@ function comment_links($comment, $return = 1) {
       );
     }
     else if (user_access('post comments')) {
-		if (comment_access("delete", $comment))
-		{
-			$links['comment_delete'] = array(
-				'title' => t('delete'),
-				'href'	=> "comment/delete/{$comment->cid}",
-			);
-		}
       if (comment_access('edit', $comment)) {
         $links['comment_edit'] = array(
           'title' => t('edit'),
@@ -1216,7 +1192,7 @@ function comment_validate($edit) {
       form_set_error('date', t('You have to specify a valid date.'));
     }
   }
-  if (isset($edit['author']) && !$account = user_load($edit['author'])) {
+  if (isset($edit['author']) && !$account = user_load(array('name' => $edit['author']))) {
     form_set_error('author', t('You have to specify a valid author.'));
   }
 
@@ -1225,7 +1201,7 @@ function comment_validate($edit) {
     $node = node_load($edit['nid']);
     if (variable_get('comment_anonymous_'. $node->type, COMMENT_ANONYMOUS_MAYNOT_CONTACT) > COMMENT_ANONYMOUS_MAYNOT_CONTACT) {
       if ($edit['name']) {
-        $taken = db_result(db_query("SELECT COUNT(uid) FROM {users} WHERE name = '%s'", $edit['name']));
+        $taken = db_result(db_query("SELECT COUNT(uid) FROM {users} WHERE LOWER(name) = '%s'", $edit['name']));
 
         if ($taken != 0) {
           form_set_error('name', t('The name you used belongs to a registered user.'));
@@ -1312,15 +1288,13 @@ function comment_form(&$form_state, $edit, $title = NULL) {
       if ($edit['registered_name'] != '') {
         // The comment is by a registered user
         $form['admin']['author'] = array(
-		  '#type'	=> 'value',
-		  '#value'	=> $edit['uid'],
-          /*'#type' => 'textfield',
+          '#type' => 'textfield',
           '#title' => t('Authored by'),
           '#size' => 30,
           '#maxlength' => 60,
           '#autocomplete_path' => 'user/autocomplete',
           '#default_value' => $author,
-          '#weight' => -1,*/
+          '#weight' => -1,
         );
       }
       else {
@@ -1363,7 +1337,7 @@ function comment_form(&$form_state, $edit, $title = NULL) {
     else {
       $form['_author'] = array('#type' => 'item', '#title' => t('Your name'), '#value' => theme('username', $user)
       );
-      $form['author'] = array('#type' => 'value', '#value' => $user->uid);
+      $form['author'] = array('#type' => 'value', '#value' => $user->name);
     }
   }
   else if (variable_get('comment_anonymous_'. $node->type, COMMENT_ANONYMOUS_MAYNOT_CONTACT) == COMMENT_ANONYMOUS_MAY_CONTACT) {
@@ -1468,7 +1442,7 @@ function comment_form_add_preview($form, &$form_state) {
 
     // Attach the user and time information.
     if (!empty($edit['author'])) {
-      $account = user_load($edit['author']);
+      $account = user_load(array('name' => $edit['author']));
     }
     elseif ($user->uid && !isset($edit['is_anonymous'])) {
       $account = $user;
@@ -1538,9 +1512,9 @@ function _comment_form_submit(&$comment_values) {
   }
   $comment_values['timestamp'] = strtotime($comment_values['date']);
   if (isset($comment_values['author'])) {
-    $account = user_load($comment_values['author']);
+    $account = user_load(array('name' => $comment_values['author']));
     $comment_values['uid'] = $account->uid;
-    $comment_values['name'] = $account->name;
+    $comment_values['name'] = $comment_values['author'];
   }
   // Validate the comment's subject. If not specified, extract
   // one from the comment's body.

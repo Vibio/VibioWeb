@@ -166,7 +166,7 @@
   <?php 
 
 
-//print theme('imagecache', 'item_base_square', $image_filepath, $alt, $title, $attributes);  /* imagecache is failing, and error log is full of garbage
+print theme('imagecache', 'item_base_square', $image_filepath, $alt, $title, $attributes);  /* imagecache is failing, and error log is full of garbage
  //(which desperately needs to be fixed ) */
 //print "imagepath is $image_filepath"; ?>
 </div>

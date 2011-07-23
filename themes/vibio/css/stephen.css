@@ -62,3 +62,31 @@ div.search-links {
         position: absolute;
         bottom: 10px;
 }
+
+/* search results, items in an image-rectangle in multiple places */
+.item-rectangle {
+	width: 180px;
+	/*height: 180px;*/
+	padding: 7px;
+	margin: 6px;
+	border: 1px solid #999;
+	background: #eee;
+	float: left; /* intend 3col? */
+	position: relative; /* make it the parent */
+}
+/*img.item-square-image {  done with imagecache 
+	//height: 180px;
+	width: 180px;
+}*/	
+div.title-item {
+}
+.item-rectangle div.over-item a {
+	color: #eee;
+}
+.item-rectangle:hover div.over-item a {
+	color: black;
+}
+div.search-links {
+        position: absolute;
+        bottom: 10px;
+}

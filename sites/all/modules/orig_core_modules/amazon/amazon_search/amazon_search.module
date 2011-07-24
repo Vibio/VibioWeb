@@ -1,0 +1,72 @@
+<?php
+// $Id: amazon_search.module,v 1.1.2.1 2010/02/25 06:41:30 rfay Exp $
+
+
+function amazon_search_perm() {
+  return array('access amazon search');
+}
+
+/**
+ * Implementation of hook_search(). Implements remote Amazon searching.
+ */
+function amazon_search_search($op = 'search', $keys = NULL, $skip_access_check = FALSE) {
+  switch ($op) {
+    case 'name':
+      if ($skip_access_check || user_access('access amazon search')) {
+        return t('Amazon.com');
+      }
+    case 'search':
+      if ($skip_access_check || user_access('access amazon search')) {
+        $products = array();
+        $items = amazon_search_simple_search($keys);
+        foreach ($items as $item) {
+          if (module_exists("vibio_amazon"))
+          {
+            amazon_item_insert($item);
+            $products[] = _vibio_amazon_search_result($item);
+          }
+          else
+          {
+            $products[] = array(
+              'title' => check_plain($item['title']),
+              'link' => check_url($item['detailpageurl']),
+              'type' => check_plain($item['productgroup']),
+              'user' => isset($item['participants']) ? implode(', ', $item['participants']) : '',
+              'snippet' => isset($item['editorialreviews']) ? check_markup($item['editorialreviews'][0]['content']) : '',
+            );
+          }
+        }
+        return $products;
+      }
+  }
+}
+
+function amazon_search_simple_search($keywords = '', $parameters = array()) {
+  global $pager_page_array, $pager_total;
+  $current_page = $_GET['page'] ? $_GET['page'] : 0;
+  $offset = module_exists("product") ? product_set_external_search_page_offset() : 0;
+  $search_page = $current_page - $offset;
+  $search_page = $search_page < 0 ? 0 : $search_page;
+  
+  $parameters += array(
+    'ResponseGroup' => 'Large',
+    'SearchIndex'   => 'All',
+    'ItemPage'      => $search_page + 1,
+  );
+  $parameters['Keywords'] = urlencode($keywords);
+  drupal_alter('amazon_search_parameters', $parameters);
+
+  $items = array();
+  $results = amazon_http_request('ItemSearch', $parameters);
+  
+  $total_pages = (int) $results->Items->TotalPages > 5 ? 5 : (int) $results->Items->TotalPages;
+  $total_pages += $offset;
+  $pager_page_array[0] = $current_page;
+  $pager_total[0] = $total_pages;
+  
+  foreach($results->Items->Item as $xml) {
+    $item = amazon_item_clean_xml($xml);
+    $items[$item['asin']] = $item;
+  }
+  return $items;
+}

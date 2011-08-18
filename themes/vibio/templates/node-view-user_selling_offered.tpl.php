@@ -75,15 +75,52 @@
 ?>
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix">
 
-<h4><!--Item Sought: --><?php print $node->field_item_sought[0][view]; ?>:</h4>
+<?php //dsm($node);
+// get the item sought
+$item = node_load( $node->field_item_sought[0][nid] );
+$item_title = $item->title;
+// messy: get field_main_image, but that's probably empty, get product.
+$item_pic_url = $item->picture;
+
+//dsm($item);
+
+// get collection
+$cid = isset($item->collection_info) ? $item->collection_info['cid'] : collection_get_item_cid($item->nid);
+//trim($cid);
+if ( is_array($cid) ) {
+	$cid = array_shift($cid);
+}
+//$cid[]= 7;
+$collection = collection_load($cid);  
+//dsm(array($item,$collection));
+if ( $collection['title'] ) {
+	$collection['title'] = '<div class="collection"><a href="/collections/' .
+		$cid . '">' . 
+		$collection['title'] . "</a></div>";
+}
+$item_pic = vibio_item_get_image($item->nid, 'product_fixed_width_teaser');
+// at the moment, product_fixed_width is 180px, product_fixed_width_teaser 120px
+
+// Offer2Buy info
+$price = $item->offer2buy['settings']['price'];
+
+ ?>
+<div class="selling_item_info"
+ >
+<div class="teaser_item_pic"><?php print $item_pic; ?></div>
+<?php print $collection['title']; ?>
+<?php print $node->field_item_sought[0][view];?>
+<br>Requested: $<?php print $price; ?>
+</div>
+
 
   <?php print $user_picture; /* vibiosity will go here
  * Watch out -- weird css here: themes/vibio/css/pages.css
  * imagecache on next revision	
  */ ?>
 
-<?php /* create a tpl just for this? */ 
-/* ANOTHER POSSIBLE STYLE, but these are just notes, trying popups module first:
+	<?php /* create a tpl just for this? */ 
+	/* ANOTHER POSSIBLE STYLE, but these are just notes, trying popups module first:
        <div class='offer2buy_popup'>
                &nbsp;- <a class='offer2buy_offer_view_popup_init'>
                       Negotiate as a popup
@@ -94,19 +131,42 @@
        </div>
 */
 ?>
-<div class="negotiation_block" style="float: right; width: 200px;">
-	<a  class="popups" href="/node/<?php print $node->nid; ?>">Review Offer</a>
-</div>
+	<div class="negotiation_block" style="float: right; width: 200px;">
+		<a  class="popups" href="/node/<?php print $node->nid; ?>">Review Offer</a>
+	</div>
 
   <?php if ($unpublished): ?>
     <div class="unpublished"><?php print t('Unpublished'); ?></div>
   <?php endif; ?>
 
   <div class="content">
-    <?php print $name;  /* v2: connection level */ ?>
+    <?php print $name;  /* v2: connection level */
+ 			/* is this up to date in the offer, or do we need to do more to load the
+				 negs */
+		 ?>
     <br>Offer: <strong><?php print $node->field_price[0][view] ?></strong> (<?php print $date; ?>)&nbsp;&nbsp;&nbsp;Expires: <?php print $node->field_offer_expires[0][view]; ?>
     <br>Ship to: <?php print $node->field_city[0][view]; ?>
+	<br>Last Comment:	<?php /* we want one line from the most recent conversation,
+			yours or theirs.  Similar to node-offer.tpl.php */
+  $viewName = 'offer_conversation';
+  $display_id = 'default';
+  $myArgs = array($node->nid); // node is this offer
+        // below is much like views_embed_view
+  $view_neg = views_get_view($viewName);
+  $view_neg->set_arguments($myArgs);
+					$chit_chat = $view_neg->preview($display_id, $args);
+					$neg = node_load( $view_neg->result[0]->nid );   // is this most recent? or oldest?
+	//dsm($neg);
+	// note" if $neg->uid == $user->uid, it's me.  
+	// I think this should be in design
+	$chars = 40;  // length of string to print before elipses
+	if ( strlen($neg->body) > ($chars+3) ) {
+		print substr($neg->body, 0 , $chars) . "...";
+	} else {
+		print $neg->body;
+	}
+	//dsm(array($node, $view_neg));	
+		?>
   </div>
-<?php print $links; //should just be archive flag link ?>
-
+	<?php print $links; //should just be archive flag link ?>
 </div> <!-- /.node -->

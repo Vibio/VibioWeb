@@ -1,4 +1,4 @@
-<?php
+<?php    /* seems to print a link to the user, maybe on the profile page */
 if ($dos === false)
 {
 	$out = t("This is you");

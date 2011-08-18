@@ -67,6 +67,40 @@ function profile_ext_manage_external_accounts($uid)
 	";
 }
 
+/**
+ * Coordinate printing various profile-branch pages, eg
+ *  profile/uid/badges
+ *
+
+also began here with
+function profile_ext_preprocess_user_profile(&$vars){
+
+
+
+ /* @return 
+ *  theme("profile_ext_profile", $child_page)
+ *
+ *		- stephen, 20110811 keyword reprofileicious
+ */
+function TAKE_OTHER_PATHprofile_ext_profile($account, $page_arg = "activity") {
+	// model a bit off user_view in user module
+	// rewrite that tpl, using all new names to not get entangled.
+	$username =   check_plain($account->name);
+
+  // Retrieve all profile fields and attach to $account->content.
+  user_build_content($account);
+	
+	/* copy some of Nelson's code just in case...
+		try cutting this out to see what happens when time,
+		or see if I need pieces put here and commented
+  */	
+	drupal_add_js("themes/vibio/js/profile.js");
+	module_load_include("inc", "profile_ext");
+	//   $steps = module_exists("newuser") ? array() : profile_ext_initial_steps($user);
+
+  return theme("profile_ext_profile", $account, $this_page, $sec_menu);
+}
+// puts heartbeat in dashboard, and ??
 function profile_ext_dashboard($selected_tab=false)
 {
 	global $user;

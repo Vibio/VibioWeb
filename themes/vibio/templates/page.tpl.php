@@ -136,7 +136,7 @@
 
 	  <?php print $sidebar_first; ?>
 
-	  <?php print $sidebar_second; ?>
+	  <?php //not set: print $sidebar_second; ?>
 
 	</div></div> <!-- /#main, /#main-wrapper -->
 

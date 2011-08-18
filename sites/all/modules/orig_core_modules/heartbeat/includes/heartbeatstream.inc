@@ -73,7 +73,7 @@ class HeartbeatStream {
   public $grouping_seconds = 7200;
 
   // Maximum number of items in the block display
-  public $block_items_max = 25;
+  public $block_items_max = 3; /* stephen: was 25 */
 
   // Number to indicate how a block-pager should be shown
   public $block_show_pager = 0;

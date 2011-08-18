@@ -2,6 +2,26 @@
 
 /* stephen:  */
 
+/* modified preprocess_search_results
+ *  1) fiddle (freely) with searches per page
+ *  2) two ways to "zebra stripe" the columns
+ */
+function vibio_preprocess_search_results(&$variables) {
+  $variables['search_results'] = '';
+	$zebra = 1;
+  foreach ($variables['results'] as $result) {
+		$z = $result['zebra'] = $zebra%3;
+		$zebra++;
+    $variables["search_results_$z"] .= theme('search_result', $result, $variables['type']);
+  }
+	// I think this is overridden somewhere for product search, which is called
+  //  item search.
+  $variables['pager'] = theme('pager', NULL, 40, 0);
+  // Provide alternate search results template.
+  $variables['template_files'][] = 'search-results-'. $variables['type'];
+}
+
+
 /* simple secondary menu link cleanup, for weird secondary menu links
  *  ! not sure where the menu_with_count_text comes from, being careful
  *    not to filter it out.
@@ -30,9 +50,20 @@ function vibio_theme(&$existing, $type, $theme, $path) {
 	$hooks = zen_theme($existing, $type, $theme, $path);
 
 	$hooks = array_merge($hooks, array(
+		/* I think this is not used anymore -stephen */
 		"user_social_info"	=> array(
 			"arguments"	=> array("uid"	=> null),
 			"template"	=> "templates/user/social-info",
+		),
+
+		/* templates for forms for negotiations, inserted into offers */
+		"offer_neg_buyer_node_form" => array(
+			'arguments' => array('form' => NULL),
+			'template' => "templates/node-offer_neg_buyer-edit"
+		),
+		"offer_neg_seller_node_form" => array(
+			'arguments' => array('form' => NULL),
+			'template' => "templates/node-offer_neg_seller-edit"
 		),
 	));
 	

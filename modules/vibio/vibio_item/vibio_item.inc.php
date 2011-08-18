@@ -33,6 +33,14 @@ function _vibio_item_search($keys)
 		if ((!variable_get("product_local_search", false) || $_GET['external_product_search']) && ($results = product_external_search($keys)))
 		{
 			$keys = _product_remove_options($keys);
+//dsm($results);
+// product_external_search is returning 10 results
+// it calls vibio_amazon_product_search($args)
+// Hey: we change the keys, then return $results, without redoing anything? confusing...
+// $results above can come down a very twisted path, 
+// vibio_amazon_product_search to amazon_search_search at the amazon module
+// which was thrown into the core directory with unmodified modules, but is 
+// modified, goes back to _vibio_amazon_search_result
 			return $results;
 		}
 		
@@ -202,6 +210,7 @@ function _vibio_item_search($keys)
 			//'snippet' => search_excerpt($keys, $node->body),
 		);
 	}
+//dsm($results); -- seems to fire maybe on weirder searches w/o results?
 	return $results;
 }
 
@@ -307,6 +316,26 @@ function _vibio_item_get_image($nid)
 	return _vibio_item_default_image();
 }
 
+/* function vibio_item_get_image_for_imagecache($nid) // for imagecache
+ * almost same as _vibio_item_get_image, but internal
+ * path rather than URL
+ * either by code (not yet) or by cutting (for now) 
+ * return the main image for an item --
+ * it's own, or it's products, or default.
+ *   		- stephen
+ */
+function vibio_item_get_image($nid, $imagecachecode, $alt = null, $title = null, $attributes = null) { // for imagecache
+	$url = _vibio_item_get_image($nid); // could recode and clean this,
+		// previous code takes what we want and runs file_create_url over it,
+		// then I undo that here sloppy fast works fine.
+	$pattern = "/sites/";
+	$p = preg_split ( $pattern, $url, 2 );
+	$path = $pattern . $p[1];
+
+	return theme('imagecache', $imagecachecode, $path, $alt, $title, $attrbutes);
+
+}
+	
 function _vibio_item_default_image()
 {
 	return file_create_url("themes/vibio/images/icons/default_item.png");

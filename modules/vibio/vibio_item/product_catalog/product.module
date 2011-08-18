@@ -1,7 +1,8 @@
 <?php
-define("PRODUCT_SEARCH_RESULTS_PER_PAGE", 10);
+define("PRODUCT_SEARCH_RESULTS_PER_PAGE", 40);
 define("PRODUCT_DETAIL_SNIPPET_LENGTH", 256);
-
+// PRODUCT_SEARCH_RESULTS_PER_PAGE does this do anything?  
+// Seems to be it's all done in search.module, hard-coded
 function product_perm()
 {
 	return array(
@@ -90,7 +91,7 @@ function product_external_search($args)
 	
 	$func = "{$provider}_product_search";
 	$args['keywords'] = _product_remove_options($args['keywords']);
-	
+// example $func = vibio_amazon_product_search
 	return $func($args);
 }
 
@@ -339,17 +340,20 @@ function product_preprocess_box(&$vars)
 	}
 }
 
+/* how does this dance with theme vibio_preprocess_search_results ? */
 function product_preprocess_search_results(&$vars)
 {
 	if ($vars['type'] == "vibio_item")
 	{
 		global $pager_page_array, $pager_total;
+
 		
 		module_load_include("inc", "product");
 		drupal_add_css("themes/vibio/css/product.css");
 		drupal_add_js("themes/vibio/js/product.js");
 		
 		$is_external = product_set_external_search();
+//PRODUCT_SEARCH_RESULTS_PER_PAGE does this do anything?
 		
 		if (!$is_external && variable_get("product_append_external", false) && (count($vars['results']) < PRODUCT_SEARCH_RESULTS_PER_PAGE || $_GET['page'] == $pager_total[0] - 1))
 		{
@@ -361,7 +365,7 @@ function product_preprocess_search_results(&$vars)
 			{	
 				foreach ($external_results as $result)
 				{
-					$vars['other_results'] .= theme("search_result", $result, "vibio_item");
+					$vars['other_results'] .= theme("search_result", $result, "vibio_item"); /* stephen: what is this? */
 				}
 				
 				$vars['pager'] = theme("pager");

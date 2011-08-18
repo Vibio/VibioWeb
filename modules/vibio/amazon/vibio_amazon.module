@@ -145,6 +145,8 @@ function vibio_amazon_product_source()
 
 function vibio_amazon_product_search($args)
 {
+	// at first glance, this bounces right back to this module. very confusing
+	//  to _vibio_amazon_search_result  - stephen
 	return amazon_search_search("search", $args['keywords'], true);
 }
 

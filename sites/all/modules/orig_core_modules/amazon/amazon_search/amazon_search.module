@@ -41,6 +41,8 @@ function amazon_search_search($op = 'search', $keys = NULL, $skip_access_check =
   }
 }
 
+/* This defines the pagination of the search. 
+ * Max's it at 5 pages -- stephen */
 function amazon_search_simple_search($keywords = '', $parameters = array()) {
   global $pager_page_array, $pager_total;
   $current_page = $_GET['page'] ? $_GET['page'] : 0;

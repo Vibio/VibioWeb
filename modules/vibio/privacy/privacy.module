@@ -283,6 +283,12 @@ function privacy_del_user($uid)
 	db_query($sql, $uid);
 }
 
+/**
+ * Get access of from (defaults to logged in user) to first arg 
+ *
+ * Creates, but does it store, an array of privacy levels 
+ *  uid_owner x uid_viewer
+ */ 
 function privacy_get_access_level($to_uid, $from_uid=null)
 {
 	static $privacy_access_levels = array();
@@ -304,7 +310,7 @@ function privacy_get_access_level($to_uid, $from_uid=null)
 	
 	if (!$privacy_access_levels[$from_uid][$to_uid])
 	{
-		$network = network_get($from_uid, false, 1);
+		$network = network_get($from_uid, false, 1); // no idea what this is
 		$privacy_access_levels[$from_uid][$to_uid] = array_key_exists($to_uid, $network) ? PRIVACY_CONNECTION : PRIVACY_AUTHENTICATED;
 	}
 	

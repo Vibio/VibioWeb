@@ -1,6 +1,8 @@
 <?php
 global $user;
 
+//die("social-info.tpl shouldn't be used anymore");
+print "<h1>in the old social-info file</h1>";
 $default_tab = false;
 if (arg(2) == "inventory")
 {

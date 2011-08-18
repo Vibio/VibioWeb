@@ -1,6 +1,35 @@
 <?php
 
-// access helo docs http://drupal.stackexchange.com/questions/116/how-do-i-add-an-access-condition-to-a-menu-item
+/**
+ * Load extended aspects of an offer, including conversations
+ *
+ * array($chit_chat, $current_buyer, $current_seller) =
+ *   _offer_conversation_info($node);
+ */
+function _offer_conversation_info($node) {
+	 $viewName = 'offer_conversation';
+  $display_id = 'default';
+  $myArgs = array($node->nid); // node is this offer
+  // below is much like views_embed_view
+  $view_neg = views_get_view($viewName);
+  $view_neg->set_arguments($myArgs);
+  // access could get complicated, not wireframed yet!  $chit_chat = $view_neg->preview($display_id, $args);
+
+  /* Need the most recent buyer and seller node from the communications */
+  foreach ( $view_neg->result as $neg ) {
+    $neg = node_load($neg->nid); // need rest of node loaded, another way???!!!
+    //dpr( $neg );
+    if ( !$current_seller && /*toggle based on sort criteria in view */ ( $neg->type == 'offer_neg_seller' ) ) {
+      $current_seller = $neg;
+    }
+    elseif ( !$current_buyer && ( $neg->type == 'offer_neg_buyer' ) ) {
+      $current_buyer = $neg;
+    }
+  }
+
+	return array($chit_chat, $current_buyer, $current_seller);
+
+}
 
 /**
  * @file
@@ -17,29 +46,37 @@
 
 /* hook_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) */
 function vibio_offer_nodeapi(&$node, $op) {
+//if ($op != 'load' && $op != 'view' && $op != 'alter' ) { die ($op); }
   switch ($op) {
+
+		/* send mail when creating or updating negotiations within offers */
+		// what about: alter
+		case 'alter':
+		case 'update':
     case 'insert':
-    // $node contains the newly created node
-		dsm ("nodeapi firing on insert(vibio_offer.module") ;
+    	// $node contains the newly created node
+			//it does in testing: dsm ("nodeapi firing on insert(vibio_offer.module") 
 			if ($node->type == 'offer_neg_seller' ||
 				  $node->type == 'offer_neg_buyer' ) {
-				dpm($node);
-				//drupal_send_mail(
+				// dpm or dsm useless for popups..
+				dsm(array("going to send an email around this" => $node));
+//die("here");
+				$module = 'vibio_offer';
+				$key = $node->type;
+				$writer_uid = $node->uid;
+				$offer_nid = $node->field_offer[0][nid];
+		//XXX	
+				drupal_mail($module, $key, $to, $language, $params = array(), $from = NULL, $send = TRUE);
 			}
+			
+
+
+
     	break;
   }
-	if ( $op != 'load' ) {
-		//die("xxxxhere at $op");
-	}
 
-/*
-	dpm($op);
-	if ( $op == 'insert' ) { /* update *
-		dpm($node);
-		// no return value for insert
-	}
-*/
 }
+
 
 function vibio_offer_preprocess_page(&$vars) {
         // Continuing site style of micro-css files
@@ -50,7 +87,7 @@ function vibio_offer_preprocess_node(&$vars) {
 	// help: http://drupal.org/node/223430
   // figure out access, load needed variables
   // fire up template, probably with included forms
-
+	// *** mostly do this in node-offer.tpl, migrate here later?
   // return nothing -- fiddle with $vars, passed in by reference
 }
 
@@ -77,7 +114,7 @@ function vibio_offer_menu() {
 		'description' => "Deal with an offer",
 		'page callback' => 'vibio_offer_page', 
 		'page arguments' => array(1,2),  /* or 2 or what? */
-		'type'             => MENU_NORMAL_ITEM,
+//		'type'             => MENU_NORMAL_ITEM,
 		'access arguments' => array('access content'), 
 		//'access callback'  => 'user_access',  withing this, "you are not logged in"
 		
@@ -111,17 +148,17 @@ $nid = $content->nid;
 //--> if offer exist, or doesn't, get it.
 if ( $nid ) {
 	$node = node_load($nid);
-	dsm("loaded node $nid");	
 } else {
-	dsm("couldn't find node for $sql");
 	$node = new stdClass();
 	$node->type = 'offer';
   global $user;
   $node->uid = $user->uid;
   $node->name = $user->name;	
-	//$node->title = "Offer by " . $user->name . " for $item_title";
-	// set the item it's attached to
+		// set the item it's attached to
 	$node->field_item_sought[]['nid'] = $item_nid; // [] or [0], same
+
+	$node->title = "Offer by " . $user->name . " for $item_nid $item_title";
+
 	// Do we create it, or just load the form for it?  I'm not sure,
 	//  try both ways (both should be ok, but not sure).  Maybe create
 	//	it now, to be sure the nid is saved, and make both processes as
@@ -137,9 +174,6 @@ if ( $nid ) {
 drupal_set_title($node->title);
 return node_view($node);
 
-	/* 2) 
-*/
-	return "ain't built vibio_offer_page yet.  item: $item_nid buyer: $buyer_uid.  Nid is $nid";
 }
 
 /* load some values from $default into $this
@@ -150,28 +184,28 @@ return node_view($node);
  *  and Offer doesn't store these values and could lose them, doesn't have
  *  cck fields defined (that could change), but I use the same format
  */
-function _load_default ($this, $default) {
+function _load_default_offer ($setme, $default) {
+	// Configure:
 	$buyer_fields = array('field_price', 'field_offer_expires','field_city','field_buy_actions');
-	$seller_fields = array('field_sale_status', 'field_sale_actions');
-
+	$seller_fields = array('field_accept', 'field_pay_received', 'field_item_sent');
 	// Pick the fields to update, or get out of here
 	switch ( $default->type ) {
-		case 'offer-neg-buyer':
+		case 'offer_neg_buyer':
 			$fields = $buyer_fields;
 			break;
-		case 'offer-neg-seller':
+		case 'offer_neg_seller':
 			$fields = $seller_fields;
 			break;
 		default:
-			return $this; // often negotiations have not begun
+			return $setme; // often negotiations have not begun
 	}
 
 	// Set new node to default node
 	foreach ( $fields as $field ) {
-		$this->$field = $default->$field;
+		$setme->$field = $default->$field;
 	}
 
-	return $this;
+	//return $setme; shouldn't need, do we?
 }
 
 
@@ -205,6 +239,12 @@ function vibio_offer_form_alter(&$form, $form_state, $form_id) {
 //request_uri()
 		$form['#redirect'] = request_uri(); // 'offer/offer-vibio-item-1';
 
+		// and clean up extra message -- oh, this breaks the whole submit process.
+		//unset($form['buttons']['submit']['#submit'][0]); 
+				// later, might put a message back in.  It won't show up for popups.
+			// instead of unsetting, try:
+			// $form['buttons']['submit']['#submit'][0] = 'MODULENAME_node_form_submit';
+			// see http://www.deeson.co.uk/online/labs/overwriting-the-node-has-been-created-updated-drupal-set-messages
 	}
 }
 

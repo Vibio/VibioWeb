@@ -21,7 +21,8 @@
  * @see template_preprocess_search_results()
  */
 ?>
-where's this? anything calling search-results.tpl.php
+search-results.tpl.php is called by admin or url searches.  It's not a security
+issue, but it doesn't work well either.
 <dl class="search-results <?php print $type; ?>-results">
   <?php print $search_results; ?>
 </dl>

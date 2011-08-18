@@ -1,0 +1,228 @@
+<?php
+
+// access helo docs http://drupal.stackexchange.com/questions/116/how-do-i-add-an-access-condition-to-a-menu-item
+
+/**
+ * @file
+ * Catch the url   offer/item_id/offer_uid
+ *  Create or edit that offer(cck node) if you are the offerer,
+ *  Deal in different ways if you are seller or have some access
+ * The more this can be a normal cck, the better.
+ *
+ * form alter:
+ * need to set the parent nid automatically
+ * _simplify_form simplifies the negotiation input forms
+ * offer amounts will need some complex help to get right default
+ */
+
+/* hook_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) */
+function vibio_offer_nodeapi(&$node, $op) {
+  switch ($op) {
+    case 'insert':
+    // $node contains the newly created node
+		//it does in testing: dsm ("nodeapi firing on insert(vibio_offer.module") ;
+			if ($node->type == 'offer_neg_seller' ||
+				  $node->type == 'offer_neg_buyer' ) {
+				dpm($node);
+				//drupal_send_mail(
+			}
+    	break;
+  }
+	if ( $op != 'load' ) {
+		//die("xxxxhere at $op");
+	}
+
+/*
+	dpm($op);
+	if ( $op == 'insert' ) { /* update *
+		dpm($node);
+		// no return value for insert
+	}
+*/
+}
+
+function vibio_offer_preprocess_page(&$vars) {
+        // Continuing site style of micro-css files
+        drupal_add_css("themes/vibio/css/offer.css");
+}
+
+function vibio_offer_preprocess_node(&$vars) {
+	// help: http://drupal.org/node/223430
+  // figure out access, load needed variables
+  // fire up template, probably with included forms
+	// *** mostly do this in node-offer.tpl, migrate here later?
+  // return nothing -- fiddle with $vars, passed in by reference
+}
+
+/*
+
+function verdant_share_form_alter(&$form, $form_state, $form_id) {
+	// Might not even need this?
+
+ */
+
+/**
+  * Implementation of hook_menu().
+  */
+	// !!! function xxx_menu($may_cache) { -> what about $may_cache ?
+function vibio_offer_menu() {
+	$items = array();
+	/* weird caching problem -- clean cache using first line (no args)
+	 * then switch to second line. !!! */
+	/* Perhaps it's an access issue?  Is it programmed
+   * to give a 403 when access denied? */	
+ 	$items['offer'] = array(
+	//$items['offer/%item_nid/%buyer_uid'] = array(
+		'title' => 'An Offer',
+		'description' => "Deal with an offer",
+		'page callback' => 'vibio_offer_page', 
+		'page arguments' => array(1,2),  /* or 2 or what? */
+		'type'             => MENU_NORMAL_ITEM,
+		'access arguments' => array('access content'), 
+		//'access callback'  => 'user_access',  withing this, "you are not logged in"
+		
+	);
+  return $items;
+}
+
+/**
+  * Menu callback -- main view/forms for dealing with offers here
+  * [Create and] Display the page, with varying forms by user
+  * !!! Or is it better to use preprocess?
+  */
+function vibio_offer_page($item_nid, $buyer_uid) {
+  if (( $item_nid < 1 || $buyer_uid < 1)) {
+	return "<h1>Offer failed</h1>Sorry, there was a technical problem
+		with this offer.  Please let the webmaster know.";
+  }
+	/* 1) Load offer.  If doesn't exist, create.  This need to 
+	   	  create rather than return page-not-found is the main reason
+		  I need a menu callback, rather than merely preprocess the theme.
+   */
+$sql = "SELECT node.nid AS nid
+ FROM drupal_node node 
+ LEFT JOIN drupal_content_type_offer node_data_field_item_sought ON node.vid = node_data_field_item_sought.vid
+ INNER JOIN drupal_users users ON node.uid = users.uid
+ WHERE (node.type in ('offer')) AND (node_data_field_item_sought.field_item_sought_nid = $item_nid) AND (users.uid = $buyer_uid)
+   ";  /* orig from offer_selector_item_buyer view */
+$content = db_fetch_object(db_query("$sql"));
+$nid = $content->nid;
+
+//--> if offer exist, or doesn't, get it.
+if ( $nid ) {
+	$node = node_load($nid);
+} else {
+	$node = new stdClass();
+	$node->type = 'offer';
+  global $user;
+  $node->uid = $user->uid;
+  $node->name = $user->name;	
+	$node->brandnew = 1; // not stored, of course. used in edit template
+		// set the item it's attached to
+	$node->field_item_sought[]['nid'] = $item_nid; // [] or [0], same
+
+	$node->title = "Offer by " . $user->name . " for $item_nid $item_title";
+
+	// Do we create it, or just load the form for it?  I'm not sure,
+	//  try both ways (both should be ok, but not sure).  Maybe create
+	//	it now, to be sure the nid is saved, and make both processes as
+	//  parallel as possible.
+  $node->format = 2;     // 1 means filtered html, 2 means full html, 3 is php
+  $node->status = 1;     // 1 means published
+  $node->promote = 0;
+  $node = node_submit( $node );
+  node_save( $node ); 
+}
+
+// 2) Print it
+drupal_set_title($node->title);
+return node_view($node);
+
+	/* 2) 
+*/
+	return "ain't built vibio_offer_page yet.  item: $item_nid buyer: $buyer_uid.  Nid is $nid";
+}
+
+/* load some values from $default into $this
+ * The types can vary: $default can be offer_neg_buyer or ..._seller
+ * $this can be for a form of the same type,
+ * or the Offer itself getting most recent values
+ * (Typically, the neg's will store the default when the user hits save,
+ *  and Offer doesn't store these values and could lose them, doesn't have
+ *  cck fields defined (that could change), but I use the same format
+ */
+function _load_default_offer ($setme, $default) {
+	// Configure:
+	$buyer_fields = array('field_price', 'field_offer_expires','field_city','field_buy_actions');
+	$seller_fields = array('field_accept', 'field_pay_received', 'field_item_sent');
+	// Pick the fields to update, or get out of here
+	switch ( $default->type ) {
+		case 'offer_neg_buyer':
+			$fields = $buyer_fields;
+			break;
+		case 'offer_neg_seller':
+			$fields = $seller_fields;
+			break;
+		default:
+			return $setme; // often negotiations have not begun
+	}
+
+	// Set new node to default node
+	foreach ( $fields as $field ) {
+		$setme->$field = $default->$field;
+	}
+
+	//return $setme; shouldn't need, do we?
+}
+
+
+/**
+ * Implementation of hook_theme()
+ */
+function vibio_offer_theme() {
+	return array(
+		'offer' => array(
+		/*example'arguments' => array('node' => NULL, 'teaser' => FALSE, 'page' => FALSE),*/
+			'template' => 'offer',
+		),
+	);
+}
+
+
+/* code change options: switch to hook_form_FORM_ID_alter() */
+function vibio_offer_form_alter(&$form, $form_state, $form_id) {
+	/* Simple cleanup reducing options for editing negotiations */
+  if (    ( $form_id == 'offer_neg_seller_node_form' )
+       || ( $form_id == 'offer_neg_buyer_node_form' ) ) {
+
+		// just clean up unneeded options
+		_simplify_form($form, TRUE);	
+		unset ($form['buttons']['preview']);
+		//dpr(array("form" => $form));	
+		//print '<pre>';
+		//print_r($form);	
+		// stay on page
+//$_SERVER['REQUEST_URI']
+//request_uri()
+		$form['#redirect'] = request_uri(); // 'offer/offer-vibio-item-1';
+
+	}
+}
+
+function _simplify_form(&$form) {
+  // this is cut and pasted from another module, some overkill, 
+  $form['body_field']['teaser_include']['#access'] = FALSE;
+  $form['#content_extra_fields']['revision_information']['#access'] = FALSE;
+  $form['comment_settings']['#access'] = FALSE;
+  $form['menu']['#access'] = FALSE;
+  $form['path']['#access'] = false;
+  $form['author']['#access'] = false;
+  $form['options']['#access'] = false;
+  $form['revision_information']['#access'] = false;
+  unset($form['body_field']['format']['format']['guidelines']);
+  $form['body_field']['body']['#rows'] = 4;
+	unset($form['body_field']['format']); // ok or too broad stroke? 
+	//lock and hide the offer you are connected to
+	$form['field_offer']['#access'] = FALSE;
+//dpr($form);
+}

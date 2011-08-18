@@ -1,0 +1,53 @@
+<!-- seller edits their response: node-offer_neg_seller-edit.tpl.php -->
+
+<?php //To REMOVE Title field, in case of popup
+  unset($form['title']); ?>
+
+    <?php 
+      //NOTE: if you don't have Field Group then simply type:
+      // print drupal_render($form['field_accreg_company_name']['0']['value']); 
+  //    print drupal_render($form['group_company']['field_company']['0']['value']); 
+   //   print drupal_render($form['group_company']['field_street']['0']['value']);
+
+// Some configuration that one day might move from here
+//$form['body_field']['body']['#rows'] = 3;
+/*print drupal_render($form[field_sale_actions]);
+print drupal_render($form[field_sale_status]);*/
+//body, we want suggested text, disapears on focus: onfocus="this.value=''
+/*
+only if default
+value="Search" onfocus="if
+(this.value==this.defaultValue) this.value='';"
+
+burn after opening:
+onFocus="this.value='';this.onfocus='';" 
+*/
+unset($form['body_field']); // !!!??? go with the text version?
+
+?>
+<?php
+//print drupal_render($form['body_field']['body']);
+dsm($form[field_chat]);
+//$form[field_chat][display_settings][label][exclude] = 1;
+$form[field_chat]['#attributes'] = array(
+	'alt' => "alt atribute",
+	'onFocus' =>"this.value='';this.onfocus='';");
+$form[field_chat][0]['value']['#title'] = '';
+
+print drupal_render($form[field_chat]);
+
+$form['buttons']['submit']['#value'] = 'Respond to Offer';
+// not working yet....
+//$form[field_chat]['#attributes']['onFocus'] = "this.value='';this.onfocus='';";
+// nor this.
+print drupal_render($form);
+
+    ?>
+<?php 
+  
+  //Enable below to show all Array Variables of Form 
+
+  print '<pre>';
+	print_r($form['field_chat']);
+//  print_r($form);
+  print '</pre>';

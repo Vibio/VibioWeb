@@ -48,7 +48,7 @@
  *
  * @ingroup database
  */
-function pager_query($query, $limit = 10, $element = 0, $count_query = NULL) {
+function pager_query($query, $limit = 2, $element = 0, $count_query = NULL) {
   global $pager_page_array, $pager_total, $pager_total_items;
   $page = isset($_GET['page']) ? $_GET['page'] : '';
 

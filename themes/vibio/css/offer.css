@@ -1,15 +1,41 @@
+
+
+.node-type-offer #page_title { display: none; }
+
 div#product_info_in_offer {
-        width: 160px;
+        width: 160px; /* not sure */
         float: left;
-        height: 200px;
-        padding: 5px;
+        min-height: 100px;
+        padding: 8px;
 }
 div#seller_info_in_offer {
         padding: 5px;
         height: 95px;
+}
+div#seller_info_in_offer .person_pic {
+	height: 85px;
 }
 div#buyer_info_in_offer {
         padding: 5px;
         height: 95px;
 }
 
+/* Stephens, some still in stephen.css */
+#form-column {
+  float: left;
+  clear: left; /* get around user image in v1.1 */
+  width: 48%;
+}
+
+#buyer-for-seller { /* based on neg-form for the moment */
+  background: #ddd;
+  margin-bottom: 1em;
+  border: 1px solid red;
+  padding: 2px;
+}
+
+#chit-chat .node { 
+	margin-bottom: 6px; 
+	border-bottom: 1px solid #ccc;
+}
+	

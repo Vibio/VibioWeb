@@ -1,47 +1,4 @@
 <?php
-/* Nelson wrote this.  Stephen adding new tokens so when you add
- * an item, it points at the product page 
- */
-/**
- * Implementation of hook_token_list().
- * Based on http://heartbeat.menhireffect.be/docs/how-add-variables-and-tokens
- * Note that it has imagecache examples we might want when get to that step
- */
-function hbi_token_list($type = 'all') {
-
-  $tokens = array();
-  if ($type == 'node') {
-
-    // Define images for albums
-    $tokens['node']['parent-product-title'] = t("The url of the product that this item is an instance of");
-  }
-  return $tokens;
-}
-/**
-* Implementation of hook_token_values().
-*/
-function hbi_token_values($type, $object = NULL, $options = array()) {
-  $values = array();
-  switch ($type) {
-
-    case 'node':
-    if($object->type == 'vibio_item') {
-			// My approach to associating items with products first explored
-			//  in node-offer.tpl.php	
-			module_load_include('inc', 'product', 'product');
-      if ( ( $product_nid = $item->product_nid ) ||  /* never set? */
- 						 $product_nid = _product_nid_from_item($item_nid) ) {
-        $product = node_load( $product_nid );
-			}
-      $values['parent-product-title'] = $product->title . "parent product title";
-    }
-    break;
-  }
-  return $values;
-}
-
-/****** Nelson's code below here *******/
-
 function hbi_exit($destination=null)
 {
 	hbi_node_log_update();
@@ -61,8 +18,6 @@ function hbi_nodeapi(&$node, $op, $a3=null, $a4=null)
 			$args = array(
 				"@username"		=> l($u->name, "user/{$u->uid}"),
 				"@node_title"	=> l($node->title, "node/{$node->nid}"),
-				/* stephen -- hasn't kicked in yet */
-				"@parent_title" => l("parent", "node/parentgrephbimodule"),
 			);
 			$params = array("heartbeat_edit_node", $node->uid, 0, $node->nid, 0, $args);
 			

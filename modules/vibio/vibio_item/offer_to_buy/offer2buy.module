@@ -608,8 +608,9 @@ function offer2buy_forms($id, $args)
 			"callback"	=> "offer2buy_offer_reject_form",
 		);
 	}
-	
-	if ($forms)
+
+	// stephen: was if ($forms) producing errors all the time, try...	
+	if (isset($forms))
 	{
 		return $forms;
 	}

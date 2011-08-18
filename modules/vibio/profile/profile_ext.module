@@ -9,6 +9,28 @@ function profile_ext_perm()
 function profile_ext_menu()
 {
 	$menu = array();
+
+	/*--- various profile section pages ---*/
+		
+	// overwrite the normal user profile page from user module.	
+	// user module uses:   $items['user/%user_uid_optional'] = array(
+
+	$menu['profile/%user'] = array(
+		"title"				=> "User Profile", //rewritten
+			// title rewritten in main code, instead of this way.	
+		"page callback"		=> "profile_ext_profile",
+		"access callback"	=> "profile_ext_access_dashboard",
+		"file"				=> "profile_ext.pages.inc",
+		"type"				=> MENU_NORMAL_ITEM,
+		"menu_name"	=> "primary",	
+	);
+
+
+
+
+
+
+	/*--- Nelson's work below here, Stephen's recent additions above ---*/	
 	
 	$menu['my-dashboard'] = array(
 		"title"				=> "My Dashboard",
@@ -41,6 +63,10 @@ function profile_ext_menu()
 			"type"				=> MENU_SUGGESTED_ITEM,
 		);
 	}
+
+
+
+
 	
 	return $menu;
 }
@@ -60,7 +86,8 @@ function profile_ext_user($op, &$edit, &$u, $category=null)
 		case "login":
 			if (empty($_GET['destination']) || $_GET['destination'] == "frontpage")
 			{
-				$_GET['destination'] = $_REQUEST['destination'] = "my-dashboard";
+				//$_GET['destination'] = $_REQUEST['destination'] = "my-dashboard"; -- stephen, no the things in the if are correct for today's wireframe, might change again so leaving code in place
+				
 			}
 			break;
 	}
@@ -93,6 +120,7 @@ function profile_ext_block($op="list", $delta=0, $edit=array())
 	}
 }
 
+/* load a tpl for every pixel on the screen */
 function profile_ext_theme(&$existing, $type, $theme, $path)
 {
 	return array(
@@ -105,6 +133,7 @@ function profile_ext_theme(&$existing, $type, $theme, $path)
 			"template"	=> "templates/profile/external-accounts",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+		/* seems to be part of profile, what calls it? */
 		"profile_ext_view_fields"	=> array(
 			"arguments"	=> array("target_user" => false, "fields_category" => array()),
 			"template"	=> "templates/profile/view-fields",
@@ -120,12 +149,15 @@ function profile_ext_theme(&$existing, $type, $theme, $path)
 			"template"	=> "templates/profile/edit-link",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+		/* used for the top left primary menus */
 		"profile_ext_displayblock"		=> array(
-			"arguments"	=> array("display_user" => false, "profile_picture" => false, "sub_items" => array()),
+			"arguments"	=> array("user" => false, "profile_picture" => false, "vars" => array()), // was sub_items, stephen changed to vars
 			"template"	=> "templates/profile/display-block",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
-		"profile_ext_displayblock_item"	=> array(
+		"profile_ext_displayblock_item"	=> array( /* awful complex, destroy -- stephen
+			this may have been removed from code, test, see
+			if it's called elsewhere.  */
 			"arguments"	=> array("item_data" => array()),
 			"template"	=> "templates/profile/display-block-item",
 			"path"		=> drupal_get_path("theme", "vibio"),
@@ -135,6 +167,7 @@ function profile_ext_theme(&$existing, $type, $theme, $path)
 			"template"	=> "templates/profile/header",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+		/* something to do with account editing */
 		"profile_ext_header_menu"		=> array(
 			"arguments"	=> array("profile_ext_user" => false),
 			"template"	=> "templates/profile/header-menu",
@@ -150,10 +183,84 @@ function profile_ext_theme(&$existing, $type, $theme, $path)
 			"template"	=> "templates/profile/profile-progress",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+		/* stephen adding template */
+		"profile_ext_profile"	=> array(
+			"arguments"	=> array("account"=>array(),
+				"this_page" => null,
+				"sec_menu" => null),
+			"template"	=> "templates/profile/profile",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+	
 	);
 }
 
+/* function profile_ext_display_block($user)
+ *  show the user's picture, name, and desktop (buy, sell, etc)
+ *		in the top left.
+ *  Whole thing disappears if not signed in.
+ * Nelson cached this for 5 minutes -- so if you're chit-chatting with
+ *  someone else you won't see it.  I think we should take out caching
+ *  of messages and offers unless need to throttle, and postpone in any
+ *  case.  
+ * His code will be kept and commented in stub function below this.
+ * My code is a little sloppy but clear -- how do you stick the $vars into
+ *  a tpl from display_block without writing preprocess?
+ *   -- Stephen
+ */
 function profile_ext_display_block($u)
+{	
+	$vars = array();
+
+	$cache_key = "profile_display_block:{$u->uid}";
+	$cache_time = 60*0; // 0 minutes
+	
+	if ($cache = cache_get($cache_key, "cache"))
+	{
+		$items = $cache->data;
+	}
+	else
+	{
+		module_load_include("inc", "profile_ext");
+		$items = "";
+	
+
+
+	
+		if (module_exists("privatemsg"))
+		{
+			$vars['msg_count'] = privatemsg_unread_count($u);
+//dsm($vars);
+		}
+		$vars['notifications'] = profile_ext_get_dashboard_notifications($u->uid, $tabs);
+		
+	}
+
+	global $user;
+  $vars['friend_count'] = module_exists("network") ? count(_network_get_friends($user->uid, 1)) : 0;
+
+
+	// print $GLOBALS['current_view']->total_rows; or num_rows
+	$view = views_get_view('user_selling_offered');	
+	$view->execute_display(); // do one that doesn't have a pager?!!!
+	$vars['selling'] = count($view->result);
+	//$pic_nelson = $u->picture ? file_create_url($u->picture) : "/themes/vibio/images/icons/default_user_large.png";
+  $alt = "Your picture";
+  $title = '';
+  $attributes = '';
+
+	if ( !$u->picture ) { /* deal with no pic loaded */
+		$u->picture = "/themes/vibio/images/icons/default_user_large.png";
+	}
+	//elsewhere: $pic = $u->picture ? file_create_url($u->picture) : "/themes/vibio/images/icons/default_user_large.png";
+	$pic = theme('imagecache', "little_profile_pic", $u->picture, $alt, $title, $attributes);
+	// fire it to this template: templates/profile/display-block
+	return theme("profile_ext_displayblock", $u, $pic, $vars);
+}
+
+
+
+function NELSONs____profile_ext_display_block___archived_in_place($u)
 {	
 	$cache_key = "profile_display_block:{$u->uid}";
 	$cache_time = 60*5; // 5 minutes
@@ -279,16 +386,86 @@ function profile_ext_preprocess_user_profile(&$vars)
 	
 	$args = explode("/", $_GET['q']);
 	$uid = $args[1];
-	$target_user = user_load($uid);
+	$target_user = user_load($uid);  // $user is looking at $target_user profile
 	
 	if ($user->uid == $uid)
 	{
+		// not being printed in current template, leave for now
 		$vars['profile']['profile_progress'] = profile_ext_get_progress($uid);
 	}
 	
 	$vars['profile']['user'] = $target_user;
-	$vars['profile']['demographics'] = theme("profile_ext_view_fields", $target_user, "demographics");
-	$vars['profile']['public_info'] = profile_ext_public_info($uid);
+	$vars['profile']['demographics'] = theme("profile_ext_view_fields", $target_user, "demographics");  // what are demographics?
+	//$vars['profile']['public_info'] = profile_ext_public_info($uid);
+
+	/* Second half of page depends on third arg, user/uid/second_section */
+	$sec_page = $args[2]; // user/uid/$sec_page like "about me"
+	switch ( $sec_page ) {
+		case "badges":	
+			$vars['sec_content'] = 
+				"<div id='user_badges'>" .
+				theme("badge_list", $uid) .
+				"</div>";
+			break;
+    // eventually, split to collections and inventory, this will be collection,
+    // but with only one choice, call it inventory.
+		// sucess: /user/1/inventory
+    case "inventory":
+		case "collections":
+		$access = module_exists("privacy") ? privacy_get_access_level($uid) : 1;
+			//!!! This shows only what you can see, without quite
+			//	letting you know that, for example, an anoymous
+			//	user can't see much
+			if ( $user->uid < 1 ) {
+				$msg = "<h3>Sign in for a better view of " . check_plain($target_user->name) . "'s collections.</h3>";
+			} elseif ( $user->uid != $uid ) {
+				$msg = "<h3>Connecting lets you see more private items.</h3>";
+			}
+			$vars['sec_content'] =  
+				$msg .
+				views_embed_view("user_collections", "default", $uid, $access);
+
+
+			break;
+    case "about me":
+    case "about":
+			$vars['sec_content'] = profile_ext_public_info($uid);
+			break;
+    case "activity":  // never used, default blank?
+    default:
+      drupal_set_title($user->name); //(t($user->name));
+			// can't yet tell heartbeat views apart
+      //$vars['sec_content'] = views_embed_view("user_hb_incoming_activity");
+
+			$access = module_exists("privacy") ? privacy_get_access_level($uid) : 1;
+//$access = 1; // 4 MYONLY shows nothing looking at someone else; 3 shows it;
+						// 2 shows it, and 1 doesn't!  
+			$vars['sec_content'] = views_embed_view("user_heartbeat_activity", "block_1", $uid, $access);
+
+    break;
+
+	}
+
+	// Finding friends.
+	// network_get seems to return my entire network, maybe two friends
+	//	out.  This might be coded in network module or elsewhere, but recoding
+	//  is faster than reverse engineering for the moment.
+	// Since network_get shows two degrees out, it's weird.
+	$network = network_get($uid);
+	$me_in_their_wide_network = $network[$user->uid]['friends'];
+	$friends = _network_get_friends($uid);
+	//dsm($me_in_their_wide_network);
+	dsm($friends);
+	if ( $uid == $user->uid ) {
+		$vars['who_to_you'] = 'you';
+	} elseif ( in_array($user->uid, $friends ) ) {
+		$vars['who_to_you'] = 'connection';
+	} elseif ( $me_in_their_wide_network ) {
+		$vars['who_to_you'] = 'second';
+	} else {
+		$vars['who_to_you'] = 'none';
+	}
+
 }
 
 function profile_ext_preprocess_page(&$vars)

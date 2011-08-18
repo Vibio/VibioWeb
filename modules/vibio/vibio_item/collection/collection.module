@@ -502,6 +502,10 @@ function collection_badge_user_login($uid) {
 	}
 }
 
+// warning: stephen cut and pasted some code, and found $cid being passed
+//  here was an array.  Is this happening elsewhere?  It oddly works if
+//  you comment out the the is_numeric test... $cid = array(26=>26) behaves
+//  like $cid = 26
 function collection_load($cid)
 {
 	if (!is_numeric($cid))
@@ -513,8 +517,8 @@ function collection_load($cid)
 			FROM {collection} c JOIN {users} u ON c.`uid`=u.`uid`
 			WHERE `cid`=%d";
 	$collection = db_fetch_array(db_query($sql, $cid));
-	$collection = array_merge($collection, module_invoke_all("collection_load", $collection, $as_uid));
-	
+	$collection = array_merge($collection, module_invoke_all("collection_load", $collection, $as_uid)); // stephen notes: $as_uid, what is it, where from?
+//dsm(array($cid,$collection));
 	return $collection;
 }
 

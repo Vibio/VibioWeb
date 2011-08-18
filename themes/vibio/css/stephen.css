@@ -1,11 +1,56 @@
+/* negotiations */
+
+.item-picture-offer {
+	/* a few pix more than the imagecache setting */
+	height: 142px;
+	width: 142px;
+	margin: auto; /* remove width and margin auto, maybe? design? */
+	text-align: center;
+}
+
+.neg-form {
+	border: 1px solid red;
+	padding: 2px;
+	background: #ddd;
+}
+#neg-discuss { /* discussion, or note there isn't one. */
+	float: right;
+	width: 48%;
+	display: block;
+	padding: 2px;
+	border: 1px solid yellow;
+}
+
+/* feature-this flag */
+div.search-flag {
+	position: relative;
+	top: 10px;
+}
+
+
 /* offers page, see also selling page */
+/*  slowly switching to imagacche */
 .person_pic img {
-	height: 36px;
-	width: 36px;
+	height: 42px;
+	width: 42px;
 }
 .popups-box .title { display: none; }
 
 /* selling page (and then similar components elsewhere) */
+div.teaser_item_pic {
+	float: left;
+}
+.page-selling .node-type-offer {
+	margin-bottom: 1em;
+	border-bottom: 1px solid #333;
+}
+div.selling_item_info {   /* the sellers info, left of offer */
+	/* rapid, crappy css */
+	width: 300px; float: left; height: 160px;
+	padding-right: 1em;
+	margin-right: 1em; 
+}
+
 
 /* user pics in various places, rename thorughout? */
 .person_pic,
@@ -65,15 +110,26 @@ div.search-links {
 
 /* search results, items in an image-rectangle in multiple places */
 .item-rectangle {
-	width: 180px;
+	width: 190px;
 	/*height: 180px;*/
 	padding: 7px;
 	margin: 6px;
 	border: 1px solid #999;
 	background: #eee;
-	float: left; /* intend 3col? */
+	/*float: left; /* intend 3col? */
 	position: relative; /* make it the parent */
 }
+.col1, .col2 { 
+	width: 230px;
+	float: left;
+	display: block;
+}
+.col3 { 
+	width: 230px;
+	float: right;
+	display: block;
+}
+.col0 { background: blue; }
 /*img.item-square-image {  done with imagecache 
 	//height: 180px;
 	width: 180px;
@@ -89,4 +145,21 @@ div.title-item {
 div.search-links {
         position: absolute;
         bottom: 10px;
+}
+
+
+
+/* expect Carolyn to erase and replace this, but there's no correct
+ * template so I'm going to design in css
+ */
+#profile_ext_displayblock {
+	background: #669;
+}
+#profile_ext_displayblock_subitems  {
+	width: 100%;
+	text-align: center;
+}
+a #profile_ext_displayblock_image {
+	display: block;
+	float: left;
 }

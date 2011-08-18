@@ -1,4 +1,6 @@
 <?php
+/* this produces your Profile "About me" page. */
+
 $res = _profile_get_fields($fields_category);
 $offset = strlen("profile_") - 1;
 

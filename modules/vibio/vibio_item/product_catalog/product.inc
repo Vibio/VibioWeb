@@ -1,6 +1,6 @@
 <?php
 define("PRODUCT_OWNER_CACHE_TTL", 300);
-define("PRODUCT_OWNER_DISPLAY_PER_PAGE", 10);
+define("PRODUCT_OWNER_DISPLAY_PER_PAGE", 40);
 
 
 /* _product_get_product_owners gets and array of owners by network and 

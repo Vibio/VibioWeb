@@ -1,0 +1,98 @@
+#vibio_dialog {
+	padding: 10px;
+	background: #375670;
+	border-radius: 8px;
+	-moz-border-radius: 8px;
+	min-height: 55px !important;
+}
+
+.vibio_dialog_content {
+	background: white;
+	max-height: 650px;
+	overflow: auto;
+	border-radius: 8px;
+	-moz-border-radius: 8px;
+	border: 1px solid #E2E6E9;
+	padding: 5px 10px;
+}
+
+.ui-dialog {
+	position: absolute;
+}
+
+.ui-widget-overlay {
+	background: #465d70;
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.ui-dialog-titlebar {
+	display: none;
+}
+
+.ui-dialog-titlebar img {
+	position: relative;
+	top: 2px;
+	right: 5px;
+}
+
+.vibio_dialog_close_link:hover {
+	cursor: pointer;
+}
+
+.vibio_dialog_close_button {
+	position: absolute;
+	right: -7px;
+	top: -5px;
+}
+
+#vibio_dialog .views_message {
+	max-width: 390px;
+}
+
+#dialog_busy_indicator_container {
+	display: none;
+}
+
+#dialog_busy_indicator {
+	padding: 10px 0;
+	text-align: center;
+}
+
+#vibio_dialog form .form-item label {
+	float: left;
+	margin-right: 10px;
+	width: 150px;
+	text-align: right;
+	color: #2B363D;
+}
+
+#vibio_dialog form select[multiple] {
+	max-height: 120px;
+}
+
+#vibio_dialog form input[type="text"], #vibio_dialog form textarea {
+	max-width: 310px;
+	max-height: 60px;
+}
+
+#vibio_dialog form .description {
+	margin-left: 163px;
+	font-size: 12px;
+	color: #2B363D;
+}
+
+#vibio_dialog form input[type="file"] {
+	width: 170px;
+}
+
+#vibio_dialog #edit-picture-delete-wrapper label {
+	margin-left: 8px;
+}
+
+#vibio_dialog form fieldset > div.description {
+	margin-left: 0;
+}

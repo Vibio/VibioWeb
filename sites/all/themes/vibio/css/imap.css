@@ -1,0 +1,8 @@
+.imap_attach_form {
+	margin-top: 5px;
+}
+
+.imap_attach_form .form-item {
+	float: left;
+	margin: 0 10px 0 0;
+}

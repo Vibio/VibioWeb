@@ -3,31 +3,37 @@
 /**
  * Load extended aspects of an offer, including conversations
  *
- * array($chit_chat, $current_buyer, $current_seller) =
+ * list($chit_chat, $current_buyer, $current_seller) =
  *   _offer_conversation_info($node);
+ *
  */
 function _offer_conversation_info($node) {
 	 $viewName = 'offer_conversation';
   $display_id = 'default';
   $myArgs = array($node->nid); // node is this offer
+
   // below is much like views_embed_view
   $view_neg = views_get_view($viewName);
   $view_neg->set_arguments($myArgs);
-  // access could get complicated, not wireframed yet!  $chit_chat = $view_neg->preview($display_id, $args);
+  // access could get complicated, not wireframed yet!  
+	$chit_chat = $view_neg->preview($display_id, $args);
 
   /* Need the most recent buyer and seller node from the communications */
   foreach ( $view_neg->result as $neg ) {
     $neg = node_load($neg->nid); // need rest of node loaded, another way???!!!
-    //dpr( $neg );
+    		//dpr( $neg );
     if ( !$current_seller && /*toggle based on sort criteria in view */ ( $neg->type == 'offer_neg_seller' ) ) {
+
       $current_seller = $neg;
     }
     elseif ( !$current_buyer && ( $neg->type == 'offer_neg_buyer' ) ) {
       $current_buyer = $neg;
+// make sure this piece is working print "<h1>neg type " . $neg->type . "</h1>";
+
     }
   }
-
 	return array($chit_chat, $current_buyer, $current_seller);
+
 
 }
 
@@ -51,7 +57,7 @@ function vibio_offer_nodeapi(&$node, $op) {
 
 		/* send mail when creating or updating negotiations within offers */
 		// what about: alter
-		case 'alter':
+//		case 'alter':
 		case 'update':
     case 'insert':
     	// $node contains the newly created node
@@ -59,24 +65,148 @@ function vibio_offer_nodeapi(&$node, $op) {
 			if ($node->type == 'offer_neg_seller' ||
 				  $node->type == 'offer_neg_buyer' ) {
 				// dpm or dsm useless for popups..
-				dsm(array("going to send an email around this" => $node));
-//die("here");
+				//dsm(array("going to send an email around this" => $node));
+				//###>> fill up the email
+				$offer = node_load($node->field_offer[0][nid]);
+				//## from the offer, get the rest
+			  list($chit_chat, $current_buyer, $current_seller) =
+    			_offer_conversation_info($offer);
+//!! problem? print_r($current_buyer);
+			  $item_nid = $offer->field_item_sought[0][nid];
+			  $item = node_load($item_nid);
+//print_r($current_seller);
+
 				$module = 'vibio_offer';
-				$key = $node->type;
-				$writer_uid = $node->uid;
-				$offer_nid = $node->field_offer[0][nid];
-		//XXX	
-				drupal_mail($module, $key, $to, $language, $params = array(), $from = NULL, $send = TRUE);
-			}
+				$key = $node->type; // make something up
+				$buyer = user_load($current_buyer->uid);
+//!!!!$buyer = user_load(711); // !!! somethign wrong.
+				$seller = user_load($current_seller->uid);
+				if ( $node->type == 'offer_neg_seller' ) {
+					$to = $buyer->mail;
+					$language = user_preferred_language($buyer);
+				} else {
+					$to = $seller->mail;
+					$language = user_preferred_language($seller);
+
+				}
+				$from = "noreply@vibio.com";
+
+				// get base url, in case on staging
+				// icky when plain text, go back to basics
+				//$offer_link = l($offer->title, "node/" . $offer->nid,	array('absolute' => true ));
+				$offer_link = url("node/$offer->nid", 
+					array('absolute' => true, 'alias'=>'true' ));
+
+				// $comments for seller
+				$comments =  _vibio_offer_simplify_accept_plain_text($current_seller) .
+					$current_seller->field_chat[0][value];
+				if ( $current_seller->field_payment_received[0][value] == 'Yes' ) {
+					$comments .= "\n* Payment Received";
+				} 
+				if ( $current_seller->field_item_sent[0][value] == 'Yes' ) {
+					$comments .= "\n* Item Sent";
+				} 
 			
+				// $comments_buyer for buyer , consider expanding
+				$comments_buyer =
+					$current_buyer->field_chat[0][value];
+			
+	
+
+			 
+			//print_r($current_seller);
+//die();	
 
 
-
+				$params = array(
+					'buyer' => $buyer->name,
+					'seller' => $seller->name,
+					'amount' => $current_buyer->field_price[0][value],
+					'title' => $item->title,  /* repeat? */
+					'item' => $item->title,
+					'comment' => $comments,
+					'comment_buyer' => $comments_buyer,
+					'offer_link' => $offer_link,
+				);
+print_r(array($module, $key, $to, $language, $params, $from));
+				drupal_mail($module, $key, $to, $language, $params, $from);
+//die("<p>did we just send drupal_mail");
+			}
     	break;
   }
-
 }
 
+/**
+ * answer mail hook, called by drupal_mail
+ *  which is called by nodeapi
+ *  and needs this to write the emails
+ */
+function vibio_offer_mail($key, &$message, $params) {
+	$language = $message['language'];
+	$variables = user_mail_tokens($params['account'], $language);
+	switch($key) {
+
+
+		case 'offer_neg_seller':   /* seller posted negotiation */
+		$message['subject'] = t("Response to your offer for \"!title\" from !seller at Vibio.com", array("!title" => $params['title'], "!seller" => $params['seller']));
+
+
+			$nothing ="nothing";
+$buyer = $params['buyer'];
+$seller = $params['seller'];
+$amount = $params['amount'];
+$item = $params['item'];
+$comment = $params['comment'];  // conjigured above
+$offer_link = $params['offer_link'];
+
+			$body = "Dear $buyer,
+
+$seller just responded to your offer for $item:
+
+$comment
+
+View the offer here: $offer_link
+or on your selling page: "  .
+url("buying", array('absolute' => true )) . "
+
+";
+			$message['body'] = t($body);
+			//$message['body'][] = t("Dear !username\n\nThere is new content available on the site.", $variables, $language->language);
+		break;
+
+		case 'offer_neg_buyer':   /* buyer posted negotiation */
+			$message['subject'] = t("Offer on \"!title\" from !buyer at Vibio.com", array("!title" => $params['title'], "!buyer" => $params['buyer']));
+	
+			$buyer = $params['buyer'];
+			$seller = $params['seller'];
+			$amount = $params['amount'];
+			$item = $params['item'];
+			$comment = $params['comment_buyer'];  // conjigured above ... most of these are repeats buyer and seller, this is not.  Could use cleaning up
+			$offer_link = $params['offer_link'];
+
+			$body = "Dear $seller,
+
+$buyer just responded to your offer for $item:
+
+$comment
+
+View the offer here: $offer_link
+or on your selling page: "  .
+url("selling", array('absolute' => true )) . "
+
+";
+			$message['body'] = t($body);
+			//$message['body'][] = t("Dear !username\n\nThere is new content available on the site.", $variables, $language->language);
+		break;
+
+
+
+
+
+//$seller just made or updated an offer of \$$amount for $item:
+
+	}
+}
 
 function vibio_offer_preprocess_page(&$vars) {
         // Continuing site style of micro-css files
@@ -186,7 +316,7 @@ return node_view($node);
  */
 function _load_default_offer ($setme, $default) {
 	// Configure:
-	$buyer_fields = array('field_price', 'field_offer_expires','field_city','field_buy_actions');
+	$buyer_fields = array('field_price', 'field_offer_expires','field_city', 'field_pay_sent', 'field_item_received');
 	$seller_fields = array('field_accept', 'field_pay_received', 'field_item_sent');
 	// Pick the fields to update, or get out of here
 	switch ( $default->type ) {
@@ -248,6 +378,69 @@ function vibio_offer_form_alter(&$form, $form_state, $form_id) {
 	}
 }
 
+/**
+ * the _simplify series spits out text tuned to the sales process.
+ * 
+ * Next: change the css classes based on current user.  Do I have to
+ *  ship, or wait for the other person who has to ship?
+ */
+function _vibio_offer_simplify_accept($current_seller /*$current_buyer*/) {
+	switch ( $current_seller->field_accept[0][value] ) {
+		case "accept":
+			return "<div class='simple done'>Offer Accepted!</div>";
+			break;
+		case "negotiating":
+			return "<div class='simple ontrack'>Negotiating</div>";
+			break;
+		case "decline":
+			return "<div class='simple fail'>Offer Declined</div>";
+			break;
+	}
+}
+function _vibio_offer_simplify_accept_plain_text($current_seller /*$current_buyer*/) {
+	switch ( $current_seller->field_accept[0][value] ) {
+		case "accept":
+			return "** Offer Accepted! **  ";
+			break;
+		case "negotiating":
+			return "[ Negotiating ]  ";
+			break;
+		case "decline":
+			return "** Offer Declined **  ";
+			break;
+	}
+}
+function _vibio_offer_simplify_pay($current_seller, $current_buyer) {
+	if ( $current_seller->field_pay_received[0][value] == 'Yes' ) {
+		return "<div class='simple done'>Pay Received</div>";
+	} elseif ( $current_buyer->field_pay_sent[0][value] != 'no' ) {
+		$how = $current_buyer->field_pay_sent[0][value];	
+		return "<div class='simple ontrack'>Pay Sent: $how</div>";
+	} elseif ( $current_seller->field_accept[0][value]  == 'accept') {
+		return "<div class='simple ontrack'>Payment Due?</div>";
+	}	else {
+		return; // not accepted, don't talk about money
+	}
+}
+function _vibio_offer_simplify_ship($current_seller, $current_buyer) {
+	if ( $current_buyer->field_item_received[0][value] == 'Yes' ) {
+		return "<div class='simple done'>Item Received</div>";
+	} elseif ( $current_seller->field_item_sent[0][value] == 'Yes' ) {
+		return "<div class='simple ontrack'>Item Sent</div>";
+	} elseif ( $current_seller->field_pay_received[0][value]  == 'Yes') {
+		return "<div class='simple ontrack'>Send Item</div>";
+	} elseif ( $current_buyer->field_pay_sent[0][value]  == 'Yes') {
+		return "<div class='simple ontrack'>Send Item?</div>";
+	}	else {
+		return; // not accepted, don't talk about money
+	}
+}
+
+
+
+
+
+/* does anythign call this, I forgit */
 function _simplify_form(&$form) {
   // this is cut and pasted from another module, some overkill, 
   $form['body_field']['teaser_include']['#access'] = FALSE;

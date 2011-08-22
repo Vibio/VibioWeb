@@ -1,4 +1,42 @@
 
+/* discussion box */
+#neg-discuss {
+	height: 500px; /* make it scroll */
+	overflow: auto;
+}
+#neg-discuss .content {
+	clear: left; /* around the picture */
+}
+#neg-discuss .minheader {
+	font-size: 1.2em;
+}
+#neg-discuss .picture {
+	float: left;  /* maybe right? */
+	padding-right: 5px;
+}
+#neg-discuss div.label {
+	display: inline;
+	font-weight: bold;
+	clear: left;
+	padding-right: 5px;
+}
+.done {
+	color: green;
+	font-weight: bold;
+}
+
+/* product area */
+#offer_item_offer {
+	font-size: 1.3em;
+}
+
+/* Make "My Offer" look like the title */
+#edit-field-price-0-value-wrapper label {
+	font-size: 1.4em;
+	font-weight: bold;
+	padding-bottom: 2px;
+	float: left;  /* or inline? */
+}
 
 .node-type-offer #page_title { display: none; }
 
@@ -14,6 +52,10 @@ div#seller_info_in_offer {
 }
 div#seller_info_in_offer .person_pic {
 	height: 85px;
+}
+/* buyer pic in buyer area during offer */
+#offer_neg_buyer .person_pic {
+	float: right;
 }
 div#buyer_info_in_offer {
         padding: 5px;
@@ -32,6 +74,7 @@ div#buyer_info_in_offer {
   margin-bottom: 1em;
   border: 1px solid red;
   padding: 2px;
+	min-height: 42px; /* photo of user, at least */
 }
 
 #chit-chat .node { 

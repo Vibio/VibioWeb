@@ -82,26 +82,39 @@
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix">
   <?php print $user_picture; ?>
 
-  <?php if ($display_submitted || $terms): ?>
-    <div class="meta">
-      <?php if ($display_submitted): ?>
         <span class="submitted">
           <?php
-            print t("!username sent this offer on !datetime",
-              array('!username' => $name, '!datetime' => $date));
+						$amount = $node->field_price[0][value];
+						if ( $amount > 0 ) { $amount = "offers \$$amount"; }
+						else { $amount = "is interested"; }
+						print "<div class='date'>$date</div>";
+						print "<div class='minheader'>$name $amount</div>";
           ?>
         </span>
-      <?php endif; ?>
 
-      <?php if ($terms): ?>
-        <div class="terms terms-inline"><?php print $terms; ?></div>
-      <?php endif; ?>
-    </div>
-  <?php endif; ?>
 
   <div class="content">
-    <?php print $content; ?>
+<?php
+if ( $node->field_expires[0][safe] ) {
+	print "<br><div class='label'>Expires:</div>" . $node->field_expires[0][safe] 
+		. '</div>';
+} else {
+	print "<div class='label'>No Expiration Set</div>";
+}
+if ( $node->field_city[0][value] ) {
+	print "<br><div class='label'>Ship to:</div>" . $node->field_city[0][safe];
+}
+if ( $node->field_pay_sent[0][value] != 'no' ) {
+	print "<br><div class='label'>Pay Sent:</div>" . $node->field_pay_sent[0][value];
+}
+if ( $node->field_item_received[0][value] == 'Yes' ) {
+	print "<br><div class='label'>Received!</div>";
+}
+
+
+?>
+
+    <?php //print $content; ?>
   </div>
 
-  <?php print $links; ?>
 </div> <!-- /.node -->

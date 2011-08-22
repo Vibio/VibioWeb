@@ -6,10 +6,17 @@
 	*/
 ?>
 <!-- seller edits their response: node-offer_neg_seller-edit.tpl.php -->
-<div OnMouseOver="setTimeout(document.getElementById('edit-field-chat-0-value').value='', 800);this.onfocus='';">
+<div id="offer_neg_buyer" OnMouseOver="setTimeout(document.getElementById('edit-field-chat-0-value').value='', 800);this.onmouseover='';">
 
 
-<?php 
+<?php
+	$buyer = user_load($form['#node']->uid);
+?>
+<div class="person_pic"><?php print theme('user_picture', $buyer); ?></div>
+
+<?php
+
+
  /* in the future, might put this function as OnFocus in every attribute
 	* below.  But need to erase them all. Or perhaps more of a cascade:
 	*	onFocus for any neighbor fires the onFocus for the textarea which 
@@ -27,14 +34,14 @@ $form[field_chat][0]['value']['#title'] = '';
 
 $accept = $form['#node']->buyer_accepted;
 /* print everything you always see. */
+$form[field_price][0][value]['#title'] ='My Offer';
 print drupal_render($form[field_price]);
 print drupal_render($form[field_offer_expires]);
 print drupal_render($form[field_city]);
 
 
 if ( $accept == 'accept' ) {
-	print "buy that crap right now";
-	print drupal_render($form[field_pay_sent]);
+	print drupal_render($form[field_pay_sent]); 
 	print drupal_render($form[field_item_received]);
 } else {
 	unset($form[field_item_received]);
@@ -42,6 +49,7 @@ if ( $accept == 'accept' ) {
 }
 $form[field_chat][0][value]['#cols'] = 7; // does css override this?
 					// rows works, cols doesn't
+// why does the chat field disappear?
 print drupal_render($form[field_chat]);
 
 

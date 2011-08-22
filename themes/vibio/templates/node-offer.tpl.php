@@ -84,39 +84,10 @@
 
 <?php /* we need the conversation/negotiation */
 	// some of this move to pre_process or similar? 
-  $viewName = 'offer_conversation';
-  $display_id = 'default';
-  $myArgs = array($node->nid); // node is this offer
-	// below is much like views_embed_view
-  $view_neg = views_get_view($viewName);
-  $view_neg->set_arguments($myArgs);
-	// access could get complicated, not wireframed yet!
-	$chit_chat = $view_neg->preview($display_id, $args);
-  //dpr( $view_neg->result );
-	/* looks like this, sorts by date:
-			[0] => stdClass Object
-				(
-					[nid] => 20029
-					[node_created] => 1309999051
-				)
-	*/
-
-	/* Need the most recent buyer and seller node from the communications */
-	foreach ( $view_neg->result as $neg ) {
-		$neg = node_load($neg->nid); // need rest of node loaded, another way???!!!
-		//dpr( $neg );
-		if ( !$current_seller && /*toggle based on sort criteria in view */ ( $neg->type == 'offer_neg_seller' ) ) {
-			$current_seller = $neg;
-		} 
-		elseif ( !$current_buyer && ( $neg->type == 'offer_neg_buyer' ) ) {
-			$current_buyer = $neg;
-		}
-	}
 
 	// Get key pieces of the view of past conversations
 	list($chit_chat, $current_buyer, $current_seller) =
 		_offer_conversation_info($node);
-
 
 
 	/* We need the user, and perhaps picture, of the nodereferenced item */
@@ -200,10 +171,18 @@
 ?>
   <?php /* it was Requested price, Jason sent frames that had it as Price,
 	* Simon said "Asking", Jason changed it to "List", back to Asking. */ ?>
-<?php print content_view_field(content_fields("field_accept"), $current_seller, FALSE, FALSE);?>
-<?php print content_view_field(content_fields("field_pay_received"), $current_seller, FALSE, FALSE);?>
-<?php print content_view_field(content_fields("field_item_sent"), $current_seller, FALSE, FALSE);?>
+<?php
 
+//Accept: 
+print  _vibio_offer_simplify_accept($current_seller, $current_buyer);
+print  _vibio_offer_simplify_pay($current_seller, $current_buyer);
+print  _vibio_offer_simplify_ship($current_seller, $current_buyer);
+/* another way to print them:
+print content_view_field(content_fields("field_accept"), $current_seller, FALSE, FALSE);
+print content_view_field(content_fields("field_pay_received"), $current_seller, FALSE, FALSE);
+print content_view_field(content_fields("field_item_sent"), $current_seller, FALSE, FALSE);
+*/
+?>
 
  </div>
 <?php /* Prep the buyer info section. Moves depending on buyer logged in. */ 
@@ -255,7 +234,6 @@ if ($perm_seller) {
 				  drupal_get_form('offer_neg_seller_node_form', $first_node) .
 				'</div></div>';	
 		} elseif ( $perm_buyer ) { // can't sell to yourself.
-      echo '<h3>Make or Update Your Offer</h3>';
 
 			$second_node = new stdClass();
 			$second_node->type = 'offer_neg_buyer';
@@ -267,7 +245,9 @@ if ($perm_seller) {
 			$second_node->field_offer[0]['nid'] = $node->nid;  // node is this offer
 			// pass on some very temporary info to the node
 			$second_node->buyer_accepted = $current_seller->field_accept[0][value];
-			$second_node->brandnew = 
+			//$second_node->brandnew = 
+			_load_default_offer($second_node,$current_buyer);
+
 		//print "<h1>" . $second_node->buyer_accepted . "</h1>";
 			$output .= "<div id='form-column'>" .
 				'<div id="buyer-neg-form" class="neg-form">' .

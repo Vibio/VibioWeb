@@ -29,8 +29,27 @@
 	width: 500px;
 }
 
+.item-square .inventory_add, 
+.item-square .inventory_want {
+  display: none;
+}
+
+.item-square:hover .inventory_add, 
+.item-square:hover .inventory_want {
+  display: inline;
+}
+
+
 .inventory_add, .inventory_want {
-	font-weight: bold;
+       background: #46c9fd;
+       border: 0;
+       -webkit-border-radius: 5px;
+       -moz-border-radius: 5px;
+       border-radius: 5px;
+       color: #fff;
+       font-weight: bold;
+       margin: 10px 20px;
+       padding: 5px 10px;
 }
 
 .inventory_add_pinfo {

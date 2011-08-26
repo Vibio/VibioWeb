@@ -231,11 +231,9 @@ function vibio_status_messages($display=null)
 }
 
 
-
-
-
-
-
+function vibio_user_login_block($form) {
+   $form['submit']['#value'] = 'Sign up';
+}
 
 
 

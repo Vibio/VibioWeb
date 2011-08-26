@@ -1,4 +1,4 @@
-<?php
+<?php  
 echo "
 	<div class='profile_editable'>
 		<div id='profile_about_me'>

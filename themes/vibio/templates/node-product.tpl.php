@@ -1,5 +1,3 @@
-<h3 style="color: red;">template: node-vibio-product, keep this one</h3>
-
 <?php
 $title = "<h3 class='product_title'>".check_plain($node->title)."</h3>";
 

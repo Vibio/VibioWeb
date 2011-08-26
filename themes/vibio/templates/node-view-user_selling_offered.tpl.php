@@ -130,6 +130,11 @@ $price = $item->offer2buy['settings']['price'];
                </div>
        </div>
 */
+/* Popup styles:
+ 1 - what's above,Nelson's I think
+ 2 - a class="popups" ...
+ 3 - Nelson: "class" => "uri_popup_link"
+*/
 ?>
 	<div class="negotiation_block" style="float: right; width: 200px;">
 		<a  class="popups" href="/node/<?php print $node->nid; ?>">Review Offer</a>

@@ -12,21 +12,19 @@
 
 
 div.tabs {
-  margin: 0 0 5px 0;
+  margin: 0 0 15px 0;
 }
 
 div.tabs_big ul.primary {
-  background-image: url(../images/tabs/bigtab_bar.png)
 }
 
 ul.primary {
+  border: 0;
   margin: 0;
   padding: 0 0 0 10px; /* LTR */
-  border-width: 0;
   list-style: none;
   white-space: nowrap;
   line-height: normal;
-  background: url(../images/tab-bar.png) repeat-x left bottom;
 }
 
 ul.primary li {
@@ -40,16 +38,18 @@ div.tabs_big ul.primary li a {
 }
 
 ul.primary li a {
+  border: 0;
   display: block;
   height: 19px;
   margin: 0;
-  padding: 0 0 0 5px; /* width of tab-left.png */
-  border-width: 0;
   font-weight: bold;
   text-decoration: none;
   color: #777;
+  padding: 0;
   background-color: transparent;
 }
+
+
 
 div.tabs_big ul.primary li a .tab {
   height: 31px;
@@ -60,23 +60,22 @@ div.tabs_big ul.primary li a .tab {
 
 ul.primary li a .tab {
   display: block;
-  height: 19px;
   margin: 0;
   padding: 0 8px 0 5px;
   border-width: 0;
   line-height: 20px;
-  font-size: 12px;
+  border-bottom: 7px solid #cfd2d5;  
   font-weight: normal;
-  color: black;
+  color: #758391;
 }
 
 ul.primary li a:hover {
-	border-width: 0;
-	background-color: transparent;
+  background-color: transparent;
 }
 
 ul.primary li a:hover .tab {
-	color: #0092C9;
+  border-bottom: 7px solid #0092C9;  
+  color: #00aeef;
 }
 
 div.tabs_big ul.primary li.active a,
@@ -84,7 +83,6 @@ div.tabs_big ul.primary li.active a:hover,
 div.tabs_big ul.primary li.ui-state-active a,
 div.tabs_big ul.primary li.ui-state-active a:hover
 {
-  background-image: url(../images/tabs/bigtab_left.png);
 }
 
 ul.primary li.active a,
@@ -92,9 +90,9 @@ ul.primary li.active a:hover,
 ul.primary li.ui-state-active a,
 ul.primary li.ui-state-active a:hover
 {
-  border-width: 0;
+ background: transparent;
+ border-width: 0;
   color: black;
-  background: transparent url(../images/tab_left.png) no-repeat;
 }
 
 div.tabs_big ul.primary li.active a .tab,
@@ -102,7 +100,6 @@ div.tabs_big ul.primary li.active a:hover .tab,
 div.tabs_big ul.primary li.ui-state-active a .tab,
 div.tabs_big ul.primary li.ui-state-active a:hover .tab
 {
-  background-image: url(../images/tabs/bigtab_end.png);
 }
 
 ul.primary li.active a .tab,
@@ -110,9 +107,10 @@ ul.primary li.active a:hover .tab,
 ul.primary li.ui-state-active a .tab,
 ul.primary li.ui-state-active a:hover .tab
 {
-	background: transparent url(../images/tab_end.png) no-repeat right top;
-	color: black;
+  border-bottom: 7px solid #54cffe;
+  color: #54cffe;
 }
+
 
 ul.secondary {
   margin: 0;

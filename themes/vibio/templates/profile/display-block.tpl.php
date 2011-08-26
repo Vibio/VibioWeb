@@ -13,6 +13,7 @@ $url_name = url("user/$uid");
 $msg_count = $vars['msg_count'];
 $notifications = $vars['notifications'];
 $selling = $vars['selling'];
+$buying = $vars['buying'];
 $friend_count = $vars['friend_count'];
 //dsm($vars);
 echo "
@@ -30,7 +31,7 @@ echo "
 	<div id='profile_ext_displayblock_subitems'>
 		<a href='/'>Home</a> | <a href='$url_name'>Profile</a>
 		<ul class='primary_menu_by_hand'>
-			<li><a title='Offers you have made' href='/buying'><span class='menu_with_count_text'>Buy (Offers from You)</span><span class='menu_with_count_count'>?</span></a></li>
+			<li><a title='Offers you have made' href='/buying'><span class='menu_with_count_text'>Buy (Offers from You)</span><span class='menu_with_count_count'>$buying</span></a></li>
 			<li><a title='Offers others have have made to you' href='/selling'><span class='menu_with_count_text'>Sell (Offers to You)</span><span class='menu_with_count_count'>$selling</span></a></li>
 	
 			<li><span class='menu_with_count_text'>Notifications</span><span class='menu_with_count_count'>$notifications</span></li>

@@ -1,0 +1,61 @@
+.fb_dialog {
+	display: none;
+}
+
+.fb_popup #vibio_dialog {
+	padding: 0;
+}
+
+.fb_header {
+	background: #3B5998;
+	padding: 5px 10px;
+}
+
+.fb_body {
+	padding: 10px;
+}
+
+.fb_share_params {
+	display: none;
+}
+
+.fb_login_button:hover {
+	cursor: pointer;
+}
+
+.fb_share_container {
+	float: left;
+	margin-left: 10px;
+}
+
+.collection_list_item_summary .fb_share_container {
+	margin-left: 5px;
+}
+
+.fb_ff_message {
+	margin-bottom: 10px;
+}
+
+.fb_ff_message .fb_message {
+	float: left;
+	width: 500px;
+}
+
+.fb_ff_message .fb_link {
+	float: right;
+}
+
+#block-fb-fb_login {
+	margin-top: 10px;
+	border-top: 3px double #3c4b55;
+}
+
+#block-fb-fb_login .fb_login {
+	text-align: center;
+	margin-top: 10px;
+}
+
+.product_image .fb_share_container {
+	float: none;
+	margin: 0;
+}

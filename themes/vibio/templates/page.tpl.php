@@ -12,6 +12,11 @@
   <link rel="stylesheet" href="/themes/vibio/css/jquery-ui.tabs.css" />
   <link rel="stylesheet" href="/themes/vibio/css/vibio_dialog.css" />
   <link rel="stylesheet" href="/themes/vibio/prettyphoto/css/prettyPhoto.css" />
+
+<?php // hack in ctools modal
+ // ctools_include('modal');
+ // ctools_modal_add_js();
+?>
   
   <!--[if IE]>
   <link rel="stylesheet" href="/themes/vibio/css/ie.css" />
@@ -29,8 +34,14 @@
   <script type="text/javascript" src="/themes/vibio/js/mb_menu.js"></script>
 </head>
 <body class="<?php print $classes; ?>">
+
+
 <div id="page-wrapper">
 	<div id="page">
+<div style="width: 960px; height: 40px; border: 1px solid blue; color: white;"> 960 </div>
+<div style="width: 890px; height: 40px; border: 1px solid blue; color:white;"> 890 </div>
+
+
 		<div id="header">
 			<div class="section clearfix">
 				<div id="name-and-slogan">
@@ -38,7 +49,9 @@
 						<img src='/themes/vibio/vibio-logo.png' />
 					</a>
 				</div>
-				
+				<div class="slogan">
+                                  <?php print $site_slogan; ?>
+                                </div>
 				<?php
 				echo "<div id='header_quick_actions'>";
 				if ($search_box)
@@ -81,7 +94,7 @@
 <?php if (isset($secondary_links)): ?>
   <div id="secondary">
     <?php //print theme('links', $secondary_links); ?>
-<?php vibio_secondary_menu_ad_hoc($secondary_links); /* in template.php */ ?>
+<?php //vibio_secondary_menu_ad_hoc($secondary_links); /* in template.php */ ?>
 
   </div>
 <?php endif; ?>

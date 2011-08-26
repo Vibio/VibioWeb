@@ -1,0 +1,12 @@
+#network_ff_messages {
+	background: #e0f2ff !important;
+	border: 1px solid #c7e5fd;
+	margin-top: 10px !important;
+	min-height: 0 !important;
+	padding: 5px !important;
+}
+
+#network_ff_messages h4 {
+	margin-top: 0;
+	color: gray;
+}

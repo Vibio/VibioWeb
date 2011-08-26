@@ -83,8 +83,7 @@ body.page-selling h4 {
 	width: 180px;
 	height: 180px;
 	padding: 7px;
-	margin: 6px;
-	border: 1px solid #999;
+	margin: 0 6px 60px;
 	background: #eee;
 	float: left; /* intend 3col? */
 	position: relative; /* make it the parent */

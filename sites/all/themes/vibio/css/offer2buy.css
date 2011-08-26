@@ -1,0 +1,65 @@
+.offer2buy_nid {
+	display: none;
+}
+
+.offer2buy_action_complete_form, .offer2buy_transaction_cancel_form {
+	float: left;
+	margin-right: 15px;
+}
+
+.offer_details, .offer_accept {
+	float: left;
+}
+
+.offer_details {
+	margin-right: 15px;
+}
+
+.offer2buy_pending_offer {
+	font-style: italic;
+}
+
+.offer2buy_node_display {
+	float: right;
+	font-weight: bold;
+	color: black;
+}
+
+.offer2buy_popup {
+	float: right;
+	font-size: 10px;
+}
+
+.offer2buy_popup a:hover {
+	cursor: pointer;
+}
+
+.offer2buy_offer_view_popup {
+	display: none;
+}
+
+.node_offer2buy_price {
+	float: right;
+}
+
+#content-area .offer2buy_notification.rounded_content {
+	min-height: 0;
+	background: #e0f2ff;
+	border: 1px solid #c7e5fd;
+	padding: 5px;
+	margin-bottom: 15px;
+}
+
+.offer2buy_notification h2 {
+	color: #464F54;
+	font-size: 1.5em;
+	margin: 0;
+}
+
+.offer2buy_notification .view-content tr {
+	background-color: #e0f2ff;
+}
+
+#profiletab_offers .offer2buy_popup {
+	float: none;
+}

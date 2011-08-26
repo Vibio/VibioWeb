@@ -101,7 +101,7 @@ function profile_ext_block($op="list", $delta=0, $edit=array())
 			return array(
 				"navigation_profile_display"	=> array(
 					"info"	=> t("Profile Navigation"),
-					"cache"	=> BLOCK_NO_CACHE, // i'll handle caching on my own, kthx.
+					"cache"	=> BLOCK_NO_CACHE, // i'll handle caching on my own, kthx. [ -- Nelson, stephen thinks]
 				)
 			);
 		case "view":
@@ -240,10 +240,23 @@ function profile_ext_display_block($u)
   $vars['friend_count'] = module_exists("network") ? count(_network_get_friends($user->uid, 1)) : 0;
 
 
+	// how many buying and selling offers? Needs rethinking at design level
+
 	// print $GLOBALS['current_view']->total_rows; or num_rows
 	$view = views_get_view('user_selling_offered');	
 	$view->execute_display(); // do one that doesn't have a pager?!!!
 	$vars['selling'] = count($view->result);
+
+	// print $GLOBALS['current_view']->total_rows; or num_rows
+	$view = views_get_view('user_buying_offers');	
+	$view->execute_display(); // do one that doesn't have a pager?!!!
+	$vars['buying'] = count($view->result);
+
+
+
+
+
+
 	//$pic_nelson = $u->picture ? file_create_url($u->picture) : "/themes/vibio/images/icons/default_user_large.png";
   $alt = "Your picture";
   $title = '';

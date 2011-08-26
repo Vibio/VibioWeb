@@ -95,8 +95,9 @@
 
   <div class="content">
 <?php
-if ( $node->field_expires[0][safe] ) {
-	print "<br><div class='label'>Expires:</div>" . $node->field_expires[0][safe] 
+dsm($node);
+if ( $node->field_offer_expires[0][value] ) {
+	print "<br><div class='label'>Expires:</div>" . $node->field_offer_expires[0][value] 
 		. '</div>';
 } else {
 	print "<div class='label'>No Expiration Set</div>";
@@ -112,8 +113,8 @@ if ( $node->field_item_received[0][value] == 'Yes' ) {
 }
 
 
+print "<div class='chat'>" . $node->field_chat[0][value] . "</div>";
 ?>
-
     <?php //print $content; ?>
   </div>
 

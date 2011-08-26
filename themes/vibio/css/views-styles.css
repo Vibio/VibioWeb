@@ -38,7 +38,7 @@
 }
 
 .view-content tr {
-	background-color: white;
+	background-color: transparent;
 	border-bottom: 1px solid #E2E6E9;
 	padding-bottom: 5px;
 }
@@ -67,4 +67,15 @@
 
 .view-user-inventory td.views-field-field-main-image-fid img {
 	max-width: 80px;
+}
+
+.views_slideshow_singleframe_previous {
+  background: transparent url("../images/arrow-gray-left.png") top left no-repeat;
+  text-indent: -5000px;
+border: 1px solid red;
+}
+
+
+.views_slideshow_singleframe_controls views_slideshow_controls {
+  border: 1px solid red;
 }

@@ -47,14 +47,14 @@ if ( $accept == 'accept' ) {
 	unset($form[field_item_received]);
 	unset($form[field_pay_sent]);
 }
-$form[field_chat][0][value]['#cols'] = 7; // does css override this?
+//$form[field_chat][0][value]['#cols'] = 7; // does css override this?
 					// rows works, cols doesn't
 // why does the chat field disappear?
 print drupal_render($form[field_chat]);
 
 
 
-$form['buttons']['submit']['#value'] = 'Respond to Offer';
+$form['buttons']['submit']['#value'] = 'Make or Update Offer';
 // not working yet....
 //$form[field_chat]['#attributes']['onFocus'] = "this.value='';this.onfocus='';";
 // nor this.

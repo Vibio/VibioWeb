@@ -86,7 +86,8 @@ if (!$u->picture) {
 <div class="clear"></div>
 
 <?php
-//echo "profile completeness: {$profile['profile_progress']}%";
+echo "profile completeness: {$profile['profile_progress']}%";
+//die("profile.tpl.php still runs"); why not running? cached?
 print $sec_menu;
 
 print $this_page;

@@ -27,10 +27,13 @@ $square = "
 				<img class='item-square-image' srcimagecache='$img' src='{$info_split['image']}' />
 			</a>
 			<div class='over-item'>
-				<a class='item-title' href='$url'>$title</a><br />
 			</div>
 			<div class='search-links'>$search_links</div>
-		</div>
+                        <div class='under-item'>
+                                <a class='item-title' href='$url'>$title</a><br />
+                        </div>
+                 </div>
+
 ";
 
 

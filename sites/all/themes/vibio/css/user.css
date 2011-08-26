@@ -1,0 +1,162 @@
+#page_title {
+	display: none;
+}
+
+#content-area #profile_user_summary.rounded_content {
+	padding: 45px 15px 60px;
+	-moz-border-radius-bottomleft: 0;
+	-moz-border-radius-bottomright: 0;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+#content-area .rounded_content {
+	padding: 0;
+}
+
+#content-area .rounded_content .rounded_content {
+	min-height: 0 !important;
+}
+
+.profile .picture {
+	float: none;
+}
+
+#social_tabs {
+	list-style-type: none;
+	padding: 0;
+}
+
+#social_tabs li {
+	float: left;
+	margin-right: 10px;
+}
+
+#profile_user_summary .profile_data {
+	padding: 10px 20px;
+	margin-bottom: 5px;
+}
+
+#profile_user_summary .profile_data > div:first-child {
+	margin-left: 300px;
+	float: left;
+}
+
+#profile_summary {
+	background: #E9F0F6;
+}
+
+#profile_username h5 {
+	color: #464F54;
+	margin: 0;
+	font-size: 1.5em;
+}
+
+#profile_username table {
+	margin: 0;
+}
+
+#profile_picture_container {
+	position: relative;
+	top: -330px;
+	left: 60px;
+}
+
+.profile_picture_display {
+	position: absolute;
+	background: white;
+	padding: 5px;
+	-moz-box-shadow: 3px 3px 3px #666;
+	-webkit-box-shadow: 3px 3px 3px #666;
+	box-shadow: 3px 3px 3px #666;
+	border: 1px solid black;
+}
+
+#profile_picture_bg {
+	display: none;
+	z-index: 1;
+}
+
+#profile_picture_bg > div {
+	background: #ddd;
+	width: 100%;
+	height: 100%;
+}
+
+#profile_picture {
+	z-index: 5;
+}
+
+#profile_picture img {
+	max-width: 225px;
+	max-height: 250px;
+	border: 1px solid black;
+}
+
+#profile_summary table.profile_fields td.field_name {
+	text-align: left;
+	padding-right: 0;
+	width: 150px;
+	padding-right: 15px;
+}
+
+#profile_summary .user_latest_item {
+	max-height: 60px;
+}
+
+table.profile_fields td.field_name {
+	width: 200px;
+	font-weight: bold;
+	color: #414C52;
+	text-align: right;
+	padding-right: 10px;
+}
+
+table.profile_fields td.field_name.section_title {
+	font-size: 20px;
+}
+
+table.profile_fields td {
+	padding-bottom: 7px;
+	vertical-align: top;
+}
+
+#profile_user_tabs {
+	margin-top: -31px;
+}
+
+#profile_user_tabs ul.tabs li:first-child {
+	margin-left: 40px;
+}
+
+.profile_info_container {
+	padding: 0 15px 10px;
+}
+
+.profile_edit_link {
+	float: right;
+	display: none;
+	font-size: 10px;
+}
+
+#profile_about_me, #profile_demographics {
+	float: left;
+	width: 690px;
+}
+
+table.user_external_accounts {
+	margin: 0;
+}
+
+table.user_external_accounts td.external_accounts_image {
+	text-align: right;
+	padding-right: 10px;
+}
+
+table.user_external_accounts td ul {
+	margin: 0;
+}
+
+.external_accounts_account_list {
+	vertical-align: middle !important;
+}

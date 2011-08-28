@@ -245,6 +245,8 @@ function _privacy_form_submit($form, &$state)
 	}
 }
 
+
+// example:  privacy_get($user->uid, "account_setting", "item_default"),
 function privacy_get($uid, $type, $type_id)
 {
 	if (!$uid || !$type || !$type_id)

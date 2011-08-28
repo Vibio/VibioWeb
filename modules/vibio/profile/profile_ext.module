@@ -442,7 +442,11 @@ function profile_ext_preprocess_user_profile(&$vars)
 			break;
     case "about me":
     case "about":
-			$vars['sec_content'] = profile_ext_public_info($uid);
+			$vars['sec_content'] = profile_ext_public_info($uid) .
+				theme("profile_ext_profile_info", $uid, $access);
+
+				
+			
 			break;
     case "activity":  // never used, default blank?
     default:

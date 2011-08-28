@@ -2,7 +2,6 @@
 // $Id: node.tpl.php,v 1.10 2009/11/02 17:42:27 johnalbin Exp $
 
 // Copied from the ""buying" version, then tweaked. -- stephen 20110825 
-// !!!! grep buyer_then_seller to see new work, plus imagecache profile pic
 
 
 /**
@@ -103,7 +102,7 @@ print theme('imagecache', 'little_profile_pic', $owner->picture, $alt,$title, $a
 	$neg = node_load( $view_neg->result[0]->nid );   // is this most recent? or oldest?
 	// note" if $neg->uid == $user->uid, it's me.  
 	// I think this should be in design
-	$chars = 40;  // length of string to print before elipses
+	$chars = 70;  // length of string to print before elipses
 	$text = $neg->field_chat[0][value];
 	if ( strlen($text) > ($chars+3) ) {
 		print substr($text, 0 , $chars) . "...";

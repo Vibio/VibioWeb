@@ -95,7 +95,6 @@
 
   <div class="content">
 <?php
-dsm($node);
 if ( $node->field_offer_expires[0][value] ) {
 	print "<br><div class='label'>Expires:</div>" . $node->field_offer_expires[0][value] 
 		. '</div>';

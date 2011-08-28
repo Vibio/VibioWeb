@@ -135,9 +135,17 @@ $price = $item->offer2buy['settings']['price'];
  2 - a class="popups" ...
  3 - Nelson: "class" => "uri_popup_link"
 */
-?>
+
+
+
+// New style (buyer_then_seller)
+list($chit_chat, $current_buyer, $current_seller) =
+  _offer_conversation_info($node);
+
+
+?>new form:
 	<div class="negotiation_block" style="float: right; width: 200px;">
-		<a  class="popups" href="/node/<?php print $node->nid; ?>">Review Offer</a>
+		<a  class="popups-form-reload" href="/node/<?php print $node->nid; ?>">Review Offer</a>
 	</div>
 
   <?php if ($unpublished): ?>
@@ -149,8 +157,24 @@ $price = $item->offer2buy['settings']['price'];
  			/* is this up to date in the offer, or do we need to do more to load the
 				 negs */
 		 ?>
-    <br>Offer: <strong><?php print $node->field_price[0][view] ?></strong> (<?php print $date; ?>)&nbsp;&nbsp;&nbsp;Expires: <?php print $node->field_offer_expires[0][view]; ?>
-    <br>Ship to: <?php print $node->field_city[0][view]; ?>
+
+ <br><strong>Their Offer: <?php
+if ( $current_buyer->field_price[0][value] ) {
+	print $current_buyer->field_price[0][value] ;
+} else {
+	print "--";
+}
+if ( $current_buyer->field_city[0][value] ) {
+	print "<br>Ship: " . $current_buyer->field_city[0][value]; 
+}
+
+        //label of "Latest Offer" not correct text... print content_view_field(content_fields("field_price"), $current_buyer, FALSE, FALSE);
+        print  _vibio_offer_simplify_accept($current_seller, $current_buyer);
+        print  _vibio_offer_simplify_pay($current_seller, $current_buyer);
+        print  _vibio_offer_simplify_ship($current_seller, $current_buyer);
+
+?></strong>
+
 	<br>Last Comment:	<?php /* we want one line from the most recent conversation,
 			yours or theirs.  Similar to node-offer.tpl.php */
   $viewName = 'offer_conversation';
@@ -164,12 +188,15 @@ $price = $item->offer2buy['settings']['price'];
 	//dsm($neg);
 	// note" if $neg->uid == $user->uid, it's me.  
 	// I think this should be in design
-	$chars = 40;  // length of string to print before elipses
-	if ( strlen($neg->body) > ($chars+3) ) {
-		print substr($neg->body, 0 , $chars) . "...";
-	} else {
-		print $neg->body;
-	}
+	$chars = 70;  // length of string to print before elipses
+	$text = $neg->field_chat[0][value];
+
+  if ( strlen($text) > ($chars+3) ) {
+    print substr($text, 0 , $chars) . "...";
+  } else {
+    print $text;
+  }
+
 	//dsm(array($node, $view_neg));	
 		?>
   </div>

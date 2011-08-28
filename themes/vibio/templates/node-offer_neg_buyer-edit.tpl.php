@@ -34,12 +34,29 @@ $form[field_chat][0]['value']['#title'] = '';
 
 $accept = $form['#node']->buyer_accepted;
 /* print everything you always see. */
+
+//city box too big.  Themer can adjust freely:
+$form[field_city][0][value]['#size'] = 50;
+
 $form[field_price][0][value]['#title'] ='My Offer';
 print drupal_render($form[field_price]);
 print drupal_render($form[field_offer_expires]);
 print drupal_render($form[field_city]);
 
+// Why aren't defaults being set?  Deal with that later.
+// This tpl does not appear to be the cause..
+// Oh: maybe it's just old data before defaults were set,
+//	before required was set?
+if ( $accept != 'accept' ) {
+  $hide_class = ' hide';
+}
+//if ( $form[field_pay_sent][0][value]
+print "<div class='dependent $hide_class'>";
+print drupal_render($form[field_pay_sent]);         
+print drupal_render($form[field_item_received]);
+print "</div>";
 
+/* this doesn't work if defaults not set 
 if ( $accept == 'accept' ) {
 	print drupal_render($form[field_pay_sent]); 
 	print drupal_render($form[field_item_received]);
@@ -47,9 +64,8 @@ if ( $accept == 'accept' ) {
 	unset($form[field_item_received]);
 	unset($form[field_pay_sent]);
 }
-//$form[field_chat][0][value]['#cols'] = 7; // does css override this?
-					// rows works, cols doesn't
-// why does the chat field disappear?
+*/
+
 print drupal_render($form[field_chat]);
 
 

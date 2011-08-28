@@ -38,10 +38,6 @@
 
 <div id="page-wrapper">
 	<div id="page">
-<div style="width: 960px; height: 40px; border: 1px solid blue; color: white;"> 960 </div>
-<div style="width: 890px; height: 40px; border: 1px solid blue; color:white;"> 890 </div>
-
-
 		<div id="header">
 			<div class="section clearfix">
 				<div id="name-and-slogan">

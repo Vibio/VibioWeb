@@ -128,7 +128,7 @@ function vibio_offer_nodeapi(&$node, $op) {
 					'comment_buyer' => $comments_buyer,
 					'offer_link' => $offer_link,
 				);
-print_r(array($module, $key, $to, $language, $params, $from));
+//print_r(array($module, $key, $to, $language, $params, $from));
 				drupal_mail($module, $key, $to, $language, $params, $from);
 //die("<p>did we just send drupal_mail");
 			}
@@ -148,7 +148,12 @@ function vibio_offer_mail($key, &$message, $params) {
 
 
 		case 'offer_neg_seller':   /* seller posted negotiation */
-		$message['subject'] = t("Response to your offer for \"!title\" from !seller at Vibio.com", array("!title" => $params['title'], "!seller" => $params['seller']));
+		if ( strlen( $params['title'] ) > 30 ) {
+			$title = substr($params['title'], 0, 30) . "...";
+		} else {
+			$title = $params['title'];
+		}
+		$message['subject'] = t("Response to your offer for \"!title\" from !seller at Vibio.com", array("!title" => $title, "!seller" => $params['seller']));
 
 
 			$nothing ="nothing";
@@ -175,7 +180,12 @@ url("buying", array('absolute' => true )) . "
 		break;
 
 		case 'offer_neg_buyer':   /* buyer posted negotiation */
-			$message['subject'] = t("Offer on \"!title\" from !buyer at Vibio.com", array("!title" => $params['title'], "!buyer" => $params['buyer']));
+			if ( strlen( $params['title'] ) > 30 ) {
+				$title = substr($params['title'], 0, 30) . "...";
+			} else {
+				$title = $params['title'];
+			}
+			$message['subject'] = t("Offer on \"!title\" from !buyer at Vibio.com", array("!title" => $title, "!buyer" => $params['buyer']));
 	
 			$buyer = $params['buyer'];
 			$seller = $params['seller'];

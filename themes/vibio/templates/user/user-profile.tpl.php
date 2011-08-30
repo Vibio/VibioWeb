@@ -70,7 +70,11 @@ switch ($who_to_you) {
 			echo "<div id='name_and_friend'><h5>$u->name</h5><div class='friend_info'>";
 
 			echo $friends_info . "</div><div class='friend_actions'>" . 
-				$profile['uri_actions']['actions'] . '</div></div>';
+				$profile['uri_actions']['actions'] . '</div>';
+			if ( $profile['profile_progress'] ) {
+				echo $profile['profile_progress'];
+			}
+			echo '</div>';
 			echo "<br/>";
 			echo $message_link;
 						//echo $profile['profile_progress'];

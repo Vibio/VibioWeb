@@ -239,7 +239,7 @@
 }
 
 #profile_completion_steps_container {
-	display: none;
+	display: none; /* stephen: hey, look at this.  Serious code, not displayed? */
 }
 
 #profile_progressbar {

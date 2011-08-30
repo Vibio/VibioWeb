@@ -1,1 +1,4 @@
-lots of cleanup needs to be done
+Replacing the v1.0 offers system with a cck-oriented system.
+
+There is basically a shell offer, which is generated from two streams
+over negotiation conversations (each their own cck)

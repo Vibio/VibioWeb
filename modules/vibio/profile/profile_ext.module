@@ -442,8 +442,14 @@ function profile_ext_preprocess_user_profile(&$vars)
 			break;
     case "about me":
     case "about":
-			$vars['sec_content'] = profile_ext_public_info($uid) .
-				theme("profile_ext_profile_info", $uid, $access);
+			$edit_me = '';
+			if ( $user->uid == $uid ) {
+				$edit_me = l('Edit "About Me"', 'user/' . $uid . '/edit/About%20Me');
+			}
+			$vars['sec_content'] = $edit_me . 
+				theme("profile_ext_profile_info", $uid, $access) .
+				profile_ext_public_info($uid);
+
 
 				
 			
@@ -472,7 +478,6 @@ function profile_ext_preprocess_user_profile(&$vars)
 	$me_in_their_wide_network = $network[$user->uid]['friends'];
 	$friends = _network_get_friends($uid);
 	//dsm($me_in_their_wide_network);
-	dsm($friends);
 	if ( $uid == $user->uid ) {
 		$vars['who_to_you'] = 'you';
 	} elseif ( in_array($user->uid, $friends ) ) {

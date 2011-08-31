@@ -35,7 +35,6 @@
 </head>
 <body class="<?php print $classes; ?>">
 
-
 <div id="page-wrapper">
 	<div id="page">
 		<div id="header">

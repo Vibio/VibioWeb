@@ -71,11 +71,16 @@ print drupal_render($form[field_chat]);
 
 
 $form['buttons']['submit']['#value'] = 'Make or Update Offer';
-// tune that button a little, needs more work when time (are you making
+/* Is this a new offer or not */
+// !!! tune that button a little, needs more work when time (are you making
 //  or updating?)
+// dsm($form);
+// $form['field_offer_expires'][0]['#value']['value'];
+// I think the best next step would be to see if offer.tpl can pass in info
+// if the $current_buyer has a negotiation yet or not?
+
 if ($form[field_price][0]['#value']['value'] > 0 ) {
 	$form['buttons']['submit']['#value'] = 'Update Your Offer';
-	//dsm($form);
 }
 // not working yet....
 //$form[field_chat]['#attributes']['onFocus'] = "this.value='';this.onfocus='';";

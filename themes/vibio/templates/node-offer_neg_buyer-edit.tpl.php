@@ -71,6 +71,12 @@ print drupal_render($form[field_chat]);
 
 
 $form['buttons']['submit']['#value'] = 'Make or Update Offer';
+// tune that button a little, needs more work when time (are you making
+//  or updating?)
+if ($form[field_price][0]['#value']['value'] > 0 ) {
+	$form['buttons']['submit']['#value'] = 'Update Your Offer';
+	//dsm($form);
+}
 // not working yet....
 //$form[field_chat]['#attributes']['onFocus'] = "this.value='';this.onfocus='';";
 // nor this.

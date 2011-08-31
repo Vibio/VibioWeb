@@ -267,7 +267,7 @@ print $output;
   <?php /* print the conversation, view defined (and cache loaded) above */
 //print views_embed_view($viewName, $display_id, $myArgs);
 	if ( $perm_buyer || $perm_seller ) { // you  are buyer or seller
-		print "<h3>Activity Log</h3><div id='chit-chat'>" .
+		print "<h3>Negotiation Log</h3><div id='chit-chat'>" .
 			$chit_chat . '</div>';
 	} else {
 		print "<h3>Discussions are private to the participants.</h3>";

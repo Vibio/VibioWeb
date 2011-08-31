@@ -32,7 +32,20 @@ list($chit_chat, $current_buyer, $current_seller) =
 //dsm($current_buyer);
 
 // get collection
+// Simon is getting errors here, but I can't replicate. 
+// Seems like collection module is being loaded for me (multiple accounts,
+//  facebook and not facebook, admin and not admin) but not him.
+//module_load_include('inc', 'node', 'node.admin');
+module_load_include('inc', 'collection');
+/*
+hm... product 20410 on Simon's was giving an error.
+print '<pre>';
+print_r($item);
+print '</pre>';
+*/
 $cid = isset($item->collection_info) ? $item->collection_info['cid'] : collection_get_item_cid($item->nid);
+$cid = collection_get_item_cid($item->nid);
+
 //trim($cid);
 if ( is_array($cid) ) {
 	$cid = array_shift($cid);
@@ -71,7 +84,7 @@ print theme('imagecache', 'little_profile_pic', $owner->picture, $alt,$title, $a
   ?>
 
 	<div class="negotiation_block" style="float: right; width: 200px;">
-		<a  class="popups" href="/node/<?php print $node->nid; ?>">View / Edit</a>
+		<a  class="popups" href="/node/<?php print $node->nid; ?>">Update Offer</a>
 	</div>
 
   <?php if ($unpublished): ?>

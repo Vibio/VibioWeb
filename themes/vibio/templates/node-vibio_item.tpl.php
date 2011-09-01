@@ -1,4 +1,4 @@
-<h3 style="color: red;">template: node-vibio-item, eventually to be removed</h3>
+<h3 style="color: red;">template: node-vibio-item, eventually to be removed.  I only see this coming up with view yours</h3>
 <?php
 /* stephen: what about a teaser view, similar but cleaner, for new themes? 
  *	It looks like the new themes are product-driven, rather than item-driven
@@ -10,23 +10,6 @@
  */
 
 global $user;
-$offer2buy = "";
-
-if ($node->offer2buy['settings']['price'] == 0 && $node->offer2buy['settings']['is_negotiable'])
-{
-	$offer2buy = t("Price: Best Offer");
-}
-else
-{
-	$offer2buy = t("Price: \$!price", array("!price" => $node->offer2buy['settings']['price']));
-	
-	if ($node->offer2buy['settings']['is_negotiable'])
-	{
-		$offer2buy .= " (".t("Negotiable").")";
-	}
-}
-
-$offer2buy = "<div class='node_offer2buy_price'>$offer2buy</div>";
 
 /* if it's not yours, and you're not anonymous, make an offer */
 if ($user->uid > 0 && $user->uid != $node->uid)

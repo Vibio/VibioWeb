@@ -130,12 +130,12 @@ function offer2buy_form_vibio_item_node_form_alter(&$form, &$state)
 	$settings = offer2buy_get_settings($nid);
 	
 	$form['offer2buy'] = array(
-		"#type"				=> "fieldset",
-		"#title"			=> t("Price"),
-		"#description"		=> t('These options only affect your posting if this item is set to type "selling"'),
+		"#type"				=> "fieldset", // personally don't like this design style but just opinion, leaving for now -- stephen
+		"#title"			=> t("Pricing Information (if for sale)"),
+		//"#description"		=> t('These options only affect your posting if this item is set to type "selling"'),
 		"#collapsible"		=> true,
-		"#collapsed"		=> true,
-		"#weight"			=> -8,
+		"#collapsed"		=> false,
+		"#weight"			=> 0, // was: -8, // above the title desired, above 'for sale'?
 	);
 	
 	$form['offer2buy'] = array_merge($form['offer2buy'], _offer2buy_fields_form($nid, $settings));

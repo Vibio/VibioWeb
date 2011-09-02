@@ -502,6 +502,8 @@ function profile_ext_preprocess_page(&$vars)
 function profile_ext_preprocess_profile_ext_profile_info(&$vars)
 {
 	global $user;
+
+	$vars['username'] = $user->name;
 	
 	if ($vars['access'] >= privacy_get($vars['uid'], "profile", "profile_about_me"))
 	{
@@ -575,7 +577,7 @@ function profile_ext_profile_ext_public_info($uid)
 	
 	return array(array(
 		"weight"=> 10,
-		"title"	=> t("Member Since"),
+		"title"	=> t("Joined Vibio"),
 		"data"	=> "$join_date ($join_date_interval)"
 	));
 }

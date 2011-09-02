@@ -14,7 +14,7 @@ while ($row = db_fetch_object($res))
 	echo "
 		<tr>
 			<td class='field_name'>
-				{$row->title}
+				{$row->title}:
 			</td>
 			<td class='field_val'>
 				{$list}

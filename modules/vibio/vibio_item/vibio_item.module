@@ -242,7 +242,7 @@ function vibio_item_profile_ext_public_info($uid)
 				AND p.`type`='node'
 				AND p.`setting` <= %d";
 	$total_items = db_result(db_query($sql, $uid, $access));
-	
+/* latest item no longer needed	
 	$sql = "SELECT n.`nid`
 			FROM {node} n JOIN {privacy_settings} p
 				ON n.`nid`=p.`type_id`
@@ -265,18 +265,20 @@ function vibio_item_profile_ext_public_info($uid)
 	{
 		$latest_item = "-";
 	}
-	
+	*/
 	return array(
 		array(
 			"weight"=> -10,
-			"title"	=> t("Number of items"),
+			"title"	=> t("Items"),
 			"data"	=> $total_items,
 		),
+		/*
 		array(
 			"weight"=> 100,
 			"title"	=> t("Latest Item"),
 			"data"	=> $latest_item,
 		),
+		*/
 	);
 }
 

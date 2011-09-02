@@ -482,7 +482,7 @@ function collection_profile_ext_public_info($uid)
 	
 	return array(array(
 		"weight"=> 0,
-		"title"	=> t("Number of Collections"),
+		"title"	=> t("Collections"),
 		"data"	=> count($collections),
 	));
 }

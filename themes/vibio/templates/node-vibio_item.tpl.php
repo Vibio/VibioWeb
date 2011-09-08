@@ -42,7 +42,7 @@ if ($user->uid > 0 && $user->uid != $node->uid)
 	} else {
 		$nid = $node->nid;
 		// if we ever give up on popups, use destination=this url
-		$offer2buy_extra .= "<a class='offer2buy_init popup'
+		$offer2buy_extra .= "<a class='offer2buy_init automodal popup'
 			href='add/offer/$nid'>offer popup</a>";	
 	}
 	

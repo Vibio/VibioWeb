@@ -143,9 +143,9 @@ list($chit_chat, $current_buyer, $current_seller) =
   _offer_conversation_info($node);
 
 
-?>new form:
+?>
 	<div class="negotiation_block" style="float: right; width: 200px;">
-		<a  class="popups-form-reload" href="/node/<?php print $node->nid; ?>">Review Offer</a>
+		<a  class="automodal popups-form-reload" href="/node/<?php print $node->nid; ?>">Review Offer</a>
 	</div>
 
   <?php if ($unpublished): ?>

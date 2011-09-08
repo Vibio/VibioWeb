@@ -84,7 +84,7 @@ print theme('imagecache', 'little_profile_pic', $owner->picture, $alt,$title, $a
   ?>
 
 	<div class="negotiation_block" style="float: right; width: 200px;">
-		<a  class="popups" href="/node/<?php print $node->nid; ?>">Update Offer</a>
+		<a  class="automodal popups" href="/node/<?php print $node->nid; ?>">Update Offer</a>
 	</div>
 
   <?php if ($unpublished): ?>

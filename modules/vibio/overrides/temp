@@ -1,0 +1,59 @@
+9a10,21
+> /*********--------- Stephen's overrides ----------***********/
+> 
+> // form_alter, below, made node add/edit changes
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> /**********-------- Nelson below here --------------*********/
+> 
+17c29
+< function overrides_theme()
+---
+> function overrides_theme($form, &$form_state)
+27a40,65
+> 
+> // These functions seemed to work, then stop, may be related to pop ups
+> //  -- but at least they stop the stupid messages, good enough
+> function overides_remessagify_buyer_form_submit($form, &$form_state) {
+>  global $user;
+>  $node = node_form_submit_build_node($form, $form_state);
+>  $insert = empty($node->nid); // boolean
+> 
+> 	/// !!! test for failure in future version
+> 
+>  	if ( $insert ) { // brand new
+> 		drupal_set_message(t("Offer made."));
+> 	} else { // updating
+> 		drupal_set_message(t("Offer updated."));
+> 	}
+> }
+> 
+> 
+> function overides_remessagify_seller_form_submit($form, &$form_state) {
+>  global $user;
+>  $node = node_form_submit_build_node($form, $form_state);
+>  $insert = empty($node->nid); // boolean
+> 
+> 	drupal_set_message(t("Response to offer was successful")); // !!! test for failure in future version
+> }
+> 
+29a68,79
+> 	// stephen 20110901
+> 	// add another function to the submit process, at the end, which 
+> 	//	re-sets the drupal_set_message.
+> 	if ($id == 'offer_neg_buyer_node_form' ) {
+> 		$form['buttons']['submit']['#submit'][] = 'overides_remessagify_buyer_form_submit';
+> 	}
+> 	if ($id == 'offer_neg_seller_node_form' ) {
+> 		$form['buttons']['submit']['#submit'][] = 'overides_remessagify_seller_form_submit';
+> 	}
+> 
+> 
+> 
+152a203
+> // this doesn't seem to do anything but set the redirect?

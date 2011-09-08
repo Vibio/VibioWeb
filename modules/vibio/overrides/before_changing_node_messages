@@ -7,18 +7,6 @@
 
 define("OVERRIDES_FILE_DOWNLOAD_DIRECT", 5);
 
-/*********--------- Stephen's overrides ----------***********/
-
-// form_alter, below, made node add/edit changes
-
-
-
-
-
-
-
-/**********-------- Nelson below here --------------*********/
-
 function overrides_menu_alter(&$menu)
 {
 	$menu['user/%/messages']['type'] = MENU_CALLBACK;
@@ -26,7 +14,7 @@ function overrides_menu_alter(&$menu)
 	$menu['user/%user/openid']['type'] = MENU_CALLBACK;
 }
 
-function overrides_theme($form, &$form_state)
+function overrides_theme()
 {
 	return array(
 		"overrides_search_type_select"	=> array(
@@ -37,46 +25,8 @@ function overrides_theme($form, &$form_state)
 	);
 }
 
-
-// These functions seemed to work, then stop, may be related to pop ups
-//  -- but at least they stop the stupid messages, good enough
-function overides_remessagify_buyer_form_submit($form, &$form_state) {
- global $user;
- $node = node_form_submit_build_node($form, $form_state);
- $insert = empty($node->nid); // boolean
-
-	/// !!! test for failure in future version
-
- 	if ( $insert ) { // brand new
-		drupal_set_message(t("Offer made."));
-	} else { // updating
-		drupal_set_message(t("Offer updated."));
-	}
-}
-
-
-function overides_remessagify_seller_form_submit($form, &$form_state) {
- global $user;
- $node = node_form_submit_build_node($form, $form_state);
- $insert = empty($node->nid); // boolean
-
-	drupal_set_message(t("Response to offer was successful")); // !!! test for failure in future version
-}
-
 function overrides_form_alter($form, &$state, $id)
 {
-	// stephen 20110901
-	// add another function to the submit process, at the end, which 
-	//	re-sets the drupal_set_message.
-	if ($id == 'offer_neg_buyer_node_form' ) {
-		$form['buttons']['submit']['#submit'][] = 'overides_remessagify_buyer_form_submit';
-	}
-	if ($id == 'offer_neg_seller_node_form' ) {
-		$form['buttons']['submit']['#submit'][] = 'overides_remessagify_seller_form_submit';
-	}
-
-
-
 	if ($id == "user_register")
 	{
 		drupal_set_title(t("Create A New Account"));
@@ -200,7 +150,6 @@ function overrides_form_search_form_alter(&$form, &$state)
 	);
 }
 
-// this doesn't seem to do anything but set the redirect?
 function overrides_search_form_submit($form, &$state)
 {
 	$allowed_searches = overrides_allowed_search_types(true);

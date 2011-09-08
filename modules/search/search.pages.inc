@@ -61,6 +61,8 @@ function template_preprocess_search_results(&$variables) {
   $variables['search_results'] = '';
   foreach ($variables['results'] as $result) {
     $variables['search_results'] .= theme('search_result', $result, $variables['type']);
+	  $variables['search_results_not_lost'] .= theme('search_result', $result, $variables['type']);
+
   }
   $variables['pager'] = theme('pager', NULL, 10, 0);
   // Provide alternate search results template.

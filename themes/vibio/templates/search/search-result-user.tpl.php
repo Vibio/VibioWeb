@@ -1,4 +1,6 @@
 <?php
+/* $title can include their email, if you're an admin [?]
+   uri_actions is for friending, and ...???  */
 echo "
 	<tr>
 		<td class='search_user_picture'>$search_user_picture</td>

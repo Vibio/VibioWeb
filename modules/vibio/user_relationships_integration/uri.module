@@ -131,10 +131,19 @@ function uri_preprocess_search_result(&$vars)
 	if ($vars['type'] == "user")
 	{
 		global $user;
-		
-		$args = explode("/user/", $vars['result']['link']);
-		$account = user_load((int) $args[1]);
 
+
+		// stephen:
+		// Found this piece of code dependent on the path,
+		//  which was messed up by pathalias.
+		// I hope this life-support keeps the code going for now and
+		// through other alias changes
+		$argublatts = explode("com/", $vars['result']['link'], 2);
+		$system_path = drupal_lookup_path('source', $argublatts[1]);
+		$args = explode("user/", $system_path);
+		//$args = explode("/user/", $vars['result']['link']);
+		$account = user_load((int) $args[1]);
+		//dpr(array($argublatts,$system_path,$vars['result']['link'],$args));
 		$vars['search_user_picture'] = theme("user_picture", $account);
 		
 		if ($action_links = _user_relationships_ui_actions_between($user, $account))

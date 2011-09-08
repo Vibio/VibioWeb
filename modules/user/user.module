@@ -597,6 +597,8 @@ function user_search($op = 'search', $keys = NULL, $skip_access_check = FALSE) {
             $find[] = array('title' => $account->name, 'link' => url('user/'. $account->uid, array('absolute' => TRUE)));
           }
         }
+// edit core but: overwrite, nothing but temp worknotes here
+//dsm($find); --> looks good, not the problem
         return $find;
       }
   }

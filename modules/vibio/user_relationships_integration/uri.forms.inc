@@ -1,4 +1,6 @@
 <?php
+
+// this function has been basically destroyed for now
 function uri_elaborations_form($relationship=false, $target_uid=false)
 {
 	if ($relationship)

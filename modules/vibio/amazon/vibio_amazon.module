@@ -19,9 +19,12 @@ function vibio_amazon_nodeapi(&$node, $op, $a3=null, $a4=null)
 			}
 			break;
 		case "load":
+			// 20110707 error: $node->field_amazon_asin[0]['asin'] not set
+			// dsm($node->field_amazon_asin[0]['asin']); // -> blank
+
 			return array(
-				"amazon_data"	=> array_shift(amazon_item_lookup_from_db($node->field_amazon_asin[0]['asin'])),
-			);
+				"amazon_data"	=> array_shift(amazon_item_lookup_from_db($node->field_amazon_asin[0]['asin'])), 
+ 			);
 			break;
 		case "delete":
 			$sql = "DELETE FROM {amazon_item_node}

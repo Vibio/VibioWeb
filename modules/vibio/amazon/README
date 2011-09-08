@@ -1,0 +1,5 @@
+Ran this *by hand* on dev 20110907
+update drupal_system SET weight=1 where name = 'vibio_amazon'
+
+Created an install file for next time.... totally untested.
+(running repeatedly ok)

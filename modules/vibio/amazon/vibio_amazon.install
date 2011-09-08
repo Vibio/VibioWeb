@@ -1,0 +1,9 @@
+<?php
+
+/* quick fix by stephen 20110907
+ * to change the weight of this module heavier than amazon=0 
+ * Did it by hand on dev, so this is untested
+ */
+function vibio_amazon_install() {
+	db_query("update drupal_system SET weight=1 where name = 'vibio_amazon'");
+}

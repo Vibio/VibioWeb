@@ -27,8 +27,20 @@ if ($image = _product_get_image($node->nid, true))
 $sanitary = htmlspecialchars ( $_GET['searchcrumb'],   ENT_QUOTES );
 $manage_link = theme("product_inventory_manage_link", $node, $sanitary);
 
-if (isset($node->amazon_data))
-{
+if (isset($node->amazon_data)) {
+	/* bug hunt: nodes with field_amazon_asin are returning false here.
+   *  returned by: amazon/vibio_amazon.module
+   *    function vibio_amazon_nodeapi ($op = load)
+   *     "amazon_data" => array_shift(amazon_item_lookup_from_db($node->field_amazon_asin[0]['asin'])),
+   * this is working: dsm(amazon_item_lookup_from_db($node->field_amazon_asin[0]['asin']));
+   * and node_load is firing, but somehow that lookup, which works here, isn't
+   *  working there.
+   * $node->field_amazon_asin[0]['asin'] isn't set at node_api. It is set here.
+   *  module weighting problem?  
+
+   */
+dsm(debug_backtrace);
+
 	if (empty($node->body))
 	{
 		$product_content = theme("product_amazon_display", $node, $page);
@@ -46,6 +58,8 @@ if (isset($node->amazon_data))
 else
 {
 	$product_content = theme("product_display", $node, $page);
+$external_link = "We couldn't find this product at Amazon.";
+//this is working: dsm(amazon_item_lookup_from_db($node->field_amazon_asin[0]['asin']));
 }
 
 // these things will show up, regardless of the product source
@@ -153,9 +167,12 @@ else
 	}
 }
 
+/* press design/wireframe team to get a back-to-search into the design
+ *  $searchcrumb
+ */
+
 echo "
-	searchcrumb: $searchcrumb
-	<div class='external_short_link'>
+		<div class='external_short_link'>
 		$external_it_link
 	</div>
 	<div class='product_image'>

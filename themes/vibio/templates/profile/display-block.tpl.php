@@ -39,7 +39,7 @@ echo "
 			<li><a title='Connect with other Vibio Users' href='/notifications'><span class='menu_with_count_text'>Notifications</span><span class='menu_with_count_count'>$notifications</span></a></li>
 			<li><span class='menu_with_count_text'><a href='/messages'>Messages</a></span><span class='menu_with_count_count'>$msg_count</span></li>
 
-		<li><a title='Build a network of Facebook friends and Vibio contacts so you can Trade with Trust' href='/friends'><span class='menu_with_count_text'>Contacts</span><span class='menu_with_count_count'>$friend_count</span></a></li>
+		<li><a title='Build a network of Facebook friends and Vibio contacts so you can Trade with Trust' href='/contacts'><span class='menu_with_count_text'>Contacts</span><span class='menu_with_count_count'>$friend_count</span></a></li>
 
 
 		</ul>

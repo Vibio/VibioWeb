@@ -2,8 +2,16 @@
 $friends_title = t("Friends");
 $friend_finder_title = t("Friend Finder");
 
+/* Simon 20110907 remove notifications, which was first line in echo:
+ *	$notifications
+ * I lean towards UI change, remove notifications link instead.
+ *  Just a preference, but keeping the note here.
+ * 
+ * EFFICIENCY: what creates $notifications, and can we remove it?
+ */
+
+
 echo "
-	$notifications
 	<div id='friends_tabs' class='tabs'>
 		<div class='tabs'>
 			<ul class='tabs primary clearfix'>

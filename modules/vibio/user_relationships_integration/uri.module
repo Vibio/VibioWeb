@@ -60,8 +60,8 @@ function uri_menu_alter(&$menu)
 	
 	$menu['relationships/requests']['type'] = MENU_CALLBACK;
 
-	$menu['friends'] = array(
-		"title"				=> "Friends",
+	$menu['contacts'] = array(
+		"title"				=> "Contacts",
 		"title callback"	=> "uri_menu_title",
 		"access callback"	=> "user_relationships_ui_check_access",
 		"access arguments"	=> array("edit"),

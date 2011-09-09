@@ -1,4 +1,4 @@
-<h6>init.tpl.php is crap and needs to be backtraced and removed</h6>
+<h6>init.tpl.php is a pain point and needs to be backtraced and removed</h6>
 
 <?php
 // offer2buy_init: "arguments"     => array("nid" => false, "offer_type" => "new"),

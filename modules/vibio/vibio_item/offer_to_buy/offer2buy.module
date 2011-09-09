@@ -341,11 +341,28 @@ function offer2buy_get_settings($nid=false)
 	return db_fetch_array(db_query($sql, $nid));
 }
 
-// horrible!  sneakily calls the init tpl to spaghetti a straightforward owner tpl
+// previous: sneakily calls the init tpl to spaghetti a straightforward owner tpl
 function offer2buy_preprocess_product_owner(&$vars) {
 	//	$vars['offer2buy'] = theme("offer2buy_init", $vars['item']['node']['nid'], "button");
-	dpm($vars);
+	//dpm($vars);
 	$nid = $vars['item']['node']['nid'];
+
+	$item = node_load($nid);   // seems like this should occur elsewhere, 
+		// like it was partly done upstream of here.  Trace later.
+	//dpm($item); 
+
+	// Teaser and links to item
+	$vars['teaser'] = $item->teaser; // in design this is ~30chars, but I think
+		// I like longer?
+
+	// Uh oh: no design for an item page ready yet, no ux.  Maybe it should
+	// be a popup?  Maybe expand in place?
+	$vars['shortlink'] = l("Item details", "node/" . $item->nid .);
+	// weird url format: ?highlight=107 highlights that user.
+
+
+	// Price
+
 	$text = t("make offer");
 
 	// Need the nid of an offer for this node, by this logged in user,
@@ -355,6 +372,13 @@ function offer2buy_preprocess_product_owner(&$vars) {
 	$row = db_fetch_array($res);  // the point of this is there be just one
 //SELECT node.uid from , node where uid=%d AND course_nid=. $user->uid 
 	$offer_nid = $row[0]['nid'];
+	//!!! Some if this not used in v1.1 ... soon want to differentiate
+	// between new offers and editing offers.
+$owner_uid = $vars['item']['user']['uid'];
+	$owner = user_load( $owner_uid );
+	$vars['username'] = "Name: " . $owner->name; // also found in the item array
+	// alternate UX: add /collection to the link 
+	$vars['usernamelink'] = l($owner->name, "user/$owner->uid");
 
 	if ( 'edit' == 'get edit button' ) {
 	} else {
@@ -362,8 +386,20 @@ function offer2buy_preprocess_product_owner(&$vars) {
 		//  you'll still be you after you click this link, but the
 		//  seller can use the same url this way.
 		$uid = $user->uid;
-		$vars['offer2buy'] = l($text, "offer/$nid/$uid", array('class'=> 'action_button_link'));
-/* "improve on $offer_nid: <a class='offer2buy_init_v1_2 popupsTOOSLOW action_button_link'                        href='offer/$nid/$uid'>$text</a>";*/
+
+		// Is it on sale?
+		// dpm($item->offer2buy[settings][is_on_sale]); i
+		//0 = not for sale, 1 = for sale
+		if ($item->offer2buy[settings][is_on_sale] == 1) {
+			$vars['offer2buy'] = l($text, "offer/$nid/$uid", array('class'=> 'action_button_link'));
+		} else {
+			$nfs_text = t("Just showing my style: Not For Sale");
+			$vars['offer2buy'] = "<div class='not_for_sale'>$nfs_text</div>";
+		}
+		// Price.
+		// Note that "insert" is complex... test.  Is price always a number?
+		$vars['price'] = $item->offer2buy[settings][price];
+		// Next: is "negotiable" something to add here?
 	}
 
 }

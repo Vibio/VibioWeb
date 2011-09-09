@@ -15,6 +15,11 @@
 	margin-left: 25px;
 }
 
+.item_owner .action {
+	float: right;
+	width: 100px; /* Carolyn should play */
+}
+
 .item_owner .picture {
 	float: left;
 }

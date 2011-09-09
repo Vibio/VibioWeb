@@ -357,7 +357,7 @@ function offer2buy_preprocess_product_owner(&$vars) {
 
 	// Uh oh: no design for an item page ready yet, no ux.  Maybe it should
 	// be a popup?  Maybe expand in place?
-	$vars['shortlink'] = l("Item details", "node/" . $item->nid .);
+	$vars['shortlink'] = l("Item details", "node/" . $item->nid );
 	// weird url format: ?highlight=107 highlights that user.
 
 

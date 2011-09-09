@@ -42,7 +42,7 @@ function uri_edit_elaboration($rid)
 	}
 	elseif (!$out)
 	{
-		$out = t("There was an error saving friend details. Please try again later.");
+		$out = t("Oops. There was an error saving connection details. Please try later.");
 	}
 	
 	exit(json_encode(array(

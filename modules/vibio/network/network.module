@@ -5,7 +5,7 @@ function network_menu()
 {
 	return array(
 		"network/find-friends"	=> array(
-			"title"				=> "Friend Finder",
+			"title"				=> "Vibio Connection Finder",
 			"page callback"		=> "network_find_friends",
 			"access arguments"	=> array("can have relationships"),
 			"file"				=> "network.pages.inc",

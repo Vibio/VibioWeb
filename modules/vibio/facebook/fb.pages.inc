@@ -88,7 +88,7 @@ function fb_user_link_account()
 	}
 	
 	fb_save_user($user, $fb_user->id);
-	drupal_set_message(t("Your Facebook account has been linked to Vibio! Now you can share your items and collections to your Facebook wall. You can also find friends faster and easier"));
+	drupal_set_message(t("Your Facebook account has been linked to Vibio! Now you can share your Style Profile with your Facebook friends, post Collections to your wall, and expand your circle on Vibio."));
 	drupal_goto($_GET['destination']);
 }
 

@@ -96,7 +96,7 @@ function privacy_access_restricted_page($u, $type)
 	}
 	else
 	{
-		$message = t("This !type may be restricted only to !user's friends or may be private. Try adding !user as a friend and see if that helps.", $t_args);
+		$message = t("Uh, this page/item !type may be restricted. You might want to try adding !user to your circle and see if that helps.", $t_args);
 		$actions = t("!view_user", $t_args);
 	}
 	

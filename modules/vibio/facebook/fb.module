@@ -303,7 +303,7 @@ function fb_network_find_friends($uid, &$potentials, $existing, &$errors)
 	
 	if (!(fb_user_has_fb($uid)))
 	{
-		$message = t("Connect your Facebook account to see which friends are on Vibio");
+		$message = t("Connect your Facebook account to see which friends use Vibio");
 		$href = array("url" => url("fb/add-account"), "class" => "fb_link_account");
 		$errors[] = theme("fb_ff_message", $message, (object) $href, "link_account");
 		
@@ -406,7 +406,7 @@ function fb_newuser_tutorial($u, $user_stage)
 	{
 		return array(array(
 			"stage" => $stage_number,
-			"header"=> t("Find Friends"),
+			"header"=> t("Connection Finder"),
 		));
 	}
 	
@@ -439,7 +439,7 @@ function fb_newuser_tutorial($u, $user_stage)
 	
 	return array(array(
 		"stage"			=> $stage_number,
-		"header"		=> t("Find Friends"),
+		"header"		=> t("Connection Finder"),
 		"content_header"=> t("Find your Facebook friends"),
 		"steps"			=> array(
 			$link_account,

@@ -31,14 +31,14 @@ if (!$u->picture)
 }
 
 /* Friend information 
- * $profile['dos'] written by Nelson not explored yet shows up to second degree?
+ * $profile['dos'] written by Nelson not explored yet; shows up to second degree?
  * $vars['connect'] = You, Connection, Second or false
  */
 switch ($who_to_you) {
 	case 'you':
 		$friends_info = "You";
 		$my_options = "<div class='profile_options'><a href='/search' class='profile_option'>Search for and Add an Item to Your Profile</a>
-	<a href='/friends' class='profile_friends'>Invite friends to view your collections</a>	</div>
+	<a href='/contacts' class='profile_friends'>Invite friends to view your collections</a>	</div>
 		";
 		break;
 	case 'connection':

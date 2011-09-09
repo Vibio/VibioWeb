@@ -1,9 +1,10 @@
 <?php
 function uri_menu()
 {
+	/* erase this, right? */
 	$menu = array(
 		"relationships/edit-elaboration/%"	=> array(
-			"title"				=> "Edit Friend Details",
+			"title"				=> "XXX Edit Friend Details",
 			"page callback"		=> "uri_edit_elaboration",
 			"page arguments"	=> array(2),
 			"access arguments"	=> array("can have relationships"),
@@ -51,7 +52,7 @@ function uri_menu()
 
 function uri_menu_alter(&$menu)
 {
-	$menu['relationships/list']['title'] = 'Friends';
+	$menu['relationships/list']['title'] = 'Connections';
 	
 	foreach (user_relationships_types_load() as $rtid => $relationship)
 	{
@@ -77,7 +78,7 @@ function uri_menu_title()
 	global $user;
 	$friend_count = module_exists("network") ? count(_network_get_friends($user->uid, 1)) : 0;
 	
-	return t("Friends (!count)", array("!count" => $friend_count));
+	return t("Connections (!count)", array("!count" => $friend_count));
 }
 
 function uri_preprocess_user_relationships(&$vars)
@@ -103,11 +104,11 @@ function uri_preprocess_page(&$vars)
 	$uri_js = array(
 		"uri"	=> array(
 			"messages"	=> array(
-				"approve"	=> t("You are now friends with !target"),
-				"cancel"	=> t("You have cancelled the friend request to !target"),
-				"disapprove"=> t("You have ignored a friend request from !target"),
-				"remove"	=> t("You are no longer friends with !target"),
-				"request"	=> t("Friend request sent to !target"),
+				"approve"	=> t("!target is now part of your circle of connections."),
+				"cancel"	=> t("You have cancelled the request to connect with !target"),
+				"disapprove"=> t("You have ignored !target’s request to connect"),
+				"remove"	=> t("You are no longer connected with !target"),
+				"request"	=> t("You sent a request to connect with !target"),
 			),
 		),
 	);
@@ -206,7 +207,7 @@ function uri_edit_elaboration_form()
 		),
 		"container"		=> array(
 			"#type"			=> "fieldset",
-			"#title"		=> t("Edit Friend Details"),
+			"#title"		=> t("Edit Connection Details"),
 			"#collapsible"	=> false,
 			"elaboration"	=> array(
 				"#title"		=> t("Elaboration"),
@@ -237,7 +238,7 @@ function uri_profile_ext_dashboard_notifications($uid, $html=true)
 		}
 		else
 		{
-			$output[] = (object) array("message" => t("You have a pending friend request"));
+			$output[] = (object) array("message" => t("You have a pending connection request"));
 		}
 	}
 	

@@ -22,7 +22,7 @@ function profile_ext_initial_steps($u, $force_show=false)
 	{
 		$steps[] = array(
 			"image" => "/themes/vibio/images/thirdparty/facebook.png",
-			"text"	=> t("Find some friends using the !ff", array("!ff" => l(t("Friend Finder"), "friends", array("fragment" => "ui-tabs-1")))),
+			"text"	=> t("Expand your circle with the Vibio !ff", array("!ff" => l(t("Connection Finder"), "contacts", array("fragment" => "ui-tabs-1")))),
 		);
 	}
 

@@ -9,7 +9,7 @@ function profile_ext_get_dashboard_notifications($uid, &$tabs)
 		$output .= $data['display'];
 	}
 	
-	$title = t("Notifications !num", array("!num" => $num_notifications > 0 ? "($num_notifications)" : ""));
+	$title = t("Invitations !num", array("!num" => $num_notifications > 0 ? "($num_notifications)" : ""));
 	$tabs[$title] = $output;
 	
 	return $num_notifications;

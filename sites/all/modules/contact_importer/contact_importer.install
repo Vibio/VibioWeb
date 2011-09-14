@@ -1,0 +1,212 @@
+<?php
+// $Id: contact_importer.install,v 1.1.4.5 2010/09/14 13:54:30 dalin Exp $
+
+/**
+ * @file
+ * (un)install and update routines for contact_importer.
+ */
+
+/**
+ * Implementation of hook_schema().
+ */
+function contact_importer_schema() {
+  $schema['contact_importer_log'] = array(
+    'description' => t('Logs Contact Imports.'),
+    'fields' => array(
+      'log_id' => array(
+        'description' => t('Auto-incrementing primary key.'),
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'session_id' => array(
+        'description' => t('FK to {session}.sid.'),
+        'type' => 'varchar',
+        'length' => '64',
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'provider_name' => array(
+        'description' => t('The machine readable provider name.'),
+        'type' => 'varchar',
+        'length' => '64',
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'engine_name' => array(
+        'description' => t('The machine readable engine name.'),
+        'type' => 'varchar',
+        'length' => '64',
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'email' => array(
+        'description' => t('The email_address or username used.'),
+        'type' => 'varchar',
+        'length' => '64',
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'authentication_success' => array(
+        'description' => t('Did the user successfully authenticate with the provider?'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'size' => 'tiny',
+        'not null' => TRUE,
+      ),
+      'contacts_retrieved' => array(
+        'description' => t('The number of contacts that the engine retrieved from the provider.'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'size' => 'small',
+        'not null' => TRUE,
+      ),
+      'contacts_imported' => array(
+        'description' => t('The number of contacts that the user selected.'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'size' => 'small',
+        'not null' => TRUE,
+      ),
+      'completed' => array(
+        'description' => t('Is the contact import form wizard still in progress.'),
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('log_id'),
+    'indexes' => array(
+      'provider_name' => array('provider_name'),
+      'session_id' => array('session_id', 'email', 'authentication_success', 'completed'),
+    ),
+  );
+  return $schema;
+}
+
+/**
+ * Implementation of hook_install().
+ */
+function contact_importer_install() {
+  drupal_install_schema('contact_importer');
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function contact_importer_uninstall() {
+  drupal_uninstall_schema('contact_importer');
+  variable_del('contact_importer_engine');
+  variable_del('contact_importer_separator');
+  variable_del('contact_importer_providers_saved');
+}
+
+/**
+ * Implementation of hook_enable().
+ */
+function contact_importer_enable() {
+  contact_importer_cache_clear_all();
+}
+
+/**
+ * Clean things up for provider-select refactoring.
+ * You will need to re-configure Contact Importer due to a new way of managing engines and providers.
+ */
+function contact_importer_update_6001() {
+  $return = array();
+  variable_del('contact_importer_engine');
+  drupal_set_message(t('You will need to re-configure Contact Importer due to a new way of managing '.
+    'engines and providers.'));
+  return $return;
+}
+
+/**
+ * Forgot to install the new schema in 6001.
+ */
+function contact_importer_update_6002() {
+  $return = array();
+  $table = array(
+    'description' => t('Logs Contact Imports.'),
+    'fields' => array(
+      'log_id' => array(
+        'description' => t('Auto-incrementing primary key.'),
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'session_id' => array(
+        'description' => t('FK to {session}.sid.'),
+        'type' => 'varchar',
+        'length' => '64',
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'provider_name' => array(
+        'description' => t('The machine readable provider name.'),
+        'type' => 'varchar',
+        'length' => '64',
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'engine_name' => array(
+        'description' => t('The machine readable engine name.'),
+        'type' => 'varchar',
+        'length' => '64',
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'email' => array(
+        'description' => t('The email_address or username used.'),
+        'type' => 'varchar',
+        'length' => '64',
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'authentication_success' => array(
+        'description' => t('Did the user successfully authenticate with the provider?'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'size' => 'tiny',
+        'not null' => TRUE,
+      ),
+      'contacts_retrieved' => array(
+        'description' => t('The number of contacts that the engine retrieved from the provider.'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'size' => 'small',
+        'not null' => TRUE,
+      ),
+      'contacts_imported' => array(
+        'description' => t('The number of contacts that the user selected.'),
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'size' => 'small',
+        'not null' => TRUE,
+      ),
+      'completed' => array(
+        'description' => t('Is the contact import form wizard still in progress.'),
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('log_id'),
+    'indexes' => array(
+      'provider_name' => array('provider_name'),
+      'session_id' => array('session_id', 'email', 'authentication_success', 'completed'),
+    ),
+  );
+  db_create_table($return, 'contact_importer_log', $table);
+  return $return;
+}
+
+/**
+ * If lightbox was used in the past, keep using it.
+ */
+function contact_importer_update_6003() {
+  $return = array();
+  if (module_exists('lightbox2')) {
+    variable_set('contact_importer_modal', 'lightbox2');
+  }
+  return $return;
+}

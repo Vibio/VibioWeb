@@ -1,0 +1,686 @@
+<html>
+<title>Open Inviter - Free Contacts importer integration with CMS like Buddy Zone, Boonex Dolphin, PhpBB and many more</title>
+<link href="/new_tb/main.css" rel="stylesheet" type="text/css" />
+<link rel="shortcut icon" href="/favicon.ico">
+
+<script>
+function go(url)
+	{
+	window.location=url;
+	}
+function hovering(element)
+	{
+	element.style.backgroundImage="url('/new_tb/images/btn_active.jpg')";
+	}
+function leaving(element,type)
+	{
+	if (type==1)
+		element.style.backgroundImage="url('/new_tb/images/btn_special.jpg')";
+	else
+		if (type==2)
+			element.style.backgroundImage="url('/new_tb/images/btn_active.jpg')";
+		else
+			element.style.backgroundImage="url('')";
+	}
+</script>
+
+
+</head>
+<body>
+
+<noscript>Open source OpenInviter<sup>TM</sup> (Open Inviter<sup>TM</sup>) is a free <b>import contacts</b> (addressbook) script from email providers like Grafitti, Inbox.com, Web.de, Pochta, Bordermail, Canoe, O2, Doramail, Clevergo, Rambler, IndiaTimes, Mynet.com, India, Abv, FastMail, YouTube, Aussiemail, 5Fm, AOL, Zapakmail, Popstarmail, Kids, Freemail, Xing, Care2, Gawab, Mail.in, Yahoo!, Inet, Interia, MSN, Rediff, Mail2World, Virgilio, Bigstring, Hushmail, Lycos, Uk2, Yandex, Azet, Evite, Wp.pt, Mail.ru, Sapo.pt, Netaddress, Apropo, GMX.net, Techemail, Live/Hotmail, GMail, OperaMail, Libero, LinkedIn, Plaxo, KataMail, Meta, Nz11, Terra, Mail.com, Walla, Atlas or social portals like Flingr, Multiply, Last.fm, Cyworld, Xuqa, Fdcareer, Kincafe, Orkut, Famiva, Flixster, Skyrock, Meinvz, Friendfeed, Livejournal, Hyves, Faces, Ning, Friendster, NetLog, Hi5, Brazencareerist, Plazes, Bookcrossing, Konnects, Motortopia, Mydogspace, MySpace, Lovento, Vkontakte, Xanga, Eons, Flickr, Perfspot, Mycatspace, Twitter, Facebook, Koolro, Badoo, Bebo, Mevio, Plurk, Vimeo, Tagged. This <b>contacts importer</b> script is integrating with content management systems (aka CMS) like myBB, Atmail5, Social Engine 4, RoundCube, PHPMELODY, PunBB, Etano, Vwebmail, PhpBB, SimpleMachines Forum (SMF), Wordpress, symfony, nowFire, Boonex Dolphin, E107, Social Engine, jamit job, Drupal, JamRoom, Joomla, phpizabi, Joomla1.0, joovili, Buddy Zone, phpFoX, Dating Pro, vBulletin. Open Inviter is written in <b>PHP 5</b> (no database required but cURL or wget required) and running on <b>any webserver</b> (tested on Apache) offering advanced tell a friend features. OpenInviter<sup>TM</sup> is a free <b>self hosted</b> solution that does not use a third party gateway (or API) to <b>import contacts</b>.</noscript>
+<table align="center" height="100%" width="958" border="0" cellspacing="0" cellpadding="0">
+<!-- menu -->
+  <tr>
+    <td align="left" valign="top" height="54">
+    <table width="100%" height="44" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td class="menu_left">
+        <table width="18" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td></td>
+          </tr>
+        </table>
+        </td>
+        <td class="menu_repeat" width="100%" align="center" valign="top">
+        <table width="80%" height="44" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+          	          		<td onClick="go('/index.php')" style="cursor:pointer;" onMouseOver='hovering(this)' onMouseOut='leaving(this,0)' height="30" width="120" align="center"><a  href='/index.php'>Home</a></td>
+          	          		<td onClick="go('/download.php')" style="cursor:pointer;" onMouseOver='hovering(this)' onMouseOut='leaving(this,0)' height="30" width="120" align="center"><a  href='/download.php'>Download</a></td>
+          	          		<td onClick="go('/autodownloads.php')" style="cursor:pointer;" onMouseOver='hovering(this)' onMouseOut='leaving(this,0)' height="30" width="120" align="center"><a  href='/autodownloads.php'>Get AutoUpdates</a></td>
+          	          		<td onClick="go('/demo/')" style="cursor:pointer;background-image:url('/new_tb/images/btn_special.jpg');background-repeat:repeat-x;" onMouseOver='hovering(this)' onMouseOut='leaving(this,1)' height="30" width="120" align="center"><a  href='/demo/'>DEMO</a></td>
+          	          		<td onClick="go('/forum/')" style="cursor:pointer;" onMouseOver='hovering(this)' onMouseOut='leaving(this,0)' height="30" width="120" align="center"><a  href='/forum/'>Resources</a></td>
+          	          		<td  style="cursor:pointer;" onMouseOver='hovering(this)' onMouseOut='leaving(this,0)' height="30" width="120" align="center"><a target='_blank' href='/blog/'>Blog</a></td>
+          	          		<td onClick="go('/contact.php')" style="cursor:pointer;" onMouseOver='hovering(this)' onMouseOut='leaving(this,0)' height="30" width="120" align="center"><a  href='/contact.php'>Contact</a></td>
+          	          </tr>
+        </table>
+        </td>
+        <td class="menu_right">
+        <table width="18" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td></td>
+          </tr>
+        </table>
+        </td>
+      </tr>
+          </table>
+    </td>
+  </tr>
+<!-- /menu -->
+<!-- header img -->
+  <tr>
+    <td align="center" valign="top" height="257">
+    <table width="957" height="245" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td class="header_left" width="46"></td>
+        <td class="header_1" width="896" align="center" valign="top">
+        	<table height='245' width='896' class='header_2' cellspacing="0" cellpadding="0" border="0">
+			<tr>
+				<td class="header_3" valign='top' height='245' width='896'>
+					<table height='245' width='896' cellspacing="0" cellpadding="0" border="0">
+						<tr>
+							<td height="245" align="left" valign="top" style='padding-top:22px;'>
+								<a href="/">
+									<img border="0" src="/new_tb/images/logo.png" width="455" height="176">
+								</a>
+							</td>
+							<td width="100%" valign="bottom" align="right" style="padding-bottom:13px;">
+								<table cellspacing="" cellpadding="0" border="0" width=403" height="72"><tr>
+									<td class="quotes" align="left">
+&ldquo;As we enjoy great advantages from inventions of others, we should be glad of an opportunity to serve others by any invention of ours; and this we should do
+freely and generously.&rdquo;</td></tr>
+<tr><td class="quotes" align="right">Benjamin Franklin</td></tr></table>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+        </td>        
+        <td class="header_right" width="15"></td>
+      </tr>
+    </table>
+    </td>
+  </tr>
+	<tr><td align='center' style='padding-bottom:10px;'>
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	  <tr>
+	    <td align="right" width='130' valign="top"><a style='border:none !important;' href='/contact.php?ad'><img border="0" src="/new_tb/images/advertise_here.jpg" width="90" height="90"></a></td>
+	    <td align="center" valign="top" style='padding-top:3px;'>
+		<literal>
+		
+		<script type="text/javascript"><!--
+		google_ad_client = "pub-1439086379261425";
+		/* 728x90, created 11/14/08 OpenInviter */
+		google_ad_slot = "0731612218";
+		google_ad_width = 728;
+		google_ad_height = 90;
+		//-->
+		</script>
+		<script type="text/javascript"
+		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+		</script>
+		
+		</literal>
+	    </td>
+	  </tr>
+	</table>
+	</td></tr>
+  <tr>
+    <td align="left" valign="top" height="100%">
+    <table width="100%" height="100%" cellspacing="0" cellpadding="0">
+      <tr>
+        <td class="top_left" height="14" width="17">
+        <table width="17" height="14" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="17" height="14"></td>
+          </tr>
+        </table>
+        </td>
+        <td class="top"></td>
+        <td class="top_right" height="14" width="17"></td>
+      </tr>
+      <tr>
+        <td class="left" width="17"></td>
+        <td bgcolor="#f4f3ef" height="100%" width="100%" align="left" valign="top">
+        	<table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0"><tr><td><img src='/images/txt2img.php?title=Login area&PHPSESSID=l5uk1lf2rs6aenekcknuno6q23&style=dark'></td></tr>
+<tr><td class="line_long" align="left" valign="bottom"><br>
+		 <table cellspacing='0' cellpadding='0' style='border:1px solid red;' align='center' class='tbErrorMsgGrad'>
+	<tr>
+    	<td valign='middle' style='padding:3px' valign='middle' class='tbErrorMsg'>
+    		<img src='/images/ers.gif' >
+    	</td>	
+    	<td valign='middle' style='color:red;padding:5px;'>	
+     		   
+   			You need to login in order to have access to that page.
+   			   			  		</td>
+	</tr>
+</table><br>	<table class='thTable' cellspacing='0' cellpadding='0' align='center'>
+		<form method="POST" class="thForm" name="form" action="?">
+		  <input type='hidden' name='jump_to' value='/download.php'>
+          <tr class="thTableHeader">
+            <td colspan='2'>Login area</td>
+          </tr>
+          <tr>
+            <td><label>Username:</label></td><td><input class="thTextbox" name="user_box" type="text" value=""></td>
+          </tr>
+          <tr>
+            <td><label>Password:</label></td><td><input class="thTextbox" name="password_box" type="password" value=""></td>
+          </tr>
+          <tr>
+          	<td><label>Code:</label></td><td><img src='/code.php?PHPSESSID=l5uk1lf2rs6aenekcknuno6q23' align='absmiddle'>&nbsp;<input type='text' size='8' style='width:100px;' value='' name='code_box' class='thTextbox'></td>
+		  </tr>
+          <tr>
+            <td colspan='2' height="31" align="center"><input class="thButton" type='submit' name='send' value='Login' /></td>
+          </tr>
+      	</form>
+           <tr>
+           <td colspan='2' valign='middle' align='center'>Forgot your password?&nbsp;&nbsp;&nbsp;<a href="forgot.php"><b>Recover!</b></a></td>
+           </tr>
+           <tr class='thTableHeader_orange'>
+      		<td colspan='2' valign='middle'>Not having an account yet?&nbsp;&nbsp;&nbsp;<a href="register.php"><b>Sign up now!</b></a></td>
+      	  </tr>
+ 	 </table>
+</td></tr>        		<tr>
+            <td colspan="2" height="195" valign="top">
+            <table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td colspan="4"></td>
+              </tr>
+              <tr>
+                <td class="line_long" align="left" valign="bottom">
+                <table width="200" border="0" cellspacing="0" cellpadding="0">
+                                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="4" align="center">                
+                <style type="text/css">
+	.crop_image_up { background-image:url("/images/services/all_services_up.png"); border:none; display:block; height:90px; margin:0; padding:0; width:162px; }
+	.crop_image_down { background-image:url("/images/services/all_services_down.png"); border:none; display:block; height:90px; margin:0; padding:0; width:162px; }
+	</style>
+	<table cellspacing="0" cellpadding="0" style="border: medium none;" class="thTable"><tr><td align='center'>
+							<a href='/article.php?service=abv'>
+								<div style='background-position: 0px 0px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=aol'>
+								<div style='background-position: -162px 0px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=apropo'>
+								<div style='background-position: -324px 0px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=atlas'>
+								<div style='background-position: -486px 0px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=aussiemail'>
+								<div style='background-position: -648px 0px;' class='crop_image_up'></div>
+							</a>
+						</td></tr><tr><td align='center'>
+							<a href='/article.php?service=azet'>
+								<div style='background-position: 0px -90px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=badoo'>
+								<div style='background-position: -162px -90px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=bebo'>
+								<div style='background-position: -324px -90px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=bigstring'>
+								<div style='background-position: -486px -90px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=bookcrossing'>
+								<div style='background-position: -648px -90px;' class='crop_image_up'></div>
+							</a>
+						</td></tr><tr><td align='center'>
+							<a href='/article.php?service=bordermail'>
+								<div style='background-position: 0px -180px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=brazencareerist'>
+								<div style='background-position: -162px -180px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=canoe'>
+								<div style='background-position: -324px -180px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=care2'>
+								<div style='background-position: -486px -180px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=clevergo'>
+								<div style='background-position: -648px -180px;' class='crop_image_up'></div>
+							</a>
+						</td></tr><tr><td align='center'>
+							<a href='/article.php?service=cyworld'>
+								<div style='background-position: 0px -270px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=doramail'>
+								<div style='background-position: -162px -270px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=eons'>
+								<div style='background-position: -324px -270px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=evite'>
+								<div style='background-position: -486px -270px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=facebook'>
+								<div style='background-position: -648px -270px;' class='crop_image_up'></div>
+							</a>
+						</td></tr><tr><td align='center'>
+							<a href='/article.php?service=faces'>
+								<div style='background-position: 0px -360px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=famiva'>
+								<div style='background-position: -162px -360px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=fastmail'>
+								<div style='background-position: -324px -360px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=fdcareer'>
+								<div style='background-position: -486px -360px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=flickr'>
+								<div style='background-position: -648px -360px;' class='crop_image_up'></div>
+							</a>
+						</td></tr><tr><td align='center'>
+							<a href='/article.php?service=flingr'>
+								<div style='background-position: 0px -450px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=flixster'>
+								<div style='background-position: -162px -450px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=fm5'>
+								<div style='background-position: -324px -450px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=freemail'>
+								<div style='background-position: -486px -450px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=friendfeed'>
+								<div style='background-position: -648px -450px;' class='crop_image_up'></div>
+							</a>
+						</td></tr><tr><td align='center'>
+							<a href='/article.php?service=friendster'>
+								<div style='background-position: 0px -540px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=gawab'>
+								<div style='background-position: -162px -540px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=gmail'>
+								<div style='background-position: -324px -540px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=gmx_net'>
+								<div style='background-position: -486px -540px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=graffiti'>
+								<div style='background-position: -648px -540px;' class='crop_image_up'></div>
+							</a>
+						</td></tr><tr><td align='center'>
+							<a href='/article.php?service=hi5'>
+								<div style='background-position: 0px -630px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=hotmail'>
+								<div style='background-position: -162px -630px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=hushmail'>
+								<div style='background-position: -324px -630px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=hyves'>
+								<div style='background-position: -486px -630px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=inbox'>
+								<div style='background-position: -648px -630px;' class='crop_image_up'></div>
+							</a>
+						</td></tr><tr><td align='center'>
+							<a href='/article.php?service=india'>
+								<div style='background-position: 0px -720px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=indiatimes'>
+								<div style='background-position: -162px -720px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=inet'>
+								<div style='background-position: -324px -720px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=interia'>
+								<div style='background-position: -486px -720px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=katamail'>
+								<div style='background-position: -648px -720px;' class='crop_image_up'></div>
+							</a>
+						</td></tr><tr><td align='center'>
+							<a href='/article.php?service=kids'>
+								<div style='background-position: 0px -810px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=kincafe'>
+								<div style='background-position: -162px -810px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=konnects'>
+								<div style='background-position: -324px -810px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=koolro'>
+								<div style='background-position: -486px -810px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=lastfm'>
+								<div style='background-position: -648px -810px;' class='crop_image_up'></div>
+							</a>
+						</td></tr><tr><td align='center'>
+							<a href='/article.php?service=libero'>
+								<div style='background-position: 0px -900px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=linkedin'>
+								<div style='background-position: -162px -900px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=livejournal'>
+								<div style='background-position: -324px -900px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=lovento'>
+								<div style='background-position: -486px -900px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=lycos'>
+								<div style='background-position: -648px -900px;' class='crop_image_up'></div>
+							</a>
+						</td></tr><tr><td align='center'>
+							<a href='/article.php?service=mail2world'>
+								<div style='background-position: 0px -990px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=mail_com'>
+								<div style='background-position: -162px -990px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=mail_in'>
+								<div style='background-position: -324px -990px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=mail_ru'>
+								<div style='background-position: -486px -990px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=meinvz'>
+								<div style='background-position: -648px -990px;' class='crop_image_up'></div>
+							</a>
+						</td></tr><tr><td align='center'>
+							<a href='/article.php?service=meta'>
+								<div style='background-position: 0px -1080px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=mevio'>
+								<div style='background-position: -162px -1080px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=motortopia'>
+								<div style='background-position: -324px -1080px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=msn'>
+								<div style='background-position: -486px -1080px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=multiply'>
+								<div style='background-position: -648px -1080px;' class='crop_image_up'></div>
+							</a>
+						</td></tr><tr><td align='center'>
+							<a href='/article.php?service=mycatspace'>
+								<div style='background-position: 0px -1170px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=mydogspace'>
+								<div style='background-position: -162px -1170px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=mynet'>
+								<div style='background-position: -324px -1170px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=myspace'>
+								<div style='background-position: -486px -1170px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=netaddress'>
+								<div style='background-position: -648px -1170px;' class='crop_image_up'></div>
+							</a>
+						</td></tr><tr><td align='center'>
+							<a href='/article.php?service=netlog'>
+								<div style='background-position: 0px -1260px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=ning'>
+								<div style='background-position: -162px -1260px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=nz11'>
+								<div style='background-position: -324px -1260px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=o2'>
+								<div style='background-position: -486px -1260px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=operamail'>
+								<div style='background-position: -648px -1260px;' class='crop_image_up'></div>
+							</a>
+						</td></tr><tr><td align='center'>
+							<a href='/article.php?service=orkut'>
+								<div style='background-position: 0px -1350px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=perfspot'>
+								<div style='background-position: -162px -1350px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=plaxo'>
+								<div style='background-position: -324px -1350px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=plazes'>
+								<div style='background-position: -486px -1350px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=plurk'>
+								<div style='background-position: -648px -1350px;' class='crop_image_up'></div>
+							</a>
+						</td></tr><tr><td align='center'>
+							<a href='/article.php?service=pochta'>
+								<div style='background-position: 0px -1440px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=popstarmail'>
+								<div style='background-position: -162px -1440px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=rambler'>
+								<div style='background-position: -324px -1440px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=rediff'>
+								<div style='background-position: -486px -1440px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=sapo'>
+								<div style='background-position: -648px -1440px;' class='crop_image_up'></div>
+							</a>
+						</td></tr><tr><td align='center'>
+							<a href='/article.php?service=skyrock'>
+								<div style='background-position: 0px -1530px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=tagged'>
+								<div style='background-position: -162px -1530px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=techemail'>
+								<div style='background-position: -324px -1530px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=terra'>
+								<div style='background-position: -486px -1530px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=twitter'>
+								<div style='background-position: -648px -1530px;' class='crop_image_up'></div>
+							</a>
+						</td></tr><tr><td align='center'>
+							<a href='/article.php?service=uk2'>
+								<div style='background-position: 0px -1620px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=vimeo'>
+								<div style='background-position: -162px -1620px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=virgilio'>
+								<div style='background-position: -324px -1620px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=vkontakte'>
+								<div style='background-position: -486px -1620px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=walla'>
+								<div style='background-position: -648px -1620px;' class='crop_image_up'></div>
+							</a>
+						</td></tr><tr><td align='center'>
+							<a href='/article.php?service=web_de'>
+								<div style='background-position: 0px -1710px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=wpl'>
+								<div style='background-position: -162px -1710px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=xanga'>
+								<div style='background-position: -324px -1710px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=xing'>
+								<div style='background-position: -486px -1710px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=xuqa'>
+								<div style='background-position: -648px -1710px;' class='crop_image_up'></div>
+							</a>
+						</td></tr><tr><td align='center'>
+							<a href='/article.php?service=yahoo'>
+								<div style='background-position: 0px -1800px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=yandex'>
+								<div style='background-position: -162px -1800px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=youtube'>
+								<div style='background-position: -324px -1800px;' class='crop_image_up'></div>
+							</a>
+						</td><td align='center'>
+							<a href='/article.php?service=zapak'>
+								<div style='background-position: -486px -1800px;' class='crop_image_up'></div>
+							</a>
+						</td></tr></table>
+                						<br>
+					<center><font size='1'>All these trademarks/logos are properties of their respective companies and are hereby acknowledged. None of these trademarks may be used in connection with any product or service in any manner that is likely to cause confusion among customers, or in any manner that disparages or discredits their owner.</font></center>
+                </td>
+              </tr>
+            </table>
+            </td>
+            </tr>
+        </table>
+        </td>
+        <td class="right" width="17"></td>
+      </tr>
+      <tr>
+        <td class="bottom_left" height="14" width="17"></td>
+        <td class="bottom"></td>
+        <td class="bottom_right" height="14" width="17">
+        <table width="17" height="14" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="17" height="14"></td>
+          </tr>         
+        </table>
+        </td>
+      </tr>
+       <tr height="80px"><td align="center" colspan="2"><a href="http://opens.org/" target="_blank"><img src="/new_tb/images/opens.jpg" width="486" height="60"  style="border:1px solid black"/></a></td></tr>
+    </table>
+    </td>
+  </tr>
+<!-- /content -->
+<!-- footer -->
+  <tr>
+    <td align="left" valign="middle" height="74">
+    <table width="100%" height="44" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td class="menu_left">
+        <table width="18" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td></td>
+          </tr>
+        </table>
+        </td>
+        <td class="menu_repeat" width="100%" valign="middle">
+<table cellpadding='0' cellspacing='0' border='0' width='100%' height='100%'><tr><td style='color:white;'>
+<a href='/terms.php'>Terms of Service</a> | <a href='/privacy.php'>Privacy Statement</a>
+</td><td align="right"><div class="footer">Copyright <a href="/">OpenInviter.com</a></div></td></tr></table>
+
+</td>
+        <td class="menu_right">
+        <table width="18" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td></td>
+          </tr>
+        </table>
+        </td>
+      </tr>
+    </table>
+    </td>
+  </tr>
+<!-- footer -->
+</table>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-3266501-5");
+pageTracker._trackPageview();
+</script>
+</body>
+</html>

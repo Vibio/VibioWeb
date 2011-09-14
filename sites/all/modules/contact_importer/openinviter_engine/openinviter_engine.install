@@ -1,0 +1,46 @@
+<?php
+// $Id: openinviter_engine.install,v 1.1.4.2 2010/02/27 03:29:48 dalin Exp $
+
+/**
+ * @file
+ * The install functions for the openinviter engine
+ */
+
+/**
+ * Implementation of hook_requirements().
+ */
+function openinviter_engine_requirements($phase) {
+  $requirements = array();
+  if ($phase == 'runtime') {
+    if (!extension_loaded('SQLite') OR !function_exists('sqlite_open')) {
+      $requirements['openinviter_engine_sqlite'] = array(
+        'description' => t('If you install the SQLite PHP extension, OpenInviter can track stats in its own database.'),
+        'severity' => REQUIREMENT_INFO,
+      );
+    }
+  }
+  return $requirements;
+}
+
+/**
+ * Implementation of hook_enable().
+ */
+function openinviter_engine_enable() {
+  contact_importer_cache_clear_all();
+}
+
+/**
+ * Implementation of hook_disable().
+ */
+function openinviter_engine_disable() {
+  contact_importer_cache_clear_all();
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function openinviter_engine_uninstall() {
+  variable_del('openinviter_engine_transport');
+  variable_del('openinviter_engine_providers_email');
+  variable_del('openinviter_engine_providers_social');
+}

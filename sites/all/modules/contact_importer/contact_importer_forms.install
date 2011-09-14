@@ -1,0 +1,36 @@
+<?php
+// $Id: contact_importer_forms.install,v 1.1.4.2 2010/02/27 03:29:48 dalin Exp $
+
+/**
+ * @file (un)install routines for contact_importer. 
+ * 
+ * @todo remove vars on uninstall
+ */
+
+/**
+ * Implementation of hook_schema().
+ */
+function contact_importer_forms_schema() {
+  $schema['contact_importer_forms'] = array(
+    'fields' => array(
+      'form_id' => array('type' => 'varchar', 'length' => '127', 'not null' => TRUE, 'default' => ''),
+      'field' => array('type' => 'varchar', 'length' => '127', 'not null' => TRUE, 'default' => ''),
+    ),
+    'primary key' => array('form_id', 'field'),
+  );
+  return $schema;
+}
+
+/**
+ * Implementation of hook_install().
+ */
+function contact_importer_forms_install() {
+  drupal_install_schema('contact_importer_forms');
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function contact_importer_forms_uninstall() {
+  drupal_uninstall_schema('contact_importer_forms');
+}

@@ -1,0 +1,406 @@
+<?php
+// $Id: octazen_engine.module,v 1.1.4.5 2010/08/03 03:16:03 dalin Exp $
+
+/**
+ * @file
+ * Octazen Retrieval Engine.
+ * Integrates Contact Importer with the Octazen Retrieval Library.
+ */
+
+/**
+ * Implementation of hook_retrieval_engine_info()
+ * 
+ *  @return array
+ *  @see _contact_importer_engines
+ */ 
+function octazen_engine_retrieval_engine_info() {
+  $info = array(
+    'human_readable' => 'Octazen',
+    'url' => 'http://octazen.com/product_abimporter.php',
+    'readme' => 'README.txt',
+    'library_directory' => 'abimporter',
+    'library_filename' => 'abi.php',
+    'providers' => array(),
+  );
+
+  $importer = _octazen_engine_library_load($info);
+  
+  // If we are unable to load the library (perhaps the user hasn't added it yet) we cannot continue.
+  if (!$importer) {
+    return $info;
+  }
+
+  // Unfortunately Octazen does not make it easy for us to extract information about what providers
+  // and domains it supports.
+  global $_DOMAIN_IMPORTERS, $_OZ_SERVICES;
+
+  // We need to force some miscategorized providers to be compatible with other engines.
+  $forced_type = array('plaxo' => 'social', 'linkedin' => 'social');
+
+  foreach ($_DOMAIN_IMPORTERS as $domain => $class) {
+    foreach ($_OZ_SERVICES as $service) {
+      
+      // If the class is found, add the details to our info array.
+      if ($service['class'] == $class) {
+        $domain_name = contact_importer_string_make_machine_readable($domain);
+        $provider_name = contact_importer_string_make_machine_readable($service['label']);
+
+        // What type of provider is this?
+        $type = 'webmail';
+        if (isset($forced_type[$provider_name])) {
+          $type = $forced_type[$provider_name];
+        }
+
+        // If we haven't already found a match for this provider, create it.
+        if (!isset($info['providers'][$provider_name])) {
+          $info['providers'][$provider_name] = array(
+            'human_readable' => $service['label'],
+            'type' => $type,
+            'domains' => array(),
+          );
+          $provider =& $info['providers'][$provider_name];
+
+          // Favicons.
+          $provider['possible_favicon_urls'] = array(
+            'http://www.'. $provider_name .'.com/favicon.ico',
+            'http://'. $provider_name .'.com/favicon.ico',
+          );
+        }
+
+        // Add the domain to the provider.
+        $info['providers'][$provider_name]['domains'][$domain_name] = array(
+          'human_readable' => $domain,
+          'regex' => '/('. $domain .')/i',
+        );
+      }
+    }
+  }
+
+  // Also add the desktop clients that we support.
+  $info['providers']['outlook'] = array(
+    'human_readable' => 'Outlook',
+    'type' => 'upload',
+    'possible_favicon_urls' => array(
+      'http://office.microsoft.com/global/images/default.aspx?assetid=ZA102633801033',
+    ),
+    'domains' => contact_importer_domains_wildcard_array(),
+  );
+  $info['providers']['outlookexpress'] = array(
+    'human_readable' => 'Outlook Express',
+    'type' => 'upload',
+    'possible_favicon_urls' => array(
+      'http://www.queensu.ca/its/software/outlookExpress/outlookExpress.gif',
+    ),
+    'domains' => contact_importer_domains_wildcard_array(),
+  );
+  $info['providers']['thunderbird'] = array(
+    'human_readable' => 'Thunderbird',
+    'type' => 'upload',
+    'possible_favicon_urls' => array(
+      'http://mxr.mozilla.org/comm-central/source/other-licenses/branding/thunderbird/mailicon16.png?raw=1',
+    ),
+    'domains' => contact_importer_domains_wildcard_array(),
+  );
+
+  return $info;
+}
+
+/**
+ * Main form.
+ * 
+ * @return FAPI array
+ */
+function octazen_engine_form(&$form_state) {
+  $form_function = 'octazen_engine_form_webmail';
+  if ($form_state['storage']['provider']['type'] == 'upload') {
+    $form_function = 'octazen_engine_form_upload';
+  }
+  return $form_function($form_state);
+}
+
+/**
+ * Webmail form.
+ */
+function octazen_engine_form_webmail(&$form_state) {
+  $provider = $form_state['storage']['provider'];
+  $email_title = 'Your @provider email address';
+  $password_title = 'Password';
+  if ($form_state['storage']['provider']['type'] == 'social') {
+    $email_title = 'The email address that you use at @provider';
+    $password_title = 'Password at @provider';
+  }
+  $form['email'] = array(
+    '#type' => 'textfield',
+    '#title' => t($email_title, array('@provider' => $provider['human_readable'])),
+    '#required' => TRUE,
+    '#size' => 25,
+    '#attributes' => array('autocomplete' => 'off'),
+  );
+  $form['password'] = array(
+    '#type' => 'password',
+    '#title' => t($password_title, array('@provider' => $provider['human_readable'])),
+    '#required' => TRUE,
+    '#size' => 25,
+    '#description' => t('Will not be saved.'),
+    '#attributes' => array('autocomplete' => 'off'),
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Fetch my contacts for individual review'),
+  );
+ return $form;
+}
+
+/**
+ * Upload form.
+ */
+function octazen_engine_form_upload(&$form_state) {
+  $help = '';
+  switch ($form_state['storage']['provider']['provider_name'] ) {
+    case 'outlook':
+      $steps = array(
+        t('Switch to Contact view.'),
+        t('Go to the "File" menu, select "Import/Export". '.
+          'The Import and Export Wizard window appears.'),
+        t('Select "Export to a file". Click Next.'),
+        t('Select "Comma Separated Values". Click Next.'),
+        t('Select where to save the CSV file. Click Next.'),
+        t('Click Finish.  Choose the file below.'),
+      );
+      $help = theme('item_list', $steps,
+        'In Outlook 2000 - 2003 (other versions will be similar)', 'ol');
+      break;
+    case 'outlookexpress':
+      $steps = array(
+        t('Go to File->Export->Address Book menu. The address book export tool appears.'),
+        t('Select "Export to a file". Click Next.'),
+        t('Select "Text File (Comma Separated Values)". Click Export.'),
+        t('Select where to save the CSV file. Click Next.'),
+        t('Click Finish.  Choose the file below.'),
+      );
+      $help = theme('item_list', $steps,
+        'In Outlook Express 6 (other versions will be similar)', 'ol');
+      $break;
+    case 'thunderbird':
+      $steps = array(
+        t('Go to the "Tools" menu, select "Address Book". Address book window appears.'),
+        t('Go to the "Tools" menu, select "Export"'),
+        t('Select "Export to a file". Click Next.'),
+        t('Select "Text File (Comma Separated Values)". Click Export.'),
+        t('Select where to save the file. Remember to select "Comma Separated (*.CSV)" under the '.
+          '"Save as type" dropdown list.'),
+        t('Click save.  Choose the file below.'),
+      );
+      $help .= theme('item_list', $steps,
+        'In Thunderbird 1.5.x (other versions will be similar)', 'ol');
+      break;
+  }
+
+  $form['#prefix'] = $help;
+  $form['upload'] = array(
+    '#type' => 'file',
+    '#title' => t('File to upload'),
+    '#size' => 25,
+  );
+  
+  // We need this to make the upload field work.
+  $form['#attributes']['enctype'] = 'multipart/form-data';
+  
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Fetch my contacts for individual review'),
+  );
+  return $form;
+}
+
+/**
+ * Validation handler.
+ * 
+ * Since the external library does validation and retrieval all in one step,
+ * we do the heavy lifting here instead of in the submit handler.
+ *
+ * @param string $form_id
+ * @param array $form_state
+ * @param array $form
+ * @return null
+ */
+function octazen_engine_form_validate($form, &$form_state) {
+  $validation_function = 'octazen_engine_form_validate_webmail';
+  if ($form_state['storage']['provider']['type'] == 'upload') {
+    $validation_function = 'octazen_engine_form_validate_upload';
+  }
+  return $validation_function($form, $form_state);
+}
+
+function octazen_engine_form_validate_webmail($form, &$form_state) {
+  $provider = $form_state['storage']['provider'];
+  $importer = _octazen_engine_library_load();
+
+  // Add suffixes for Plaxo and LinkedIn.  This is the way that Octazen differentiates 
+  // social networks.
+  if ($provider['provider_name'] == 'plaxo') {
+    $form_state['values']['email'] .= '.plaxo';
+  }
+  elseif ($provider['provider_name'] == 'linkedin') {
+    $form_state['values']['email'] .= '.linkedin';
+  }
+
+  // Fetch the contacts.
+  $contacts = $importer->fetchContacts($form_state['values']['email'], $form_state['values']['password']);
+  $result = abi_get_errorcode();
+  $error = FALSE;
+  if ($result != _ABI_SUCCESS || !is_array($contacts)) {
+
+    // Give admins the detailed error. 
+    if (user_access('administer contact importer')) {
+      $error = abi_get_error();
+      form_set_error('email', check_plain($error));
+    }
+
+    if ($result == _ABI_AUTHENTICATION_FAILED) {
+      $error = t('Bad user name or password');
+    }
+    elseif ($result == _ABI_FAILED) {
+      $error = t('Server error');
+    }
+    elseif ($result == _ABI_UNSUPPORTED) {
+      $error = t('Unsupported webmail');
+    }
+    elseif ($result == _ABI_CAPTCHA_RAISED || $result == _ABI_USER_INPUT_REQUIRED) {
+      $error = t('Your webmail provider requested additional information that we were '.
+        'unable to process.  We are unable to import your contacts at this time.');
+    }
+    if (!$error) {
+      $error = t('Unknown error');
+    }
+    contact_importer_log_authentication($provider['provider_name'], $provider['engine_enabled'],
+      FALSE, $form_state['values']['email']);
+  }
+  elseif (!count($contacts)) {
+    contact_importer_log_authentication($provider['provider_name'], $provider['engine_enabled'],
+      TRUE, $form_state['values']['email']);
+    $error = t('There were no contacts found in your webmail account.');
+  }
+  else {
+    contact_importer_log_authentication($provider['provider_name'], $provider['engine_enabled'],
+      TRUE, $form_state['values']['email']);
+
+    // IMPORTANT: Add the contacts to the form so that they are available in
+    // the submit stage.  Contacts must be an array of arrays.
+    $contact_array = _octazen_engine_contacts_as_arrays($contacts);
+    $form_state['storage']['contacts'] = $contact_array;
+  }
+  
+  // Show errors on the form.
+  if ($error) {
+    form_set_error('email', $error);
+    watchdog('Octazen Engine', $provider['provider_name'] .': @result - @error',
+      array('@result' => nl2br(var_export($result, TRUE)), '@error' => abi_get_error()));
+  }
+
+}
+  
+function octazen_engine_form_validate_upload($form, &$form_state) {
+  $provider = $form_state['storage']['provider'];
+  $importer = _octazen_engine_library_load();
+
+  // Save the file.
+  $file = file_save_upload('upload');
+  if (!$file) {
+    form_set_error('upload', t('File upload error'));
+    return FALSE;
+  }
+
+  // Process the CSV file.
+  $csv = file_get_contents($file->filepath);
+  if (empty($csv)) {
+    $error = t('Empty CSV file');
+  }
+  else {
+    switch ($provider['provider_name']) {
+      case "outlook":
+        $result = abi_extractContactsFromCsv($csv);
+        break;
+      case "outlookexpress":
+        $result = abi_extractContactsFromCsv($csv);
+       break;
+      case "thunderbird":
+        $result = abi_extractContactsFromThunderbirdCsv($csv);
+        break;
+    }
+    if (is_array($result)) {
+      contact_importer_log_authentication($provider['provider_name'], $provider['engine_enabled'], TRUE);
+      if (!count($result)) {
+        $error = 'There were no contacts found in the uploaded file.';
+      }
+      else {
+
+        // IMPORTANT: Add the contacts to the form so that they are available in
+        // the submit stage.  Contacts must be an array of arrays.
+        $contact_array = _octazen_engine_contacts_as_arrays($result);
+        $form_state['storage']['contacts'] = $contact_array;
+        return;
+      }
+    }
+    else {
+      contact_importer_log_authentication($provider['provider_name'], FALSE);
+
+      // There's only one possible error code here so no need to give admins more info.
+      $error = t('Unrecognized file format');
+    }
+  }
+
+  // Show errors on the form.
+  if ($error) {
+    form_set_error('email', $error);
+    watchdog('Octazen Engine', $provider['provider_name'] .': @result - @error',
+      array('@result' => nl2br(var_export($result, TRUE)), '@error' => abi_get_error()));
+  }
+
+}
+
+/**
+ * Submit handler
+ *
+ * @param string $form_id
+ * @param array $form_state
+ * @return null
+ */
+function octazen_engine_form_submit($form, &$form_state) {
+  // There's nothing to do here since due to the architecture of the octazen library
+  // we are forced to do all processing in the validation handler.  
+}
+
+/**
+ * @category INTERNAL FUNCTIONS
+ */
+
+/**
+ * Convert array of contact objects into an array of contact arrays.
+ * Each contact must have keys for 'name' and 'email'.
+ *
+ * @param array $contacts
+ * @return array
+ */
+function _octazen_engine_contacts_as_arrays($contacts) {
+  foreach ($contacts as $key => $contact) {
+    $contacts[$key] = (array)$contact;
+  }
+  return $contacts;
+}
+
+/**
+ * Initialize the Octazen library.
+ *
+ * @param array $info
+ *  Our engine's info array.  Should be ommitted in most cases unless called from the info hook.
+ * @return mixed
+ *  The Importer object or FALSE on error.
+ */
+function _octazen_engine_library_load($info = NULL) {
+  if (!contact_importer_load_library('octazen_engine', $info)) {
+    return FALSE;
+  }
+  $importer = new AddressBookImporter;
+  return $importer;
+}

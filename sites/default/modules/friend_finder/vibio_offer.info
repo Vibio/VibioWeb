@@ -1,0 +1,7 @@
+name = "Vibio Offer"
+description = "Handles a user making an offer on a Vibio Item"
+core = 6.x
+version = "6.x-0.01"
+package = "Vibio"
+dependencies[] = vibio_item
+

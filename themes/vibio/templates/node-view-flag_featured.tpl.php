@@ -29,20 +29,6 @@ $justkeepmakingchanges = "
                 </div>
 ";
 
-// in new mockup, over-item is no longer over the item,
-//  and the item-square is no longer a square :-)
-$original = "
-                <div class='item-square'> 
-                        <a href='$url' title='$title' alt='$title'>
-                               $img
-                        </a>
-                        <div class='over-item'>
-                                <a class='item-title' href='$url'>$title</a><br />
-                        </div>
-			$flag
-                        <div class='search-links'>$search_links</div>
-                </div>
-";
 
 print $justkeepmakingchanges;
 ?>

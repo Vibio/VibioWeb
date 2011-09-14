@@ -1,0 +1,42 @@
+Use Contact_importer, and channel the results to drupal_send_mail
+
+Task from Pivotal Tracker:
+
+This feature should send an email to all your contacts (Gmail, Hotmail, AOL, Yahoo! etc) inviting them to join Vibio. This should be added to the final step of the signup process/wizard - this it is very viral.
+
+and elsewhere:
+
+
+This feature should send an email to all your contacts (Gmail, Hotmail, AOL, Yahoo! etc) inviting them to join Vibio.
+
+We should add it to this page:
+
+http://ec2-184-73-233-198.compute-1.amazonaws.com/friends
+
+
+Solutions:
+
+Contact Importer looks good.  Not great, but good.
+Also mentioned...
+DCL_importer... abandoned for Contact Importer 
+Invite module
+
+Hey:
+http://drupal.org/project/invite can work with Contact Importer, doing "Other ideas" below.
+
+Other ideas:
+The request is to have them join the site.  Should they automatically be your
+friend=contact on Vibio?  Should this be sequential, or the way to joi
+Vibio through the link you get is to be Connections with initiator.
+
+
+Review these posts:
+* similar needs, no solution: http://drupal.org/node/334913
+
+
+
+
+Here's what I'm doing:
+set up skeleton module
+drush dl invite
+drush dl contact_importer

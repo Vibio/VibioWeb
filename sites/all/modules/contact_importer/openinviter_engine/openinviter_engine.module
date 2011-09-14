@@ -1,0 +1,329 @@
+<?php
+// $Id: openinviter_engine.module,v 1.1.4.8 2010/09/14 13:54:30 dalin Exp $
+
+/**
+ * @file
+ * OpenInviter Retrieval Engine.
+ *
+ * Integrates Contact Importer with the OpenInviter Retrieval Service/Library.
+ */
+
+// Enable openinviter social network capabilities.
+// The social networks capability of OpenInviter is experimental.  If you'd like to experiment,
+// set this to TRUE.
+define('OPENINVITER_ENGINE_SOCIAL', FALSE);
+
+/**
+ * Implementation of hook_retrieval_engine_info()
+ * 
+ *  @return array
+ *  @see _contact_importer_engines
+ */ 
+function openinviter_engine_retrieval_engine_info() {
+  $info = array(
+    'human_readable' => 'OpenInviter',
+    'url' => 'http://openinviter.com/',
+    'readme' => 'README.txt',
+    'providers' => array(),
+    'library_directory' => 'OpenInviter',
+    'library_filename' => 'openinviter.php',
+  );
+
+  // Get information about the providers and domains supported.
+  $inviter = _openinviter_engine_library_load($info);
+
+  // If we are unable to load the library (perhaps the user hasn't added it yet) we cannot continue.
+  if (!$inviter) {
+    return $info;
+  }
+
+  $plugins = $inviter->getPlugins();
+
+  // We need to force some miscategorized providers to be compatible with other engines.
+  $forced_type = array('linkedin' => 'social', 'youtube' => 'social');
+
+  foreach ($plugins as $plugin_list) {
+    foreach ($plugin_list as $plugin_internal_name => $plugin) {
+
+      $provider_name = contact_importer_string_make_machine_readable($plugin['name']);
+
+      // What type of provider is this.
+      $type = $plugin['type'] == 'email' ? 'webmail' : 'social';
+      if (isset($forced_type[$provider_name])) {
+        $type = $forced_type[$provider_name];
+      }
+
+      // Skip social networks if necessary.
+      if ($type == 'social' && !OPENINVITER_ENGINE_SOCIAL) {
+        continue;
+      }
+
+      // Add Provider.
+      $info['providers'][$provider_name] = array(
+        'human_readable' => $plugin['name'],
+        'type' => $type,
+        // Our additional info.
+        'internal_name' => $plugin_internal_name,
+      );
+      $provider =& $info['providers'][$provider_name];
+
+      // Favicon.
+      $provider_url = $plugin['check_url'];
+      $favicon_url = parse_url($provider_url, PHP_URL_SCHEME) .'://'.
+        parse_url($provider_url, PHP_URL_HOST) .'/favicon.ico';
+      $provider['possible_favicon_urls'] = array($favicon_url);
+
+      // Add domains.
+      // OpenInviter does this strange thing where it uses both 'allowed_domains' and
+      // 'detected_domains'.  Not sure what the difference is :P
+      foreach (array('allowed_domains', 'detected_domains') as $key) {
+        if (isset($plugin[$key]) && is_array($plugin[$key])) {
+          foreach ($plugin[$key] as $regex) {
+            $domain_human_readable = str_replace(array(')/i', '/('), '', $regex);
+            $domain_machine_readable =
+              contact_importer_string_make_machine_readable($domain_human_readable);
+            $provider['domains'][$domain_machine_readable] = array(
+              'regex' => $regex,
+              'human_readable' => $domain_human_readable,
+            );
+          }
+        }
+      }
+
+      // If there's no domains, then this provider can work with all domains.
+      if (empty($provider['domains'])) {
+        $provider['domains'] = contact_importer_domains_wildcard_array();
+      }
+
+    }
+  }
+
+  return $info;
+
+}
+
+/**
+ * Implementation of hook_form_FORM_ID_alter().
+ * 
+ * Add our settings to the Contact Importer settings form.
+ */
+function openinviter_engine_form_contact_importer_settings_form_alter(&$form, $form_state) {
+  $form['openinviter_engine_transport'] = array(
+    '#type' => 'select',
+    '#title' => t('OpenInviter transport method'),
+    '#default_value' => variable_get('openinviter_engine_transport', 'curl'),
+    '#description' => t('The library to use for fetching URLs.'),
+    '#required' => TRUE,
+    '#options' => array(
+      'curl' => t('curl'),
+      'wget' => t('wget'),
+    ),
+  );
+  $form['#validate'][] = 'openinviter_engine_settings_form_validate';
+}
+
+/**
+ * FAPI validation handler. Validate wether cURL/WGET are available.
+ */
+function openinviter_engine_settings_form_validate($form, &$form_state) {
+  switch ($form_state['values']['openinviter_engine_transport']) {
+   case 'curl':
+     if (!function_exists('curl_init')) {
+       form_set_error('openinviter_engine_transport', 
+         t('The CURL PHP extension is not available.  Try using WGET instead.'), 'error');
+     }
+     break;
+   case 'wget':
+     $wget_info = @passthru('wget --version');
+     if (!strpos('GNU Wget', $wget_info)) {
+       form_set_error('openinviter_engine_transport', 
+         t('WGET is not available.  Try using CURL instead.'), 'error');
+     }
+     break;
+  }
+}
+
+/**
+ * Main form.
+ * 
+ * @return FAPI array
+ */
+function openinviter_engine_form(&$form_state) {
+  $provider = $form_state['storage']['provider'];
+
+  $form['email'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Your @provider email address', array('@provider' => $provider['human_readable'])),
+    '#size' => 25,
+    '#attributes' => array('autocomplete' => 'off'),
+    '#required' => TRUE,
+  );
+  $form['password'] = array(
+    '#type' => 'password',
+    '#title' => t('Password'),
+    '#size' => 25,
+    '#description' => t('Will not be saved.'),
+    '#required' => TRUE,
+    '#attributes' => array('autocomplete' => 'off'),
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Fetch my contacts for individual review'),
+  );
+  
+  return $form;
+}
+
+/**
+ * Validation handler.
+ * 
+ * @param string $form_id
+ * @param array $form_state
+ * @param array $form
+ * @return null
+ */
+function openinviter_engine_form_validate($form, &$form_state) {
+  $provider = $form_state['storage']['provider'];
+
+  if ($provider['type'] = 'webmail') {
+    if (!$form_state['values']['email'] || !valid_email_address($form_state['values']['email'])) {
+      form_set_error('email', t('The email address %email is not valid.', array('%email' => $form_state['values']['email'])));
+      return;
+    }
+  }
+
+  $errors = array();
+  $inviter = _openinviter_engine_authenticate(
+    $errors,
+    $provider['internal_name'],
+    $form_state['values']['email'],
+    $form_state['values']['password']
+  );
+      
+  if (!empty($errors)) {
+    $success = FALSE;
+    foreach ($errors as $error) {
+      form_set_error('email', $error);
+    }
+  }
+  else {
+    $success = TRUE;
+    // The connection to the inviter is stored in the 'inviter' paramater of the
+    // form state so that we don't need to authenticate a second time in submit.
+    $form_state['storage']['inviter'] = $inviter;
+  }
+  contact_importer_log_authentication($provider['provider_name'], $provider['engine_enabled'],
+    $success, $form_state['values']['email']);
+}
+
+/**
+ * Submit handler
+ *
+ * @param string $form_id
+ * @param array $form_state
+ * @return null
+ */
+function openinviter_engine_form_submit($form, &$form_state) {
+  $contacts = _openinviter_engine_contacts_get($form_state['storage']['inviter']);
+  $form_state['storage']['contacts'] = $contacts;
+}
+
+/**
+ * @category INTERNAL FUNCTIONS
+ */
+
+/**
+ * Authenticate to the specified provider.
+ *
+ * @param &$errors - records any authentication errors that occur.
+ * @param $provider_name - the email or social network to grab the contacts from
+ * @param $username
+ * @param $password
+ * @return
+ *   The authenticated OpenInviter object. Also any errors will be stored in
+ *   $errors.
+ */
+function _openinviter_engine_authenticate(&$errors, $provider_name, $username, $password) {
+  $errors = array();
+  $inviter = _openinviter_engine_library_load();
+  if (!$inviter) {
+    $errors['inviter'] = t('There was an internal error and we are unable to fetch your '.
+        'contacts.  ');
+    return FALSE;
+  }
+  $inviter->startPlugin($provider_name);
+  $error = $inviter->getInternalError();
+  if (!empty($error)) {
+    watchdog('Open Inviter', 'Internal error: @error provider_name: @provider_name username: @username',
+      array('@error' => $error, '@provider_name' => $provider_name, '@username' => $username),
+      WATCHDOG_ERROR);
+    if (user_access('administer contact importer')) {
+      $errors['inviter'] = $error;
+    }
+    else {
+      $errors['inviter'] = t('There was an internal error and we are unable to fetch your '.
+        'contacts.  Please <a href="!try_again">try another provider</a>.',
+        array('!try_again' => contact_importer_form_url()));
+    }
+  }
+  elseif (!$inviter->login($username, $password)) {
+    $error = $inviter->getInternalError();
+    watchdog('Open Inviter', 'Login error: @error provider_name: @provider_name username: @username',
+      array('@error' => $error, '@provider_name' => $provider_name, '@username' => $username),
+      WATCHDOG_NOTICE);
+    $errors['login'] = $error ? check_plain($error) :
+      t('Login failed. Please check the email and password and try again or
+        <a href="!try_again">try another provider</a>.',
+        array('!try_again' => contact_importer_form_url()));
+  }
+
+  return $inviter;
+}
+
+/**
+ * Get the list of this user's contacts and return them in an array.
+ *
+ * @param $inviter - the authenticated OpenInviter object
+ * @return - Array of contacts. Each contact must have
+ *           keys for 'name' and 'email'.
+ */
+function _openinviter_engine_contacts_get($inviter) {
+  $contacts = $inviter->getMyContacts();
+  if ($contacts === FALSE || !is_array($contacts)) {
+    drupal_set_message(t('Unable to get contacts.'), 'error');
+  }
+  $inviter->stopPlugin(TRUE);
+
+  // Cleanup the results
+  $contact_list = array();
+  foreach ($contacts as $email => $name) {
+    $email = trim($email);
+    if ($email) {
+      $contact_list[] = array(
+        'email' => $email,
+        'name' => $name,
+      );
+    }
+  }
+
+  return $contact_list;
+}
+
+/**
+ * Initialize the OpenInviter library.
+ * 
+ * @param string $info
+ *  Our engine's info array.  Should be ommitted in most cases unless called from the info hook.
+ * @return mixed
+ *  The Inviter object or FALSE on error.
+ */
+function _openinviter_engine_library_load($info = NULL) {
+  if (!contact_importer_load_library('openinviter_engine', $info)) {
+    return FALSE;
+  }
+
+  $inviter = new OpenInviter();
+  $inviter->settings['cookie_path'] = file_directory_temp();
+  $inviter->settings['transport'] = variable_get('openinviter_engine_transport', 'curl');
+  return $inviter;
+}

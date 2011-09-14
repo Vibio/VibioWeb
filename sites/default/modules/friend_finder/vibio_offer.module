@@ -1,0 +1,470 @@
+<?php
+
+/**
+ * Load extended aspects of an offer, including conversations
+ *
+ * list($chit_chat, $current_buyer, $current_seller) =
+ *   _offer_conversation_info($node);
+ *
+ */
+function _offer_conversation_info($node) {
+	 $viewName = 'offer_conversation';
+  $display_id = 'default';
+  $myArgs = array($node->nid); // node is this offer
+
+  // below is much like views_embed_view
+  $view_neg = views_get_view($viewName);
+  $view_neg->set_arguments($myArgs);
+  // access could get complicated, not wireframed yet!  
+	$chit_chat = $view_neg->preview($display_id, $args);
+
+  /* Need the most recent buyer and seller node from the communications */
+  foreach ( $view_neg->result as $neg ) {
+    $neg = node_load($neg->nid); // need rest of node loaded, another way???!!!
+    		//dpr( $neg );
+    if ( !$current_seller && /*toggle based on sort criteria in view */ ( $neg->type == 'offer_neg_seller' ) ) {
+
+      $current_seller = $neg;
+    }
+    elseif ( !$current_buyer && ( $neg->type == 'offer_neg_buyer' ) ) {
+      $current_buyer = $neg;
+// make sure this piece is working print "<h1>neg type " . $neg->type . "</h1>";
+
+    }
+  }
+	return array($chit_chat, $current_buyer, $current_seller);
+
+
+}
+
+/**
+ * @file
+ * Catch the url   offer/item_id/offer_uid
+ *  Create or edit that offer(cck node) if you are the offerer,
+ *  Deal in different ways if you are seller or have some access
+ * The more this can be a normal cck, the better.
+ *
+ * form alter:
+ * need to set the parent nid automatically
+ * _simplify_form simplifies the negotiation input forms
+ * offer amounts will need some complex help to get right default
+ */
+
+/* hook_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) */
+function vibio_offer_nodeapi(&$node, $op) {
+//if ($op != 'load' && $op != 'view' && $op != 'alter' ) { die ($op); }
+  switch ($op) {
+
+		/* send mail when creating or updating negotiations within offers */
+		// what about: alter
+//		case 'alter':
+		case 'update':
+    case 'insert':
+    	// $node contains the newly created node
+			//it does in testing: dsm ("nodeapi firing on insert(vibio_offer.module") 
+			if ($node->type == 'offer_neg_seller' ||
+				  $node->type == 'offer_neg_buyer' ) {
+				// dpm or dsm useless for popups..
+				//dsm(array("going to send an email around this" => $node));
+				//###>> fill up the email
+				$offer = node_load($node->field_offer[0][nid]);
+				//## from the offer, get the rest
+			  list($chit_chat, $current_buyer, $current_seller) =
+    			_offer_conversation_info($offer);
+//!! problem? print_r($current_buyer);
+			  $item_nid = $offer->field_item_sought[0][nid];
+			  $item = node_load($item_nid);
+//print_r($current_seller);
+
+				$module = 'vibio_offer';
+				$key = $node->type; // make something up
+				$buyer = user_load($current_buyer->uid);
+//!!!!$buyer = user_load(711); // !!! somethign wrong.
+				$seller = user_load($current_seller->uid);
+				if ( $node->type == 'offer_neg_seller' ) {
+					$to = $buyer->mail;
+					$language = user_preferred_language($buyer);
+				} else {
+					$to = $seller->mail;
+					$language = user_preferred_language($seller);
+
+				}
+				$from = "noreply@vibio.com";
+
+				// get base url, in case on staging
+				// icky when plain text, go back to basics
+				//$offer_link = l($offer->title, "node/" . $offer->nid,	array('absolute' => true ));
+				$offer_link = url("node/$offer->nid", 
+					array('absolute' => true, 'alias'=>'true' ));
+
+				// $comments for seller
+				$comments =  _vibio_offer_simplify_accept_plain_text($current_seller) .
+					$current_seller->field_chat[0][value];
+				if ( $current_seller->field_payment_received[0][value] == 'Yes' ) {
+					$comments .= "\n* Payment Received";
+				} 
+				if ( $current_seller->field_item_sent[0][value] == 'Yes' ) {
+					$comments .= "\n* Item Sent";
+				} 
+			
+				// $comments_buyer for buyer , consider expanding
+				$comments_buyer =
+					$current_buyer->field_chat[0][value];
+			
+	
+
+			 
+			//print_r($current_seller);
+//die();	
+
+
+				$params = array(
+					'buyer' => $buyer->name,
+					'seller' => $seller->name,
+					'amount' => $current_buyer->field_price[0][value],
+					'title' => $item->title,  /* repeat? */
+					'item' => $item->title,
+					'comment' => $comments,
+					'comment_buyer' => $comments_buyer,
+					'offer_link' => $offer_link,
+				);
+//print_r(array($module, $key, $to, $language, $params, $from));
+				drupal_mail($module, $key, $to, $language, $params, $from);
+//die("<p>did we just send drupal_mail");
+			}
+    	break;
+  }
+}
+
+/**
+ * answer mail hook, called by drupal_mail
+ *  which is called by nodeapi
+ *  and needs this to write the emails
+ */
+function vibio_offer_mail($key, &$message, $params) {
+	$language = $message['language'];
+	$variables = user_mail_tokens($params['account'], $language);
+	switch($key) {
+
+
+		case 'offer_neg_seller':   /* seller posted negotiation */
+		if ( strlen( $params['title'] ) > 30 ) {
+			$title = substr($params['title'], 0, 30) . "...";
+		} else {
+			$title = $params['title'];
+		}
+		$message['subject'] = t("Response to your offer for \"!title\" from !seller at Vibio.com", array("!title" => $title, "!seller" => $params['seller']));
+
+
+			$nothing ="nothing";
+$buyer = $params['buyer'];
+$seller = $params['seller'];
+$amount = $params['amount'];
+$item = $params['item'];
+$comment = $params['comment'];  // conjigured above
+$offer_link = $params['offer_link'];
+
+			$body = "Dear $buyer,
+
+$seller just responded to your offer for $item:
+
+$comment
+
+View the offer here: $offer_link
+or on your selling page: "  .
+url("buying", array('absolute' => true )) . "
+
+";
+			$message['body'] = t($body);
+			//$message['body'][] = t("Dear !username\n\nThere is new content available on the site.", $variables, $language->language);
+		break;
+
+		case 'offer_neg_buyer':   /* buyer posted negotiation */
+			if ( strlen( $params['title'] ) > 30 ) {
+				$title = substr($params['title'], 0, 30) . "...";
+			} else {
+				$title = $params['title'];
+			}
+			$message['subject'] = t("Offer on \"!title\" from !buyer at Vibio.com", array("!title" => $title, "!buyer" => $params['buyer']));
+	
+			$buyer = $params['buyer'];
+			$seller = $params['seller'];
+			$amount = $params['amount'];
+			$item = $params['item'];
+			$comment = $params['comment_buyer'];  // conjigured above ... most of these are repeats buyer and seller, this is not.  Could use cleaning up
+			$offer_link = $params['offer_link'];
+
+			$body = "Dear $seller,
+
+$buyer just responded to your offer for $item:
+
+$comment
+
+View the offer here: $offer_link
+or on your selling page: "  .
+url("selling", array('absolute' => true )) . "
+
+";
+			$message['body'] = t($body);
+			//$message['body'][] = t("Dear !username\n\nThere is new content available on the site.", $variables, $language->language);
+		break;
+
+
+
+
+
+//$seller just made or updated an offer of \$$amount for $item:
+
+	}
+}
+
+function vibio_offer_preprocess_page(&$vars) {
+        // Continuing site style of micro-css files
+        drupal_add_css("themes/vibio/css/offer.css");
+}
+
+function vibio_offer_preprocess_node(&$vars) {
+	// help: http://drupal.org/node/223430
+  // figure out access, load needed variables
+  // fire up template, probably with included forms
+	// *** mostly do this in node-offer.tpl, migrate here later?
+  // return nothing -- fiddle with $vars, passed in by reference
+}
+
+/*
+
+function verdant_share_form_alter(&$form, $form_state, $form_id) {
+	// Might not even need this?
+
+ */
+
+/**
+  * Implementation of hook_menu().
+  */
+	// !!! function xxx_menu($may_cache) { -> what about $may_cache ?
+function vibio_offer_menu() {
+	$items = array();
+	/* weird caching problem -- clean cache using first line (no args)
+	 * then switch to second line. !!! */
+	/* Perhaps it's an access issue?  Is it programmed
+   * to give a 403 when access denied? */	
+ 	$items['offer'] = array(
+	//$items['offer/%item_nid/%buyer_uid'] = array(
+		'title' => 'An Offer',
+		'description' => "Deal with an offer",
+		'page callback' => 'vibio_offer_page', 
+		'page arguments' => array(1,2),  /* or 2 or what? */
+//		'type'             => MENU_NORMAL_ITEM,
+		'access arguments' => array('access content'), 
+		//'access callback'  => 'user_access',  withing this, "you are not logged in"
+		
+	);
+  return $items;
+}
+
+/**
+  * Menu callback -- main view/forms for dealing with offers here
+  * [Create and] Display the page, with varying forms by user
+  * !!! Or is it better to use preprocess?
+  */
+function vibio_offer_page($item_nid, $buyer_uid) {
+  if (( $item_nid < 1 || $buyer_uid < 1)) {
+	return "<h1>Offer failed</h1>Sorry, there was a technical problem
+		with this offer.  Please let the webmaster know.";
+  }
+	/* 1) Load offer.  If doesn't exist, create.  This need to 
+	   	  create rather than return page-not-found is the main reason
+		  I need a menu callback, rather than merely preprocess the theme.
+   */
+$sql = "SELECT node.nid AS nid
+ FROM drupal_node node 
+ LEFT JOIN drupal_content_type_offer node_data_field_item_sought ON node.vid = node_data_field_item_sought.vid
+ INNER JOIN drupal_users users ON node.uid = users.uid
+ WHERE (node.type in ('offer')) AND (node_data_field_item_sought.field_item_sought_nid = $item_nid) AND (users.uid = $buyer_uid)
+   ";  /* orig from offer_selector_item_buyer view */
+$content = db_fetch_object(db_query("$sql"));
+$nid = $content->nid;
+
+//--> if offer exist, or doesn't, get it.
+if ( $nid ) {
+	$node = node_load($nid);
+} else {
+	$node = new stdClass();
+	$node->type = 'offer';
+  global $user;
+  $node->uid = $user->uid;
+  $node->name = $user->name;	
+		// set the item it's attached to
+	$node->field_item_sought[]['nid'] = $item_nid; // [] or [0], same
+
+	$node->title = "Offer by " . $user->name . " for $item_nid $item_title";
+
+	// Do we create it, or just load the form for it?  I'm not sure,
+	//  try both ways (both should be ok, but not sure).  Maybe create
+	//	it now, to be sure the nid is saved, and make both processes as
+	//  parallel as possible.
+  $node->format = 2;     // 1 means filtered html, 2 means full html, 3 is php
+  $node->status = 1;     // 1 means published
+  $node->promote = 0;
+  $node = node_submit( $node );
+  node_save( $node ); 
+}
+
+// 2) Print it
+drupal_set_title($node->title);
+return node_view($node);
+
+}
+
+/* load some values from $default into $this
+ * The types can vary: $default can be offer_neg_buyer or ..._seller
+ * $this can be for a form of the same type,
+ * or the Offer itself getting most recent values
+ * (Typically, the neg's will store the default when the user hits save,
+ *  and Offer doesn't store these values and could lose them, doesn't have
+ *  cck fields defined (that could change), but I use the same format
+ */
+function _load_default_offer ($setme, $default) {
+	// Configure:
+	$buyer_fields = array('field_price', 'field_offer_expires','field_city', 'field_pay_sent', 'field_item_received');
+	$seller_fields = array('field_accept', 'field_pay_received', 'field_item_sent');
+	// Pick the fields to update, or get out of here
+	switch ( $default->type ) {
+		case 'offer_neg_buyer':
+			$fields = $buyer_fields;
+			break;
+		case 'offer_neg_seller':
+			$fields = $seller_fields;
+			break;
+		default:
+			return $setme; // often negotiations have not begun
+	}
+
+	// Set new node to default node
+	foreach ( $fields as $field ) {
+		$setme->$field = $default->$field;
+	}
+
+	//return $setme; shouldn't need, do we?
+}
+
+
+/**
+ * Implementation of hook_theme()
+ */
+function vibio_offer_theme() {
+	return array(
+		'offer' => array(
+		/*example'arguments' => array('node' => NULL, 'teaser' => FALSE, 'page' => FALSE),*/
+			'template' => 'offer',
+		),
+	);
+}
+
+
+/* code change options: switch to hook_form_FORM_ID_alter() */
+function vibio_offer_form_alter(&$form, $form_state, $form_id) {
+	/* Simple cleanup reducing options for editing negotiations */
+  if (    ( $form_id == 'offer_neg_seller_node_form' )
+       || ( $form_id == 'offer_neg_buyer_node_form' ) ) {
+
+		// just clean up unneeded options
+		_simplify_form($form, TRUE);	
+		unset ($form['buttons']['preview']);
+		//dpr(array("form" => $form));	
+		//print '<pre>';
+		//print_r($form);	
+		// stay on page
+//$_SERVER['REQUEST_URI']
+//request_uri()
+		$form['#redirect'] = request_uri(); // 'offer/offer-vibio-item-1';
+
+		// and clean up extra message -- oh, this breaks the whole submit process.
+		//unset($form['buttons']['submit']['#submit'][0]); 
+				// later, might put a message back in.  It won't show up for popups.
+			// instead of unsetting, try:
+			// $form['buttons']['submit']['#submit'][0] = 'MODULENAME_node_form_submit';
+			// see http://www.deeson.co.uk/online/labs/overwriting-the-node-has-been-created-updated-drupal-set-messages
+	}
+}
+
+/**
+ * the _simplify series spits out text tuned to the sales process.
+ * 
+ * Next: change the css classes based on current user.  Do I have to
+ *  ship, or wait for the other person who has to ship?
+ */
+function _vibio_offer_simplify_accept($current_seller /*$current_buyer*/) {
+	switch ( $current_seller->field_accept[0][value] ) {
+		case "accept":
+			return "<div class='simple done'>Offer Accepted!</div>";
+			break;
+		case "negotiating":
+			return "<div class='simple ontrack'>Negotiating</div>";
+			break;
+		case "decline":
+			return "<div class='simple fail'>Offer Declined</div>";
+			break;
+	}
+}
+function _vibio_offer_simplify_accept_plain_text($current_seller /*$current_buyer*/) {
+	switch ( $current_seller->field_accept[0][value] ) {
+		case "accept":
+			return "** Offer Accepted! **  ";
+			break;
+		case "negotiating":
+			return "[ Negotiating ]  ";
+			break;
+		case "decline":
+			return "** Offer Declined **  ";
+			break;
+	}
+}
+function _vibio_offer_simplify_pay($current_seller, $current_buyer) {
+	if ( $current_seller->field_pay_received[0][value] == 'Yes' ) {
+		return "<div class='simple done'>Pay Received</div>";
+	} elseif ( $current_buyer->field_pay_sent[0][value] != 'no' ) {
+		$how = $current_buyer->field_pay_sent[0][value];	
+		return "<div class='simple ontrack'>Pay Sent: $how</div>";
+	} elseif ( $current_seller->field_accept[0][value]  == 'accept') {
+		return "<div class='simple ontrack'>Payment Due?</div>";
+	}	else {
+		return; // not accepted, don't talk about money
+	}
+}
+function _vibio_offer_simplify_ship($current_seller, $current_buyer) {
+	if ( $current_buyer->field_item_received[0][value] == 'Yes' ) {
+		return "<div class='simple done'>Item Received</div>";
+	} elseif ( $current_seller->field_item_sent[0][value] == 'Yes' ) {
+		return "<div class='simple ontrack'>Item Sent</div>";
+	} elseif ( $current_seller->field_pay_received[0][value]  == 'Yes') {
+		return "<div class='simple ontrack'>Send Item</div>";
+	} elseif ( $current_buyer->field_pay_sent[0][value]  == 'Yes') {
+		return "<div class='simple ontrack'>Send Item?</div>";
+	}	else {
+		return; // not accepted, don't talk about money
+	}
+}
+
+
+
+
+
+/* does anythign call this, I forgit */
+function _simplify_form(&$form) {
+  // this is cut and pasted from another module, some overkill, 
+  $form['body_field']['teaser_include']['#access'] = FALSE;
+  $form['#content_extra_fields']['revision_information']['#access'] = FALSE;
+  $form['comment_settings']['#access'] = FALSE;
+  $form['menu']['#access'] = FALSE;
+  $form['path']['#access'] = false;
+  $form['author']['#access'] = false;
+  $form['options']['#access'] = false;
+  $form['revision_information']['#access'] = false;
+  unset($form['body_field']['format']['format']['guidelines']);
+  $form['body_field']['body']['#rows'] = 4;
+	unset($form['body_field']['format']); // ok or too broad stroke? 
+	//lock and hide the offer you are connected to
+	$form['field_offer']['#access'] = FALSE;
+//dpr($form);
+}

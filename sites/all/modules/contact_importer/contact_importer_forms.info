@@ -1,0 +1,12 @@
+; $Id: contact_importer_forms.info,v 1.1.4.2 2010/02/27 03:29:48 dalin Exp $
+name = Contact Importer Form Integration
+description = Allows you to choose forms to use with Contact Importer.
+dependencies[] = contact_importer
+package = Contact Importer
+core = 6.x
+; Information added by drupal.org packaging script on 2010-10-20
+version = "6.x-2.3"
+core = "6.x"
+project = "contact_importer"
+datestamp = "1287564669"
+

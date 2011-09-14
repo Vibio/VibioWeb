@@ -1,0 +1,282 @@
+<?php
+// $Id: contact_importer_forms.module,v 1.1.4.6 2010/09/09 02:11:08 dalin Exp $
+
+/**
+ * @file  Contact Importer Forms Integration.
+ *  Allows you to choose forms to use with Contact Importer.
+ */
+
+/**
+ * Implementation of hook_menu.
+ */
+function contact_importer_forms_menu() {
+  $items = array();
+  $items['admin/settings/contact_importer/forms'] = array(
+    'title' => 'Forms Integration',
+    'page callback' => 'contact_importer_forms_list',
+    'access arguments' => array('administer contact importer'),
+    'type' => MENU_LOCAL_TASK,
+  );
+  $items['admin/settings/contact_importer/forms/list'] = array(
+    'title' => 'List',
+    'page callback' => 'contact_importer_forms_list',
+    'access arguments' => array('administer contact importer'),
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+  );
+  $items['admin/settings/contact_importer/forms/create'] = array(
+    'title' => 'Create',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('contact_importer_forms_form'),
+    'access arguments' => array('administer contact importer'),
+    'weight' => 1,
+    'type' => MENU_LOCAL_TASK,
+  );
+  $items['admin/settings/contact_importer/forms/edit'] = array(
+    'title' => 'Contact Importer Forms Integration Edit',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('contact_importer_forms_form'),
+    'access arguments' => array('administer contact importer'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['admin/settings/contact_importer/forms/delete'] = array(
+    'title' => 'Contact Importer Forms Integration Delete',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('contact_importer_forms_delete_form'),
+    'access arguments' => array('administer contact importer'),
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+/**
+ * Page callback to show all current form bindings.
+ */
+function contact_importer_forms_list() {
+  $help = t('You can <a href="!url">enable/disable messaging</a> to help you discover Form IDs and Fields.',
+    array('!url' => url('admin/settings/contact_importer/settings'))
+  );
+  $table_rows = array();
+  $table_header = array(t('Form ID'), t('Text Field'), '');
+  $res = db_query('SELECT * FROM {contact_importer_forms}');
+  while ($form_binding = db_fetch_object($res)) {
+    $edit_link = l('edit', 'admin/settings/contact_importer/forms/edit/'.
+      $form_binding->form_id .'/'. $form_binding->field);
+    $delete_link = l('delete', 'admin/settings/contact_importer/forms/delete/'.
+      $form_binding->form_id .'/'. $form_binding->field);
+    $table_rows[] = array($form_binding->form_id, $form_binding->field,
+      $edit_link .' | '. $delete_link);
+  }
+  return $help . theme('table', $table_header, $table_rows);
+}
+
+/**
+ * Form to create/edit a form binding.
+ *
+ * @ingroup forms
+ *
+ * @see contact_importer_forms_form_validate()
+ * @see contact_importer_forms_form_submit()
+ */
+function contact_importer_forms_form(
+  &$form_state,
+  $form_binding_form_id = NULL,
+  $form_binding_field = NULL
+) {
+  $form = array();
+  $form['existing_form_binding_form_id'] = array(
+    '#type' => 'value',
+    '#value' => $form_binding_form_id,
+  );
+  $form['existing_form_binding_field'] = array(
+    '#type' => 'value',
+    '#value' => $form_binding_field,
+  );
+  $form['form_binding_form_id'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Form ID'),
+    '#required' => TRUE,
+    '#default_value' => ($form_binding_form_id ? $form_binding_form_id : ''),
+  );
+  $form['form_binding_field'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Text Field'),
+    '#required' => TRUE,
+    '#default_value' => ($form_binding_field ? $form_binding_field : ''),
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save'),
+  );
+  return $form;
+}
+
+/**
+ * Form validation handler to create/edit a form binding.
+ *
+ * @ingroup forms
+ *
+ * @see contact_importer_forms_form()
+ * @see contact_importer_forms_form_submit()
+ */
+function contact_importer_forms_form_validate($form, &$form_state) {
+  if (strpos($form_state['values']['form_binding_form_id'], ',') !== FALSE) {
+    form_set_error('form_binding_form_id', t('No commas allowed.  You may only setup one form at a time.'));
+  }
+  if (strpos($form_state['values']['form_binding_field'], ',') !== FALSE) {
+    form_set_error('form_binding_field', t('No commas allowed.  You may only setup one form field at a time.'));
+  }
+}
+
+/**
+ * Form submit handler to create/edit a form binding.
+ *
+ * @ingroup forms
+ *
+ * @see contact_importer_forms_form()
+ * @see contact_importer_forms_form_validate()
+ */
+function contact_importer_forms_form_submit($form, &$form_state) {
+  $values = $form_state['values'];
+  if (
+    !empty($values['existing_form_binding_form_id']) &&
+    !empty($values['existing_form_binding_field'])
+  ) {
+    db_query("DELETE FROM {contact_importer_forms} WHERE form_id = '%s' AND field = '%s'",
+      $values['existing_form_binding_form_id'], $values['existing_form_binding_field']);
+  }
+  db_query("INSERT INTO {contact_importer_forms} (form_id, field) VALUES('%s', '%s')",
+    $values['form_binding_form_id'], $values['form_binding_field']);
+  $form_state['redirect'] = 'admin/settings/contact_importer/forms';
+}
+
+/**
+ * Form to confirm deletion of form binding. 
+ */
+function contact_importer_forms_delete_form(
+  &$form_state, 
+  $form_binding_form_id = NULL, 
+  $form_binding_field = NULL
+) {
+  $form['form_binding_form_id'] = array('#type' => 'hidden', '#value' => $form_binding_form_id);
+  $form['form_binding_field'] = array('#type' => 'hidden', '#value' => $form_binding_field);
+  $message = t('Are you sure you want to delete the binding of contact importer to  %name?', 
+    array('%name' => $form_binding_form_id .': '. $form_binding_field));
+  return confirm_form($form, $message, 'admin/settings/contact_importer/forms', '',
+    t('Delete'), t('Cancel'));
+}
+
+/**
+ * Deletion of form binding. 
+ */
+function contact_importer_forms_delete_form_submit($form, &$form_state) {
+  db_query("DELETE FROM {contact_importer_forms} WHERE form_id = '%s' AND field = '%s'",
+    $form_state['values']['form_binding_form_id'], $form_state['values']['form_binding_field']);
+  drupal_set_message(t('The form binding %name has been removed.', array('%name' =>
+    $form_state['values']['form_binding_form_id'] .': '.
+    $form_state['values']['form_binding_field'])));
+  $form_state['redirect'] = 'admin/settings/contact_importer/forms';
+  return;
+}
+
+/**
+ * Implementation of hook_form_FORM_ID_alter().
+ */
+function contact_importer_forms_form_contact_importer_settings_form_alter(&$form, $form_state) {
+  $form['contact_importer_form_show_ids'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable Form ID and Field messaging'),
+    '#description' => t("This can aid you in determining what Form IDs and Fields you'd like to ".
+      "use Contact Importer with.  Messaging is shown to all users with the 'administer contact ".
+      "importer' permission. "),
+    '#default_value' => variable_get('contact_importer_form_show_ids', FALSE),
+  );
+  $form['buttons']['#weight'] = 1;
+}
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function contact_importer_form_alter(&$form, $form_state, $form_id) {
+  _contact_importer_form_messaging($form, $form_id);
+  $field = _contact_importer_form_bind_field($form_id);
+  if (!empty($field)) {
+    contact_importer_bind_to_form($form, $field);
+  }
+}
+
+/**
+ * Show helper messages for form_id and text fields.
+ *
+ * @param array $form
+ *  FAPI form array.
+ * @param string $form_id
+ *  FAPI form_id.
+ */
+function _contact_importer_form_messaging($form, $form_id) {
+  if ($form_id == 'contact_importer_form') {
+    return;
+  }
+  static $disable_message = FALSE;
+  if (
+    variable_get('contact_importer_form_show_ids', FALSE) &&
+    user_access('administer contact importer')
+  ) {
+    $text_fields = _contact_importer_form_text_fields($form);
+    if ($text_fields) {
+      if (!$disable_message) {
+        drupal_set_message(t('Contact Importer Forms messaging is on. '.
+          '<a href="!url">Disable messaging</a>.',
+          array('!url' => url('admin/settings/contact_importer/settings'))));
+        $disable_message = TRUE;
+      }
+      $form_id_message = t('Form ID: %form_id', array('%form_id' => $form_id));
+      $text_fields_message = t('Text Fields: %text_fields',
+        array('%text_fields' => implode(', ', $text_fields)));
+      drupal_set_message($form_id_message .'<br />'. $text_fields_message);
+    }
+  }
+}
+
+/**
+ * Return a list of all textareas and textfields in the given form.
+ *
+ * @param array $form
+ *  FAPI form array.
+ *
+ * @return array
+ */
+function _contact_importer_form_text_fields($form) {
+  $text_fields = array();
+  $children = element_children($form);
+  foreach ($children as $child) {
+    if (empty($form[$child]['#type']) || $form[$child]['#type'] == 'fieldset') {
+      $text_fields += _contact_importer_form_text_fields($form[$child]);
+    }
+    elseif ($form[$child]['#type'] == 'textfield' || $form[$child]['#type'] == 'textarea') {
+      $text_fields[] = $child;
+    }
+  }
+  return $text_fields;
+}
+
+/**
+ * Get the field to bind to for the given form_id.
+ * 
+ * @param string $form_id
+ *
+ * @return mixed
+ *  The field as a string if one exists in the database, else FALSE. 
+ */
+function _contact_importer_form_bind_field($form_id) {
+  static $forms = array();
+  if (empty($forms)) {
+    $res = db_query('SELECT * FROM {contact_importer_forms}');
+    while ($form_binding = db_fetch_object($res)) {
+      $forms[$form_binding->form_id] = $form_binding->field;
+    }
+  }
+  if (isset($forms[$form_id])) {
+    return $forms[$form_id];
+  }
+  return FALSE;
+}

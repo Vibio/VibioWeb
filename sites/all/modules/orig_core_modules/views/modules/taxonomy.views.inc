@@ -1,5 +1,5 @@
 <?php
-// $Id: taxonomy.views.inc,v 1.57.2.6 2010/04/29 18:17:37 merlinofchaos Exp $
+// $Id: taxonomy.views.inc,v 1.50.2.14 2010/04/06 19:59:26 merlinofchaos Exp $
 /**
  * @file
  *
@@ -51,6 +51,10 @@ function taxonomy_views_data() {
       'handler' => 'views_handler_field',
       'click sortable' => TRUE,
     ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+      'help' => t('The taxonomy vocabulary name'),
+    ),
   );
   $data['vocabulary']['vid'] = array(
     'title' => t('Vocabulary ID'), // The item it appears as on the UI,
@@ -58,6 +62,9 @@ function taxonomy_views_data() {
     'argument' => array(
       'handler' => 'views_handler_argument_vocabulary_vid',
       'name field' => 'name',
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
     ),
   );
 
@@ -172,6 +179,15 @@ function taxonomy_views_data() {
     ),
   );
 
+  // Link to edit the term
+  $data['term_data']['edit_term'] = array(
+    'field' => array(
+      'title' => t('Term edit link'),
+      'help' => t('Provide a simple link to edit the term.'),
+      'handler' => 'views_handler_field_term_link_edit',
+    ),
+  );
+
   // ----------------------------------------------------------------------
   // term_node table
 
@@ -219,6 +235,7 @@ function taxonomy_views_data() {
       'help' => t('Display all taxonomy terms associated with a node from specified vocabularies.'),
       'handler' => 'views_handler_field_term_node_tid',
       'skip base' => 'term_data',
+      'no group by' => TRUE,
     ),
     'argument' => array(
       'handler' => 'views_handler_argument_term_node_tid',
@@ -320,7 +337,7 @@ function taxonomy_views_data() {
     'argument' => array(
       'help' => t('The parent term of the term.'),
       'handler' => 'views_handler_argument_numeric',
-    ),    
+    ),
   );
 
   // ----------------------------------------------------------------------
@@ -440,6 +457,9 @@ function taxonomy_views_handlers() {
       'views_handler_relationship_node_term_data' => array(
         'parent' => 'views_handler_relationship',
       ),
+      'views_handler_field_term_link_edit' => array(
+        'parent' => 'views_handler_field',
+      ),
     ),
   );
 }
@@ -462,7 +482,6 @@ function taxonomy_views_plugins() {
         'title' => t('Taxonomy Term ID from URL'),
         'handler' => 'views_plugin_argument_default_taxonomy_tid',
         'path' => drupal_get_path('module', 'views') . '/modules/taxonomy',
-        'parent' => 'fixed',
       ),
     ),
   );

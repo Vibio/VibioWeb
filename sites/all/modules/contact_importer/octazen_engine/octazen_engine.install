@@ -1,0 +1,22 @@
+<?php
+// $Id: octazen_engine.install,v 1.1.4.2 2010/02/27 03:29:48 dalin Exp $
+
+/**
+ * @file
+ * (un)install routines for octazen_engine.
+ */
+
+/**
+ * Implementation of hook_enable().
+ */
+function octazen_engine_enable() {
+  contact_importer_cache_clear_all();
+}
+
+/**
+ * Implementation of hook_disable().
+ */
+function octazen_engine_disable() {
+  contact_importer_cache_clear_all();
+}
+

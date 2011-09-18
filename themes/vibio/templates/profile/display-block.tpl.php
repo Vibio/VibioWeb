@@ -36,7 +36,7 @@ echo "
 			<li><a title='Offers you have made' href='/buying'><span class='menu_with_count_text'>Buy (Offers from You)</span><span class='menu_with_count_count'>$buying</span></a></li>
 			<li><a title='Offers others have have made to you' href='/selling'><span class='menu_with_count_text'>Sell (Offers to You)</span><span class='menu_with_count_count'>$selling</span></a></li>
 	
-			<li><a title='Connect with other Vibio Users' href='/notifications'><span class='menu_with_count_text'>Invitiations</span><span class='menu_with_count_count'>$notifications</span></a></li>
+			<li><a title='Connect with other Vibio Users' href='/notifications'><span class='menu_with_count_text'>Invitations</span><span class='menu_with_count_count'>$notifications</span></a></li>
 			<li><span class='menu_with_count_text'><a href='/messages'>Messages</a></span><span class='menu_with_count_count'>$msg_count</span></li>
 
 		<li><a title='Build a network of Facebook friends and Vibio contacts so you can Trade with Trust' href='/contacts'><span class='menu_with_count_text'>Contacts</span><span class='menu_with_count_count'>$friend_count</span></a></li>

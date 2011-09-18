@@ -24,6 +24,53 @@ function profile_ext_menu()
 		"type"				=> MENU_NORMAL_ITEM,
 		"menu_name"	=> "primary",	
 	);
+  /* Stephen, code-build menu creation */
+/* is the user menu item from core the parent? I think so.
+  $items['user'] = array(
+    'title' => 'User account',
+    'page callback' => 'user_page',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'user.pages.inc',
+  );
+*/
+
+	/* Add some minimal menu items for the Profile pages
+   *  They're built off the user system, preprocessing it here:
+   *  function profile_ext_preprocess_user_profile(&$vars)
+   *  and winds up at user-profile.tpl.php which has a little module-stuff
+   *  in it
+
+   *  note: direct parent is   $items['user/%user_uid_optional'] = array(
+   *    which views your account in the default settings [?] 
+   */
+
+	/* I think it might be better to change the file path etc
+   *  and initiate the whole process here.  Perhaps pass in both
+   *  arguments, rather than just modify the call to the user page
+   *  This is mucking up "active" and so on ...
+   */
+  $menu['user/%user/activities'] = array(  /* default, for now  */
+    "title"       => "Activity",
+		'page arguments'=> array(1),
+    'type'=> MENU_DEFAULT_LOCAL_TASK,
+		// this is the default -- but without 'file path' it looks local	
+    //'file' => 'user.pages.inc',
+		'file path' => drupal_get_path('module', 'user'),
+  );
+  $menu['user/%user/collections'] = array(
+    "title"       => "Collections",
+		'page arguments'=> array(1),
+    'type'=> MENU_LOCAL_TASK,
+		'file path' => drupal_get_path('module', 'user'),
+  );
+  $menu['user/%user/about'] = array(
+    "title"       => "About",
+  	'page arguments'=> array(1),
+    'type'=> MENU_LOCAL_TASK,
+		'file path' => drupal_get_path('module', 'user'),
+ 	);
+
 
 
 
@@ -49,7 +96,8 @@ function profile_ext_menu()
 		"file"				=> "profile_ext.pages.inc",
 		"type"				=> MENU_CALLBACK,
 	);
-	
+
+ 	/* stephen: not needed:	
 	foreach (module_invoke_all("profile_ext_menuitems") as $href => $title_callback)
 	{
 		$menu["my-dashboard/{$href}"] = array(
@@ -63,7 +111,7 @@ function profile_ext_menu()
 			"type"				=> MENU_SUGGESTED_ITEM,
 		);
 	}
-
+	*/
 
 
 
@@ -204,8 +252,7 @@ function profile_ext_theme(&$existing, $type, $theme, $path)
  *  of messages and offers unless need to throttle, and postpone in any
  *  case.  
  * His code will be kept and commented in stub function below this.
- * My code is a little sloppy but clear -- how do you stick the $vars into
- *  a tpl from display_block without writing preprocess?
+ * My code is a little sloppy but clear
  *   -- Stephen
  */
 function profile_ext_display_block($u)
@@ -223,9 +270,6 @@ function profile_ext_display_block($u)
 	{
 		module_load_include("inc", "profile_ext");
 		$items = "";
-	
-
-
 	
 		if (module_exists("privatemsg"))
 		{
@@ -412,7 +456,11 @@ function profile_ext_preprocess_user_profile(&$vars)
 	//$vars['profile']['public_info'] = profile_ext_public_info($uid);
 
 	/* Second half of page depends on third arg, user/uid/second_section */
+	// In v2 redo this, I think, passing these in from menu
 	$sec_page = $args[2]; // user/uid/$sec_page like "about me"
+
+
+	$vars['active'][$sec_page] = 'class="active" ';
 	switch ( $sec_page ) {
 		case "badges":	
 			$vars['sec_content'] = 
@@ -442,6 +490,11 @@ function profile_ext_preprocess_user_profile(&$vars)
 			break;
     case "about me":
     case "about":
+	    // This is overkill, since "About" is always public?  
+			//  Or is the Edit link shown if privacy is high enough?
+			//   no, edit is right below, which should be switched to access,
+			//   but not the custom access .... good enough for now
+			$access = module_exists("privacy") ? privacy_get_access_level($uid) : 1;
 			$edit_me = '';
 			if ( $user->uid == $uid ) {
 				$edit_me = l('Edit "About Me"', 'user/' . $uid . '/edit/About%20Me');
@@ -450,9 +503,6 @@ function profile_ext_preprocess_user_profile(&$vars)
 				theme("profile_ext_profile_info", $uid, $access) .
 				profile_ext_public_info($uid);
 
-
-				
-			
 			break;
     case "activity":  // never used, default blank?
     default:
@@ -502,14 +552,15 @@ function profile_ext_preprocess_page(&$vars)
 function profile_ext_preprocess_profile_ext_profile_info(&$vars)
 {
 	global $user;
-
-	$vars['username'] = $user->name;
-	
+	$u = user_load($vars[uid]);
+		
 	if ($vars['access'] >= privacy_get($vars['uid'], "profile", "profile_about_me"))
 	{
 		module_load_include("inc", "profile_ext", "profile_ext.pages");
 		
 		$u = user_load($vars['uid']);
+		$vars['username'] = $u->name;
+
 		$vars['profile_about_me'] = theme("profile_ext_view_fields", $u, "about me");
 		$vars['profile_external_accounts'] = profile_ext_manage_external_accounts($vars['uid']);
 	}

@@ -1,3 +1,9 @@
+Vibio:
+
+Lots of text changes.  Nothing else.  Should with any luck diff updates 
+easily.  20110917ish  --Stephen
+
+
 
 -- SUMMARY --
 

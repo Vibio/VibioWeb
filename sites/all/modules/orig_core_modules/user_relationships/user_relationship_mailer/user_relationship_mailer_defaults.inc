@@ -79,23 +79,26 @@ function user_relationship_mailer_replacements(&$relationship) {
 
 /**
  * Default request relationship message
+ *
+ * Changed in code to Jenny's 20110916 update; will likely need to change
+ *  in database as well.
  */
 function user_relationship_mailer_request_default() {
-  $subject = "[@site] @requester_name wants to be your @relationship_name";
+  $subject = "[@site] @requester_name wants to be connected to you on Vibio";
   $message = <<<MESSAGE
-Dear @requestee_name,
+Hi @requestee_name,
 
-@requester_name wants to be your @relationship_name.
+@requester_name wants to be connected to you on Vibio.
 
 Here's a link to @requester_name's profile:
   @requester_link
 
-To approve/disapprove this, log in to @site_url and see your pending relationship requests at @requestee_pending_link.
+Whether or not you’re elated or deflated by this request, you’ll have to follow this link to accept or reject it: @requestee_pending_link.
 
-Regards,
-The @site team
-This message was sent to you because you have user relationships email notifications turned on.
-If you no longer wish to receive these emails, you can turn them off at @site_url/user/@requestee_uid/edit.
+Thanks!
+The Vibio team
+
+This message was sent to you because you have relationship email notifications turned on. If you no longer wish to receive these emails, turn them off  @site_url/user/@requestee_uid/edit.
 MESSAGE;
 
   return array(

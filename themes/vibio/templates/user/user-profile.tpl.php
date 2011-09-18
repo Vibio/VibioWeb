@@ -1,11 +1,18 @@
 <?php
+/* All user-profile pages go through here.  Too much is done in this 
+ * tpl for long-run.  Disentangling from a single page with internal nav
+ * and javascript. 
+ */
+
+
 global $user;
 $u = $profile['user'];
-//print "(user/user-profile.tpl, do we use it";
+
 if ($user->uid == $u->uid || user_access("administer users"))
 {
 	$text = t("Edit");
 	$account_edit_link = theme("profile_ext_edit_link", "user/{$u->uid}/edit");
+	/* profile_ext.module creates this meny callback */
 	$picture_edit_link = "
 		<div id='profile_change_picture' class='profile_edit_link'>
 			<a href='/profile/{$u->uid}/change-picture'>$text</a>
@@ -103,9 +110,7 @@ switch ($who_to_you) {
 
 
 //print "<h3>Secondary Menu will go here</h3>";
-//print "We need to include the parent but as if it's a tab.  Not sure if want nice-menus or not<p>";
-// do we want to get the links, and then
-// this seems like it should work:
+// next: this seems like it should work: or back up, skip nice menus v1.1
 /*$menu = theme('nice_menus', -1, 'primary-links', 21, 'down');
 print $menu['content'];*/
 
@@ -117,24 +122,38 @@ print $menu['content'];*/
  */
 
 
+/* Currently, 
+ * these look a lot like tabs.  But, we don't want to mix in with other tabs,
+ * and tabs are printed at the top of the page.  So unless really
+ * wants to retheme every page, just spit out the tabs in a forced/faked way
+ */
 $uid = $u->uid; // shortcut to move way up this tpl
 $secondary = array ('activity' => "Activity", 
 	'collections' => "Collections", 
 	'badges' => "Badges", 
 	'about' => "About"
 	);
-print "<div id='profile_tabs'>";
+print "<div id='profile_tabs'><ul class='primary'>"; /* primary? css currently calls for it, I think */
 foreach ($secondary as $key => $name ) {
-	print "<a href='/user/$uid/$key'>$name</a>";
+	print "<li {$active[$key]}><a href='/user/$uid/$key' ><span class='tab'>$name</span></a></li>";
 }
-print "</div>";
-
+//dsm(menu_get_active_trail());
+dsm($active);
+print "</ul></div>";
+/*
+  $options['attributes']['class'] .= ($tabkey == $active_tab ? ' active' : '');
+  $output .= '<li'. $attributes_li .'>'. l($tab['title'], $_GET['q'] . $tabkey, $options) .'</li>';
 /*$menu = theme('nice_menus', 1, 'primary-links', 21, 'down');
 print $menu['content'];*/
 ?>
+          <?php if (!empty($tabs)): ?><div class="tabs"><?php print $tabs; ?></div><?php endif; ?>
+
+
+
 <div class="clear"></div>
 <?php
 
+/* this is from function profile_ext_preprocess_user_profile(&$vars) */
 print $sec_content;
 
 //echo "profile completeness: {$profile['profile_progress']}%";

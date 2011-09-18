@@ -2,7 +2,7 @@
 switch ($rel_type)
 {
 	default:
-		$message = t("!user wants to be friends", array("!user" => l($relationship->requester->name, "user/{$relationship->requester_id}")));
+		$message = t("!user wants to be connected", array("!user" => l($relationship->requester->name, "user/{$relationship->requester_id}")));
 }
 
 $requester_image = theme("user_picture", $relationship->requester);

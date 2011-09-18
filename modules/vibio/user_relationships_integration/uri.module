@@ -81,7 +81,7 @@ function uri_menu_title()
 	return t("Connections (!count)", array("!count" => $friend_count));
 }
 
-function uri_preprocess_user_relationships(&$vars)
+function EDIT_ELABORATIONS_NO_MORE_uri_preprocess_user_relationships(&$vars)
 {	
 	$link_options = array(
 		"attributes"	=> array(

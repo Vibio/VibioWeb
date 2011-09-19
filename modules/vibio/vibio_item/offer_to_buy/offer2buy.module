@@ -404,7 +404,8 @@ $owner_uid = $vars['item']['user']['uid'];
 			//$vars['offer2buy'] = "<div class='not_for_sale'>$nfs_text</div>";
 			$vars['offer2buy'] = "<div class='not_for_sale'><img
 			  src='/themes/vibio/images/item/not_for_sale.png'
-				alt='$nfs_text' /></div>";	
+				alt='$nfs_text'
+				title='$nfs_text'	 /></div>";	
 		}
 	}
 

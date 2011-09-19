@@ -1,3 +1,4 @@
+
 .external_short_link {
 	float: right;
 }
@@ -17,7 +18,8 @@
 
 .item_owner .action {
 	float: right;
-	width: 100px; /* Carolyn should play */
+	width: 140px; /* Carolyn should play */
+  /* the not_for_sale.png image is messing up the flow after first-pass */
 }
 
 .item_owner .picture {
@@ -31,7 +33,7 @@
 .item_owner .item_info {
 	float: left;
 	margin-left: 10px;
-	width: 500px;
+	width: 430px; /* it was 500, which messed up flow with .item_owner .action above */
 }
 
 .item-square .inventory_add, 

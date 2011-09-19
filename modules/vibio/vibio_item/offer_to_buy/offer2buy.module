@@ -401,7 +401,10 @@ $owner_uid = $vars['item']['user']['uid'];
 
 		} else {
 			$nfs_text = t("Just showing my style: Not For Sale");
-			$vars['offer2buy'] = "<div class='not_for_sale'>$nfs_text</div>";
+			//$vars['offer2buy'] = "<div class='not_for_sale'>$nfs_text</div>";
+			$vars['offer2buy'] = "<div class='not_for_sale'><img
+			  src='/themes/vibio/images/item/not_for_sale.png'
+				alt='$nfs_text' /></div>";	
 		}
 	}
 

@@ -358,7 +358,7 @@ function offer2buy_preprocess_product_owner(&$vars) {
 	// Uh oh: no design for an item page ready yet, no ux.  Maybe it should
 	// be a popup?  Maybe expand in place?
 	$vars['shortlink'] = l("Item details", "node/" . $item->nid );
-	// weird url format: ?highlight=107 highlights that user.
+	// weird url format: ?highlight=107 highlights that user (= that user's item)
 
 
 	// Price
@@ -392,14 +392,17 @@ $owner_uid = $vars['item']['user']['uid'];
 		//0 = not for sale, 1 = for sale
 		if ($item->offer2buy[settings][is_on_sale] == 1) {
 			$vars['offer2buy'] = l($text, "offer/$nid/$uid", array('class'=> 'action_button_link'));
+			// Price.
+			// Note that "insert" is complex... test.  Is price always a number?
+			if ( $item->offer2buy[settings][price] > 0 ) {
+				$vars['price'] = $item->offer2buy[settings][price];
+			}
+		// Next: is "negotiable" something to add here?
+
 		} else {
 			$nfs_text = t("Just showing my style: Not For Sale");
 			$vars['offer2buy'] = "<div class='not_for_sale'>$nfs_text</div>";
 		}
-		// Price.
-		// Note that "insert" is complex... test.  Is price always a number?
-		$vars['price'] = $item->offer2buy[settings][price];
-		// Next: is "negotiable" something to add here?
 	}
 
 }

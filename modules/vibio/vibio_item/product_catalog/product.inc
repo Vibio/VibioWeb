@@ -88,7 +88,12 @@ function _product_get_owners($nid, $as_uid, $type="network", $page=0)
 			),
 			"user"	=> array(
 				"picture"	=> theme("user_picture", (object) $row),
-				"link"		=> $as_uid && $type == "network" && module_exists("dos") ? theme("dos_display", dos_get($row['uid'], false, $depth)) : "<br />".l($row['name'], "user/{$row['uid']}"),
+				//v1.0 
+				//"link"		=> $as_uid && $type == "network" && module_exists("dos") ? theme("dos_display", dos_get($row['uid'], false, $depth)) : "<br />".l($row['name'], "user/{$row['uid']}"),
+				// changes: if user logged in, print friend-chain; if not, print nothing
+				//  instead of printing the owner's name again.
+				"link"		=> $as_uid && $type == "network" && ($GLOBALS['user']->uid > 0) && module_exists("dos") ? theme("dos_display", dos_get($row['uid'], false, $depth)) : "", 
+
 				"uid"     => $row['uid'],  // stephen adds, to highlight
 			),
 		);

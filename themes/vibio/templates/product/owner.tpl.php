@@ -52,6 +52,9 @@ There's no design/ux yet on how to get item details.
 
 I'm thinking it should pop?
 */
+
+$Connection = $GLOBALS['user']->uid ? "<div class='row'><div class='header'>Connection:</div> {$item['user']['link']}</div>" : '';
+
 echo "
 	<div class='item_owner {$item['user']['highlight']}'>
 		{$item['user']['picture']}
@@ -60,9 +63,8 @@ echo "
 		$usernamelink
 		<div class='item_info'>
 			$shortlink
-{$item['node']['link']}
 			<div class='row'>$teaser</div>
-			<div class='row'><div class='header'>Connection:</div> {$item['user']['link']}</div>
+			$Connection
 		</div>
 		</div>
 	<div class='clear'></div>

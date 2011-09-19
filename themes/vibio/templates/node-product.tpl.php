@@ -39,7 +39,6 @@ if (isset($node->amazon_data)) {
    *  module weighting problem?  
 
    */
-dsm(debug_backtrace);
 
 	if (empty($node->body))
 	{
@@ -117,9 +116,11 @@ if ($page)
 		//$product_owners .= "<h4 class='product_description'>$type_title</h4>";
 		$product_owners .= "<div class='product_owners_results'>";
 		// is this really theming a custom, non-node data structure?
-		// do to make design changes, have to go back to 
+		// to make design changes, have to go back to 
 		// product_catalog/product.inc which is formating the
 		// links, for example.	
+		// Also look here list:
+		//  modules/vibio/vibio_item/offer_to_buy/offer2buy.module
 		$product_owners .= theme("product_owners", $type, $data);
 		
 		$product_owners .= "</div></div>";

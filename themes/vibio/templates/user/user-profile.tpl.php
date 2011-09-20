@@ -138,13 +138,12 @@ foreach ($secondary as $key => $name ) {
 	print "<li {$active[$key]}><a href='/user/$uid/$key' ><span class='tab'>$name</span></a></li>";
 }
 //dsm(menu_get_active_trail());
-dsm($active);
+//dsm($active);
 print "</ul></div>";
 /*
   $options['attributes']['class'] .= ($tabkey == $active_tab ? ' active' : '');
   $output .= '<li'. $attributes_li .'>'. l($tab['title'], $_GET['q'] . $tabkey, $options) .'</li>';
-/*$menu = theme('nice_menus', 1, 'primary-links', 21, 'down');
-print $menu['content'];*/
+*/
 ?>
           <?php if (!empty($tabs)): ?><div class="tabs"><?php print $tabs; ?></div><?php endif; ?>
 

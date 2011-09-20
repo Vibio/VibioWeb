@@ -49,6 +49,9 @@ function profile_ext_menu()
    *  and initiate the whole process here.  Perhaps pass in both
    *  arguments, rather than just modify the call to the user page
    *  This is mucking up "active" and so on ...
+
+	 * ERROR: this seemed to test ok, and then later (I thought I was
+    *  clearing cache?) create nasty "Access Denied" even for adming.
    */
   $menu['user/%user/activities'] = array(  /* default, for now  */
     "title"       => "Activity",
@@ -58,8 +61,10 @@ function profile_ext_menu()
     //'file' => 'user.pages.inc',
 		'file path' => drupal_get_path('module', 'user'),
   );
-  $menu['user/%user/collections'] = array(
+  /*$menu['user/%user/collections'] = array(
     "title"       => "Collections",
+    'access callback' => 'user_view_access', puttering, think through
+    'access arguments' => array(1),
 		'page arguments'=> array(1),
     'type'=> MENU_LOCAL_TASK,
 		'file path' => drupal_get_path('module', 'user'),
@@ -70,7 +75,7 @@ function profile_ext_menu()
     'type'=> MENU_LOCAL_TASK,
 		'file path' => drupal_get_path('module', 'user'),
  	);
-
+	*/
 
 
 

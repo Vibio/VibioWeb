@@ -526,7 +526,12 @@ function profile_ext_preprocess_user_profile(&$vars)
 	// Since network_get shows two degrees out, it's weird.
 	$network = network_get($uid);
 	$me_in_their_wide_network = $network[$user->uid]['friends'];
-	$friends = _network_get_friends($uid);
+
+	// this wants a second parameter of $rel_type... seems like 1 is a default
+	//  elsewhere?
+	//  does this mean, I think it means, people one connection out?
+	$rel_type = 1; // maybe
+	$friends = _network_get_friends($uid, $rel_type);
 	//dsm($me_in_their_wide_network);
 	if ( $uid == $user->uid ) {
 		$vars['who_to_you'] = 'you';

@@ -9,4 +9,5 @@ when this fubar site should look
 sites/all/themes/vibio/templates/profile/display-block.tpl.php
 what made it do that?
 ouch, but try: ln -s /home/ubuntu/www/vibio/src/themes/vibio vibio
+ln -s /home/ubuntu/www/vibio/src/themes/zen  zen
 

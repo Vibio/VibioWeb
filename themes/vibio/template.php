@@ -36,7 +36,9 @@ function vibio_secondary_menu_ad_hoc($secondary_links) {
 //		$menu_html .= l($link['link_title'], $link['link_path']);
 		$menu_html .= '<a href="' . $link['href'] . '">' . $link['title'] . '</a>&nbsp;|&nbsp;';	
 	}
-	print $menu_html;
+	print "<h2>Secondary Menu ad hoc from template.php creates this</h2>" . 
+		"I think nothing calls this function, if you see this note, something does" .
+		$menu_html;
 }
 
 
@@ -48,6 +50,7 @@ function vibio_secondary_menu_ad_hoc($secondary_links) {
  */
 function vibio_theme(&$existing, $type, $theme, $path) {
 	$hooks = zen_theme($existing, $type, $theme, $path);
+	//came back empty anyway: dsm(array("hooks from zen" => $hooks));
 
 	$hooks = array_merge($hooks, array(
 		/* I think this is not used anymore -stephen */
@@ -57,6 +60,7 @@ function vibio_theme(&$existing, $type, $theme, $path) {
 		),
 
 		/* templates for forms for negotiations, inserted into offers */
+		// move this to module?
 		"offer_neg_buyer_node_form" => array(
 			'arguments' => array('form' => NULL),
 			'template' => "templates/node-offer_neg_buyer-edit"
@@ -77,19 +81,34 @@ function vibio_preprocess_user_profile(&$vars)
 	$vars['profile']['social_info'] = theme("user_social_info", arg(1));
 }
 
+/* Not sure what this is for, maybe nothing, generating errors...
+   Remove 20110920 and see if we need any of it 
+ */
+
+/* What's this?  Custom menu links, not noticed when doing v1.2 work  
 function vibio_menu_item_link($link)
 {
+
+
+Worried this may have a real function:
+
 	if ($link['type'] & MENU_IS_LOCAL_TASK && $link['path'] == "search/node/%")
 	{
 		return "";
 	}
+
+	/* no longer used? doesn't look important 
 	elseif (strpos($link['router_path'], "my-dashboard/") !== false)
 	{
 		$link['localized_options']['html'] = true;
 	}
-	
+  * /	
+
+	// this loads missing style.css
+Is it really desired for anything ever to go to parent zen theme?
 	return zen_menu_item_link($link);
 }
+*/
 
 function vibio_preprocess_page(&$vars, $hook)
 {
@@ -114,7 +133,7 @@ function vibio_preprocess_page(&$vars, $hook)
 }
 
 /* this seems weird to me, don't you have to tell user_picture
- * whose user picture you want?  -- Stephen */
+ * whose user picture you want? Or is that from the comment  -- Stephen */
 function vibio_preprocess_comment(&$vars)
 {
 	if (empty($vars['picture']))

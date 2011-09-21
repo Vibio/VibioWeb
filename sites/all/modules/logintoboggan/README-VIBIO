@@ -1,0 +1,8 @@
+There was a slightly modified logintoboggan, based on v.1.7, 
+that blocked non-email logins.  Never discovered if this was 
+feature or bug, but there'd been no attempt to reword.
+
+It seemed to be the root of a couple errors.  Upgraded to 1.9 
+ignoring overwriting all the hacks on 20110920
+
+That original module has been moved to stephen's home dir

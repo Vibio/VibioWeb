@@ -1,4 +1,8 @@
 <?php
+/* some of this is the long way round: creating forms so you can enter
+ * fb_app_secret via the browser, instead of the much simpler setting of
+ * variables here in the code where git and upgrades work.  --stephen
+ */
 function facebook_admin()
 {
 	return system_settings_form(array(

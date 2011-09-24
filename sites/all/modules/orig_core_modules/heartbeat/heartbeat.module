@@ -790,7 +790,7 @@ function _theme_user_message_select_form($title, $settings) {
     '#weight' => 4,
     '#tree' => TRUE,
     '#collapsible' => TRUE,
-    '#description' => t('This setting lets you configure the visibility of activity messages.'),
+    '#description' => t('These settings control the visibility of your actions.'),
     '#theme' => 'heartbeat_message_user_select_form',
   );
 
@@ -1652,7 +1652,7 @@ function _heartbeat_perms_options($profile = FALSE) {
     return array(
       HEARTBEAT_NONE => ('Never'),
       HEARTBEAT_PRIVATE => t('Only me'),
-      HEARTBEAT_PUBLIC_TO_CONNECTED => t('Only my friends'),
+      HEARTBEAT_PUBLIC_TO_CONNECTED => t('Only my contacts'),
       HEARTBEAT_PUBLIC_TO_ALL => t('Everyone'),
     );
   }

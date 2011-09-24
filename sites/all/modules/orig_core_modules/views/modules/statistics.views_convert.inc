@@ -1,5 +1,4 @@
 <?php
-// $Id: statistics.views_convert.inc,v 1.1.2.2 2009/06/12 16:17:42 merlinofchaos Exp $
 
 /**
  * @file

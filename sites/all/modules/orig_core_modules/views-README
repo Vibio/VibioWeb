@@ -1,0 +1,3 @@
+Upgrading to views 6.x-3.0-alpha led to error when editing the empty
+text.  Similar error was dealt with and seems to have been committed, so
+trying dev version from 20110915

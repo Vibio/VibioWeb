@@ -1,8 +1,8 @@
 <?php
 $collection_url = url("collections/{$collection->cid}");
-$manage_link = $collection->is_owner ? l(t("Manage Collection"), "collections/manage/{$collection->cid}") : "";
+$manage_link = $collection->is_owner ? l(t("Rename Collection"), "collections/manage/{$collection->cid}") : "";
 $total_items = t("!count items", array("!count" => $collection->total_items));
-$expand = t("Expand Item List");
+$expand = t("View Items");
 
 if ($show_preview)
 {

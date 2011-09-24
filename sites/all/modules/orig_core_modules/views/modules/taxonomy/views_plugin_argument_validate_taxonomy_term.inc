@@ -1,5 +1,4 @@
 <?php
-// $Id: views_plugin_argument_validate_taxonomy_term.inc,v 1.4.2.6 2010/03/19 23:44:15 merlinofchaos Exp $
 /**
  * @file
  * Contains the 'taxonomy term' argument validator plugin.
@@ -84,6 +83,11 @@ class views_plugin_argument_validate_taxonomy_term extends views_plugin_argument
         return empty($vids) || !empty($vids[$result->vid]);
 
       case 'tids':
+        // An empty argument is not a term so doesn't pass.
+        if (empty($argument)) {
+          return FALSE;
+        }
+
         $tids = new stdClass();
         $tids->value = $argument;
         $tids = views_break_phrase($argument, $tids);
@@ -150,8 +154,8 @@ class views_plugin_argument_validate_taxonomy_term extends views_plugin_argument
 
         if ($type == 'convert') {
           $this->argument->argument = $result->tid;
-          $this->argument->validated_title = check_plain($result->name);
         }
+        $this->argument->validated_title = check_plain($result->name);
 
         return TRUE;
     }

@@ -1,5 +1,4 @@
 <?php
-// $Id: search.views.inc,v 1.17.2.2 2009/12/24 00:55:16 merlinofchaos Exp $
 /**
  * @file
  * Provide views data and handlers for search.module

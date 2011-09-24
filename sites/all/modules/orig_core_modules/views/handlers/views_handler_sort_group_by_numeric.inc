@@ -1,5 +1,4 @@
 <?php
-// $Id: views_handler_sort_group_by_numeric.inc,v 1.1.2.1 2009/11/10 23:23:27 merlinofchaos Exp $
 /**
  * Handler for GROUP BY on simple numeric fields.
  */
@@ -16,14 +15,16 @@ class views_handler_sort_group_by_numeric extends views_handler_sort {
    * Called to add the field to a query.
    */
   function query() {
+    $this->ensure_my_table();
+
     $params = array(
       'function' => $this->options['group_type'],
     );
 
-    $this->query->add_orderby($this->table, $this->field, $this->options['order'], NULL, $params);
+    $this->query->add_orderby($this->table_alias, $this->real_field, $this->options['order'], NULL, $params);
   }
 
-  function ui_name() {
-    return $this->get_field(parent::ui_name());
+  function ui_name($short = FALSE) {
+    return $this->get_field(parent::ui_name($short));
   }
 }

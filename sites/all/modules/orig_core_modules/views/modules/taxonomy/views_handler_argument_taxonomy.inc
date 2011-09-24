@@ -1,10 +1,9 @@
 <?php
-// $Id: views_handler_argument_taxonomy.inc,v 1.1 2008/09/03 19:21:30 merlinofchaos Exp $
 
 /**
  * Argument handler for basic taxonomy tid.
  */
-class views_handler_argument_taxonomy extends views_handler_argument {
+class views_handler_argument_taxonomy extends views_handler_argument_numeric {
 
   /**
    * Override the behavior of title(). Get the title of the node.

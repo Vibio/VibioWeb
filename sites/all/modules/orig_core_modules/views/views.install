@@ -1,5 +1,4 @@
 <?php
-// $Id: views.install,v 1.46.2.9 2010/03/24 19:07:05 merlinofchaos Exp $
 /**
  * @file views.install
  * Contains install and update functions for Views.
@@ -277,7 +276,14 @@ function views_update_6001() {
     $new = strtr($block->delta, '$', '-');
     $ret[] = update_sql("UPDATE {blocks} SET delta = '" . db_escape_string($new) . "' WHERE module = 'views' AND delta = '" . db_escape_string($block->delta) . "'");
   }
-  $ret[] = update_sql("UPDATE {blocks} SET delta = CONCAT(delta, '-block_1') WHERE module = 'views'");
+  $result = db_query("SELECT * FROM {blocks} WHERE module = 'views'");
+  while ($block = db_fetch_object($result)) {
+    $new = $block->delta .= '-block_1';
+    if (strlen($new) >= 32) {
+      $new = md5($new);
+    }
+    $ret[] = update_sql("UPDATE {blocks} SET delta = '$new' WHERE bid = $block->bid");
+  }
 
   return $ret;
 }
@@ -426,7 +432,118 @@ function views_update_6009() {
   $ret = array();
 
   $schema = views_schema_6009();
-  db_change_field($ret, 'views_display', 'display_options', 'display_options', $schema['views_display']['fields']['display_options']);
+
+  if ($GLOBALS['db_type'] == 'pgsql') {
+    $ret[] = update_sql('ALTER TABLE {views_display} RENAME "display_options" TO "display_options_old"');
+    db_add_field($ret, 'views_display', 'display_options', $schema['views_display']['fields']['display_options']);
+
+    $sql = "SELECT vid, id, display_options_old FROM {views_display}";
+    $result = db_query($sql);
+    while ($row = db_fetch_array($result)) {
+      $row['display_options_old'] = db_decode_blob($row['display_options_old']);
+      $sql = "UPDATE {views_display} SET display_options = '%s' WHERE vid = %d AND id = '%s'";
+      db_query($sql, $row['display_options_old'], $row['vid'], $row['id']);
+    }
+
+    db_drop_field($ret, 'views_display', 'display_options_old');
+  }
+  else {
+    db_change_field($ret, 'views_display', 'display_options', 'display_options', $schema['views_display']['fields']['display_options']);
+  }
 
   return $ret;
 }
+
+/**
+ * Remove the view_php field
+ */
+function views_schema_6010() {
+  $schema = views_schema(__FUNCTION__);
+  unset($schema['views_view']['fields']['view_php']);
+  unset($schema['views_view']['fields']['is_cacheable']);
+  return $schema;
+}
+
+/**
+ * Remove the view_php and is_cacheable field
+ */
+function views_update_6010() {
+  $ret = array();
+
+  db_drop_field($ret, 'views_view', 'view_php');
+  db_drop_field($ret, 'views_view', 'is_cacheable');
+
+
+  return $ret;
+}
+
+/**
+ * Correct the cache setting for exposed filter blocks.
+ *
+ * @see http://drupal.org/node/910864
+ */
+function views_update_6011() {
+  $ret = array();
+
+  // There is only one simple query to run.
+  $ret[] = update_sql("UPDATE {blocks} SET cache = " . BLOCK_NO_CACHE . " WHERE module = 'views' AND delta LIKE '-exp-%'");
+  
+  return $ret;
+}
+
+
+/**
+ * Add a human readable name.
+ */
+function views_schema_6012() {
+  $schema = views_schema(__FUNCTION__);
+  $schema['views_view']['fields']['human_name'] = array(
+    'type' => 'varchar',
+    'length' => '255',
+    'default' => '',
+    'description' => 'A human readable name used to be displayed in the admin interface',
+  );
+  return $schema;
+}
+
+function views_update_6012() {
+  $ret = array();
+
+  $new_field = array(
+    'type' => 'varchar',
+    'length' => '255',
+    'default' => '',
+    'description' => 'A human readable name used to be displayed in the admin interface',
+  );
+
+  db_add_field($ret, 'views_view', 'human_name', $new_field);
+
+  return $ret;
+}
+
+function views_schema_6013() {
+  $schema = views_schema(__FUNCTION__);
+  $schema['views_view']['fields']['core'] = array(
+    'type' => 'int',
+    'default' => 0,
+    'description' => 'Stores the drupal core version of the view.',
+  );
+  return $schema;
+}
+
+/**
+ * Add a drupal core version field.
+ */
+function views_update_6013() {
+  $ret = array();
+  $new_field = array(
+    'type' => 'int',
+    'default' => 0,
+    'description' => 'Stores the drupal core version of the view.',
+  );
+
+  db_add_field($ret, 'views_view', 'core', $new_field);
+
+  return $ret;
+}
+

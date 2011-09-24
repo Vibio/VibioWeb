@@ -1,5 +1,4 @@
 <?php
-// $Id: views_handler_filter.inc,v 1.6.2.15 2010/03/22 20:44:52 merlinofchaos Exp $
 /**
  * @defgroup views_filter_handlers Views' filter handlers
  * @{
@@ -8,7 +7,17 @@
  * Definition items:
  * - allow empty: If true, the 'IS NULL' and 'IS NOT NULL' operators become
  *   available as standard operators.
- * -
+ *
+ * Object flags:
+ *  You can set some specific behavior by setting up the following flags on
+ *  your custom class.
+ *
+ * - no_single:
+ *    Disable the possibility to force a single value.
+ * - no_operator:
+ *    Disable the possibility to use operators.
+ * - no_optional:
+ *    Disable the possibility to allow a exposed input to be optional.
  */
 
 /**
@@ -26,12 +35,6 @@ class views_handler_filter extends views_handler {
 
     $this->operator = $this->options['operator'];
     $this->value = $this->options['value'];
-
-    // Compatibility: Set use_operator to true if the old way of using
-    // the operator is set and use_operator is NULL (was never set).
-    if (!empty($options['exposed']) && !empty($options['expose']['operator']) && !isset($options['expose']['use_operator'])) {
-      $this->options['expose']['use_operator'] = TRUE;
-    }
 
     // If there are relationships in the view, allow empty should be true
     // so that we can do IS NULL checks on items. Not all filters respect
@@ -51,8 +54,10 @@ class views_handler_filter extends views_handler {
     $options['expose'] = array(
       'contains' => array(
         'operator' => array('default' => FALSE),
+        'limit_operators' => array('default' => FALSE),
+        'available_operators' => array('default' => array()),
         'label' => array('default' => '', 'translatable' => TRUE),
-        'use_operator' => array('deafult' => 0),
+        'use_operator' => array('default' => 0),
         'operator' => array('default' => ''),
         'identifier' => array('default' => ''),
         'optional' => array('default' => 1),
@@ -83,6 +88,7 @@ class views_handler_filter extends views_handler {
    * are called.
    */
   function options_form(&$form, &$form_state) {
+    parent::options_form($form, $form_state);
     if ($this->can_expose()) {
       $this->show_expose_button($form, $form_state);
     }
@@ -115,7 +121,16 @@ class views_handler_filter extends views_handler {
     $this->operator_submit($form, $form_state);
     $this->value_submit($form, $form_state);
     if (!empty($this->options['exposed'])) {
+      if (!empty($form_state['values']['options']['expose']['limit_operators'])) {
+        $form_state['values']['options']['expose']['available_operators'] = array_filter($form_state['values']['options']['expose']['available_operators']);
+      }
+      else {
+        $form_state['values']['options']['expose']['available_operators'] = array();
+      }
       $this->expose_submit($form, $form_state);
+      if (empty($form_state['values']['options']['expose']['use_operator'])) {
+        $form_state['values']['options']['expose']['limit_operators'] = array();
+      }
     }
   }
 
@@ -137,6 +152,14 @@ class views_handler_filter extends views_handler {
   function operator_form(&$form, &$form_state) {
     $options = $this->operator_options();
     if (!empty($options)) {
+      $limit = array_filter($this->options['expose']['available_operators']);
+      if (!empty($this->options['expose']['limit_operators']) && count($limit)) {
+        foreach ($options as $key => $value) {
+          if (!isset($limit[$key])) {
+            unset($options[$key]);
+          }
+        }
+      }
       $form['operator'] = array(
         '#type' => count($options) < 10 ? 'radios' : 'select',
         '#title' => t('Operator'),
@@ -215,6 +238,33 @@ class views_handler_filter extends views_handler {
           'edit-options-expose-use-operator' => array(1)
         ),
       );
+      $form['expose']['limit_operators'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Limit operators'),
+        '#description' => t('When checked, the operator will be exposed to the user'),
+        '#default_value' => !empty($this->options['expose']['limit_operators']),
+        '#process' => array('views_process_dependency'),
+        '#dependency' => array(
+          'edit-options-expose-use-operator' => array(1)
+        ),
+        '#description' => t('Restrict which operators will be available to select in the exposed operator form.'),
+      );
+      $operator_options = $this->operator_options();
+      if (count($operator_options)) {
+        $form['expose']['available_operators'] = array(
+          '#type' => 'checkboxes',
+          '#title' => t('Limit the exposed operators'),
+          '#default_value' => $this->options['expose']['available_operators'],
+          '#prefix' => '<div id="edit-options-expose-available-operators-wrapper"><div id = "edit-options-expose-available-operators">',
+          '#suffix' => '</div></div>',
+          '#description' => t('Select which operators will be available to select in the exposed operator form. If none is selected, all the operators listed here will be used.'),
+          '#options' => $operator_options,
+          '#process' => array('expand_checkboxes', 'views_process_dependency'),
+          '#dependency' => array(
+            'edit-options-expose-limit-operators' => array(1)
+          ),
+        );
+      }
     }
     else {
       $form['expose']['operator'] = array(
@@ -242,12 +292,14 @@ class views_handler_filter extends views_handler {
    * Handle the 'right' side fo the exposed options form.
    */
   function expose_form_right(&$form, &$form_state) {
-    $form['expose']['optional'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Optional'),
-      '#description' => t('This exposed filter is optional and will have added options to allow it not to be set.'),
-      '#default_value' => $this->options['expose']['optional'],
-    );
+    if (empty($this->no_optional)) {
+      $form['expose']['optional'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Optional'),
+        '#description' => t('This exposed filter is optional and will have added options to allow it not to be set.'),
+        '#default_value' => $this->options['expose']['optional'],
+      );
+    }
     if (empty($this->no_single)) {
       $form['expose']['single'] = array(
         '#type' => 'checkbox',
@@ -375,7 +427,7 @@ class views_handler_filter extends views_handler {
       $form['#size'] = NULL;
     }
 
-    if ($type == 'value' && !empty($this->options['expose']['optional']) && $form['#type'] == 'select' && empty($form['#multiple'])) {
+    if ($type == 'value' && empty($this->no_optional) && !empty($this->options['expose']['optional']) && $form['#type'] == 'select' && empty($form['#multiple'])) {
       $any_label = variable_get('views_exposed_filter_any_label', 'old_any') == 'old_any' ? '<Any>' : t('- Any -');
       $form['#options'] = array('All' => $any_label) + $form['#options'];
       $form['#default_value'] = 'All';
@@ -423,8 +475,15 @@ class views_handler_filter extends views_handler {
 
       // Various ways to check for the absence of optional input.
       if (!empty($this->options['expose']['optional'])) {
-        if ($value == 'All' || $value === array()) {
-          return FALSE;
+
+        if (($this->operator == 'empty' || $this->operator == 'not empty') && $value === '') {
+          $value = ' ';
+        }
+
+        if ($this->operator != 'empty' && $this->operator != 'not empty') {
+          if ($value == 'All' || $value === array()) {
+            return FALSE;
+          }
         }
 
         if (!empty($this->no_single) && $value === '') {

@@ -105,7 +105,7 @@ if ( $node->field_city[0][value] ) {
 	print "<br><div class='label'>Ship to:</div>" . $node->field_city[0][safe];
 }
 if ( $node->field_pay_sent[0][value] != 'no' ) {
-	print "<br><div class='label'>Pay Sent:</div>" . $node->field_pay_sent[0][value];
+	print "<br><div class='label'>Payment Sent:</div>" . $node->field_pay_sent[0][value];
 }
 if ( $node->field_item_received[0][value] == 'Yes' ) {
 	print "<br><div class='label'>Received!</div>";

@@ -1,5 +1,4 @@
 <?php
-// $Id: views_handler_argument_term_node_tid_depth.inc,v 1.1.2.3 2010/03/16 23:38:22 merlinofchaos Exp $
 /**
  * Argument handler for taxonomy terms with depth.
  *
@@ -72,6 +71,8 @@ class views_handler_argument_term_node_tid_depth extends views_handler_argument 
     $actions = parent::default_actions();
     unset($actions['summary asc']);
     unset($actions['summary desc']);
+    unset($actions['summary asc by count']);
+    unset($actions['summary desc by count']);
     return $actions;
   }
 

@@ -191,6 +191,10 @@ function product_add_to_inventory($product, $quick_add=false)
 	return $output;
 }
 
+/* Stephen wonders: what happens here?  It looks like a totally normal
+ *  node add page, except it has a message set to act as a kind of help.
+ *  Should all this be ripped out?  
+ */
 function product_add_new()
 {
 	global $user;
@@ -205,8 +209,9 @@ function product_add_new()
 	$node->type = "product";
 	
 	node_object_prepare($node);
-	
-	drupal_set_message(t("This is a generic product, with generic info all users will be able to edit and see. Info that should go here might be a book's ISBN, a DVDs runtime, etc. It's definitive information about the product."), "notice");
+
+	// v2: less weird, move help into form, not message 	
+	drupal_set_message(t("Here’s where you get to write down stuff about your product. Please share descriptive things, like the size, fabric content or whatever you think will tell us exactly what you’ve got."), "notice");
 	return drupal_get_form($form_id, $node);
 }
 

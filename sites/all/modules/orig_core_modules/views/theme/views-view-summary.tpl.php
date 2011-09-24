@@ -1,5 +1,4 @@
 <?php
-// $Id: views-view-summary.tpl.php,v 1.6.2.1 2010/03/16 23:12:29 merlinofchaos Exp $
 /**
  * @file views-view-summary.tpl.php
  * Default simple view template to display a list of summary lines

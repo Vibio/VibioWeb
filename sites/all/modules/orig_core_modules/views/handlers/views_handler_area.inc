@@ -1,12 +1,11 @@
 <?php
-// $Id: views_handler_area.inc,v 1.1.2.1 2010/01/19 22:11:27 merlinofchaos Exp $
 /**
  * @file
  * Views area handlers.
  */
 
 /**
- * @defgroup views_area_handlers Views' relationship handlers
+ * @defgroup views_area_handlers Views' area handlers
  * @{
  * Handlers to tell Views what can display in header, footer
  * and empty text in a view.
@@ -25,8 +24,7 @@ class views_handler_area extends views_handler {
 
   function option_definition() {
     $options = parent::option_definition();
-
-    $label = !empty($this->definition['label']) ? $this->definition['label'] : $this->definition['field'];
+    $label = !empty($this->definition['label']) ? $this->definition['label'] : $this->definition['title'];
     $options['label'] = array('default' => $label, 'translatable' => TRUE);
     $options['empty'] = array('default' => 0, 'bool' => TRUE);
 
@@ -45,6 +43,7 @@ class views_handler_area extends views_handler {
    * should have.
    */
   function options_form(&$form, &$form_state) {
+    parent::options_form($form, $form_state);
     $form['label'] = array(
       '#type' => 'textfield',
       '#title' => t('Label'),
@@ -57,7 +56,6 @@ class views_handler_area extends views_handler {
         '#type' => 'checkbox',
         '#title' => t('Display even if view has no result'),
         '#default_value' => isset($this->options['empty']) ? $this->options['empty'] : 0,
-        '#description' => t('If checked this area will be rended, even if the views has no results.'),
       );
     }
   }

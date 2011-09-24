@@ -2,6 +2,47 @@
 
 /* stephen:  */
 
+/* string override for search */
+function vibio_preprocess_box(&$vars) {   //, $hook)
+	$vars['content'] ='<ul>
+<li>Try removing quotes around phrases: "paisley tie" will match less than paisley tie.</li>
+<li>Use OR: paisley tie will match less than paisley OR tie.</li>
+</ul>';
+		// We might add another "Add Item button here, perhaps?  Suggest to 
+		//  design team
+}
+
+
+/* Filter Tips */
+//  Other option: use Better Formats module.  But this code seems a quick fix 
+//  so here it is... (have Amelia look for more nicely done examples,
+//  see if automodal is used for this... but this works so stopping.)
+
+/* remove formatting tips from edit page, shorten for details page.
+ *  may want to expand the Compose Tips a little more than the short
+ *  version, without going to the long version.
+ */
+function vibio_filter_tips($tips, $long = FALSE, $extra = '') {
+  if ($long) {
+		return '<h2>Compose Tips</h2><ul class="tips"><li>Web page addresses and e-mail addresses turn into links automatically.</li><li>Allowed HTML tags: &lt;a&gt; &lt;em&gt; &lt;strong&gt; &lt;cite&gt; &lt;code&gt; &lt;ul&gt; &lt;ol&gt; &lt;li&gt; &lt;dl&gt; &lt;dt&gt; &lt;dd&gt;</li><li>Lines and paragraphs break automatically.</li></ul>';
+  }
+  else {
+    return ""; // no short tips
+  }
+}
+
+/* new link replacing 
+ * More information about formatting options
+ * filter/tips
+ */
+function vibio_filter_tips_more_info() {
+  return 'If you want fancy formatting options, read ' .
+		l(t('this stuff.'), "filter/tips", array('attributes' => 
+			array('class' => "automodal"))) . '<p>';
+			// at least Private Messages looks bad without <p> at end
+}
+
+
 /* modified preprocess_search_results
  *  1) fiddle (freely) with searches per page
  *  2) two ways to "zebra stripe" the columns

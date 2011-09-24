@@ -1,5 +1,4 @@
 <?php
-// $Id: views_plugin_exposed_form_input_required.inc,v 1.1.2.3 2010/01/19 22:11:28 merlinofchaos Exp $
 
 /**
  * Exposed form plugin that provides basic exposed form
@@ -24,7 +23,7 @@ class views_plugin_exposed_form_input_required extends views_plugin_exposed_form
     $form['text_input_required'] = array(
       '#type' => 'textarea',
       '#title' => t('Text on demand'),
-      '#description' => t('Text to display instead results until user select and apply an expose filter.'),
+      '#description' => t('Text to display instead of results until the user selects and applies an exposed filter.'),
       '#default_value' => $this->options['text_input_required'],
     );
 
@@ -41,7 +40,6 @@ class views_plugin_exposed_form_input_required extends views_plugin_exposed_form
     static $cache = NULL;
     if (!isset($cache)) {
       $view = $this->view;
-      $exposed_data = $view->exposed_data;
       if (is_array($view->filter) && count($view->filter)) {
         foreach ($view->filter as $filter_id => $filter) {
           if ($filter->is_exposed()) {
@@ -59,7 +57,7 @@ class views_plugin_exposed_form_input_required extends views_plugin_exposed_form
     return $cache;
   }
 
-  function pre_render() {
+  function pre_render(&$values) {
     if (!$this->exposed_filter_applied()) {
       $options = array(
         'id' => 'area',
@@ -86,6 +84,9 @@ class views_plugin_exposed_form_input_required extends views_plugin_exposed_form
       $this->view->built = TRUE;
       $this->view->executed = TRUE;
       $this->view->result = array();
+    }
+    else {
+      parent::query();
     }
   }
 

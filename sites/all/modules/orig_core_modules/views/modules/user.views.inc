@@ -1,5 +1,4 @@
 <?php
-//$Id: user.views.inc,v 1.56.2.10 2010/03/22 20:32:44 merlinofchaos Exp $
 /**
  * @file
  * Provide views data and handlers for user.module
@@ -67,6 +66,7 @@ function user_views_data() {
       'help' => t('Relate nodes to the user who created it. This relationship will create one record for every node created by the user.'),
       'handler' => 'views_handler_relationship',
       'base' => 'node',
+      'base field' => 'uid',
       'field' => 'uid',
       'label' => t('nodes'),
     ),
@@ -162,7 +162,7 @@ function user_views_data() {
     ),
   );
 
-    // created field
+  // created field
   $data['users']['created'] = array(
     'title' => t('Created date'), // The item it appears as on the UI,
     'help' => t('The date the user was created.'), // The help that appears on the UI,
@@ -177,6 +177,60 @@ function user_views_data() {
       'handler' => 'views_handler_filter_date',
     ),
   );
+
+  $data['users']['created_fulldate'] = array(
+    'title' => t('Created date'),
+    'help' => t('In the form of CCYYMMDD.'),
+    'argument' => array(
+      'field' => 'created',
+      'handler' => 'views_handler_argument_node_created_fulldate',
+    ),
+  );
+
+  $data['users']['created_year_month'] = array(
+    'title' => t('Created year + month'),
+    'help' => t('In the form of YYYYMM.'),
+    'argument' => array(
+      'field' => 'created',
+      'handler' => 'views_handler_argument_node_created_year_month',
+    ),
+  );
+
+  $data['users']['timestamp_year'] = array(
+    'title' => t('Created year'),
+    'help' => t('In the form of YYYY.'),
+    'argument' => array(
+      'field' => 'created',
+      'handler' => 'views_handler_argument_node_created_year',
+    ),
+  );
+
+  $data['users']['created_month'] = array(
+    'title' => t('Created month'),
+    'help' => t('In the form of MM (01 - 12).'),
+    'argument' => array(
+      'field' => 'created',
+      'handler' => 'views_handler_argument_node_created_month',
+    ),
+  );
+
+  $data['users']['created_day'] = array(
+    'title' => t('Created day'),
+    'help' => t('In the form of DD (01 - 31).'),
+    'argument' => array(
+      'field' => 'created',
+      'handler' => 'views_handler_argument_node_created_day',
+    ),
+  );
+
+  $data['users']['created_week'] = array(
+    'title' => t('Created week'),
+    'help' => t('In the form of WW (01 - 53).'),
+    'argument' => array(
+      'field' => 'timestamp',
+      'handler' => 'views_handler_argument_node_created_week',
+    ),
+  );  
 
   // access field
   $data['users']['access'] = array(
@@ -210,7 +264,7 @@ function user_views_data() {
     ),
   );
 
-  // published status
+  // active status
   $data['users']['status'] = array(
     'title' => t('Active'), // The item it appears as on the UI,
     'help' => t('Whether a user is active or blocked.'), // The help that appears on the UI,
@@ -259,6 +313,14 @@ function user_views_data() {
     ),
   );
 
+  $data['users']['data'] = array(
+    'title' => t('Data'),
+    'help' => t('Provide serialized data of the user'),
+    'field' => array(
+      'handler' => 'views_handler_field_serialized',
+    ),
+  );
+
   // ----------------------------------------------------------------------
   // users_roles table
 
@@ -298,6 +360,7 @@ function user_views_data() {
       'name table' => 'role',
       'name field' => 'name',
       'empty field name' => t('No role'),
+      'zero is null' => TRUE,
       'numeric' => TRUE,
     ),
   );
@@ -331,7 +394,7 @@ function user_views_data() {
 
   // ----------------------------------------------------------------------
   // authmap table
-  
+
   $data['authmap']['table']['group']  = t('User');
   $data['authmap']['table']['join'] = array(
      // Directly links to users table.
@@ -386,7 +449,7 @@ function user_views_data() {
       'handler' => 'views_handler_argument_string',
     ),
   );
-  
+
   return $data;
 }
 

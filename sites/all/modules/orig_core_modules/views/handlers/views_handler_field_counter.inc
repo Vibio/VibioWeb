@@ -1,5 +1,4 @@
 <?php
-// $Id: views_handler_field_counter.inc,v 1.1.2.7 2009/12/03 01:47:31 merlinofchaos Exp $
 
 class views_handler_field_counter extends views_handler_field {
   function option_definition() {

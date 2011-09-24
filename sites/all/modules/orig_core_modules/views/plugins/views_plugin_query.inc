@@ -1,5 +1,4 @@
 <?php
-// $Id: views_plugin_query.inc,v 1.1.2.7 2010/02/22 17:41:54 merlinofchaos Exp $
 /**
  * @file
  * Defines the base query class, which is the underlying layer in a View.
@@ -17,7 +16,11 @@ class views_plugin_query extends views_plugin {
   /**
    * Constructor; Create the basic query object and fill with default values.
    */
-  function init($base_table, $base_field) {  }
+  function init($base_table, $base_field, $options) {
+    $this->base_table = $base_table;
+    $this->base_field = $base_field;
+    $this->unpack_options($this->options, $options);
+  }
 
   /**
    * Generate a query and a countquery from all of the information supplied
@@ -44,6 +47,8 @@ class views_plugin_query extends views_plugin {
    *
    * Values to set: $view->result, $view->total_rows, $view->execute_time,
    * $view->pager['current_page'].
+   *
+   * $view->result should contain an array of objects.
    */
   function execute(&$view) {  }
 
@@ -63,6 +68,19 @@ class views_plugin_query extends views_plugin {
   function get_aggregation_info() { }
 
   /**
+   * Add settings for the ui.
+   */
+  function options_form(&$form, &$form_state) { }
+
+  function options_validate(&$form, &$form_state) { }
+
+  function options_submit(&$form, &$form_state) { }
+
+  function summary_title() {
+    return t('Settings');
+  }
+
+  /**
    * Set a LIMIT on the query, specifying a maximum number of results.
    */
   function set_limit($limit) {
@@ -76,22 +94,14 @@ class views_plugin_query extends views_plugin {
     $this->offset = $offset;
   }
 
-  function init_pager(&$view) {
-    // @todo -- probably this should be a method on the display rather than directly calling
-    // get plugin?
-    if (empty($this->pager)) {
-      $this->pager = $view->display_handler->get_plugin('pager');
-    }
-  }
-
   /**
    * Render the pager, if necessary.
    */
-  function render_pager() {
+  function render_pager($exposed_input) {
     if (!empty($this->pager) && $this->pager->use_pager()) {
-      $exposed_input = isset($this->view->exposed_data_raw) ? $this->view->exposed_data_raw : NULL;
       return $this->pager->render($exposed_input);
     }
+
     return '';
   }
 
@@ -134,6 +144,26 @@ class views_plugin_query extends views_plugin {
    */
   function set_group_operator($type = 'AND') {
     $this->group_operator = strtoupper($type);
+  }
+
+  /**
+   * Return info to base the uniqueness of the result on.
+   *
+   * @return $cache_info
+   *   A string or array with query unique data or FALSE to deactivate caching
+   */
+  function get_cache_info() {
+    return FALSE;
+  }
+
+  /**
+   * Return preview info.
+   *
+   * @return $rows
+   *   An array of strings with info to be shown in the preview.
+   */
+  function get_preview_info() {
+    return array(array('<strong>' . t('Query') . '</strong>', t('No info')));
   }
 
 }

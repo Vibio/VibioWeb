@@ -1,5 +1,4 @@
 <?php
-// $Id: views_handler_argument_term_node_tid.inc,v 1.1.2.1 2009/12/24 00:24:02 merlinofchaos Exp $
 /**
  * Allow taxonomy term ID(s) as argument
  */

@@ -1,5 +1,4 @@
 <?php
-// $Id: views_handler_filter_group_by_numeric.inc,v 1.1.2.2 2010/01/22 01:41:24 merlinofchaos Exp $
 
 /**
  * Simple filter to handle greater than/less than filters
@@ -39,8 +38,8 @@ class views_handler_filter_group_by_numeric extends views_handler_filter_numeric
     $this->query->add_having($this->options['group'], "$field $operator");
   }
 
-  function ui_name() {
-    return $this->get_field(parent::ui_name());
+  function ui_name($short = FALSE) {
+    return $this->get_field(parent::ui_name($short));
   }
 
   function can_group() { return FALSE; }

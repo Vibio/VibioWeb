@@ -73,7 +73,7 @@ $messages_menu =
 $contacts_menu =
 	l("Contacts", "contacts", array(
 	attributes => array(
-		'title' => 'Build a network of Facebook friends and Vibio contacts so you can Trade with Trust',
+		'title' => 'Widen your circle of contacts on Vibio or link to Facebook',
 		'class' => $taint_path == 'contacts' ? " active" : '',
 		),
 	)

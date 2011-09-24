@@ -1,5 +1,4 @@
 <?php
-// $Id: node.views.inc,v 1.93.2.12 2010/03/25 01:14:18 merlinofchaos Exp $
 /**
  * @file
  * Provide views data and handlers for node.module
@@ -90,6 +89,7 @@ function node_views_data() {
       'group' => t('Node'), // The group it appears in on the UI. Could be left out.
       'handler' => 'views_handler_field_node',
       'click sortable' => TRUE,
+      'link_to_node default' => TRUE,
      ),
     'sort' => array(
       'handler' => 'views_handler_sort',
@@ -161,11 +161,15 @@ function node_views_data() {
     'field' => array(
       'handler' => 'views_handler_field_boolean',
       'click sortable' => TRUE,
+      'output formats' => array(
+        'published-notpublished' => array(t('Published'), t('Not published')),
+      ),
     ),
     'filter' => array(
       'handler' => 'views_handler_filter_boolean_operator',
       'label' => t('Published'),
       'type' => 'yes-no',
+      'use equal' => TRUE, // Use status = 1 instead of status <> 0 in WHERE statment
     ),
     'sort' => array(
       'handler' => 'views_handler_sort',
@@ -203,8 +207,8 @@ function node_views_data() {
 
   // moderate
   $data['node']['moderate'] = array(
-    'title' => t('Moderated'), // The item it appears as on the UI,
-    'help' => t('Whether or not the node is moderated.'), // The help that appears on the UI,
+    'title' => t('In moderation'), // The item it appears as on the UI,
+    'help' => t('Whether or not the node is currently in the moderation queue.'), // The help that appears on the UI,
      // Information for displaying a title as a field
     'field' => array(
       'handler' => 'views_handler_field_boolean',
@@ -212,7 +216,7 @@ function node_views_data() {
     ),
     'filter' => array(
       'handler' => 'views_handler_filter_boolean_operator',
-      'label' => t('Moderated'),
+      'label' => t('In the moderation queue'),
       'type' => 'yes-no',
     ),
     'sort' => array(
@@ -229,7 +233,7 @@ function node_views_data() {
       'handler' => 'views_handler_field_boolean',
       'click sortable' => TRUE,
       'output formats' => array(
-        'sticky' => array('', t('Sticky')),
+        'sticky' => array(t('Sticky'), ''),
       ),
     ),
     'filter' => array(
@@ -400,6 +404,18 @@ function node_views_data() {
     ),
   );
 
+  $data['node']['uid_revision'] = array(
+    'title' => t('User has a revision'),
+    'help' => t('All nodes where a certain user has a revision'),
+    'real field' => 'nid',
+    'filter' => array(
+      'handler' => 'views_handler_filter_node_uid_revision',
+    ),
+    'argument' => array(
+      'handler' => 'views_handler_argument_node_uid_revision',
+    ),
+  );
+
   // ----------------------------------------------------------------------
   // Node revisions table
 
@@ -489,6 +505,13 @@ function node_views_data() {
     'sort' => array(
       'handler' => 'views_handler_sort',
     ),
+    'relationship' => array(
+      'handler' => 'views_handler_relationship',
+      'base' => 'node',
+      'base field' => 'nid',
+      'title' => t('Node'),
+      'label' => t('Get the actual node from a node revision.'),
+    ),
   );
 
   // title
@@ -528,8 +551,8 @@ function node_views_data() {
   // revision timestamp
   // changed field
   $data['node_revisions']['timestamp'] = array(
-    'title' => t('Created date'), // The item it appears as on the UI,
-    'help' => t('The date the node revision was created.'), // The help that appears on the UI,
+    'title' => t('Updated date'), // The item it appears as on the UI,
+    'help' => t('The date the node was last updated.'), // The help that appears on the UI,
     'field' => array(
       'handler' => 'views_handler_field_date',
       'click sortable' => TRUE,
@@ -674,9 +697,6 @@ function node_views_handlers() {
       'views_handler_field_node_path' => array(
         'parent' => 'views_handler_field',
       ),
-      'views_handler_field_node_type' => array(
-        'parent' => 'views_handler_field_node',
-      ),
       'views_handler_field_node_link_edit' => array(
         'parent' => 'views_handler_field_node_link',
       ),
@@ -735,6 +755,9 @@ function node_views_handlers() {
         'file' => 'views_handler_argument_dates_various.inc',
         'parent' => 'views_handler_argument_date',
       ),
+      'views_handler_argument_node_uid_revision' => array(
+        'parent' => 'views_handler_argument_comment_user_uid',
+      ),
 
       // filters
       'views_handler_filter_node_type' => array(
@@ -748,6 +771,9 @@ function node_views_handlers() {
       ),
       'views_handler_filter_node_access' => array(
         'parent' => 'views_handler_filter',
+      ),
+      'views_handler_filter_node_uid_revision' => array(
+        'parent' => 'views_handler_filter_user_name',
       ),
     ),
   );
@@ -811,7 +837,9 @@ function template_preprocess_views_view_row_node(&$vars) {
   $vars['node'] = '';
   $vars['comments'] = '';
 
-  $nid = $vars['row']->{$vars['field_alias']};
+  if (!empty($vars['row']->{$vars['field_alias']})) {
+    $nid = $vars['row']->{$vars['field_alias']};
+  }
   if (!is_numeric($nid)) {
     return;
   }
@@ -848,10 +876,22 @@ function node_views_analyze($view) {
   // Check for something other than the default display:
   if ($view->base_table == 'node') {
     foreach ($view->display as $id => $display) {
+      if (empty($display->handler)) {
+        continue;
+      }
       if (!$display->handler->is_defaulted('access') || !$display->handler->is_defaulted('filters')) {
         // check for no access control
         $access = $display->handler->get_option('access');
         if (empty($access['type']) || $access['type'] == 'none') {
+          $result = db_query("SELECT r.name, p.perm FROM {role} r INNER JOIN {permission} p ON p.rid = r.rid WHERE r.name IN ('anonymous user', 'authenticated user')");
+          while ($role = db_fetch_object($result)) {
+            $role->perm = explode(', ', $role->perm);
+            $role->safe = in_array('access content', $role->perm);
+            $roles[$role->name] = $role;
+          }
+          if (!($roles['anonymous user']->safe && $roles['authenticated user']->safe)) {
+            $ret[] = views_ui_analysis(t('Some roles lack permission to access content, but display %display has no access control.', array('%display' => $display->display_title)), 'warning');
+          }
           $filters = $display->handler->get_option('filters');
           foreach ($filters as $filter) {
             if ($filter['table'] == 'node' && ($filter['field'] == 'status' || $filter['field'] == 'status_extra')) {

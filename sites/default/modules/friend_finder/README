@@ -1,3 +1,6 @@
+This stuff isn't used yet, it's notes-in-place.
+
+
 Use Contact_importer, and channel the results to drupal_send_mail
 
 Task from Pivotal Tracker:
@@ -38,5 +41,5 @@ Review these posts:
 
 Here's what I'm doing:
 set up skeleton module
-drush dl invite
+drush dl invite -> let's see what this does before coding.
 drush dl contact_importer

@@ -1,5 +1,4 @@
 <?php
-// $Id: views_test.views_default.inc,v 1.1.4.4 2010/03/10 20:12:06 merlinofchaos Exp $
 /**
  * @file
  *   Test views

@@ -1,5 +1,4 @@
 <?php
-// $Id: views_plugin_argument_validate_numeric.inc,v 1.1.2.1 2009/11/26 00:35:16 merlinofchaos Exp $
 /**
  * @file
  * Contains the numeric argument validator plugin.

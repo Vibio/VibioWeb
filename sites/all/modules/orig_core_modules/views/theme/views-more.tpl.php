@@ -1,5 +1,4 @@
 <?php
-// $Id: views-more.tpl.php,v 1.2.2.1 2009/06/02 20:35:56 merlinofchaos Exp $
 /**
  * @file views-more.tpl.php
  * Theme the more link

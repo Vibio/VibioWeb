@@ -1,5 +1,4 @@
 <?php
-// $Id: views_plugin_pager_mini.inc,v 1.1.2.1 2009/12/03 01:47:31 merlinofchaos Exp $
 
 /**
  * The plugin to handle full pager.

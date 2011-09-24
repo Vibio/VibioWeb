@@ -1,5 +1,4 @@
 <?php
-// $Id: views_handler_relationship_node_term_data.inc,v 1.1.2.1 2009/07/01 06:13:42 merlinofchaos Exp $
 /**
  * @file
  * Views' relationship handlers.
@@ -43,7 +42,6 @@ class views_handler_relationship_node_term_data extends views_handler_relationsh
     $def['table'] = 'term_data';
 
     if (!empty($this->options['required']) || !array_filter($this->options['vids'])) {
-      $term_node = $this->query->add_table('term_node', $this->relationship);
       $def['left_table'] = 'term_node';
       $def['left_field'] = 'tid';
       $def['field'] = 'tid';

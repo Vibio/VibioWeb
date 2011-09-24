@@ -1,5 +1,4 @@
 <?php
-// $Id: views_plugin_exposed_form.inc,v 1.1.2.9 2010/01/19 21:53:07 merlinofchaos Exp $
 
 /**
  * The base plugin to handle exposed filter forms.
@@ -34,9 +33,13 @@ class views_plugin_exposed_form extends views_plugin {
     $options['submit_button'] = array('default' => 'Apply', 'translatable' => TRUE);
     $options['reset_button'] = array('default' => FALSE, 'bool' => TRUE);
     $options['reset_button_label'] = array('default' => 'Reset', 'translatable' => TRUE);
-    $options['exposed_sorts_label'] = array('default' => 'Sort By', 'translatable' => TRUE);
+    $options['exposed_sorts_label'] = array('default' => 'Sort by', 'translatable' => TRUE);
     $options['sort_asc_label'] = array('default' => 'Asc', 'translatable' => TRUE);
     $options['sort_desc_label'] = array('default' => 'Desc', 'translatable' => TRUE);
+    if (module_exists('ctools')) {
+      $options['autosubmit'] = array('default' => FALSE);
+      $options['autosubmit_hide'] = array('default' => FALSE);
+    }
     return $options;
   }
 
@@ -91,6 +94,25 @@ class views_plugin_exposed_form extends views_plugin {
       '#default_value' => $this->options['sort_desc_label'],
       '#required' => TRUE,
     );
+
+    if (module_exists('ctools')) {
+      $form['autosubmit'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Autosubmit'),
+        '#description' => t('Automatically submit the form once an element is changed.'),
+        '#default_value' => $this->options['autosubmit'],
+      );
+
+      $form['autosubmit_hide'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Hide submit button'),
+        '#description' => t('Hide submit button if javascript is enabled.'),
+        '#default_value' => $this->options['autosubmit_hide'],
+        '#dependency' => array(
+          'edit-exposed-form-options-autosubmit' => array(1),
+        ),
+      );
+    }
   }
 
   /**
@@ -128,7 +150,12 @@ class views_plugin_exposed_form extends views_plugin {
       $this->view->js_settings = $form_state['js settings'];
     }
 
-    return $output;
+    if (!$this->view->display_handler->displays_exposed() || (!$block && $this->view->display_handler->get_option('exposed_block'))) {
+      return "";
+    }
+    else {
+      return $output;
+    }
   }
 
   function query() {
@@ -138,7 +165,7 @@ class views_plugin_exposed_form extends views_plugin {
       $handler = $view->sort[$exposed_data['sort_by']];
       if (isset($handler)) {
         $view->query->orderby = array();
-        if (isset($exposed_data['sort_order']) && in_array($exposed_data['sort_order'], array('asc', 'desc'))) {
+        if (isset($exposed_data['sort_order']) && in_array($exposed_data['sort_order'], array('ASC', 'DESC'))) {
           $handler->options['order'] = $exposed_data['sort_order'];
         }
         $handler->query();
@@ -151,7 +178,7 @@ class views_plugin_exposed_form extends views_plugin {
     }
   }
 
-  function pre_render() { }
+  function pre_render(&$values) { }
 
   function post_render(&$output) { }
 
@@ -160,12 +187,12 @@ class views_plugin_exposed_form extends views_plugin {
   function exposed_form_alter(&$form, &$form_state) {
     if (!empty($this->options['reset_button'])) {
       $form['reset'] = array(
-        '#value' => t($this->options['reset_button_label']),
+        '#value' => $this->options['reset_button_label'],
         '#type' => 'submit',
       );
     }
 
-    $form['submit']['#value'] = t($this->options['submit_button']);
+    $form['submit']['#value'] = $this->options['submit_button'];
     // Check if there is exposed sorts for this view
     $exposed_sorts = array();
     foreach ($this->view->sort as $id => $handler) {
@@ -178,16 +205,18 @@ class views_plugin_exposed_form extends views_plugin {
       $form['sort_by'] = array(
         '#type' => 'select',
         '#options' => $exposed_sorts,
-        '#title' => t($this->options['exposed_sorts_label']),
+        '#title' => $this->options['exposed_sorts_label'],
       );
       $sort_order = array(
-        'asc' => t($this->options['sort_asc_label']),
-        'desc' => t($this->options['sort_desc_label']),
+        'ASC' => $this->options['sort_asc_label'],
+        'DESC' => $this->options['sort_desc_label'],
       );
+      $first_sort = reset($this->view->sort);
       $form['sort_order'] = array(
         '#type' => 'select',
         '#options' => $sort_order,
         '#title' => t('Order'),
+        '#default_value' => $first_sort->options['order'],
       );
       $form['submit']['#weight'] = 10;
       if (isset($form['reset'])) {
@@ -199,6 +228,18 @@ class views_plugin_exposed_form extends views_plugin {
     if ($pager) {
       $pager->exposed_form_alter($form, $form_state);
       $form_state['pager_plugin'] = $pager;
+    }
+
+
+    // Apply autosubmit values.
+    if (!empty($this->options['autosubmit'])) {
+      $form['#attributes']['class'] .= ' ctools-auto-submit-full-form';
+      $form['submit']['#attributes']['class'] = 'ctools-use-ajax ctools-auto-submit-click';
+      ctools_add_js('auto-submit');
+
+      if (!empty($this->options['autosubmit_hide'])) {
+        $form['submit']['#attributes']['class'] .= ' js-hide';
+      }
     }
   }
 
@@ -220,7 +261,7 @@ class views_plugin_exposed_form extends views_plugin {
    *   $view->exposed_raw_input
    */
   function exposed_form_submit(&$form, &$form_state, &$exclude) {
-    if (!empty($form_state['values']['op']) && $form_state['values']['op'] == t('Reset')) {
+    if (!empty($form_state['values']['op']) && $form_state['values']['op'] == $this->options['reset_button_label']) {
       $this->reset_form($form, $form_state);
     }
     if (isset($form_state['pager_plugin'])) {
@@ -233,7 +274,12 @@ class views_plugin_exposed_form extends views_plugin {
    * Provide a reset form if one was requested.
    */
   function reset_form(&$form, &$form_state) {
-    unset($_SESSION['views'][$this->view->name][$this->view->current_display]);
+    // If filters are not overridden, store the 'remember' settings on the
+    // default display. If they are, store them on this display. This way,
+    // multiple displays in the same view can share the same filters and
+    // remember settings.
+    $display_id = ($this->view->display_handler->is_defaulted('filters')) ? 'default' : $this->view->current_display;
+    unset($_SESSION['views'][$this->view->name][$display_id]);
     $form_state['no_redirect'] = FALSE;
     $form_state['redirect'] = !empty($this->view->ajax_path) ? $this->view->ajax_path : $_GET['q'];
   }

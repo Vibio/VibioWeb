@@ -1,6 +1,7 @@
 <?php
 $friends_title = t("Connections");
 $friend_finder_title = t("Vibio Connection Finder");
+$invite_title = t("Invite Friends");
 
 /* Simon 20110907 remove notifications, which was first line in echo:
  *	$notifications
@@ -23,6 +24,11 @@ echo "
 				<li>
 					<a href='/network/find-friends'>
 						<span class='tab'>$friend_finder_title</span>
+					</a>
+				</li>
+				<li>
+					<a href='/invite'>
+						<span class='tab'>$invite_title</span>
 					</a>
 				</li>
 			</ul>

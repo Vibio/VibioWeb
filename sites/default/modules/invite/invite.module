@@ -143,6 +143,8 @@ function invite_menu() {
   );
 
   // Frontend menu items
+		// temp note, ok to upgrade over this: I think this callback would need
+		// to change to fit into the ajax system.
   $items['invite'] = array(
     'title' => 'Expand your circle',
     'title callback' => 'invite_page_title',

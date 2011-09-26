@@ -4,12 +4,18 @@
 
 /* string override for search */
 function vibio_preprocess_box(&$vars) {   //, $hook)
-	$vars['content'] ='<ul>
-<li>Try removing quotes around phrases: "paisley tie" will match less than paisley tie.</li>
-<li>Use OR: paisley tie will match less than paisley OR tie.</li>
-</ul>';
+	if ( $vars['title'] == "Your search yielded no results" ) {
+		$vars['content'] ='
+<h3>Add it?</h3>
+Can\'t find your item? <a href="/product/add">Add it directly to our Product Database</a>
+<h3>Keep looking for it?</h3>
+<ul>
+	<li>Try removing quotes around phrases: "paisley tie" will match less than paisley tie.</li>
+	<li>Use OR: paisley tie will match less than paisley OR tie.</li>
+	</ul>';
 		// We might add another "Add Item button here, perhaps?  Suggest to 
 		//  design team
+	}
 }
 
 

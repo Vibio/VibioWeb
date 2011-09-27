@@ -29,7 +29,7 @@ function hbi_nodeapi(&$node, $op, $a3=null, $a4=null)
 function hbi_views_api()
 {
 	return array(
-		"api"	=> 2,
+		"api"	=> 3, // it was 2, now we're using 3.  What happens?
 	);
 }
 

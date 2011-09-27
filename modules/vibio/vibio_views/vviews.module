@@ -2,7 +2,7 @@
 function vviews_views_api()
 {
 	return array(
-		"api"	=> 2,
+		"api"	=> 3, // stephen: was 2, not sure what this all does
 	);
 }
 

@@ -283,6 +283,9 @@ function invite_user_register_access() {
  *   The default page title, ie. non-overridden.
  */
 function invite_page_title($title) {
+	// !!! somehow network is overwriting the normal approach. Or for tabs 
+	//		maybe titles aren't set? Anyway, this works...
+	drupal_set_title(variable_get('invite_page_title', $title));
   return variable_get('invite_page_title', $title);
 }
 

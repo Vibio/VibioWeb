@@ -1,17 +1,6 @@
 <?php
 function uri_menu()
 {
-	/* erase this, right? */
-	$menu = array(
-		"relationships/edit-elaboration/%"	=> array(
-			"title"				=> "XXX Edit Friend Details",
-			"page callback"		=> "uri_edit_elaboration",
-			"page arguments"	=> array(2),
-			"access arguments"	=> array("can have relationships"),
-			"file"				=> "uri.pages.inc",
-			"type"				=> MENU_CALLBACK,
-		),
-	);
 	
 	// user_relationships_ui.module has something similar, but we went everything to be ajax-y fancy pants, so we must provide our own callbacks
 	foreach (array('approve', 'disapprove', 'cancel') as $action)
@@ -86,24 +75,6 @@ function uri_menu_title()
 	$friend_count = module_exists("network") ? count(_network_get_friends($user->uid, 1)) : 0;
 	
 	return t("Connections (!count)", array("!count" => $friend_count));
-}
-
-function EDIT_ELABORATIONS_NO_MORE_uri_preprocess_user_relationships(&$vars)
-{	
-	$link_options = array(
-		"attributes"	=> array(
-			"class"	=> "uri_edit_elaboartion",
-		),
-	);
-	
-	foreach ($vars['relationships'] as $rid => $rel)
-	{
-		$link = l(t("Edit"), "relationships/edit-elaboration/$rid", $link_options);
-		$vars['relationships'][$rid]->extra_for_display = "
-			<span class='uri_elaboration'>{$rel->extra_for_display}</span>
-			$link
-		";
-	}
 }
 
 function uri_preprocess_page(&$vars)

@@ -285,7 +285,6 @@ function invite_user_register_access() {
 function invite_page_title($title) {
 	// !!! somehow network is overwriting the normal approach. Or for tabs 
 	//		maybe titles aren't set? Anyway, this works...
-	drupal_set_title(variable_get('invite_page_title', $title));
   return variable_get('invite_page_title', $title);
 }
 
@@ -756,7 +755,10 @@ function invite_get_role_limit($account) {
 function invite_page_form($remaining_invites, $edit = array()) {
   global $user;
 
-  // Remaining invites.
+	// problems with title not being set correctly bad bad bad !!!
+  drupal_set_title("Invite Your Friends");
+
+	// Remaining invites.
   if ($remaining_invites != INVITE_UNLIMITED) {
     $form['remaining_invites_markup']['#value'] = format_plural($remaining_invites, 'You have 1 invite remaining.', 'You have @count invites remaining.');
   }

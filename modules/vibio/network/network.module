@@ -16,8 +16,8 @@ function network_menu()
 	);
 }
 function connection_finder_title() {   /* otherwise parent overrides? */
-	drupal_set_title("Vibio Connection Finder"); // !!! bad bad bad, why doesn't the code below work? note that invite didn't work either. ~/src/modules/vibio/user_relationships_integration$ vim uri.module  is somehow overpowering?  rush...
-
+	// use drupal_set_message in the page.inc, not sure why this here doesn't
+	// work.  bad bad bad !!!
   return t("Vibio Connection Finder");
 }
 

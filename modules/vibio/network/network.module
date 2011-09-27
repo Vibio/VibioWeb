@@ -4,14 +4,19 @@ define("NETWORK_DEFAULT_DEPTH", 3);
 function network_menu()
 {
 	return array(
-		"network/find-friends"	=> array(
+		"contacts/find-friends"	=> array( // s /network/contact 20110926
 			"title"				=> "Vibio Connection Finder",
+			"title callback"  => "connection_finder_title",
 			"page callback"		=> "network_find_friends",
 			"access arguments"	=> array("can have relationships"),
 			"file"				=> "network.pages.inc",
-			"type"				=> MENU_CALLBACK,
+			"type"				=> MENU_LOCAL_TASK,  // MENU_CALLBACK,
+			"weight" => 1,
 		),
 	);
+}
+function connection_finder_title() {   /* otherwise parent overrides? */
+  return "Vibio Connection Finder";
 }
 
 function network_theme()

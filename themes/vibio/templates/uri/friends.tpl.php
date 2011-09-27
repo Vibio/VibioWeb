@@ -11,10 +11,10 @@ $invite_title = t("Invite Friends");
  * EFFICIENCY: what creates $notifications, and can we remove it?
  */
 
-
+//dsm($friends);
 echo "
 	<div id='friends_tabs' class='tabs'>
-		<div class='tabs'>
+		<div class='tabs' style='display: none;'>
 			<ul class='tabs primary clearfix'>
 				<li>
 					<a href='#friends'>
@@ -22,7 +22,7 @@ echo "
 					</a>
 				</li>
 				<li>
-					<a href='/network/find-friends'>
+					<a href='/network/find-friends'> turning into contacts/find-friends
 						<span class='tab'>$friend_finder_title</span>
 					</a>
 				</li>

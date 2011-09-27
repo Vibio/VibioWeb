@@ -69,8 +69,15 @@ function uri_menu_alter(&$menu)
 		"page callback"		=> "uri_user_friends",
 		"file"				=> "uri.pages.inc",
 		"file path"			=> drupal_get_path("module", "uri"),
-		"type"				=> MENU_SUGGESTED_ITEM,
+		"type"				=> MENU_NORMAL_ITEM,
 	);
+  $menu['contacts/connections'] = array(
+		"title" => "Contacts",
+    "type"        => MENU_DEFAULT_LOCAL_TASK,
+  );
+	// is this somehow overwriting network menu?  why alter?
+
+
 }
 
 function uri_menu_title()

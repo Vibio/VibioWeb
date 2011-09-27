@@ -1,5 +1,7 @@
 <?php
 
+// various text and **menu location** changes
+
 /**
  * @file
  * Allows your users to send and track invitations to join your site.
@@ -145,27 +147,31 @@ function invite_menu() {
   // Frontend menu items
 		// temp note, ok to upgrade over this: I think this callback would need
 		// to change to fit into the ajax system.
-  $items['invite'] = array(
+	$contacts_menu = 'contacts/';
+  $items[$contacts_menu . 'invite'] = array(
     'title' => 'Expand your circle',
     'title callback' => 'invite_page_title',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('invite_form', 'page', array()),
     'access arguments' => array('send invitations'),
-    'type' => MENU_NORMAL_ITEM,
+    'type' => MENU_LOCAL_TASK, //MENU_NORMAL_ITEM,
+		'weight' => 6,
   );
-  $items['invite/accept/%invite'] = array(
+
+//!!!! test if theis menu callback wants the new url, or the old without $contacts_menu !!!
+  $items[$contacts_menu . 'invite/accept/%invite'] = array(
     'page callback' => 'invite_accept',
     'page arguments' => array(2),
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
-  $items['invite/withdraw/%invite'] = array(
+  $items[$contacts_menu . 'invite/withdraw/%invite'] = array(
     'page callback' => 'drupal_get_form',
     'page arguments' => array('invite_cancel', 2),
     'access arguments' => array('track invitations'),
     'type' => MENU_CALLBACK,
   );
-  $items['invite/resend/%invite'] = array(
+  $items[$contacts_menu . 'invite/resend/%invite'] = array(
     'title' => 'Resend invitation',
     'page callback' => 'invite_resend',
     'page arguments' => array(2),

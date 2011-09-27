@@ -2,10 +2,6 @@
 // reprofileicious
 
 
-print "Account print_r:<p>";
-print_r($account);
-
-
 global $user;
 $u = $profile['user'];
 

@@ -1,5 +1,6 @@
 <?php
-function network_find_friends($uid=false, $ajax=true, $specific_modules=false)
+//  ajax defaulted to true in last version, default to false give own page.
+function network_find_friends($uid=false, $ajax=false, $specific_modules=false)
 {
 	if (!$uid)
 	{

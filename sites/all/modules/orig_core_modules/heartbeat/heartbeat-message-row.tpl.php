@@ -19,8 +19,25 @@
 
 ?>
 <div class="heartbeat-message-block <?php print $message->message_id . ' ' . $zebra; ?>">
+<?php
+/* how do I pick the picture?
+uid_target  might be interesting?
+*/
 
+?>
   <div class="beat-item" id="beat-item-<?php print $message->uaid ?>">
+
+		<span class="heartbeat-pic-in-block"><?php
+			global $user;	
+			$notme = ($user->uid != $message->uid_target && $message->uid_target > 0 ) 
+				? $message->uid_target : $message->uid;
+
+			$u = user_load($notme);
+			$alt = $u->name . '\'s Picture';
+			$title = ''; // orname, if it’snot printed right below anyway
+			$attributes = ‘’;
+			print theme('imagecache', "little_profile_pic", $u->picture, $alt,$title, $attributes);
+		?></span>
 
     <?php print $message->content['message']; ?>
     <?php if (!empty($message->content['time_info'])): ?>

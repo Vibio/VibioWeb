@@ -290,6 +290,12 @@ function privacy_del_user($uid)
  *
  * Creates, but does it store, an array of privacy levels 
  *  uid_owner x uid_viewer
+ *
+ * Typical: I request to a privacy access for someone else, get  authenticated
+ *  or my friends circle, 2 or 3.
+ * For myself, get PRIVACY_ONLYME = 4
+
+ * The higher this returns, the more I can access
  */ 
 function privacy_get_access_level($to_uid, $from_uid=null)
 {

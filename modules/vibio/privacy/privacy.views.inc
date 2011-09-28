@@ -57,6 +57,16 @@ function privacy_views_query_alter(&$view, &$query)
 	if (!privacy_views_ensure_privacy($view->args))
 	{
 		$query->add_where(0, "0"); // can't see it, DAWG!
+
+		// stephen: this seems a bit odd so far.  If the view says
+		// "show this person lots" it doesn't say "they can only see this much",
+    //  instead it blocks everything.  So 711/1 shows me info about 711 that
+    //  is public.  711/4 I'm not allowed to see.
+    // Is this just here to prevent manipulations?
+
+		// dsm($view->args);
+		// 711, 4 returns false. 711, 1 returns true.  Signed in as uid 1.
+		// 1,4 or 1,1 both true (meaning if above does not fire.)/privacy_views_ensure_privacy(
 		$view->no_cache = true;
 	}
 	elseif ($view->name == "user_heartbeat_activity")
@@ -126,8 +136,11 @@ function privacy_views_query_alter(&$view, &$query)
 }
 
 /*
- if a view has multiple arguments, the first argument is a uid, last arg is a privacy setting
-*/
+ if a view has multiple arguments, the first argument is a uid, last arg is a privacy setting.  The higher the privacy, the more likely to fail.
+
+ * RETURNS boolean indicating logged in user (at leat for 2 arg case that I see)
+ *  can see the $uid (first arg) at the given level of privacy.  
+ */
 function privacy_views_ensure_privacy($args)
 {
 	if (count($args) <= 1)
@@ -138,7 +151,10 @@ function privacy_views_ensure_privacy($args)
 	$uid = $args[0];
 	$index = count($args) - 1;
 	$privacy_setting = $args[$index];
-	
+
+	// so it returns true if this user has a higher general access level
+	//  than requested.  Admin, returns true.  Normal user, if you want access 1
+	//  that's no problem, access 4 is a problem.  
 	return $privacy_setting <= privacy_get_access_level($args[0]);
 }
 ?>

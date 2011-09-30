@@ -322,6 +322,7 @@ function product_user_owns_product($product_id, $uid=false)
 /* warning: this uses search text for functional if
  * The point of this is something to do with searches with no results. 
  * Experiment when time
+ * !!! I think I wrote some code for blank searches to. -Stephen
  */
 function product_preprocess_box(&$vars)
 {

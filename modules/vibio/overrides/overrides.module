@@ -170,9 +170,18 @@ function overrides_search_submit($form, &$state)
 /* This produces the main search form */
 function overrides_form_search_form_alter(&$form, &$state)
 {	
-	$search_prefix = "<div id='search_page_prefix'><h3>Add an Item?</h3>
-		<div id='search_page_prefix_additional'><img src='/themes/vibio/images/Add_an_Item.png'></div>
-	</div>";
+
+  /* changes to searchform:
+   * We're greatly changing the search form 20090928.
+   * I'm not sure we'll stick with these changes.
+   * So I'm going to just hide it all with css for now
+   * A lot of this code could be removed if we stick with it.
+   */
+
+
+
+
+	$search_prefix = "";
 
 	drupal_add_js("themes/vibio/js/jquery-csb-1.0.js");
 	drupal_add_js("themes/vibio/js/search.js");
@@ -193,7 +202,7 @@ function overrides_form_search_form_alter(&$form, &$state)
 	$form['#submit'][] = "overrides_search_form_submit";
 	$form['search_form_type'] = array(
 		"#type"			=> "select",
-		"#title"		=> t("Search"),
+		"#title"		=> t("Search Results"),
 		"#options"		=> overrides_allowed_search_types(true),
 		"#default_value"=> $default,
 		"#weight"		=> -10,

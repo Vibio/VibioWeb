@@ -1,3 +1,12 @@
+/* PAY ATTENTION: whole search section removed with css for now.
+ * If we really stick with this change, do it in code instead.
+ * The code that alters the form is in the overrides module
+ */
+#search_form_container {
+	display: none;
+}
+
+
 /* stephen, prefix section */
 #search_page_prefix {
 	text-align: right;
@@ -21,14 +30,10 @@
 
 
 .box h2 { 
-	display: none;
+	/*isplay: none;*/
 }
-
-
-
-
 #page_title {
-	display: none;
+	/*display: none;*/
 }
 
 .tabs {

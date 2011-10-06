@@ -1,3 +1,7 @@
-settings.php
+sites/default/settings.php
 modules/vibio/facebook/compare_with_facebook_module_fb
 WELCOME_TO_DEV
+WELCOME_TO_MESH
+modules/memcache
+modules/memcache/*
+

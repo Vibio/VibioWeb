@@ -68,11 +68,13 @@ function sameusername_get_username($form, &$state)
 {
 	$vals = $state['values'];
 
-	/* stephen: spammers using same first and last name */
-	if ( $vals['fname'] == $vals['lname'] ) {
+	/* stephen: spammers using same first and last name  */
+	/* Keith tried with facebook and hit this error, so if it's blank, pass it,
+      hopefully some other security deals with blank names */
+	if ( $vals['fname'] && ($vals['fname'] == $vals['lname']) ) {
 		drupal_set_message("Your post matches one of our spam filters.  If you're a real person we apologize, please try again!");
 		drupal_goto(''); /* homepage */
-	}
+	} 
 
 	$full_name = trim("{$vals['fname']} {$vals['lname']}");
 	unset($state['values']['fname']);

@@ -9,6 +9,9 @@ a.local_action_button {
 }
 
 
+/* hide the pathauto.  This might be better in code one day !!! */
+#edit-pathauto-perform-alias-wrapper { display: none; }
+
 
 /* misc */
 .hide {

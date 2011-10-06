@@ -1,0 +1,3 @@
+<?php
+
+include_once('cck_and_menus_from_v1_1.features.inc');

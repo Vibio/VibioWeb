@@ -1,0 +1,3 @@
+<?php
+
+include_once('v1_1_imagecache_presets.features.inc');

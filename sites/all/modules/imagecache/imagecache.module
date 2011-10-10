@@ -72,18 +72,6 @@ function imagecache_menu() {
     'access callback' => '_imagecache_menu_access_public_files',
     'type' => MENU_CALLBACK
   );
-  // stephen: redirect from secondary server to main (staging)
-	// this didn't immediately work.  Ok to erase if never get it going.
-	// with this: You are not logged in.
-	// the access callback isn't working.  Who can't access?
-	// I think anyone can access, so I'm locking it accessable.
-  $items['cachedimages/imagecache'] = array(
-    'page callback' => 'imagecache_cache',
-    'access callback' => '_imagecache_menu_access_public_files',
-    'type' => MENU_CALLBACK
-  );
-
-
   // private downloads imagecache callback
   $items['system/files/imagecache'] = array(
     'page callback' => 'imagecache_cache_private',
@@ -98,10 +86,6 @@ function imagecache_menu() {
  * Menu access callback for public file transfers.
  */
 function _imagecache_menu_access_public_files() {
-	// not sure what Nelson coded... let's kill this problem -- stephen
-	return 1;
-	//die(FILE_DOWNLOADS_PUBLIC);
-	//die(variable_get('file_downloads', FILE_DOWNLOADS_PUBLIC));
   return (FILE_DOWNLOADS_PUBLIC == variable_get('file_downloads', FILE_DOWNLOADS_PUBLIC));
 }
 
@@ -356,7 +340,55 @@ function imagecache_action_definition($action) {
  * @param $absolute
  *   A Boolean indicating that the URL should be absolute. Defaults to TRUE.
  */
+
+// vibio: I found this alternative function from someone with the same symptoms.
+//  it's likely that we should go back to the original when tuning this, I 
+//  don't think their fixes are a perfect match for what we need... but it's
+//  working fine so moving on
 function imagecache_create_url($presetname, $filepath, $bypass_browser_cache = FALSE, $absolute = TRUE) {
+  $args = array('query' => empty($bypass_browser_cache) ? NULL : time());
+  $file_directory = file_directory_path();
+
+  // Determine the path of the derivative inside the files directory.
+  $derivative_path = 'imagecache/'. $presetname .'/'. _imagecache_strip_file_directory($filepath);
+
+  // Then construct a full path and see if anyone wants to alter it.
+  $altered_path = $old_path = $file_directory .'/'. $derivative_path;
+  drupal_alter('file_url', $altered_path);
+
+  // If any module has altered the path, then return the alteration...
+	/* vibio: we always alter the path, but 
+  if ($altered_path != $old_path) {
+    // ...but use url() so our $bypass_browser_cache parameter is honored.
+    return url($altered_path, $args);
+  }
+  */
+
+  // It was unchanged so use the download method's prefix.
+
+	/* vibio: we are using neither of these:
+  $prefix = array(
+    FILE_DOWNLOADS_PUBLIC => $file_directory,
+    FILE_DOWNLOADS_PRIVATE => 'system/files',
+  );
+  $path = $prefix[variable_get('file_downloads', FILE_DOWNLOADS_PUBLIC)] .'/'. $derivative_path;
+  */
+	// instead, use this:   !! do we even use this?
+	$path = $file_directory .'/'. $derivative_path;
+
+  //vibio: we use neither PUBLIC nor PRIVATE if (variable_get('file_downloads', FILE_DOWNLOADS_PUBLIC) == FILE_DOWNLOADS_PUBLIC && variable_get('clean_url', '0')){
+    imagecache_generate_image($presetname, $filepath);
+  //}
+
+	// vibio: Merge different approaches for our unique file structure
+	//return url($altered_path, $args);
+  return url($altered_path, $args + array('absolute' => $absolute));
+  //return url($path, $args + array('absolute' => $absolute));
+	
+}
+
+// vibio: this is the original function. 
+function Ximagecache_create_url($presetname, $filepath, $bypass_browser_cache = FALSE, $absolute = TRUE) {
   $args = array('query' => empty($bypass_browser_cache) ? NULL : time());
   $file_directory = file_directory_path();
 
@@ -410,8 +442,7 @@ function _imagecache_strip_file_directory($path) {
  * callback for handling public files imagecache requests.
  */
 function imagecache_cache() {
-  $args = func_get_args(); // Returns an array comprising a function's argument list
-
+  $args = func_get_args();
   $preset = check_plain(array_shift($args));
   $path = implode('/', $args);
   _imagecache_cache($preset, $path);
@@ -1349,6 +1380,7 @@ function imagecache_generate_image($presetname, $filepath) {
   if (file_exists($destination)) {
     return TRUE;
   }
+// Follow this -->
   return imagecache_build_derivative($preset['actions'], $filepath, $destination);
 }
 

@@ -108,11 +108,7 @@ switch ($who_to_you) {
  */
 
 
-
-//print "<h3>Secondary Menu will go here</h3>";
-// next: this seems like it should work: or back up, skip nice menus v1.1
-/*$menu = theme('nice_menus', -1, 'primary-links', 21, 'down');
-print $menu['content'];*/
+// Secondary Menu  --> now formatted like tabs (but not really Drupal's tabs)
 
 /* Still to do:
 		- badges and some others need a number... not necessarily well defined yet,

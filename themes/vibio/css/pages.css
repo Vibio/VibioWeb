@@ -353,11 +353,9 @@ ul.links li {
 }
 
 .rounded_content {
-  background: white;
   border-radius: 4px;
   -moz-border-radius: 4px;
   margin: 0;
-  padding: 10px;
 }
 
 .rounded_left_side {
@@ -392,7 +390,6 @@ ul.links li {
 }*/
 
 .sidebar .rounded_content {
-  background: #f6f6f6;
   color: #556270;
 }
 

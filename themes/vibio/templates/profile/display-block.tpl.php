@@ -100,7 +100,7 @@ echo "
 
 <div id='profile_ext_displayblock'>	
 	<div id='upper_title'>
-		$home_menu | $profile_menu
+		$home_menu  $profile_menu
 	</div>
 	<div id='profile_ext_displayblock_user_section'>
 		<a href='$url_name' id='profile_ext_displayblock_image'>

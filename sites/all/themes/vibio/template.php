@@ -197,7 +197,7 @@ function vibio_status_messages($display=null)
 	return $out;
 }
 
-
+/*  note: we're in the theming section, not good to do any serious changes */
 function vibio_user_login_block($form) {
    $form['submit']['#value'] = 'Sign up';
 }

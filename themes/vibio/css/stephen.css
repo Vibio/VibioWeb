@@ -7,17 +7,14 @@ a.local_action_button {
 	margin: 6px;
 	display: block;
 }
-
-
 /* hide the pathauto.  This might be better in code one day !!! */
-#edit-pathauto-perform-alias-wrapper { display: none; }
-
-
+#edit-pathauto-perform-alias-wrapper {
+	display: none;
+}
 /* misc */
 .hide {
 	display: none;
 }
-
 /* negotiations */
 
 .item-picture-offer {
@@ -27,7 +24,6 @@ a.local_action_button {
 	margin: auto; /* remove width and margin auto, maybe? design? */
 	text-align: center;
 }
-
 .neg-form {
 	border: 1px solid red;
 	padding: 2px;
@@ -40,22 +36,20 @@ a.local_action_button {
 	padding: 2px;
 	border: 1px solid yellow;
 }
-
 /* feature-this flag */
 div.search-flag {
 	position: relative;
 	top: 10px;
 }
-
-
 /* offers page, see also selling page */
 /*  slowly switching to imagacche */
 .person_pic img {
 	height: 42px;
 	width: 42px;
 }
-.popups-box .title { display: none; }
-
+.popups-box .title {
+	display: none;
+}
 /* selling page (and then similar components elsewhere) */
 div.teaser_item_pic {
 	float: left;
@@ -66,16 +60,15 @@ div.teaser_item_pic {
 }
 div.selling_item_info {   /* the sellers info, left of offer */
 	/* rapid, crappy css */
-	width: 300px; float: left; height: 160px;
+	width: 300px;
+	float: left;
+	height: 160px;
 	padding-right: 1em;
-	margin-right: 1em; 
+	margin-right: 1em;
 }
-
-
 /* user pics in various places, rename thorughout? */
-.person_pic,
-body.page-selling div.picture {
-        float: left;
+.person_pic, body.page-selling div.picture {
+	float: left;
 	padding-right: 6px;
 }
 body.page-selling div.picture img {
@@ -86,18 +79,15 @@ body.page-selling div.picture img {
 body.page-selling h4 {
 	margin-bottom: .1em;
 }
-
 /* meus */
 #block-menu-primary-links li ul li {
 	margin-left: 8px;
 }
-
 /* product page */
 .action_button_link {
 	margin: 4px;
 	background: #ddd;
 }
-
 /* search results, items in an image-square in multiple places */
 .item-square {
 	width: 180px;
@@ -111,7 +101,7 @@ body.page-selling h4 {
 img.item-square-image {  /* should be done with imagecache */
 	height: 180px;
 	width: 180px;
-}	
+}
 div.over-item {
 	position: absolute;
 	top: 10px;
@@ -123,10 +113,9 @@ div.over-item {
 	color: black;
 }
 div.search-links {
-        position: absolute;
-        bottom: 10px;
+	position: absolute;
+	bottom: 10px;
 }
-
 /* search results, items in an image-rectangle in multiple places */
 .item-rectangle {
 	width: 160px; /* same as image, I think */
@@ -137,21 +126,23 @@ div.search-links {
 	float: left;
 	position: relative; /* make it the parent */
 }
-.col1, .col2 { 
+.col1, .col2 {
 	width: 230px;
 	float: left;
 	display: block;
 }
-.col3 { 
+.col3 {
 	width: 230px;
 	float: right;
 	display: block;
 }
-.col0 { background: blue; }
-/*img.item-square-image {  done with imagecache 
-	//height: 180px;
-	width: 180px;
-}*/	
+.col0 {
+	background: blue;
+}
+/*img.item-square-image {  done with imagecache
+ //height: 180px;
+ width: 180px;
+ }*/
 div.title-item {
 }
 .item-rectangle div.over-item a {
@@ -161,23 +152,36 @@ div.title-item {
 	color: black;
 }
 div.search-links {
-        position: absolute;
-        bottom: 10px;
+	position: absolute;
+	bottom: 10px;
 }
-
-
-
 /* expect Carolyn to erase and replace this, but there's no correct
  * template so I'm going to design in css
  */
 #profile_ext_displayblock {
-	background: #cce;
+	font-size: 15px;
 }
-#profile_ext_displayblock_subitems  {
+#profile_ext_displayblock_subitems {
 	width: 100%;
 	text-align: center;
 }
 a #profile_ext_displayblock_image {
 	display: block;
 	float: left;
+}
+#upper_title {
+	background: url(/themes/vibio/images/upper_title.png) no-repeat 0 0;
+	height: 40px;
+	display: block;
+}
+#upper_title a {
+	font-size: 15px;
+	font-weight: bold;
+	color: #a3a3a3;
+	padding: 10px 20px;
+	line-height: 42px;
+}
+#upper_title a.active {
+	color: #20a0d1;
+	padding: 10px 27px;
 }

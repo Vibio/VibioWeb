@@ -81,6 +81,14 @@ function overrides_form_alter($form, &$state, $id)
 	{
 		drupal_set_title(t("Create A New Account"));
 	}
+
+	// Login to  home page (oddly, user-login-form works already, but do together
+	// Security module is overoverwriting this!
+ 	if ($form_id == 'user_login_block' || $form_id == 'user_login') {
+		$go = 'home';
+    $form['#action'] = '/user/login?destination=' . $go;
+  }
+
 }
 
 function overrides_form_user_login_block_alter(&$form, &$state)

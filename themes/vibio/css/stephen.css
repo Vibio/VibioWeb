@@ -161,14 +161,12 @@ div.search-links {
 #profile_ext_displayblock {
 	font-size: 15px;
 }
-#profile_ext_displayblock_subitems {
-	width: 100%;
-	text-align: center;
-}
+
 a #profile_ext_displayblock_image {
 	display: block;
 	float: left;
 }
+/*Upper Left Sidebar*/
 #upper_title {
 	background: url(/themes/vibio/images/upper_title.png) no-repeat 0 0;
 	height: 40px;
@@ -184,4 +182,34 @@ a #profile_ext_displayblock_image {
 #upper_title a.active {
 	color: #20a0d1;
 	padding: 10px 27px;
+}
+/*Sidebar Little Profile Pic*/
+#profile_ext_displayblock_user_section {
+	background: #ffffff
+}
+#profile_ext_displayblock_image {
+	float: left;
+	border: 1px solid #CCC;
+	padding: 3px;
+	margin: 10px 5px 10px 10px;
+}
+#profile_ext_displayblock_image img {
+	border: 1px solid #CCC
+}
+#profile_ext_displayblock_name{
+	line-height: 38px;
+}
+/*Sidebar Inbox*/
+#profile_ext_displayblock_subitems{
+	background: url(/themes/vibio/images/inbox.png) no-repeat 5px 0 #FFF;
+	width: 190px;
+	height: 164px;
+	
+}
+ul.primary_menu_by_hand {
+	margin: 0;
+	list-style: none;
+	padding: 0;
+	width: 150px;
+	color: #FFF;
 }

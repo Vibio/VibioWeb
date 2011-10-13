@@ -1,0 +1,51 @@
+<?php
+
+/**
+ * Implementation of hook_theme().
+ */
+function views_autofakerefresh_theme() {
+  return array(
+    'views_autofakerefresh' => array(
+      'arguments' => array('interval' => array('default' => NULL)),
+    ),
+  );
+}
+
+/**
+ * Theme function for 'views_autofakerefresh'.
+ *  Interval might be 5 seconds, for example
+ */
+function theme_views_autofakerefresh($interval) {
+  drupal_add_js(drupal_get_path('module', 'views_autofakerefresh') . '/views_autofakerefresh.js');
+  drupal_add_js(array('views_autofakerefresh' => array('interval' => $interval)), 'setting');
+  $query_string = drupal_query_string_encode($_REQUEST, array_merge(array('q', 'pass'), array_keys($_COOKIE)));
+
+	$offset = _next_offset();
+	$offset + 3;
+  $query[] = $query_string . "&offset=$offset";
+
+  $link = l('', $_GET['q'], array('query' => count($query) ? implode('&', $query) : NULL));
+  
+	return $link . '<div class="auto-refresh">' . $link . '</div>';
+}
+
+/* Set the offset */
+function views_autofakerefresh_views_pre_view(&$view, &$display_id, &$args) {
+	if($view->name == 'user_hb_incoming_activity'){
+		$view->display['default']->handler->options['pager']['options']['offset'] =  _next_offset();
+	}
+}
+
+/* Get offset from url, and add 1. */
+function _next_offset () {
+	$offset = 0;
+	if ( is_numeric($_GET['offset']) ) {
+		$offset = $_GET['offset'];
+	}
+	// Let's do most recent 120?  (Don't set too high or 
+	//  we get empty text )
+	if ( $offset > 120 ) {
+		$offset = 0;
+	}
+	return $offset + 1;
+}

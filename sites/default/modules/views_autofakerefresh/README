@@ -1,0 +1,7 @@
+From views_hacks and modified by stephen, probably very heavily
+
+This module normally updates a view with new incoming information using ajax...
+we're faking that, pretending new information is coming in.
+
+In the future, we might have it test to see if new information has come in,
+and maybe start over?  Could easily get way to complex for a toy

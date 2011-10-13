@@ -1,0 +1,7 @@
+name = Views Auto-Fake-refresh
+description = Acts like it's auto-refreshing of Ajax-enabled views but uses offsets instead.  Modified from Auto-refresh
+package = Views
+dependencies[] = views
+core = 6.x
+
+

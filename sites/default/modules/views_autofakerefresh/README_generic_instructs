@@ -1,0 +1,8 @@
+From the project page:
+
+Turn AJAX on for your view
+Edit your view header to use the PHP code input format and insert the following line:
+<?php
+$interval = 5000;
+print theme('views_autorefresh', $interval);
+?>

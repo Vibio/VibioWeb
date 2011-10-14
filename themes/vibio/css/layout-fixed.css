@@ -33,7 +33,7 @@ body {
    */
   margin-left: auto;
   margin-right: auto;
-  width: 890px;
+  width: 960px;
 }
 
 #page {
@@ -78,9 +78,9 @@ body {
 }
 
 .sidebar-first #content {
-  width: 680px;
+  width: 750px;
   margin-left: 210px; /* LTR */ /* The width of .region-sidebar-first. */
-  margin-right: -890px; /* LTR */ /* Negative value of #content's width + left margin. */
+  margin-right: -958px; /* LTR */ /* Negative value of #content's width + left margin. */
 }
 
 .sidebar-second #content {
@@ -117,7 +117,7 @@ body {
 .with-navigation #content,
 .with-navigation .region-sidebar-first,
 .with-navigation .region-sidebar-second {
-  margin-top: 2.3em; /* Set this to the same value as the navigation height above. */
+  margin-top: 10px; /* Set this to the same value as the navigation height above. */
 }
 
 #navigation .section {

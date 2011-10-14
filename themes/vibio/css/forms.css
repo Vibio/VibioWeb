@@ -58,7 +58,7 @@
  */
 #search-box /* Wrapper for the search form */ {
   float: left;
-  margin: 4px 0 0 10px;
+  margin-left:10px;
   width: 285px;
 }
 
@@ -83,11 +83,11 @@
   -webkit-border-radius: 7px;
   -moz-border-radius: 7px;
   border-radius: 7px;
-  height: 35px;
-  width: 200px;
+  height: 34px;
+  width: 387px;
   padding-left: 85px;
   position: absolute;
-  right: 0;
+  right: -190px;
   top: 0;
   z-index: 0;
 }
@@ -95,10 +95,10 @@
 #search input[type="submit"] {
   background: transparent url(../images/search-icon.png) no-repeat top center;
   width: 35px;
-  height: 35px;
+  height: 30px;
   border: 0;
   position: absolute;
-  right: 5px;
+  right: -185px;
   top: 8px !important;
 }
 
@@ -278,29 +278,8 @@ div.form-radios td.form-item-label, div.form-checkboxes td.form-item-label {
 /* ----- Buttons---- */
 
 .button {
-  background: #3fc7fb; /* Old browsers */
-  background: -moz-linear-gradient(top, #54cffe 1%, #02aff0 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#54cffe), color-stop(100%,#02aff0)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, #54cffe 1%,#02aff0 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, #54cffe 1%,#02aff0 100%); /* Opera11.10+ */
-  background: -ms-linear-gradient(top, #54cffe 1%,#02aff0 100%); /* IE10+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#54cffe', endColorstr='#02aff0',GradientType=0 ); /* IE6-9 */
-  background: linear-gradient(top, #54cffe 1%,#02aff0 100%); /* W3C */
-  border: 1px solid #246e89;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-  -webkit-box-shadow: inset 0px 1px 1px 0px #9ee1f3;
-  -moz-box-shadow: inset 0px 1px 1px 0px #9ee1f3;
-  box-shadow: inset 0px 1px 1px 0px #9ee1f3;
-  color: #fff;
-  display: inline-block;
-  font-weight: bold;
-  padding: .3em 1em;
+  background:url(/themes/vibio/images/search_button.png) no-repeat 0px 0px;
+  display: block;
   position: relative;
-  margin: .3em 0;
-  text-decoration: none;
-  text-shadow: 0px 1px 1px #000000;
-  filter: dropshadow(color=#000000, offx=0, offy=1);
   z-index: 0; 
 }

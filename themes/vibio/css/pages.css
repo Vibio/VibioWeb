@@ -26,7 +26,7 @@ a {
 }
 
 #page-wrapper {
-  padding: 15px 10px;
+  padding: 10px;
 }
 
 #page_title {
@@ -69,8 +69,8 @@ a.item_link {
  */
 
 #header_quick_actions {
-  width: 500px;
-  height: 33px;
+  width: 625px;
+  height: 48px;
   float: right;
   position: relative;
 }
@@ -87,6 +87,9 @@ a.item_link {
 
 #name-and-slogan /* Wrapper for website name and slogan */ {
   float: left;
+}
+#name-and-slogan img{
+	width:132px;
 }
 
 h1#site-name,
@@ -109,11 +112,10 @@ div#site-name /* The name of the website */ {
 
 .slogan {
 background: transparent url(../vibio-tagline.png) no-repeat;
-  top: 45px;
+  top: 28px;
   position: relative;
-  left: 160px;
+  left: 130px;
   text-indent: -5000px;
-  height: 30px;
   width: 200px;
 }
 
@@ -395,8 +397,6 @@ ul.links li {
 
 .sidebar .rounded_content a {
   color: #106f93;
-  font-size: 13px;
-  font-family: Helvetica;
 }
 
 .sidebar .rounded_content a.active {
@@ -466,10 +466,8 @@ ul.links li {
 }
 
 .region-sidebar-first h2.title {
-  border-bottom: 1px solid #e4e5e5;
-  color: #525e6c;
+  color: #106F93;
   font-size: 15px;
-  text-transform: capitalize;
 }
 
 #block-user-1 {
@@ -483,8 +481,7 @@ ul.links li {
 
 .menu_with_count_count {
   float: right;
-  color: #B5CA3E;
-  font-weight: bold;
+  color: #FFF;
 }
 
 .indent {

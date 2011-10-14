@@ -158,9 +158,6 @@ div.search-links {
 /* expect Carolyn to erase and replace this, but there's no correct
  * template so I'm going to design in css
  */
-#profile_ext_displayblock {
-	font-size: 15px;
-}
 
 a #profile_ext_displayblock_image {
 	display: block;
@@ -196,20 +193,28 @@ a #profile_ext_displayblock_image {
 #profile_ext_displayblock_image img {
 	border: 1px solid #CCC
 }
-#profile_ext_displayblock_name{
+#profile_ext_displayblock_name {
 	line-height: 38px;
 }
 /*Sidebar Inbox*/
-#profile_ext_displayblock_subitems{
+#profile_ext_displayblock_subitems {
 	background: url(/themes/vibio/images/inbox.png) no-repeat 5px 0 #FFF;
 	width: 190px;
 	height: 164px;
-	
 }
 ul.primary_menu_by_hand {
 	margin: 0;
 	list-style: none;
-	padding: 0;
-	width: 150px;
-	color: #FFF;
+	padding: 33px 0px 0px 15px;
+	width: 163px;
 }
+ul.primary_menu_by_hand li {
+	margin: 0 0 5px 0;
+}
+.menu_with_count_count {
+	background: url(/themes/vibio/images/blue_bubble.png) no-repeat 5px 0;
+	width: 47px;
+	height:19px;
+	text-align: center;
+}
+#block-profile_ext-navigation_profile_display{margin: 0}

@@ -172,13 +172,17 @@ a #profile_ext_displayblock_image {
 #upper_title a {
 	font-size: 15px;
 	font-weight: bold;
-	color: #a3a3a3;
-	padding: 10px 20px;
 	line-height: 42px;
+	color: #999;
 }
 #upper_title a.active {
 	color: #20a0d1;
-	padding: 10px 27px;
+}
+#upper_title .home-b {
+	padding: 10px 26px;
+}
+#upper_title .profile-b {
+	padding: 10px 21px;
 }
 /*Sidebar Little Profile Pic*/
 #profile_ext_displayblock_user_section {
@@ -214,7 +218,30 @@ ul.primary_menu_by_hand li {
 .menu_with_count_count {
 	background: url(/themes/vibio/images/blue_bubble.png) no-repeat 5px 0;
 	width: 47px;
-	height:19px;
+	height: 19px;
 	text-align: center;
 }
-#block-profile_ext-navigation_profile_display{margin: 0}
+#block-profile_ext-navigation_profile_display {
+	margin: 0
+}
+/*Sidebar Logged Out*/
+#block-user-0 {
+	padding: 10px;
+}
+#block-user-0.block{
+	margin: 0px;
+}
+#block-user-0 .menu_header {
+	text-align: center;
+	color: #00AEF0;
+}
+#edit-name-wrapper.form-item {
+	margin-bottom: 0;
+	font-size: 15px;
+	font-weight: normal
+}
+#edit-pass-wrapper.form-item {
+	margin: 4px 0;
+	font-size: 15px;
+	font-weight: normal
+}

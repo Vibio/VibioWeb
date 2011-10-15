@@ -168,9 +168,12 @@ body {
  * Footer
  */
 #footer {
+	background: url(/themes/vibio/images/footer_bgd.png) repeat-x;
 }
 
 #footer .section {
+	width: 960px;
+	margin: 0 auto;
 }
 
 /*

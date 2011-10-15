@@ -216,13 +216,16 @@ dd {
  * http://meyerweb.com/eric/thoughts/2007/06/11/who-ordered-the-link-states
  */
 a:link {
+	color: #79AFBF;
 }
 
 a:visited {
+	color:#496F8E
 }
 
 a:hover,
 a:focus {
+	color: #00AEF0
 }
 
 a:active {

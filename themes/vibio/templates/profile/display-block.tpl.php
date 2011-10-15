@@ -83,7 +83,7 @@ $profile_menu =
 	l("Profile", "user/$uid", array(
 	attributes => array(
 		'title' => 'My Profile',
-		'class' => $taint_path == 'profile' ? " active" : '',
+		'class' => $taint_path == 'profile' ? "profile-b active" : 'profile-b inactive',
 		),
 	)
 );
@@ -91,7 +91,7 @@ $home_menu =
 	l("Home", "", array(
 	attributes => array(
 		'title' => 'Home',
-		'class' => $taint_path == 'home' ? " active" : '',
+		'class' => $taint_path == 'home' ? "home-b active" : 'home-b inactive',
 		),
 	)
 );

@@ -30,7 +30,7 @@ a {
 }
 
 #page_title {
-  color: grey;
+  color: #666666;
 }
 
 a.item_link {
@@ -73,6 +73,7 @@ a.item_link {
   height: 48px;
   float: right;
   position: relative;
+  font-size: 15px;
 }
 
 #logo /* Wrapping link for logo */ {
@@ -235,20 +236,17 @@ ul.links li {
   text-align: right; /* LTR */
 }
 
-/*
- Footer
- */
+/*Footer*/
 
 .region-footer {
-  border: 1px solid #c3c8ce;
-  margin-top: 1em;
-  padding: 10px;
 }
 
 .region-footer .block {
-  float: left;
-  margin: 0 10px; 
- }
+  font-size: 11px;
+  font-weight: bold;
+  color: #c3dfe8;
+  padding-top: 5px 
+}
 
 .region-footer h2 {
   display: none;
@@ -256,9 +254,7 @@ ul.links li {
 
 .region-footer a:link,
 .region-footer a:visited {
-  color: #f5fcff;
-  font-size: 12px;
-  font-weight: normal;
+  color: #c3dfe8;
   line-height: 2em;
 }
 
@@ -271,13 +267,70 @@ ul.links li {
   list-style-type: none;
   list-style-image: none;
 }
+#block-block-3{
+	width: 100%;
+	height: 84px;
+}
+#footer-logo img{
+	float: left;
+	width:132px; 
+	margin-right: 87px;
+}
+#footer-links{
+ 	float: left;
+}
+#footer-social{
+	font-size: 13px;
+	margin-top:15px;
+	font-weight: bold;
+}
+#footer-twitter{
+	background-position: 0px 0px;
+	margin-left: 10px;
+}
+#footer-fb{
+	background-position: -29px 0px;
+}
+#footer-tumbler{
+	background-position: -59px 0px;
+	
+}
+#footer-email{
+	background-position: -89px 0px;
+}
+#footer-nav{
+	clear: both;
+}
+.float-left{
+	float: left;
+	margin-top: 5px;
+}
+.footer-s-image{
+	background: url(/themes/vibio/images/footer_social.png) no-repeat;
+	text-indent:-9999px;
+	display: block;
+	width: 21px;
+	height:21px;
+	float: left;
+	margin-right: 7px; 
+}
 
+#footer-copyright{
+ 	font-weight: normal;
+ 	float: right;
+ 	margin-top: 12px;
+}
+#footer-copyright p{
+	margin: 5px 0;
+	text-align: right;
+}
+
+ 
 
 /*
  * Closure
  */
 .region-page-closure {
-	min-height: 155px;
 	width: 100%;
 	margin-top: -75px;
 }
@@ -602,10 +655,10 @@ h5.menu_header {
   -moz-border-radius: 5px;
   border-radius: 5px; 
   -webkit-box-shadow: inset 1px 1px 1px 0px #e3e3e3;
--moz-box-shadow: inset 1px 1px 1px 0px #e3e3e3;
-box-shadow: inset 1px 1px 1px 0px #e3e3e3;  
-height: 30px;	
-  width: 180px;
+ -moz-box-shadow: inset 1px 1px 1px 0px #e3e3e3;
+ box-shadow: inset 1px 1px 1px 0px #e3e3e3;  
+ height: 30px;	
+  width: 168px;
 }
 
 #user-login-form #edit-openid-identifier {

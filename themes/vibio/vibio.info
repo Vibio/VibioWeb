@@ -7,8 +7,6 @@ base theme = zen
    ; Stephen making quick edits in various places, better
    ;  to separate my work than integrate with each file here 
 stylesheets[all][]   = css/stephen.css
- 
-
 stylesheets[all][]   = css/html-reset.css
 stylesheets[all][]   = css/layout-fixed.css
 stylesheets[all][]   = css/tabs.css
@@ -27,7 +25,7 @@ conditional-stylesheets[if IE][all][]       = css/ie.css
 conditional-stylesheets[if lte IE 6][all][] = css/ie6.css
 
   ; Optionally add some JavaScripts to your theme.
-; scripts[] = js/script.js
+scripts[] = js/dom-removal.js
 
   ; The regions defined in Zen's default page.tpl.php file.  The name in
   ; brackets is the name of the variable in the page.tpl.php file, (e.g.

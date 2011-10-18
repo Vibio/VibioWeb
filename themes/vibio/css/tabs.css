@@ -44,7 +44,6 @@ ul.primary li a {
   margin: 0;
   font-weight: bold;
   text-decoration: none;
-  color: #777;
   padding: 0;
   background-color: transparent;
 }
@@ -63,10 +62,9 @@ ul.primary li a .tab {
   margin: 0;
   padding: 0 8px 0 5px;
   border-width: 0;
-  line-height: 20px;
+  font-size:15px;
   border-bottom: 7px solid #cfd2d5;  
-  font-weight: normal;
-  color: #758391;
+  font-weight: bold;
 }
 
 ul.primary li a:hover {

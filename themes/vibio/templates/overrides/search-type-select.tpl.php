@@ -12,10 +12,7 @@ foreach ($search_types as $type => $data)
 		);
 
 	$submenu .= "
-		<a href='#'>
-			<img id='searchtype_{$type}' src='{$data['image']}' class='searchtype_image'
-				alt='{$data['title']}' title='{$data['title']}' />
-		</a>
+		<a href='#' class='searchtype_{$type}'>{$data['title']}</a>
 	";
 }
 ?>

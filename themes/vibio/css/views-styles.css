@@ -1,6 +1,11 @@
+/*spinning views gif*/
+.views-throbbing{
+	display: none;
+}
 .views_node_image_container img {
-	max-height: 40px;
-	max-width: 80px;
+	height: 42px;
+	width: 42px;
+	border: 1px solid #CCC;
 }
 
 .views_node_image_container {
@@ -8,18 +13,23 @@
 }
 
 .views-field-picture, .views-field-message {
-	padding: 5px 0;
+	padding: 10px 0;
 	vertical-align: top;
 }
 
-.views-field-picture .picture {
-	margin-right: 5px;
+.views-field-picture .picture, .views_node_image_container  {
+	margin-right: 7px;
+	padding: 3px 0 0 3px;
+	height:47px;
+	width:47px;
+	background: #FFFFFF;
+	border: 1px solid #CCCCCC;
 }
 
 .views_message {
 	float: left;
-	margin-left: 10px;
-	max-width: 585px;
+	width: 613px;
+	padding-top: 7px;
 }
 
 .views_message p {
@@ -31,15 +41,21 @@
 }
 
 .view_activity_timestamp {
-	display: block;
+	display: none;
 	font-size: 10px;
 	color: #838383;
 	margin: -5px 0 0;
 }
 
+table.views-table.cols-2{
+	margin: 0;
+}
+
+table.views-table.cols-2 thead {
+	background:url(../images/long_border.png) no-repeat scroll 0 10px;
+}
+
 .view-content tr {
-	background-color: transparent;
-	border-bottom: 1px solid #E2E6E9;
 	padding-bottom: 5px;
 }
 

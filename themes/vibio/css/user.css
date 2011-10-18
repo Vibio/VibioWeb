@@ -1,14 +1,58 @@
-.connect_you 				#name_and_friend { background: yellow; }
-.connect_connection #name_and_friend { background: #f9c900; }
-.connect_second 		#name_and_friend { background: #aa0; }
-.connect_none 			#name_and_friend { background: #eee; }
+.connect_you #name_and_friend {}
+.connect_connection #name_and_friend {}
+.connect_second #name_and_friend { }
+.connect_none #name_and_friend { }
 #profile_user_information .mouse_for_friends { display: none; }
 #profile_user_information:hover .mouse_for_friends { display: block; }
 
-
+/*User Profile Page*/
+#profile_picture_container{
+	padding: 5px 5px 1px;
+	border: 1px solid #CCCCCC;
+	margin: 15px 8px 15px 15px;
+	background: #FFFFFF;
+}
+#profile_picture_container img{
+	width: 100px;
+	height: 100px;
+}
+#profile_user_information{
+	background: url(../images/profile_user_bgd.jpg) no-repeat 0 0;
+}
+#profile_username{
+	padding: 30px 0 0 0;
+	min-height: 119px;
+	width: 738px;
+}
 
 #page_title {
 	display: none;
+}
+#profile_username h5 {
+	color: #FFF;
+	margin:10px 10px 8px 10px;
+	font-size:18px;
+	line-height:25px;
+	display: inline;
+}
+.friend_info{
+	padding-top:6px;
+	color: #FFF;
+	display: inline;
+}
+.profile_option,.profile_friends{
+	float: left;
+}
+a.profile_friends{
+	margin: 20px 10px; 
+}
+a.profile_option{
+	display: block;
+	height: 42px;
+	width: 254px;
+	background: url(../images/add_item.png) no-repeat 0 0;
+	text-indent: -9999px;
+	margin-top: 10px;
 }
 /*
 #content-area #profile_user_summary.rounded_content {
@@ -55,15 +99,8 @@
 	background: #E9F0F6;
 }
 */
-#profile_username h5 {
-	color: #464F54;
-	margin: 0;
-	font-size: 1.5em;
-	display: inline;
-	float: left;
-}
-#name_and_friend {
-	padding: 4px;	
+
+#name_and_friend {	
 }
 #profile_username table {
 	margin: 0;

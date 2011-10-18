@@ -84,10 +84,10 @@
   -moz-border-radius: 7px;
   border-radius: 7px;
   height: 34px;
-  width: 387px;
+  width: 303px;
   padding-left: 85px;
   position: absolute;
-  right: -190px;
+  right: -106px;
   top: 0;
   z-index: 0;
   font-size: 14px;
@@ -99,7 +99,7 @@
   height: 30px;
   border: 0;
   position: absolute;
-  right: -185px;
+  right: -100px;
   top: 8px !important;
 }
 
@@ -163,16 +163,17 @@
 	width: 125px;
 	border: none;
 	margin: 0 auto;
+	cursor:pointer;
 
 }
 
 #user-login-form div.item-list {
-	font-size: 11px;
+	font-size: 13px;
 	line-height: 17px;
 }
 
 #user-login-form div.item-list.login_form_separator {
-	padding-top: 1px;
+	padding: 2px 0 17px;
 }
 
 #user-login-form div.item-list.login_form_separator li.openid-processed {

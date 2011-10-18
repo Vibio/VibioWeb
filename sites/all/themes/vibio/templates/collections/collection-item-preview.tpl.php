@@ -1,6 +1,7 @@
 <?php
 $updated = t("Updated !date", array("!date" => "<span class='timestamp_uncalculated'>{$item->node_changed}</span>"));
 $price_image = theme("vibio_item_price_image", $item, "mini");
+$share_links = "<i><u>share</u></i>";
 
 echo "
 	<div class='collection_list_image'>

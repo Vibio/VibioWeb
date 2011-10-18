@@ -118,12 +118,6 @@ div.search-links {
 }
 /* search results, items in an image-rectangle in multiple places */
 .item-rectangle {
-	width: 160px; /* same as image, I think */
-	padding: 10px;
-	margin: 0px 10px 20px 0px;
-	border: 1px solid #999;
-	background: #eee;
-	float: left;
 	position: relative; /* make it the parent */
 }
 .col1, .col2 {
@@ -191,11 +185,13 @@ a #profile_ext_displayblock_image {
 #profile_ext_displayblock_image {
 	float: left;
 	border: 1px solid #CCC;
-	padding: 3px;
+	padding: 3px 3px 0 3px;
 	margin: 10px 5px 10px 10px;
 }
 #profile_ext_displayblock_image img {
-	border: 1px solid #CCC
+	border: 1px solid #CCC;
+	width: 50px;
+	height: 50px;
 }
 #profile_ext_displayblock_name {
 	line-height: 38px;
@@ -228,7 +224,7 @@ ul.primary_menu_by_hand li {
 #block-user-0 {
 	padding: 10px;
 }
-#block-user-0.block{
+#block-user-0.block {
 	margin: 0px;
 }
 #block-user-0 .menu_header {
@@ -244,4 +240,138 @@ ul.primary_menu_by_hand li {
 	margin: 4px 0;
 	font-size: 15px;
 	font-weight: normal
+}
+
+/*Sidebar Featured USer*/
+#block-views-flag_featured_users-block_1{
+	background: url(../images/featured_member.png) no-repeat 8px 33px;
+	padding: 0 16px;
+}
+#block-views-flag_featured_users-block_1 h2{
+	padding-top: 14px;
+}
+.field-content{
+	padding-top: 10px;
+	text-align: center;
+}
+/*Sidebar Connect Block for featured page*/
+
+#block-block-5 {
+	background: url(../images/sidebar_connect.png) no-repeat -1px 0;
+	padding: 0 0 0 25px;
+	color: #106F93;
+	font-weight: bold;
+	min-height: 255px;
+	margin: 0 -10px;
+}
+.not-logged-in #block-block-5 {
+	display: none;
+}
+.not-logged-in div.rounded_content{
+	background: #F6F6F6;
+}
+#connect-nav {
+	clear: both;
+	padding-top: 25px;
+	font-size: 12px;
+}
+#connect-nav ul {
+	float: left;
+	list-style: none;
+	padding: 0 25px 0 0;
+}
+#connect-nav li {
+	margin-bottom: 7px
+}
+#content-copyright {
+	clear: both;
+	font-size: 9px;
+	color: #FFFFFF;
+	padding-top: 9px;
+}
+#content-copyright p {
+	margin: 0
+}
+/*Front Page Video*/
+.logged-in #block-block-4 {/*hide from loggedin users*/
+	display: none;
+}
+#connection-top {
+	padding-top: 65px;
+}
+#content-social a {
+	background: url(../images/sidebar_social.png) no-repeat;
+	display: block;
+	height: 21px;
+	text-indent: -9999px;
+	float: left;
+	margin: 4px 3px 0 0;
+}
+#connect-nav a:hover {
+	color: #00AEF0
+}
+a#content-twitter {
+	background-position: 0px 0px;
+	width: 22px;
+}
+a#content-fb {
+	background-position: -26px 0px;
+	width: 22px;
+}
+a#content-tumbler {
+	background-position: -54px -1px;
+	width: 22px;
+}
+a#content-email {
+	background-position: -82px -1px;
+	width: 22px;
+}
+#block-block-4 {
+	margin-bottom: 8px;
+}
+#front-video {
+	background: url(../images/front_colorbox.png) no-repeat 0 0;
+	width: 734px;
+	height: 303px;
+}
+#front-video-l {
+	width: 373px;
+	height: 211px;
+	background: #666;
+	margin: 21px;
+	float: left;
+}
+#front-video-r {
+	float: left;
+}
+#front-p1 {
+	font-size: 24px;
+	color: #106F93;
+	margin-top: 36px;
+}
+#front-p2 {
+	font-size: 18px;
+	margin-top: 32px;
+}
+#front-p3 {
+	margin-top: 55px;
+}
+
+/*Featured Page View Rows*/
+.views-row-1,.views-row-2,.views-row-3,.views-row-4,.views-row-5,.views-row-6,.views-row-7,.views-row-8 {
+	width: 175px;
+	float: left;
+	background: #FFF;
+	border: 1px solid #CCCCCC;
+	margin-right: 8px;
+}
+.views-row-4,.views-row-8{
+	margin: 0;
+}
+.views-row-5{
+	clear: both;
+}
+.item-rectangle {
+	position: relative; /* make it the parent */
+	padding: 5px;
 }

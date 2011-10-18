@@ -1,4 +1,6 @@
 <?php
+// Confused: what is actor?  Is this totally custom code?  Doesn't extend
+//  well when creating new views
 $profile_pic = $row->actor->picture ? file_create_url($row->actor->picture) : "/themes/vibio/images/icons/default_user.png";
 $alt = $row->actor->name;
 //dsm($row);

@@ -16,7 +16,7 @@ if (user_access("create product content"))
 	echo l('+ Add Item', "product/add", array(
 		attributes => array(
 			alt=>"Add an item to our database",
-			'class'=>"autonodal",   
+			'class'=>"autonodal ",   
 				// not discussed or time-budgeded, does it work
 				// out of box?
 			)

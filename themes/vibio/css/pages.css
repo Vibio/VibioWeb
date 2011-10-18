@@ -14,15 +14,9 @@
  * Body
  */
 body {
-  background: #425162 url('../images/bgtile.jpg');
+  background: url('../images/bgtile.jpg') repeat scroll 0 0;
   margin: 0;
   padding: 0;
-}
-
-
-a {
-  text-decoration: none;
-  color: #0092c9;
 }
 
 #page-wrapper {
@@ -30,11 +24,7 @@ a {
 }
 
 #page_title {
-  color: #666666;
-}
-
-a.item_link {
-  color: #8e9e30;
+  color: #556270;
 }
 
 /*
@@ -70,12 +60,14 @@ a.item_link {
 
 #header_quick_actions {
   width: 625px;
-  height: 48px;
+  height: 41px;
   float: right;
   position: relative;
   font-size: 15px;
 }
-
+#header_quick_actions a:hover{
+	color:#00AEF0;
+}
 #logo /* Wrapping link for logo */ {
   float: left; /* LTR */
   margin: 0;
@@ -112,12 +104,13 @@ div#site-name /* The name of the website */ {
 }
 
 .slogan {
-background: transparent url(../vibio-tagline.png) no-repeat;
-  top: 28px;
+  background: transparent url(../vibio-tagline.png) no-repeat;
+  top: 33px;
   position: relative;
   left: 130px;
-  text-indent: -5000px;
+  text-indent: -4999px;
   width: 200px;
+  height: 20px;
 }
 
 
@@ -159,11 +152,11 @@ h3.title /* Comment title */ {
 }
 
 tr.even /* Some tables have rows marked even or odd. */ {
-  /* background-color: #eee; */ /* Drupal core uses a #eee background */
+   background: none; /* Drupal core uses a #eee background */
 }
 
 tr.odd {
-  /* background-color: #eee; */ /* Drupal core uses a #eee background */
+  background: none; /* Drupal core uses a #eee background */
 }
 
 div.messages /* Important messages (status, warning, and error) for the user. See also the declarations in messages.css. */ {
@@ -437,6 +430,7 @@ ul.links li {
 #content-area .rounded_content {
   background: transparent url(../images/bg-content-tile.jpg);
 	min-height: 700px;
+	padding: 6px;
 }
 
 /*#content-area .rounded_content {
@@ -477,8 +471,14 @@ ul.links li {
   height: 0;
 }
 
+/* stephen: these are two broad. not all .view .picture
+ * images should be locked to a set size (remove this note when solved)
+ * Featured Member breaks this, bet more things will soon
+ */
 .comment .picture img, .view .picture img, .view-content .picture img  {
-	max-height: 40px;
+	height: 42px;
+	width:42px;
+	border: 1px solid #CCC;
 }
 
 #block-menu-secondary-links {
@@ -596,23 +596,41 @@ img#search_type_current {
 /* stephen-remove-hidden-menu	
 weird, these are larger images, not the ones we want,
 go back to hiding them */
-display: none; 
+ display: none;
 }
 
+/*Search Buttons dropdown images*/
+
+a.searchtype_vibio_item{
+	background: url(../images/btn_search_dropdown.png) no-repeat 7px 10px;
+	text-indent: -9999px;
+	display: block;
+	height: 42px;
+}
+a.searchtype_vibio_item:hover{
+	background-position: 7px -153px;
+}
+a.searchtype_user{
+	background: url(../images/btn_search_dropdown.png) no-repeat 7px -42px;
+	text-indent: -9999px;
+	display: block;
+	height: 42px;
+}
+a.searchtype_user:hover{
+	background-position: 7px -205px;
+}
 .search_type_submenu_container {
-	background: white;
-	border: 1px solid black;
-	opacity: 0.85 !important;
-	filter: alpha(opacity=85) !important;
+	background: url(../images/bgd_search_drop.png) no-repeat 0 0;
+	display:block;
+	height:113px;
+	width: 114px;
 }
 
 .search_type_submenu_container table {
-	margin: -10px 0 0 0;
+	margin: 10px 0 0 0;
 }
 
 .search_type_submenu_container .searchtype_image {
-	max-width: 30px;
-	max-height: 30px;
 	margin-bottom: -5px;
 }
 
@@ -658,7 +676,9 @@ h5.menu_header {
  -moz-box-shadow: inset 1px 1px 1px 0px #e3e3e3;
  box-shadow: inset 1px 1px 1px 0px #e3e3e3;  
  height: 30px;	
-  width: 168px;
+  width: 158px;
+  padding: 0 5px;
+  font-size: 13px;
 }
 
 #user-login-form #edit-openid-identifier {

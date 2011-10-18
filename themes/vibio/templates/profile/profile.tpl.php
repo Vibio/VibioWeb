@@ -1,9 +1,11 @@
 <?php
 // reprofileicious
-
+This page isn't used is it?  Delete if no error message appears after
+multiple cache clears and testing...
 
 global $user;
 $u = $profile['user'];
+
 
 // edit your picture
 if ($user->uid == $u->uid || user_access("administer users"))
@@ -85,6 +87,9 @@ if (!$u->picture) {
 echo "profile completeness: {$profile['profile_progress']}%";
 //die("profile.tpl.php still runs"); why not running? cached?
 print $sec_menu;
+
+// Add a flag, for admins
+// This isn't even called, is it...print "stuff here" . flag_create_link('feature_users', $u->uid); 
 
 print $this_page;
 

@@ -5,12 +5,12 @@ if ($profile_ext_user->uid)
 }
 else
 {
-	$message = t("!login or !signup", array("!login" => l(t("Login"), "user/login"), "!signup" => l(t("Register"), "user/register")));
+	$message = t("!login or !signup", array("!login" => l(t("Login"), "user/login"), "!signup" => l(t("Sign Up"), "user/register")));
 }
 
 echo "
 	<div id='profile_ext_header'>
-		$message
+		$message <a id='header-faq' href='/faq'>FAQ</a>
 	</div>
 ";
 ?>

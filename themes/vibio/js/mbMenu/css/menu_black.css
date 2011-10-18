@@ -34,7 +34,7 @@ body{
 
 .rootVoices td.rootVoice.selected{
   background: black url("../images/bgnd_sel_4.png");
-  padding:8px;
+  padding:28px;
   color:#ffffff;
   cursor: pointer;
   font-size:14px;

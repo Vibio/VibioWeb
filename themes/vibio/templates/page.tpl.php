@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php print $language -> language;?>" lang="<?php print $language -> language;?>" dir="<?php print $language -> dir;?>">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php print $language -> language;?>" xml:fb="http://ogp.me/ns/fb#" lang="<?php print $language -> language;?>" dir="<?php print $language -> dir;?>">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 		<title><?php print $head_title;?></title>
@@ -30,6 +30,7 @@
 		<script type="text/javascript" src="/themes/vibio/js/mb_menu.js"></script>
 	</head>
 	<body class="<?php print $classes;?>">
+	  <div id="fb-root"></div>
 		<div id="page-wrapper">
 			<div id="page">
 				<div id="header">

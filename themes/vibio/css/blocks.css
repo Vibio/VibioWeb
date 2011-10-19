@@ -8,6 +8,9 @@
 .block/* Block wrapper */ {
 	margin-bottom: 1em;
 }
+.logged-in #block-views-flag_featured_users-block_1 {
+	display: none
+}
 #block-block-2 {
 	clear: both;
 }

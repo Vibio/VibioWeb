@@ -375,3 +375,5 @@ a#content-email {
 	position: relative; /* make it the parent */
 	padding: 5px;
 }
+/* override collections page Search tool -Keith */
+.view-user-collections .view-filters { display: none; }

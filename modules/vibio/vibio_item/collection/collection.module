@@ -77,7 +77,7 @@ function collection_block($op="list", $delta=0, $edit=array())
 				case "random_collection":
 					global $user;
 					module_load_include("inc", "collection", "collection.pages");
-					
+
 					return array(
 						"subject"	=> "",
 						"content"	=> collection_random_collection($user),
@@ -125,7 +125,7 @@ function collection_theme(&$existing)
 function collection_preprocess_collection_view_collection(&$vars)
 {
 	global $user;
-	
+
 	$collection_html = "";
 	foreach ($vars['collection_sidebar'] as $c)
 	{
@@ -134,12 +134,12 @@ function collection_preprocess_collection_view_collection(&$vars)
 		{
 			$item_html .= theme("collection_sidebar_item", $item);
 		}
-		
+
 		$collection_html .= theme("collection_sidebar_collection", $c, $item_html);
 	}
-	
+
 	$vars['collection_sidebar_output'] = $collection_html;
-	
+
 	if ($vars['collection_owner'] == $user->uid)
 	{
 		$add_text = t("Add Item");
@@ -164,32 +164,29 @@ function collection_preprocess_collection_view_collection(&$vars)
 
 function collection_preprocess_collection_list_item(&$vars)
 {
-	if (empty($vars['collection']))
-	{
+	if(empty($vars['collection']))
 		return;
-	}
-	
+
 	module_load_include("inc", "collection");
-	
+
 	$vars['collection']->is_owner = module_exists("privacy") ? $vars['access'] == PRIVACY_ONLYME : true;
 	$vars['collection']->image = collection_get_image($vars['collection']->cid, false, $vars['access']);
 	$vars['collection']->total_items = collection_get_num_items($vars['collection']->cid, $vars['access']);
-	
+
 	$share_html = "";
-	if ($vars['collection']->is_owner && module_exists("fb"))
-	{
-		$share_html .= theme("fb_share", $vars['collection']->cid, "collection");
+/*
+	if($vars['collection']->is_owner ) {
+		if(module_exists("fb"))
+			$share_html .= 'x'.theme("fb_share", $vars['collection']->cid, "collection");
+		if(module_exists("tweetassist"))
+			$share_html .= theme("tweetassist_tweet", "collection", $vars['collection']->cid);
 	}
-	if ($vars['collection']->is_owner && module_exists("tweetassist"))
-	{
-		$share_html .= theme("tweetassist_tweet", "collection", $vars['collection']->cid);
-	}
-	
+
+ */
 	$vars['collection']->share_html = $share_html;
-	
+
 	$categories = collection_get_categories($vars['collection']->cid);
-	if (!empty($categories))
-	{
+	if(!empty($categories)) {
 		$category_text = t("Tags: !categories", array("!categories" => implode(", ", $categories)));
 		$vars['collection']->collection_categories = "<span class='collection_categories'>$category_text</span>";
 	}
@@ -198,24 +195,21 @@ function collection_preprocess_collection_list_item(&$vars)
 function collection_preprocess_collection_list_item_preview(&$vars)
 {
 	global $user;
-	
+
 	$vars['item']->image = _vibio_item_get_image($vars['item']->nid);
 	$vars['item']->for_sale = $vars['item']->node_data_field_posting_type_field_posting_type_value == VIBIO_ITEM_TYPE_SELL;
 	$vars['item']->node_title = strlen($vars['item']->node_title) > COLLECTION_ITEM_PREVIEW_MAX_TITLE_LENGTH ? substr($vars['item']->node_title, 0, COLLECTION_ITEM_PREVIEW_MAX_TITLE_LENGTH)."..." : $vars['item']->node_title;
-	
-	$show_share_links = $vars['item']->users_uid == $user->uid;
+
 	$share_html = "";
-	if ($show_share_links && module_exists("fb"))
-	{
-		$share_html .= theme("fb_share", $vars['item']->nid, "node", "icon");
+	if ($vars['item']->users_uid == $user->uid) {
+		if(module_exists("fb"))
+			$share_html .= 'y'.theme("fb_share", $vars['item']->nid, "node", "icon");
+		if(module_exists("tweetassist"))
+			$share_html .= theme("tweetassist_tweet", "node", $vars['item']->nid);
 	}
-	if ($show_share_links && module_exists("tweetassist"))
-	{
-		$share_html .= theme("tweetassist_tweet", "node", $vars['item']->nid);
-	}
-	
-	$vars['share_links'] = $share_html ? $share_html : "";
-	
+
+	$vars['share_links'] = $share_html;
+
 	if (!$vars['item']->for_sale && $vars['item']->users_uid == $user->uid)
 	{
 		$options = array(
@@ -247,10 +241,10 @@ function collection_nodeapi(&$node, $op, $a3=null, $a4=null)
 	{
 		return;
 	}
-	
+
 	global $user;
 	module_load_include("inc", "collection");
-	
+
 	switch ($op)
 	{
 		case "insert":
@@ -262,28 +256,28 @@ function collection_nodeapi(&$node, $op, $a3=null, $a4=null)
 						FROM {collection}
 						WHERE `cid` IN ($cids)";
 				$res = db_query($sql);
-				
+
 				$collections = array();
 				while ($row = db_fetch_object($res))
 				{
 					$collections[] = l($row->title, "collections/{$row->cid}");
 				}
-				
+
 				$t_args = array(
 					"!item" 		=> l($node->title, "node/{$node->nid}"),
 					"!collections"	=> implode(", ", $collections),
 				);
-				
+
 				$message = count($collections) > 1 ?
 					t("!item has been created and added to the following collections: !collections", $t_args) :
 					t("!item has been created and added to your !collections collection", $t_args);
-				
+
 				drupal_set_message($message);
 			}
 		case "update":
 			$cids = isset($node->collection_info) ? $node->collection_info['cid'] : collection_get_item_cid($node->nid);
 			unset($node->collection_info);
-			
+
 			$old_cids = $op == "update" ? collection_get_item_cid($node->nid) : array();
 			$delete_cids = array_diff($old_cids, $cids);
 			if (!empty($delete_cids))
@@ -294,7 +288,7 @@ function collection_nodeapi(&$node, $op, $a3=null, $a4=null)
 							AND `cid` IN ($delete_cids)";
 				db_query($sql, $node->nid);
 			}
-			
+
 			$sql = "INSERT INTO {collection_items}
 					(`cid`, `item_nid`) VALUES";
 			$vals = array();
@@ -305,13 +299,13 @@ function collection_nodeapi(&$node, $op, $a3=null, $a4=null)
 				$args[] = $cid;
 				$args[] = $node->nid;
 			}
-			
+
 			if (!empty($vals))
 			{
 				$sql .= implode(",", $vals);
 				db_query($sql, $args);
 			}
-			
+
 			module_invoke_all("collection_update", $user->uid, array_unique(array_merge($cids, $old_cids)));
 			break;
 		case "delete":
@@ -337,7 +331,7 @@ function collection_form_product_node_form_alter(&$form, &$state)
 	{
 		return;
 	}
-	
+
 	if (!$form['#node']->nid) // only on new product nodes
 	{
 		collection_form_vibio_item_node_form_alter(&$form, &$state);
@@ -347,12 +341,12 @@ function collection_form_product_node_form_alter(&$form, &$state)
 function collection_form_vibio_item_node_form_alter(&$form, &$state)
 {
 	module_load_include("inc", "collection");
-	
+
 	if ($form['#node']->nid) //existing node
 	{
 		$default = collection_get_item_cid($form['#node']->nid);
 	}
-	
+
 	$form['collection_info'] = array(
 		"#title"		=> t("Collection"),
 		"#description"	=> t("Select which collections to add this item to. Choose all that apply."),
@@ -379,14 +373,14 @@ function collection_form_vibio_item_node_form_alter(&$form, &$state)
 function collection_product_inventory_quick_add($form_vals)
 {
 	global $user;
-	
+
 	module_load_include("inc", "collection");
 
 	if ($form_vals['collection_info']['cid'] || !($default = collection_get_user_default($user->uid, true)))
 	{
 		return array();
 	}
-	
+
 	return array(
 		"collection_info"	=> array(
 			"cid"	=> array($default => $default),
@@ -398,7 +392,7 @@ function collection_offer2buy_complete_actions($old_uid, $node)
 {
 	module_load_include("inc", "collection");
 	$old_cid = collection_get_item_cid($node->nid);
-	
+
 	if (!($new_cid = collection_get_user_default($node->uid)))
 	{
 		$new_cid = collection_get_user_default($node->uid, true); //this will handle clearing the views caches for us...
@@ -407,23 +401,23 @@ function collection_offer2buy_complete_actions($old_uid, $node)
 	{
 		module_invoke_all("collection_update", $node->uid, array($new_cid));
 	}
-	
+
 	$sql = "DELETE FROM {collection_items}
 			WHERE `item_nid`=%d";
 	db_query($sql, $node->nid);
-	
+
 	$sql = "INSERT INTO {collection_items}
 			(`cid`, `item_nid`) VALUES
 			(%d, %d)";
 	db_query($sql, $new_cid, $node->nid);
-	
+
 	module_invoke_all("collection_update", $old_uid, $old_cid);
 }
 
 function collection_form_views_exposed_form_alter(&$form, &$state)
 {
-	if ($form['#id'] == "views-exposed-form-user-collection-default")
-	{
+
+	if ($form['#id'] == "views-exposed-form-user-collection-default") {
 		$form['collection_order_by'] = array(
 			"#type"		=> "select",
 			"#title"	=> t("Sort"),
@@ -441,7 +435,7 @@ function collection_form_views_exposed_form_alter(&$form, &$state)
 			"#type" => "hidden",
 			"#value"=> isset($_GET['sort']) ? $_GET['sort'] : "node_changed",
 		);
-		
+
 		$form['submit']['#weight'] = 10;
 	}
 	elseif (in_array($form['#id'], array("views-exposed-form-user-collections-default", "views-exposed-form-user-inventory-default")))
@@ -453,7 +447,7 @@ function collection_form_views_exposed_form_alter(&$form, &$state)
 		$collection_default = $form['#id'] == "views-exposed-form-user-collections-default" ? "selected='selected'" : "";
 		$items_default = $form['#id'] == "views-exposed-form-user-inventory-default" ? "selected='selected'" : "";
 
-		/*$form['#suffix'] = "
+		/* $form['#suffix'] = "
 			<div class='inventory_view_type'>
 				<span>$label</span>
 				<select class='inventory_view_type_select'>
@@ -471,7 +465,7 @@ function collection_profile_ext_public_info($uid)
 	module_load_include("inc", "collection");
 	$collections = collection_get_collections($uid);
 	$access = privacy_get_access_level($uid);
-	
+
 	foreach ($collections as $cid => $c)
 	{
 		if ($c['privacy'] > $access)
@@ -479,7 +473,7 @@ function collection_profile_ext_public_info($uid)
 			unset($collections[$cid]);
 		}
 	}
-	
+
 	return array(array(
 		"weight"=> 0,
 		"title"	=> t("Collections"),
@@ -491,12 +485,12 @@ function collection_badge_user_login($uid) {
 	if (!($badge = badge_load_special("100_collections_6_months")) || badge_user_has_badge($badge->bid, $uid)) {
 		return false;
 	}
-	
+
 	$sql = "SELECT COUNT(*)
 			FROM {collection}
 			WHERE `uid`=%d";
 	$total_collections = db_result(db_query($sql, $uid));
-	
+
 	if ($total_collections >= 100) {
 		badge_give_badge($badge->bid, $uid);
 	}
@@ -512,7 +506,7 @@ function collection_load($cid)
 	{
 		return false;
 	}
-	
+
 	$sql = "SELECT c.*, u.name AS user_name
 			FROM {collection} c JOIN {users} u ON c.`uid`=u.`uid`
 			WHERE `cid`=%d";
@@ -525,7 +519,7 @@ function collection_load($cid)
 function collection_access_collection($collection)
 {
 	global $user;
-	
+
 	if ($user->uid == $collection['uid'])
 	{
 		return true;
@@ -543,7 +537,7 @@ function collection_access_collection($collection)
 function collection_manage_collection_access($collection)
 {
 	global $user;
-	
+
 	if (is_numeric($collection))
 	{
 		$sql = "SELECT `uid`
@@ -551,7 +545,7 @@ function collection_manage_collection_access($collection)
 				WHERE `cid`=%d";
 		$collection = db_fetch_array(db_query($sql, $collection));
 	}
-	
+
 	return $user->uid == $collection['uid'];
 }
 

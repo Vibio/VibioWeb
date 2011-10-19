@@ -1,0 +1,32 @@
+/*featured item page*/
+
+.views-fluidgrid-wrapper{
+  width:760px;
+}
+  
+.views-fluidgrid-item .views-field-field-main-image-fid{
+  width:160px;
+  border:1px solid #DADADA;
+  margin:0;
+  padding:0;
+}
+
+.views-fluidgrid-item{
+  margin:0 8px 20px 0;
+  border:1px solid #DADADA;
+  background: #fff;
+}
+
+.views-fluidgrid-item .views-field-title{
+  width:160px;
+  margin:8px 0 16px 0;
+}
+
+.views-fluidgrid-item .views-fluidgrid-item-inner{
+  margin:8px;
+}
+
+.views-fluidgrid-item .field-content{
+  margin:0;
+  padding:0;
+}

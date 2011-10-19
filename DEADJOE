@@ -1,0 +1,66 @@
+
+*** These modified files were found in JOE when it aborted on Tue Oct 18 23:20:58 2011
+*** JOE was aborted by UNIX signal 1
+
+*** File '(Unnamed)'
+.git/COMMIT_EDITMSG
+
+*** File '.git/COMMIT_EDITMSG'
+initial css
+
+
+
+ 
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# Explicit paths specified without -i nor -o; assuming --only paths...
+#
+# Committer: travis <travis@ip-10-244-151-207.ec2.internal>
+#
+# On branch mesh
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	new file:   travis.css
+#
+# Changed but not updated:
+#   (use "git add/rm <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#	modified:   ../../../modules/vibio/facebook/fb.module
+#	modified:   ../../../modules/vibio/vibio_item/collection/collection.inc
+#	modified:   ../../../modules/vibio/vibio_item/collection/collection.info
+#	modified:   ../../../modules/vibio/vibio_item/collection/collection.install
+#	modified:   ../../../modules/vibio/vibio_item/collection/collection.module
+#	modified:   ../../../sites/all/modules/orig_core_modules/amazon/amazon.module
+#	deleted:    ../../../sites/all/modules/orig_core_modules/imagefield/imagefield
+#	modified:   ../../../sites/all/themes/vibio/templates/facebook/share.tpl.php
+#	modified:   ../../../sites/all/themes/vibio/vibio.info
+#	modified:   pages.css
+#	modified:   profile.css
+#	modified:   tabs.css
+#	modified:   user.css
+#	modified:   views-styles.css
+#	modified:   ../js/dom-manipulate.js
+#	modified:   ../js/dom-removal.js
+#	modified:   ../js/facebook.js
+#	modified:   ../templates/badge/list-badge.tpl.php
+#	modified:   ../templates/facebook/share.tpl.php
+#	modified:   ../templates/profile/view-fields.tpl.php
+#	modified:   ../templates/user/user-profile.tpl.php
+#	modified:   ../vibio.info
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	../../../AmazonResult.xml
+#	../../../modules/vibio/tweetassist
+#	../../../modules/vibio/vibio_item/collection/.collection.module.swp
+#	../../../sites/all/modules/views_fluidgrid/
+#	../../../sites/all/themes/seven/
+#	../../../sites/all/themes/vibio/css/travis.css
+#	../../../sites/all/themes/vibio/images/vshare/share-btn-hover.png
+#	../../../sites/all/themes/vibio/images/vshare/share-btn.png
+#	stephen.css---modified_version
+#	../images/info_button.png
+#	../images/tabs_bgd.png

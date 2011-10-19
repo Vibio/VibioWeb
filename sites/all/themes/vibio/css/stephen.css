@@ -51,3 +51,6 @@ div.search-links {
         position: absolute;
         bottom: 10px;
 }
+
+/* override collections page Search tool -Keith */
+.view-user-collections .view-filters { display: none; }

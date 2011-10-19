@@ -138,6 +138,25 @@ div#site-name /* The name of the website */ {
 #mission /* The mission statement of the site (displayed on homepage) */ {
 }
 
+p.section_title {
+background:url("../images/long_border.png") no-repeat scroll 0 30px transparent;
+height:43px;
+margin: 13px 0 0;
+padding: 0;
+}
+.section_title{
+	font-size: 22px;
+	color: #556270;
+	font-weight: bold;
+}
+
+.section_sub_title a{
+	font-size: 13px;
+	color: #106F93;
+	font-weight: normal;
+	padding-left: 20px
+}
+
 .region-content-top /* Wrapper for any blocks placed in the "content top" region */ {
 }
 
@@ -389,11 +408,12 @@ ul.links li {
  * causes issues for keyboard only or voice recognition users. "!important" is
  * used to prevent unintentional overrides.
  */
-.element-invisible {
+/* .element-invisible {
   position: absolute !important;
   clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
-  clip: rect(1px, 1px, 1px, 1px);
+  /*clip: rect(1px, 1px, 1px, 1px);
 }
+*/
 
 .rounded_container {
   border-radius: 4px;

@@ -403,11 +403,11 @@ function badge_preprocess_badge_list($vars)
 	$out = "";	
 
 	// vibio: add some text, maybe just for your own badges page
-	if ($user->uid == $vars['uid'])
+/*	if ($user->uid == $vars['uid'])
         {
 		$out .= "<div class='section-intro'>Build your social status on Vibio by creating collections of your most prized and unique possessions. Badges are earned when you reach certain milestones.</div>";
 	}
-
+*/
 	foreach (badge_get_user_badges($vars['uid']) as $bid => $badge)
 	{
 		$badge->image_src = file_create_url($badge->image);

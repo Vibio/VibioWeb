@@ -2,7 +2,7 @@ fb_ajax_actions = {};
 
 $(document).ready(function()
 {
-	if (typeof FB == "undefinged")
+	if (typeof FB == "undefined")
 	{
 		return;
 	}
@@ -15,7 +15,6 @@ $(document).ready(function()
 	});
 	
 	var fb_next_action, fb_next_action_args, fb_do_reload = false;
-	var fb_next_action_args;
 	var fb_login_callbacks = {
 		"signup": function(res)
 		{

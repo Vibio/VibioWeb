@@ -1,5 +1,5 @@
 <?php
-$alt = t("Share on Facebook");
+$alt = t("Share On Facebook");
 echo "
 	<div class='fb_share_container'>
 		<span class='fb_share_params'>$share_params</span>

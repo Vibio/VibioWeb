@@ -19,8 +19,6 @@ $picture_edit_link="
 if($user->uid&&$user->uid!=$u->uid&&module_exists("privatemsg")) {
 $message_link=l(t("Send !user a message",array("!user"=>$u->name)),"messages/new/{$u->uid}");
 }
-
-// Set the default user icon if there's no pic set elsewhere...
 if(!$u->picture) {
 $profile['user_picture']="
 		<div class='picture'>
@@ -104,7 +102,7 @@ echo $my_options;
  */
 $uid=$u->uid;
 // shortcut to move way up this tpl
-$secondary=array('activity'=>"Activity",'collections'=>"Collections",'badges'=>"Badges",'about'=>"About");
+$secondary=array('activity'=>"Activity<span class='tab-seperator'>|</span>",'collections'=>"Collections<span class='tab-seperator'>|</span>",'badges'=>"Badges<span class='tab-seperator'>|</span>",'about'=>"About Me<span class='tab-seperator'>|</span>");
 print "<div id='profile_tabs'><ul class='primary'>";
 /* primary? css currently calls for it, I think */
 foreach($secondary as $key=>$name) {
@@ -112,7 +110,7 @@ print "<li {$active[$key]}><a href='/user/$uid/$key' ><span class='tab'>$name</s
 }
 //dsm(menu_get_active_trail());
 //dsm($active);
-print "</ul></div>";
+print "<li><a href='/info' id='info-button' rel='automodal'><span class=tab>Info</span></a></li><li class='blank-li'><span class='tab'>&nbsp;</span></li></ul></div>";
 /*
  $options['attributes']['class'] .= ($tabkey == $active_tab ? ' active' : '');
  $output .= '<li'. $attributes_li .'>'. l($tab['title'], $_GET['q'] . $tabkey, $options) .'</li>';
@@ -124,11 +122,6 @@ print "</ul></div>";
 
 <div class="clear"></div>
 <?php
-
-/* Add a flag, for admins */
-print flag_create_link('feature_users', $u->uid); 
-
-
 /* this is from function profile_ext_preprocess_user_profile(&$vars) */
 print $sec_content;
 //echo "profile completeness: {$profile['profile_progress']}%";

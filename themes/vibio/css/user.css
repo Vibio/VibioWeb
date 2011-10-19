@@ -26,7 +26,7 @@
 }
 
 #page_title {
-	display: none;
+	
 }
 #profile_username h5 {
 	color: #FFF;
@@ -164,7 +164,7 @@ a.profile_option{
 }
 
 table.profile_fields td.field_name {
-	width: 200px;
+	width: 135px;
 	font-weight: bold;
 	color: #414C52;
 	text-align: right;
@@ -174,10 +174,14 @@ table.profile_fields td.field_name {
 table.profile_fields td.field_name.section_title {
 	font-size: 20px;
 }
+#profile_about_me table.profile_fields td {
+	padding-bottom: 28px;
+}
 
 table.profile_fields td {
-	padding-bottom: 7px;
+	padding-bottom: 15px;
 	vertical-align: top;
+	width: 440px;
 }
 
 #profile_user_tabs {
@@ -192,17 +196,34 @@ table.profile_fields td {
 	padding: 0 15px 10px;
 }
 
-.profile_edit_link {
+/* .profile_edit_link {
 	float: right;
 	display: none;
 	font-size: 10px;
-}
+	color: red;
+} */
 
 #profile_about_me, #profile_demographics {
-	float: left;
 	width: 690px;
 }
 
+#profile_about_me table{
+	margin: 0px;
+}
+
+#profile_demographics {
+	border-bottom: 1px solid #CCCCCC;
+	margin-bottom: 0;
+	padding-bottom: 10px;
+}
+
+div.profile_editable{
+	padding: 0 15px;
+}
+
+table.profile_fields{
+	margin: 0;
+}
 table.user_external_accounts {
 	margin: 0;
 }

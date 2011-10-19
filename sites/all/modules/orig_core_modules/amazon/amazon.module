@@ -255,6 +255,7 @@ function amazon_http_request($operation, $parameters = array(), $locale = NULL) 
   // Make the request and return a SimpleXML object.
   $results = drupal_http_request($url, array(), 'GET');
   if ($results->code == 200) {
+file_put_contents('AmazonResult.xml', $results->data);
     $xml = new SimpleXMLElement($results->data);
     return $xml;
   }

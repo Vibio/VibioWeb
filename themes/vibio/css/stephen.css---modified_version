@@ -1,0 +1,395 @@
+/* Style guide, site wide, Carolyn will need to fix badly */
+a.local_action_button {
+	padding: 6px;
+	background: blue;
+	color: white;
+	font-weight: bold;
+	margin: 6px;
+	display: block;
+}
+/* hide the pathauto.  This might be better in code one day !!! */
+#edit-pathauto-perform-alias-wrapper {
+	display: none;
+}
+/* misc */
+.hide {
+	display: none;
+}
+/* negotiations */
+
+.item-picture-offer {
+	/* a few pix more than the imagecache setting */
+	height: 142px;
+	width: 142px;
+	margin: auto; /* remove width and margin auto, maybe? design? */
+	text-align: center;
+}
+.neg-form {
+	border: 1px solid red;
+	padding: 2px;
+	background: #ddd;
+}
+#neg-discuss { /* discussion, or note there isn't one. */
+	float: right;
+	width: 48%;
+	display: block;
+	padding: 2px;
+	border: 1px solid yellow;
+}
+/* feature-this flag */
+div.search-flag {
+	position: relative;
+	top: 10px;
+}
+/* offers page, see also selling page */
+/*  slowly switching to imagacche */
+.person_pic img {
+	height: 42px;
+	width: 42px;
+}
+.popups-box .title {
+	display: none;
+}
+/* selling page (and then similar components elsewhere) */
+div.teaser_item_pic {
+	float: left;
+}
+.page-selling .node-type-offer {
+	margin-bottom: 1em;
+	border-bottom: 1px solid #333;
+}
+div.selling_item_info {   /* the sellers info, left of offer */
+	/* rapid, crappy css */
+	width: 300px;
+	float: left;
+	height: 160px;
+	padding-right: 1em;
+	margin-right: 1em;
+}
+/* user pics in various places, rename thorughout? */
+.person_pic, body.page-selling div.picture {
+	float: left;
+	padding-right: 6px;
+}
+body.page-selling div.picture img {
+	height: 60px;
+	width: 60px;
+	max-height: 60px; /* undoing other css */
+}
+body.page-selling h4 {
+	margin-bottom: .1em;
+}
+/* meus */
+#block-menu-primary-links li ul li {
+	margin-left: 8px;
+}
+/* product page */
+.action_button_link {
+	margin: 4px;
+	background: #ddd;
+}
+/* search results, items in an image-square in multiple places */
+.item-square {
+	width: 180px;
+	height: 180px;
+	padding: 7px;
+	margin: 0 6px 60px;
+	background: #eee;
+	float: left; /* intend 3col? */
+	position: relative; /* make it the parent */
+}
+img.item-square-image {  /* should be done with imagecache */
+	height: 180px;
+	width: 180px;
+}
+div.over-item {
+	position: absolute;
+	top: 10px;
+}
+.item-square div.over-item a {
+	color: #eee;
+}
+.item-square:hover div.over-item a {
+	color: black;
+}
+div.search-links {
+	position: absolute;
+	bottom: 10px;
+}
+/* search results, items in an image-rectangle in multiple places */
+.item-rectangle {
+	position: relative; /* make it the parent */
+}
+.col1, .col2 {
+	width: 230px;
+	float: left;
+	display: block;
+}
+.col3 {
+	width: 230px;
+	float: right;
+	display: block;
+}
+.col0 {
+	background: blue;
+}
+/*img.item-square-image {  done with imagecache
+ //height: 180px;
+ width: 180px;
+ }*/
+div.title-item {
+}
+.item-rectangle div.over-item a {
+	color: #eee;
+}
+.item-rectangle:hover div.over-item a {
+	color: black;
+}
+div.search-links {
+	position: absolute;
+	bottom: 10px;
+}
+/* expect Carolyn to erase and replace this, but there's no correct
+ * template so I'm going to design in css
+ */
+
+a #profile_ext_displayblock_image {
+	display: block;
+	float: left;
+}
+/*Upper Left Sidebar*/
+#upper_title {
+	background: url(/themes/vibio/images/upper_title.png) no-repeat 0 0;
+	height: 40px;
+	display: block;
+}
+#upper_title a {
+	font-size: 15px;
+	font-weight: bold;
+	line-height: 42px;
+	color: #999;
+}
+#upper_title a.active {
+	color: #20a0d1;
+}
+#upper_title .home-b {
+	padding: 10px 26px;
+}
+#upper_title .profile-b {
+	padding: 10px 21px;
+}
+/*Sidebar Little Profile Pic*/
+#profile_ext_displayblock_user_section {
+	background: #ffffff
+}
+#profile_ext_displayblock_image {
+	float: left;
+	border: 1px solid #CCC;
+	padding: 3px 3px 0 3px;
+	margin: 10px 5px 10px 10px;
+}
+#profile_ext_displayblock_image img {
+	border: 1px solid #CCC;
+	width: 50px;
+	height: 50px;
+}
+#profile_ext_displayblock_name {
+	line-height: 38px;
+}
+/*Sidebar Inbox*/
+#profile_ext_displayblock_subitems {
+	background: url(/themes/vibio/images/inbox.png) no-repeat 5px 0 #FFF;
+	width: 190px;
+	height: 164px;
+}
+ul.primary_menu_by_hand {
+	margin: 0;
+	list-style: none;
+	padding: 33px 0px 0px 15px;
+	width: 163px;
+}
+ul.primary_menu_by_hand li {
+	margin: 0 0 5px 0;
+}
+.menu_with_count_count {
+	background: url(/themes/vibio/images/blue_bubble.png) no-repeat 5px 0;
+	width: 47px;
+	height: 19px;
+	text-align: center;
+}
+#block-profile_ext-navigation_profile_display {
+	margin: 0
+}
+/*Sidebar Logged Out*/
+#block-user-0 {
+	padding: 10px;
+}
+#block-user-0.block {
+	margin: 0px;
+}
+#block-user-0 .menu_header {
+	text-align: center;
+	color: #00AEF0;
+}
+#edit-name-wrapper.form-item {
+	margin-bottom: 0;
+	font-size: 15px;
+	font-weight: normal
+}
+#edit-pass-wrapper.form-item {
+	margin: 4px 0;
+	font-size: 15px;
+	font-weight: normal
+}
+/*Sidebar Featured USer*/
+.logged-in #block-views-flag_featured_users-block_1 {
+	display: none
+}
+
+#block-views-flag_featured_users-block_1 .medium_user_pic{
+	padding: 5px;
+	border: 1px solid #CCCCCC;
+	width:118px;
+	height: 118px;
+	margin: 0 auto;
+}
+#block-views-flag_featured_users-block_1 .views-field-picture{
+	padding: 18px 0 4px;
+}
+#block-views-flag_featured_users-block_1 .field-content{
+	font-size: 13px;	
+}
+#block-views-flag_featured_users-block_1 {
+	background: url(../images/featured_member.png) no-repeat 8px 33px;
+	padding: 0 16px 25px;
+}
+#block-views-flag_featured_users-block_1 h2 {
+	padding-top: 14px;
+	color: #106F93;
+	font-size: 15px;
+	font-weight:bold;
+}
+
+/*Sidebar Connect Block for featured page*/
+
+#block-block-5 {
+	background: url(../images/sidebar_connect.png) no-repeat -1px 0;
+	padding: 0 0 0 25px;
+	color: #106F93;
+	font-weight: bold;
+	min-height: 255px;
+	margin: 0 -10px;
+}
+.not-logged-in #block-block-5 {
+	display: none;
+}
+.not-logged-in div.rounded_content {
+	background: #F6F6F6;
+}
+#connect-nav {
+	clear: both;
+	padding-top: 25px;
+	font-size: 12px;
+}
+#connect-nav ul {
+	float: left;
+	list-style: none;
+	padding: 0 25px 0 0;
+}
+#connect-nav li {
+	margin-bottom: 7px
+}
+#content-copyright {
+	clear: both;
+	font-size: 9px;
+	color: #FFFFFF;
+	padding-top: 9px;
+}
+#content-copyright p {
+	margin: 0
+}
+/*Front Page Video*/
+.logged-in #block-block-4 {/*hide from loggedin users*/
+	display: none;
+}
+#connection-top {
+	padding-top: 65px;
+}
+#content-social a {
+	background: url(../images/sidebar_social.png) no-repeat;
+	display: block;
+	height: 21px;
+	text-indent: -9999px;
+	float: left;
+	margin: 4px 3px 0 0;
+}
+#connect-nav a:hover {
+	color: #00AEF0
+}
+a#content-twitter {
+	background-position: 0px 0px;
+	width: 22px;
+}
+a#content-fb {
+	background-position: -26px 0px;
+	width: 22px;
+}
+a#content-tumbler {
+	background-position: -54px -1px;
+	width: 22px;
+}
+a#content-email {
+	background-position: -82px -1px;
+	width: 22px;
+}
+#block-block-4 {
+	margin-bottom: 8px;
+}
+#front-video {
+	background: url(../images/front_colorbox.png) no-repeat 0 0;
+	width: 734px;
+	height: 303px;
+}
+#front-video-l {
+	width: 373px;
+	height: 211px;
+	background: #666;
+	margin: 21px;
+	float: left;
+}
+#front-video-r {
+	float: left;
+}
+#front-p1 {
+	font-size: 24px;
+	color: #106F93;
+	margin-top: 36px;
+}
+#front-p2 {
+	font-size: 18px;
+	margin-top: 32px;
+}
+#front-p3 {
+	margin-top: 55px;
+}
+/*Featured Page View Rows*/
+/*.views-row {
+	width: 175px;
+	background: #FFF;
+	border: 1px solid #CCCCCC;
+	margin: 0 10px 10px 0;
+}*/
+
+.views-row img{
+	border: 1px solid #CCCCCC;
+}
+
+.column{
+	float: left;
+}
+
+.item-rectangle {
+	position: relative; /* make it the parent */
+	padding: 5px;
+	display: table-cell;
+}

@@ -3,7 +3,7 @@ $collection_url = url("collections/{$collection->cid}");
 $manage_link = $collection->is_owner ? l(t("Manage Collection"), "collections/manage/{$collection->cid}") : "";
 $total_items = t("!count items", array("!count" => $collection->total_items));
 $expand = t("Expand Item List");
-
+echo "\n<!-- sites/all/themes/vibio/templates/collections/collections.tpl.php ->\n";
 if ($show_preview)
 {
 	$preview = "
@@ -21,7 +21,7 @@ if ($show_preview)
 }
 
 echo "
-	<div class='collection_list_collection' id='collection_{$collection->cid}'>
+	<div clAss='collection_list_collection' id='collection_{$collection->cid}'>
 		<div class='collection_image'>
 			<a href='$collection_url'>
 				<img src='{$collection->image}' title='{$collection->collection_description}' alt='{$collection->collection_description}' />

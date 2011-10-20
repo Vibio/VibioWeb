@@ -25,7 +25,7 @@ $justkeepmakingchanges = "
                                 <a class='item-title' href='$url'>$title</a><br />
                         </div>
 			$flag
-                        <div class='search-links'>$search_links</div>
+                        <div class='search-links'>Search links: $search_links X</div>
                 </div>
 ";
 

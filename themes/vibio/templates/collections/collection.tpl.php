@@ -4,6 +4,8 @@ $manage_link = $collection->is_owner ? l(t("Rename Collection"), "collections/ma
 $total_items = t("!count items", array("!count" => $collection->total_items));
 $expand = t("View Items");
 
+echo "\n<!-- /themes/vibio/templates/collections/collection.tpl.php -->\n";
+
 if ($show_preview)
 {
 	$preview = "
@@ -27,7 +29,7 @@ echo "
 				<img src='{$collection->image}' title='{$collection->collection_description}' alt='{$collection->collection_description}' />
 			</a>
 		</div>
-		<div class='collection_summary'>
+		<div cLass='collection_summary'>
 			<a href='$collection_url'>
 				<h3>{$collection->collection_title}</h3>
 			</a>

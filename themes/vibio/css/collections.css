@@ -1,3 +1,26 @@
+/* override collections page Search tool -Keith */
+.view-user-collections .view-filters { display: none; }
+
+/*.user-collection-preview td { width: 360px; }
+.user-collection-preview .collection_list_image img { max-width: 63px; }
+.collection-preview-boxshadow { float: left; box-shadow: 3px 3px 3px 1px #ccc; padding: 3px; width: 335px; }
+.collection_list_collection .collection_image { width: inherit; }
+.collection_list_collection .collection_image img { max-width: 200px; }
+.collection_list_collection .collection_summary { width: 518px; }
+*/
+
+.collection_list_collection .collection_image {
+	margin-right: 10px;
+	padding: 5px 0 0 5px;
+	width: 107px;
+	border: 1px solid #CCCCCC;
+	background: #FFFFFF;
+}
+.collection_list_collection .collection_image img{
+	max-width: 100px;
+	min-width 100px;
+	border: 1px solid #CCCCCC;
+}
 .collections_view_header {
 	margin-bottom: 10px;
 }
@@ -76,8 +99,7 @@
 }
 .user-collection-preview h5, #collection_sidebar .collection_sidebar_collection h5 {
 	margin: 0;
-	color: #8e9e30;
-	font-size: 14px;
+	font-size: 13px;
 }
 .user-collection-preview span {
 	color: #404f5a;
@@ -161,6 +183,7 @@
 }
 #block-collection-random_collection .collection_image img {
 	border: 1px solid #CCC;
+	background:#FFFFFF;
 	padding: 5px;
 	max-height: 115px;
 	max-width: 115px;

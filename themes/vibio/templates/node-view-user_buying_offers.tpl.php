@@ -10,6 +10,7 @@
  *
  * $node is the offer (for this row of the view) for the buying page
  */
+require_once 'sites/all/modules/vshare/vshare_small.php';
 ?>
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix">
 
@@ -66,17 +67,20 @@ $item_pic = vibio_item_get_image($item->nid, 'product_fixed_width_teaser');
 $price = $item->offer2buy['settings']['price'];
 
  ?>
-<div class="selling_item_info"
- >
-<div class="teaser_item_pic"><?php print $item_pic; ?></div>
-<?php print $collection['title']; ?>
-<?php print $node->field_item_sought[0][view];?>
-<br>List Price: $<?php print $price; ?>
+<!-- sites/default/themes/vibio/templates/node-view-user_buying_offers.tpl.php -->
+<div class="selling_item_info">
+  <div class="teaser_item_pic">
+    <?php print $item_pic; ?>
+  </div>
+  <?php print $collection['title']; ?>
+  <?php print $node->field_item_sought[0][view];?>
+  <br>
+  List Price: $<?php print $price; ?><br>
+  <? print vshare_small($item); ?>
 </div>
 
 
-  <?php  /* vibiosity will go here
-/* put this code into sellers version when chance */
+  <?php /* vibiosity will go here -- put this code into sellers version when chance */
 $alt = $owner->name . 'Picture';
 $title = ''; // orname, if it’snot printed right below anyway
 $attributes = '';

@@ -297,7 +297,7 @@ if ( $nid ) {
 		// set the item it's attached to
 	$node->field_item_sought[]['nid'] = $item_nid; // [] or [0], same
 
-	$node->title = "Offer by " . $user->name . " for $item_nid $item_title";
+	$node->title = "Offer by " . $user->name; // . " for $item_nid $item_title";
 
 	// Do we create it, or just load the form for it?  I'm not sure,
 	//  try both ways (both should be ok, but not sure).  Maybe create

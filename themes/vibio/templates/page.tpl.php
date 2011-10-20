@@ -68,8 +68,8 @@
 										echo $content_top;
 										echo $title ? "<h1 id='page_title' class='title'>$title</h1>" : "";
 										echo $tabs ? "<div class='tabs'>$tabs</div>" : "";
-										echo $help;
 										echo $content;
+										echo $help;
 										echo $content_bottom;
 										echo $feed_icons ? "<div class='feed-icons'>$feed_icons</div>" : "";
 										?>

@@ -110,7 +110,9 @@ print "<li {$active[$key]}><a href='/user/$uid/$key' ><span class='tab'>$name</s
 }
 //dsm(menu_get_active_trail());
 //dsm($active);
-print "<li><a href='/info' id='info-button' rel='automodal'><span class=tab>Info</span></a></li><li class='blank-li'><span class='tab'>&nbsp;</span></li></ul></div>";
+
+//check script in blocks footer section file for the info button href settings
+print "<li><a href='/info/activity' id='info-button' class='automodal' rel='automodal'><span class=tab>Info</span></a></li><li class='blank-li'><span class='tab'>&nbsp;</span></li></ul></div>";
 /*
  $options['attributes']['class'] .= ($tabkey == $active_tab ? ' active' : '');
  $output .= '<li'. $attributes_li .'>'. l($tab['title'], $_GET['q'] . $tabkey, $options) .'</li>';

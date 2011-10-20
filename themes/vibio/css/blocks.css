@@ -8,8 +8,35 @@
 .block/* Block wrapper */ {
 	margin-bottom: 1em;
 }
+
+/*Sidebar Featured USer*/
+
 .logged-in #block-views-flag_featured_users-block_1 {
 	display: none
+}
+
+#block-views-flag_featured_users-block_1 .medium_user_pic{
+	padding: 5px;
+	border: 1px solid #CCCCCC;
+	width:118px;
+	height: 118px;
+	margin: 0 auto;
+}
+#block-views-flag_featured_users-block_1 .views-field-picture{
+	padding: 18px 0 4px;
+}
+#block-views-flag_featured_users-block_1 .field-content{
+	font-size: 13px;	
+}
+#block-views-flag_featured_users-block_1 {
+	background: url(../images/featured_member.png) no-repeat 8px 33px;
+	padding: 0 16px 25px;
+}
+#block-views-flag_featured_users-block_1 h2 {
+	padding-top: 14px;
+	color: #106F93;
+	font-size: 15px;
+	font-weight:bold;
 }
 #block-block-2 {
 	clear: both;

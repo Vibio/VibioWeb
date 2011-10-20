@@ -58,15 +58,24 @@ img.uri_edit_busy_indicator {
 
 .user-relationships-listing-table tr {
 	background: inherit;
-	border-top: 1px solid #E6EAED;
+	border-bottom: 1px solid #CCCCCC;
 }
 
 .user-relationships-listing-table tr:first-child {
 	border-top: none;
 }
+.user-relationships-listing-table .picture{
+	padding: 5px 0 0 5px;
+	background: #FFF;
+	border: 1px solid #CCCCCC;
+	height: 50px;
+	width: 50px;
+}
 
 .user-relationships-listing-table .picture img {
-	max-width: 40px;
+	height:42px;
+	width:42px;
+	border: 1px solid #CCCCCC;
 }
 
 .user-relationships-listing-table td {

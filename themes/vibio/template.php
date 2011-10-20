@@ -220,7 +220,7 @@ function phptemplate_user_relationships_pending_request_disapprove_link($uid, $r
 function phptemplate_user_relationships_remove_link($uid, $rid)
 {
 	return l(
-		"<img src='/themes/vibio/images/close_button.png' />",
+		"<img src='/themes/vibio/images/not_now.png' />",
 		"relationships/{$uid}/{$rid}/remove",
 		array(
 			"attributes"=> array(

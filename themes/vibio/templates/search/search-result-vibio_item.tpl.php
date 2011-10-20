@@ -4,7 +4,8 @@ $node = $result[node]; //!!! Different from node-view-flag_featured.tpl.php
 $flag = flag_create_link('feature', $node->nid);
 $img = theme('imagecache', 'product_fixed_width', $node->field_main_image[0]['filepath']);
 
-/* two sets of wireframes, rectangle and square, keep both variants for now */
+// $search_links are have and want buttons
+
 $rectangle = "
 	<div class='item-rectangle col_$zebra'> 
 		<a href='$url' title='$title' alt='$title'>
@@ -17,22 +18,6 @@ $rectangle = "
 	<div class='search-links'>$search_links</div>
 	</div>
 ";
-
-$square = "
-		<div class='item-square'>
-			<a href='$url' title='$title' alt='$title'>
-				<img class='item-square-image' srcimagecache='$img' src='{$info_split['image']}' />
-			</a>
-			<div class='over-item'>
-			</div>
-			<div class='search-links'>$search_links</div>
-                        <div class='under-item'>
-                                <a class='item-title' href='$url'>$title</a><br />
-                        </div>
-                 </div>
-
-";
-
 
 print $rectangle;
 

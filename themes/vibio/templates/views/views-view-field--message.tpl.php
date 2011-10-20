@@ -8,6 +8,7 @@ $row = $view->result[$view->row_index];
  *  but it appears to be right there in the $row->message
  */
 $message = "";
+// Get's a second image if it's got an nid (item, product?)
 if ($row->nid)
 {
 	$is_item_message = strpos($row->message_id, "node") !== false || strpos($row->message_id, "item") !== false;
@@ -34,8 +35,27 @@ if ($row->nid)
 		</div>
 	";
 }
-// where does "$output" come from?  appears to come from nowhere...
-// v1.1 force it.
+
+/* Neither friends nor badges print the second image.  Seems like they
+ *  sure should.  Begun work here, realized it's a feature not a bug/priority,
+ *  code snippets should get you started...
+ */
+//if   [message_id] => heartbeat_become_friends,  $row->uid_target
+
+/*if ($row->variables['@badge']) {
+
+print '<pre>';
+print_r($row);
+print '</pre>';
+
+}
+*/
+
+
+// where does "$output" come from?  appears to come from nowhere = 
+//  it's never set, not sure how this code ever worked (did it?)...
+// v1.1 force it.  On my personal homepage, $output never[?] appears
+//  to be set
 if ( !$output ) {
 	$output = $row->message;
 }

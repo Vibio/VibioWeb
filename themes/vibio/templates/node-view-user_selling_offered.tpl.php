@@ -104,9 +104,9 @@ $item_pic = vibio_item_get_image($item->nid, 'product_fixed_width_teaser');
 // Offer2Buy info
 $price = $item->offer2buy['settings']['price'];
 
- ?>
-<div class="selling_item_info"
- >
+?>
+<!-- sites/default/themes/vibio/templates/node-view-user_selling_offered.tpl.php -->
+<div class="selling_item_info">
 <div class="teaser_item_pic"><?php print $item_pic; ?></div>
 <?php print $collection['title']; ?>
 <?php print $node->field_item_sought[0][view];?>

@@ -43,6 +43,7 @@ regions[sidebar_first]  = First sidebar
 regions[navigation]     = Navigation bar
 ;regions[highlight]      = Highlighted content
 regions[content_top]    = Content top
+regions[content]    = Content
 regions[content_bottom] = Content bottom
 regions[header]         = Header
 regions[footer]         = Footer

@@ -94,8 +94,8 @@ function product_ajax_add_complete()
 	$item_nid = $state['nid'];
 	$t_args = array(
 		"!title"		=> l($product->title, "node/{$item_nid}"),
-		"!view_link"	=> l(t("view the item"), "node/{$item_nid}"),
-		"!close_link"	=> l(t("close this window"), "", array("attributes" => array("class" => "vibio_dialog_close_link"))),
+		"!view_link"	=> l(t("View the item"), "node/{$item_nid}"),
+		"!close_link"	=> l(t("close this window"), "", array("attributes" => array("class" => "vibio_dialog_close_link"))),  // being mostly, not completely,deprecated
 		
 	);
 	
@@ -103,7 +103,9 @@ function product_ajax_add_complete()
 	{
 		if (!$cids)
 		{
-			exit(t("\"!title\" has been added to your inventory! You can !view_link or !close_link", $t_args));
+			//exit(t("\"!title\" has been added to your inventory! You can !view_link or !close_link", $t_args));
+			exit(t("\"!title\" has been added to your inventory! !view_link", $t_args));
+
 		}
 		
 		$collection_names = array();
@@ -118,11 +120,11 @@ function product_ajax_add_complete()
 			$key = count($cids) - 1;
 			$collection_names[$key] = "and {$collection_names[$key]}";
 			$t_args['!collection'] = implode(", ", $collection_names);
-			exit(t('"!title" has been added to your !collection collections. You can !view_link or !close_link', $t_args));
+			exit(t('"!title" has been added to your !collection collections. !view_link', $t_args));
 		}
 		
 		$t_args['!collection'] = implode(", ", $collection_names);
-		exit(t('"!title" has been added to your !collection collection. You can !view_link or !close_link', $t_args));
+		exit(t('"!title" has been added to your !collection collection. !view_link', $t_args));
 	}
 	
 	exit(t("There was an error adding the item to your inventory. Please try again later. !close_link", $t_args));

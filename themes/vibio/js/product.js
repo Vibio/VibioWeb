@@ -44,7 +44,7 @@ $(document).ready(function()
 			data: { nid: nid },
 			success: function(html, stat)
 			{
-				vibio_dialog.dialog.dialog("close");
+				/* remove close button? vibio_dialog.dialog.dialog("close"); */
 				vibio_dialog.create(html);
 			}
 		});

@@ -1,9 +1,12 @@
 #vibio_dialog {
-	padding: 10px;
-	background: #375670;
+	/*padding: 10px;
+	background: #375670;*/
 	border-radius: 8px;
 	-moz-border-radius: 8px;
 	min-height: 55px !important;
+}
+span.ui-icon{
+	display: none
 }
 
 .vibio_dialog_content {
@@ -48,8 +51,8 @@
 
 .vibio_dialog_close_button {
 	position: absolute;
-	right: -7px;
-	top: -5px;
+	right: -20px;
+	top: -2px;
 }
 
 #vibio_dialog .views_message {

@@ -1,6 +1,6 @@
 <?php
 $friends_title = t("Connections");
-$friend_finder_title = t("Vibio Connection Finder");
+$friend_finder_title = t("Connection Finder");
 $invite_title = t("Invite Friends");
 
 /* Simon 20110907 remove notifications, which was first line in echo:

@@ -82,7 +82,7 @@ function uri_preprocess_page(&$vars)
 	$uri_js = array(
 		"uri"	=> array(
 			"messages"	=> array(
-				"approve"	=> t("!target is now part of your circle of connections."),
+				"approve"	=> t("!target is now part of your circle of trust."),
 				"cancel"	=> t("You have cancelled the request to connect with !target"),
 				"disapprove"=> t("You have ignored !target’s request to connect"),
 				"remove"	=> t("You are no longer connected with !target"),

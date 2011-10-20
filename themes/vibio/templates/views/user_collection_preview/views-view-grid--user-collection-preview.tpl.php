@@ -53,13 +53,16 @@ if ($unshown_items)
 			$col_class = "col-".($j + 1);
 			$td_output = isset($view->result[$result_index]) ? theme("collection_list_item_preview", $view->result[$result_index]) : $item;
 
-			echo "
-				<td class='$col_class'>
-				  <div class='collection-preview-boxshadow'>
-					$td_output
-				  </div>
-				</td>
-			";
+			if(strlen($td_output))
+				echo "
+					<td class='$col_class'>
+					  <div class='collection-preview-boxshadow'>
+						$td_output
+					  </div>
+					</td>
+				";
+			else
+				echo "<td></td>\n";
 		}
 		echo "</tr>";
 	}

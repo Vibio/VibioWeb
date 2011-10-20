@@ -44,14 +44,13 @@ body {
   font-size: 0.875em; /* 16px x .875 = 14px 
   line-height: 1.286em; /* 14px x 1.286 = 18px  */
  
- font-size:	0.813em;
+ font-size:	13px;
 }
 
 body,
 caption,
 th,
 td,
-input,
 textarea,
 select,
 option,
@@ -80,9 +79,28 @@ fieldset {
   font-family: "Courier New", "DejaVu Sans Mono", monospace;
 
    */
-
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   color: #556270;
+}
+
+/*Form Inputs*/
+
+input,
+textarea{
+border: 1px solid #CCCCCC;
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+border-radius: 5px;
+resize: none;
+/*-webkit-box-shadow: inset 1px 1px 1px 0px #e3e3e3;
+-moz-box-shadow: inset 1px 1px 1px 0px #e3e3e3;
+box-shadow: inset 1px 1px 1px 0px #e3e3e3;*/
+padding: 0 5px;
+font-size: 13px;
+}
+
+label{
+	font-size: 15px;
 }
 
 pre,

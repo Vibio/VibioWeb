@@ -144,6 +144,14 @@ height:43px;
 margin: 13px 0 0;
 padding: 0;
 }
+
+h1#page_title {
+background:url("../images/long_border.png") no-repeat scroll 0 32px transparent;
+height:43px;
+margin: 13px 0 0;
+padding: 0;
+}
+
 .section_title{
 	font-size: 22px;
 	color: #556270;

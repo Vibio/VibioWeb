@@ -379,7 +379,10 @@ a#content-email {
 	opacity:0.4;
     filter:alpha(opacity=40); /* For IE8 and earlier */
 }
-
+.hover-shadow{
+	opacity:0.4;
+    filter:alpha(opacity=40); /* For IE8 and earlier */
+}
 .selling_item_info div.teaser_item_pic {
     background-color: #E8E8E8;
     display: block;
@@ -387,5 +390,42 @@ a#content-email {
     height: 80px;
     margin-right: 5px;
     width: 80px;
+}
+/*Have and Want Buttons*/
+.inventory_add,.inventory_want{
+	background: url(../images/want_have.png) no-repeat;
+	height: 26px;
+	width: 53px;
+	border: none;
+	text-indent: -9999px;
+	cursor: pointer;
+	float: left;
+}
+.inventory_add{
+	background-position: 0px 0px;
+}
+.inventory_add:hover{
+	background-position: -100px 0px;
+}
+.inventory_want{
+	background-position: 2px -30px;
+}
+.inventory_want:hover{
+	background-position: -98px -30px;
+}
+div.views-field.views-field-nid{
+	position: absolute;
+	width: 128px;
+	left: 8px;
+	height: 2px
+}
+
+.collection-preview-boxshadow { 
+	box-shadow: 1px 1px 9px #DDDDDD;
+	float: left;
+	padding: 2px;
+	width: 347px;
+	margin-right: 2px;
+}
 }
 

@@ -296,6 +296,8 @@ function _vibio_item_user_options()
 	);
 }
 
+
+/* for example, called for the Showcase Item */
 function _vibio_item_get_image($nid)
 {
 	if (!($node = node_load($nid)))

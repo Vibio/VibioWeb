@@ -144,7 +144,7 @@ function collection_preprocess_collection_view_collection(&$vars)
 	{
 		$add_text = t("Add Item");
 		$vars['collection_owner_name'] = t("Your");
-		$vars['add_item_link'] = "<a href='/search/vibio_item'>
+		$vars['add_item_link'] = "<a href='/product/add'>
 			<div class='button_left'></div>
 			<div class='button_mid'>
 				<span class='form-submit'>

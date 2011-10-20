@@ -1,10 +1,12 @@
 <?php
+require_once 'sites/all/modules/vshare/vshare_big.php';
 $collection_url = url("collections/{$collection->cid}");
 $manage_link = $collection->is_owner ? l(t("Rename Collection"), "collections/manage/{$collection->cid}") : "";
 $total_items = t("!count items", array("!count" => $collection->total_items));
 $expand = t("View Items");
+$vshare = vshare_big($collection);
 
-echo "\n<!-- /themes/vibio/templates/collections/collection.tpl.php -->\n";
+echo "\n<!-- themes/vibio/templates/collections/collection.tpl.php -->\n";
 
 if ($show_preview)
 {
@@ -40,6 +42,7 @@ echo "
 			<p>{$collection->collection_description}</p>
 			{$collection->collection_categories}
 		</div>
+		$vshare
 		<div class='clear'></div>
 		$preview
 	</div>

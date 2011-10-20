@@ -371,3 +371,13 @@ function vibio_checkboxes($ele)
 	$ele['#children'] = "<table>{$ele['#children']}</table>";
 	return theme_checkboxes($ele);
 }*/
+
+/*Remove Resizable funtion of text area*/
+/*function phptemplate_textarea($element) {
+  if (strpos($_GET['q'], 'node/add') !== 0) {
+    $element['#resizable'] = FALSE;
+  }
+  return theme_textarea($element);
+}*/
+
+?>

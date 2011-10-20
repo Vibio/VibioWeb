@@ -2,14 +2,11 @@
 $updated = t("Updated !date", array("!date" => "<span class='timestamp_uncalculated'>{$item->node_changed}</span>"));
 $price_image = theme("vibio_item_price_image", $item, "mini");
 
-if($_GET['debug'] || 1 ) {
-	require_once getcwd() . '/sites/all/modules/vshare/vshare_small.php';
-	$share_links = vshare_small($item);
-} else
-	$share_links = "<i><u title='hover gives the Twitter and Facebook icons'>share$a$b</u></i>";
+require_once getcwd() . '/sites/all/modules/vshare/vshare_small.php';
+$share_links = vshare_small($item);
 
 
-echo "
+echo "<!-- sites/default/themes/vibio/templates/collections/collection-item-preview.tpl.php -->
 	<div class='collection_list_image'>
 		$price_image
 		<a href='/node/{$item->nid}'>

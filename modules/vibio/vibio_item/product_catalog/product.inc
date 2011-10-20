@@ -129,32 +129,24 @@ function _product_from_item($item_nid)
 function _product_get_image($nid, $is_product=false)
 {
 	static $product_images = array();
-	
-	if (isset($product_images[$nid]))
-	{
+
+	if ( isset($product_images[$nid]))
 		return $product_images[$nid];
-	}
-	
+
 	$search_nid = $is_product ? $nid : _product_nid_from_item($nid);
-	
+
 	if (!$is_product && isset($product_images[$search_nid])) //if it's an item and we already have the product image cached..
-	{
 		return $product_images[$search_nid];
-	}
-	
+
 	$product = node_load($search_nid);
-	
+// echo "<pre>"; var_dump($product); exit;
 	if (!empty($product->field_main_image[0]['filepath']) && file_exists($product->field_main_image[0]['filepath']))
-	{
 		$url = file_create_url($product->field_main_image[0]['filepath']);
-	}
 	else
-	{
 		$url = _product_default_image();
-	}
-	
+
 	$product_images[$search_nid] = $url;
-	
+
 	return $url;
 }
 

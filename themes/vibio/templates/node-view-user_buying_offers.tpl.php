@@ -19,7 +19,7 @@ require_once 'sites/all/modules/vshare/vshare_small.php';
 $item = node_load( $node->field_item_sought[0][nid] );
 $item_title = $item->title;
 // messy: get field_main_image, but that's probably empty, get product.
-$item_pic_url = $item->picture;
+//this is old and not used: $item_pic_url = $item->picture;
 
 //buyer specific
 //skip: $owner_uid = $item->uid;
@@ -59,7 +59,7 @@ if ( $collection['title'] ) {
 		$collection['title'] . "</a></div>";
 }
 
-
+//die( "About to get image for " . $item->nid ); About to get image for 25858
 $item_pic = vibio_item_get_image($item->nid, 'product_fixed_width_teaser');
 // at the moment, product_fixed_width is 180px, product_fixed_width_teaser 120px
 

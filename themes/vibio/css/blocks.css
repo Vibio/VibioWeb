@@ -21,9 +21,10 @@
 	width:118px;
 	height: 118px;
 	margin: 0 auto;
+	background: #FFFFFF
 }
 #block-views-flag_featured_users-block_1 .views-field-picture{
-	padding: 18px 0 4px;
+	padding: 8px 0 4px;
 }
 #block-views-flag_featured_users-block_1 .field-content{
 	font-size: 13px;	

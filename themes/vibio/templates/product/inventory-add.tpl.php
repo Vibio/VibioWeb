@@ -1,26 +1,22 @@
 <?php
 $text = t("Have");
-$mouseover = "I already have this item";
-      //alt wording  "Let people know you already have this item"
+/* A javascript seems to catch this from v1.0 days */
 
-$attributes = array(
-  'id' => "inventory_add_{$nid}",
-);
-
-$attributes['class'] = 'inventory_add';
-
-echo 
-"<div class='inventory_add'>" .
-l($text, "node/$nid", $attributes) .
-"<div class='mouseover'>$mouseover</div></div>";
-
-
-
-/*
+/* text version:
 echo "
-	<button class='inventory_add' id='inventory_add_{$nid}'>
+	<a class='inventory_add' id='inventory_add_{$nid}'>
 		$text
-	</button>
+	</a>
 ";
 */
+
+echo "
+	<a class='inventory_add' id='inventory_add_{$nid}'><img
+		src='/sites/default/themes/vibio/images/have_button.png'/></a>
+";
+
+
+
+
+
 ?>

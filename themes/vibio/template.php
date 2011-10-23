@@ -57,9 +57,9 @@ function vibio_preprocess_search_results(&$variables) {
   $variables['search_results'] = '';
 	$zebra = 1;
   foreach ($variables['results'] as $result) {
-		$z = $result['zebra'] = $zebra%3;
+		$z = $result['zebra'] = $zebra%4; // change to number of columns you want
 		$zebra++;
-    $variables["search_results_$z"] .= theme('search_result', $result, $variables['type']);
+    $variables["search_results_$z"] .= /* "col$z" .*/ theme('search_result', $result, $variables['type']);
   }
 	// I think this is overridden somewhere for product search, which is called
   //  item search.
@@ -301,9 +301,22 @@ function vibio_user_login_block($form) {
    $form['submit']['#value'] = 'Sign up';
 }
 
+/*this is for theming selects*/
+
+function vibio_select($element) {
+  $select = '';
+ //  if (in_array($element['#post']['form_id'], 'node-form')) {
+  $element['#attributes'] = array('class' => 'jquery_dropdown jquery_dropdown_jump');
+ // }
+  $size = $element['#size'] ? ' size="'. $element['#size'] .'"' : '';
+  _form_set_class($element, array('form-select'));
+  $multiple = $element['#multiple'];
+  return theme('form_element', $element, '<select name="'. $element['#name'] .''. ($multiple ? '[]' : '') .'"'. ($multiple ? ' multiple="multiple" ' : '') . drupal_attributes($element['#attributes']) .' id="'. $element['#id'] .'" '. $size .'>'. form_select_options($element) .'</select>');
+}
 
 
-/*function vibio_fieldset($ele)
+/*fieldset theming*/
+function vibio_fieldset($ele)
 {
 	if (!empty($ele['#collapsible']))
 	{
@@ -336,7 +349,7 @@ function vibio_user_login_block($form) {
 	";
 
 }
-
+/*
 function vibio_form_element($ele, $val)
 {
 	$out = "<tr class='form-item'";

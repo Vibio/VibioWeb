@@ -184,8 +184,9 @@ Drupal.modalFrame.create = function() {
 
     // Hide the dialog, center it on the viewport and then fade it in with
     // the iframe still hidden, until the child document is loaded.
-    self.iframe.$element.hide();
-    $('.modalframe').hide().css({top: dialogPosition.top, left: dialogPosition.left});
+//    self.iframe.$element.hide();
+//    $('.modalframe').hide().css({top: dialogPosition.top, left: dialogPosition.left});
+    $('.modalframe').css({top: dialogPosition.top, left: dialogPosition.left});
     $('.modalframe').fadeIn('slow', function() {
       // Load the document on the hidden iframe (see bindChild method).
       self.load(self.options.url);

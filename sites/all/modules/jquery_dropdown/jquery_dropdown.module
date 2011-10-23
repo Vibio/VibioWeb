@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @todo is this where I need to put this? - JC
+ * 
+ * Implementation of hook_init()
+ */
+function jquery_dropdown_init(){
+  drupal_add_js(drupal_get_path('module', 'jquery_dropdown').'/js/jquery_dropdown.js', 'module');
+  
+  //will want to override with your own CSS
+  drupal_add_css(drupal_get_path('module', 'jquery_dropdown').'/css/jquery_dropdown.css', 'module');
+}
+
+function jquery_dropdown_footer(){
+	return "<noscript><style>.jquery_dropdown { display: block; }</style></noscript>";
+}

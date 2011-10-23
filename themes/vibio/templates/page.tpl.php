@@ -30,6 +30,7 @@
 		<script type="text/javascript" src="/themes/vibio/js/mb_menu.js"></script>
 	</head>
 	<body class="<?php print $classes;?>">
+<?php /*
 	  <div id="fb-root"></div>
         <script type="text/javascript">(function(d, s, id){
           var js,fjs=d.getElementsByTagName(s)[0];
@@ -38,7 +39,7 @@
           js.src="//connect.facebook.net/en_US/all.js#xfbml=1";
           fjs.parentNode.insertBefore(js,fjs);
         }(document,'script','facebook-jssdk'));</script>
-
+*/ ?>
 		<div id="page-wrapper">
 			<div id="page">
 				<div id="header">

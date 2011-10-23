@@ -7,16 +7,20 @@ $img = theme('imagecache', 'product_fixed_width', $node->field_main_image[0]['fi
 // $search_links are have and want buttons
 
 $rectangle = "
-	<div class='item-rectangle col_$zebra'> 
-		<a href='$url' title='$title' alt='$title'>
-			 $img
-		</a>
-		<div class='title-item'>
-			<a class='item-title' href='$url'>$title</a><br/>
-		</div>                        
-	<div class='search-flag'>$flag</div>
-	<div class='search-links'>$search_links</div>
+<div class='views-fluidgrid-item'> 
+	<div class='views-fluidgrid-item-inner'>
+  	<div class='views-field-field-main-image-fid'>
+  		<a href='$url' title='$title' alt='$title'>
+  			 $img
+  		</a>
+  	</div>	
+  		<div class='search-links'>$search_links</div>
+  		<div class='views-field-title'>
+  			<a class='item-title' href='$url'>$title</a>
+  		</div>   		                     
+  	<div class='search-flag'>$flag</div>
 	</div>
+</div>
 ";
 
 print $rectangle;

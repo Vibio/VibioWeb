@@ -11,13 +11,13 @@ if ($is_product_page && $item_id || // PRODUCT page where user owns the product
 			'attributes' => array(
 				'class' => "local_action_button",),
 			'query'=>'manage=1')
-		) . "<br />";  // used to be View yours
+		);  // used to be View yours
 }
 elseif (!$item_id) // user doesn't own this product, always show this.
 {
 	// originally unsanitized though maybe theme fixed. fix 20110609
 	$searchcrumb = htmlentities ( trim ( $searchcrumb ) , ENT_QUOTES )  ;
-	$manage_link = theme("product_inventory_add", $product->nid, $searchcrumb)."<br />";
+	$manage_link = theme("product_inventory_add", $product->nid, $searchcrumb);
 }
 
 if (!$is_product_page)

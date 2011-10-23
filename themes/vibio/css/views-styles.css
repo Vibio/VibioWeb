@@ -1,43 +1,41 @@
 /*spinning views gif*/
-.views-throbbing{
+.views-throbbing {
 	display: none;
 }
+
 .views_node_image_container img {
 	height: 42px;
 	width: 42px;
 	border: 1px solid #CCC;
 }
-
 .views_node_image_container {
 	float: left;
 }
-
 .views-field-picture, .views-field-message {
 	padding: 10px 0;
 	vertical-align: top;
 }
-
-.views-field-picture .picture, .views_node_image_container  {
+.views-field-picture .picture, .views_node_image_container {
 	margin-right: 7px;
 	padding: 3px 0 0 3px;
-	height:47px;
-	width:47px;
+	height: 47px;
+	width: 47px;
 	background: #FFFFFF;
 	border: 1px solid #CCCCCC;
 }
-
 .views_message {
 	float: right;
 	width: 613px;
 	padding-top: 7px;
 }
-
 .views_message p {
 	margin: 0;
 }
-
 .views_actions {
 	margin: 10px 0;
+}
+.view-header{
+	display: none
 }
 
 .view_activity_timestamp {
@@ -46,52 +44,41 @@
 	color: #838383;
 	margin: -5px 0 0;
 }
-
-table.views-table.cols-2{
+table.views-table.cols-2 {
 	margin: 0;
+	padding-top: 0;
 }
-
-table.views-table.cols-2 thead {
-	background:url(../images/long_border.png) no-repeat scroll 0 10px;
+.views-table.cols-2 thead{
+	display: none;
 }
-
 .view-content tr {
 	padding-bottom: 5px;
 }
-
 .view-content .views-view-grid tr {
 	border-bottom: none;
 }
-
 #views-exposed-form-user-collection-default #edit-collection-order-by-wrapper {
 	display: inline;
 }
-
 #views-exposed-form-user-collection-default #edit-submit-user-collection {
 	margin-top: 0;
 }
-
 .inventory_view_type {
 	float: right;
 	margin-top: -53px;
 }
-
 .inventory_view_type span {
 	display: block;
 	font-weight: bold;
 }
-
 .view-user-inventory td.views-field-field-main-image-fid img {
 	max-width: 80px;
 }
-
 .views_slideshow_singleframe_previous {
-  background: transparent url("../images/arrow-gray-left.png") top left no-repeat;
-  text-indent: -5000px;
-border: 1px solid red;
+	background: transparent url("../images/arrow-gray-left.png") top left no-repeat;
+	text-indent: -5000px;
+	border: 1px solid red;
 }
-
-
 .views_slideshow_singleframe_controls views_slideshow_controls {
-  border: 1px solid red;
+	border: 1px solid red;
 }

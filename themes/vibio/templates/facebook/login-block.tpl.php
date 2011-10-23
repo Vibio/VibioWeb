@@ -1,4 +1,10 @@
 <?php
+/* quick reverse-engineer:  suspect class=fb_login clicks are dealt with
+ *  by themes/vibio/js/facebook.js
+ * If we switch to a normal facebook module, um...
+ */
+
+
 global $user;
 
 if (!$user -> uid) {

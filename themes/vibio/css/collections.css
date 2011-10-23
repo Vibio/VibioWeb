@@ -34,10 +34,10 @@
 }
 .collection_summary {
 	float: left;
-	width: 610px;
+	width: 595px;
 }
 .collection_summary h3 {
-	color: #667122;
+	
 	margin: 0;
 }
 .collection_summary p {
@@ -57,7 +57,6 @@
 }
 .collection_preview {
 	width: 100%;
-	border: 2px solid #a5a5a5;
 }
 .collection_preview_init {
 	height: 16px;
@@ -81,20 +80,22 @@
 }
 .collection_preview_items {
 	display: none;
-	padding: 0 15px;
 }
 .collection_list_image {
 	float: left;
 	margin-right: 10px;
 }
 .collection_list_image img {
-	max-width: 40px;
+	max-width: 100px;
+	max-height: 100px; 
+	border: 1px solid #CCCCCC;
 }
 .collection_list_item_summary {
-	float: left;
+	border-bottom:1px solid #CCCCCC; 
+	margin: 5px 10px 5px 0px;
+	min-height: 110px;
 }
 .collection_list_item_summary span.item_price {
-	float: left;
 	width: 60px;
 }
 .user-collection-preview h5, #collection_sidebar .collection_sidebar_collection h5 {
@@ -106,8 +107,17 @@
 	font-size: 12px;
 }
 .user-collection-preview td {
-	width: 230px;
+	width: 365px;
 	vertical-align: top;
+}
+td.col-1{ 
+	
+}
+td.col-2{ 
+	padding-left:10px;
+	border-left: 1px solid #CCCCCC; 
+}
+.minisocialbar div{
 }
 .user-collection-preview tr {
 	height: 60px;
@@ -119,7 +129,7 @@
 	color: #a5a5a5;
 }
 .item_updated {
-	display: block;
+	display: none;
 }
 #collection_main, #collection_sidebar {
 	float: left;

@@ -1,0 +1,15 @@
+; $Id$
+name = jQuery UI Theme
+description = Add jQuery UI to drupal themes
+package = User interface
+version = 6.x-1.0-alpha1
+core = 6.x
+
+dependencies[] = jquery_ui
+dependencies[] = jquery_update
+; Information added by drupal.org packaging script on 2011-07-03
+version = "6.x-1.0-alpha2"
+core = "6.x"
+project = "jqueryui_theme"
+datestamp = "1309702616"
+

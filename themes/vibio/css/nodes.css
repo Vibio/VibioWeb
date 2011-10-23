@@ -89,7 +89,8 @@
 }
 
 .product_main_image, .node_view_item_image {
-  max-width: 100px;
+  max-width: 250px;
+  border: 1px solid #CCCCCC;
 }
 
 .node_view_item_image {
@@ -99,26 +100,38 @@
 
 .product_node_data {
   float: left;
-  width: 595px;
+  width: 345px;
 }
-
+.product_node_data .item_link h3{
+  font-size: 18px;
+  margin-bottom: 10px;
+}
 .product_description {
   color: #2b363d;
 }
 
+.product_extra_data h3{
+	font-size: 15px;
+	background:url("../images/long_border.png") no-repeat scroll 0 32px transparent;
+    height:43px;
+	margin: 0 0 10px;
+	padding: 0;
+}
+
 .product_extra_data {
   margin-top: 10px;
-  background: #f9f9f9;
-  border: 2px solid #eaeaea;
-  padding: 5px 20px;
+  border-bottom: 1px solid #CCCCCC;
+  padding: 0;
   color: #727272;
+  font-size: 18px;
 }
 
 .product_image {
   float: left;
-  margin: 5px 25px 0 0;
-  text-align: center;
-  width: 100px;
+  padding: 25px;
+  background: #FFFFFF;
+  border: 1px solid #CCCCCC;
+  margin-right: 28px;
 }
 
 .node_vibio_item_title {

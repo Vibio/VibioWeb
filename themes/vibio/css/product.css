@@ -1,38 +1,73 @@
 
 .external_short_link {
 	float: right;
+	position: absolute;
+	top: 15px;
+	right: 20px;
+	font-size: 15px;
+	line-height: 28px;
+}
+
+.external_short_link a#info-button {
+	text-indent: -9999px;
+	display: block;
+	background: url(../images/info_button.png) no-repeat 0px -1px;
+	height: 24px;
+	width: 24px;
+	float: right;
+	margin-left: 5px
+}
+
+.external_short_link a#info-button:hover{
+	background-position: -40px -1px;
 }
 
 #page_title {
 	display: none;
 }
 
+h1#product_description {
+background:url("../images/long_border.png") no-repeat scroll 0 32px transparent;
+height:43px;
+margin: 0 0 20px;
+padding: 0;
+}
+
 .product_title {
-	color: #8e9e30;
 	margin: 0;
 }
 
 .product_owners_results {
-	margin-left: 25px;
 }
 
 .item_owner .action {
-	float: right;
-	width: 140px; /* Carolyn should play */
+	width: 140px;
+	float: right; /* Carolyn should play */
   /* the not_for_sale.png image is messing up the flow after first-pass */
 }
 
 .item_owner .picture {
+	padding: 5px 5px 0;
+	border: 1px solid #CCCCCC;
+	background: #FFFFFF;
+	width: 44px;
 	float: left;
+	margin: 7px 18px 0 0;
 }
 
+.product_owners_results .item_owner .picture img {
+    max-width: 42px;
+    max-height: 42px;
+    border: 1px solid #CCCCCC;
+    
+}
 .item_owner .picture img {
 	max-width: 40px;
 }
 
 .item_owner .item_info {
 	float: left;
-	margin-left: 10px;
+	font-size:13px;
 	width: 430px; /* it was 500, which messed up flow with .item_owner .action above */
 }
 
@@ -44,19 +79,6 @@
 .item-square:hover .inventory_add, 
 .item-square:hover .inventory_want {
   display: inline;
-}
-
-
-.inventory_add, .inventory_want {
-       background: #46c9fd;
-       border: 0;
-       -webkit-border-radius: 5px;
-       -moz-border-radius: 5px;
-       border-radius: 5px;
-       color: #fff;
-       font-weight: bold;
-       margin: 10px 20px;
-       padding: 5px 10px;
 }
 
 .inventory_add_pinfo {

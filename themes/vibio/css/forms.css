@@ -5,128 +5,97 @@
  * Form Styling
  */
 
-
-.form-item,
-.form-checkboxes,
-.form-radios /* Wrapper for a form element (or group of form elements) and its label */ {
-  margin: 1em 0;
+.form-item, .form-checkboxes, .form-radios/* Wrapper for a form element (or group of form elements) and its label */ {
+	margin: 1em 0;
 }
-
-.form-item input.error,
-.form-item textarea.error,
-.form-item select.error /* Highlight the form elements that caused a form submission error */ {
-  border: 1px solid #c00 !important;
+.form-item input.error, .form-item textarea.error, .form-item select.error/* Highlight the form elements that caused a form submission error */ {
+	border: 1px solid #c00 !important;
 }
-
-.form-item label /* The label for a form element */ {
-  display: block;
-  font-weight: bold;
+.form-item label/* The label for a form element */ {
+	display: block;
+	font-weight: bold;
 }
-
-.form-item label.option /* The label for a radio button or checkbox */ {
-  display: inline;
-  font-weight: normal;
+.form-item label.option/* The label for a radio button or checkbox */ {
+	display: inline;
+	font-weight: normal;
 }
-
-.form-required /* The part of the label that indicates a required field */ {
-  color: #c00;
+.form-required/* The part of the label that indicates a required field */ {
+	color: #c00;
 }
-
-.form-item .description /* The descriptive help text (separate from the label) */ {
-  font-size: 0.85em;
+.form-item .description/* The descriptive help text (separate from the label) */ {
+	font-size: 0.85em;
 }
-
-.form-checkboxes .form-item,
-.form-radios .form-item /* Pack groups of checkboxes and radio buttons closer together */ {
-  margin: 0.4em 0;
+.form-checkboxes .form-item, .form-radios .form-item/* Pack groups of checkboxes and radio buttons closer together */ {
+	margin: 0.4em 0;
 }
-
-.form-submit /* The submit button */ {
+.form-submit/* The submit button */ {
 }
-
-.container-inline div,
-.container-inline label /* Inline labels and form divs */ {
-  display: inline;
+.container-inline div, .container-inline label/* Inline labels and form divs */ {
+	display: inline;
 }
-
-.tips /* Tips for Drupal's input formats */ {
+.tips/* Tips for Drupal's input formats */ {
 }
-
-
 /*
  * Search (search-theme-form.tpl.php)
  */
-#search-box /* Wrapper for the search form */ {
-  float: left;
-  margin-left:10px;
-  width: 285px;
+#search-box/* Wrapper for the search form */ {
+	float: left;
+	margin-left: 10px;
+	width: 285px;
 }
-
 #search {
-  position: relative;
-  z-index: 0;
+	position: relative;
+	z-index: 0;
 }
-
 #search_type_menu_container {
-  z-index: 1;
+	z-index: 1;
 }
-
 #edit-search-theme-form-1-wrapper {
-  left: 0px;
-  top: 0px;
-  z-index: 0;
+	left: 0px;
+	top: 0px;
+	z-index: 0;
 }
-
 #edit-search-theme-form-1 {
-  color: #999;
-  border: 3px solid #2c3e53;
-  -webkit-border-radius: 7px;
-  -moz-border-radius: 7px;
-  border-radius: 7px;
-  height: 34px;
-  width: 303px;
-  padding: 0 0 0 85px;
-  position: absolute;
-  right: -106px;
-  top: 0;
-  z-index: 0;
-  font-size: 14px;
+	color: #999;
+	border: 3px solid #2c3e53;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+	height: 34px;
+	width: 303px;
+	padding: 0 0 0 85px;
+	position: absolute;
+	right: -106px;
+	top: 0;
+	z-index: 0;
+	font-size: 14px;
 }
-
 #search input[type="submit"] {
-  background: transparent url(../images/search-icon.png) no-repeat top center;
-  width: 35px;
-  height: 30px;
-  border: 0;
-  position: absolute;
-  right: -100px;
-  top: 8px !important;
+	background: transparent url(../images/search-icon.png) no-repeat top center;
+	width: 35px;
+	height: 30px;
+	border: 0;
+	position: absolute;
+	right: -110px !important;
+	top: -1px !important;
 }
-
-#edit-search-theme-form-1-wrapper label /* Label that says "Search this site:" */ {
-  display: none;
+#edit-search-theme-form-1-wrapper label/* Label that says "Search this site:" */ {
+	display: none;
 }
-
-
 /*
  * Search (search-block-form.tpl.php)
  */
-#search-block-form /* Wrapper for the search form */ {
+#search-block-form/* Wrapper for the search form */ {
 }
-
-#edit-search-block-form-1-wrapper label /* Label that says "Search this site:" */ {
-  display: none;
+#edit-search-block-form-1-wrapper label/* Label that says "Search this site:" */ {
+	display: none;
 }
-
-
 /*
  * Drupal's default login form block
  */
 #user-login-form {
-  text-align: left; /* LTR */
+	text-align: left; /* LTR */
 }
-
-
 /*
  * OpenID
  *
@@ -134,28 +103,22 @@
  * styling of list items.
  */
 
-#user-login-form ul /* OpenID creates a new ul above the login form's links. */ {
-  margin-bottom: 0; /* Position OpenID's ul next to the rest of the links. */
+#user-login-form ul/* OpenID creates a new ul above the login form's links. */ {
+	margin-bottom: 0; /* Position OpenID's ul next to the rest of the links. */
 }
-
-#user-login-form li.openid-link /* The "Log in using OpenID" link. */ {
-  margin-top: 1em;
-  margin-left: -20px; /* LTR */ /* Un-do some of the padding on the ul list. */
+#user-login-form li.openid-link/* The "Log in using OpenID" link. */ {
+	margin-top: 1em;
+	margin-left: -20px; /* LTR */ /* Un-do some of the padding on the ul list. */
 }
-
-#user-login-form li.user-link /* The "Cancel OpenID login" link. */ {
-  margin-top: 1em;
+#user-login-form li.user-link/* The "Cancel OpenID login" link. */ {
+	margin-top: 1em;
 }
-
 #user-login ul {
-  margin: 1em 0;
+	margin: 1em 0;
 }
-
-#user-login li.openid-link,
-#user-login li.user-link /* The OpenID links on the /user form. */ {
-  margin-left: -2em; /* LTR */ /* Un-do all of the padding on the ul list. */
+#user-login li.openid-link, #user-login li.user-link/* The OpenID links on the /user form. */ {
+	margin-left: -2em; /* LTR */ /* Un-do all of the padding on the ul list. */
 }
-
 #user-login-form input[type="submit"] {
 	display: block;
 	background: url(../images/login_user.png) no-repeat 0 0;
@@ -163,34 +126,27 @@
 	width: 125px;
 	border: none;
 	margin: 0 auto;
-	cursor:pointer;
-
+	cursor: pointer;
 }
-
 #user-login-form div.item-list {
 	font-size: 13px;
 	line-height: 17px;
 }
-
 #user-login-form div.item-list.login_form_separator {
 	padding: 2px 0 17px;
 }
-
 #user-login-form div.item-list.login_form_separator li.openid-processed {
 	margin-left: 0;
 	border-top: 3px double #3c4b55;
 	padding-top: 10px;
 	margin-top: 10px;
 }
-
 #user-login-form div.item-list.login_form_separator li.openid-processed a {
 	padding: 0;
 }
-
 #user-login-form div.item-list li.last {
 	margin-top: 0;
 }
-
 /*
  * Drupal admin tables
  *
@@ -198,37 +154,30 @@
  * section of the site.
  */
 
-form th,
-form thead th {
-  text-align: left; /* LTR */
-  padding-right: 1em; /* LTR */
-  border-bottom: 3px solid #ccc;
+form th, form thead th {
+	text-align: left; /* LTR */
+	padding-right: 1em; /* LTR */
+	border-bottom: 3px solid #ccc;
 }
-
 form tbody th {
-  border-bottom: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
 }
-
 form fieldset td {
 	vertical-align: top;
 	padding-bottom: 5px;
 }
-
 td.form-item-label {
 	text-align: right;
 	padding-right: 10px;
 	width: 150px;
 	font-weight: bold;
 }
-
 div.form-radios, div.form-checkboxes, div.form-radios > table, div.form-checkboxes > table {
 	margin: 0;
 }
-
 div.form-radios td.form-item-label, div.form-checkboxes td.form-item-label {
 	display: none;
 }
-
 /* registration form */
 #user-register div.form-item label {
 	float: left;
@@ -236,39 +185,54 @@ div.form-radios td.form-item-label, div.form-checkboxes td.form-item-label {
 	width: 150px;
 	margin-right: 10px;
 }
-
 #user-register div.form-item div.description {
 	margin-left: 160px;
 }
-
 #user-register span.password-result {
 	padding-left: 125px;
 	background-repeat: no-repeat;
 	background-position: 0 4px;
 }
-
 #user-register span.password-result.error {
 	background-image: url(/themes/vibio/images/progress/progressbar_low.png);
 }
-
 #user-register span.password-result.warning {
 	background-image: url(/themes/vibio/images/progress/progressbar_medium.png);
 }
-
 #user-register span.password-result.ok {
 	background-image: url(/themes/vibio/images/progress/progressbar_high.png);
 }
-
 /* ----- Buttons---- */
 
 .button {
-  background:url(/themes/vibio/images/search_button.png) no-repeat 0px 0px;
-  display: block;
-  position: relative;
-  z-index: 0; 
-  width: 80px;
-  height: 33px;
-  text-indent: -9999px;
-  top:1px;
-  
+	background: url(/themes/vibio/images/search_button.png) no-repeat 0px 0px;
+	display: block;
+	position: relative;
+	z-index: 0;
+	width: 80px;
+	height: 33px;
+	text-indent: -9999px;
+	top: 0px;
+}
+/*Add Product form*/
+#edit-title, #edit-body, #edit-collection-info-cid {
+	width: 460px;
+}
+.grippie {
+	display: none
+}
+
+#edit-submit.form-submit, #edit-preview.form-submit{
+	background: #bfd64b;
+	bottom: 5px;
+	border-color: #7d8e1a;
+}
+#edit-submit.form-submit {
+	position: absolute;
+	right: 83px;
+	
+}
+#edit-preview.form-submit {
+	position: absolute;
+	right: 5px;
 }

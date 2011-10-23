@@ -1,0 +1,214 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Install, update and uninstall functions for the jQuery UI theme module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function jqueryui_theme_schema() {
+    
+  $schema['jqueryui_theme'] = array(
+    'description' => 'Store fid, human-name files and machine-name files',
+    
+    'fields' => array(
+      'machine_name' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Primary Key: Unique file ID.',
+      ),
+      'human_name' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Human name file',
+      ),
+      'version' => array(
+        'type' => 'varchar',
+        'length' => 12,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'jQuery UI theme version',
+      ),
+      'params' => array(
+        'type' => 'varchar',
+        'length' => 2048,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'jQuery UI theme parameters',
+      ),
+    ),
+    
+    'primary key' => array('machine_name'),
+    'indexes' => array(
+        'jqueryui_theme_name' => array('human_name'),
+    ),
+    'foreign keys' => array(
+      'jqueryui_theme_user_constraint' => array(
+        'table' => 'users',
+        'columns' => array('uid' => 'uid'),
+      ),
+    ),
+  );
+  
+  $schema['jqueryui_theme_assoc'] = array(
+    'description' => 'Store jqueryui theme used by drupal theme',
+    
+    'fields' => array(
+      'drupal_theme' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'machine_name' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+    ),
+    'primary key' => array('drupal_theme'),
+    'foreign keys' => array(
+      'machine_name_constraint' => array(
+        'table' => 'jqueryui_theme',
+        'columns' => array('machine_name' => 'machine_name'),
+      ),
+    ),
+  );
+  return $schema;
+}
+
+/**
+ * Implements hook_install().
+ */
+function jqueryui_theme_install() {
+  drupal_install_schema('jqueryui_theme');
+  
+  $temp = file_directory_temp() . '/jqueryui_theme/';
+  $public = file_directory_path() . '/jqueryui_theme/';
+  foreach (array($temp, $public) as $dir) {
+    if (FALSE === ($create = file_check_directory($dir, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS))) {
+      drupal_set_message(st('Unable to create %directory', array('%directory' => $dir)), 'error');
+      break;
+    } 
+  }
+  
+  if ($create) {
+    global $theme;
+    $drupal_themes = array();
+    foreach (list_themes() as $ele) {
+      if (!isset($ele->info['hidden']) && $ele->status && $ele->name != $theme) {
+        $drupal_themes[] = $ele->name;
+      }
+    }
+    $drupal_themes[] = $theme;
+    
+    require_once 'jqueryui_theme.module';
+    $drupal_root = getcwd();
+    
+    $path = drupal_get_path('module', 'jqueryui_theme') . '/default_themes/';
+    if ($files = file_scan_directory($path, '^[-A-Za-z0-9_.]*\.(css|png|txt)$')) {
+      if ($themes = _jqueryui_theme_detect_themes(array_keys($files), $path)) {
+        $key = 0;
+        foreach ($themes as $jqueryui) {
+          //Be aware, no check unique name
+          $files_directory = $public . $jqueryui['name'];
+          $images_directory = $files_directory . '/images';
+
+          $succeed = TRUE;
+          foreach (array($files_directory, $images_directory) as $dir) {
+            if (FALSE === (file_check_directory($dir, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS))) {
+              $succeed = FALSE;
+              break;
+            }
+          }
+          
+          if (!$succeed) {
+            drupal_set_message(st('Unable to create a public directory for default theme "@theme"', array('@theme' => $jqueryui)), 'error');
+          }
+          else {
+            $version  = _jqueryui_theme_get_version($drupal_root, $jqueryui['files']);
+            $params   = _jqueryui_theme_get_params($drupal_root, $jqueryui['files']);
+      
+            foreach ($jqueryui['files'] as $filepath) {
+              if (substr(basename($filepath), -3, 3) == 'css') {
+                file_copy($filepath, $files_directory, FILE_EXISTS_REPLACE); 
+              }
+              else {
+                file_copy($filepath, $images_directory, FILE_EXISTS_REPLACE); 
+              }
+            }
+          
+            db_query("INSERT INTO {jqueryui_theme} (machine_name, human_name) VALUES ('%s', '%s')", $jqueryui['name'], $jqueryui['name']);       
+            if (isset($drupal_themes[$key])) {
+              db_query("INSERT INTO {jqueryui_theme_assoc} (drupal_theme, machine_name) VALUES ('%s', '%s')", $drupal_themes[$key], $jqueryui['name']);
+              $key++;
+            }
+          }
+        }
+      }
+    }
+  }
+  variable_set('jqueryui_theme_switch_method', 'session');
+  
+  $default_ext = array();
+  if ($var = variable_get('upload_extensions_default', NULL)) {
+    $default_ext = trim(explode(' ', $var));
+  }
+
+  //$extensions = array('zip', 'tar', 'tgz', 'tar.gz', 'tar.bz2');
+  $extensions = array('zip');
+  foreach ($extensions as $key => $ext) {
+    if (!in_array($ext, $default_ext)) {
+      $default_ext[] = $ext;
+    }
+    else {
+      unset($extensions[$key]);
+    }
+  }
+  if ($extensions) {
+    variable_set('upload_extensions_default', implode(' ', $default_ext));
+    variable_set('jqueryui_theme_default_ext_upload_files_add', $extensions);
+    drupal_set_message(st('Extensions : @ext have been added to default extensions uploaded files. See upload files <a href="@upload">settings</a>. You could also configure it per <a href="@role">role.</a>', array('@ext' => implode(' ', $extensions), '@upload' => '/admin/settings/uploads', '@role' => '/admin/user/permissions#module-upload')), 'warning');
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function jqueryui_theme_uninstall() {
+  $temp = file_directory_temp() . '/jqueryui_theme';
+  $public = file_directory_path() . '/jqueryui_theme';
+  foreach (array($temp, $public) as $path) {
+    _jqueryui_theme_delete_recursive($path);
+  }
+  
+  if ($extensions = variable_get('jqueryui_theme_default_ext_upload_files_add', FALSE)) {
+    $default_ext = explode(' ', trim(variable_get('upload_extensions_default', array())));
+    foreach ($extensions as $key => $ext) {
+      if (in_array($ext, $default_ext)) {
+        unset($default_ext[reset(array_keys($default_ext, $ext))]);
+      }
+      else {
+        unset($extensions[$key]);
+      }
+    }
+    if ($extensions) {
+      variable_set('upload_extensions_default', implode(' ', $default_ext));
+      drupal_set_message(st('Extensions : @ext have been removed from default extensions uploaded files. Make sure their weren\'t required by another modules after installing this module. See upload files <a href="@upload">settings</a>.', array('@ext' => implode(' ', $extensions), '@upload' => '/admin/settings/uploads')), 'warning');
+    }
+  }
+  variable_del('jqueryui_theme_default_ext_upload_files_add');
+  variable_del('jqueryui_theme_switch_method');
+  
+  drupal_uninstall_schema('jqueryui_theme');
+  
+  db_query('DELETE FROM {blocks} WHERE module = "jqueryui_theme"');
+}

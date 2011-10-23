@@ -38,13 +38,13 @@ if (strlen($description) > PRODUCT_DETAIL_SNIPPET_LENGTH)
 	
 	$body = "
 		<div class='product_snippet'>
-			$snippet <a href='#' class='product_snippet_link'>more</a>
+			$snippet <a href='#' class='product_snippet_link'>More</a>
 		</div>
 		<div class='product_snippet product_snippet_expand'>
 			$description 
 			<div class='clear'></div>
-			$details<br />
-			<a href='#' class='product_snippet_link'>less</a>
+			$details
+			<a href='#' class='product_snippet_link'>Less</a>
 		</div>
 	";
 }

@@ -457,7 +457,7 @@ ul.links li {
 
 #content-area .rounded_content {
   background: transparent url(../images/bg-content-tile.jpg);
-	min-height: 700px;
+	min-height: 749px;
 	padding: 6px;
 }
 
@@ -468,6 +468,7 @@ ul.links li {
 
 .sidebar .rounded_content {
   color: #556270;
+  min-height: 761px;
 }
 
 .sidebar .rounded_content a {

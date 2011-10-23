@@ -91,13 +91,23 @@ border: 1px solid #CCCCCC;
 -webkit-border-radius: 5px;
 -moz-border-radius: 5px;
 border-radius: 5px;
-resize: none;
 /*-webkit-box-shadow: inset 1px 1px 1px 0px #e3e3e3;
 -moz-box-shadow: inset 1px 1px 1px 0px #e3e3e3;
 box-shadow: inset 1px 1px 1px 0px #e3e3e3;*/
-padding: 0 5px;
+padding: 5px;
 font-size: 13px;
 }
+
+.form-submit{
+background: #556270;
+color: #FFFFFF;
+border: 1px solid #3d454f;
+font-size: 15px;
+padding: 5px 15px;
+cursor: pointer;
+}
+
+
 
 label{
 	font-size: 15px;

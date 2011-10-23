@@ -102,3 +102,22 @@ span.ui-icon{
 #vibio_dialog form fieldset > div.description {
 	margin-left: 0;
 }
+/*Info Popups*/
+#modalframe-element{
+	background: none;
+}
+.modalframe{
+	border: none;
+}
+.modalframe .ui-dialog-titlebar{
+	border: none;
+}
+.modalframe-page-content{
+	background: #FFFFFF
+}
+iframe .modalframe-page-wrapper{
+	background: #FFFFFF;
+}
+.modalframe .ui-dialog-titlebar{
+	background: #FFFFFF;
+}

@@ -1,0 +1,1272 @@
+<?php
+// $Id$
+
+/**
+ * Implements hook_help()
+ */
+function jqueryui_theme_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#jqueryui_theme' :
+      return '<p>' . t('This module provide a user interface to import jQuery UI themes and associated them to Drupal themes. ' .
+                       'CSS files and PNG from the jQuery UI theme are extracted and store in default public directory. If a drupal ' .
+                       'theme have been associated with a jQuery UI theme, when the page is loaded, CSS files are loaded in addition. ' .
+                       'In that way, you just have to add your javascript files manipulating DOM element and add library needed. ' .
+                       'See <a href="http://jqueryui.com/themeroller/">jqueryui.com</a>') . '</p>';
+             '<p>' . t('This module also provide a block to let\'s the end-user choose which jQuery UI theme he want to use. ' .
+                       'Please note that allow anonymous users to switch between different jQuery UI theme will decrease performance due to sessions/cookies usage. ' .
+                       '(Unable to serve up cached pages from a reverse proxy server, like Varnish). ') . '</p>';
+    case 'admin/build/themes/jqueryui-theme' :
+      return '<p>' . t('This page provide a user interface to interact with jQuery UI Theme imported. ' .
+                       'Note that there is no preview for drupal theme that have not been actived. ' .
+                       'A drupal theme can be attach with only one jQuery UI Theme.') . '</p>' .
+             '<p>' . t('This module require both jQuery UI and jQuery Update in order to use ' .
+                        'jQuery UI library depending on current jQuery UI theme version.') . '</p>';
+  }
+}
+
+/**
+ * Implements hook_menu()
+ */
+function jqueryui_theme_menu() {
+  $items['admin/build/themes/jqueryui-theme'] = array(
+    'title' => 'jQuery UI theme settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('jqueryui_theme_settings_form'),
+    'access arguments' => array('select different theme'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'jqueryui_theme.admin.inc',
+  );
+  
+  $items['admin/build/themes/jqueryui-theme/global'] = array(
+    'title' => 'Global settings',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -1,
+  );
+  
+  $items['admin/build/themes/jqueryui-theme/import'] = array(
+    'title' => 'Import jQuery UI theme',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('jqueryui_theme_import_form'),
+    'access arguments' => array('select different theme'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'jqueryui_theme.admin.inc',
+    'weight' => 0,
+  );
+  
+  $theme_used = _jqueryui_theme_drupal_themes_used();
+  if (!empty($theme_used)) {
+    foreach ($theme_used as $theme) {
+      if ($theme['status']) {
+        $items['admin/build/themes/jqueryui-theme/example/' . $theme['name']] = array(
+          'title' => "@theme's preview",
+          'title arguments' => array('@theme' => $theme['name']),
+          'page callback' => 'jqueryui_theme_example',
+          'page arguments' => array(4, 5),
+          'access arguments' => array('select different theme'),
+          'type' => MENU_LOCAL_TASK,
+          'file' => 'jqueryui_theme.admin.inc',
+          'weight' => 1,
+        );
+      }
+    }
+  }
+  return $items;
+}
+
+/**
+ * Implements hook_block()
+ */
+function jqueryui_theme_block($op = 'list', $delta = 0, $edit = array()) {
+  $blocks = array();
+  switch ($op) {
+    case 'list' :
+      $blocks['jqueryui_theme_switch'] = array(
+        'info' => t('Switch jQuery UI themes'),
+        'cache' => DRUPAL_NO_CACHE,
+        'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+        'pages' => 'admin/build/themes/jqueryui-theme/example/*',
+      );
+      return $blocks;
+      
+    case 'view' :
+      if ($delta == 'jqueryui_theme_switch') {
+        $blocks['subject'] = t('Switch jQuery UI themes');
+        $blocks['content'] = drupal_get_form('jqueryui_theme_switch_form');
+      }
+      return $blocks;
+      
+    case 'configure' :
+      $form = array();
+      if ($delta == 'jqueryui_theme_switch') {
+        $form['jqueryui_theme_switch_method'] = array(
+          '#type' => 'radios',
+          '#title' => t('Method to keep track on user\'s preference'),
+          '#description' => t('Note that lifetime session is shorter than cookie. ' .
+                              'If this block is display to anonymous user, it \'ll unable to serve up cached pages from a reverse proxy server.'),
+          '#default_value' => variable_get('jqueryui_theme_switch_method', 'session'),
+          '#options' => array('session' => t('Use session'), 'cookie' => t('Use cookie')),
+          '#element_validate' => array('jqueryui_theme_block_switch_validate'),
+        );
+      }
+      return $form;
+
+    case 'save' :
+      if ($delta == 'jqueryui_theme_switch') {
+        variable_set('jqueryui_theme_switch_method', $edit['jqueryui_theme_switch_method']);
+      }
+      break;
+  }
+}
+
+/**
+ * Form validation handler for jqueryui_block_configure().
+ *
+ * @see jqueryui_theme_block()
+ */
+function jqueryui_theme_block_switch_validate($element) {
+  if ($element['#value'] != 'session' && $element['#value'] != 'cookie') {
+    form_error($element, t('Invalid method for switching jQuery UI themes.'));
+  }
+}
+
+/**
+ * Implements hook_init()
+ */
+function jqueryui_theme_init() {
+  $path = drupal_get_normal_path(trim($_GET['q'], '/'));
+  if (FALSE !== (strpos($path, 'admin/build/themes/jqueryui-theme/example/'))) {
+    $themename = array_pop(explode('/', $path));
+    if (array_key_exists($themename, list_themes())) {
+      global $custom_theme;
+      $custom_theme = $themename;
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess()
+ */
+function jqueryui_theme_preprocess(&$variables) {
+  global $theme;
+  static $loaded = FALSE;
+
+  if (!$loaded) {
+    if (_jqueryui_theme_block_is_loaded($theme, 'jqueryui_theme', 'jqueryui_theme_switch')) {
+      if ($user_theme = _jqueryui_theme_get_user_theme()) {
+        $files = _jqueryui_theme_get_css_files($user_theme);
+      }
+    }
+
+    if (!isset($files) || empty($files)) {
+      $files = _jqueryui_theme_get_theme_files($theme);
+    }
+
+    if ($files) {
+      foreach ($files as $file) {
+        $css = drupal_add_css($file->filename, 'theme');
+      }
+    }
+    $loaded = TRUE;
+  }
+}
+
+/**
+ * Defines if a block is loaded
+ * on the current page for the
+ * current user.
+ *
+ * @param $theme
+ *   Drupal theme name
+ * @param $module
+ *   Module which declare a block
+ * @param $delta
+ *   Block delta
+ *
+ * @return
+ *   TRUE if block is loaded
+ *   FALSE otherwise
+ *
+ * @see block_list()
+ */
+function _jqueryui_theme_block_is_loaded($theme, $module, $delta) {
+  global $user;
+  $page_match = FALSE;
+  $regions = system_region_list($theme);
+
+  $rids = array_keys($user->roles);
+  $query = "SELECT region, pages, visibility " .
+           "FROM {blocks} b " .
+           "LEFT JOIN {blocks_roles} r ON b.module = r.module AND b.delta = r.delta " .
+           "WHERE b.theme = '%s' AND b.module = '%s' AND b.delta = '%s' AND b.status = 1 AND (r.rid IN (". db_placeholders($rids) .") OR r.rid IS NULL)";
+  $block = db_fetch_object(db_query(db_rewrite_sql($query, 'b', 'bid'), array_merge(array($theme, $module, $delta), $rids)));
+
+  if ($block && array_key_exists($block->region, $regions)) {
+    if ($block->pages) {
+      if ($block->visibility < 2) {
+        $path = drupal_get_path_alias($_GET['q']);
+        $page_match = drupal_match_path($path, $block->pages);
+        if ($path != $_GET['q']) {
+          $page_match = $page_match || drupal_match_path($_GET['q'], $block->pages);
+        }
+        $page_match = !($block->visibility xor $page_match);
+      }
+      else {
+        $page_match = drupal_eval($block->pages);
+      }
+    }
+  }
+  return $page_match;
+}
+
+/**
+ * Implements hook_theme()
+ */
+function jqueryui_theme_theme($existing, $type, $theme, $path) {
+  return array(
+    'jqueryui_theme_settings' => array(
+      'render element' => 'element',
+    ),
+    'jqueryui_theme_import_confirm' => array(
+      'render element' => 'element',
+    ),
+    'jqueryui_theme_example' => array(
+      'template' => 'jqueryui-theme-example',
+    ),
+  );
+}
+
+/**
+ * Returns HTML for a list of Jquery UI themes
+ * associated with drupal themes.
+ * 
+ * @param $variables
+ *   An associative array containing:
+ *   - form : An array of form element theme.
+ * 
+ * @return 
+ *   A table containing informations about
+ *   jQuery UI theme.
+ * 
+ * @ingroup themeable
+ */
+function theme_jqueryui_theme_settings($variables) {
+  $form = &$variables['themes'];
+  
+  $box_all['box_all'] = array(
+    '#type' => 'checkbox',
+    '#attributes' => array('class' => 'box-all'),
+  );
+  $header = array(
+    'select'        => drupal_render($box_all),
+    'name'          => t('Name'), 
+    'association'   => t('Associated with'),
+    'path'          => t('Directory'),
+    'version'       => t('Version'),
+    'params'        => t('Parameters'),
+  );
+  
+  $rows = array();
+  if ($form) {
+    foreach (element_children($form) as $key) {
+      $row = array();
+      $row[] = drupal_render($form[$key]['checkbox']);
+      $row[] = drupal_render($form[$key]['name']);
+      $row[] = drupal_render($form[$key]['assoc']);
+      $row[] = drupal_render($form[$key]['path']);
+      $row[] = drupal_render($form[$key]['version']);
+      $row[] = drupal_render($form[$key]['params']);
+      $rows[] = $row;
+    }
+  }
+  
+  if (empty($rows)) {
+    $rows[] = array(
+      'data' => array(
+        array(
+          'data' => t('No jQuery UI themes available.'), 
+          'colspan' => count($header),
+          'style' => 'text-align:center;',
+        ),
+      )
+    );
+  }
+  
+  $output = '';
+  foreach (element_children($variables) as $key) {
+    if ($key != 'themes' && !empty($variables[$key])) {
+      $output .= drupal_render($variables[$key]);
+    }
+  }
+  return theme('table', $header, $rows) . $output;
+}
+
+/**
+ * Returns HTML for a list of Jquery UI themes
+ * detected in archive uploaded.
+ * 
+ * @param $variables
+ *   An associative array containing:
+ *   - form : An array of form element theme.
+ * 
+ * @return 
+ *   A table containing informations about
+ *   jQuery UI theme.
+ * 
+ * @ingroup themeable
+ */
+function theme_jqueryui_theme_import_confirm($variables) {
+  $form = &$variables['themes'];
+  
+  $box_all['box_all'] = array(
+    '#type' => 'checkbox',
+    '#attributes' => array('class' => 'box-all'),
+  );
+  $caption = t('Select jQuery UI themes you want to import');
+  $header = array(
+    'select'  => drupal_render($box_all),
+    'name'    => t('Name'),
+    'version' => t('Version'),
+  );
+  
+  $rows = array();
+  foreach (element_children($form) as $key) {
+    $row = array();
+    $row[] = drupal_render($form[$key]['checkbox']);
+    $row[] = drupal_render($form[$key]['human_name']) . drupal_render($form[$key]['machine_name']);
+    $row[] = drupal_render($form[$key]['display_version']);
+    $rows[] = $row;
+  }
+  
+  if (empty($rows)) {
+    $rows[] = array(
+      'data' => array(
+        array(
+          'data' => t('No jQuery UI themes found.'), 
+          'colspan' => count($header),
+          'style' => 'text-align:center;',
+        ),
+      )
+    );
+  }
+  
+  $output = '';
+  foreach (element_children($variables) as $key) {
+    if ($key != 'themes' && !empty($variables[$key])) {
+      $output .= drupal_render($variables[$key]);
+    }
+  }
+  return theme('table', $header, $rows, $caption) . $output;
+}
+
+/**
+ * Retrieves jQuery UI css files per Drupal Theme.
+ * 
+ * @param $drupal_theme
+ *   A string containing a Drupal theme name.
+ * 
+ * @return 
+ *   An associative array of jQuery UI theme objects files.
+ *   NULL otherwise.
+ */
+function _jqueryui_theme_get_theme_files($drupal_theme) {
+  $machine_name = db_result(db_query("SELECT machine_name FROM {jqueryui_theme_assoc} WHERE drupal_theme = '%s'", $drupal_theme));
+  if (!empty($machine_name)) {
+    if ($files = _jqueryui_theme_get_css_files($machine_name)) {
+      return $files;
+    }
+  }
+  return ;
+}
+
+/**
+ * Returns CSS from a Jquery UI themes imported.
+ * 
+ * @param $machine_name
+ *   A string containing a jQuery UI theme machine name.
+ * 
+ * @see file_scan_directory.
+ */
+function _jqueryui_theme_get_css_files($machine_name) {
+  $public = file_directory_path() . '/jqueryui_theme/' . $machine_name;
+  return file_scan_directory($public, '^[-A-Za-z0-9_.]*\.css$');
+}
+
+/**
+ * Returns Drupal themes use by jQuery UI themes.
+ * 
+ * @param $drupal_theme
+ *   A string containing a Drupal theme name.
+ *   If omitted, all Drupal themes will be fetch.
+ * @return 
+ *   An associative array (keyed by Drupal theme containing
+ *   name, status about Drupal theme and jQuery UI
+ *   machine name associated.
+ */
+function _jqueryui_theme_drupal_themes_used($drupal_theme = NULL) {
+  $themes = array();
+  $drupal_themes = list_themes();
+  
+  $query = "SELECT drupal_theme, machine_name FROM {jqueryui_theme_assoc}";
+  if ($drupal_theme) {
+    $query .= " WHERE drupal_theme = '%s'";
+  }
+  $result = db_query(db_distinct_field('jqueryui_theme_assoc', 'drupal_theme', $query), $drupal_theme);
+  
+  $admin_theme = variable_get('admin_theme', FALSE);
+  while ($theme = db_fetch_object($result)) {
+    if (array_key_exists($theme->drupal_theme, $drupal_themes)) {
+      $themes[$theme->drupal_theme]['name'] = $theme->drupal_theme;
+      $themes[$theme->drupal_theme]['status'] = $theme->drupal_theme == $admin_theme ? 1 : $drupal_themes[$theme->drupal_theme]->status;
+      $themes[$theme->drupal_theme]['jqueryui_theme'] = $theme->machine_name;
+      unset($drupal_themes[$theme->drupal_theme]);
+    }
+  }
+  return $themes;
+}
+
+/**
+ * Returns an array containing informations on jQuery UI themes.
+ * 
+ * @return
+ *  An association array keyed by jQuery UI machine name
+ *  containing Drupal theme name.
+ */
+function _jqueryui_theme_get_themes_infos() {
+  static $themes = array();
+
+  if (!$themes) {
+    $options = array();
+    
+    $result = db_query("SELECT machine_name, human_name, version, params FROM {jqueryui_theme}");
+    while ($theme = db_fetch_object($result)) {
+      $theme->path = file_directory_path() . '/jqueryui_theme/' . $theme->machine_name;
+      
+      $drupal_themes = array();
+      $assoc = db_query("SELECT drupal_theme FROM {jqueryui_theme_assoc} WHERE machine_name = '%s'", $theme->machine_name);
+      while ($drupal_theme = db_fetch_array($assoc)) {
+        $drupal_themes[] = $drupal_theme['drupal_theme'];
+      }
+      $theme->drupal_theme_attach = $drupal_themes;
+      
+      $themes[$theme->machine_name] = $theme;
+    }
+  }
+  return $themes;
+}
+
+/**
+ * Returns a list of Drupal themes availables.
+ * 
+ * @param $all
+ *   Boolean to render only Drupal theme which
+ *   are not used or all Drupal themes with an attribute
+ *   to indicating if they are used or not
+ * 
+ * @return
+ *   An associative array of drupal theme
+ *   available keyed by name.
+ * 
+ */
+function _jqueryui_theme_drupal_themes_availables($all = FALSE) {
+  $themes = array();
+  $admin_theme = variable_get('admin_theme', FALSE);
+  foreach (list_themes() as $theme) {
+    if (!isset($theme->info['hidden'])) {
+      $themes[$theme->name]['name']   = $theme->name;
+      //Admin theme have always a disable status
+      $themes[$theme->name]['status'] = $theme->name == $admin_theme ? 1 : $theme->status;
+    } 
+  }
+  
+  $themes_used = _jqueryui_theme_drupal_themes_used();
+  if (!$all) {
+    return array_diff_assoc($themes, $themes_used);
+  }
+  else {
+    foreach ($themes as $key => $theme) {
+      if (array_key_exists($theme['name'], $themes_used)) {
+        $themes[$key]['attach'] = TRUE;
+      }
+      else {
+        $themes[$key]['attach'] = FALSE;
+      }
+    }
+    return $themes;
+  }
+}
+
+/**
+ * Renames human name jQuery UI theme.
+ * 
+ * @param $machine_name
+ *   A string for jQuery UI machine name.
+ * @param $new_name
+ *   A string for the new human name.
+ */
+function _jqueryui_theme_rename($machine_name, $new_name) {
+  return (bool)db_query("UPDATE {jqueryui_theme} SET human_name = '%s' WHERE machine_name = '%s'", $new_name, $machine_name);
+}
+
+/**
+ * Deletes a jQuery UI theme.
+ * 
+ * @param $machine_name
+ *   A string for jQuery UI machine name.
+ * @param $path
+ *   Path to the public jQuery UI theme.
+ * 
+ * @return
+ *   TRUE if success, FALSE otherwise.
+ */
+function _jqueryui_theme_delete($machine_name, $path) {
+  db_query("DELETE FROM {jqueryui_theme_assoc} WHERE machine_name = '%s'", $machine_name);
+  $res1 = (bool)db_query("DELETE FROM {jqueryui_theme} WHERE machine_name = '%s'", $machine_name);
+  
+  $res2 = _jqueryui_theme_delete_recursive($path);
+  return $res1 && $res2;
+}
+
+/**
+ * Detachs a jQuery UI theme to a Drupal theme.
+ * 
+ * @param $machine_name
+ *   A string for jQuery UI machine name.
+ * @param $drupal_theme
+ *   A string containing the Drupal theme name.
+ */
+function _jqueryui_theme_dissoc($machine_name, $drupal_theme) {
+  return (bool)db_query("DELETE FROM {jqueryui_theme_assoc} WHERE machine_name = '%s' AND drupal_theme = '%s'", $machine_name, $drupal_theme);
+}
+
+/**
+ * Attach a jQuery Ui theme to a Drupal theme.
+ */
+function _jqueryui_theme_assoc($machine_name, $drupal_theme) {
+  return (bool)db_query("INSERT INTO {jqueryui_theme_assoc} (drupal_theme, machine_name) VALUES ('%s', '%s')", $drupal_theme, $machine_name);
+}
+
+/**
+ * Inserts jQuery UI theme in database
+ * 
+ * @param $machine_name
+ *   A string containing jQuery UI machine name.
+ * @param $human_name
+ *   A string containing jQuery UI human name.
+ * @param $version
+ *   A string containing the jQuery UI theme's version.
+ * @param $params
+ *   An url containing jQuery UI theme parameters.
+ * 
+ * @return
+ *   TRUE on success.
+ *   FALSE otherwise.
+ */
+function _jqueryui_theme_insert_theme($machine_name, $human_name, $version, $params) {
+  return (bool)db_query("INSERT INTO {jqueryui_theme} (machine_name, human_name, version, params) " .
+             "VALUES ('%s', '%s', '%s', '%s')", $machine_name, $human_name, $version, $params);
+}
+
+/**
+ * Attempts to get a file object uploaded from url.
+ * 
+ * @param $url
+ *   The URL of the file to grab.
+ * @param $destination
+ *   A string file path directory.
+ * 
+ * @return
+ *   On success the location the file was saved to. 
+ *   
+ * @see _jqueryui_theme_retrieve_file()
+ */
+function _jqueryui_theme_get_file_url($url, $destination) {
+  $parsed_url = parse_url($url);
+  $remote_schemes = array('http', 'https', 'ftp', 'ftps', 'smb', 'nfs');
+  if (!in_array($parsed_url['scheme'], $remote_schemes)) {
+    // local file
+    $local_cache = realpath($url);
+  }
+  else {
+    $local_cache = _jqueryui_theme_retrieve_file($url, $destination, TRUE, FILE_EXISTS_REPLACE);
+  }
+  return $local_cache;   
+}
+
+/**
+ * Determines if files extracted temporary 
+ * containing jQuery UI themes as expected and
+ * provide informations on it.
+ * 
+ * @param $files
+ *   An array containing filepaths of a jQuery UI theme
+ *   previously extracted in temporary directory.
+ * @param $directory
+ *   A string containing a directory path.
+ * 
+ * @return
+ *   On success, an array containing infos on 
+ *   the jQuery UI files extracted.
+ *   NULL otherwise.
+ */
+function _jqueryui_theme_detect_themes($files, $directory) {
+  $tracks = preg_grep('#.*\.all\.css$#', $files);
+  if (!empty($tracks)) {
+    $dir = array();
+    foreach ($tracks as $key => $track) {
+      $search = explode('/', $track);
+      array_pop($search);
+      $dir[$key]['name'] = $search[sizeof($search)-1];
+      $dir[$key]['path'] = implode('/', $search);
+    }
+    
+    $themes = array();
+    foreach ($dir as $key => $element) {
+      $themes[$key]['name']      = $element['name'];
+      $themes[$key]['directory'] = $directory;
+      $themes[$key]['version']   = NULL;
+      foreach (preg_grep('#(' . $element['path'] . '\/?.*(\.(css|png))$)|(\/version\.txt)$#', $files) as $filepath) {
+        if (basename($filepath) == 'version.txt') {
+          $themes[$key]['version'] = $filepath;
+        }
+        else {
+          $themes[$key]['files'][] = $filepath;
+        }
+      }
+    }
+    return $themes;
+  }
+  return;
+}
+
+/**
+ * Try to get jQuery UI theme version
+ * from only *.theme.css file despite
+ * more possibilities.
+ * 
+ * @param $directory
+ *   A string indicating main directory to a jQuery UI theme.
+ * @param $files
+ *   An array containing filepath.
+ * @param $filepath_version
+ *   A path to a version.txt file.
+ * 
+ * @return
+ *   A string containing version of the jQuery UI theme.
+ *   An empty string otherwise.
+ */
+function _jqueryui_theme_get_version($directory, $files, $filepath_version = NULL) {
+  $version = FALSE;
+  
+  if ($filepath_version) {
+    $version = file_get_contents($directory . '/' . $filepath_version, FALSE, NULL, NULL, 10);
+  }
+  elseif ($searches = preg_grep('#\.theme\.css$#', $files)) {
+    $header = _jqueryui_theme_get_comment_header_files($directory . '/' . reset($searches));
+    foreach ($header as $line) {
+      if (strstr($line, '* jQuery UI CSS Framework ')) {
+        $version = str_replace('* jQuery UI CSS Framework ', '', $line);
+        break;
+      }
+    }
+  }
+  
+  if ($version === FALSE || empty($version) || !preg_match('/^[0-9\.]*$/', $version)) {
+    return '';
+  }
+  return trim($version);
+}
+
+/**
+ * Try to get paramaters to a jQuery UI theme
+ * from *.theme.css file.
+ * 
+ * @param $directory
+ *   A string indicating main directory to a jQuery UI theme.
+ * 
+ * @param $filepath
+ *   An array containing filepath to a jQuery UI theme.
+ * 
+ * @return
+ *   An url containing jQuery UI theme parameters.
+ *   An empty string otherwise.
+ */
+function _jqueryui_theme_get_params($directory, $files) {
+  $params = '';
+  if ($searches = preg_grep('#\.theme\.css$#', $files)) {
+    $header = _jqueryui_theme_get_comment_header_files($directory . '/' . reset($searches));
+    
+    foreach ($header as $line) {
+      if (strstr($line, 'To view and modify this theme, visit ')) {
+        $tmp = explode('visit ', $line);
+        $url = trim($tmp[1]);
+        if (valid_url($url, TRUE)) {
+          $parsed_url = parse_url($url);
+          if (isset($parsed_url['query']) && !empty($parsed_url['query'])) {
+            $params = $url;
+          }
+        }
+        break;
+      }
+    }
+  }
+  return $params;
+}
+
+/**
+ * Returns an array containing strings of a comment
+ * header file.
+ * 
+ * @param $filepath
+ *   A filepath to read and return comment header.
+ * 
+ * @return
+ *   An array containing each lines of the comment header.
+ */
+function _jqueryui_theme_get_comment_header_files($filepath) {
+  $text = array(); $line = '';
+  $fp = fopen($filepath, 'r');
+  while (!feof($fp) && !strstr($line, '*/')) {
+    $line = trim(fgets($fp, 4096));
+    if (!empty($line) && !in_array($line, array('*', '/*', '*/'))) {
+      $text[] = $line;
+    }
+  }
+  fclose($fp);
+  return $text;
+}
+
+/**
+ * Moves jQuery UI themes from temporary 
+ * directory to default public location.
+ * 
+ * @param $theme
+ *   An associate array containing infos on jQuery UI theme:
+ *    - Machine name
+ *    - Human name
+ *    - Current directory
+ *    - An array of filepaths to move
+ * 
+ * @return
+ *   TRUE on success.
+ *   FALSE otherwise. All previous extracted files
+ *   will be deleted.
+ */
+function _jqueryui_theme_move_tmp($theme) {
+  $destination = file_directory_path() . '/jqueryui_theme/' . $theme['machine_name'];
+  foreach (array($destination, $destination . '/images') as $dir) {
+    if (FALSE === (file_check_directory($dir, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS))) {
+      drupal_set_message(t('Unable to create @dir', array('@dir' => $dir)), 'error');
+      return FALSE;
+    } 
+  }
+  
+  foreach ($theme['files'] as $file) {
+    $filepath = $theme['directory'] . '/' . $file;
+    $dir = $destination;
+    if (substr(strrchr(basename($file), '.'), 1) == 'png') {
+      $dir .= '/images';
+    }
+    if (!file_move($filepath, $dir, FILE_EXISTS_REPLACE)) {
+      _jqueryui_theme_delete_recursive($destination);
+      return FALSE;
+    }
+  }
+  return TRUE;
+}
+
+/**
+ * Checks if URL to jQuery UI default theme
+ * are still available and tarballs could be retrieve.
+ * 
+ * @return
+ *   An array keyed by url to default jQuery UI theme default version
+ *   as options expected by Form API.
+ *   NULL otherwise.
+ */
+function _jqueryui_theme_default_jqueryui_themes_exist() {
+  $options = array('none' => t('None'));
+  $sources = array(
+    'jQuery UI 1.7' => 'http://jquery-ui.googlecode.com/files/jquery-ui-themes-1.7.zip',
+  );
+  
+  if (jquery_update_get_version() >= '1.3.2' && jquery_ui_get_version() >= '1.8') {
+    $sources['jQuery UI 1.8'] = 'http://jquery-ui.googlecode.com/files/jquery-ui-themes-1.8.zip';
+  }
+  
+  foreach ($sources as $key => $src) {
+    if (@preg_match('/200/', reset(@get_headers($src))) > 0) {
+      $options[$src] = $key;
+    }
+  }
+  
+  if (sizeof($options) > 1) {
+    return $options;
+  }
+  return;
+}
+
+/**
+ * Function callback to get form array options
+ * containing jQuery UI theme machine name
+ * and human name associate with a Drupal theme given.
+ *
+ * @param $drupal_theme
+ *   A string containing a Drupal theme name.
+ * @param $default_value
+ *   A variable which will be the default value
+ *   of the form element.
+ * @return
+ *   An association array containing jQuery UI human name
+ *   and keyed by machine name.
+ *
+ * @see jqueryui_theme_form_system_theme_settings_alter()
+ * @see jqueryui_theme_switch_form()
+ */
+function _jqueryui_theme_get_options_themes($drupal_theme, &$default_value) {
+  $query = db_query("SELECT machine_name, human_name FROM {jqueryui_theme}");
+  $jqthemes = array();
+  while ($theme = db_fetch_object($query)) {
+    $jqthemes[] = $theme;
+  }
+  $attach = db_result(db_query("SELECT machine_name FROM {jqueryui_theme_assoc} WHERE drupal_theme = '%s'", $drupal_theme));
+
+  $options['none'] = t('None');
+  $default_value = 'none';
+  foreach ($jqthemes as $theme) {
+    $options[$theme->machine_name] = $theme->human_name;
+    if ($theme->machine_name == $attach) {
+      $default_value = $theme->machine_name;
+    }
+  }
+  return $options;
+}
+
+/**
+ * Retrieve user's preference jQuery UI theme
+ * of the current user for the current Drupal theme.
+ *
+ * @return
+ *   A string containing an available jQuery UI theme.
+ *   NULL otherwise.
+ */
+function _jqueryui_theme_get_user_theme() {
+  global $theme;
+  static $user_theme = NULL;
+
+  if (!$user_theme) {
+    $method = variable_get('jqueryui_theme_switch_method', NULL);
+
+    if ($method == 'session' && isset($_SESSION['jqueryui_theme_default'])) {
+      $user_theme = $_SESSION['jqueryui_theme_default'];
+    }
+    elseif ($method == 'cookie' && isset($_COOKIE['Drupal_visitor_jqueryui_theme_default'])) {
+      $user_theme = @unserialize($_COOKIE['Drupal_visitor_jqueryui_theme_default']);
+    }
+    else {
+      watchdog('jqueryui_theme', t('No method define to keep track on user s preference.'), NULL, WATCHDOG_WARNING, l("Set method tracking user's preference", 'admin/build/block/configure/jqueryui_theme/jqueryui_theme_switch'));
+    }
+
+    if (isset($user_theme[$theme]) && array_key_exists($user_theme[$theme], _jqueryui_theme_get_themes_infos())) {
+      $user_theme = $user_theme[$theme];
+    }
+  }
+  return $user_theme;
+}
+
+/**
+ * Form constructor for end-user to switch jQuery UI themes
+ *
+ * @see jqueryui_theme_switch_form_validate()
+ * @see jqueryui_theme_switch_form_submit()
+ * @ingroup $forms
+ */
+function jqueryui_theme_switch_form() {
+  global $theme;
+  $default_value = NULL;
+  $options = _jqueryui_theme_get_options_themes($theme, $default_value);
+  if (isset($options['none'])) {
+    $options['none'] = t('Default');
+  }
+
+  if ($user_theme = _jqueryui_theme_get_user_theme()) {
+    $default_value = $user_theme;
+  }
+
+  $form['machine_name'] = array(
+    '#type' => 'select',
+    '#title' => t('Switch jQuery UI themes'),
+    '#default_value' => $default_value,
+    '#options' => $options,
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit'),
+  );
+  return $form;
+}
+
+/**
+ * Form validation handler for jqueryui_theme_switch_form().
+ *
+ * @see jqueryui_theme_switch_form()
+ * @see jqueryui_theme_switch_form_submit()
+ */
+function jqueryui_theme_switch_form_validate($form, &$form_state) {
+  if ($form_state['values']['machine_name'] != 'none' && !array_key_exists($form_state['values']['machine_name'], _jqueryui_theme_get_themes_infos())) {
+    form_set_error('machine_name', t('jQuery UI themes given doesn\'t exist.'));
+  }
+}
+
+/**
+ * Form submission handler for jqueryui_theme_switch_form().
+ *
+ * @see jqueryui_theme_switch_form()
+ * @see jqueryui_theme_switch_form_validate()
+ */
+function jqueryui_theme_switch_form_submit($form, &$form_state) {
+  global $theme;
+  $method = variable_get('jqueryui_theme_switch_method', 'session');
+  if ($form_state['values']['machine_name']) {
+    if ($method == 'session') {
+      $data = _jqueryui_theme_user_switch_merge_data($method, array($theme => $form_state['values']['machine_name']));
+      $_SESSION['jqueryui_theme_default'] = $data;
+    }
+    elseif ($method == 'cookie') {
+      $data = serialize(_jqueryui_theme_user_switch_merge_data($method, array($theme => $form_state['values']['machine_name'])));
+      setrawcookie('Drupal.visitor.jqueryui_theme_default', rawurlencode($data), time() + 31536000, '/');
+    }
+  }
+}
+
+/**
+ * Checks and merges data store in session or cookie
+ * with the data submitted by the switch form block.
+ *
+ * @param $method
+ *   Method used to store data.
+ *   It could be 'session' or 'cookie'
+ * @param $edit
+ *   The data to merge with current data.
+ * @return
+ *   A merged array keyed by Drupal theme
+ *   and containing jQuery UI theme preference.
+ *   Edit array only otherwise.
+ *
+ * @see jqueryui_theme_switch_form_submit()
+ */
+function _jqueryui_theme_user_switch_merge_data($method, $edit) {
+  $data = array();
+  $themes = _jqueryui_theme_get_themes_infos();
+  $drupal_themes = _jqueryui_theme_drupal_themes_used();
+
+  if ($method == 'session' && isset($_SESSION['jqueryui_theme_default'])) {
+    $data = $_SESSION['jqueryui_theme_default'];
+  }
+  elseif ($method == 'cookie' && isset($_COOKIE['Drupal_visitor_jqueryui_theme_default'])) {
+    $data = @unserialize($_COOKIE['Drupal_visitor_jqueryui_theme_default']);
+  }
+
+  $valid = TRUE;
+  if (is_array($data)) {
+    foreach ($data as $drupal_themename => $jtheme) {
+      if (!array_key_exists($drupal_themename, $drupal_themes) || !array_key_exists($jtheme, $themes)) {
+        $valid = FALSE;
+        break;
+      }
+    }
+    if ($valid) {
+      return $edit + $data;
+    }
+  }
+  return $edit;
+}
+
+/**
+ * Recursively delete all files and folders in the specified filepath, then
+ * delete the containing folder.
+ *
+ * Note that this only deletes visible files with write permission.
+ *
+ * @param string $path
+ *   A filepath relative to file_directory_path.
+ * 
+ * @param $succeed
+ *   Must not be used, internal parameter.
+ * 
+ * @return
+ *   TRUE on succes
+ *   FALSE otherwise.
+ * 
+ * @see _imagecache_recursive_delete()
+ */
+function _jqueryui_theme_delete_recursive($path, $succeed = TRUE) {
+  if (is_file($path) || is_link($path)) {
+    unlink($path);
+  }
+  elseif (is_dir($path)) {
+    $d = dir($path);
+    while (($entry = $d->read()) !== FALSE) {
+      if ($entry == '.' || $entry == '..') continue;
+      $entry_path = $path .'/'. $entry;
+      _jqueryui_theme_delete_recursive($entry_path, $succeed);
+    }
+    $d->close();
+    rmdir($path);
+  }
+  else {
+    $succeed = FALSE;
+  }
+  return $succeed;
+}
+
+/**
+ * Attempts to get a file using drupal_http_request and to store it locally.
+ *
+ * @param $url
+ *   The URL of the file to grab.
+ *
+ * @param $destination
+ *   A string containing the destination location. If a directory path is provided, 
+ *   the file is saved into that directory under its original name. If the path 
+ *   contains a filename as well, that one will be used instead.
+ *   If this value is omitted, the site's default files path will be used.
+ * 
+ * @param $filename
+ *   Boolean to enforce temporary filename if destination path provided
+ *   doesn't contain a filepath.
+ * 
+ * @param $replace boolean
+ *   Replace behavior when the destination file already exists:
+ *   - FILE_EXISTS_REPLACE: Replace the existing file.
+ *   - FILE_EXISTS_RENAME: Append _{incrementing number} until the filename is
+ *     unique.
+ *   - FILE_EXISTS_ERROR: Do nothing and return FALSE.
+ * 
+ * @return
+ *   On success the location the file was saved to, FALSE on failure.
+ */
+function _jqueryui_theme_retrieve_file($url, $destination = NULL, $filename = FALSE, $replace = FILE_EXISTS_RENAME) {
+  $parsed_url = parse_url($url);
+  if (!isset($destination)) {
+    $path = file_directory_path() . '/' . basename($parsed_url['path']);
+  }
+  elseif ($filename === TRUE) {
+    $path = str_replace('//', '/', $destination . '/' . basename($parsed_url['path']));
+  }
+  else {
+    $path = $destination;
+  }
+  
+  $result = drupal_http_request($url);
+  if ($result->code != 200) {
+    return FALSE;
+  }
+  return file_save_data($result->data, $path, $replace);
+}
+
+
+
+/**
+ * Determine the maximum file upload size by querying the PHP settings.
+ *
+ * @return
+ *   A file size limit in bytes based on the PHP upload_max_filesize and
+ *   post_max_size
+ */
+function _jqueryui_theme_get_file_upload_max_size() {
+  $max_size = parse_size(ini_get('post_max_size'));
+  $upload_max = parse_size(ini_get('upload_max_filesize'));
+  if ($upload_max > 0 && $upload_max < $max_size) {
+    $max_size = $upload_max;
+  }
+  return $max_size;
+}
+
+/**
+ * An element form validate for machine name.
+ * Ensures the element does not contain any
+ * invalid characters and is unique.
+ * 
+ * @see jqueryui_theme_import_form()
+ */
+function _jqueryui_theme_machine_name_validate(&$element, &$form_state) {
+  $themename = $element['#parents'][1];
+  if ($form_state['values']['themes'][$themename]['checkbox']) {
+    if ($errors = _jqueryui_theme_check_machine_name($element['#value'])) {
+      foreach ($errors as $err) {
+        form_error($element, $err);
+      }
+    }
+  }
+}
+
+/**
+ * 
+ * A function callback to check that the value
+ * passed does not contain any invalid characters 
+ * and is unique.
+ * 
+ * @param $value
+ *   An element value.
+ * 
+ * @return 
+ *   An array containing errors messages.
+ * 
+ * @see _jqueryui_theme_machine_name_validate()
+ * @see _jqueryui_theme_import()
+ */
+function _jqueryui_theme_check_machine_name($value) {
+  $errors = array();
+  // Verify that the machine name not only consists of replacement tokens.
+  if (preg_match('@^_+$@', $value)) {
+    $errors[] = t('The machine-readable name must contain unique characters.');
+  }
+  // Verify that the machine name contains no disallowed characters.
+  if (preg_match('@[^a-z0-9_]+@', $value)) {
+    $errors[] = t('The machine-readable name must contain only lowercase letters, numbers, and underscores.');
+  }
+  // Verify that the machine name is unique.
+  if ((bool)db_result(db_query("SELECT machine_name FROM {jqueryui_theme} WHERE machine_name = '%s'", $value))) { 
+    $errors[] = t('The machine-readable name is already in use. It must be unique.');
+  }
+  return $errors;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter()
+ */
+function jqueryui_theme_form_system_theme_settings_alter(&$form, &$form_state) {
+  $theme_name = preg_replace(array('/theme_/', '/_?settings/'), '', $form['var']['#value']);
+  
+  if (!empty($theme_name)) {
+    $form['jqueryui_theme'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Attach one jqueryui theme import to !theme', array('!theme' => $theme_name)),
+      '#weight' => 0,
+    );
+    
+    $default_value = '';
+    $options = _jqueryui_theme_get_options_themes($theme_name, $default_value);
+    if (empty($options)) {
+      $form['jqueryui_theme']['markup'] = array(
+        '#type' => 'markup',
+        '#value' => t('There is no jQuery UI themes imported.'),
+      );
+    }
+    else {
+      $form['jqueryui_theme']['radios'] = array(
+        '#type' => 'radios',
+        '#options' => $options,
+        '#default_value' => $default_value,
+      );
+      if ($default_value != 'none') {
+        $form['jqueryui_theme']['example_link'] = array(
+          '#type' => 'markup',
+          '#value' => l(t('See on @theme with @jquery_theme', array('@theme' => $theme_name, '@jquery_theme' => $default_value)),  
+                           'admin/appearance/jqueryui-theme/example/' . $theme_name),
+        );
+      }
+    }
+    
+    $form_state['storage']['default_radio'] = $default_value;
+    $form['jqueryui_theme']['theme_name'] = array(
+      '#type' => 'value',
+      '#value' => $theme_name,
+    );
+    $form['#submit'][] = 'jqueryui_theme_attach_submit';
+  }
+}
+
+/**
+ * Form submission handler for jqueryui_theme_form_system_theme_settings_alter().
+ * 
+ * @see jqueryui_theme_form_system_theme_settings_alter()
+ */
+function jqueryui_theme_attach_submit($form, &$form_state) {
+  $theme_name   = $form_state['values']['theme_name'];
+  $radio        = $form_state['values']['radios'];
+  $default      = $form_state['storage']['default_radio'];
+  
+  if ($radio != $default) {
+    db_query("DELETE FROM {jqueryui_theme_assoc} WHERE drupal_theme = '%s'", $theme_name);
+    if ($radio != 'none') {
+      db_query("INSERT INTO {jqueryui_theme_assoc} (drupal_theme, machine_name) VALUES ('%s', '%s')", $theme_name, $radio);
+    }
+    menu_rebuild();
+  }
+}
+
+/**
+ * Create the appropriate archiver for the specified file.
+ *
+ * @param $file
+ *   The full path of the archive file.  Note that remote
+ *   paths are not supported.
+ * @return
+ *   A newly created instance of the archiver class appropriate
+ *   for the specified file, already bound to that file.
+ *   If no appropriate archiver class was found, will return FALSE.
+ */
+function _jqueryui_theme_get_archiver($file) {
+  // Archivers can only work on local paths
+  $filepath = realpath($file);
+  if (!is_file($filepath)) {
+    throw new Exception(t('Archivers can only operate on local files: %file not supported', array('%file' => $file)));
+  }
+  
+  $archiver_info = _jqueryui_theme_get_archiver_info();
+  foreach ($archiver_info as $key => $implementation) {
+    foreach ($implementation['extensions'] as $extension) {
+      if (strrpos($filepath, '.' . $extension) === strlen($filepath) - strlen('.' . $extension)) {
+        require_once 'archiver/archiver.inc';
+        if ($key == 'tar') {
+          require_once 'archiver/system.tar.inc';
+        }
+        require_once 'archiver/system.archiver.inc';
+        return new $implementation['class']($filepath);
+      }
+    }
+  }
+}
+
+/**
+ * Retrieves a list of all available archivers.
+ */
+function _jqueryui_theme_get_archiver_info() {
+  //@todo listContent() do the job but _extractList() failed
+  //@see system.tar.inc
+  
+  //$archivers['tar'] = array(
+  //  'class' => 'ArchiverTar',
+  //  'extensions' => array('tar', 'tgz', 'tar.gz', 'tar.bz2'),
+  //);
+  
+  if (function_exists('zip_open')) {
+    $archivers['zip'] = array(
+      'class' => 'ArchiverZip',
+      'extensions' => array('zip'),
+    );
+  }
+  return $archivers;
+}
+
+/**
+ * Returns a string of supported archive extensions.
+ *
+ * @return
+ *   A space-separated string of extensions suitable for use by the file
+ *   validation system.
+ */
+function _jqueryui_theme_get_archiver_extensions() {
+  $valid_extensions = array();
+  foreach (_jqueryui_theme_get_archiver_info() as $archive) {
+    foreach ($archive['extensions'] as $extension) {
+      foreach (explode('.', $extension) as $part) {
+        if (!in_array($part, $valid_extensions)) {
+          $valid_extensions[] = $part;
+        }
+      }
+    }
+  }
+  return implode(' ', $valid_extensions);
+}

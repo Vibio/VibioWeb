@@ -1,0 +1,5 @@
+Keith:
+AmazonResult.xml is something I added to the code to "log" the latest Amazon dump.  It contains all the data available, not just the data we are currently using.  It was a way to track what was going on during the test time (and after).  It does not need to be archived or Gig'd.  It is automatically created and overwritten at each Amazon service request (one per each new item request, returning 10 Amazon items).
+
+
+Find and comment this out before we go live.

@@ -5,7 +5,7 @@ function network_menu()
 {
 	return array(
 		"contacts/find-friends"	=> array( // s /network/contact 20110926
-			"title"				=> "Vibio Connection Finder",
+			"title"				=> "Connection Finder",
 			"title callback"  => "connection_finder_title",
 			"page callback"		=> "network_find_friends",
 			"access arguments"	=> array("can have relationships"),
@@ -18,7 +18,7 @@ function network_menu()
 function connection_finder_title() {   /* otherwise parent overrides? */
 	// use drupal_set_message in the page.inc, not sure why this here doesn't
 	// work.  bad bad bad !!!
-  return t("Vibio Connection Finder");
+  return t("Connection Finder");
 }
 
 function network_theme()

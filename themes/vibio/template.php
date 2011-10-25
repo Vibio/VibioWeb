@@ -54,6 +54,11 @@ function vibio_filter_tips_more_info() {
  *  2) two ways to "zebra stripe" the columns
  */
 function vibio_preprocess_search_results(&$variables) {
+	/* stephen, fixing stuff: wonder if $variables['search_results']
+   * gets overwritten when you have a non-Amazon product-line?
+   */
+
+
   $variables['search_results'] = '';
 	$zebra = 1;
   foreach ($variables['results'] as $result) {
@@ -196,7 +201,7 @@ function phptemplate_user_relationships_pending_request_approve_link($uid, $rid)
 		"relationships/{$uid}/{$rid}/approve",
 		array(
 			"attributes"=> array(
-				"class"	=> "uri_popup_link",
+				"class"	=> "uri_popup_link accept",
 			),
 			"html"		=> true,
 		)
@@ -210,7 +215,7 @@ function phptemplate_user_relationships_pending_request_disapprove_link($uid, $r
 		"relationships/{$uid}/{$rid}/disapprove",
 		array(
 			"attributes"=> array(
-				"class"	=> "uri_popup_link",
+				"class"	=> "uri_popup_link ignore",
 			),
 			"html"		=> true,
 		)
@@ -224,7 +229,7 @@ function phptemplate_user_relationships_remove_link($uid, $rid)
 		"relationships/{$uid}/{$rid}/remove",
 		array(
 			"attributes"=> array(
-				"class"	=> "uri_popup_link",
+				"class"	=> "uri_popup_link remove",
 			),
 			"html"		=> true,
 		)
@@ -238,7 +243,7 @@ function phptemplate_user_relationships_pending_request_cancel_link($uid, $rid)
 		"relationships/{$uid}/{$rid}/cancel",
 		array(
 			"attributes"	=> array(
-				"class"	=> "uri_popup_link",
+				"class"	=> "uri_popup_link cancel",
 			),
 		)
 	);
@@ -251,7 +256,7 @@ function phptemplate_user_relationships_request_relationship_direct_link($relate
 		"relationships/{$relate_to->uid}/{$relationship_type->rtid}/request",
 		array(
 			"attributes"=> array(
-				"class"	=> "uri_popup_link",
+				"class"	=> "uri_popup_link add_friend",
 			),
 			"html"		=> true,
 		)

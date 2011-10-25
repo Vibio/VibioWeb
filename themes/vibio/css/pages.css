@@ -795,3 +795,13 @@ span.privatemsg_autocomplete_name {
   margin: 0;
   padding: 0;
 }
+/*Not Logged In Pages*/
+
+.not-logged-in h1#page_title{
+	margin: 1px 0 10px 0px;
+	padding-left: 8px;
+}
+
+.not-logged-in div.tabs{
+	margin: 0 0 25px;
+}

@@ -1161,7 +1161,7 @@ function search_data($keys = NULL, $type = 'node') {
 			//looks fine for users...dsm($results);
       if (isset($results) && is_array($results) && count($results)) {
         if (module_hook($type, 'search_page')) {
-					//nope. die("here");
+					//die("Search is running"); --> does not trigger for a normal search
           return module_invoke($type, 'search_page', $results);
         }
         else {

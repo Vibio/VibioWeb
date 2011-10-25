@@ -356,7 +356,8 @@ function product_preprocess_search_results(&$vars)
 		drupal_add_js("themes/vibio/js/product.js");
 		
 		$is_external = product_set_external_search();
-//PRODUCT_SEARCH_RESULTS_PER_PAGE does this do anything?
+//PRODUCT_SEARCH_RESULTS_PER_PAGE does this do anything?  Is the idea that if you have a full page of results in $vars['results'] 
+// which is either local, or local+Amazone but not eBay, or ???, then we don't need to do this next search?
 		
 		if (!$is_external && variable_get("product_append_external", false) && (count($vars['results']) < PRODUCT_SEARCH_RESULTS_PER_PAGE || $_GET['page'] == $pager_total[0] - 1))
 		{
@@ -368,7 +369,7 @@ function product_preprocess_search_results(&$vars)
 			{	
 				foreach ($external_results as $result)
 				{
-					$vars['other_results'] .= theme("search_result", $result, "vibio_item"); /* stephen: what is this? */
+					$vars['other_results'] .= theme("search_result", $result, "vibio_item"); /* stephen: what is this?  Ebay, or Ebay and Amazon? */
 				}
 				
 				$vars['pager'] = theme("pager");
@@ -376,7 +377,7 @@ function product_preprocess_search_results(&$vars)
 			
 			if ($_GET['page'] > product_set_external_search_page_offset())
 			{
-				$vars['search_results'] = "";
+				$vars['search_results'] = "";    /* has this been tested */
 			}
 		}
 		/*elseif (variable_get("product_append_external", false))

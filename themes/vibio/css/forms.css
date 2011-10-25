@@ -72,12 +72,14 @@
 }
 #search input[type="submit"] {
 	background: transparent url(../images/search-icon.png) no-repeat top center;
-	width: 35px;
-	height: 30px;
+	width: 25px;
+	height: 24px;
 	border: 0;
 	position: absolute;
-	right: -110px !important;
-	top: -1px !important;
+	padding:0;
+	margin:0;
+	right: -98px !important;
+	top: 8px !important;
 }
 #edit-search-theme-form-1-wrapper label/* Label that says "Search this site:" */ {
 	display: none;
@@ -179,14 +181,30 @@ div.form-radios td.form-item-label, div.form-checkboxes td.form-item-label {
 	display: none;
 }
 /* registration form */
+form#user-register {
+	width: 470px;
+}
+form#user-register input#edit-submit.form-submit{
+	position: absolute;
+	right: 71px;
+	bottom: 10px;
+}
+
+#user-register div.description{
+	font-size: 13px;
+	margin-top: 18px;
+}
+#edit-pass-pass1-wrapper{
+	margin: 0;
+}
+#edit-pass-pass2-wrapper{
+	margin: 0;
+}
 #user-register div.form-item label {
-	float: left;
-	text-align: right;
-	width: 150px;
-	margin-right: 10px;
+	width: 450px;
 }
 #user-register div.form-item div.description {
-	margin-left: 160px;
+	
 }
 #user-register span.password-result {
 	padding-left: 125px;
@@ -214,6 +232,19 @@ div.form-radios td.form-item-label, div.form-checkboxes td.form-item-label {
 	text-indent: -9999px;
 	top: 0px;
 }
+
+a.add_friend{
+	background: url(../images/add_friend.png) no-repeat 0px 0px;
+	width: 111px;
+	height: 28px;
+	display: block;
+	border: none;
+	text-indent: -9999px;
+}
+a.add_friend:hover{
+	background-position: -0px -38px;
+}
+
 /*Add Product form*/
 #edit-title, #edit-body, #edit-collection-info-cid {
 	width: 460px;
@@ -227,12 +258,11 @@ div.form-radios td.form-item-label, div.form-checkboxes td.form-item-label {
 	bottom: 5px;
 	border-color: #7d8e1a;
 }
-#edit-submit.form-submit {
-	position: absolute;
-	right: 83px;
-	
-}
+
 #edit-preview.form-submit {
 	position: absolute;
 	right: 5px;
 }
+/*button styles*/
+
+

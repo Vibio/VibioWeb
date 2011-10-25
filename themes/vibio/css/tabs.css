@@ -21,7 +21,7 @@ div.tabs_big ul.primary {
 ul.primary {
   border: 0;
   margin: 0;
-  padding: 0 0 0 10px; /* LTR */
+  padding: 0; /* LTR */
   list-style: none;
   white-space: nowrap;
   line-height: normal;

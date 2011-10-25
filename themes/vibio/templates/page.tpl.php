@@ -30,16 +30,7 @@
 		<script type="text/javascript" src="/themes/vibio/js/mb_menu.js"></script>
 	</head>
 	<body class="<?php print $classes;?>">
-<?php /*
 	  <div id="fb-root"></div>
-        <script type="text/javascript">(function(d, s, id){
-          var js,fjs=d.getElementsByTagName(s)[0];
-          if(d.getElementById(id)){return;}
-          js=d.createElement(s);js.id=id;
-          js.src="//connect.facebook.net/en_US/all.js#xfbml=1";
-          fjs.parentNode.insertBefore(js,fjs);
-        }(document,'script','facebook-jssdk'));</script>
-*/ ?>
 		<div id="page-wrapper">
 			<div id="page">
 				<div id="header">
@@ -75,8 +66,8 @@
 										<div id="js_messages_container"></div>
 										<?php
 										echo $content_top;
-										echo $title ? "<h1 id='page_title' class='title'>$title</h1>" : "";
 										echo $tabs ? "<div class='tabs'>$tabs</div>" : "";
+										echo $title ? "<h1 id='page_title' class='title'>$title</h1>" : "";
 										echo $content;
 										echo $help;
 										echo $content_bottom;

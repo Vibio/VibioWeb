@@ -19,7 +19,6 @@ img.uri_edit_busy_indicator {
 }
 
 #friends_tabs {
-	margin-top: 25px;
 }
 
 .potential_friend {
@@ -28,10 +27,6 @@ img.uri_edit_busy_indicator {
 
 .potential_friend .picture {
 	float: left;
-}
-
-.potential_friend .picture img {
-	max-width: 40px !important;
 }
 
 .potential_friend .potential_friend_summary {
@@ -56,6 +51,10 @@ img.uri_edit_busy_indicator {
 	width: 500px;
 }
 
+.user-relationships-listing-table{
+	margin-top: 7px;
+}
+
 .user-relationships-listing-table tr {
 	background: inherit;
 	border-bottom: 1px solid #CCCCCC;
@@ -64,7 +63,9 @@ img.uri_edit_busy_indicator {
 .user-relationships-listing-table tr:first-child {
 	border-top: none;
 }
-.user-relationships-listing-table .picture{
+
+/*All little pictures with a 5px border should go here*/
+.user-relationships-listing-table .picture, .potential_friend .picture, .profile_notification .picture{
 	padding: 5px 0 0 5px;
 	background: #FFF;
 	border: 1px solid #CCCCCC;
@@ -72,7 +73,10 @@ img.uri_edit_busy_indicator {
 	width: 50px;
 }
 
-.user-relationships-listing-table .picture img {
+.uri_notification{
+	border-bottom: 1px solid #CCCCCC;
+}
+.user-relationships-listing-table .picture img, .potential_friend .picture img , .profile_notification .picture img{
 	height:42px;
 	width:42px;
 	border: 1px solid #CCCCCC;
@@ -80,8 +84,7 @@ img.uri_edit_busy_indicator {
 
 .user-relationships-listing-table td {
 	vertical-align: top;
-	padding-bottom: 5px;
-	padding-top: 5px;
+	padding: 8px 0;
 }
 
 .user-relationships-listing-table .ur_friend_info {
@@ -95,6 +98,7 @@ img.uri_edit_busy_indicator {
 
 .ur_friend_remove img {
 	display: none;
+	margin-top:10px;
 }
 
 .ur_friend_busy {

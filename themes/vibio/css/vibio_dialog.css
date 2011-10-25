@@ -121,3 +121,6 @@ iframe .modalframe-page-wrapper{
 .modalframe .ui-dialog-titlebar{
 	background: #FFFFFF;
 }
+iframe#modalframe-container body{
+	background-image: none;
+}

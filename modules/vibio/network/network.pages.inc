@@ -2,7 +2,7 @@
 //  ajax defaulted to true in last version, default to false give own page.
 function network_find_friends($uid=false, $ajax=false, $specific_modules=false)
 {
-drupal_set_title("Vibio Connection Finder"); // !!! bad bad bad, why doesn't the code below work? note that invite didn't work either. ~/src/modules/vibio/user_relationships_integration$ vim uri.module  is somehow overpowering?  rush...
+drupal_set_title("Connection Finder"); // !!! bad bad bad, why doesn't the code below work? note that invite didn't work either. ~/src/modules/vibio/user_relationships_integration$ vim uri.module  is somehow overpowering?  rush...
 
 
 

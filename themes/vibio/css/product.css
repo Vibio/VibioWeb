@@ -99,7 +99,9 @@ padding: 0;
   display: none;
 }
 
-.highlight {  /* parallel to item_owner */
-	background: purple;	/* doesn't show up */
+/*
+.highlight {
+	background: purple;	
 	border: 2px solid yellow;
 }
+*/

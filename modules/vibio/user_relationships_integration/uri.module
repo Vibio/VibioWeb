@@ -74,7 +74,7 @@ function uri_menu_title()
 	global $user;
 	$friend_count = module_exists("network") ? count(_network_get_friends($user->uid, 1)) : 0;
 	
-	return t("Connections (!count)", array("!count" => $friend_count));
+	return t("Contacts (!count)", array("!count" => $friend_count));
 }
 
 function uri_preprocess_page(&$vars)

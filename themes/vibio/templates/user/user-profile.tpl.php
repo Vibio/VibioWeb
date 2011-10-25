@@ -43,7 +43,7 @@ case 'connection':
 $friends_info="Direct Connection";
 break;
 case 'second':
-$friends_info="In Your Network<div class='mouse_for_friends'>".$profile['dos']."</div>";
+$friends_info="<div class='mouse_for_friends'>".$profile['dos']."</div>";
 break;
 case 'none':
 $friends_info="No Connection<div class='mouse_for_friends'>"."Keep connecting with people till you find a common connection.</div>";
@@ -61,13 +61,12 @@ break;
 	<div id='profile_username' class='profile_data profile_editable '>
 		<div>
 			<?php
-echo "<div id='name_and_friend'><h5>$u->name</h5><div class='friend_info'>";
+echo "<div id='name_and_friend'><h5>$u->name</h5><div id='message-user'><p>Send Message</p><p id='message-link'>$message_link</p></div><div class='friend_info'>";
 echo $friends_info."</div><div class='friend_actions'>".$profile['uri_actions']['actions'].'</div>';
 if($profile['profile_progress']) {
 echo $profile['profile_progress'];
 }
 echo '</div>';
-echo $message_link;
 //echo $profile['profile_progress'];
 echo $my_options;
 			?>
@@ -112,7 +111,7 @@ print "<li {$active[$key]}><a href='/user/$uid/$key' ><span class='tab'>$name</s
 //dsm($active);
 
 //check script in blocks footer section file for the info button href settings
-print "<li><a href='/info/activity' id='info-button' class='automodal popup'><span class=tab>Info</span></a></li><li class='blank-li'><span class='tab'>&nbsp;</span></li></ul></div>";
+print "<li><a href='/info/activity' id='info-button' class='automodal'><span class=tab>Info</span></a></li><li class='blank-li'><span class='tab'>&nbsp;</span></li></ul></div>";
 /*
  $options['attributes']['class'] .= ($tabkey == $active_tab ? ' active' : '');
  $output .= '<li'. $attributes_li .'>'. l($tab['title'], $_GET['q'] . $tabkey, $options) .'</li>';

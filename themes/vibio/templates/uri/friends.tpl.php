@@ -19,12 +19,12 @@ echo "
 				<li>
 					<a href='#friends'>
 						<span class='tab'>$friends_title</span>
-					</a>
+					</a><span class='tab-seperator'>|</span>
 				</li>
 				<li>
 					<a href='/network/find-friends'> turning into contacts/find-friends
 						<span class='tab'>$friend_finder_title</span>
-					</a>
+					</a><span class='tab-seperator'>|</span>
 				</li>
 				<li>
 					<a href='/invite'>
@@ -32,7 +32,7 @@ echo "
 Mocked this up but didn't get it working.  End the single-page-ajax effort.
 
 						<span class='tab'>$invite_title</span>
-					</a>
+					</a><span class='tab-seperator'>|</span>
 				</li>
 			</ul>
 		</div>

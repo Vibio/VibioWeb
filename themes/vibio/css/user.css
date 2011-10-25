@@ -2,8 +2,11 @@
 .connect_connection #name_and_friend {}
 .connect_second #name_and_friend { }
 .connect_none #name_and_friend { }
-#profile_user_information .mouse_for_friends { display: none; }
-#profile_user_information:hover .mouse_for_friends { display: block; }
+#profile_user_information .mouse_for_friends { 
+	margin-top: 13px;
+	color: #556270;
+}
+
 
 /*User Profile Page*/
 #profile_picture_container{
@@ -101,6 +104,7 @@ a.profile_option{
 */
 
 #name_and_friend {	
+	position: relative;
 }
 #profile_username table {
 	margin: 0;
@@ -240,3 +244,35 @@ table.user_external_accounts td ul {
 .external_accounts_account_list {
 	vertical-align: middle !important;
 }
+.breadcrumb-sep{
+	color: #106f93;
+	padding: 0 2px;
+}
+#message-user a{
+	background:url(../images/envelope.png) no-repeat;
+	height: 17px;
+	width: 25px;
+	display: block;
+}
+#message-user p{
+	float: left;
+	margin: 0;
+	padding-left: 5px;
+	line-height: 14px;
+}
+#message-user{
+	position: absolute;
+	top:6px;
+	right: 24px;
+	
+}
+#message-link{
+	text-indent: -9999px;
+}
+.dos_display{
+	margin-top: 13px;
+}
+.dos_display a:link{
+	color:#106F93;
+}
+

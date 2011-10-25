@@ -5,7 +5,7 @@
  *  There's lots of work to still do here... but the basic concept is integrated into our pages now.
  */
 
-function vshare_small($thing) { return vshare_big($thing); }
+function vshare_small($thing) { return vshare_big($thing); } 
 
 function vibio_addthis_button($variables) {
 return '
@@ -98,6 +98,9 @@ function Vibio_addthis_button($node, $teaser) {
 
 function vshare_big($thing)
 {
+	
+	return ''; // vsharedisable
+
 	//require_once getcwd() . '/sites/all/modules/vshare/vshare_small.php';
 	//return vshare_small($thing);
 

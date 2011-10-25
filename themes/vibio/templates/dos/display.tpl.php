@@ -1,4 +1,4 @@
-<?php    /* seems to print a link to the user, maybe on the profile page */
+<?php    /* seems to print a link on the other user page -breadcrumb */
 if ($dos === false)
 {
 	$out = t("This is you");
@@ -18,7 +18,7 @@ elseif (!empty($dos))
 		$links[] = l($name, "user/{$uid}");
 	}
 	
-	$out = implode(" -> ", $links);
+	$out = implode("<span class='breadcrumb-sep'>-</span>", $links);
 }
 
 echo "

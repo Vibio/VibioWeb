@@ -13,14 +13,20 @@ echo $pager;
 
  * The three columns are produced in template.php
  * vibio_preprocess_search_results
+
+ * It can't work like this, please, but seems to:
+ *  $search_results fills will one type of search results, 
+ *  so local products if there are some, Amazon if not.
+ *  Then $other_results has the other results.  So Amazon
+ *  products can come in EITHER way
+
  */
-echo "
+echo " 
 	<!-- table class='search-results $type' -->
-		<div class='search-col 1'>$search_results_3</div>
-		<div class='search-col 2'>$search_results_2</div>
-		<div class='search-col 3'>$search_results_1</div>
-		<div class='search-col 4'>$search_results_0</div>
-		
+		<div class='search-col 1'>$search_results_0</div>
+		<div class='search-col 2'>$search_results_1</div>
+		<div class='search-col 3'>$search_results_2</div>
+		<div class='search-col 4'>$search_results_3</div>
 	<!-- /table -->
 ";
 

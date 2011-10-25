@@ -82,6 +82,9 @@ fieldset {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   color: #556270;
 }
+.bold-text{
+	font-weight: bold;
+}
 
 /*Form Inputs*/
 
@@ -103,7 +106,7 @@ background: #556270;
 color: #FFFFFF;
 border: 1px solid #3d454f;
 font-size: 15px;
-padding: 5px 15px;
+padding: 3px 5px;
 cursor: pointer;
 }
 

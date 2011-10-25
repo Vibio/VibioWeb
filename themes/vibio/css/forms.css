@@ -76,8 +76,8 @@
 	height: 24px;
 	border: 0;
 	position: absolute;
-	padding:0;
-	margin:0;
+	padding: 0;
+	margin: 0;
 	right: -98px !important;
 	top: 8px !important;
 }
@@ -184,27 +184,29 @@ div.form-radios td.form-item-label, div.form-checkboxes td.form-item-label {
 form#user-register {
 	width: 470px;
 }
-form#user-register input#edit-submit.form-submit{
+form#user-register input#edit-submit.form-submit {
 	position: absolute;
 	right: 71px;
 	bottom: 10px;
 }
-
-#user-register div.description{
+.page-user-register form#user-register input#edit-submit.form-submit {
+	right: 7px;
+	bottom: 82px;
+}
+#user-register div.description {
 	font-size: 13px;
 	margin-top: 18px;
 }
-#edit-pass-pass1-wrapper{
+#edit-pass-pass1-wrapper {
 	margin: 0;
 }
-#edit-pass-pass2-wrapper{
+#edit-pass-pass2-wrapper {
 	margin: 0;
 }
 #user-register div.form-item label {
 	width: 450px;
 }
 #user-register div.form-item div.description {
-	
 }
 #user-register span.password-result {
 	padding-left: 125px;
@@ -232,8 +234,7 @@ form#user-register input#edit-submit.form-submit{
 	text-indent: -9999px;
 	top: 0px;
 }
-
-a.add_friend{
+a.add_friend {
 	background: url(../images/add_friend.png) no-repeat 0px 0px;
 	width: 111px;
 	height: 28px;
@@ -241,10 +242,9 @@ a.add_friend{
 	border: none;
 	text-indent: -9999px;
 }
-a.add_friend:hover{
+a.add_friend:hover {
 	background-position: -0px -38px;
 }
-
 /*Add Product form*/
 #edit-title, #edit-body, #edit-collection-info-cid {
 	width: 460px;
@@ -252,17 +252,63 @@ a.add_friend:hover{
 .grippie {
 	display: none
 }
-
-#edit-submit.form-submit, #edit-preview.form-submit{
+#edit-submit.form-submit, #edit-preview.form-submit {
 	background: #bfd64b;
 	bottom: 5px;
 	border-color: #7d8e1a;
 }
-
 #edit-preview.form-submit {
 	position: absolute;
 	right: 5px;
 }
 /*button styles*/
 
-
+/*User Login Form*/
+form#user-login {
+	width: 360px;
+	background: #e5e7ea;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	margin: 0;
+	padding: 5px 0;
+	position: relative;
+	min-height: 270px;
+	float: left;
+}
+form#user-login input, form#user-login .description {
+	width: 305px;
+	margin: 0 20px;
+}
+form#user-login .description {
+	padding: 10px 0;
+	line-height: 20px;
+}
+form#user-login label {
+	font-weight: bold;
+	margin-left: 20px;
+}
+form#user-login input#edit-submit {
+	width: 20px;
+	padding: 0;
+	margin:  :0;
+	background: url(../images/log_in.png) no-repeat;
+	display: block;
+	height: 35px;
+	width: 73px;
+	border: none;
+	text-indent: -9999px;
+	position: absolute;
+	bottom: 10px;
+	right: 13px;
+}
+/*Facebook button User Login PAge*/
+#block-block-12 {
+	float: left;
+	margin: 75px 0 0 60px;
+	position: relative;
+}
+#block-block-12 .fb-or{
+	top:31px;
+	left:-36px;
+	position: absolute;
+}

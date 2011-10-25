@@ -343,7 +343,7 @@ function product_preprocess_box(&$vars)
 	}
 }
 
-/* how does this dance with theme vibio_preprocess_search_results ? */
+/* first this goes to template.php's vibio_preprocess_search_results ? */
 function product_preprocess_search_results(&$vars)
 {
 	if ($vars['type'] == "vibio_item")
@@ -367,9 +367,18 @@ function product_preprocess_search_results(&$vars)
 			$vars['other_results'] = "";
 			if (!empty($external_results))
 			{	
+				// Stephen: we need finer control on external results, add this
+				//  the pager system is out of sorts
+				$vars['unthemed_other_results'] = $external_results;
+				
 				foreach ($external_results as $result)
 				{
-					$vars['other_results'] .= theme("search_result", $result, "vibio_item"); /* stephen: what is this?  Ebay, or Ebay and Amazon? */
+					$vars['other_results'] .= theme("search_result", $result, "vibio_item"); /* stephen: what is this?  Ebay, or Ebay and Amazon?  OMG:
+    *  I think other_results is basically less interesting results,
+    *  so Amazon results can be regularly results if no other results are
+    *  found, and 'other_results' if local results were found.   
+    *  Not sure about this, check later.
+    */
 				}
 				
 				$vars['pager'] = theme("pager");

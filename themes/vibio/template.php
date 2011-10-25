@@ -60,12 +60,27 @@ function vibio_preprocess_search_results(&$variables) {
 
 
   $variables['search_results'] = '';
-	$zebra = 1;
+	$zebra = 0;
   foreach ($variables['results'] as $result) {
 		$z = $result['zebra'] = $zebra%4; // change to number of columns you want
 		$zebra++;
-    $variables["search_results_$z"] .= /* "col$z" .*/ theme('search_result', $result, $variables['type']);
+    $variables["search_results_$z"] .=  /* "col$z" .*/ theme('search_result', $result, $variables['type']);
   }
+	// other_results
+  // Stephen: make other_results more like regular results
+  // !!! I think later might go back deeper, and make other_results
+  //  just be more normal. Rabbit hole for another day.
+  foreach ($variables['unthemed_other_results'] as $result) {
+    $z = $result['zebra'] = $zebra%4;    
+		$zebra++;
+    $variables["search_results_$z"] .= "col$z" . theme('search_result', $result, $variables['type']);
+  }
+  
+
+
+
+
+
 	// I think this is overridden somewhere for product search, which is called
   //  item search.
   $variables['pager'] = theme('pager', NULL, 40, 0);

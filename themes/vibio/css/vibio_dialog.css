@@ -5,6 +5,37 @@
 	-moz-border-radius: 8px;
 	min-height: 55px !important;
 }
+#vibio_dialog .inventory_add_image{
+	padding: 5px 5px 0;
+	border: 1px solid #CCCCCC;
+}
+
+#vibio_dialog .inventory_add_image img{
+	max-height: 150px;
+	border: 1px solid #CCCCCC;
+}
+#inventory_top{
+	font-size: 13px;
+	padding: 15px 0 0 10px;
+}
+.inventory_border_top{
+	border-top: 1px solid #CCCCCC;
+}
+.inventory_border_bottom{
+	border-bottom: 1px solid #CCCCCC;
+}
+tr.inventory_border_bottom td, tr.inventory_border_top td{
+	line-height: 12px
+}
+#vibio_dialog .inventory_title{
+	padding: 0 18px;
+	font-size: 15px;
+	font-weight:bold;
+	width: 100%;
+}
+table.inventory_add_pinfo tr{
+	vertical-align: top;
+}
 span.ui-icon{
 	display: none
 }
@@ -69,19 +100,42 @@ span.ui-icon{
 }
 
 #vibio_dialog form .form-item label {
-	float: left;
-	margin-right: 10px;
 	width: 150px;
-	text-align: right;
-	color: #2B363D;
 }
-
+#product-ajax-add-form div{
+	margin: 5px 0
+}
+#product-ajax-add-form div#edit-posting-type-wrapper, #product-ajax-add-form div.inventory_add_price{
+	float: left;
+	margin: 0
+}
+div#edit-node-price-wrapper{
+	margin: 0
+}
+#product-ajax-add-form input#edit-submit{
+	background: url(../images/add_item_product.png) no-repeat;
+	display: block;
+	border: none;
+	text-indent: -9999px;
+	width: 110px;
+	padding: 0;
+	margin: 0;
+	height: 27px;
+	right: 15px;
+	position: absolute;
+	bottom: 8px;
+}
+#product-ajax-add-form div#edit-privacy-wrapper{
+	height: 65px;
+	margin-bottom: 40px;
+	border-bottom: 1px solid #CCCCCC;
+}
 #vibio_dialog form select[multiple] {
 	max-height: 120px;
 }
 
 #vibio_dialog form input[type="text"], #vibio_dialog form textarea {
-	max-width: 310px;
+	max-width: 360px;
 	max-height: 60px;
 }
 
@@ -121,6 +175,6 @@ iframe .modalframe-page-wrapper{
 .modalframe .ui-dialog-titlebar{
 	background: #FFFFFF;
 }
-iframe#modalframe-container body{
+iframe#modalframe-container html.js body{
 	background-image: none;
 }

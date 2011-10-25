@@ -112,10 +112,7 @@ div.over-item {
 .item-square:hover div.over-item a {
 	color: black;
 }
-div.search-links {
-	position: absolute;
-	bottom: 10px;
-}
+
 /* search results, items in an image-rectangle in multiple places */
 .item-rectangle {
 	position: relative; /* make it the parent */
@@ -145,10 +142,7 @@ div.title-item {
 .item-rectangle:hover div.over-item a {
 	color: black;
 }
-div.search-links {
-	position: absolute;
-	bottom: 10px;
-}
+
 /* expect Carolyn to erase and replace this, but there's no correct
  * template so I'm going to design in css
  */
@@ -402,12 +396,14 @@ a#content-email {
 	text-indent: -9999px;
 	cursor: pointer;
 	float: left;
+	z-index: 500;
 }
 .inventory_add{
 	background-position: 0px 0px;
 }
 .inventory_add:hover{
 	background-position: -100px 0px;
+	z-index: 500;
 }
 .inventory_want{
 	background-position: 2px -30px;

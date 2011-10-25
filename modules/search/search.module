@@ -956,8 +956,15 @@ function do_search($keywords, $type, $join1 = '', $where1 = '1 = 1', $arguments1
   // Do actual search query
   // This doesn't seem to be fired for a product search, 
   // or is being seriously cached -- stephen
+	// May be ok to overwrite this, doesn't seem to work anyway, sorry
+	// mucking around in core right now... erase this, work on it when time
+	/*
+	global $pager_total;
+	$new_search_page_count = 20; // started as 10, and changing it not working
+	 $pager_total = $new_search_page_count;
+	*/
 
-  $result = pager_query("$select $sort_parameters", 14, 0, $count_select, $arguments);
+  $result = pager_query("$select $sort_parameters", $new_search_page_count, 0, $count_select, $arguments);
   $results = array();
   while ($item = db_fetch_object($result)) {
     $results[] = $item;

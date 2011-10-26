@@ -498,3 +498,27 @@ div.views-field.views-field-nid{
 #about-copy{
 	clear: both
 }
+/*Terms of Use Page*/
+.terms-header{
+	font-size: 13px;
+	color: #00AEF0;
+	margin-bottom: 0;
+}
+#node-23080 div#terms-top{
+	border-bottom: none;
+}
+
+#node-23080 div.content div{
+	border-bottom: 1px solid #CCCCCC;
+	clear: both;
+}
+
+#node-23080 div p{
+	float: right;
+	width:495px;
+}
+#node-23080 ul{
+	width: 395px;
+	float: right;
+	margin:0 40px 0;
+}

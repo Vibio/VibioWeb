@@ -152,12 +152,15 @@ h3 {
 }
 
 h4,
-h5,
-h6 {
+h5 {
   font-size: 1.1em;
   line-height: 1.3em;
   margin-top: 0.909em; /* Equivalent to 1em in the page's base font: 1 / 1.1 = 0.909 */
   margin-bottom: 0.909em;
+}
+h6{
+	font-size: 15px;
+	color: #00AEF0;
 }
 
 /*
@@ -261,6 +264,21 @@ a:focus {
 }
 
 a:active {
+}
+
+/*Inside main body content */
+#content-area a:link {
+	color: #106F93;
+	text-decoration: none;
+}
+
+#content-area a:visited {
+	color:#496F8E
+}
+
+#content-area a:hover,
+#content-area a:focus {
+	color: #00AEF0
 }
 
 /*

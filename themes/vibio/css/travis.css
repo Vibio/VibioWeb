@@ -152,7 +152,8 @@ ul.jquery_dropdown_list li a:hover {
 .page-product-add #field-images-items,
 .page-product-add #edit-field-main-image-0-ahah-wrapper,
 .page-product-add .region-content-top{
-  border-bottom: 1px solid #999;
+  border-bottom: 1px solid #CCCCCC;
+  padding-bottom: 40px;
 }
 
 .page-product-add .content-add-more{
@@ -176,7 +177,7 @@ ul.jquery_dropdown_list li a:hover {
   /*right: 110px!important;*/
  }
  
-#edit-preview.form-submit,
+/*#edit-preview.form-submit,
 #edit-submit.form-submit {
 right: 110px;
 margin: 10px;
@@ -185,7 +186,7 @@ text-shadow: 1px 1px 2px #4f6b02;
 filter: dropshadow(color=#4f6b02, offx=1, offy=1);
 color:#fff;
 font-weight: 700;
-} 
+} */
  
  
 .form-region-footer{

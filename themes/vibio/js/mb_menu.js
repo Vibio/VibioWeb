@@ -33,11 +33,17 @@ $(document).ready(function()
 	{
 		var type_id = $(this).attr("id").split("searchtype_")[1];
 		$("#search_type_current")
-			.attr("src", $(this).attr("src"))
+			//.attr("src", $(this).attr("src"))
+			.attr("src", $(this).attr("src") + "_main")
 			.attr("alt", $(this).attr("alt"))
 			.attr("title", $(this).attr("title"));
 
-		$("#edit-search-type").val(type_id);
+		/* this used to use the same button up top and in the menu.
+       Now it doesn't.  Need a non-displaying option that displays
+       when it's the "Item ^" or "User ^" button
+     */
+
+		$("#edit-search-type").val(type_id); // this is hidden value for submit
 
 		return false;
 	});

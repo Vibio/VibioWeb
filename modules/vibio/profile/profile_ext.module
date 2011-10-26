@@ -484,7 +484,8 @@ function profile_ext_preprocess_user_profile(&$vars)
 			//	user can't see much
 			if ( $user->uid < 1 ) {
 				$msg = "<h3>Sign in for a better view of " . check_plain($target_user->name) . "'s collections.</h3>";
-			} elseif ( $user->uid != $uid ) {
+			} elseif ( ( $user->uid != $uid ) && ( $access < 3 ) ) { 
+																					// $access 3 means you're connected
 				$msg = "<h3>Connecting lets you see more private items.</h3>";
 			}
 			$vars['sec_content'] =  

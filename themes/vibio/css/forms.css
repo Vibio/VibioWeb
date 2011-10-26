@@ -190,9 +190,16 @@ form#user-register input#edit-submit.form-submit {
 	bottom: 10px;
 }
 .page-user-register form#user-register input#edit-submit.form-submit {
-	right: 7px;
+	right: 16px;
 	bottom: 82px;
+	background: url(../images/create_new_account.png) no-repeat;
+	width:185px;
+	height: 39px;
+	border:none;
+	text-indent:-9999px;
+	display: block;
 }
+
 #user-register div.description {
 	font-size: 13px;
 	margin-top: 18px;
@@ -249,13 +256,13 @@ a.add_friend:hover {
 #edit-title, #edit-body, #edit-collection-info-cid {
 	width: 460px;
 }
+#add-product{
+	margin-top: 18px;
+}
 .grippie {
 	display: none
 }
 #edit-submit.form-submit, #edit-preview.form-submit {
-	background: #bfd64b;
-	bottom: 5px;
-	border-color: #7d8e1a;
 }
 #edit-preview.form-submit {
 	position: absolute;
@@ -278,6 +285,14 @@ form#user-login {
 form#user-login input, form#user-login .description {
 	width: 305px;
 	margin: 0 20px;
+}
+
+form#user-register{
+	width: 480px;
+}
+
+form#user-register input{
+	width:450px;
 }
 form#user-login .description {
 	padding: 10px 0;
@@ -311,4 +326,22 @@ form#user-login input#edit-submit {
 	top:31px;
 	left:-36px;
 	position: absolute;
+}
+/*Forgot password page*/
+
+form#user-pass input#edit-submit.form-submit{
+	background: url(../images/btn_submit.png) no-repeat;
+	display: block;
+	text-indent: -9999px;
+	width: 82px;
+	height: 36px;
+	border: none;
+	float: right;
+}
+form#user-pass div#edit-name-wrapper{
+	padding-bottom: 20px;margin-bottom: 20px;
+	border-bottom: 1px solid #CCCCCC;
+}
+form#user-pass div#edit-name-wrapper input#edit-name{
+	width: 449px;
 }

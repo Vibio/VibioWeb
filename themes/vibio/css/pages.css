@@ -572,7 +572,7 @@ ul.links li {
 }
 
 .search-results.user .picture img {
-	max-width: 40px;
+	/*max-width: 40px;*/
 }
 
 .search-results.user .search_user_info {

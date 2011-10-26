@@ -1,6 +1,24 @@
 
-
-#badge_alert_container {
+/*Popup after earning a badge*/
+#badge_alert_container_earned {
+	text-align:center;	
+}
+#badge_alert_container_earned h5{
+	font-size: 28px;
+	margin: 28px 0 28px;
+}
+#badge_alert_container_earned div#badge_alert_footer{
+	text-align: right;
+	font-size: 13px;
+	margin: 0 13px 25px 0;
+}
+#badge_alert_container_earned .badge_alert_single {
+	min-height: 150px;
+	text-align: center;
+}
+#badge_alert_container_earned .badge_alert_single div.badge_title {
+	font-weight: bold;
+	font-size: 15px;
 }
 
 #badge_alert_container .badge_alert_single img.badge_image {

@@ -265,8 +265,7 @@ a.add_friend:hover {
 #edit-submit.form-submit, #edit-preview.form-submit {
 }
 #edit-preview.form-submit {
-	position: absolute;
-	right: 5px;
+
 }
 /*button styles*/
 

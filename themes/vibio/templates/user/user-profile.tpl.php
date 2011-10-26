@@ -17,7 +17,7 @@ $picture_edit_link="
 }
 // "Send --- a message"
 if($user->uid&&$user->uid!=$u->uid&&module_exists("privatemsg")) {
-$message_link=l(t("Send !user a message",array("!user"=>$u->name)),"messages/new/{$u->uid}");
+$message_link= "<p>Send Message</p><p id='message-link'>".l(t("Send !user a message",array("!user"=>$u->name)),"messages/new/{$u->uid}")."</p>";
 }
 if(!$u->picture) {
 $profile['user_picture']="
@@ -61,7 +61,7 @@ break;
 	<div id='profile_username' class='profile_data profile_editable '>
 		<div>
 			<?php
-echo "<div id='name_and_friend'><h5>$u->name</h5><div id='message-user'><p>Send Message</p><p id='message-link'>$message_link</p></div><div class='friend_info'>";
+echo "<div id='name_and_friend'><h5>$u->name</h5><div id='message-user'>$message_link</div><div class='friend_info'>";
 echo $friends_info."</div><div class='friend_actions'>".$profile['uri_actions']['actions'].'</div>';
 if($profile['profile_progress']) {
 echo $profile['profile_progress'];

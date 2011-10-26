@@ -1,7 +1,7 @@
 <?php
 if ($view->args[1] == PRIVACY_ONLYME)
 {
-	echo l(t("Create New Collection"), "collections/new")."<br />";
+	echo l(t("Create New Collection"), "collections/new");
 }
 
 echo l(t("View All Items"), "collections/{$view->args[0]}/view-all");

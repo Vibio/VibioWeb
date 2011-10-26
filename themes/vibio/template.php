@@ -325,9 +325,9 @@ function vibio_user_login_block($form) {
 
 function vibio_select($element) {
   $select = '';
- //  if (in_array($element['#post']['form_id'], 'node-form')) {
+  if (in_array($element['#post']['form_id'], 'node-form')) {
   $element['#attributes'] = array('class' => 'jquery_dropdown jquery_dropdown_jump');
- // }
+  }
   $size = $element['#size'] ? ' size="'. $element['#size'] .'"' : '';
   _form_set_class($element, array('form-select'));
   $multiple = $element['#multiple'];

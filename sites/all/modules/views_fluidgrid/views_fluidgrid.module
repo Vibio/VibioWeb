@@ -50,7 +50,7 @@ function template_preprocess_views_view_fluidgrid(&$vars) {
           columnWidth: viewsFluidGrid.".$vars['views_fluidgrid_id'].".settings.column_width,
           itemSelector: '.views-fluidgrid-item:visible',
           resizeable: viewsFluidGrid.".$vars['views_fluidgrid_id'].".settings.resizeable,
-          appendedContent: $('#".$vars['views_fluidgrid_id']."'),
+         
           saveOptions: false
           },  function() { eval(viewsFluidGrid.".$vars['views_fluidgrid_id'].".settings.callback); }
         ); $('#".$vars['views_fluidgrid_id']."').addClass('views-fluidgrid-processed');

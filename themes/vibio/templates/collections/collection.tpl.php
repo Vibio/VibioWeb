@@ -1,12 +1,8 @@
 <?php
-require_once 'sites/all/modules/vshare/vshare_big.php';
 $collection_url = url("collections/{$collection->cid}");
 $manage_link = $collection->is_owner ? l(t("Rename Collection"), "collections/manage/{$collection->cid}") : "";
 $total_items = t("!count items", array("!count" => $collection->total_items));
 $expand = t("View Items");
-$vshare = vshare_big($collection);
-
-echo "\n<!-- themes/vibio/templates/collections/collection.tpl.php -->\n";
 
 if ($show_preview)
 {
@@ -31,7 +27,7 @@ echo "
 				<img src='{$collection->image}' title='{$collection->collection_description}' alt='{$collection->collection_description}' />
 			</a>
 		</div>
-		<div cLass='collection_summary'>
+		<div class='collection_summary'>
 			<a href='$collection_url'>
 				<h3>{$collection->collection_title}</h3>
 			</a>
@@ -42,7 +38,6 @@ echo "
 			<p>{$collection->collection_description}</p>
 			{$collection->collection_categories}
 		</div>
-		$vshare
 		<div class='clear'></div>
 		$preview
 	</div>

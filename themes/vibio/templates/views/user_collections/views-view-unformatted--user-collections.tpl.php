@@ -3,7 +3,7 @@ echo "<div class='collections_view_header'>";
 
 if ($view->args[1] == PRIVACY_ONLYME)
 {
-	echo l("<button>".t("Create New Collection")."</button>", "collections/new", array("html" => true))."<br />";
+	echo l(t("Create New Collection"), "collections/new", array("html" => true));
 }
 echo "</div>";
 

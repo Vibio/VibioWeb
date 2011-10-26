@@ -1,7 +1,6 @@
 /* Style guide, site wide, Carolyn will need to fix badly */
 a.local_action_button {
 	padding: 6px;
-	background: blue;
 	color: white;
 	font-weight: bold;
 	margin: 6px;
@@ -456,4 +455,46 @@ div.views-field.views-field-nid{
 }
 .addthis_button_google_plusone{
 	width: 62px;
+}
+/*about us page*/
+#block-block-14{
+	height: 70px
+}
+/*Hiding the about us page title*/
+.page-about h1#page_title{
+	display: none
+}
+#about-top-p{
+	font-size: 28px;
+	line-height: 46px;
+	margin: 1px 0 38px;
+}
+#block-block-14 .content{
+	position: absolute;
+	top:6px;
+	right: 20px;
+}
+#about-left{
+	float: left;
+	width:250px
+}
+#about-right{
+	float: left;
+	width: 454px;
+	line-height: 22px;
+}
+#about-footer{
+	clear: both;
+	line-height: 22px;
+}
+#about-footer p{
+	float: left;
+	margin-right: 87px;
+}
+#about-footer h2{
+	margin: 5px 0;
+	font-size: 18px;
+}
+#about-copy{
+	clear: both
 }

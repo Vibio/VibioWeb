@@ -57,9 +57,14 @@ div.teaser_item_pic {
 	margin-bottom: 1em;
 	border-bottom: 1px solid #333;
 }
-div.selling_item_info {   /* the sellers info, left of offer */
-	/* rapid, crappy css */
-	width: 300px;
+.views-row div.selling_item_info {  
+	width: 151px;
+	float: left;
+}
+.views-row div.selling_item_info img {  
+	max-width: 150px;
+}
+div.selling_item_info { 
 	float: left;
 	height: 160px;
 	padding-right: 1em;
@@ -378,14 +383,36 @@ a#content-email {
 	opacity:0.4;
     filter:alpha(opacity=40); /* For IE8 and earlier */
 }
-.selling_item_info div.teaser_item_pic {
-    background-color: #E8E8E8;
-    display: block;
-    float: left;
-    height: 80px;
-    margin-right: 5px;
-    width: 80px;
+/*Selling Page*/
+.selling{
+	
 }
+.selling-top-image{
+	float: left;
+	margin: 15px 12px 15px 0;
+	width:126px;
+}
+.selling-top-image img{
+	border:1px solid #CCCCCC;
+	max-width: 125px;
+}
+.selling-top-text{
+	float: left;
+	width:454px;
+}
+.selling_item_info div.teaser_item_pic {
+    float: left;
+    margin-right: 5px;
+    border: 1px solid #CCCCCC;
+    padding: 5px 5px 2px;
+    background: #FFFFFF;
+}
+
+.selling_item_info div.teaser_item_pic img {
+   max-width:150px;
+   border: 1px solid #CCCCCC  
+}
+
 /*Have and Want Buttons*/
 .inventory_add,.inventory_want{
 	background: url(../images/want_have.png) no-repeat;

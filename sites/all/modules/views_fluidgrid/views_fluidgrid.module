@@ -1,8 +1,4 @@
-
-
-<?php // $Id$
-
-
+<?php // $Id: views_fluidgrid.module,v 1.1.2.4 2010/03/16 07:16:01 doublethink Exp $
 
 /**
  * @file
@@ -25,10 +21,8 @@ function views_fluidgrid_views_api() {
 function template_preprocess_views_view_fluidgrid(&$vars) {
   $view = $vars['view'];
   $options = $view->style_plugin->options;
-
+  
   drupal_add_js(drupal_get_path('module', 'views_fluidgrid') .'/js/jquery.masonry.min.js');
-   drupal_add_js(drupal_get_path('module', 'views_fluidgrid') .'/js/jquery.infinitescroll.min.js');
-
   drupal_add_css(drupal_get_path('module', 'views_fluidgrid') .'/views_fluidgrid.css');
 
   $vars['views_fluidgrid_id'] = 'views_fluidgrid_'. $view->name .'_'. $view->current_display;
@@ -45,94 +39,25 @@ function template_preprocess_views_view_fluidgrid(&$vars) {
    * Adding the script inline with each view helps in loading each view's settings seperatly when called via AJAX
    * If you have another way to do this, please let me know.
    */
-   
-
-   
- $vars['script'] .= "\n<script type=\"text/javascript\">
+  $vars['script'] .= "\n<script type=\"text/javascript\">
     <!--//--><![CDATA[//><!--
-     
-
     Drupal.behaviors.viewsFluidGrid = function(context) {
-    
-   
-    
       viewsFluidGrid = {}; viewsFluidGrid.".$vars['views_fluidgrid_id']." = {};
       if (!$('#".$vars['views_fluidgrid_id']."').hasClass('views-fluidgrid-processed')) {
         viewsFluidGrid.".$vars['views_fluidgrid_id'].".settings = ". drupal_to_js($settings) .";
-        
-        
- 
-
-             $(document).ready(function() { 
-    
         $('#".$vars['views_fluidgrid_id']."').masonry({
-         
           singleMode: viewsFluidGrid.".$vars['views_fluidgrid_id'].".settings.single_mode,
-          
           columnWidth: viewsFluidGrid.".$vars['views_fluidgrid_id'].".settings.column_width,
-          
           itemSelector: '.views-fluidgrid-item:visible',
-          
           resizeable: viewsFluidGrid.".$vars['views_fluidgrid_id'].".settings.resizeable,
-          
-      
-          
-         
+          appendedContent: $('#".$vars['views_fluidgrid_id']."'),
           saveOptions: false
-          },  
-          
-      
-          
-                       Drupal.behaviors.viewsFluidGrid = function() { eval(viewsFluidGrid.".$vars['views_fluidgrid_id'].".settings.callback); }
-          
-        ).infinitescroll({
-                   navSelector  : 'ul.pager', 
-                   nextSelector : 'ul.pager a', 
-                   itemSelector : '.views-fluidgrid-item',
-                   debug: true,  
-                   loadingText  : 'Loading more posts...',   
-                   animate  : false,  
-                    bufferPx: 1000,  
-                    extraScrollPx: 0, 
-                    currPage: 0,
-                     
-                    
-                   errorCallback: function() { $('#infscr-loading').animate({opacity: .8},2000).fadeOut('normal'); }
-  }, 
-  
-         
-           
-           
-        
-                  
-function( newElements ) {Drupal.attachBehaviors(); 
-    $('#".$vars['views_fluidgrid_id']."').masonry({  singleMode: viewsFluidGrid.".$vars['views_fluidgrid_id'].".settings.single_mode,   bufferPx: 1000, appendedContent: $(newElements) })
-  })
-
-
-                 
-            
-
-
-         
-        $('#".$vars['views_fluidgrid_id']."').addClass('views-fluidgrid-processed');
-        
-   }) } }
-     
-     
-      
-      
-           
-	  
-	  
-	                    
-                    
-	 
-	  //--><!]]>
+          },  function() { eval(viewsFluidGrid.".$vars['views_fluidgrid_id'].".settings.callback); }
+        ); $('#".$vars['views_fluidgrid_id']."').addClass('views-fluidgrid-processed');
+      }
+	  }; //--><!]]>
     </script>";
 }
-
-
 
 /**
  * Only returns true the first time it's called for an id
@@ -153,7 +78,3 @@ function theme_views_fluidgrid_display_item($id) {
 
   return $output;
 }
-
-
-
-

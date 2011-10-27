@@ -27,6 +27,7 @@ echo "
 		<div class='search-col 2'>$search_results_1</div>
 		<div class='search-col 3'>$search_results_2</div>
 		<div class='search-col 4'>$search_results_3</div>
+		<div class='clearfix'></div>
 	<!-- /table -->
 ";
 

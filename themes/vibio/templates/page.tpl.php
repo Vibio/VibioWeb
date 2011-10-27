@@ -64,10 +64,11 @@
 								<div id="content-area">
 									<div class="rounded_content">
 										<div id="js_messages_container"></div>
+										<div id="info"><img src="/themes/vibio/images/info.png"/></div>
 										<?php
-										echo $content_top;
-										echo $tabs ? "<div class='tabs'>$tabs</div>" : "";
+										echo $content_top;									
 										echo $title ? "<h1 id='page_title' class='title'>$title</h1>" : "";
+										echo $tabs ? "<div class='tabs'>$tabs</div>" : "";
 										echo $content;
 										echo $help;
 										echo $content_bottom;

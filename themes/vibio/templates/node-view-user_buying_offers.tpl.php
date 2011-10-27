@@ -10,7 +10,6 @@
  *
  * $node is the offer (for this row of the view) for the buying page
  */
-require_once 'sites/all/modules/vshare/vshare_small.php';
 ?>
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix">
 
@@ -19,7 +18,7 @@ require_once 'sites/all/modules/vshare/vshare_small.php';
 $item = node_load( $node->field_item_sought[0][nid] );
 $item_title = $item->title;
 // messy: get field_main_image, but that's probably empty, get product.
-//this is old and not used: $item_pic_url = $item->picture;
+$item_pic_url = $item->picture;
 
 //buyer specific
 //skip: $owner_uid = $item->uid;
@@ -59,7 +58,7 @@ if ( $collection['title'] ) {
 		$collection['title'] . "</a></div>";
 }
 
-//die( "About to get image for " . $item->nid ); About to get image for 25858
+
 $item_pic = vibio_item_get_image($item->nid, 'product_fixed_width_teaser');
 // at the moment, product_fixed_width is 180px, product_fixed_width_teaser 120px
 
@@ -67,20 +66,17 @@ $item_pic = vibio_item_get_image($item->nid, 'product_fixed_width_teaser');
 $price = $item->offer2buy['settings']['price'];
 
  ?>
-<!-- sites/default/themes/vibio/templates/node-view-user_buying_offers.tpl.php -->
-<div class="selling_item_info">
-  <div class="teaser_item_pic">
-    <?php print $item_pic; ?>
-  </div>
-  <?php print $collection['title']; ?>
-  <?php print $node->field_item_sought[0][view];?>
-  <br>
-  List Price: $<?php print $price; ?><br>
-  <? print vshare_small($item); ?>
+<div class="selling_item_info"
+ >
+<div class="teaser_item_pic"><?php print $item_pic; ?></div>
+<?php print $collection['title']; ?>
+<?php print $node->field_item_sought[0][view];?>
+<br>List Price: $<?php print $price; ?>
 </div>
 
 
-  <?php /* vibiosity will go here -- put this code into sellers version when chance */
+  <?php  /* vibiosity will go here
+/* put this code into sellers version when chance */
 $alt = $owner->name . 'Picture';
 $title = ''; // orname, if it’snot printed right below anyway
 $attributes = '';

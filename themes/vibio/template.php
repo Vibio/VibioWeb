@@ -321,8 +321,7 @@ function vibio_user_login_block($form) {
    $form['submit']['#value'] = 'Sign up';
 }
 
-/*this is for theming selects*/
-
+/*this is for theming selects
 function vibio_select($element) {
   $select = '';
   if (in_array($element['#post']['form_id'], 'node-form')) {
@@ -333,7 +332,7 @@ function vibio_select($element) {
   $multiple = $element['#multiple'];
   return theme('form_element', $element, '<select name="'. $element['#name'] .''. ($multiple ? '[]' : '') .'"'. ($multiple ? ' multiple="multiple" ' : '') . drupal_attributes($element['#attributes']) .' id="'. $element['#id'] .'" '. $size .'>'. form_select_options($element) .'</select>');
 }
-
+*/
 
 /*fieldset theming*/
 function vibio_fieldset($ele)

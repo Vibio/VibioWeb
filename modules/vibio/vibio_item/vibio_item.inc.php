@@ -332,7 +332,7 @@ function vibio_item_get_image($nid, $imagecachecode, $alt = null, $title = null,
 		// then I undo that here sloppy fast works fine.
 	$pattern = "/sites/";
 	$p = preg_split ( $pattern, $url, 2 );
-	$path = $pattern . $p[1];
+	$path ="sites/"  . $p[1];
 
 	return theme('imagecache', $imagecachecode, $path, $alt, $title, $attrbutes);
 

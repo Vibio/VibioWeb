@@ -1,6 +1,6 @@
 /*featured item page*/
 
-.views-fluidgrid-wrapper{
+.view.view-flag-featured{
   width: 740px;
   position: relative;
   left: -10px;
@@ -9,24 +9,26 @@
 .views-fluidgrid-item .views-field-field-main-image-fid{
   width:160px;
   border:1px solid #DADADA;
-  margin:0;
+  margin:5px;
   padding:0;
 }
 
 .views-fluidgrid-item{
-  margin:0 8px 20px 0;
+  margin:0 5px 20px 0;
   border:1px solid #DADADA;
   background: #fff;
 }
 
 .views-fluidgrid-item .views-field-title{
   width:160px;
-  margin:8px 0 16px 0;
+  margin:8px 5px 16px 5px;
 }
 
+/*
 .views-fluidgrid-item .views-fluidgrid-item-inner{
   margin:6px;
 }
+*/
 
 .views-fluidgrid-item .field-content{
   margin:0;
@@ -46,14 +48,15 @@
 }
 
 div.search-links {
-margin-top: -30px;
-margin-left: 15px;
-position: relative;
-width: 185px;
+  margin-top: -40px;
+  margin-left: 32px;
+  position: relative;
+  width: 185px;
 }
 
 .search-col .views-fluidgrid-item .views-field-title{
-  margin: 35px 0 0 0;
+  margin: 45px 0 0 8px;
+  width: 160px;
 }
 
 .search-col 1{   
@@ -84,19 +87,20 @@ div.jquery_dropdown_header  {
   text-indent:2px;
   color: #666;
   position: relative;
-  z-index: 999;
+  z-index:1!important;
+  font-weight: normal;
 }
 
 ul.jquery_dropdown_list {
-  border: 0;
+  border: 1px solid #CCC;
   background: #fff;
   left:0;
   margin:0;
   padding:0;
   position:absolute;
   top:24px;
-  width:230px;
-  z-index: 1000 !important;
+  width:205px;
+  z-index:2!important;
 }
 
 ul.jquery_dropdown_list li {
@@ -105,6 +109,7 @@ ul.jquery_dropdown_list li {
   list-style:none outside none;
   margin:0;
   padding: 0;
+  font-weight: normal;
 }
 
 ul.jquery_dropdown_list li a, 
@@ -160,22 +165,26 @@ ul.jquery_dropdown_list li a:hover {
   padding-bottom:20px; 
 }
 
-.node.node-type-page{
+/*.node.node-type-page{
   padding:10px;
+}*/
+
+#node-form #field_images_values .delta-order .form-item{
+  display:none;
 }
 
 .node-form-has-region-right .form-region-footer{
   margin-top:20px;
 }
 
- #content-area fieldset.rounded_content {
+#content-area fieldset.rounded_content {
   background: none!important;
   border:1px solid #ccc!important;
 }
 
- #edit-submit.form-submit {
-  /*right: 110px!important;*/
- }
+#edit-submit.form-submit {
+/*right: 110px!important;*/
+}
  
 /*#edit-preview.form-submit,
 #edit-submit.form-submit {
@@ -192,3 +201,22 @@ font-weight: 700;
 .form-region-footer{
   text-align: right;
 } 
+
+#infscr-loading{
+  z-index: 11111;
+  position:absolute;
+  bottom: 20px;  
+  left:280px;
+}
+
+#info{
+  position:absolute;
+  right:10px;
+  float:right;
+}
+
+.filefield-upload input.form-file{
+  border:none;
+  width:200px;
+  font-size:11px;  
+}

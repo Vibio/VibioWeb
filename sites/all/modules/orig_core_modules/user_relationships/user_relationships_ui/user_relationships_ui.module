@@ -827,6 +827,17 @@ function template_preprocess_user_relationships(&$variables) {
     $variables['relationships'][$relationship->rid] = $relationship;
   }
 
+	// Sort somehow ... by stephen
+	/*dsm($variables['relationships']);
+   	array by rid = stdClass->requestee->name  
+		
+		Too late to sort, because pagination already happened
+		_user_relationships_generate_query
+
+
+	*/  
+
+
   if ($account->uid == $user->uid) {
     $msg = isset($relationship_type) 
            ? t("My %relationships", array('%relationships' => $relationship_type->plural_name ? ur_tt("user_relationships:rtid:$relationship_type->rtid:plural_name", $relationship_type->plural_name) : ur_tt("user_relationships:rtid:$relationship_type->rtid:name", $relationship_type->name))) 

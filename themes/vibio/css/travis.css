@@ -3,7 +3,6 @@
 .view.view-flag-featured{
   width: 740px;
   position: relative;
-  left: -10px;
 }
   
 .views-fluidgrid-item .views-field-field-main-image-fid{
@@ -165,9 +164,11 @@ ul.jquery_dropdown_list li a:hover {
   padding-bottom:20px; 
 }
 
-/*.node.node-type-page{
+/*
+.node.node-type-page{
   padding:10px;
-}*/
+}
+*/
 
 #node-form #field_images_values .delta-order .form-item{
   display:none;
@@ -219,4 +220,27 @@ font-weight: 700;
   border:none;
   width:200px;
   font-size:11px;  
+}
+
+.view.view-flag-featured .view-header{
+  display: block;
+} 
+
+.modalframe-page-wrapper,
+iframe#modalframe-element body{
+  background: #fff!important;
+} 
+
+.view.view-flag-featured .view-footer{
+width: 720px;
+position: fixed;
+bottom: -17px;
+}
+
+.view.view-flag-featured .view-footer a{
+float:right;
+}
+
+#block-block-5{
+
 }

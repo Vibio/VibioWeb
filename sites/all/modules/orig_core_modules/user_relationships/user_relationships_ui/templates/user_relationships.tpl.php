@@ -1,4 +1,5 @@
 <?php
+/* Print your friends=contacts on the Contacts page */
 if ($relationships) 
 {
 	$table = "<table class='user-relationships-listing-table'>";

@@ -368,6 +368,8 @@ function template_preprocess_user_relationships_block(&$variables) {
   $query_opts = array('include_user_info' => TRUE);
 
   // select the appropriate set of relationships based on admin's configuration settings
+	// stephen: can we get rid of this?  Make the view work from the views admin
+	//  page?
   switch ($settings->sort) {
     case 'newest': $query_opts['order'] = 'updated_at DESC'; break;
     case 'oldest': $query_opts['order'] = 'updated_at ASC'; break;

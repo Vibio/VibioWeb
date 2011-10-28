@@ -2,8 +2,6 @@
 $updated = t("Updated !date", array("!date" => "<span class='timestamp_uncalculated'>{$item->node_changed}</span>"));
 $price_image = theme("vibio_item_price_image", $item, "mini");
 
-require_once getcwd() . '/sites/all/modules/vshare/vshare_small.php';
-$share_links = vshare_small($item);
 
 
 echo "<!-- sites/default/themes/vibio/templates/collections/collection-item-preview.tpl.php -->
@@ -19,7 +17,6 @@ echo "<!-- sites/default/themes/vibio/templates/collections/collection-item-prev
 		</a>
 		<span class='item_updated'>$updated</span>
 		<span class='item_price'>{$item->offer2buy_price}</span>
-		{$share_links}
 	</div>
 ";
 ?>

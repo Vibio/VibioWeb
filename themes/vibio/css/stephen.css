@@ -17,23 +17,13 @@ a.local_action_button {
 /* negotiations */
 
 .item-picture-offer {
-	/* a few pix more than the imagecache setting */
-	height: 142px;
-	width: 142px;
-	margin: auto; /* remove width and margin auto, maybe? design? */
-	text-align: center;
+
 }
 .neg-form {
-	border: 1px solid red;
-	padding: 2px;
-	background: #ddd;
+
 }
 #neg-discuss { /* discussion, or note there isn't one. */
-	float: right;
-	width: 48%;
-	display: block;
-	padding: 2px;
-	border: 1px solid yellow;
+	
 }
 /* feature-this flag */
 div.search-flag {
@@ -49,40 +39,75 @@ div.search-flag {
 .popups-box .title {
 	display: none;
 }
-/* selling page (and then similar components elsewhere) */
-div.teaser_item_pic {
+
+/*Selling Page*/
+.selling{
+	
+}
+.selling-top-image{
+	float: left;
+	margin: 15px 12px 15px 0;
+	width:126px;
+}
+.selling-top-image img{
+	border:1px solid #CCCCCC;
+	max-width: 125px;
+}
+.selling-top-text{
+	float: left;
+	width:454px;
+}
+.selling_item_info div.teaser_item_pic {
+    float: left;
+    margin-right: 15px;
+    background: #FFFFFF;
+}
+.teaser_item_sought{
+	color: #79AFBF;
+	font-size: 18px;
+}
+
+.selling_item_info div.teaser_item_pic img {
+   max-width:150px;
+   border: 1px solid #CCCCCC  
+}
+.teaser_item_buyer{
+	margin: 10px 0 28px;
+}
+.teaser_item_asking{
+	margin:10px 0 10px 2px;
+}
+.teaser_item_their{
+	margin-left:2px;
+}
+.negotiation_block a{
+	display: block;
+	background: url(../images/review_offer.png) no-repeat;
+	height: 27px;
+	width:107px;
+	text-indent: -9999px;
+}
+.page-selling .node.node-type-page{
+	padding: 0
+}
+.negotiation_block{
+	width: 100px;
 	float: left;
 }
-.page-selling .node-type-offer {
-	margin-bottom: 1em;
-	border-bottom: 1px solid #333;
+.page-selling div.views-row, .page-buying div.views-row {
+	border-bottom: 1px solid #CCCCCC;
+	padding: 18px 0;
 }
-.views-row div.selling_item_info {  
-	width: 151px;
+.views-row div.selling_item_info{  
 	float: left;
+	width: 612px;
 }
 .views-row div.selling_item_info img {  
-	max-width: 150px;
-}
-div.selling_item_info { 
 	float: left;
-	height: 160px;
-	padding-right: 1em;
-	margin-right: 1em;
 }
 /* user pics in various places, rename thorughout? */
-.person_pic, body.page-selling div.picture {
-	float: left;
-	padding-right: 6px;
-}
-body.page-selling div.picture img {
-	height: 60px;
-	width: 60px;
-	max-height: 60px; /* undoing other css */
-}
-body.page-selling h4 {
-	margin-bottom: .1em;
-}
+
+
 /* meus */
 #block-menu-primary-links li ul li {
 	margin-left: 8px;
@@ -383,35 +408,6 @@ a#content-email {
 	opacity:0.4;
     filter:alpha(opacity=40); /* For IE8 and earlier */
 }
-/*Selling Page*/
-.selling{
-	
-}
-.selling-top-image{
-	float: left;
-	margin: 15px 12px 15px 0;
-	width:126px;
-}
-.selling-top-image img{
-	border:1px solid #CCCCCC;
-	max-width: 125px;
-}
-.selling-top-text{
-	float: left;
-	width:454px;
-}
-.selling_item_info div.teaser_item_pic {
-    float: left;
-    margin-right: 5px;
-    border: 1px solid #CCCCCC;
-    padding: 5px 5px 2px;
-    background: #FFFFFF;
-}
-
-.selling_item_info div.teaser_item_pic img {
-   max-width:150px;
-   border: 1px solid #CCCCCC  
-}
 
 /*Have and Want Buttons*/
 .inventory_add,.inventory_want{
@@ -548,4 +544,7 @@ div.views-field.views-field-nid{
 	width: 395px;
 	float: right;
 	margin:0 40px 0;
+}
+#modalframe-page-content{
+ background:#fff;
 }

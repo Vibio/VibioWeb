@@ -134,15 +134,22 @@ function _user_relationships_generate_query($param = array(), $options = array()
   $cond = $cond ? 'WHERE '. implode(' AND ', $cond) : '';
 
   $extra = array();
+
+	// stephen: where does this come from?  order not in this file!
   if (!empty($order)) {
     $extra[] = "ORDER BY {$order}";
   }
+	// stephen: I apologize for sticking this here.
+	$extra[] = "ORDER BY requestee_name";
+
+
+
   if (!empty($limit)) {
     $extra[] = "LIMIT {$limit}";
   }
-  $extra = is_array($extra) ? implode(' ', $extra) : $extra;
-
-  return array(
+	  $extra = is_array($extra) ? implode(' ', $extra) : $extra;
+  
+	return array(
     //331692 remove improper GROUP BY rid for Postgre
     'query'     => "SELECT {$selects} FROM {user_relationships} ur {$joins} {$cond} {$extra}",
     'count'     => "SELECT COUNT(DISTINCT rid) AS count FROM {user_relationships} ur {$count_joins} {$cond}",

@@ -28,10 +28,14 @@ $(document).ready(function()
 		closeAfter: 400,
 		menuSelector: ".search_type_submenu_container"
 	});
-
+	
 	$(".searchtype_image").live("click", function()
 	{
+		//Parsing the .searchtype_image id: should grab whether
+		//it's an item or people search.
 		var type_id = $(this).attr("id").split("searchtype_")[1];
+		//change the #search_type_current to have the proper
+		//image src/alt/title attributes for the newly selected search type
 		$("#search_type_current")
 			//.attr("src", $(this).attr("src"))
 			.attr("src", $(this).attr("src") + "_main")

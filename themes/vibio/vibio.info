@@ -28,11 +28,17 @@ conditional-stylesheets[if lte IE 6][all][] = css/ie6.css
   ; Optionally add some JavaScripts to your theme.
 scripts[] = js/dom-removal.js
 scripts[] = js/dom-manipulate.js
-
+scripts[] = js/product.js
 scripts[] = js/select.js
 scripts[] = js/scroll.js
 scripts[] = js/scroll-init.js
 scripts[] = js/masonry.js
+scripts[] = js/fixed-scroll.js
+scripts[] = js/jquery-scrolltofixed-min.js
+scripts[] = js/mb_menu.js
+scripts[] = js/mbMenu/inc/mbMenu.js
+scripts[] = js/mbMenu/inc/jquery.hoverIntent.js
+scripts[] = js/mbMenu/inc/jquery.metadata.js
 
   ; The regions defined in Zen's default page.tpl.php file.  The name in
   ; brackets is the name of the variable in the page.tpl.php file, (e.g.

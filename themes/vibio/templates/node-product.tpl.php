@@ -26,8 +26,6 @@ if ($image = _product_get_image($node->nid, true))
 /* stephen: security update 20110609 */
 $sanitary = htmlspecialchars ( $_GET['searchcrumb'],   ENT_QUOTES );
 $manage_link = theme("product_inventory_manage_link", $node, $sanitary);
-require_once 'sites/all/modules/vshare/vshare_big.php';
-$vshare = vshare_big($node);
 
 if (isset($node->amazon_data)) {
 	/* bug hunt: nodes with field_amazon_asin are returning false here.
@@ -189,7 +187,6 @@ echo "
 		</a>
 		$product_content
 		$manage_link
-		$vshare
 	</div>
 	<div class='clear'></div>
 	$extra_data

@@ -24,10 +24,6 @@
 		<script type="text/javascript" src="/themes/vibio/js/utility.js"></script>
 		<script type="text/javascript" src="/themes/vibio/prettyphoto/js/jquery.prettyPhoto.js"></script>
 		<script type='text/javascript' src='/themes/vibio/js/jquery.livequery.min.js'></script>
-		<script type="text/javascript" src="/themes/vibio/js/mbMenu/inc/jquery.hoverIntent.js"></script>
-		<script type="text/javascript" src="/themes/vibio/js/mbMenu/inc/jquery.metadata.js"></script>
-		<script type="text/javascript" src="/themes/vibio/js/mbMenu/inc/mbMenu.js"></script>
-		<script type="text/javascript" src="/themes/vibio/js/mb_menu.js"></script>
 	</head>
 	<body class="<?php print $classes;?>">
 	  <div id="fb-root"></div>
@@ -64,7 +60,7 @@
 								<div id="content-area">
 									<div class="rounded_content">
 										<div id="js_messages_container"></div>
-										<div id="info"><img src="/themes/vibio/images/info.png"/></div>
+										
 										<?php
 										echo $content_top;									
 										echo $title ? "<h1 id='page_title' class='title'>$title</h1>" : "";

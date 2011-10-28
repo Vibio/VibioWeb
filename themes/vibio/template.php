@@ -54,33 +54,13 @@ function vibio_filter_tips_more_info() {
  *  2) two ways to "zebra stripe" the columns
  */
 function vibio_preprocess_search_results(&$variables) {
-	/* stephen, fixing stuff: wonder if $variables['search_results']
-   * gets overwritten when you have a non-Amazon product-line?
-   */
-
-
   $variables['search_results'] = '';
-	$zebra = 0;
+	$zebra = 1;
   foreach ($variables['results'] as $result) {
-		$z = $result['zebra'] = $zebra%4; // change to number of columns you want
+		$z = $result['zebra'] = $zebra%3;
 		$zebra++;
-    $variables["search_results_$z"] .=  /* "col$z" .*/ theme('search_result', $result, $variables['type']);
+    $variables["search_results_$z"] .= theme('search_result', $result, $variables['type']);
   }
-	// other_results
-  // Stephen: make other_results more like regular results
-  // !!! I think later might go back deeper, and make other_results
-  //  just be more normal. Rabbit hole for another day.
-  foreach ($variables['unthemed_other_results'] as $result) {
-    $z = $result['zebra'] = $zebra%4;    
-		$zebra++;
-    $variables["search_results_$z"] .= "col$z" . theme('search_result', $result, $variables['type']);
-  }
-  
-
-
-
-
-
 	// I think this is overridden somewhere for product search, which is called
   //  item search.
   $variables['pager'] = theme('pager', NULL, 40, 0);
@@ -216,7 +196,7 @@ function phptemplate_user_relationships_pending_request_approve_link($uid, $rid)
 		"relationships/{$uid}/{$rid}/approve",
 		array(
 			"attributes"=> array(
-				"class"	=> "uri_popup_link accept",
+				"class"	=> "uri_popup_link",
 			),
 			"html"		=> true,
 		)
@@ -230,7 +210,7 @@ function phptemplate_user_relationships_pending_request_disapprove_link($uid, $r
 		"relationships/{$uid}/{$rid}/disapprove",
 		array(
 			"attributes"=> array(
-				"class"	=> "uri_popup_link ignore",
+				"class"	=> "uri_popup_link",
 			),
 			"html"		=> true,
 		)
@@ -244,7 +224,7 @@ function phptemplate_user_relationships_remove_link($uid, $rid)
 		"relationships/{$uid}/{$rid}/remove",
 		array(
 			"attributes"=> array(
-				"class"	=> "uri_popup_link remove",
+				"class"	=> "uri_popup_link",
 			),
 			"html"		=> true,
 		)
@@ -258,7 +238,7 @@ function phptemplate_user_relationships_pending_request_cancel_link($uid, $rid)
 		"relationships/{$uid}/{$rid}/cancel",
 		array(
 			"attributes"	=> array(
-				"class"	=> "uri_popup_link cancel",
+				"class"	=> "uri_popup_link",
 			),
 		)
 	);
@@ -271,7 +251,7 @@ function phptemplate_user_relationships_request_relationship_direct_link($relate
 		"relationships/{$relate_to->uid}/{$relationship_type->rtid}/request",
 		array(
 			"attributes"=> array(
-				"class"	=> "uri_popup_link add_friend",
+				"class"	=> "uri_popup_link",
 			),
 			"html"		=> true,
 		)
@@ -321,21 +301,9 @@ function vibio_user_login_block($form) {
    $form['submit']['#value'] = 'Sign up';
 }
 
-/*this is for theming selects
-function vibio_select($element) {
-  $select = '';
-  if (in_array($element['#post']['form_id'], 'node-form')) {
-  $element['#attributes'] = array('class' => 'jquery_dropdown jquery_dropdown_jump');
-  }
-  $size = $element['#size'] ? ' size="'. $element['#size'] .'"' : '';
-  _form_set_class($element, array('form-select'));
-  $multiple = $element['#multiple'];
-  return theme('form_element', $element, '<select name="'. $element['#name'] .''. ($multiple ? '[]' : '') .'"'. ($multiple ? ' multiple="multiple" ' : '') . drupal_attributes($element['#attributes']) .' id="'. $element['#id'] .'" '. $size .'>'. form_select_options($element) .'</select>');
-}
-*/
 
-/*fieldset theming*/
-function vibio_fieldset($ele)
+
+/*function vibio_fieldset($ele)
 {
 	if (!empty($ele['#collapsible']))
 	{
@@ -368,7 +336,7 @@ function vibio_fieldset($ele)
 	";
 
 }
-/*
+
 function vibio_form_element($ele, $val)
 {
 	$out = "<tr class='form-item'";

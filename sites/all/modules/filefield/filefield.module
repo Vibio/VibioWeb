@@ -584,6 +584,9 @@ function filefield_js($type_name, $field_name, $delta) {
 
   if (!$form) {
     // Invalid form_build_id.
+		//   This error fired once on 10/28/11. Then it didn't fire on repeat.
+		//   Could it happen if there is a bad internet connection?
+		//   Erase this note with next upgrade..
     drupal_set_message(t('An unrecoverable error occurred. This form was missing from the server cache. Try reloading the page and submitting again.'), 'error');
     print drupal_to_js(array('data' => theme('status_messages')));
     exit;

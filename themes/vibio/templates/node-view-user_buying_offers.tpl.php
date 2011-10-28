@@ -66,44 +66,15 @@ $item_pic = vibio_item_get_image($item->nid, 'product_fixed_width_teaser');
 $price = $item->offer2buy['settings']['price'];
 
  ?>
-<div class="selling_item_info"
- >
+<div class="selling_item_info">
 <div class="teaser_item_pic"><?php print $item_pic; ?></div>
-<?php print $collection['title']; ?>
-<?php print $node->field_item_sought[0][view];?>
-<br>List Price: $<?php print $price; ?>
-</div>
-
-
-  <?php  /* vibiosity will go here
-/* put this code into sellers version when chance */
-$alt = $owner->name . 'Picture';
-$title = ''; // orname, if it’snot printed right below anyway
-$attributes = '';
-print theme('imagecache', 'little_profile_pic', $owner->picture, $alt,$title, $attributes);
-  ?>
-
-	<div class="negotiation_block" style="float: right; width: 200px;">
-		<a  class="automodal popups" href="/node/<?php print $node->nid; ?>">Update Offer</a>
-	</div>
-
-  <?php if ($unpublished): ?>
-    <div class="unpublished"><?php print t('Unpublished'); ?></div>
-  <?php endif; ?>
-
-  <div class="content">
-    <?php print "Seller: " . $owner->name;  /* v2: connection level */
+<div class="teaser_item_sought"><?php print $node->field_item_sought[0][view];?></div>
+<div class="teaser_item_collection"><?php print $collection['title']; ?></div>
+<div class="teaser_item_buyer"><span class="bold-text">Buyer: <?php print $name;  /* v2: connection level */
  			/* is this up to date in the offer, or do we need to do more to load the
 				 negs */
-		 ?>
-    <br><strong>Your Offer: <?php print $current_buyer->field_price[0][value]; ?> <?php
-	//label of "Latest Offer" not correct text... print content_view_field(content_fields("field_price"), $current_buyer, FALSE, FALSE);
-	print  _vibio_offer_simplify_accept($current_seller, $current_buyer);
-	print  _vibio_offer_simplify_pay($current_seller, $current_buyer);
-	print  _vibio_offer_simplify_ship($current_seller, $current_buyer);
-
-?></strong>
-	<div class="comment">Last Comment:	<?php /* we want one line from the most recent conversation,
+		 ?></span></div> 
+<div class="teaser_item_comments"><span class="bold-text">New Comment:	<?php /* we want one line from the most recent conversation,
 			yours or theirs.  Similar to node-offer.tpl.php */
   $viewName = 'offer_conversation';
   $display_id = 'default';
@@ -123,7 +94,29 @@ print theme('imagecache', 'little_profile_pic', $owner->picture, $alt,$title, $a
 		print $text;
 	}
 		?>
-	</div><!-- comment -->
-  </div>
+	</div>
+</div>		 
+
+
+	<div class="negotiation_block">
+		<a href="/node/<?php print $node->nid; ?>">Review Offer</a>
+	<?php if ($unpublished): ?>
+    <div class="unpublished"><?php print t('Unpublished'); ?></div>
+  <?php endif; ?>
+<div class="teaser_item_asking"><span class="bold-text"> Asking Price: </span><?php print $price; ?></div>
+<div class="teaser_item_their"><span class="bold-text"> My Offer: </span><?php
+if ( $current_buyer->field_price[0][value] ) {
+	print $current_buyer->field_price[0][value] ;
+} else {
+	print "--";
+}
+
+
+        //label of "Latest Offer" not correct text... print content_view_field(content_fields("field_price"), $current_buyer, FALSE, FALSE);
+        print  _vibio_offer_simplify_accept($current_seller, $current_buyer);
+        print  _vibio_offer_simplify_pay($current_seller, $current_buyer);
+        print  _vibio_offer_simplify_ship($current_seller, $current_buyer);
+
+?></div></div>
 	<?php print $links; //should just be archive flag link ?>
 </div> <!-- /.node -->

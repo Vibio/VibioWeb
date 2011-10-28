@@ -107,7 +107,7 @@ if($product->privacy_setting&&module_exists("privacy")) {
 $state['values']['privacy_setting']=$product->privacy_setting;
 }
 $state['values']=array_merge_recursive($state['values'],module_invoke_all("product_inventory_quick_add",$state['values']));
-drupal_execute($form_id,$state,$node);
+//drupal_execute($form_id,$state,$node);   AAA
 if($nid=$state['nid']) {
 drupal_goto("node/$nid");
 } else {
@@ -118,9 +118,12 @@ $output=theme("node",$product);
 $output.=drupal_get_form($form_id,$node);
 return $output;
 }
+
 /* Stephen wonders: what happens here?  It looks like a totally normal
  *  node add page, except it has a message set to act as a kind of help.
  *  Should all this be ripped out?
+ *
+ *  How important is product_set_autoadd()
  */
 function product_add_new() {
 global $user;

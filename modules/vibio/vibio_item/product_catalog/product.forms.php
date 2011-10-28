@@ -36,6 +36,7 @@ function product_ajax_add_form($state, $product)
 	global $user;
 	
 	$form = array(
+		"#action" => url("product/ajax/inventory-add/save"),
 		"nid"	=> array(
 			"#type"	=> "hidden",
 			"#value"=> $product->nid,

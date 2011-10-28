@@ -5,16 +5,25 @@
  */
 global $user;
 $u=$profile['user'];
+/* Remove Edit account and Edit Picture options for v1.1
+ *  They were poorly placed, but I think might be reintroduced
+ *  with clearer design soon...?? 
+ 
 if($user->uid==$u->uid||user_access("administer users")) {
-$text=t("Edit");
+$text=t("Edit Picture");
 $account_edit_link=theme("profile_ext_edit_link","user/{$u->uid}/edit");
-/* profile_ext.module creates this meny callback */
+// profile_ext.module creates this meny callback 
 $picture_edit_link="
 		<div id='profile_change_picture' class='profile_edit_link'>
 			<a href='/profile/{$u->uid}/change-picture'>$text</a>
 		</div>
 	";
 }
+*/
+
+
+
+
 // "Send --- a message"
 if($user->uid&&$user->uid!=$u->uid&&module_exists("privatemsg")) {
 $message_link= "<p>Send Message</p><p id='message-link'>".l(t("Send !user a message",array("!user"=>$u->name)),"messages/new/{$u->uid}")."</p>";
@@ -122,6 +131,8 @@ print "<li><a href='/info/activity' id='info-button' class='automodal'><span cla
 ?><div class="tabs"><?php print $tabs;?></div><?php endif;?>
 
 <div class="clear"></div>
+
+<?php print flag_create_link('feature_users', $uid);  ?>
 <?php
 /* this is from function profile_ext_preprocess_user_profile(&$vars) */
 print $sec_content;

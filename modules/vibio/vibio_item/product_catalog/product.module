@@ -46,6 +46,14 @@ function product_menu()
 			"file"				=> "product.pages.php",
 			"type"				=> MENU_CALLBACK,
 		),
+	
+		/* stephen thinks this should be removed.  It merely sets a message
+     * that looks kindof silly as a "message" instead of just part of the 
+     * page.  
+			 And sets to true, what is this: $_SESSION['product']['auto_add'] = $val;
+			 I see functions to set and clear that, but does it do anythign?	
+ 			 A little afraid to touch things...
+     */
 		"product/add"			=> array(
 			"title"				=> "Add New Product",
 			"page callback"		=> "product_add_new",
@@ -86,7 +94,6 @@ function product_external_search($args)
 	}
 	
 	module_load_include("inc", "product");
-	drupal_add_js("themes/vibio/js/product.js");
 	product_set_external_search(true, true);
 	
 	$func = "{$provider}_product_search";
@@ -105,6 +112,8 @@ function product_external_search_modify_search_query(&$sql)
 	$func = "{$provider}_product_search_modify_search_query";
 	$func($sql);
 }
+
+
 
 function product_nodeapi(&$node, $op, $a3=null, $a4=null)
 {
@@ -134,7 +143,7 @@ function product_nodeapi(&$node, $op, $a3=null, $a4=null)
 				break;
 		}
 	}
-	
+
 	if ($node->type == "product")
 	{
 		switch ($op)
@@ -143,7 +152,27 @@ function product_nodeapi(&$node, $op, $a3=null, $a4=null)
 				if (product_get_autoadd())
 				{
 					module_load_include("php", "product", "product.pages");
-					drupal_get_messages();
+					drupal_get_messages(); // ooh, sneaky. Get the messages, 
+						// but don't print them, so they go away quietly. 
+						//  $clear_queue defaults to TRUE.  Would be nice if there
+						//  was a testing mode for admins. TODO
+
+					// We add the product-node we are about to insert [but haven't yet]
+					//	as an item-node.  We drupal_execute($form_id... 
+					//  We may do may a drupal_goto.
+					//  This doesn't fubarify the product-add we're right in the middle
+					//  of?  drupal_execute($form_id can't be called in the middle
+					//  of nodeapi::insert ??? ... because filefield might also be
+					//  using nodeapi insert to find and save the image, maybe?
+
+					// Two solutions:
+					//  1) Use a later hook for this
+					//    X hook_insert() gets called before hook_nodeapi(),
+					//      which is near the end... 
+					//	Overwrite:  
+					//		- node_form_submit($form, &$form_state)
+					//  2) In product_add_to_inventory, don't use forms to create item
+					
 					product_add_to_inventory($node, true);
 				}
 				break;
@@ -210,13 +239,11 @@ function product_theme()
 function product_preprocess_product_amazon_display(&$vars)
 {
 	drupal_add_css("themes/vibio/css/product.css");
-	drupal_add_js("themes/vibio/js/product.js");
 }
 
 function product_preprocess_product_display(&$vars)
 {
 	drupal_add_css("themes/vibio/css/product.css");
-	drupal_add_js("themes/vibio/js/product.js");
 }
 
 function product_preprocess_node(&$vars)
@@ -249,6 +276,7 @@ function product_form_alter(&$form, &$state, $id)
 	{
 		_vibio_item_unset($form, "product");
 		_vibio_item_defaults($form, "product");
+		//print_r($form['#submit']);
 	}
 }
 
@@ -353,7 +381,6 @@ function product_preprocess_search_results(&$vars)
 		
 		module_load_include("inc", "product");
 		drupal_add_css("themes/vibio/css/product.css");
-		drupal_add_js("themes/vibio/js/product.js");
 		
 		$is_external = product_set_external_search();
 //PRODUCT_SEARCH_RESULTS_PER_PAGE does this do anything?  Is the idea that if you have a full page of results in $vars['results'] 

@@ -1,84 +1,98 @@
-
 /* discussion box */
 #neg-discuss {
-	height: 500px; /* make it scroll */
-	overflow: auto;
+	float: left;
 }
 #neg-discuss .content {
-	clear: left; /* around the picture */
 }
 #neg-discuss .minheader {
 	font-size: 1.2em;
 }
 #neg-discuss .picture {
-	float: left;  /* maybe right? */
-	padding-right: 5px;
 }
 #neg-discuss div.label {
-	display: inline;
-	font-weight: bold;
-	clear: left;
-	padding-right: 5px;
 }
 .done {
 	color: green;
 	font-weight: bold;
 }
-
 /* product area */
 #offer_item_offer {
-	font-size: 1.3em;
+	font-size: 13px;
+	font-weight: bold;
 }
-
+#offer_item_offer .item_title {
+	font-size: 18px;
+	margin-bottom: 18px;
+}
 /* Make "My Offer" look like the title */
 #edit-field-price-0-value-wrapper label {
-	font-size: 1.4em;
-	font-weight: bold;
-	padding-bottom: 2px;
-	float: left;  /* or inline? */
 }
-
-.node-type-offer #page_title { display: none; }
-
 div#product_info_in_offer {
-        width: 160px; /* not sure */
-        float: left;
-        min-height: 100px;
-        padding: 8px;
+	width: 250px;
+	float: left;
+	padding: 25px;
+	background: #FFFFFF;
+	border: 1px solid #CCCCCC;
+	margin: 0 20px 10px 0;
 }
-div#seller_info_in_offer {
-        padding: 5px;
-        height: 95px;
+div#product_info_in_offer img, div#seller_info_in_offer img {
+	border: 1px solid #CCCCCC;
+}
+div#seller_info_in_offer .person_pic, #buyer-for-seller .person_pic {
+	border: 1px solid #CCCCCC;
+	padding: 5px 5px 2px;
+	background: #FFFFFF;
+	width: 44px;
+	float: left;
 }
 div#seller_info_in_offer .person_pic {
-	height: 85px;
+	margin-top: 18px;
+}
+div#buyer-for-seller .person_pic{
+	margin: 0 10px 68px 0;
+}
+div.form-radios div.form-item{
+	float: left;
+	width:85px;
+	font-size: 13px;
+}
+div#seller_info_in_offer .person_pic_seller {
+	font-weight: bold;
+	margin: 18px 0 0 10px;
+	float: left;
+	width: 200px;
+}
+#seller-neg-form div.form-item label{
+	clear: both
+}
+#seller-neg-form div#edit-field-chat-0-value-wrapper{
+	clear: both
+}
+#buyer-for-seller .person_pic_seller{
+	font-weight: bold
+}
+.person_pic_offer{
+	font-weight: bold;
 }
 /* buyer pic in buyer area during offer */
 #offer_neg_buyer .person_pic {
-	float: right;
 }
 div#buyer_info_in_offer {
-        padding: 5px;
-        height: 95px;
 }
-
 /* Stephens, some still in stephen.css */
 #form-column {
-  float: left;
-  clear: left; /* get around user image in v1.1 */
-  width: 48%;
+	clear: left;
+	float: left;
+	width: 300px;
+	background: #e5e7ea;
+	border-radius: 4px;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-moz-border-radius: 4px;
+	padding: 10px;
+}
+#buyer-for-seller {
+}
+#chit-chat .node {
 }
 
-#buyer-for-seller { /* based on neg-form for the moment */
-  background: #ddd;
-  margin-bottom: 1em;
-  border: 1px solid red;
-  padding: 2px;
-	min-height: 42px; /* photo of user, at least */
-}
-
-#chit-chat .node { 
-	margin-bottom: 6px; 
-	border-bottom: 1px solid #ccc;
-}
-	

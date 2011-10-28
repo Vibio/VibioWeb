@@ -1,4 +1,6 @@
 <?php
+/* Still used in v1.1 but should be cleaned up */
+
 $friends_title = t("Connections");
 $friend_finder_title = t("Connection Finder");
 $invite_title = t("Invite Friends");

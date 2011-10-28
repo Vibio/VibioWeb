@@ -105,7 +105,8 @@ span.ui-icon{
 #product-ajax-add-form div{
 	margin: 5px 0
 }
-#product-ajax-add-form div#edit-posting-type-wrapper, #product-ajax-add-form div.inventory_add_price{
+#product-ajax-add-form div#edit-posting-type-wrapper, 
+#product-ajax-add-form div.inventory_add_price{
 	float: left;
 	margin: 0
 }
@@ -173,8 +174,11 @@ iframe .modalframe-page-wrapper{
 	background: #FFFFFF;
 }
 .modalframe .ui-dialog-titlebar{
-	background: #FFFFFF;
+}
+#modalframe-container.modalframe-loaded{
+  background: #FFFFFF;
 }
 iframe#modalframe-container html.js body{
 	background-image: none;
 }
+

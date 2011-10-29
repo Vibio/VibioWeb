@@ -234,13 +234,79 @@ iframe#modalframe-element body{
 .view.view-flag-featured .view-footer{
 width: 720px;
 position: fixed;
-bottom: -17px;
+bottom: 0px;
+height: 64px;
 }
 
+.view.view-flag-featured .view-footer a span{
+  font-size: 1px;
+}
 .view.view-flag-featured .view-footer a{
-float:right;
+  float:right;
+  background-image: url(../images/back-to-top.png);
+  background-repeat:  no-repeat;
+  width:84px;
+  height:64px;
+  display: block;
 }
 
-#block-block-5{
+.view.view-flag-featured .view-footer a:hover{
+  background-position-y: -69px;
+}
 
+.view.view-flag-featured .view-footer a:active{
+    background-position-y: -139px;
+}
+
+#block-block-5 {
+	background: url(../images/sidebar_connect.png) no-repeat -1px 0;
+	padding: 0;
+	color: #106F93;
+	font-weight: bold;
+	height: 255px;
+	width: 208px;
+	position: relative;
+	left:-10px;
+}
+#block-block-5 #connection-top {
+	
+}
+
+#block-block-5 .content{
+  position: relative;
+  top:65px;
+  left:20px;
+}
+
+#block-block-5 #content-social a {
+	background: url(../images/sidebar_social.png) no-repeat;
+	display: block;
+	height: 21px;
+	text-indent: -9999px;
+	float: left;
+	margin: 4px 3px 0 0;
+}http://dev.vibio.com/#top
+
+#block-block-5 #connect-nav a:hover {
+	color: #00AEF0
+}
+
+#block-block-5 a#content-twitter {
+	background-position: 0px 0px;
+	width: 22px;
+}
+
+#block-block-5 a#content-fb {
+	background-position: -26px 0px;
+	width: 22px;
+}
+
+#block-block-5 a#content-tumbler {
+	background-position: -54px -1px;
+	width: 22px;
+}
+
+#block-block-5 a#content-email {
+	background-position: -82px -1px;
+	width: 22px;
 }

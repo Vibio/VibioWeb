@@ -173,7 +173,11 @@ function product_nodeapi(&$node, $op, $a3=null, $a4=null)
 					//		- node_form_submit($form, &$form_state)
 					//  2) In product_add_to_inventory, don't use forms to create item
 					
-					product_add_to_inventory($node, true);
+					//old: product_add_to_inventory($node, true);
+					// new, memorize node and call later
+					global $new_product_node;
+					$new_product_node = $node;
+					print "now set " .$new_product_node->nid;
 				}
 				break;
 			case "update index":
@@ -276,9 +280,23 @@ function product_form_alter(&$form, &$state, $id)
 	{
 		_vibio_item_unset($form, "product");
 		_vibio_item_defaults($form, "product");
+		$form['#submit'][] = '_add_item_to_my_new_product_form_submit';
 		//print_r($form['#submit']);
 	}
 }
+
+function _add_item_to_my_new_product_form_submit($form, &$state) {
+  // Doing this in nodeapi blew things up. AAA
+  //Neither of these knows the nid: ($form, $state);
+	global $new_product_node;
+	print "add my item to $new_product_node";
+//die($new_product_node)
+//print "<pre>";
+//print_r (debug_backtrace());
+//die();
+  product_add_to_inventory($new_product_node, true);
+}
+
 
 function product_reports_daily_cron($last_run)
 {

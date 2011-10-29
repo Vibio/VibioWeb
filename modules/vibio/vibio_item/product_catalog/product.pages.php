@@ -84,40 +84,45 @@ exit(t('"!title" has been added to your !collection collection. !view_link',$t_a
 }
 exit(t("There was an error adding the item to your inventory. Please try again later. !close_link",$t_args));
 }
+
 function product_add_to_inventory($product,$quick_add=false) {
-global $user;
-if($item_id=product_user_owns_product($product->nid,$user->uid)) {
-drupal_set_message(t("You already own this item!"));
-drupal_goto("node/{$item_id}");
+	global $user;
+	if($item_id=product_user_owns_product($product->nid,$user->uid)) {
+		drupal_set_message(t("You already own this item!"));
+		drupal_goto("node/{$item_id}");
+	}
+	module_load_include("inc","node","node.pages");
+	$form_id="vibio_item_node_form";
+	$node=new stdClass;
+	$node->uid=$user->uid;
+	$node->name=$user->name;
+	$node->type="vibio_item";
+	$node->product_nid=$product->nid;
+	node_object_prepare($node);
+	if($quick_add) {
+		$state['values']=array("title"=>$product->title,"name"=>$user->name,"op"=>t("Save"),"field_posting_type"=> array( array("value"=>VIBIO_ITEM_TYPE_OWN,),),);
+		if($product->collection_info&&module_exists("collection")) {
+			$state['values']['collection_info']['cid']=$product->collection_info['cid'];
+		}
+		if($product->privacy_setting&&module_exists("privacy")) {
+			$state['values']['privacy_setting']=$product->privacy_setting;
+		}
+		$state['values']=array_merge_recursive($state['values'],module_invoke_all("product_inventory_quick_add",$state['values']));
+		drupal_execute($form_id,$state,$node);   
+			// in v1.0, this outraced and ruined
+			// file uploading
+
+		if($nid=$state['nid']) {
+		drupal_goto("node/$nid");
+		} else {
+		drupal_set_message(t("There was an error with quick add. Please fill out the form to add !product to your inventory",array("!product"=>$product->title)),"error");
+		}
+	}
+	$output=theme("node",$product);
+	$output.=drupal_get_form($form_id,$node);
+	return $output;
 }
-module_load_include("inc","node","node.pages");
-$form_id="vibio_item_node_form";
-$node=new stdClass;
-$node->uid=$user->uid;
-$node->name=$user->name;
-$node->type="vibio_item";
-$node->product_nid=$product->nid;
-node_object_prepare($node);
-if($quick_add) {
-$state['values']=array("title"=>$product->title,"name"=>$user->name,"op"=>t("Save"),"field_posting_type"=> array( array("value"=>VIBIO_ITEM_TYPE_OWN,),),);
-if($product->collection_info&&module_exists("collection")) {
-$state['values']['collection_info']['cid']=$product->collection_info['cid'];
-}
-if($product->privacy_setting&&module_exists("privacy")) {
-$state['values']['privacy_setting']=$product->privacy_setting;
-}
-$state['values']=array_merge_recursive($state['values'],module_invoke_all("product_inventory_quick_add",$state['values']));
-//drupal_execute($form_id,$state,$node);   AAA
-if($nid=$state['nid']) {
-drupal_goto("node/$nid");
-} else {
-drupal_set_message(t("There was an error with quick add. Please fill out the form to add !product to your inventory",array("!product"=>$product->title)),"error");
-}
-}
-$output=theme("node",$product);
-$output.=drupal_get_form($form_id,$node);
-return $output;
-}
+
 
 /* Stephen wonders: what happens here?  It looks like a totally normal
  *  node add page, except it has a message set to act as a kind of help.

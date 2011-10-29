@@ -391,7 +391,7 @@ $owner_uid = $vars['item']['user']['uid'];
 		// dpm($item->offer2buy[settings][is_on_sale]); i
 		//0 = not for sale, 1 = for sale
 		if ($item->offer2buy[settings][is_on_sale] == 1) {
-			$vars['offer2buy'] = l($text, "offer/$nid/$uid"); // action_button_link'));
+			$vars['offer2buy'] = l($text, "offer/$nid/$uid", array(attributes=>array('class'=> 'automodal'))); // action_button_link'));
 			// Price.
 			// Note that "insert" is complex... test.  Is price always a number?
 			if ( $item->offer2buy[settings][price] > 0 ) {

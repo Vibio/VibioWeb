@@ -1,6 +1,12 @@
 /* discussion box */
 #neg-discuss {
 	float: left;
+	margin-left: 15px;
+}
+#neg-discuss h3 {
+	font-size: 22px;
+	margin-top: 10px;
+	font-weight: normal;
 }
 #neg-discuss .content {
 }
@@ -48,12 +54,12 @@ div#seller_info_in_offer .person_pic, #buyer-for-seller .person_pic {
 div#seller_info_in_offer .person_pic {
 	margin-top: 18px;
 }
-div#buyer-for-seller .person_pic{
+div#buyer-for-seller .person_pic {
 	margin: 0 10px 68px 0;
 }
-div.form-radios div.form-item{
+div.form-radios div.form-item {
 	float: left;
-	width:85px;
+	width: 85px;
 	font-size: 13px;
 }
 div#seller_info_in_offer .person_pic_seller {
@@ -62,16 +68,16 @@ div#seller_info_in_offer .person_pic_seller {
 	float: left;
 	width: 200px;
 }
-#seller-neg-form div.form-item label{
+#seller-neg-form div.form-item label {
 	clear: both
 }
-#seller-neg-form div#edit-field-chat-0-value-wrapper{
+#seller-neg-form div#edit-field-chat-0-value-wrapper {
 	clear: both
 }
-#buyer-for-seller .person_pic_seller{
+#buyer-for-seller .person_pic_seller {
 	font-weight: bold
 }
-.person_pic_offer{
+.person_pic_offer {
 	font-weight: bold;
 }
 /* buyer pic in buyer area during offer */

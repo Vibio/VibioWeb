@@ -89,7 +89,7 @@
       <?php if ($display_submitted): ?>
         <span class="submitted">
           <?php
-            print t("!username reply to offer on !datetime",
+            print t("!username Replied<br />On: !datetime",
               array('!username' => $name, '!datetime' => $date));
           ?>
         </span>

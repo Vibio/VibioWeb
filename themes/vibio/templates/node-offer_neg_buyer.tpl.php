@@ -87,7 +87,7 @@
 						$amount = $node->field_price[0][value];
 						if ( $amount > 0 ) { $amount = "offers \$$amount"; }
 						else { $amount = "is interested"; }
-						print "<div class='date'>$date</div>";
+						print "<div class='date'>$user_picture $date</div>";
 						print "<div class='minheader'>$name $amount</div>";
           ?>
         </span>
@@ -96,19 +96,19 @@
   <div class="content">
 <?php
 if ( $node->field_offer_expires[0][value] ) {
-	print "<br><div class='label'>Expires:</div>" . $node->field_offer_expires[0][value] 
+	print "<div class='label'>Expires:</div>" . $node->field_offer_expires[0][value] 
 		. '</div>';
 } else {
 	print "<div class='label'>No Expiration Set</div>";
 }
 if ( $node->field_city[0][value] ) {
-	print "<br><div class='label'>Ship to:</div>" . $node->field_city[0][safe];
+	print "<div class='label'>Ship to:</div>" . $node->field_city[0][safe];
 }
 if ( $node->field_pay_sent[0][value] != 'no' ) {
-	print "<br><div class='label'>Payment Sent:</div>" . $node->field_pay_sent[0][value];
+	print "<div class='label'>Payment Sent:</div>" . $node->field_pay_sent[0][value];
 }
 if ( $node->field_item_received[0][value] == 'Yes' ) {
-	print "<br><div class='label'>Received!</div>";
+	print "<div class='label'>Received!</div>";
 }
 
 

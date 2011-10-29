@@ -3,7 +3,9 @@ $(document).ready(function()
 	var menu_topoffset = $.browser.mozilla ? 0 : 2;
 	var menu_leftoffset = $.browser.mozilla ? -1 : 0;
 	var menu_width = $.browser.msie ? 21 : $.browser.mozilla ? 19 : 20;
-	
+	//Tells us what kind of search is currently being performed
+	var type_id = $("#edit-search-type").val(type_id);
+       	
 	$("#profile_ext_headermenu").buildMenu({
 		menuWidth: $("#profile_ext_headermenu").width() - menu_width,
 		hasImages: false,
@@ -28,26 +30,23 @@ $(document).ready(function()
 		closeAfter: 400,
 		menuSelector: ".search_type_submenu_container"
 	});
-	
+
+        //Set the current search type image
+        $("#search_type_menu .button").css("background-image", 'url("/themes/vibio/images/' + type_id + '_button.png")');	
+
 	$(".searchtype_image").live("click", function()
 	{
-		//Parsing the .searchtype_image id: should grab whether
-		//it's an item or people search.
-		var type_id = $(this).attr("id").split("searchtype_")[1];
-		//change the #search_type_current to have the proper
-		//image src/alt/title attributes for the newly selected search type
-		$("#search_type_current")
-			//.attr("src", $(this).attr("src"))
-			.attr("src", $(this).attr("src") + "_main")
-			.attr("alt", $(this).attr("alt"))
-			.attr("title", $(this).attr("title"));
-
+		//see what the updated search type is
+		type_id = $(this).attr("id").split("searchtype_")[1];
 		/* this used to use the same button up top and in the menu.
        Now it doesn't.  Need a non-displaying option that displays
        when it's the "Item ^" or "User ^" button
      */
 
 		$("#edit-search-type").val(type_id); // this is hidden value for submit
+		//display the currently selected search type as a button label on the
+		//left of the search bar.
+                $("#search_type_menu .button").css("background-image", 'url("/themes/vibio/images/' + type_id + '_button.png")');
 
 		return false;
 	});

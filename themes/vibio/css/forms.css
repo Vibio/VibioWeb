@@ -193,13 +193,12 @@ form#user-register input#edit-submit.form-submit {
 	right: 16px;
 	bottom: 82px;
 	background: url(../images/create_new_account.png) no-repeat;
-	width:185px;
+	width: 185px;
 	height: 39px;
-	border:none;
-	text-indent:-9999px;
+	border: none;
+	text-indent: -9999px;
 	display: block;
 }
-
 #user-register div.description {
 	font-size: 13px;
 	margin-top: 18px;
@@ -239,7 +238,17 @@ form#user-register input#edit-submit.form-submit {
 	width: 80px;
 	height: 33px;
 	text-indent: -9999px;
-	top: 0px;
+	top: -0.9px;
+	left: -1px
+}
+img#searchtype_vibio_item, img#searchtype_user {
+	margin-left: 10px;
+}
+img#searchtype_vibio_item {
+	margin-top: 10px
+}
+img#searchtype_user {
+	margin-top: 5px
 }
 a.add_friend {
 	background: url(../images/add_friend.png) no-repeat 0px 0px;
@@ -256,7 +265,7 @@ a.add_friend:hover {
 #edit-title, #edit-body, #edit-collection-info-cid {
 	width: 460px;
 }
-#add-product{
+#add-product {
 	margin-top: 18px;
 }
 .grippie {
@@ -265,7 +274,6 @@ a.add_friend:hover {
 #edit-submit.form-submit, #edit-preview.form-submit {
 }
 #edit-preview.form-submit {
-
 }
 /*button styles*/
 
@@ -285,13 +293,11 @@ form#user-login input, form#user-login .description {
 	width: 305px;
 	margin: 0 20px;
 }
-
-form#user-register{
+form#user-register {
 	width: 480px;
 }
-
-form#user-register input{
-	width:450px;
+form#user-register input {
+	width: 450px;
 }
 form#user-login .description {
 	padding: 10px 0;
@@ -304,7 +310,7 @@ form#user-login label {
 form#user-login input#edit-submit {
 	width: 20px;
 	padding: 0;
-	margin:  :0;
+	margin:   :0;
 	background: url(../images/log_in.png) no-repeat;
 	display: block;
 	height: 35px;
@@ -321,14 +327,14 @@ form#user-login input#edit-submit {
 	margin: 75px 0 0 60px;
 	position: relative;
 }
-#block-block-12 .fb-or{
-	top:31px;
-	left:-36px;
+#block-block-12 .fb-or {
+	top: 31px;
+	left: -36px;
 	position: absolute;
 }
 /*Forgot password page*/
 
-form#user-pass input#edit-submit.form-submit{
+form#user-pass input#edit-submit.form-submit {
 	background: url(../images/btn_submit.png) no-repeat;
 	display: block;
 	text-indent: -9999px;
@@ -337,10 +343,11 @@ form#user-pass input#edit-submit.form-submit{
 	border: none;
 	float: right;
 }
-form#user-pass div#edit-name-wrapper{
-	padding-bottom: 20px;margin-bottom: 20px;
+form#user-pass div#edit-name-wrapper {
+	padding-bottom: 20px;
+	margin-bottom: 20px;
 	border-bottom: 1px solid #CCCCCC;
 }
-form#user-pass div#edit-name-wrapper input#edit-name{
+form#user-pass div#edit-name-wrapper input#edit-name {
 	width: 449px;
 }

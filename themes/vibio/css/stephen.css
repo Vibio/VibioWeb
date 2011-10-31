@@ -555,14 +555,3 @@ div.views-field.views-field-nid{
 /*New Search Results*/
 #search_type_submenu_0 a{
 }
-/*Site Wide Info Button*/
-#block-block-7{
-	position: absolute;
-	top:16px;
-	right:16px;
-	margin:0;
-}
-#block-block-7 p{
-	margin:0
-}
-

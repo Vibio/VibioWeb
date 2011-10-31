@@ -146,7 +146,7 @@ function _product_get_image($nid, $is_product=false)
 		$url = _product_default_image();
 
 	$product_images[$search_nid] = $url;
-
+	
 	return $url;
 }
 
@@ -154,7 +154,8 @@ function _product_get_image($nid, $is_product=false)
  *  paths on so much.   Eventually consider recoding whole site...
  */
 function file_uncreate_url($url) {
-	$pieces = explode("com", $url);
+	$pieces = explode("com/", $url);
+	
 	return $pieces[1];
 }
 

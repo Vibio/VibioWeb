@@ -12,11 +12,9 @@
  * @see template_preprocess()
  */
 ?>
-<div class="box">
-
 <?php if ($title): ?>
-  <h2><?php print $title ?></h2>
+  <h1 id="box_page_title"><?php print $title ?></h1>
 <?php endif; ?>
-
+<div class="box">
   <div class="content"><?php print $content ?></div>
 </div>

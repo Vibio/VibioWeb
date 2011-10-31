@@ -58,7 +58,6 @@
 		</div>
 
 	<div id="main-wrapper"><div id="main" class="clearfix<?php if ($primary_links || $navigation) { print ' with-navigation'; } ?>">
-
 	  <div id="content" class="column">
 	  	<?php echo $messages; ?>
 	  	<div class="section rounded_container">
@@ -77,7 +76,8 @@
 				</div>
 			</div>
 		</div>
-	  </div> <!-- /.section, /#content -->
+	  </div>
+	</div> <!-- /.section, /#content -->
 
 	  <?php if ($primary_links || $navigation): ?>
 		<div id="navigation"><div class="section clearfix">

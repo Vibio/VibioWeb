@@ -64,7 +64,9 @@ function template_preprocess_search_results(&$variables) {
 	  $variables['search_results_not_lost'] .= theme('search_result', $result, $variables['type']);
 
   }
-  $variables['pager'] = theme('pager', NULL, 10, 0);
+  $variables['pager'] = theme('pager', NULL, 10, 0); // changed to 40, 
+		// change not obvious
+
   // Provide alternate search results template.
   $variables['template_files'][] = 'search-results-'. $variables['type'];
 }

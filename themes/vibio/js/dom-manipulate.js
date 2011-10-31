@@ -27,5 +27,20 @@ $(document).ready(function() {
 //places forgot password snippet above page lost password form
 	$(".not-logged-in h1#page_title").remove().insertBefore("div.tabs");
 	$("#block-block-13").remove().insertBefore("form#user-pass");	
-	
+//Intial text value for the Search Bar
+$('input#edit-search-theme-form-1').attr('value', 'Search Items');	
+//Remove search bar text on click of field
+$("input#edit-search-theme-form-1").focus(function() {
+      $('input#edit-search-theme-form-1').attr('value', '');
+ });
+
+//Change Serach box text to "Search Users" on click
+$('img#searchtype_user').click (function() {
+	$('input#edit-search-theme-form-1').attr('value', 'Search Users');
+});
+//Change Serach box text to "Search Items" on click
+$('img#searchtype_vibio_item').click (function() {
+	$('input#edit-search-theme-form-1').attr('value', 'Search Items');
+});
+
 });

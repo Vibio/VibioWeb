@@ -33,10 +33,12 @@ uid_target  might be interesting?
 				? $message->uid_target : $message->uid;
 
 			$u = user_load($notme);
+			//Load the correct user picture
+			!empty($u->picture) ? $user_picture = $u->picture : $user_picture = 'themes/vibio/images/icons/default_user_large.png';
 			$alt = $u->name . '\'s Picture';
 			$title = ''; // orname, if it’snot printed right below anyway
 			$attributes = ‘’;
-			print theme('imagecache', "little_profile_pic", $u->picture, $alt,$title, $attributes);
+			print theme('imagecache', "little_profile_pic", $user_picture, $alt,$title, $attributes);
 		?></span>
 
     <?php print $message->content['message']; ?>

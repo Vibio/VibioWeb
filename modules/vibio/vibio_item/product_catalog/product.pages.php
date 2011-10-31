@@ -108,6 +108,8 @@ function product_add_to_inventory($product,$quick_add=false) {
 			$state['values']['privacy_setting']=$product->privacy_setting;
 		}
 		$state['values']=array_merge_recursive($state['values'],module_invoke_all("product_inventory_quick_add",$state['values']));
+		//dsm($form_id,$state,$node);
+
 		drupal_execute($form_id,$state,$node);   
 			// in v1.0, this outraced and ruined
 			// file uploading
@@ -129,6 +131,9 @@ function product_add_to_inventory($product,$quick_add=false) {
  *  Should all this be ripped out?
  *
  *  How important is product_set_autoadd()
+ *  ... That determines whether this is a search, or a person adding their
+ *       own product in which case they'll have an item of that product type.
+ *       It is important.
  */
 function product_add_new() {
 global $user;

@@ -135,7 +135,7 @@ MESSAGE;
  */
 function user_relationship_mailer_approve_default() {
   $subject = "[@site] You are @requestee_name's newest @relationship_name";
-  $message = <<<MESSAGE
+  $OLD_DELETE_SOON_message = <<<MESSAGE
 Dear @requester_name,
 
 @requestee_name has approved your request to be their @relationship_name.
@@ -149,6 +149,27 @@ The @site team
 This message was sent to you because you have user relationships email notifications turned on.
 If you no longer wish to receive these emails, you can turn them off at @site_url/user/@requester_uid/edit.
 MESSAGE;
+
+  $message = <<<MESSAGE
+Dear @requester_name,
+
+You and @requestee_name are now connected on Vibio! You are therefore considered as someone who is both trustworthy and stylish - congratulations!
+
+Please think carefully before you invite others to join your circle of trust or accept contact requests. 
+
+Here's a link to your relationships:
+  @requester_list_link
+
+Thanks!
+The Vibio team
+--
+Vibio (Your Style, Online)
+
+
+This message was sent to you because you have user relationships email notifications turned on.
+If you no longer wish to receive these emails, you can turn them off at @site_url/user/@requester_uid/edit.
+MESSAGE;
+
 
   return array(
     'subject' => $subject,

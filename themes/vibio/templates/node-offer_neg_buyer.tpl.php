@@ -96,8 +96,7 @@
   <div class="content">
 <?php
 if ( $node->field_offer_expires[0][value] ) {
-	print "<div class='label'>Expires:</div>" . $node->field_offer_expires[0][value]
-		. '</div>';
+	print "<div class='label'>Expires:</div>" . $node->field_offer_expires[0][value];
 } else {
 	print "<div class='label'>No Expiration Set</div>";
 }

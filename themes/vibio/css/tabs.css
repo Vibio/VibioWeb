@@ -50,8 +50,8 @@ ul.primary li a {
   background-color: transparent;
 }
 
-/*Site Wide Info Button. 7 is default, 6 is for search pages, 11 for add/product page*/
-#block-block-7,#block-block-11{
+/*Site Wide Info Button. 7 is default, 6 is for search pages, 11 for add/product page, 17 home page, 16 selling page, 15 buying page*/
+#block-block-7,#block-block-11,#block-block-15,#block-block-16,#block-block-17{
 	position: absolute;
 	top:4px;
 	right:3px;
@@ -66,13 +66,16 @@ ul.primary li a {
 #block-block-11{
 	top:0;
 }
-#block-block-7 p,#block-block-6 p,#block-block-11 p{
+#block-block-7 p,#block-block-6 p,#block-block-11 p, #block-block-15 p,#block-block-16 p,#block-block-17 p{
 	margin:0;
 	
 }
 #block-block-6 p{
 	margin-right:5px;
 	float:left;
+}
+.not-logged-in #block-block-17{
+	display: none;
 }
 /*Info Button for Tabs menu*/
 

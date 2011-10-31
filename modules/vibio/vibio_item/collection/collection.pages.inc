@@ -185,6 +185,7 @@ function collection_edit_submit($form, &$state)
 	drupal_goto("collections/manage");
 }
 
+// aka Showcase Item
 function collection_random_collection($u)
 {
 	if (module_exists("network") && ($friends = _network_get_friends($u->uid, 1)) && !empty($friends))

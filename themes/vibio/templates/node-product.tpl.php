@@ -16,9 +16,16 @@ else
 
 if ($image = _product_get_image($node->nid, true))
 {
+
+	$alt = 'Product Image';
+	$title = '';
+	$attributes = array('class' => 'product_main_image');
+	$imagecached = theme('imagecache', 'product_main_product_page', 
+		file_uncreate_url($image), 
+		$alt, $title, $attributes);
 	$image = "
 		<a href='$image' rel='prettyphoto[item_image]'>
-			<img src='$image' class='product_main_image' />
+			$imagecached
 		</a>
 	";
 }

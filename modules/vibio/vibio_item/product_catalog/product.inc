@@ -150,6 +150,14 @@ function _product_get_image($nid, $is_product=false)
 	return $url;
 }
 
+/* stephen: wish we didn't call file_create_url and get full http://...
+ *  paths on so much.   Eventually consider recoding whole site...
+ */
+function file_uncreate_url($url) {
+	$pieces = explode("com", $url);
+	return $pieces[1];
+}
+
 function _product_default_image()
 {
 	return file_create_url("themes/vibio/images/icons/default_item.png");

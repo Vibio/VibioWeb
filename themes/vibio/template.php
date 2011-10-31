@@ -57,7 +57,7 @@ function vibio_preprocess_search_results(&$variables) {
   $variables['search_results'] = '';
 	$zebra = 1;
   foreach ($variables['results'] as $result) {
-		$z = $result['zebra'] = $zebra%3;
+		$z = $result['zebra'] = $zebra%4;
 		$zebra++;
     $variables["search_results_$z"] .= theme('search_result', $result, $variables['type']);
   }

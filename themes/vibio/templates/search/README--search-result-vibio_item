@@ -1,0 +1,9 @@
+There seems to be a half-done effort to convert search from 4[adjustable] columns
+in a simple, solid but slightly clunky way to some cool javascript or ???
+
+At some point this work could be taken up again, the old file is being left.
+
+If so, get rid of / transform function vibio_preprocess_search_results(&$variables) {
+in template.php
+
+

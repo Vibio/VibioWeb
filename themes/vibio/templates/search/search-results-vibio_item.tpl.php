@@ -11,7 +11,7 @@ echo $pager;
  * /var/www/vibio/src/modules/vibio/vibio_item/product_catalog/product.module
  * that might produce $other_results ... is this eBay ? 
 
- * The three columns are produced in template.php
+ * The three or four columns are produced in template.php
  * vibio_preprocess_search_results
 
  * It can't work like this, please, but seems to:

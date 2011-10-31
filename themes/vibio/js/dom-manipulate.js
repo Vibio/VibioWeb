@@ -9,13 +9,13 @@ $(window).load(function() {
 
 /* feature and search page hover effects, have and want buttons, grey */
 $(document).ready(function() {
-	$('div.views-field.views-field-nid').hide();
-	$('div.views-field.views-field-field-main-image-fid').hover(function() {
+	$('div.views-field.views-field-nid, div.box div.search-links').hide();
+	$('div.views-field.views-field-field-main-image-fid, div.views-field-field-main-image-fid').hover(function() {
 		$(this).next().show();
 	}, function() {
 		$(this).next().hide();
 	});
-	$('div.views-field.views-field-nid').hover(function() {
+	$('div.views-field.views-field-nid, div.box div.search-links').hover(function() {
 		$(this).show();
 		$(this).prev().addClass('hover-shadow');
 	}, function() {

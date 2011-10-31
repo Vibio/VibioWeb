@@ -1,9 +1,9 @@
 $(function(){
-
-    //Get the number of pages from the Views Pager (Use the full pager, it will be hidden with .infinitescroll() anyway.)
-    lastPageHref = $(".pager-last").find('a').attr('href').toString(); 
-    lastPageHref = lastPageHref.split("=");
-    numOfPages = parseInt(lastPageHref[1]);
+ if($(".pager-last").find('a').attr('href') != undefined){
+    //Get the number of pages from the Views Pager (Use the full pager, it will be hidden with .infinitescroll() anyway)
+   	 lastPageHref = $(".pager-last").find('a').attr('href').toString(); 
+    	 lastPageHref = lastPageHref.split("=");
+    	 numOfPages = parseInt(lastPageHref[1]);
 
     $('.view.view-flag-featured .view-content').masonry({
         columnWidth: 180, 
@@ -43,4 +43,5 @@ $(function(){
 	  });
    }
   );
+}
 });

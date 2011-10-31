@@ -13,7 +13,7 @@
 /*
  * Body
  */
-body {
+body.not-front, body.front{
   background: url('../images/bgtile.jpg') repeat scroll 0 0;
   margin: 0;
   padding: 0;

@@ -47,12 +47,13 @@ function product_menu()
 			"type"				=> MENU_CALLBACK,
 		),
 	
-		/* stephen thinks this should be removed.  It merely sets a message
+		/* 1) sets a message
      * that looks kindof silly as a "message" instead of just part of the 
      * page.  
-			 And sets to true, what is this: $_SESSION['product']['auto_add'] = $val;
-			 I see functions to set and clear that, but does it do anythign?	
- 			 A little afraid to touch things...
+			 2) And sets to true:  $_SESSION['product']['auto_add'] = $val;
+			 I see functions to set and clear that... think it's used to differentiate
+			 adding a product by hand (maybe auto_add means if I enter a product
+			 by hand, auto_add an item of that product to my collection).
      */
 		"product/add"			=> array(
 			"title"				=> "Add New Product",
@@ -149,7 +150,15 @@ function product_nodeapi(&$node, $op, $a3=null, $a4=null)
 		switch ($op)
 		{
 			case "insert":
-				if (product_get_autoadd())
+				if (product_get_autoadd(false))    // uh oh.  This doesn't just
+						// get it, it clears it.  So if I run this second, I don't have
+					  // the node->nid, if I run it first, the other doesn't run!!
+						// add in 'false'.  Note that reloads could do who knows what
+						// to this session variable... click back, create a slightly
+						// modified product and save it, and probably won't auto_add ???
+				
+	// NOPE.  I set #submit in either order, and this runs second.  The save
+	//  just insists on being the last thing to run.  And *then* we need to act.
 				{
 					module_load_include("php", "product", "product.pages");
 					drupal_get_messages(); // ooh, sneaky. Get the messages, 
@@ -175,10 +184,20 @@ function product_nodeapi(&$node, $op, $a3=null, $a4=null)
 					
 					//old: product_add_to_inventory($node, true);
 					// new, memorize node and call later
+/*				}
+				break;
+		 case "presave":
+
+*/
+					// presave is too early. 
 					global $new_product_node;
 					$new_product_node = $node;
-					print "now set " .$new_product_node->nid;
+					print "1) now set " .$new_product_node->nid;
+/*print "<pre>";
+print_r (debug_backtrace());
+//die();*/
 				}
+				
 				break;
 			case "update index":
 				return theme("product_display", $node);
@@ -280,31 +299,37 @@ function product_form_alter(&$form, &$state, $id)
 	{
 		_vibio_item_unset($form, "product");
 		_vibio_item_defaults($form, "product");
-		$form['buttons']['submit']['#submit'] = array('product_node_form_submit_wrapper');
+
+
+
+		// in either order, $form['#submit'] seem to happen before 
+		//	nodeapi when the node is saved and we have an nid.
+
+
 		//$form['#submit'][] = '_add_item_to_my_new_product_form_submit';
-		//print_r($form['#submit']);
+				//$form['#submit'] = array( _add_item_to_my_new_product_form_submit, _privacy_form_submit, menu_node_form_submit );
+//print_r($form['#submit']);
+		//$form['buttons']['submit']['#submit'][] ='_add_item_to_my_new_product_form_submit';
+	//$form['buttons']['submit']['#submit'] = array('product_node_form_submit');
+	dsm($form['buttons']['submit']['#submit']);
+
 	}
 }
-function product_node_form_submit_wrapper($form, &$state) {
-	//yes: die("is this called like a hook");
-  node_form_submit($form, $state);
-	//die("who gets called first " . $state['nid']);
-  $product = node_load($state['nid']); // set in node_form_submit, the
-    // product node just saved
-  _add_item_to_my_new_product_form_submit($product);
+function product_node_form_submit($form, &$state) {
+	node_form_submit($form, $state);
+	$product = node_load($state['nid']); // set in node_form_submit, the 
+		// product node just saved
+	_add_item_to_my_new_product_form_submit($product);
 }
 
-
-function _add_item_to_my_new_product_form_submit($form, &$state) {
+function _add_item_to_my_new_product_form_submit($product) {
   // Doing this in nodeapi blew things up. AAA
   //Neither of these knows the nid: ($form, $state);
-	global $new_product_node;
-	print "add my item to $new_product_node";
-//die($new_product_node)
-//print "<pre>";
-//print_r (debug_backtrace());
-//die();
-  product_add_to_inventory($new_product_node, true);
+	print "2) add my item to $new_product_node";
+	if (product_get_autoadd(false) ) {   // end of autoadd
+		print "Yes, add to inventory\n<p>";
+  	product_add_to_inventory($new_product_node, true);
+	}
 }
 
 

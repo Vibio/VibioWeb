@@ -43,6 +43,7 @@ span.ui-icon{
 .vibio_dialog_content {
 	background: white;
 	max-height: 650px;
+	min-height:150px;
 	overflow: auto;
 	border-radius: 8px;
 	-moz-border-radius: 8px;
@@ -158,27 +159,97 @@ div#edit-node-price-wrapper{
 	margin-left: 0;
 }
 /*Info Popups*/
-#modalframe-element{
-	background: none;
+.modalframe {
+    background: none;
+    border: none;
+    color: #000000;
 }
-.modalframe{
-	border: none;
+.modalframe .ui-dialog-titlebar {
+    background-color: #FFFFFF;
+    border: none;
+    border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	-moz-border-radius-topright: 10px;
+	-moz-border-radius-topleft: 10px;
+    cursor: move;
+    height: 26px;
+    position: relative;
+    white-space: nowrap;
 }
-.modalframe .ui-dialog-titlebar{
-	border: none;
+
+/*iFrame styling*/
+
+.modalframe .ui-dialog-title {
+    color: #D9D9D9;
+    display: none;
+    left: 0;
+    margin: 0.2em 0.5em;
+    padding: 0;
+    position: absolute;
+    top: 0;
+}
+.modalframe .ui-dialog-titlebar-close {
+    background: url(../images/close_button_dialog.png) no-repeat scroll 0 0 transparent;
+    display: block;
+    height: 41px;
+    margin: 2px 2px 2px 0.5em;
+    padding: 0;
+    position: absolute;
+    right: -20px;
+    top: -23px;
+    width: 39px;
+}
+.modalframe .ui-dialog-titlebar a.ui-state-hover, .modalframe .ui-dialog-titlebar a.ui-state-focus {
+    background-position: 0 0px;
+}
+.modalframe .ui-dialog-titlebar-close span {
+    display: none;
+}
+.modalframe .ui-dialog-content {
+    background-color: #F8F8F8;
+    color: #292929;
 }
 .modalframe-page-content{
-	background: #FFFFFF
+	padding:0 1em;
 }
-iframe .modalframe-page-wrapper{
-	background: #FFFFFF;
+.ui-widget-overlay {
+    background-color: #AAAAAA;
+    height: 100%;
+    left: 0;
+    opacity: 0.4;
+    position: absolute;
+    top: 0;
+    width: 100%;
 }
-.modalframe .ui-dialog-titlebar{
+#modalframe-container {
+    background: url(../images/loading.gif) no-repeat scroll 50% 50% transparent;
+    margin: 0;
+    overflow: visible;
+    padding: 0;
 }
-#modalframe-container.modalframe-loaded{
-  background: #FFFFFF;
+#modalframe-container.modalframe-loaded {
+    background: none repeat scroll 0 0 transparent;
 }
-iframe#modalframe-container html.js body{
-	background-image: none;
+#modalframe-element {
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: -moz-use-text-color -moz-use-text-color #1B5084;
+    border-style: none;
+    border-width: 0;
+    margin: 0;
+    padding: 0;
+    border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	-moz-border-radius-bottomright: 10px;
+	-moz-border-radius-bottomleft: 10px;
+}
+.modalframe-throbber {
+    background: url(../images/throbber.gif) no-repeat scroll 0 0 transparent;
+    display: inline-block;
+    height: 13px;
+    width: 13px;
 }
 

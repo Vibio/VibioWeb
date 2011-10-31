@@ -27,6 +27,8 @@
  */
 body {
   font-size: 100%; /* Fixes exaggerated text resizing in IE6 and IE7 */
+  margin:0;
+  background: #FFFFFF;
 }
 
 #skip-link,

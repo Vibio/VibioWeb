@@ -409,6 +409,11 @@ a#content-email {
     filter:alpha(opacity=40); /* For IE8 and earlier */
 }
 
+/*Search links height on search results page*/
+div.box div.search-links{
+	height:35px;
+}
+
 /*Have and Want Buttons*/
 .inventory_add,.inventory_want{
 	background: url(../images/want_have.png) no-repeat;
@@ -546,9 +551,9 @@ div.views-field.views-field-nid{
 	margin:0 40px 0;
 }
 #modalframe-page-content{
- background:#fff;
 }
 /*New Search Results*/
 #search_type_submenu_0 a{
 
 }
+

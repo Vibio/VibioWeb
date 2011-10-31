@@ -221,7 +221,11 @@ function content_multiple_value_form(&$form, &$form_state, $field, $items) {
     $form_element[$field_name .'_add_more'] = array(
       '#type' => 'submit',
       '#name' => $field_name .'_add_more',
-      '#value' => t('Add another item'),
+      '#value' => t('Add another image'), 
+				//icky quick fix... is this the only time we use this code?
+				//  used to say Add another item.
+				//Should be handed to design team, and then this code overwritten
+
       '#weight' => $field['widget']['weight'] + $max + 1,
       // Submit callback for disabled JavaScript. drupal_get_form() might get
       // the form from the cache, so we can't rely on content_form_alter()

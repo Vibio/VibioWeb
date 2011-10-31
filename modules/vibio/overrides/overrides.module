@@ -173,7 +173,9 @@ function overrides_form_search_theme_form_alter(&$form, &$state)
 
 	$form['search_type'] = array(
 		"#type"			=> "hidden",
-		"#default_value"=> "vibio_item",
+		//The default search type should reflect the last search performed. Default
+		//should be "vibio_item"
+		"#default_value"=> isset($_SESSION['search_type']) ? $_SESSION['search_type'] : "vibio_item",
 	);
 
 	$form['search_type_select'] = array(
@@ -183,6 +185,25 @@ function overrides_form_search_theme_form_alter(&$form, &$state)
 	);
 
 	$form['search_theme_form']['#title'] = "";
+  $url_parts =  explode('/', substr($_SERVER['REQUEST_URI'], 1));
+  if($url_parts[0] == 'search'){
+    array_shift($url_parts);
+    $search_type = array_shift($url_parts);
+
+    //Depending on search type, parse the URL appropriately. Add more cases
+    //if more searches are added.
+    switch ($search_type) {
+      case "user":
+        $last_keywords = urldecode($url_parts[0]);
+        $form['search_theme_form']['#default_value'] = $last_keywords;
+        break;
+      case "vibio_item":
+        $search_request = explode('?', $url_parts[0]);
+        $last_keywords = urldecode($search_request[0]);
+        $form['search_theme_form']['#default_value'] = $last_keywords;
+        break;
+    }
+  }
 }
 
 function overrides_search_submit($form, &$state)
@@ -190,6 +211,8 @@ function overrides_search_submit($form, &$state)
 	$allowed_searches = overrides_allowed_search_types();
 	$default_search = "vibio_item";
 	$search_type = array_key_exists($state['values']['search_type'], $allowed_searches) ? $state['values']['search_type'] : $default_search;
+	//Maintain state of search_type to the next page (may not be desired)
+	$_SESSION['search_type'] = $search_type;
 	$search_term = trim($state['values'][$form['form_id']['#value']]);
 
 	$state['redirect'] = "search/$search_type/$search_term";
@@ -226,7 +249,6 @@ function overrides_form_search_form_alter(&$form, &$state)
 	$form['basic']['inline']['submit']['#prefix'] = "<div class='button_left'></div><div class='button_mid'>";
 	$form['basic']['inline']['submit']['#suffix'] = "</div><div class='button_right'></div>";
 	$form['basic']['inline']['#suffix'] .= "<div class='clear'></div>";
-	
 	$form['#submit'][] = "overrides_search_form_submit";
 	$form['search_form_type'] = array(
 		"#type"			=> "select",

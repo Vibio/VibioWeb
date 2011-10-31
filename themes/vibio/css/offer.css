@@ -83,6 +83,9 @@ div#seller_info_in_offer .person_pic_seller {
 /* buyer pic in buyer area during offer */
 #offer_neg_buyer .person_pic {
 }
+#offer_neg_buyer input#edit-field-city-0-value{
+	width:284px;
+}
 div#buyer_info_in_offer {
 }
 /* Stephens, some still in stephen.css */

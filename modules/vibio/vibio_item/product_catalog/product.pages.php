@@ -139,8 +139,8 @@ $node=new stdClass;
 $node->uid=$user->uid;
 $node->name=$user->name;
 $node->type="product";
-node_object_prepare($node);
-// v2: less weird, move help into form, not message
+node_object_prepare($node);   // no nid yet
+// v2: make less weird, move help into form, not message
 drupal_set_message(t("Here’s where you get to write down stuff about your product. Please share descriptive things, like the size, fabric content or whatever you think will tell us exactly what you’ve got."),"notice");
 return drupal_get_form($form_id,$node);
 }

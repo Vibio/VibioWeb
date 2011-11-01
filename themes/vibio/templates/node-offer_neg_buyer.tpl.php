@@ -80,7 +80,7 @@
  */
 ?>
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix">
-  <?php print $user_picture; ?>
+//Need to insert user_picture printing here
 
         <span class="submitted">
           <?php

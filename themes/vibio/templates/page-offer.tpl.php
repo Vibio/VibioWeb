@@ -76,7 +76,6 @@
 				</div>
 			</div>
 		</div>
-	  </div>
 	</div> <!-- /.section, /#content -->
 
 	  <?php if ($primary_links || $navigation): ?>

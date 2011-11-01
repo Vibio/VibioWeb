@@ -183,13 +183,13 @@ print content_view_field(content_fields("field_item_sent"), $current_seller, FAL
  </div>
 <?php /* Prep the buyer info section. Moves depending on buyer logged in. */ 
 	$offer_user = user_load($node->uid);
-	$amount = $node->field_price[0][value];
+	$amount = $current_buyer->field_price[0]['value'];
 	$buyer_div = 
    '<div class="person_pic">' .
 	 theme('user_picture', $offer_user) .
 	 '</div>' .
 	 "<div class='person_pic_seller'>Buyer: <a href='user/" . $offer_user->uid . "'>" .  
-			$offer_user->name . "</a></div><div class='person_pic_offer'>Offer:$amount</div>"; 
+			$offer_user->name . "</a></div><div class='person_pic_offer'>Offer: " . $amount . "</div>"; 
 
 if ($perm_seller) {
  	$buyer_div .=
@@ -262,7 +262,7 @@ print $output; ?>
   <?php /* print the conversation, view defined (and cache loaded) above */
 //print views_embed_view($viewName, $display_id, $myArgs);
 	if ( $perm_buyer || $perm_seller ) { // you  are buyer or seller
-		print "<h3>Negotiation Log</h3>" . $chit_chat;
+		print "<h3>Negotiation Log</h3> <div id='chit-chat'>" . $chit_chat . "</div>";
 	} else {
 		print "<h3>Discussions are private to the participants.</h3>";
 	}

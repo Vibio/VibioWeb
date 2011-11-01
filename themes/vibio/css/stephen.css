@@ -46,16 +46,15 @@ div.search-flag {
 }
 .selling-top-image{
 	float: left;
-	margin: 15px 12px 15px 0;
+	margin: 15px 12px 15px 10px;
 	width:126px;
 }
 .selling-top-image img{
-	border:1px solid #CCCCCC;
-	max-width: 125px;
+
 }
 .selling-top-text{
 	float: left;
-	width:454px;
+	width:525px;
 }
 .selling_item_info div.teaser_item_pic {
     float: left;

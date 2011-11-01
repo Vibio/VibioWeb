@@ -294,7 +294,7 @@ class views_handler extends views_object {
       $display_id,
       $this->handler_type,
       $options['table'],
-      $options['field']
+      $options['id']
     );
 
     $this->unpack_options($this->options, $options);
@@ -1157,7 +1157,10 @@ function views_get_timezone() {
       if ($GLOBALS['db_type'] == 'pgsql') {
         db_query("SET TIME ZONE INTERVAL '$offset' HOUR TO MINUTE");
       }
-      elseif ($GLOBALS['db_type'] == 'mysqli' || version_compare(mysql_get_server_info(), '4.1.3', '>=')) {
+      elseif ($GLOBALS['db_type'] == 'mysqli') {
+        db_query("SET @@session.time_zone = '$offset'");
+      }
+      elseif ($GLOBALS['db_type'] == 'mysql' && version_compare(db_version, '4.1.3', '>=')) {
         db_query("SET @@session.time_zone = '$offset'");
       }
 

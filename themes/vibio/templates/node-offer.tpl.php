@@ -160,10 +160,18 @@ global $base_url;
 
  <div id="seller_info_in_offer" >
 	<?php 
+	//Prepare $item_owner and the proper imagecached picture
 	$item_owner = user_load($item_owner_uid);
-	/* imagecache the person_pic soon !!! */
+	$item_owner->picture ? $item_owner_picture = $item_owner->picture : $item_owner_picture = 'themes/vibio/images/icons/default_user_large.png';
 	?>
-	<div class="person_pic"><?php print theme('user_picture', $item_owner); ?></div>
+	<div class="person_pic">
+		<?php
+			$alt = $item_owner->name . '\'s Picture';
+                        $title = '$item_owner->name'; // orname, if it’snot printed right below anyway
+                        $attributes = ‘’;
+                        print theme('imagecache', "tiny_profile_pic", $item_owner_picture, $alt,$title, $attributes);
+		?>
+	</div>
 		<div class="person_pic_seller">
 			<?php
 			  print "<b>Seller:</b> <a href='" . $base_url ."/user/" . $item_owner->uid . "'>" .
@@ -188,9 +196,13 @@ print content_view_field(content_fields("field_item_sent"), $current_seller, FAL
 <?php /* Prep the buyer info section. Moves depending on buyer logged in. */ 
 	$offer_user = user_load($node->uid);
 	$amount = $node->field_price[0][value];
+	$offer_user->picture ? $offer_user_picture = $offer_user->picture : $offer_user_picture = 'themes/vibio/images/icons/default_user_large.png';
+        $offer_user_alt = $offer_user->name . '\'s Picture';
+        $offer_user_title = ''; // orname, if it’snot printed right below anyway
+        $offer_user_attributes = '';
 	$buyer_div = 
    '<div class="person_pic">' .
-	 theme('user_picture', $offer_user) .
+	 theme('imagecache', "tiny_profile_pic", $offer_user_picture, $offer_user_alt, $offer_user_title, $offer_user_attributes) .
 	 '</div>' .
 	 "<div class='person_pic_seller'>Buyer: " . $name . "</div><div class='person_pic_offer'>Offer:$amount</div>"; 
 

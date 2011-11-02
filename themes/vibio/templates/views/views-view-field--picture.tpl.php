@@ -3,7 +3,7 @@
 //  well when creating new views
 !empty($row->actor->picture) ? $profile_pic = $row->actor->picture : $profile_pic = "themes/vibio/images/icons/default_user_large.png";
 // Generate image using imagecache
-$picture = theme('imagecache', "little_profile_pic", $profile_pic, $alt, $alt, "");
+$picture = theme('imagecache', "tiny_profile_pic", $profile_pic, $alt, $alt, "");
 $alt = $row->actor->name;
 //dsm($row);
 //debug_backtrace());

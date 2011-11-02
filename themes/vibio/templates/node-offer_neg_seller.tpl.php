@@ -87,7 +87,7 @@
 	if (!$seller->picture) {
 		$seller->picture = "themes/vibio/images/icons/default_user_large.png";
         }
-	$seller_picture = theme('imagecache','little_profile_pic', $seller->picture, $seller->name . "'s Picture", 'User Picture', '');
+	$seller_picture = theme('imagecache','tiny_profile_pic', $seller->picture, $seller->name . "'s Picture", 'User Picture', '');
         print $seller_picture;
   ?>
   <?php if ($display_submitted || $terms): ?>

@@ -38,7 +38,7 @@ uid_target  might be interesting?
 			$alt = $u->name . '\'s Picture';
 			$title = ''; // orname, if it’snot printed right below anyway
 			$attributes = ‘’;
-			print theme('imagecache', "little_profile_pic", $user_picture, $alt,$title, $attributes);
+			print theme('imagecache', "tiny_profile_pic", $user_picture, $alt,$title, $attributes);
 		?></span>
 
     <?php print $message->content['message']; ?>

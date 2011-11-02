@@ -12,7 +12,15 @@
 <?php
 	$buyer = user_load($form['#node']->uid);
 ?>
-<div class="person_pic"><?php print theme('user_picture', $buyer); ?></div>
+<div class="person_pic">
+  <?php 
+	$buyer->picture ? $buyer_picture = $buyer->picture : $buyer_picture = 'themes/vibio/images/icons/default_user_large.png';
+	$alt = $buyer->name . '\'s Picture';
+	$title = ''; // orname, if it’snot printed right below anyway
+	$attributes = ‘’;
+	print theme('imagecache', "tiny_profile_pic", $buyer_picture, $alt,$title, $attributes);
+  ?>
+</div>
 
 <?php
 

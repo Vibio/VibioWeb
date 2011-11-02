@@ -43,7 +43,7 @@ if (isset($node->amazon_data)) {
    * and node_load is firing, but somehow that lookup, which works here, isn't
    *  working there.
    * $node->field_amazon_asin[0]['asin'] isn't set at node_api. It is set here.
-   *  module weighting problem?  
+   *  module weighting problem?   Believe that weighting was the problem/solution.
 
    */
 
@@ -58,6 +58,8 @@ if (isset($node->amazon_data)) {
 	}
 	
 	$external_link = $page ? t("Get \"!item\" from !external_link.", array("!item" => $node->title, "!external_link" => l(t("Amazon"), $node->amazon_data['detailpageurl'], array("absolute" => true)))) : "";
+	//$external_link .=  $node->amazon_data['detailpageurl']; This URL is already encoded, when it shouldn't be. i.e.:
+	//  encode   key=variable  so the equals sign is gone and it's just text.
 	$external_it_link =  t("Find it on !external_link.", array("!external_link" => l(t("Amazon"), $node->amazon_data['detailpageurl'], array("absolute" => true))));
 
 }

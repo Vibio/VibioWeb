@@ -80,12 +80,18 @@
  */
 ?>
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix">
-//Need to insert user_picture printing here
-
+<?php 
+	$buyer = user_load($node->uid);
+        if (!$buyer->picture) {
+                $buyer->picture = "themes/vibio/images/icons/default_user_large.png";
+        }
+	$buyer_picture = theme('imagecache','little_profile_pic', $buyer->picture, $buyer->name . "'s Picture", 'User Picture', ''); 
+	print $buyer_picture;
+?>
         <span class="submitted">
           <?php
 						$amount = $node->field_price[0][value];
-						if ( $amount > 0 ) { $amount = "offers \$$amount"; }
+						if ( $amount > 0 ) { $amount = "<br /><b>Offer:</b> \$$amount"; }
 						else { $amount = "is interested"; }
 						print "<div class='date'>$user_picture $date</div>";
 						print "<div class='minheader'>$name $amount</div>";
@@ -96,23 +102,22 @@
   <div class="content">
 <?php
 if ( $node->field_offer_expires[0][value] ) {
-	print "<div class='label'>Expires:</div>" . $node->field_offer_expires[0][value];
+	print "<div class='offer-detail'><span class='bold-text'>Expires:</span> " . $node->field_offer_expires[0][value] . "</div>";
 } else {
 	print "<div class='label'>No Expiration Set</div>";
 }
 if ( $node->field_city[0][value] ) {
-	print "<div class='label'>Ship to:</div>" . $node->field_city[0][safe];
+	print "<div class='offer-detail'><span class='bold-text'>Ship to:</span> " . $node->field_city[0][safe] . "</div>";
 }
 if ( $node->field_pay_sent[0][value] != 'no' ) {
-	print "<div class='label'>Payment Sent:</div>" . $node->field_pay_sent[0][value];
+	print "<div class='offer-detail'><span class='bold-text'>Payment Sent:</span> " . $node->field_pay_sent[0][value] . "</div>";
 }
 if ( $node->field_item_received[0][value] == 'Yes' ) {
 	print "<div class='label'>Received!</div>";
 }
 
 
-print "<div class='chat'>" . $node->field_chat[0][value] . "</div>";
-?>
+print "<div class='field-message'><span class='bold-text'>Message:</span> " . $node->field_chat[0][value] . "</div>"; ?>
     <?php //print $content; ?>
   </div>
 

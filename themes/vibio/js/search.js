@@ -1,5 +1,12 @@
 $(document).ready(function()
 {
+	//If the search bar has the default value set, clear it on focus
+	$("input#edit-search-theme-form-1").focus(function() {
+  		if($('input#edit-search-theme-form-1').val() == 'Search Vibio'){
+          		$('input#edit-search-theme-form-1').attr('value', '');
+ 		 }
+	});
+
 	if (!$.browser.msie)
 	{
 		$("#edit-search-form-type")

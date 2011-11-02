@@ -2,16 +2,20 @@
 #neg-discuss {
 	float: left;
 	margin-left: 15px;
+	line-height: 21px;
 }
 #neg-discuss h3 {
 	font-size: 22px;
 	margin-top: 10px;
 	font-weight: normal;
+	background: url("../images/long_border.png") no-repeat scroll 0 32px transparent;
+	height: 43px;
+	padding: 0;
+	width: 390px;
 }
 #neg-discuss .content {
 }
 #neg-discuss .minheader {
-	font-size: 1.2em;
 }
 #neg-discuss .picture {
 }
@@ -31,7 +35,18 @@
 	margin-bottom: 18px;
 }
 /* Make "My Offer" look like the title */
-#edit-field-price-0-value-wrapper label {
+#edit-field-price-0-value-wrapper .description {
+	display:inline;
+	vertical-align:bottom;
+}
+input#edit-field-price-0-value-wrapper, input#edit-field-price-0-value {
+	width:92px;
+}
+div#edit-field-price-0-value-wrapper label{
+	font-size:18px;
+}
+input#edit-field-offer-expires-0-value-datepicker-popup-0, input#edit-field-offer-expires-0-value-timeEntry-popup-1{
+	width:130px;
 }
 div#product_info_in_offer {
 	width: 250px;
@@ -44,18 +59,35 @@ div#product_info_in_offer {
 div#product_info_in_offer img, div#seller_info_in_offer img {
 	border: 1px solid #CCCCCC;
 }
-div#seller_info_in_offer .person_pic, #buyer-for-seller .person_pic {
+div#seller_info_in_offer .person_pic, div#offer_neg_buyer .person_pic, #buyer-for-seller .person_pic, #neg-discuss img {
 	border: 1px solid #CCCCCC;
-	padding: 5px 5px 2px;
+	padding: 5px 3px 1px 5px;
 	background: #FFFFFF;
 	width: 44px;
 	float: left;
 }
+div#neg-discuss img {
+	width: 44px;
+	height: 44px;
+	padding: 5px;
+	background: #FFFFFF;
+	margin: 0 10px 5px 0;
+}
+.field-field-pay-received, .field-field-item-sent, .offer-detail {
+	margin-left: 65px;
+}
+div#chit-chat .content {
+	padding-bottom: 5px;
+	border-bottom: 1px solid #CCCCCC;
+}
 div#seller_info_in_offer .person_pic {
 	margin-top: 18px;
 }
-div#buyer-for-seller .person_pic {
+div#buyer-for-seller .person_pic{
 	margin: 0 10px 68px 0;
+}
+div#offer_neg_buyer .person_pic {
+	margin: 0 10px 10px 0;
 }
 div.form-radios div.form-item {
 	float: left;
@@ -69,10 +101,18 @@ div#seller_info_in_offer .person_pic_seller {
 	width: 200px;
 }
 #seller-neg-form div.form-item label {
-	clear: both
+	clear: both;
+	margin-bottom: 15px;
+}
+#seller-neg-form div.form-radios {
+	height: 30px;
+}
+#seller-neg-form label {
+	font-weight: 500 !important;
 }
 #seller-neg-form div#edit-field-chat-0-value-wrapper {
-	clear: both
+	clear: both;
+	margin-top: 7px;
 }
 #buyer-for-seller .person_pic_seller {
 	font-weight: bold
@@ -80,11 +120,9 @@ div#seller_info_in_offer .person_pic_seller {
 .person_pic_offer {
 	font-weight: bold;
 }
-/* buyer pic in buyer area during offer */
-#offer_neg_buyer .person_pic {
-}
-#offer_neg_buyer input#edit-field-city-0-value{
-	width:284px;
+
+#offer_neg_buyer input#edit-field-city-0-value {
+	width: 284px;
 }
 div#buyer_info_in_offer {
 }
@@ -104,4 +142,16 @@ div#buyer_info_in_offer {
 }
 #chit-chat .node {
 }
-
+/*Offer Review Seller Negotiation form*/
+#seller-neg-form input#edit-submit {
+	float: right;
+	margin-right: 4px;
+}
+#seller-neg-form .attachments {
+	clear: both
+}
+#offer_top {
+	height: 320px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #CCCCCC;
+}

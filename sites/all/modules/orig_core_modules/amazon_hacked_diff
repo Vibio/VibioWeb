@@ -1,0 +1,119 @@
+
+Only in /var/www/vibio/src/sites/all/modules/orig_core_modules/amazon/: ~
+diff -upr a/amazon.module b/amazon.module
+--- amazon.module	2010-02-25 06:41:30.000000000 +0000
++++ amazon.module	2011-11-01 22:07:31.000000000 +0000
+@@ -116,7 +116,8 @@ function amazon_preprocess_amazon_item(&
+   }
+
+   $variables['type'] = _amazon_clean_type($item['producttypename']);
+-  $variables['detailpageurl'] = check_url($item['detailpageurl']);
++  $variables['detailpageurl'] = check_url($item['detailpageurl']); // stephen: is this too much? Are we turning
++		// actual key=value into key%3Dvalue ?    ... not sure
+   $variables['editorialreview'] = !empty($item['editorialreviews']) ? check_markup($item['editorialreviews'][0]['content']) : '';
+   $variables['customerreview'] = !empty($item['customerreviews']) ? check_markup($item['customerreviews'][0]['content']) : '';
+   $variables['invalid_asin'] = !empty($item['invalid_asin']) ? 1 : 0;
+@@ -255,6 +256,8 @@ function amazon_http_request($operation,
+   // Make the request and return a SimpleXML object.
+   $results = drupal_http_request($url, array(), 'GET');
+   if ($results->code == 200) {
++		// For testing, save Amazon dump in src directory
++		// file_put_contents('AmazonResult.xml', $results->data);
+     $xml = new SimpleXMLElement($results->data);
+     return $xml;
+   }
+@@ -385,8 +388,8 @@ function amazon_item_lookup_from_db($ite
+   if (!empty($item_ids)) {
+     $sql  = "SELECT * FROM {amazon_item} ai WHERE ai.asin IN (";
+     $sql .= implode(',', array_fill(0, count($item_ids), "'%s'")) .') ';
+-    $sql .= 'AND ai.timestamp > %d';
+-    $results = db_query($sql, $item_ids, time() - variable_get('amazon_refresh_schedule', 86400));
++    //$sql .= 'AND ai.timestamp > %d'; //remove limit on expired data
++    $results = db_query($sql, $item_ids/*, time() - variable_get('amazon_refresh_schedule', 86400)*/);
+     $items = array();
+     while ($item = db_fetch_array($results)) {
+       _amazon_load_child_data($item);
+@@ -757,6 +760,7 @@ function amazon_get_associate_id() {
+ }
+
+ function amazon_cron() {
++  return;
+   // Here, we're going to chug through all the existing ASINs and update them.
+   // We'll grab 50 at a time to avoid thrashing things.
+   $sql = "SELECT asin FROM {amazon_item} WHERE timestamp < %d";
+diff -upr a/amazon_search/amazon_search.module b/amazon_search/amazon_search.module
+--- amazon_search/amazon_search.module	2010-02-25 06:41:30.000000000 +0000
++++ amazon_search/amazon_search.module	2011-10-05 23:36:09.000000000 +0000
+@@ -16,36 +16,59 @@ function amazon_search_search($op = 'sea
+         return t('Amazon.com');
+       }
+     case 'search':
+-      if (user_access('access amazon search')) {
++      if ($skip_access_check || user_access('access amazon search')) {
+         $products = array();
+         $items = amazon_search_simple_search($keys);
+         foreach ($items as $item) {
+-          $products[] = array(
+-            'title' => check_plain($item['title']),
+-            'link' => check_url($item['detailpageurl']),
+-            'type' => check_plain($item['productgroup']),
+-            'user' => isset($item['participants']) ? implode(', ', $item['participants']) : '',
+-            'snippet' => isset($item['editorialreviews']) ? check_markup($item['editorialreviews'][0]['content']) : '',
+-          );
++          if (module_exists("vibio_amazon"))
++          {
++            amazon_item_insert($item);
++            $products[] = _vibio_amazon_search_result($item);
++          }
++          else
++          {
++            $products[] = array(
++              'title' => check_plain($item['title']),
++              'link' => check_url($item['detailpageurl']),
++              'type' => check_plain($item['productgroup']),
++              'user' => isset($item['participants']) ? implode(', ', $item['participants']) : '',
++              'snippet' => isset($item['editorialreviews']) ? check_markup($item['editorialreviews'][0]['content']) : '',
++            );
++          }
+         }
+         return $products;
+       }
+   }
+ }
+
++/* This defines the pagination of the search.
++ * Max's it at 5 pages -- stephen */
+ function amazon_search_simple_search($keywords = '', $parameters = array()) {
++  global $pager_page_array, $pager_total;
++  $current_page = $_GET['page'] ? $_GET['page'] : 0;
++  $offset = module_exists("product") ? product_set_external_search_page_offset() : 0;
++  $search_page = $current_page - $offset;
++  $search_page = $search_page < 0 ? 0 : $search_page;
++
+   $parameters += array(
+-    'ResponseGroup' => 'ItemAttributes,EditorialReview',
+-    'SearchIndex' => 'Blended',
++    'ResponseGroup' => 'Large',
++    'SearchIndex'   => 'All',
++    'ItemPage'      => $search_page + 1,
+   );
+   $parameters['Keywords'] = urlencode($keywords);
+   drupal_alter('amazon_search_parameters', $parameters);
+
+   $items = array();
+   $results = amazon_http_request('ItemSearch', $parameters);
++
++  $total_pages = (int) $results->Items->TotalPages > 5 ? 5 : (int) $results->Items->TotalPages;
++  $total_pages += $offset;
++  $pager_page_array[0] = $current_page;
++  $pager_total[0] = $total_pages;
++
+   foreach($results->Items->Item as $xml) {
+     $item = amazon_item_clean_xml($xml);
+     $items[$item['asin']] = $item;
+   }
+   return $items;
+-}
+\ No newline at end of file
++}
+Only in /var/www/vibio/src/sites/all/modules/orig_core_modules/amazon/: WARNING--custom_code_here

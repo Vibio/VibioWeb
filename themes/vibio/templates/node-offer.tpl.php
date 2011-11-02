@@ -80,6 +80,7 @@
  * @see zen_preprocess_node()
  * @see zen_process()
  */
+global $base_url;
 ?>
 
 <?php /* we need the conversation/negotiation */
@@ -115,7 +116,7 @@
 
 
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix popthis">
- <div id="product_info_in_offer">
+ <div id="offer_top"><div id="product_info_in_offer">
   <?php /* product picture (name in title) */ 
 	// dsm($item); -> I don't see collection as part of this
 
@@ -163,9 +164,12 @@
 	/* imagecache the person_pic soon !!! */
 	?>
 	<div class="person_pic"><?php print theme('user_picture', $item_owner); ?></div>
-<div class="person_pic_seller">  <?php print "Seller: <a href='user/" . $item_owner->uid . "'>" .
-		$item_owner->name . "</a>" ; //d5 print theme("user_picture",$user);?></div>
-  <?php /* it was Requested price, Jason sent frames that had it as Price,
+		<div class="person_pic_seller">
+			<?php
+			  print "<b>Seller:</b> <a href='" . $base_url ."/user/" . $item_owner->uid . "'>" .
+			  $item_owner->name . "</a>" ; 
+			?>  
+<?php /* it was Requested price, Jason sent frames that had it as Price,
 	* Simon said "Asking", Jason changed it to "List", back to Asking. */ ?>
 <?php
 
@@ -179,17 +183,16 @@ print content_view_field(content_fields("field_pay_received"), $current_seller, 
 print content_view_field(content_fields("field_item_sent"), $current_seller, FALSE, FALSE);
 */
 ?>
-
- </div>
+</div>
+ </div></div>
 <?php /* Prep the buyer info section. Moves depending on buyer logged in. */ 
 	$offer_user = user_load($node->uid);
-	$amount = $current_buyer->field_price[0]['value'];
+	$amount = $node->field_price[0][value];
 	$buyer_div = 
    '<div class="person_pic">' .
 	 theme('user_picture', $offer_user) .
 	 '</div>' .
-	 "<div class='person_pic_seller'>Buyer: <a href='user/" . $offer_user->uid . "'>" .  
-			$offer_user->name . "</a></div><div class='person_pic_offer'>Offer: " . $amount . "</div>"; 
+	 "<div class='person_pic_seller'>Buyer: " . $name . "</div><div class='person_pic_offer'>Offer:$amount</div>"; 
 
 if ($perm_seller) {
  	$buyer_div .=
@@ -262,9 +265,9 @@ print $output; ?>
   <?php /* print the conversation, view defined (and cache loaded) above */
 //print views_embed_view($viewName, $display_id, $myArgs);
 	if ( $perm_buyer || $perm_seller ) { // you  are buyer or seller
-		print "<h3>Negotiation Log</h3> <div id='chit-chat'>" . $chit_chat . "</div>";
+		print "<h3>Negotiation Log</h3><div id='chit-chat'>" . $chit_chat . "</div>";
 	} else {
-		print "<h3>Discussions are private to the participants.</h3>";
+		print "<div><h3>Discussions are private to the participants.</h3></div>";
 	}
   ?>
 </div>

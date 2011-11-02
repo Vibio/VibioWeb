@@ -1,0 +1,12 @@
+<?php
+
+
+/**
+ * Implementation of hook_uninstall().
+ * @file Contains the uninstall method for the module.
+ */
+function jwplayermodule_uninstall() {
+  variable_del(LONGTAIL_KEY . JW_PLAYER_CONFIG);
+  variable_del(LONGTAIL_KEY . JW_PLAYER_SUBMIT);
+  variable_del(LONGTAIL_KEY . JW_PLAYER_VERSION);
+}

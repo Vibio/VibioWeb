@@ -70,9 +70,12 @@ function overrides_form_alter($form, &$state, $id)
 	//	re-sets the drupal_set_message.
 	if ($id == 'offer_neg_buyer_node_form' ) {
 		$form['buttons']['submit']['#submit'][] = 'overides_remessagify_buyer_form_submit';
+		$form['#after_build'][] = 'overrides_edit_chat_field';
 	}
 	if ($id == 'offer_neg_seller_node_form' ) {
 		$form['buttons']['submit']['#submit'][] = 'overides_remessagify_seller_form_submit';
+		//Because it's a CCK field, we have to alter it after form build.
+		$form['#after_build'][] = 'overrides_edit_chat_field';
 	}
 
 
@@ -96,6 +99,24 @@ function overrides_form_alter($form, &$state, $id)
   }
 	*/
 }
+
+/**
+ * Adds a title to the chat field on the offer_neg_seller node form.
+ * 
+ * The chat field on the offer_neg_seller form is a CCK field, which means
+ * to alter its fields on the node form, we have to alter the form after build.
+ * See http://drupal.org/node/726282
+ * 
+ * @param <type> $form
+ * @param <type> $form_state
+ * @return <type> 
+ */
+function overrides_edit_chat_field($form, &$form_state){
+  //Add "Message:" before the textfield for the seller's negotiation response
+  $form['field_chat']['#prefix'] = '<label>Message:</label>';
+  return $form;
+}
+
 function overrides_user($op)
 {
   if ( $op == 'login' ) {
@@ -203,6 +224,8 @@ function overrides_form_search_theme_form_alter(&$form, &$state)
         $form['search_theme_form']['#default_value'] = $last_keywords;
         break;
     }
+  }else{
+     $form['search_theme_form']['#default_value'] = 'Search Vibio';
   }
 }
 

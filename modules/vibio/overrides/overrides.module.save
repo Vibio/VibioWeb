@@ -1,0 +1,322 @@
+<?php
+/* stephen: this "overrides" module reorganizes the filesystem,
+ *  returned as overrides_file_url
+ * and i think many other things.
+ * It's blocking imagecache
+ */
+
+define("OVERRIDES_FILE_DOWNLOAD_DIRECT", 5);
+
+/*********--------- Stephen's overrides ----------***********/
+
+// form_alter, below, made node add/edit changes
+
+
+
+
+
+
+
+/**********-------- Nelson below here --------------*********/
+
+function overrides_menu_alter(&$menu)
+{
+	$menu['user/%/messages']['type'] = MENU_CALLBACK;
+	$menu['user/%user_category/edit']['type'] = MENU_CALLBACK;
+	$menu['user/%user/openid']['type'] = MENU_CALLBACK;
+}
+
+function overrides_theme($form, &$form_state)
+{
+	return array(
+		"overrides_search_type_select"	=> array(
+			"arguments"	=> array("search_types" => array()),
+			"template"	=> "templates/overrides/search-type-select",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+	);
+}
+
+
+// These functions seemed to work, then stop, may be related to pop ups
+//  -- but at least they stop the stupid messages, good enough
+function overides_remessagify_buyer_form_submit($form, &$form_state) {
+ global $user;
+ $node = node_form_submit_build_node($form, $form_state);
+ $insert = empty($node->nid); // boolean
+
+	/// !!! test for failure in future version
+
+ 	if ( $insert ) { // brand new
+		drupal_set_message(t("Offer made."));
+	} else { // updating
+		drupal_set_message(t("Offer updated."));
+	}
+}
+
+
+function overides_remessagify_seller_form_submit($form, &$form_state) {
+ global $user;
+ $node = node_form_submit_build_node($form, $form_state);
+ $insert = empty($node->nid); // boolean
+
+	drupal_set_message(t("Response to offer was successful")); // !!! test for failure in future version
+}
+
+function overrides_form_alter($form, &$state, $id)
+{
+	// stephen 20110901
+	// add another function to the submit process, at the end, which 
+	//	re-sets the drupal_set_message.
+	if ($id == 'offer_neg_buyer_node_form' ) {
+		$form['buttons']['submit']['#submit'][] = 'overides_remessagify_buyer_form_submit';
+		$form['#after_build'][] = 'overrides_edit_chat_field';
+	}
+	if ($id == 'offer_neg_seller_node_form' ) {
+		$form['buttons']['submit']['#submit'][] = 'overides_remessagify_seller_form_submit';
+		//Because it's a CCK field, we have to alter it after form build.
+		$form['#after_build'][] = 'overrides_edit_chat_field';
+	}
+
+
+
+	if ($id == "user_register")
+	{
+		drupal_set_title(t("Create A New Account"));
+	}
+
+
+	/* try to redirect on login */
+	/* ODD DIFFICULTIES: gave up and wrote overrides_user with a different
+	// approach.  Maybe be a blooper on my part, but I think there was a race
+	// condition or something making the code below not work, possibly
+	// struggle with security module.
+	// see overrides_user just below here
+	/*
+ 	if ($form_id == 'user_login_block' || $form_id == 'user_login') {
+		$go = 'home';
+    $form['#action'] = '/user/login?destination=' . $go;
+  }
+	*/
+}
+
+/**
+ * Adds a title to the chat field on the offer_neg_seller node form.
+ * 
+ * The chat field on the offer_neg_seller form is a CCK field, which means
+ * to alter its fields on the node form, we have to alter the form after build.
+ * See http://drupal.org/node/726282
+ * 
+ * @param <type> $form
+ * @param <type> $form_state
+ * @return <type> 
+ */
+function overrides_edit_chat_field($form, &$form_state){
+  //Add "Message:" before the textfield for the seller's negotiation response
+  $form['field_chat']['#prefix'] = '<label>Message:</label>';
+  return $form;
+}
+
+function overrides_user($op)
+{
+  if ( $op == 'login' ) {
+    $_REQUEST['destination'] = 'home';
+  }
+  return;
+}
+
+function overrides_form_user_login_block_alter(&$form, &$state)
+{
+	$title = t("Returning user?");
+	$description = t("Login to Vibio");
+
+	$form['#prefix'] .= "
+		<h5 class='menu_header'>$title</h5>
+		<span class='menu_description'>$description</span>
+	";
+
+	$form['submit']['#value'] = " ";
+}
+
+/* try to redirect again */
+function overrides_user_register_submit($form, &$form_state) {
+	$form_state['redirect'] = 'home';
+}
+
+
+
+function overrides_form_system_file_system_settings_alter(&$form, &$state)
+{
+	$form['file_downloads']['#options'][OVERRIDES_FILE_DOWNLOAD_DIRECT] = t("Separate server");
+	$form['file_downloads']['#description'] .= " ".t("Choosing Separate vhost requires that the File URL is filled in with a valid url that will take you to the File system path.");
+	$form['overrides_file_url'] = array(
+		"#type"			=> "textfield",
+		"#title"		=> t("File URL"),
+		"#description"	=> t("The URL to access the file system path. No trailing slash plz."),
+		"#default_value"=> variable_get("overrides_file_url", ""),
+		"#weight"		=> -5,
+	);
+}
+
+function overrides_file_url_alter(&$path)
+{
+	$upload_dir = file_directory_path();
+	$file_url = variable_get("overrides_file_url", false);
+
+	//stephen: what about getting out of here for imagecache?
+/*
+No. This isn't the right place.  This alters urls being printed,
+not when they are returned.
+grep 'stephen' in imagecache for solution [?]
+	if ( preg_match("sites/default/files/uploads/imagecache", $file_url)) {
+die ($file_url);
+		return;
+	}
+*/	
+
+	if ($file_url && variable_get('file_downloads', FILE_DOWNLOADS_PUBLIC) == OVERRIDES_FILE_DOWNLOAD_DIRECT && strpos($path, $upload_dir) === 0)
+	{
+		$path = str_replace($upload_dir, $file_url, $path);
+	}
+}
+
+function overrides_form_search_theme_form_alter(&$form, &$state)
+{
+	global $theme;
+	
+	if ($theme != "vibio")
+	{
+		return;
+	}
+	
+	$form['submit']['#value'] = " ";
+	$form['#submit'][] = "overrides_search_submit";
+
+	$form['search_type'] = array(
+		"#type"			=> "hidden",
+		//The default search type should reflect the last search performed. Default
+		//should be "vibio_item"
+		"#default_value"=> isset($_SESSION['search_type']) ? $_SESSION['search_type'] : "vibio_item",
+	);
+
+	$form['search_type_select'] = array(
+		"#type"		=> "markup",
+		"#value"	=> theme("overrides_search_type_select", overrides_allowed_search_types()),
+		"#weight"	=> -10,
+	);
+
+	$form['search_theme_form']['#title'] = "";
+  $url_parts =  explode('/', substr($_SERVER['REQUEST_URI'], 1));
+  if($url_parts[0] == 'search'){
+    array_shift($url_parts);
+    $search_type = array_shift($url_parts);
+
+    //Depending on search type, parse the URL appropriately. Add more cases
+    //if more searches are added.
+    switch ($search_type) {
+      case "user":
+        $last_keywords = urldecode($url_parts[0]);
+        $form['search_theme_form']['#default_value'] = $last_keywords;
+        break;
+      case "vibio_item":
+        $search_request = explode('?', $url_parts[0]);
+        $last_keywords = urldecode($search_request[0]);
+        $form['search_theme_form']['#default_value'] = $last_keywords;
+        break;
+    }
+  }
+}
+
+function overrides_search_submit($form, &$state)
+{
+	$allowed_searches = overrides_allowed_search_types();
+	$default_search = "vibio_item";
+	$search_type = array_key_exists($state['values']['search_type'], $allowed_searches) ? $state['values']['search_type'] : $default_search;
+	//Maintain state of search_type to the next page (may not be desired)
+	$_SESSION['search_type'] = $search_type;
+	$search_term = trim($state['values'][$form['form_id']['#value']]);
+
+	$state['redirect'] = "search/$search_type/$search_term";
+}
+
+/* This produces the main search form */
+function overrides_form_search_form_alter(&$form, &$state)
+{	
+
+  /* changes to searchform:
+   * We're greatly changing the search form 20090928.
+   * I'm not sure we'll stick with these changes.
+   * So I'm going to just hide it all with css for now
+   * A lot of this code could be removed if we stick with it.
+   */
+
+
+
+
+	$search_prefix = "";
+
+	drupal_add_js("themes/vibio/js/jquery-csb-1.0.js");
+	drupal_add_js("themes/vibio/js/search.js");
+	drupal_add_css("themes/vibio/css/search_page.css");
+	
+	$default = $form['module']['#value'];
+	
+	$form['#prefix'] = $search_prefix .
+		"<div id='search_form_container'>";
+	$form['#suffix'] = "</div>";
+	
+	$form['basic']['#title'] = "";
+	$form['basic']['#weight'] = 10;
+	$form['basic']['inline']['submit']['#prefix'] = "<div class='button_left'></div><div class='button_mid'>";
+	$form['basic']['inline']['submit']['#suffix'] = "</div><div class='button_right'></div>";
+	$form['basic']['inline']['#suffix'] .= "<div class='clear'></div>";
+	$form['#submit'][] = "overrides_search_form_submit";
+	$form['search_form_type'] = array(
+		"#type"			=> "select",
+		"#title"		=> t("Search Results"),
+		"#options"		=> overrides_allowed_search_types(true),
+		"#default_value"=> $default,
+		"#weight"		=> -10,
+	);
+}
+
+// this doesn't seem to do anything but set the redirect?
+function overrides_search_form_submit($form, &$state)
+{
+	$allowed_searches = overrides_allowed_search_types(true);
+	$default_search = "vibio_item";
+	$search_type = array_key_exists($state['values']['search_form_type'], $allowed_searches) ? $state['values']['search_form_type'] : $default_search;
+	$search_term = $state['values']['processed_keys'];
+	
+	$state['redirect'] = "search/$search_type/$search_term";
+}
+
+function overrides_allowed_search_types($show_all_searches=false)
+{
+	if (!$show_all_searches)
+	{
+		return array(
+			"vibio_item"=> array(
+				"title"	=> t("Search Items"),
+				"image"	=> "/themes/vibio/images/icons/default_item.png",
+			),
+			"user"		=> array(
+				"title"	=> t("Search Users"),
+				"image"	=> "/themes/vibio/images/icons/default_user.png",
+			),
+		);
+	}
+	
+	$types = array(
+		"vibio_item"=> t("Items"), /* Vibio-Item-search */
+		"user"		=> t("Users"),
+	);
+	
+	if (module_exists("ebay"))     /* as of 201106, disabling module */
+	{
+		$types['ebay'] = t("eBay");
+	}
+	
+	return $types;
+}
+?>

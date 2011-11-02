@@ -1,7 +1,36 @@
-// $Id: CHANGELOG.TXT,v 1.7.2.5 2009/04/19 21:13:29 sun Exp $
 
 Invite 6.x-2.x, xxxx-xx-xx
 --------------------------
+by smk-ka: Cleaned up README.
+#496894 by seutje, smk-ka: Increased size of e-mail subject field.
+#871090 by smk-ka: Fixed registration message appears on password reset form.
+#870930 by jcmarco: Added support for Vertical Tabs.
+by smk-ka: Easier access to permissions page from invite settings.
+
+
+Invite 6.x-2.0-BETA2, 2010-08-01
+--------------------------------
+#324945 by andypost, Barrett, neilnz: Fixed mass email not possible.
+
+
+Invite 6.x-2.0-BETA1, 2010-08-01
+--------------------------------
+by smk-ka: Fixed invite stats don't display rank.
+#489898 by hefox: Respect destination URL on withdraw invite confirmation page.
+#790138 by rjbrown99: Fixed case-insensitive validation of e-mails.
+#651264 by fuerst, ositoblanco: Added configurable path to registration page.
+#695034 by smk-ka: Added a new permission to restrict access to administrative
+  pages.
+#364971 by jaydub: Fixed administrative overview query for PostgreSQL.
+#322748: Fixed only administrator can send invitations on multilingual
+  installation.
+#374869 by webchick, smk-ka: Denying access to the user registration form at
+  the menu callback level, not at the form level, for better compatibility with
+  other modules.
+#467486 by neilnz: Grammar fix.
+#633280 by tobiasb: Removed t() in schema definitions.
+#330233 by Bevan, smk-ka: Fixed escalation to target role failed.
+#124906 by tobiasb: Updated and improved German translation.
 
 
 Invite 6.x-2.0-ALPHA-1, 2009-04-19

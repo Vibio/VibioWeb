@@ -374,7 +374,7 @@ a#content-email {
 	margin-top: 32px;
 }
 #front-p3 {
-	margin-top: 55px;
+	margin-top: 45px;
 }
 #facebook-large{
 	cursor: pointer
@@ -484,11 +484,11 @@ div.views-field.views-field-nid{
 	width: 62px;
 }
 /*about us page*/
-#block-block-14{
+#block-block-14,#block-block-19{
 	height: 70px
 }
 /*Hiding the about us page title*/
-.page-about h1#page_title{
+.page-about h1#page_title,.page-team h1#page_title{
 	display: none
 }
 #about-top-p{
@@ -496,10 +496,10 @@ div.views-field.views-field-nid{
 	line-height: 46px;
 	margin: 1px 0 38px;
 }
-#block-block-14 .content{
+#block-block-14 .content,#block-block-19 .content{
 	position: absolute;
 	top:6px;
-	right: 20px;
+	right: 9px;
 }
 #about-left{
 	float: left;
@@ -553,4 +553,48 @@ div.views-field.views-field-nid{
 }
 /*New Search Results*/
 #search_type_submenu_0 a{
+}
+/*Team Page*/
+.team-name{
+	font-size: 28px;
+	font-weight:normal;
+	margin-bottom:10px;
+}
+.team-role{
+	font-size:18px;
+	font-weight:normal;
+	font-style:italic;
+	margin-bottom:12px;
+}
+.team-photo{
+	background:url(../images/team/picture_frame.png) no-repeat;
+	width:176px;
+	height:177px;
+	float:left;
+	margin-right:20px;
+}
+.team-photo img{
+	margin:10px 0 0 13px;
+}
+.team-bio{
+	width:500px;
+	float:right;
+	margin:0 32px 15px 0;
+}
+.team-items{
+	float:right;
+	width:500px;
+	margin-right: 32px;
+}
+.team-items img{
+	display:inline;
+	margin-right:1px;
+}
+.team-instr{
+	font-size:11px;
+	margin:0 0 10px 0;
+}
+.team-break{
+	clear:both;
+	padding:20px 0;
 }

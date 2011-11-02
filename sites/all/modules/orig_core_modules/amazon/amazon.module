@@ -116,7 +116,8 @@ function amazon_preprocess_amazon_item(&$variables) {
   }
 
   $variables['type'] = _amazon_clean_type($item['producttypename']);
-  $variables['detailpageurl'] = check_url($item['detailpageurl']);
+  $variables['detailpageurl'] = check_url($item['detailpageurl']); // stephen: is this too much? Are we turning 
+		// actual key=value into key%3Dvalue ?    ... not sure
   $variables['editorialreview'] = !empty($item['editorialreviews']) ? check_markup($item['editorialreviews'][0]['content']) : '';
   $variables['customerreview'] = !empty($item['customerreviews']) ? check_markup($item['customerreviews'][0]['content']) : '';
   $variables['invalid_asin'] = !empty($item['invalid_asin']) ? 1 : 0;

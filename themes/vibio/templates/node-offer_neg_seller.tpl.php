@@ -82,8 +82,14 @@
  */
 ?>
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix">
-  <?php print $user_picture; ?>
-
+  <?php
+	$seller = user_load($node->uid);
+	if (!$seller->picture) {
+		$seller->picture = "themes/vibio/images/icons/default_user_large.png";
+        }
+	$seller_picture = theme('imagecache','little_profile_pic', $seller->picture, $seller->name . "'s Picture", 'User Picture', '');
+        print $seller_picture;
+  ?>
   <?php if ($display_submitted || $terms): ?>
     <div class="meta">
       <?php if ($display_submitted): ?>

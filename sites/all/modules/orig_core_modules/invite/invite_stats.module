@@ -1,5 +1,4 @@
 <?php
-// $Id: invite_stats.module,v 1.4 2008/09/02 17:02:14 smk Exp $
 
 /**
  * @file
@@ -192,7 +191,7 @@ function theme_invite_stats_ranking($inviters, $rank = 1) {
 
     $header = array();
     $rows = array();
-    $prev_count = 0;
+    $prev_count = -1;
     foreach ($inviters as $inviter) {
       $row = array();
       if ($inviter->count != $prev_count) {

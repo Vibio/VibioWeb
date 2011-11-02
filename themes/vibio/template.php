@@ -247,7 +247,7 @@ function phptemplate_user_relationships_pending_request_cancel_link($uid, $rid)
 function phptemplate_user_relationships_request_relationship_direct_link($relate_to, $relationship_type)
 {
 	return l(
-		"<button>".t("Add friend")."</button>",
+		"<button class='add_connection'>".t("Connect")."</button>",
 		"relationships/{$relate_to->uid}/{$relationship_type->rtid}/request",
 		array(
 			"attributes"=> array(

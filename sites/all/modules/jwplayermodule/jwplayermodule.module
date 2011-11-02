@@ -1,0 +1,329 @@
+<?php
+
+/**
+ * @file
+ * This is the primary module file for the jwplayermodule.  It handles the
+ * embedding of the player and makes two theme functions available.
+ */
+
+define("JWPLAYER_MODULE_DIR", drupal_get_path("module", "jwplayermodule"));
+define("JWPLAYER_MODULE_URL", $GLOBALS["base_url"] . "/" . drupal_get_path("module", "jwplayermodule"));
+define("JWPLAYER_FILES_DIR", file_directory_path() . "/jwplayermodule");
+define("JWPLAYER_FILES_URL", $GLOBALS["base_url"] . "/" . file_directory_path() . "/jwplayermodule");
+
+include "framework/LongTailFramework.php";
+
+define("JW_PLAYER_CONFIG", "config");
+define("JW_PLAYER_SUBMIT", "submit");
+define("JW_PLAYER_VERSION", "version");
+define("JW_PLAYER_GA_VARS", "?utm_source=Drupal&utm_medium=Product&utm_campaign=Drupal");
+define("JW_PLAYER_DESC",
+  "Please select <em>New Player</em> or an existing Player from the dropdown.  To delete a Player click the <em>Delete</em> button.  " .
+  "<b>This is permanent.</b>"
+);
+define("JW_PLAYER_DETAILS_DESC",
+  "Edit the configuration options for your Player.  Changes here will be <em>immediately</em> reflected in any embedded Players using this configuration." .
+  "To revert changes that you have made click <em>Discard</em>."
+);
+define("JW_PLAYER_LTAS_DESC",
+  "The LongTail AdSolution (LTAS) is a service provided by LongTail Video which allows you to run pre-roll, post-roll and overlay ads.  " .
+  "This enables you to monetize your content.  In order to make use of LTAS you will need to purchase a commercial JW Player license and acquire a channel code.  " .
+  "For more information about LTAS please visit the <a href=http://www.longtailvideo.com/adsolution/" . JW_PLAYER_GA_VARS . " target=_blank>LTAS product page</a>."
+);
+define("JW_PLAYER_UPLOAD_DESC", "Upload your own zip package. Use this to upgrade to the licensed version or to install " .
+  "a specific version of the player. To obtain a licensed player, please purchase a license from LongTail Video.");
+define("JW_PLAYER_DOWNLOAD_DESC", "Automatically download the latest Non-commercial version of the JW Player to your web server.");
+define("JW_PLAYER_LICENSE_DESC",
+  "<p>By default, this plugin uses the latest non-commercial version of the JW Player. Use of the player, skins and " .
+  "plugins is free for non-commercial use. If you operate a commercial site (i.e., sells products, runs ads, or is owned " .
+  "by a company), you are required to purchase a license for the products you use.</p>" .
+  "<p>Purchasing a license will remove the JW Player watermark and allow you to set your own watermark if desired. " .
+  "In addition, you will be able to use commercial-only plugins, such as advertising plugins.</p>" .
+  "<a href=https://www.longtailvideo.com/players/order/" . JW_PLAYER_GA_VARS . " target=_blank>Purchase a License</a>" .
+  "<p>Once you have purchased a license for the commercial player, you can upload it here.</p>" .
+  "<a href='" . base_path() . "admin/settings/jwplayermodule/upgrade'>Upload Commercial Player</a>"
+);
+
+function jwplayermodule_enable() {
+  $path = JWPLAYER_FILES_DIR;
+  if (!file_check_directory($path) && file_check_directory($path, FILE_CREATE_DIRECTORY)) {
+    $path = JWPLAYER_FILES_DIR . "/configs";
+    if (file_check_directory($path, FILE_CREATE_DIRECTORY)) {
+      if ($configs = file_scan_directory(JWPLAYER_MODULE_DIR . "/configs", ".*\.xml")) {
+        foreach ($configs as $config) {
+          file_copy($config->filename, $path, $config->basename);
+        }
+      }
+    }
+    $path = JWPLAYER_FILES_DIR . "/player";
+    if (file_check_directory($path, FILE_CREATE_DIRECTORY)) {
+      if ($swfs = file_scan_directory(JWPLAYER_MODULE_DIR, ".*\.swf")) {
+        foreach ($swfs as $swf) {
+          file_copy($swf->filename, $path, $swf->basename);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implementation of hook_help.
+ */
+function jwplayermodule_help($path, $arg) {
+  $output = "";
+  switch ($path) {
+    case "admin/help#jwplayermodule":
+      $output = "<p>". t("Embeds a JW Player&trade; for Flash into nodes") ."</p>";
+      break;
+  }
+  return $output;
+}
+
+/**
+ * Implementation of hook_perm.
+ */
+function jwplayermodule_perm() {
+  return array("administer jwplayermodule");
+}
+
+/**
+ * Implementation of hook_menu.
+ */
+function jwplayermodule_menu() {
+  $items = array();
+
+  $items["admin/settings/jwplayermodule"] = array(
+    "title" => "JW Player setup",
+    "description" => "This page provides configuration options for the JW Player&trade; for Flash.",
+    "page callback" => "drupal_get_form",
+    "page arguments" => array("jwplayermodule_admin"),
+    "access arguments" => array("administer jwplayermodule"),
+    "type" => MENU_NORMAL_ITEM,
+    "file" => "jwplayermodule_admin.inc",
+  );
+  $items["admin/settings/jwplayermodule/players"] = array(
+    "title" => "Configuration",
+    "description" => "This page provides configuration options for the JW Player&trade; for Flash.",
+    "page callback" => "drupal_get_form",
+    "page arguments" => array("jwplayermodule_admin"),
+    "access arguments" => array("administer jwplayermodule"),
+    "type" => MENU_DEFAULT_LOCAL_TASK,
+    "file" => "jwplayermodule_admin.inc",
+  );
+  $items["admin/settings/jwplayermodule/upgrade"] = array(
+    "title" => "Upgrade",
+    "description" => "This page provides information installing or upgrading the JW Player&trade; for Flash.",
+    "page callback" => "drupal_get_form",
+    "page arguments" => array("jwplayermodule_upgrade"),
+    "access arguments" => array("administer jwplayermodule"),
+    "type" => MENU_LOCAL_TASK,
+    "file" => "jwplayermodule_admin.inc",
+  );
+  $items["admin/settings/jwplayermodule/license"] = array(
+    "title" => "License",
+    "description" => "This page provides information about purchasing a license for the JW Player&trade; for Flash.",
+    "page callback" => "drupal_get_form",
+    "page arguments" => array("jwplayermodule_license"),
+    "access arguments" => array("administer jwplayermodule"),
+    "type" => MENU_LOCAL_TASK,
+    "file" => "jwplayermodule_admin.inc",
+  );
+  $items["admin/settings/jwplayermodule/upgrade/js"] = array(
+    "page callback" => "jwplayermodule_upgrade_js",
+    "access arguments" => array("administer jwplayermodule"),
+    "type" => MENU_CALLBACK,
+    "file" => "jwplayermodule_admin.inc",
+  );
+  $items["admin/settings/jwplayermodule/default/js"] = array(
+    "page callback" => "jwplayermodule_default_js",
+    "access arguments" => array("administer jwplayermodule"),
+    "type" => MENU_CALLBACK,
+    "file" => "jwplayermodule_admin.inc",
+  );
+
+  return $items;
+}
+
+/**
+ * Implementation of hook_nodeapi.  This method processes jwplayer tag and
+ * begins the embed process.
+ */
+function jwplayermodule_nodeapi(&$node, $op, $a3, $a4) {
+  switch ($op) {
+    case "view":
+      $text = $node->content["body"]["#value"];
+      $node->content["body"]["#value"] = tag_processor($text);
+      break;
+  }
+}
+
+function jwplayermodule_comment(&$comment, $op) {
+  switch ($op) {
+    case "view":
+      $text = $comment->comment;
+      $comment->comment = tag_processor($text);
+      break;
+  }
+}
+
+function tag_processor($content) {
+  $text = $content;
+  $regex = "/\[(\<br \/\>|\s)*jwplayer(\<br \/\>|\s)*(\|([a-zA-Z0-9_.\s]+=[-a-zA-Z0-9+.,\(\){}:&@#\/\?<>\"%=~_\'\"\s]+))*(\<br \/\>|\s)*\]/";
+  if (preg_match_all($regex, $text, $matches)) {
+    $patterns = array();
+    $players = array();
+    //Have to process multiple matches since more than one player can be on a node.
+    foreach ($matches[0] as $match) {
+      $tag = $match;
+      $config = "";
+      $flash_vars = array();
+      $tag = str_replace("<br />", "", $tag);
+      $tag = preg_replace("/\[(\s)*jwplayer(\s)*(\||\])/", "", $tag);
+      $tag = str_replace("]", "", $tag);
+      $args = preg_split("/\|/", $tag);
+      //For the current match, process each parameter.
+      foreach ($args as $fvar) {
+        $key_val = preg_split("/=/", $fvar, 2);
+        switch (trim($key_val[0])) {
+          case "config":
+            $config = trim($key_val[1]);
+            break;
+          case "file":
+          case "image":
+          case "html5_file":
+          case "download_file":
+            //Drupal automatically converts URLs into <a> tags.  Must strip this out.
+            $file = preg_replace("/<(.)*>/U", "", $key_val[1]);
+            $attachment = theme("jwplayermodule_get_attachment_url", trim($file), $node);
+            if ($attachment) {
+              $flash_vars[trim($key_val[0])] = $attachment;
+            }
+            else {
+              $flash_vars[trim($key_val[0])] = trim($file);
+            }
+            break;
+          default:
+            if ($key_val[0] != "") {
+              $flash_vars[trim($key_val[0])] = trim($key_val[1]);
+            }
+            break;
+        }
+      }
+      //If the file and image tags haven't been set, try to find content on the node.
+      $flash_vars["file"] = $flash_vars["file"] ? $flash_vars["file"] : theme("jwplayermodule_get_attachment_url", 0, $node, TRUE);
+      $flash_vars["image"] = $flash_vars["image"] ? $flash_vars["image"] : theme("jwplayermodule_get_attachment_url", 1, $node, TRUE);
+      $patterns[] = $regex;
+      $players[] = theme("jwplayermodule_render_player", $config, $flash_vars);
+    }
+    $text = preg_replace($patterns, $players, $text, 1);
+  }
+  return $text;
+}
+
+/**
+ * Implementation of hook_theme.
+ */
+function jwplayermodule_theme() {
+  return array(
+    "jwplayermodule_render_player" => array(
+      "file" => "jwplayermodule_theme.inc",
+      "arguments" => array(
+        "config" => NULL,
+        "flash_vars" => NULL,
+      ),
+    ),
+    "jwplayermodule_get_attachment_url" => array(
+      "file" => "jwplayermodule_theme.inc",
+      "arguments" => array(
+        "fid" => NULL,
+        "node" => NULL,
+        "use_ID" => FALSE,
+      ),
+    ),
+    "jwplayermodule_admin" => array(
+      "file" => "jwplayermodule_theme.inc",
+      "arguments" => array(
+        "form" => NULL,
+      ),
+    )
+  );
+}
+
+/**
+ * For a given Player, find its index in the list of Players.
+ * @param array $configs The list of available configs
+ * @param string $config The config we want the index of
+ * @return int The index of $config
+ */
+function jwplayermodule_get_config_index($configs, $config) {
+  $count = 0;
+  foreach ($configs as $conf) {
+    if ($conf == $config) {
+      break;
+    }
+    $count++;
+  }
+  return $count;
+}
+
+/**
+ * Add the javascript that generates a confirmation dialog when deleting a
+ * player.
+ */
+function jwplayermodule_add_delete_check() {
+  $msg = t("Are you sure you wish to delete the currently selected Player?");
+  $jscript = 'Drupal.behaviors.moduleName = function() {$("#edit-delete").click(function(){return confirm("' . $msg . '")});}';
+  drupal_add_js($jscript, "inline");
+}
+
+function jwplayermodule_add_file_check() {
+  $msg = t("Please provide a player package for upload.");
+  $jscript = 'Drupal.behaviors.moduleName = function() {
+    $("#edit-submit").click(function() {
+      var value = $("#edit-zip").val();
+      if (value == "" || value.substr(value.length - 4) != ".zip") {
+        alert("' . $msg . '");
+        return false;
+      }
+    });
+  }';
+  drupal_add_js($jscript, "inline");
+}
+
+function install_player_from_package($file) {
+  $zip = new ZipArchive();
+  if ($zip->open($file)) {
+    $contents = "";
+    $dir = $zip->getNameIndex(0);
+    $fp = $zip->getStream($dir . "player.swf");
+    if ($fp) {
+      while(!feof($fp)) $contents .= fread($fp, 2);
+      fclose($fp);
+    } else {
+      form_set_error("", t("This is not a valid player package."));
+    }
+    if (!file_save_data($contents, LongTailFramework::getPrimaryPlayerPath(), FILE_EXISTS_REPLACE)) {
+      form_set_error("", t("There was an error trying to save player.swf."));
+    }
+    $fp = $zip->getStream($dir . "yt.swf");
+    if ($fp) {
+      $contents = "";
+      while(!feof($fp)) $contents .= fread($fp, 2);
+      fclose($fp);
+      if (!file_save_data($contents, str_replace("player.swf", "yt.swf", LongTailFramework::getPrimaryPlayerPath()), FILE_EXISTS_REPLACE)) {
+        form_set_error("", t("There was an error trying to save yt.swf."));
+      }
+    }
+    $fp = $zip->getStream($dir . "jwplayer.js");
+    if ($fp) {
+      $contents = "";
+      while(!feof($fp)) $contents .= fread($fp, 2);
+      fclose($fp);
+      if (!file_save_data($contents, LongTailFramework::getEmbedderPath(), FILE_EXISTS_REPLACE)) {
+        form_set_error("", t("There was an error trying to save jwplayer.js."));
+      }
+    }
+    $zip->close();
+    file_delete($file);
+  }
+}

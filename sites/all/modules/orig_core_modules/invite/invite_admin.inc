@@ -1,5 +1,4 @@
 <?php
-// $Id: invite_admin.inc,v 1.3.2.1 2008/10/06 13:03:08 smk Exp $
 
 /**
  * @file
@@ -10,11 +9,13 @@
  * Menu callback; display invite settings form.
  */
 function invite_settings() {
-  $roles = user_roles(0, 'send invitations');
+  $permissions_url = url('admin/user/permissions', array('query' => drupal_get_destination(), 'fragment' => 'module-invite'));
+
+  $roles = user_roles(FALSE, 'send invitations');
   if (count($roles) == 0) {
-    drupal_set_message(t('Please enable the <em>send invitations</em> permission for at least one role. This can be done on the <a href="!permissions-url">Permissions page</a>.', array('!permissions-url' => url('admin/user/permissions'))));
+    drupal_set_message(t('Please enable the <em>send invitations</em> permission for at least one role on the <a href="@url">permissions page</a>.', array('@url' => $permissions_url)), 'warning');
   }
-  $target_roles = user_roles(1);
+  $target_roles = user_roles(TRUE);
 
   // General settings.
   $form['general'] = array(
@@ -22,6 +23,7 @@ function invite_settings() {
     '#title' => t('General settings'),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
+    '#group' => 'additional_settings',
   );
   $form['general']['invite_target_role_default'] = array(
     '#type' => 'select',
@@ -40,36 +42,42 @@ function invite_settings() {
     '#multiple' => FALSE,
     '#required' => TRUE,
   );
+  $form['general']['invite_registration_path'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Path to registration page'),
+    '#default_value' => variable_get('invite_registration_path', 'user/register'),
+    '#description' => t('Path to the registration page for invited users. Useful when using the <em>Assign from Path</em> option of <a href="@url">Auto Assign Roles</a> module.', array('@url' => 'http://drupal.org/project/autoassignrole')),
+  );
 
   // Role settings.
   $form['role'] = array(
     '#type' => 'fieldset',
     '#title' => t('Role settings'),
-    '#description' => t('Note: Permission related settings can be found at the <a href="!permissions-url">Permissions page</a>.', array('!permissions-url' => url('admin/user/permissions'))),
+    '#description' => t('To control which roles may send invitations visit the <a href="@url">permissions page</a>.', array('@url' => $permissions_url)),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
+    '#group' => 'additional_settings',
   );
 
-  foreach ($roles as $role) {
-    $role_no_space = str_replace(' ', '_', $role);
-    $form['role'][$role_no_space] = array(
+  foreach ($roles as $rid => $role) {
+    $form['role'][$rid] = array(
       '#type' => 'fieldset',
       '#title' => t('@role settings', array('@role' => drupal_ucfirst($role))),
       '#collapsible' => TRUE,
       '#collapsed' => TRUE,
     );
-    $form['role'][$role_no_space]['invite_target_role_'. $role_no_space] = array(
+    $form['role'][$rid]['invite_target_role_'. $rid] = array(
       '#type' => 'select',
       '#title' => t('Target role'),
-      '#default_value' => variable_get('invite_target_role_'. $role_no_space, DRUPAL_AUTHENTICATED_RID),
+      '#default_value' => variable_get('invite_target_role_'. $rid, DRUPAL_AUTHENTICATED_RID),
       '#options' => $target_roles,
       '#description' => t('You may choose to add invited users to another role (in addition to the default role set in the general section) when they have been invited by a member of %role.', array('%role' => $role)),
       '#required' => TRUE,
     );
-    $form['role'][$role_no_space]['invite_maxnum_'. $role_no_space] = array(
+    $form['role'][$rid]['invite_maxnum_'. $rid] = array(
       '#type' => 'select',
       '#title' => t('Invitation limit'),
-      '#default_value' => variable_get('invite_maxnum_'. $role_no_space, INVITE_UNLIMITED),
+      '#default_value' => variable_get('invite_maxnum_'. $rid, INVITE_UNLIMITED),
       '#options' => array(5 => 5, 10 => 10, 20 => 20, 50 => 50, 100 => 100, 500 => 500, 1000 => 1000, INVITE_UNLIMITED => t('unlimited')),
       '#description' => t('Allows to limit the total number of invitations members of %role can send.', array('%role' => $role)),
       '#multiple' => FALSE,
@@ -83,13 +91,12 @@ function invite_settings() {
     '#title' => t('E-mail settings'),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
+    '#group' => 'additional_settings',
   );
   $form['email']['invite_subject'] = array(
     '#type' => 'textfield',
     '#title' => t('Subject'),
     '#default_value' => variable_get('invite_subject', t('[inviter-raw] has sent you an invite!')),
-    '#size' => 30,
-    '#maxlength' => 64,
     '#description' => t('Type the default subject of the invitation e-mail.') .' '. t('Use the syntax [token] if you want to insert a replacement pattern.'),
     '#required' => TRUE,
   );
@@ -155,6 +162,7 @@ function invite_settings() {
     '#title' => t('Invite page customization'),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
+    '#group' => 'additional_settings',
   );
   $form['custom']['invite_page_title'] = array(
     '#type' => 'textfield',
@@ -163,6 +171,9 @@ function invite_settings() {
     '#description' => t('The title of the page where users invite friends.'),
     '#required' => TRUE,
   );
+
+  // Add vertical tabs display if available.
+  $form['#pre_render'][] = 'vertical_tabs_form_pre_render';
 
   return system_settings_form($form);
 }
@@ -190,7 +201,7 @@ function invite_admin_overview() {
     $query = 'filter='. $filter_args;
     unset($_SESSION[INVITE_ADMIN_SESSION]);
   }
-  $sql  = "SELECT i.uid, u1.name, COUNT(*) AS invites, u1.data FROM {invite} i INNER JOIN {users} u1 ON u1.uid = i.uid". $filter ." GROUP BY i.uid";
+  $sql  = "SELECT i.uid, u1.name, COUNT(*) AS invites, u1.data FROM {invite} i INNER JOIN {users} u1 ON u1.uid = i.uid". $filter ." GROUP BY i.uid, u1.name, u1.data";
   $sql .= tablesort_sql($header);
   $count_sql  = "SELECT COUNT(DISTINCT i.uid) FROM {invite} i". $filter;
   $result = pager_query($sql, 50, 0, $count_sql, $filter_args);
@@ -373,7 +384,7 @@ function invite_user_overview($page = 'accepted') {
           $row[] = check_plain($invite->email);
         }
         $row[] = $account_exists ? t('Accepted') : t('Deleted');
-        $row[] = $allow_delete ? l(t('withdraw'), "invite/withdraw/$page/$invite->reg_code") : '';
+        $row[] = $allow_delete ? l(t('withdraw'), "invite/withdraw/$invite->reg_code", array('query' => drupal_get_destination())) : '';
         $row[] = '';
         break;
 
@@ -383,7 +394,7 @@ function invite_user_overview($page = 'accepted') {
 
         $row[] = check_plain($invite->email);
         $row[] = $expired ? t('Expired') : t('Pending');
-        $row[] = l(t('withdraw'), "invite/withdraw/$page/$invite->reg_code");
+        $row[] = l(t('withdraw'), "invite/withdraw/$invite->reg_code", array('query' => drupal_get_destination()));
         $row[] = $expired ? l(t('resend'), "invite/resend/$invite->reg_code") : '';
         break;
     }

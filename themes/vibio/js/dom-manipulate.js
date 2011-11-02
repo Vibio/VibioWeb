@@ -27,4 +27,49 @@ $(document).ready(function() {
 //places forgot password snippet above page lost password form
 	$(".not-logged-in h1#page_title").remove().insertBefore("div.tabs");
 	$("#block-block-13").remove().insertBefore("form#user-pass");	
+
+//Set default search bar value if no text is present
+if($('input#edit-search-theme-form-1').val() == ''){
+	var type_id = $("#edit-search-type").val(type_id);
+	if(type_id == 'vibio_item'){
+		$('input#edit-search-theme-form-1').attr('value', 'Search Items');
+	}else{
+	    $('input#edit-search-theme-form-1').attr('value', 'Search Users');
+	}
+}
+
+//When the search bar is clicked...
+$("input#edit-search-theme-form-1").focus(function() {
+	//Check to see if default text is there
+	if($('input#edit-search-theme-form-1').val() == 'Search Items' ||
+	   $('input#edit-search-theme-form-1').val() == 'Search Users'){
+		//If so, clear the search bar
+		$('input#edit-search-theme-form-1').attr('value', '');
+	}
+});
+
+//Change Serach box text to "Search Users"
+$('img#searchtype_user').click (function() {
+	//Only change if 'Search Items' is the current field value
+	if($('input#edit-search-theme-form-1').val() == 'Search Items' ||
+	$('input#edit-search-theme-form-1').val() == ''){
+          $('input#edit-search-theme-form-1').attr('value', 'Search Users');
+	}
+});
+
+//Change Serach box text to "Search Items" on click
+$('img#searchtype_vibio_item').click (function() {
+	//Only change if 'Search Users' is the current field value
+	if($('input#edit-search-theme-form-1').val() == 'Search Users' ||  
+        $('input#edit-search-theme-form-1').val() == ''){
+          $('input#edit-search-theme-form-1').attr('value', 'Search Items');
+	}
+});
+
+//Team Pages hide show bio
+$('.team-bio').hide();
+$('.team-photo').click(function(){
+    $(this).parents(".team-box:first").find(".team-bio").toggle();
+});
+
 });

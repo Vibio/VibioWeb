@@ -225,7 +225,6 @@ function overrides_form_search_theme_form_alter(&$form, &$state)
         break;
     }
   }else{
-     $form['search_theme_form']['#default_value'] = 'Search Vibio';
   }
 }
 

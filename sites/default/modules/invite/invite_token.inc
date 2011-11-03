@@ -16,7 +16,8 @@ function invite_token_values($type = 'all', $object = NULL) {
     $values['invite-mail']        = $object->email;
     $values['invite-message']     = check_plain($object->data['message']);
     $values['invite-message-raw'] = $object->data['message'];
-    $values['join-link']          = url('invite/accept/'. $object->code, array('absolute' => TRUE));
+    //This is hacked for Vibio: retrieving the registration path so we don't go to dead invite/accept/%code link
+    $values['join-link']          = url(variable_get('invite_registration_path', 'user/register') .'/' .  $object->code, array('absolute' => TRUE));
   }
   return $values;
 }

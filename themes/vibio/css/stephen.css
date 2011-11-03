@@ -232,6 +232,7 @@ ul.primary_menu_by_hand {
 }
 ul.primary_menu_by_hand li {
 	margin: 0 0 5px 0;
+	height:16px;
 }
 .menu_with_count_count {
 	background: url(/themes/vibio/images/blue_bubble.png) no-repeat 5px 0;
@@ -296,6 +297,7 @@ ul.primary_menu_by_hand li {
 	clear: both;
 	padding-top: 25px;
 	font-size: 12px;
+	height:70px;
 }
 #connect-nav ul {
 	float: left;
@@ -309,7 +311,7 @@ ul.primary_menu_by_hand li {
 	clear: both;
 	font-size: 9px;
 	color: #FFFFFF;
-	padding-top: 9px;
+	padding-top: 7px;
 }
 #content-copyright p {
 	margin: 0
@@ -320,6 +322,7 @@ ul.primary_menu_by_hand li {
 }
 #connection-top {
 	padding-top: 65px;
+	height:17px;
 }
 #content-social a {
 	background: url(../images/sidebar_social.png) no-repeat;
@@ -559,6 +562,7 @@ div.views-field.views-field-nid{
 	font-size: 28px;
 	font-weight:normal;
 	margin-bottom:10px;
+	cursor:pointer;
 }
 .team-role{
 	font-size:18px;
@@ -572,9 +576,12 @@ div.views-field.views-field-nid{
 	height:177px;
 	float:left;
 	margin-right:20px;
+	cursor:pointer;
 }
 .team-photo img{
 	margin:10px 0 0 13px;
+	width:148px;
+	height: 148px;
 }
 .team-bio{
 	width:500px;

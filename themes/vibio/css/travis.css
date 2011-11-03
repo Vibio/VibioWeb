@@ -157,7 +157,6 @@ ul.jquery_dropdown_list li a:hover {
 .page-product-add #edit-field-main-image-0-ahah-wrapper,
 .page-product-add .region-content-top{
   border-bottom: 1px solid #CCCCCC;
-  padding-bottom: 40px;
 }
 
 .page-product-add .content-add-more{
@@ -201,6 +200,7 @@ font-weight: 700;
  
 .form-region-footer{
   text-align: right;
+  padding-top:10px;
 } 
 
 #infscr-loading{
@@ -216,10 +216,7 @@ font-weight: 700;
   float:right;
 }
 
-.filefield-upload input.form-file{
-  border:none;
-  width:200px;
-  font-size:11px;  
+.filefield-upload input.form-file{ 
 }
 
 .view.view-flag-featured .view-header{
@@ -304,4 +301,13 @@ height: 64px;
 #block-block-5 a#content-email {
 	background-position: -82px -1px;
 	width: 22px;
+}
+#block-block-5 a#content-twitter:hover{background-position:0px -23px}
+#block-block-5 a#content-fb:hover{background-position:-26px -23px}
+#block-block-5 a#content-tumbler:hover{background-position:-54px -24px}
+#block-block-5 a#content-email:hover{background-position:-82px -24px}
+
+#block-block-5 a:hover {
+	color:#404e5f;
+	font-weight:bold;
 }

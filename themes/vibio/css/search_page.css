@@ -33,7 +33,7 @@
 	/*isplay: none;*/
 }
 #page_title {
-	/*display: none;*/
+	display: none;
 }
 
 .tabs {
@@ -179,4 +179,56 @@
 
 .search_select {
 	float: left;
+}
+button.add_connection{
+	background:url(../images/btn_send_invite.png) no-repeat -1px -2px;
+	display: block;
+	height:33px;
+	width:142px;
+	text-indent: -9999px;
+	border:none;
+	cursor:pointer;
+}
+button.add_connection:hover{
+	background-position: -1px -49px;
+}
+
+.picture{
+	background:#FFFFFF;
+	height: 54px;
+	width:54px;
+	position: relative;
+	border:1px solid #CCCCCC;
+	margin-top:10px;
+}
+.picture img{
+	width:44px;
+	height:44px;
+	border:1px solid #CCCCCC;
+	top:4px;
+	left: 4px;
+	position: absolute;
+}
+table.search-results tr{
+	border-bottom:1px solid #CCCCCC;
+	line-height: 10px;
+}
+table.search-results tr tr{
+	border:none
+}
+table.search-results table{
+	margin:0
+}
+table.search-results{
+	margin:0
+}
+td.search_user_info a{
+	display: block;
+	margin:-25px 0 0 10px;
+}
+td.search_user_info{
+	width:500px;
+}
+div.box pre{
+	margin:0
 }

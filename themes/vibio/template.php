@@ -300,8 +300,12 @@ function vibio_status_messages($display=null)
 function vibio_user_login_block($form) {
    $form['submit']['#value'] = 'Sign up';
 }
-
-
+/*custom automodal widths*/
+automodal_add('.make-modal', array(
+    'autoFit' => false
+    ,'width'   => 700
+    ,'height'  => 605)
+);
 
 /*function vibio_fieldset($ele)
 {

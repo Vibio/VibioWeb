@@ -49,11 +49,7 @@ input#edit-field-offer-expires-0-value-datepicker-popup-0, input#edit-field-offe
 	width:130px;
 }
 div#product_info_in_offer {
-	width: 250px;
 	float: left;
-	padding: 25px;
-	background: #FFFFFF;
-	border: 1px solid #CCCCCC;
 	margin: 0 20px 10px 0;
 }
 div#product_info_in_offer img, div#seller_info_in_offer img {

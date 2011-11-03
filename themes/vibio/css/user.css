@@ -28,9 +28,6 @@
 	width: 738px;
 }
 
-#page_title {
-	
-}
 #profile_username h5 {
 	color: #FFF;
 	margin:10px 10px 8px 10px;
@@ -275,4 +272,20 @@ table.user_external_accounts td ul {
 .dos_display a:link{
 	color:#106F93;
 }
-
+button.add_connection{
+	background:url(../images/btn_send_invite.png) no-repeat -1px -2px;
+	display: block;
+	height:33px;
+	width:142px;
+	text-indent: -9999px;
+	border:none;
+	cursor:pointer;
+}
+button.add_connection:hover{
+	background-position: -1px -49px;
+}
+div#name_and_friend div.friend_actions{
+	position: absolute;
+	right: 23px;
+	bottom: -19px
+}

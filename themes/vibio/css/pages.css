@@ -306,21 +306,27 @@ ul.links li {
 	font-weight: bold;
 }
 #footer-twitter{
-	background-position: 0px 0px;
+	background-position: -1px -1px;
 	margin-left: 10px;
 }
 #footer-fb{
-	background-position: -29px 0px;
+	background-position: -31px -1px;
 }
 #footer-tumbler{
-	background-position: -59px 0px;
-	
+	background-position: -61px -1px;
 }
 #footer-email{
-	background-position: -89px 0px;
+	background-position: -92px -1px;
 }
+#footer-twitter:hover{background-position: -1px -23px}
+#footer-email:hover{background-position: -92px -23px}
+#footer-tumbler:hover{background-position: -61px -23px}
+#footer-fb:hover{background-position: -31px -23px}
 #footer-nav{
 	clear: both;
+}
+#footer-nav a:hover{
+	color:#05b0f1
 }
 .float-left{
 	float: left;
@@ -570,15 +576,6 @@ ul.links li {
 
 .indent {
   margin-left: 25px;
-}
-
-.search-results.user .picture img {
-	/*max-width: 40px;*/
-}
-
-.search-results.user .search_user_info {
-	padding-left: 5px;
-	width: 500px;
 }
 
 /* search type selector */

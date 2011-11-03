@@ -90,8 +90,7 @@ fieldset {
 
 /*Form Inputs*/
 
-input,
-textarea{
+input.form-text, textarea, select{
 border: 1px solid #CCCCCC;
 -webkit-border-radius: 5px;
 -moz-border-radius: 5px;
@@ -103,12 +102,15 @@ padding: 5px;
 font-size: 13px;
 }
 
-.form-submit{
+div.form-region-footer input.form-submit{
 background: #556270;
 color: #FFFFFF;
 border: 1px solid #3d454f;
 font-size: 15px;
 padding: 3px 5px;
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+border-radius: 5px;
 cursor: pointer;
 }
 
@@ -173,8 +175,7 @@ ul,
 ol,
 dl,
 pre,
-table,
-fieldset {
+table {
   margin: 1em 0;
 }
 
@@ -345,8 +346,7 @@ form {
 }
 
 fieldset {
-  margin: 1em 0;
-  padding: 0.5em;
+	border:none
 }
 
 

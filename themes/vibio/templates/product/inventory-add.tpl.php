@@ -12,7 +12,7 @@ echo "
 
 echo "
 	<a class='inventory_add' id='inventory_add_{$nid}'><img
-		src='/sites/default/themes/vibio/images/have_button.png'/></a>
+		src='/themes/vibio/images/have_button.png'/></a>
 ";
 
 

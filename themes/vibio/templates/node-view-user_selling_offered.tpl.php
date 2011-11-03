@@ -170,7 +170,7 @@ list($chit_chat, $current_buyer, $current_seller) =
 
 ?>
 	<div class="negotiation_block">
-		<a href="/node/<?php print $node->nid; ?>">Review Offer</a>
+		<a class="make-modal popups-form-reload" href="/node/<?php print $node->nid; ?>">Review Offer</a>
 	
 
   <?php if ($unpublished): ?>

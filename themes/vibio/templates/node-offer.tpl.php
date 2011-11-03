@@ -164,14 +164,14 @@ global $base_url;
 	$item_owner = user_load($item_owner_uid);
 	$item_owner->picture ? $item_owner_picture = $item_owner->picture : $item_owner_picture = 'themes/vibio/images/icons/default_user_large.png';
 	?>
-	<div class="person_pic">
+<?php	/* <div class="person_pic">
 		<?php
 			$alt = $item_owner->name . '\'s Picture';
                         $title = '$item_owner->name'; // orname, if it’snot printed right below anyway
                         $attributes = ‘’;
                         print theme('imagecache', "tiny_profile_pic", $item_owner_picture, $alt,$title, $attributes);
 		?>
-	</div>
+	</div> */ ?>
 		<div class="person_pic_seller">
 			<?php
 			  print "<b>Seller:</b> <a href='" . $base_url ."/user/" . $item_owner->uid . "'>" .

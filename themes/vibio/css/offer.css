@@ -11,7 +11,7 @@
 	background: url("../images/long_border.png") no-repeat scroll 0 32px transparent;
 	height: 43px;
 	padding: 0;
-	width: 390px;
+	width: 318px;
 }
 #neg-discuss .content {
 }
@@ -32,7 +32,8 @@
 }
 #offer_item_offer .item_title {
 	font-size: 18px;
-	margin-bottom: 18px;
+	font-weight:normal;
+	margin-bottom: 5px;
 }
 /* Make "My Offer" look like the title */
 #edit-field-price-0-value-wrapper .description {
@@ -92,7 +93,8 @@ div.form-radios div.form-item {
 }
 div#seller_info_in_offer .person_pic_seller {
 	font-weight: bold;
-	margin: 18px 0 0 10px;
+	font-size: 13px;
+	margin: 18px 0 0 0px;
 	float: left;
 	width: 200px;
 }
@@ -137,6 +139,7 @@ div#buyer_info_in_offer {
 #buyer-for-seller {
 }
 #chit-chat .node {
+	font-size:13px
 }
 /*Offer Review Seller Negotiation form*/
 #seller-neg-form input#edit-submit {
@@ -147,7 +150,7 @@ div#buyer_info_in_offer {
 	clear: both
 }
 #offer_top {
-	height: 320px;
-	margin-bottom: 10px;
+	height: 140px;
+	margin-bottom: 20px;
 	border-bottom: 1px solid #CCCCCC;
 }

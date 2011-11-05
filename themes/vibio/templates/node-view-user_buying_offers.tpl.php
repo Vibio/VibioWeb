@@ -99,7 +99,7 @@ $price = $item->offer2buy['settings']['price'];
 
 
 	<div class="negotiation_block">
-		<a class="automodal popups-form-reload" href="/node/<?php print $node->nid; ?>">Review Offer</a>
+		<a class="make-modal popups-form-reload" href="/node/<?php print $node->nid; ?>">Review Offer</a>
 	<?php if ($unpublished): ?>
     <div class="unpublished"><?php print t('Unpublished'); ?></div>
   <?php endif; ?>

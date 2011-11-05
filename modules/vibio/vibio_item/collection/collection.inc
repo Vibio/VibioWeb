@@ -141,7 +141,6 @@ function collection_get_user_default($uid=false, $auto_create=false)
 	{
 		return $cid;
 	}
-	
 	// if there is no default, create one for the user...
 	$vals = array(
 		"title"			=> t("Unsorted"),
@@ -156,7 +155,7 @@ function collection_get_user_default($uid=false, $auto_create=false)
 	$vals['uid'] = $uid;
 	collection_set_user_default($uid, $vals['cid']);
 	module_invoke_all("collection_save", $vals);
-	
+
 	return $vals['cid'];
 }
 

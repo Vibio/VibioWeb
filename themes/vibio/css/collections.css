@@ -9,7 +9,7 @@
 .collection_list_collection .collection_summary { width: 518px; }
 */
 .view-user-collections div.view-content{
-	margin-top: 20px;
+	margin-top: 6px;
 	position: relative;
 }
 .collection_list_collection .collection_image {
@@ -54,7 +54,7 @@
 	float: left;
 }
 .collection_summary span.collection_item_count {
-	width: 55px;
+	width: 190px;
 }
 .collection_summary span.manage_collection_link {
 	margin-left: 10px;
@@ -65,15 +65,17 @@
 .collection_preview_init {
 	height: 16px;
 	text-align: center;
-	color: #535353;
-	font-size: 12px;
+	font-size: 15px;
 	font-weight: bold;
+}
+.collection_preview_init span:hover{
+	text-decoration: underline
 }
 .collection_preview_init img {
 	margin-right: 5px;
 }
 .collection_preview_init.expanded {
-	background: #a5a5a5;
+
 }
 .collection_preview_init:hover {
 	cursor: pointer;

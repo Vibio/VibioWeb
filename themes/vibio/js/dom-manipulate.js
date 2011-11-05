@@ -24,6 +24,9 @@ $(document).ready(function() {
 	});
 //places h1 page titles over the tabs on some pages	
 	$(".not-logged-in h1#page_title").remove().insertBefore("div.tabs");
+	$(".section-user h1#page_title").remove().insertAfter("div.tabs");
+	$(".section-user h1#page_title").remove().insertAfter("div.tabs");
+	
 //places forgot password snippet above page lost password form
 	$(".not-logged-in h1#page_title").remove().insertBefore("div.tabs");
 	$("#block-block-13").remove().insertBefore("form#user-pass");	

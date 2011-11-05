@@ -14,25 +14,32 @@ else
 	$searchcrumb = "";
 }
 
-if ($image = _product_get_image($node->nid, true))
+if(isset($product_image)){
+        $image = $product_image;
+}else{
+        $image = _product_get_image($node->nid, true);
+}
+
+if (isset($image))
 {
 
-	$alt = 'Product Image';
-	$title = '';
-	$attributes = array('class' => 'product_main_image');
-	$imagecached = theme('imagecache', 'product_main_product_page', 
-		file_uncreate_url($image), 
-		$alt, $title, $attributes);
-	$image = "
-		<a href='$image' rel='prettyphoto[item_image]'>
-			$imagecached
-		</a>
-	";
+        $alt = 'Product Image';
+        $imgtitle = '';
+        $attributes = array('class' => 'product_main_image');
+        $imagecached = theme('imagecache', 'product_main_product_page', 
+                file_uncreate_url($image), 
+                $alt, $imgtitle, $attributes);
+        $image = "
+                <a href='$image' rel='prettyphoto[item_image]'>
+                        $imagecached
+                </a>
+        ";
 }
 
 /* stephen: security update 20110609 */
 $sanitary = htmlspecialchars ( $_GET['searchcrumb'],   ENT_QUOTES );
-$manage_link = theme("product_inventory_manage_link", $node, $sanitary);
+//$variant = "prod_page";
+$manage_link = theme("product_inventory_manage_link", $node, $sanitary);//, $variant); // For example, the "Have" button, now to be "I already have this item"
 
 if (isset($node->amazon_data)) {
 	/* bug hunt: nodes with field_amazon_asin are returning false here.
@@ -57,10 +64,14 @@ if (isset($node->amazon_data)) {
 		$product_content .= theme("vibio_amazon_item_details", $node);
 	}
 	
-	$external_link = $page ? t("Get \"!item\" from !external_link.", array("!item" => $node->title, "!external_link" => l(t("Amazon"), $node->amazon_data['detailpageurl'], array("absolute" => true)))) : "";
+	$external_link = $page ? t("Get \"!item\" from !external_link.", array("!item" => $node->title, "!external_link" => l(t("Amazon"), $node->amazon_data['detailpageurl'], array("absolute" => true,
+"attributes" => array('target' =>"_amazon" )
+)))) : "";
 	//$external_link .=  $node->amazon_data['detailpageurl']; This URL is already encoded, when it shouldn't be. i.e.:
 	//  encode   key=variable  so the equals sign is gone and it's just text.
-	$external_it_link =  t("Find it on !external_link.", array("!external_link" => l(t("Amazon"), $node->amazon_data['detailpageurl'], array("absolute" => true))));
+	$external_it_link =  t("Find it on !external_link.", array("!external_link" => l(t("Amazon"), $node->amazon_data['detailpageurl'], array("absolute" => true,
+		"attributes" => array('target' =>"_amazon" )
+		))));
 
 }
 else
@@ -153,9 +164,9 @@ if ($page)
 	} else {
 		// note: if you own it, doesn't seem to show up... so...
 		if ( product_user_owns_product($node->nid) ) {
-			$non_header = t("Besides yourself, no other Vibio Collectors in your network have this item.");
+			$non_header = t("Besides yourself, no one else in your network has this item.");
 		} else {
-			$non_header = t ("Be the first Vibio Collector in your network with <em>!title</em>", array("!title" => $node->title));
+			$non_header = t ("Be the first in your network with <em>!title</em>", array("!title" => $node->title));
 		}
 		$extra_data = "
                         <div class='product_extra_data'>
@@ -195,6 +206,7 @@ echo "
 			$title
 		</a>
 		$product_content
+		$links
 		$manage_link
 	</div>
 	<div class='clear'></div>

@@ -1,4 +1,37 @@
 <?php
+/**
+ * Theme function for AddThis module which generates the AddThis sharing
+ * code.
+ * 
+ * This overrides the default function to add customizations for our desired
+ * Vibio sharing functionality.
+ * 
+ * @param <type> $variables
+ * @return <type> 
+ */
+function vibio_addthis_button($variables) {
+  $url = $variables['url'];
+  if(module_exists('shorten')){
+    $abbreviated_url = shorten_url($url, 'TinyURL');
+  }
+  $title = $variables['title'];
+  $node = $variables['node'];
+  $description = $node->body;
+  return '
+  <!-- AddThis Button BEGIN -->
+  <div class="addthis_toolbox addthis_default_style"
+    addthis:title="'. $title .'"
+    addthis:description="'. $description .'">
+  <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+  <a class="addthis_button_tweet"
+    addthis:url="'. $abbreviated_url .'"></a>
+  <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4eb430ae5c32d849"></script>
+  <!-- AddThis Button END -->
+  ';
+}
+
 
 /* stephen:  */
 
@@ -296,6 +329,22 @@ function vibio_status_messages($display=null)
 	return $out;
 }
 
+//Remove the Personal Contact Form from the User Profile
+function vibio_form_alter(&$form, $form_state, $form_id) {
+  // hide personal contact form settings for non-admin users
+  if ($form_id == 'user_profile_form' && !user_access('administer users')) {
+    unset($form['contact']);
+  }elseif($form_id == 'user_profile_form' && user_access('administer users')){
+    dsm($form);
+  }
+}
+
+//Remove the link to the personal contact
+function vibio_menu_alter(&$items) {
+  // remove personal contact form page & tab for non-admin users
+  $items['user/%user/contact']['access callback'] = 'user_access';
+  $items['user/%user/contact']['access arguments'] = array('administer users');
+}
 
 function vibio_user_login_block($form) {
    $form['submit']['#value'] = 'Sign up';
@@ -306,6 +355,9 @@ automodal_add('.make-modal', array(
     ,'width'   => 700
     ,'height'  => 605)
 );
+
+
+
 
 /*function vibio_fieldset($ele)
 {

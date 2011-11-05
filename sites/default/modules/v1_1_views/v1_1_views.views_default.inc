@@ -142,7 +142,7 @@ function v1_1_views_views_default_views() {
   $handler->display->display_options['empty']['area_1']['table'] = 'views';
   $handler->display->display_options['empty']['area_1']['field'] = 'area';
   $handler->display->display_options['empty']['area_1']['empty'] = FALSE;
-  $handler->display->display_options['empty']['area_1']['content'] = 'Start negotiating, and the conversation will be recorded here.';
+  $handler->display->display_options['empty']['area_1']['content'] = 'Start negotiating, and the conversation will be recorded here.<p>Shipping and payment options are your choice -- be sure to talk about them!';
   $handler->display->display_options['empty']['area_1']['format'] = '1';
   $handler->display->display_options['empty']['area_1']['tokenize'] = 0;
   /* Sort criterion: Node: Post date */

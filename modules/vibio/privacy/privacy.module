@@ -139,7 +139,9 @@ function privacy_form_collection_edit_alter(&$form, &$state)
 function privacy_collection_save($vals)
 {
 	global $user;
-	$privacy_setting = isset($vals['privacy_setting']) ? $vals['privacy_setting'] : PRIVACY_ONLYME;
+	//stephen changing defaults: $privacy_setting = isset($vals['privacy_setting']) ? $vals['privacy_setting'] : PRIVACY_ONLYME;
+	$privacy_setting = isset($vals['privacy_setting']) ? $vals['privacy_setting'] : PRIVACY_PUBLIC;
+	
 	privacy_set($user->uid, "collection", $vals['cid'], $privacy_setting);
 }
 

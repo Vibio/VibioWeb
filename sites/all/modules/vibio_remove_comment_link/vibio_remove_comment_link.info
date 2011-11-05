@@ -1,0 +1,4 @@
+; $Id$
+name = Vibio Remove Comment Link
+description = Remove the comment link from selected node types on Vibio
+core = 6.x

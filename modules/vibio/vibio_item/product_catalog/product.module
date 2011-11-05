@@ -206,9 +206,9 @@ function product_theme()
 			"template"	=> "templates/product/owner",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
-		// Create the have link/button, that's all.
+		// Create the have link/button, that's all.  Now variants :-(
 		"product_inventory_add"	=> array(
-			"arguments"	=> array("nid"	=> false, "searchcrumb" => ""),
+			"arguments"	=> array("nid"	=> false, "searchcrumb" => "", $variant => "addtest"),
 			"template"	=> "templates/product/inventory-add",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
@@ -219,7 +219,7 @@ function product_theme()
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
 		"product_inventory_manage_link"	=> array(
-			"arguments"	=> array("product"	=> false, "searchcrumb" => ""),
+			"arguments"	=> array("product"	=> false, "searchcrumb" => ""), //, "variant" => "test"),
 			"template"	=> "templates/product/inventory-manage-link",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),

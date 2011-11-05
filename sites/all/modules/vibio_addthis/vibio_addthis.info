@@ -1,0 +1,4 @@
+; $Id$
+name = Vibio AddThis
+description = Ammends the AddThis module to provide the sharing functionality necessary for Vibio.
+core = 6.x

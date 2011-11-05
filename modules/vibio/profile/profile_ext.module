@@ -56,7 +56,8 @@ function profile_ext_menu()
   $menu['user/%user/activities'] = array(  /* default, for now  */
     "title"       => "Activity",
 		'page arguments'=> array(1),
-    'type'=> MENU_DEFAULT_LOCAL_TASK,
+    //'type'=> MENU_DEFAULT_LOCAL_TASK,
+		'type'=>'MENU_CALLBACK',
 		// this is the default -- but without 'file path' it looks local	
     //'file' => 'user.pages.inc',
 		'file path' => drupal_get_path('module', 'user'),
@@ -312,12 +313,10 @@ function profile_ext_display_block($u)
   $attributes = '';
 
 	if ( !$u->picture ) { /* deal with no pic loaded */
-				/* !!! this uses the hardcoded location of vibio */
-		//$u->picture = "themes/vibio/images/icons/default_user_large.png";
-		$u->picture = "sites/all/themes/vibio/images/icons/default_user_large.png";
+		$u->picture = "/themes/vibio/images/icons/default_user_large.png";
 	}
 	//elsewhere: $pic = $u->picture ? file_create_url($u->picture) : "/themes/vibio/images/icons/default_user_large.png";
-	$pic = theme('imagecache', "tiny_profile_pic", $u->picture, $alt, $title, $attributes);
+	$pic = theme('imagecache', "little_profile_pic", $u->picture, $alt, $title, $attributes);
 	// fire it to this template: templates/profile/display-block
 	return theme("profile_ext_displayblock", $u, $pic, $vars);
 }
@@ -486,9 +485,8 @@ function profile_ext_preprocess_user_profile(&$vars)
 			//	user can't see much
 			if ( $user->uid < 1 ) {
 				$msg = "<h3>Sign in for a better view of " . check_plain($target_user->name) . "'s collections.</h3>";
-			} elseif ( ( $user->uid != $uid ) && ( $access < 3 ) ) { 
-																					// $access 3 means you're connected
-				$msg = "<h3>Connecting lets you see more private items.</h3>";
+			} elseif ( $user->uid != $uid ) {
+				$msg = "<h1 id='page_title'>Collections</h1>";
 			}
 			$vars['sec_content'] =  
 				$msg .

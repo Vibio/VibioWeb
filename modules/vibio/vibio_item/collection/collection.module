@@ -224,10 +224,15 @@ function collection_preprocess_collection_list_item_preview(&$vars)
 	{
 		$vars['item']->offer2buy_price =  "$".$vars['item']->offer2buy_price;
 	}
-	else
+	elseif ($vars['item']->for_sale)
 	{
 		$vars['item']->offer2buy_price = t("Best Offer");
 	}
+	else
+	{
+		$vars['item']->offer2buy_price = t("Not for Sale");
+	}
+
 }
 
 function collection_preprocess_page(&$vars)
@@ -343,14 +348,31 @@ function collection_form_vibio_item_node_form_alter(&$form, &$state)
 {
 	module_load_include("inc", "collection");
 
+	// Empty collections?
+	if (!$form['#node']->nid && 
+			(count(collection_options()) < 1 )) {
+		$default_array = collection_get_user_default(false, true);
+		// collection_options seems to cache, so force it.  This is repeat
+		//  code with collection_get_user_default which I expect will be gone
+		//  in two weeks.
+		$default = $default_array['cid'];
+		$options = array();
+		$options[$default] = 'Unsorted';
+	} else {
+		$options = collection_options();
+	}
+	
 	if ($form['#node']->nid) //existing node
 	{
 		$default = collection_get_item_cid($form['#node']->nid);
-	}
+	} 
 
+
+	// Add the collection_info field to this form
 	$form['collection_info'] = array(
 		"#title"		=> t("Collection"),
-		"#description"	=> t("Select which collections to add this item to. Choose all that apply."),
+		"#description"	=> t("Select which collections to add this item to. Choose all that apply."), //:" . '<p><strong><a href="/collections/new?automodalReload=true" class="automodal">* Add new collection</a></strong>'),
+
 		"#type"			=> "fieldset",
 		"#collapsible"	=> true,
 		"#collapsed"	=> false,
@@ -359,15 +381,19 @@ function collection_form_vibio_item_node_form_alter(&$form, &$state)
 			"#type"			=> "select",
 			"#required"		=> true,
 			"#title"		=> t("Collection"),
-			"#options"		=> collection_options(),
+			"#options"		=> $options, //collection_options(),
 			"#default_value"=> $default,
 			"#multiple"		=> true,
 		),
-		/*"new_collection"=> array(
+
+		/* this was commented out, why?
+			 --> doesn't seem to do anything at all
+		"new_collection"=> array(
 			"#type"			=> "textfield",
 			"#title"		=> t("New Collection"),
 			"#description"	=> t("Enter a name for this collection"),
-		),*/
+		),
+		*/
 	);
 }
 

@@ -2,7 +2,7 @@
 $collection_url = url("collections/{$collection->cid}");
 $manage_link = $collection->is_owner ? l(t("Rename Collection"), "collections/manage/{$collection->cid}") : "";
 $total_items = t("!count items", array("!count" => $collection->total_items));
-$expand = t("View Items");
+$expand = t("View this collection");
 
 if ($show_preview)
 {
@@ -13,7 +13,6 @@ if ($show_preview)
 				<img src='/themes/vibio/images/ajax-loader.gif' />
 			</div>
 			<div class='collection_preview_init'>
-				<img src='/themes/vibio/images/collections/expand.png' />
 				<span>$expand</span>
 			</div>
 		</div>
@@ -31,7 +30,7 @@ echo "
 			<a href='$collection_url'>
 				<h3>{$collection->collection_title}</h3>
 			</a>
-			<span class='collection_item_count'>$total_items</span>
+			<span class='collection_item_count'>Number of items: $total_items</span>
 			<span class='manage_collection_link'>$manage_link</span>
 			{$collection->share_html}
 			<div class='clear'></div>

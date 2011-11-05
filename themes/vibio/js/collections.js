@@ -35,11 +35,11 @@ $(document).ready(function()
 		{
 			$(this)
 				.addClass("expanded")
-				.find("img")
-					.attr("src", "/themes/vibio/images/collections/minimize.png")
-					.end()
+				//.find("img")
+					//.attr("src", "/themes/vibio/images/collections/minimize.png")
+					//.end()
 				.find("span")
-					.html(Drupal.t("Minimize Item List"));
+					.html(Drupal.t("Minimize this collection"));
 
 			if (loading.length)
 			{

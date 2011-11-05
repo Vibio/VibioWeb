@@ -6,10 +6,11 @@
 //dsm(debug_backtrace());
 
 echo "
+  $pager;
+
 	<table class='search-results $type'>
 		$search_results_not_lost
 	</table>
 ";
 
-echo $pager;
 ?>

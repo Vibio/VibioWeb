@@ -86,7 +86,8 @@
 	padding: 7px 0;
 }
 #profile_tabs {
-	margin-top: 10px;
+	margin: 10px 0;
+	height: 30px;
 }
 .mbmenu_arrow_icon {
 	background: url(/themes/vibio/images/icons/acct_dropdown.png) no-repeat;

@@ -387,3 +387,40 @@ input#edit-uri-request-relationship-confirm{
 input#edit-field-images-0-filefield-upload, input#edit-field-main-image-0-filefield-upload{
 	
 }
+/*User account settings*/
+form#user-profile-form{
+	font-size:13px;
+	margin-bottom:75px;
+}
+form#user-profile-form .picture img{
+	border:1px solid #CCCCCC;
+}
+form#user-profile-form fieldset{
+	border-bottom:1px solid #CCCCCC;
+	margin-bottom:0;
+}
+form#user-profile-form legend{
+	display:none
+}
+form#user-profile-form .form-item .description{
+	width:480px;
+	font-size:13px
+}
+.section-user #page_title{
+	margin-top:20px;
+	padding-left: 7px;
+}
+form#user-profile-form input#edit-submit{
+	background:url(../images/btn_save.png) no-repeat 0px 0px;
+	height:42px;
+	width:67px;
+	border:none;
+	margin-top:15px;
+	text-indent:-9999px;
+	position:absolute;
+	right:15px;
+	cursor: pointer;
+}
+form#user-profile-form input#edit-submit:hover{
+	background-position: 0px -55px;
+}

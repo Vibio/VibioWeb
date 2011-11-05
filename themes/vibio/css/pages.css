@@ -244,11 +244,6 @@ ul.links li {
   text-align: center;
 }
 
-.pager a,
-.pager strong.pager-current /* Each page number in the pager list */ {
-  padding: 0.5em;
-}
-
 .feed-icons /* The links to the RSS or Atom feeds for the current list of content */ {
   margin: 1em 0;
 }

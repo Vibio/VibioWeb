@@ -2,7 +2,6 @@
 /* normall the form would be above here.  I hid it with css in search_page.css
  * while waiting for design to completely stabilize.  -stephen
  */
-
 echo theme("product_add_product_link");
 echo $pager;
 

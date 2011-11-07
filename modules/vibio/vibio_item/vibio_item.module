@@ -30,7 +30,21 @@ function vibio_item_theme(&$existing)
 			"template"	=> "templates/vibio_item/price-image",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+		//Theme function for displaying a single item image, imagecached
+		"vibio_item_image"			=> array(
+			"arguments"	=> array("nid" => null, "imagecache" => "product_main_product_page"),
+		),
 	);
+}
+
+function theme_vibio_item_image($nid, $imagecache){
+			module_load_include('inc', 'product');
+			//If product module doesn't exist, this will fail. @todo: add error checking
+			$item_image = file_uncreate_url(_vibio_item_get_image($nid));
+			$alt = 'Product Image';
+                        $title = 'Product Image';
+                        $attributes = ‘’;
+                        return theme('imagecache', $imagecache, $item_image, $alt, $title, $attributes);	
 }
 
 function vibio_item_form_alter(&$form, &$state, $id)

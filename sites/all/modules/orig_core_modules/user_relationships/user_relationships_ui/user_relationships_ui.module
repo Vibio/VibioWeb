@@ -89,7 +89,7 @@ function _user_relationships_ui_default_messages($replacements) {
       'pre_approved'  => t("You are !requestee's newest %relationship_name.", $replacements),
     ),
     'error' => array(
-      'too_many_relationships'  => t('You may not create any more relationships to this user.'),
+      'too_many_relationships'  => t('You have already sent an invitation to this user.  Please wait for a response.'),
       'existing_request'        => t('There is already an earlier %relationship_name request sent to !requestee.', $replacements),
       'existing_relationship'   => t('There is already an existing %relationship_name relationship with !requestee.', $replacements),
       'not_accepting_requests'  => t('This user does not accept relationship requests.'),

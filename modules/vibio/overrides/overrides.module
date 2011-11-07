@@ -5,6 +5,7 @@
  * It's blocking imagecache
  */
 
+
 define("OVERRIDES_FILE_DOWNLOAD_DIRECT", 5);
 
 /*********--------- Stephen's overrides ----------***********/
@@ -21,11 +22,14 @@ define("OVERRIDES_FILE_DOWNLOAD_DIRECT", 5);
 
 function overrides_menu_alter(&$menu)
 {
-	$menu['user/%/messages']['type'] = MENU_CALLBACK;
-	$menu['user/%user_category/edit']['type'] = MENU_CALLBACK;
-	$menu['user/%user/openid']['type'] = MENU_CALLBACK;
+        $menu['user/%/messages']['type'] = MENU_CALLBACK;
+        $menu['user/%user_category/edit']['type'] = MENU_CALLBACK;
+        $menu['user/%user/openid']['type'] = MENU_CALLBACK;
+	// remove personal contact form page & tab for non-admin users
+  	$menu['user/%user/contact']['access callback'] = 'user_access';
+  	$menu['user/%user/contact']['access arguments'] = array('administer users');
+        
 }
-
 function overrides_theme($form, &$form_state)
 {
 	return array(
@@ -78,7 +82,10 @@ function overrides_form_alter($form, &$state, $id)
 		$form['#after_build'][] = 'overrides_edit_chat_field';
 	}
 
-
+  	// hide personal contact form settings for non-admin users
+  	if ($id == 'user_profile_form' && !user_access('administer users')) {
+    		unset($form['contact']);
+ 	 }
 
 	if ($id == "user_register")
 	{

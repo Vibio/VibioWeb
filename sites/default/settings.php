@@ -89,7 +89,7 @@
  *   $db_url = 'mysqli://username:password@localhost/databasename';
  *   $db_url = 'pgsql://username:password@localhost/databasename';
  */
-$db_url = 'mysqli://root:vibio@localhost/vibio';
+#SEE BELOW for local settings.php on this server instance, was:  $db_url = 'mysqli://root:vibio@localhost/vibio';
 #$db_url = 'mysqli://root:simonsaysFWarvsgESAE@127.0.0.1/vibio';
 $db_prefix = 'drupal_';
 

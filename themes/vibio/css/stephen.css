@@ -610,6 +610,9 @@ div.item-list{
 	height:30px;
 	margin-bottom: 20px;
 }
+.front div.item-list{
+	background:none;
+}
 div.item-list ul.pager{
 	text-align: right;
 	padding-top: 0.4em;
@@ -656,4 +659,28 @@ ul.pager li.pager-next{
 }
 ul.pager li.pager-next a{
 	display: block;
+}
+/*Back to top*/
+#block-block-22 a{
+  background: url(../images/back-to-top.png) no-repeat 0 -1px;
+  width:84px;
+  height:63px;
+  display: block;
+}
+#block-block-22 a:hover{
+	background-position:0 -70px
+}
+#block-block-22{
+	position: relative;
+	margin:0;
+}
+#block-block-22 p{
+	position:absolute;
+	right:1px;
+	bottom:-10px;
+	margin:0;
+	text-indent:-9999px
+}
+.front.logged-in #footer{
+	background:none
 }

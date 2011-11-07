@@ -14,7 +14,7 @@ if ($row->nid)
 	$is_item_message = strpos($row->message_id, "node") !== false || strpos($row->message_id, "item") !== false;
 	if ($is_item_message && module_exists("vibio_item")) //this nid is for a node
 	{
-		$image = _vibio_item_get_image($row->nid);
+		$image = theme('vibio_item_image', $row->nid, 'tiny_profile_pic');
 	}
 	elseif (strpos($row->message_id, "collection") !== false && module_exists("collection")) //this nid is actually a cid. hax.
 	{
@@ -24,13 +24,12 @@ if ($row->nid)
 	}
 	else
 	{
-		$image = _vibio_item_get_image($row->nid); // dunno what else to do here.. just assume it's an nid
+		$image = theme('vibio_item_image', $row->nid, 'tiny_profile_pic');
 	}
-	
 	$message .= "
 		<div class='views_node_image_container'>
 			<a href='/node/{$row->nid}'>
-				<img src='$image' />
+				{$image}
 			</a>
 		</div>
 	";

@@ -1,6 +1,0 @@
-sudo chmod 664 jquery-scrolltofixed-min.js
-sudo chmod 664 select.js
-sudo chmod 000 masonry.js
-sudo chmod 664 scroll-init.js
-sudo chmod 664 scroll.js
-sudo chmod 664 fixed-scroll.js

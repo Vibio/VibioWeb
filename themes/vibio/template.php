@@ -24,6 +24,7 @@ function vibio_addthis_button($variables) {
     addthis:description="'. $description .'">
   <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
   <a class="addthis_button_tweet"
+    tw:via="vibio"
     addthis:url="'. $abbreviated_url .'"></a>
   <a class="addthis_counter addthis_pill_style"></a>
   </div>
@@ -329,22 +330,6 @@ function vibio_status_messages($display=null)
 	return $out;
 }
 
-//Remove the Personal Contact Form from the User Profile
-function vibio_form_alter(&$form, $form_state, $form_id) {
-  // hide personal contact form settings for non-admin users
-  if ($form_id == 'user_profile_form' && !user_access('administer users')) {
-    unset($form['contact']);
-  }elseif($form_id == 'user_profile_form' && user_access('administer users')){
-    dsm($form);
-  }
-}
-
-//Remove the link to the personal contact
-function vibio_menu_alter(&$items) {
-  // remove personal contact form page & tab for non-admin users
-  $items['user/%user/contact']['access callback'] = 'user_access';
-  $items['user/%user/contact']['access arguments'] = array('administer users');
-}
 
 function vibio_user_login_block($form) {
    $form['submit']['#value'] = 'Sign up';

@@ -234,14 +234,7 @@ height: 64px;
 .view.view-flag-featured .view-footer a span{
   font-size: 1px;
 }
-.view.view-flag-featured .view-footer a{
-  float:right;
-  background-image: url(../images/back-to-top.png);
-  background-repeat:  no-repeat;
-  width:84px;
-  height:64px;
-  display: block;
-}
+
 
 .view.view-flag-featured .view-footer a:hover{
   background-position-y: -69px;
@@ -277,7 +270,7 @@ height: 64px;
 	text-indent: -9999px;
 	float: left;
 	margin: 4px 3px 0 0;
-}http://dev.vibio.com/#top
+}
 
 #block-block-5 #connect-nav a:hover {
 	color: #00AEF0

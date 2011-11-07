@@ -18,12 +18,13 @@ if ($show_preview)
 		</div>
 	";
 }
+$collection_image = theme('imagecache', 'collection_fixed_fluid_grid', $collection->image, $collection->collection_description, $collection->collection_description, '');
 
 echo "
 	<div class='collection_list_collection' id='collection_{$collection->cid}'>
 		<div class='collection_image'>
 			<a href='$collection_url'>
-				<img src='{$collection->image}' title='{$collection->collection_description}' alt='{$collection->collection_description}' />
+				{$collection_image}
 			</a>
 		</div>
 		<div class='collection_summary'>

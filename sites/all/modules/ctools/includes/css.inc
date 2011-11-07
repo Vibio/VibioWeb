@@ -201,6 +201,10 @@ function ctools_css_add_css($filename = NULL, $type = 'module', $media = 'all', 
 
       $output = '<link type="text/css" rel="stylesheet" media="' . $media . '" href="' . $url . '" />'."\n";
       drupal_set_html_head($output);
+			break;
+		/* Stephen is thrashing here, hope to overwrite and throw out this code when we fix the file system */
+		default:     /* case, vibio doesn't use PUBLIC or PRIVATE */
+			drupal_add_css($filename, $type, $media, $preprocess);	
   }
 
 }

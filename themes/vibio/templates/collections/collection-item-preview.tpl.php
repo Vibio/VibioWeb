@@ -1,14 +1,13 @@
 <?php
 $updated = t("Updated !date", array("!date" => "<span class='timestamp_uncalculated'>{$item->node_changed}</span>"));
 $price_image = theme("vibio_item_price_image", $item, "mini");
-
+$item_image = theme('imagecache', 'collection_fixed_fluid_height_100', $item->image, $item->node_title, $item->node_title, '');
 
 
 echo "<!-- sites/default/themes/vibio/templates/collections/collection-item-preview.tpl.php -->
 	<div class='collection_list_image'>
 		$price_image
-		<a href='/node/{$item->nid}'>
-			<img src='{$item->image}' />
+		$item_image
 		</a>
 	</div>
 	<div class='collection_list_item_summary'>

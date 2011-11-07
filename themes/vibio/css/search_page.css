@@ -189,6 +189,7 @@ button.add_connection{
 	border:none;
 	cursor:pointer;
 }
+
 button.add_connection:hover{
 	background-position: -1px -49px;
 }

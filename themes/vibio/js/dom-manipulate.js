@@ -51,5 +51,10 @@ $('.team-bio').hide();
 $('.team-photo, .team-name').click(function(){
     $(this).parents(".team-box:first").find(".team-bio").toggle('fast');
 });
+/*scroll to top*/
+$('a.topOfPage').click(function() {
+$.scrollTo(0, 500);
+return false;
+}); 
 
 });

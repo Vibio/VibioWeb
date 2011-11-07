@@ -3,11 +3,11 @@ $date_added = t("Added !date", array("!date" => date("M j, Y", $collection->crea
 $tags = t("Tags: !tags", array("!tags" => $collection->tags));
 $num_items = t("!count items", array("!count" => $collection->num_items));
 $link = l(t("Check it out"), "collections/{$collection->cid}", array("attributes" => array("class" => "collection_link")));
-
+$collection_image = theme('imagecache', 'collection_fixed_fluid_grid_115', $collection->image, $collection->collection_description, $collection->collection_description, '');
 echo "
 	<div class='collection_image'>
 		<a href='/collections/{$collection->cid}'>
-			<img src='{$collection->image}' />
+			{$collection_image}
 		</a>
 	</div>
 	<div class='collection_info'>

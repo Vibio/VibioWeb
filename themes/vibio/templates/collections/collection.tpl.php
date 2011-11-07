@@ -18,7 +18,7 @@ if ($show_preview)
 		</div>
 	";
 }
-$collection_image = theme('imagecache', 'collection_fixed_fluid_grid', $collection->image, $collection->collection_description, $collection->collection_description, '');
+$collection_image = theme('imagecache', 'collection_fixed_fluid_grid_77', $collection->image, $collection->collection_description, $collection->collection_description, '');
 
 echo "
 	<div class='collection_list_collection' id='collection_{$collection->cid}'>

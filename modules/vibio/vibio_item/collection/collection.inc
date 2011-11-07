@@ -166,8 +166,12 @@ function collection_set_user_default($uid, $cid)
 	return db_query($sql, $uid, $cid);
 }
 
+//Returns the image for a collection
 function collection_get_image($cid, $absolute=false, $access=false)
 {
+	//include product.inc to get the file_uncreate_url function
+	module_load_include('inc', 'product');
+
 	if (!$access)
 		$access = PRIVACY_ONLYME;
 		
@@ -183,11 +187,13 @@ function collection_get_image($cid, $absolute=false, $access=false)
 			LIMIT 1";
 	if (!$nid = db_result(db_query($sql, $cid, $access)))
 	{
-		return collection_default_image();
+		$image = collection_default_image();
+	}else{
+		$image = _vibio_item_get_image($nid);
 	}
-	
-	$image = _vibio_item_get_image($nid);
-	return $image == _vibio_item_default_image() ? collection_default_image() : $image;
+	//Make sure that we're not given a full URL
+	$image = file_uncreate_url($image);
+	return $image;
 }
 
 function collection_default_image($absolute=false)
@@ -295,6 +301,8 @@ function collection_get_sidebar($uid, $ignore_cid=0, $max_collections=4, $as_uid
 
 function collection_get_sidebar_items($cid, $owner=false, $as_uid=false, $num_items=3)
 {
+	//Get the file_uncreate_url() function
+	module_load_include('inc', 'product');
 	if (!$as_uid)
 	{
 		global $user;
@@ -336,7 +344,7 @@ function collection_get_sidebar_items($cid, $owner=false, $as_uid=false, $num_it
 	$items = array();
 	while ($item = db_fetch_object($res))
 	{
-		$item->image = _vibio_item_get_image($item->item_nid);
+		$item->image = file_uncreate_url(_vibio_item_get_image($item->item_nid));
 		$items[] = $item;
 	}
 	

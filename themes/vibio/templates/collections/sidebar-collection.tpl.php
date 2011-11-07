@@ -1,11 +1,12 @@
 <?php
 $num_items = t("!num items", array("!num" => $collection->num_items));
+$collection_image = theme('imagecache', 'collection_fixed_fluid_grid_77', $collection->image, $collection->collection_description, $collection->collection_description, '');
 
 echo "
 	<div class='collection_sidebar_collection'>
 		<div class='collection_sidebar_collection_image'>
 			<a href='/collections/{$collection->cid}'>
-				<img src='{$collection->image}' />
+				{$collection_image}
 			</a>
 		</div>
 		<div class='collection_sidebar_collection_items'>

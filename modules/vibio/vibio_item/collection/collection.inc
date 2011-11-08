@@ -193,6 +193,10 @@ function collection_get_image($cid, $absolute=false, $access=false)
 	}
 	//Make sure that we're not given a full URL
 	$image = file_uncreate_url($image);
+	//Get rid of any initial slash marks in the url
+        $pattern = "/^\//";
+        $image = preg_replace($pattern,"",$image);
+
 	return $image;
 }
 

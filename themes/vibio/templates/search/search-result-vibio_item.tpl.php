@@ -6,6 +6,10 @@ $img = theme('imagecache', 'product_fixed_width', $node->field_main_image[0]['fi
 
 // $search_links are have and want buttons
 
+// the views-fluidgrid-item class was drive-by-theming, senseless. 
+// These things are jammed into columns with no fluid anything.
+// Maybe one day a themer may decide to remove the columns 
+
 $rectangle = "
 <div class='views-fluidgrid-item'> 
 	<div class='views-fluidgrid-item-inner'>

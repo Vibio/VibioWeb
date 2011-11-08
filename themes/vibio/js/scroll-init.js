@@ -29,7 +29,7 @@ if($("body").hasClass("front") && $("body").hasClass("logged-in") ) {
 					donetext     : "No more pages to load.",
 					debug        : false,
 					pathParse    : '?page=1',
-					animate      : true, 
+					animate      : false, 
 					pages        : numOfPages, //NEW OPTION: number of pages in the Views Pager
 					errorCallback: function() { $('#infscr-loading').animate({opacity: .8},2000).fadeOut('normal');//fade out the error message after 2 seconds
 

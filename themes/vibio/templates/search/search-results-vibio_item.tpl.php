@@ -10,6 +10,12 @@ echo $pager;
  * /var/www/vibio/src/modules/vibio/vibio_item/product_catalog/product.module
  * that might produce $other_results ... is this eBay ? 
 
+ * Interesting functions:
+    form submit => vibio_item_search calls _vibio_item_search   [?]
+		 builds the internal, privacy/network search
+      it runs this: product_external_search_modify_search_query
+     returns $results
+
  * The three or four columns are produced in template.php
  * vibio_preprocess_search_results
 
@@ -21,6 +27,7 @@ echo $pager;
 
  */
 echo " 
+$other_results
 	<!-- table class='search-results $type' -->
 		<div class='search-col 1'>$search_results_0</div>
 		<div class='search-col 2'>$search_results_1</div>

@@ -42,7 +42,6 @@ span.ui-icon{
 
 .vibio_dialog_content {
 	background: white;
-	max-height: 650px;
 	min-height:150px;
 	overflow: auto;
 	border-radius: 8px;
@@ -164,6 +163,7 @@ div#edit-node-price-wrapper{
     border: none;
     color: #000000;
 }
+
 .modalframe .ui-dialog-titlebar {
     background-color: #FFFFFF;
     border: none;
@@ -209,9 +209,7 @@ div#edit-node-price-wrapper{
     background-color: #F8F8F8;
     color: #292929;
 }
-.modalframe-page-content{
-	padding:0 1em;
-}
+
 .ui-widget-overlay {
     background-color: #AAAAAA;
     height: 100%;
@@ -226,6 +224,9 @@ div#edit-node-price-wrapper{
     margin: 0;
     overflow: visible;
     padding: 0;
+}
+#modalframe-container p {
+   margin:0;
 }
 #modalframe-container.modalframe-loaded {
     background: none repeat scroll 0 0 transparent;

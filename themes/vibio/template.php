@@ -88,6 +88,8 @@ function vibio_filter_tips_more_info() {
  *  2) two ways to "zebra stripe" the columns
  */
 function vibio_preprocess_search_results(&$variables) {
+	//dsm($variables['search_results']);
+
   $variables['search_results'] = '';
 	$zebra = 1;
   foreach ($variables['results'] as $result) {

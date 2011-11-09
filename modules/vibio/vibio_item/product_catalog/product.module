@@ -358,7 +358,7 @@ function product_user_owns_product($product_id, $uid=false)
 /* warning: this uses search text for functional if
  * The point of this is something to do with searches with no results. 
  * Experiment when time
- * !!! I think I wrote some code for blank searches too. -Stephen
+ * !!! I think I wrote some code for blank searches to. -Stephen
  */
 function product_preprocess_box(&$vars)
 {
@@ -377,15 +377,13 @@ function product_preprocess_box(&$vars)
 	}
 }
 
-/* FluidGrid has acted upon $vars['search_results'] before it gets here 
-   so flow must first go through template.php's vibio_preprocess_search_results ?
-		Not clear what this function does.  Looks like nothing -- not sure if that
-    is why things are broken? Or is it pager-related? */
+/* first this goes to template.php's vibio_preprocess_search_results ? */
 function product_preprocess_search_results(&$vars)
 {
 	if ($vars['type'] == "vibio_item")
 	{
 		global $pager_page_array, $pager_total;
+
 		
 		module_load_include("inc", "product");
 		drupal_add_css("themes/vibio/css/product.css");
@@ -400,7 +398,6 @@ function product_preprocess_search_results(&$vars)
 
 //PRODUCT_SEARCH_RESULTS_PER_PAGE does this do anything?  Is the idea that if you have a full page of results in $vars['results'] 
 // which is either local, or local+Amazone but not eBay, or ???, then we don't need to do this next search?
-<<<<<<< HEAD
 
 
 
@@ -410,19 +407,11 @@ function product_preprocess_search_results(&$vars)
 //$is_external = false;
 // um... the external results look just like what we already have
 		
-=======
-	
-
-		//dsm(array($is_external, variable_get("product_append_external", false), count($vars['results'])));
-		// $is_external is true, !$is.. false, for ferrari?external_product_search=1	
->>>>>>> origin/mesh
 		if (!$is_external && variable_get("product_append_external", false) && (count($vars['results']) < PRODUCT_SEARCH_RESULTS_PER_PAGE || $_GET['page'] == $pager_total[0] - 1))
 		{
 			product_set_external_search_page_offset($pager_total[0] - 1);
 			$external_results = product_external_search(_vibio_item_search_keys());
-// https://dev.vibio.com/search/vibio_item/ferrari?external_product_search=1 does not come here!
-//die("here");
-//dsm(array("external" => $external_results));
+			
 			$vars['other_results'] = "";
 			if (!empty($external_results))
 			{
@@ -452,8 +441,6 @@ function product_preprocess_search_results(&$vars)
 			
 		}*/
 	}
-	//dsm(array($vars['search_results'], $vars['other_results']));
-	// After a normal search, the first is fll of text, the second empty, during phase when only external searches working
 }
 
 /* two functions dealing with have-want, one for search, one for view */

@@ -86,8 +86,19 @@ function vibio_filter_tips_more_info() {
 /* modified preprocess_search_results
  *  1) fiddle (freely) with searches per page
  *  2) two ways to "zebra stripe" the columns
+
+  The interesting values in $variables are
+		type
+		search -> array, data-style, of results
+		search_results -> which has already been themed, but not well. It gets trashed.
+		search_results_not_lost -> copy of search_results, an emergency fix to be erased.
+
  */
 function vibio_preprocess_search_results(&$variables) {
+	//dsm($variables);
+	if ( $variables['type'] != 'vibio_item' ) {  return; }
+			// this should fix search_type_not_lost --- ToDo!!
+		
   $variables['search_results'] = '';
 	$zebra = 1;
   foreach ($variables['results'] as $result) {

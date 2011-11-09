@@ -389,8 +389,23 @@ function product_preprocess_search_results(&$vars)
 		drupal_add_css("themes/vibio/css/product.css");
 		
 		$is_external = product_set_external_search();
+		// modules/vibiomodules/vibio_item/product_catalog/product.inc
+		// Some function, in a typical search, has already set it to true.
+		// look for:
+		// modules/vibio/vibio_item/product_catalog/product.module:  product_set_external_search(true, true);
+	// I think it's called in product_external_search (this file), by 
+	//  something before here?   start_here_tuesday
+
 //PRODUCT_SEARCH_RESULTS_PER_PAGE does this do anything?  Is the idea that if you have a full page of results in $vars['results'] 
 // which is either local, or local+Amazone but not eBay, or ???, then we don't need to do this next search?
+
+
+
+// WARNING: $is_external is typical search true,
+//	so what is all this?
+//die("is external is $is_external"); = 1
+//$is_external = false;
+// um... the external results look just like what we already have
 		
 		if (!$is_external && variable_get("product_append_external", false) && (count($vars['results']) < PRODUCT_SEARCH_RESULTS_PER_PAGE || $_GET['page'] == $pager_total[0] - 1))
 		{
@@ -399,7 +414,7 @@ function product_preprocess_search_results(&$vars)
 			
 			$vars['other_results'] = "";
 			if (!empty($external_results))
-			{	
+			{
 				// Stephen: we need finer control on external results, add this
 				//  the pager system is out of sorts
 				$vars['unthemed_other_results'] = $external_results;
@@ -413,7 +428,6 @@ function product_preprocess_search_results(&$vars)
     *  Not sure about this, check later.
     */
 				}
-				
 				$vars['pager'] = theme("pager");
 			}
 			

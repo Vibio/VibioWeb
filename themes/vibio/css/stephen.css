@@ -576,11 +576,20 @@ div.views-field.views-field-nid{
 	float:left;
 	margin-right:20px;
 	cursor:pointer;
+	position:relative;
 }
 .team-photo img{
 	margin:10px 0 0 13px;
 	width:148px;
 	height: 148px;
+}
+img.team_tooltip{
+	display:none;
+	height:124px;
+	width:228px;
+	position: absolute;
+	right:-187px;
+	top:22px;
 }
 .team-bio{
 	width:500px;
@@ -661,6 +670,9 @@ ul.pager li.pager-next a{
 	display: block;
 }
 /*Back to top*/
+.not-logged-in #block-block-22{
+	display:none
+}
 #block-block-22 a{
   background: url(../images/back-to-top.png) no-repeat 0 -1px;
   width:84px;

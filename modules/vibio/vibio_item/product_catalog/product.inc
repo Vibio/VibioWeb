@@ -144,9 +144,7 @@ function _product_get_image($nid, $is_product=false)
 		$url = file_create_url($product->field_main_image[0]['filepath']);
 	else
 		$url = _product_default_image();
-
 	$product_images[$search_nid] = $url;
-	
 	return $url;
 }
 
@@ -155,13 +153,16 @@ function _product_get_image($nid, $is_product=false)
  */
 function file_uncreate_url($url) {
 	$pieces = explode("com/", $url);
-	
-	return $pieces[1];
+	if(count($pieces) > 1){
+		return $pieces[1];
+	}else{
+		return $pieces[0];
+	}
 }
 
 function _product_default_image()
 {
-	return file_create_url("themes/vibio/images/icons/default_item.png");
+	return "themes/vibio/images/icons/default_item_large.png";
 }
 
 function product_images($node, $get_main=false)

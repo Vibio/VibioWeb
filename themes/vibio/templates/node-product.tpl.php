@@ -14,20 +14,23 @@ else
 	$searchcrumb = "";
 }
 
+//$product_image can be set by vibio_addthis if it has already loaded the image path. It is an absolute path.
 if(isset($product_image)){
         $image = $product_image;
 }else{
-        $image = _product_get_image($node->nid, true);
+        $image =_product_get_image($node->nid, true);
 }
 
 if (isset($image))
 {
-
+	$image = file_uncreate_url($image);
+	$pattern = "/^\//";
+	$image = preg_replace($pattern,"",$image);
         $alt = 'Product Image';
         $imgtitle = '';
         $attributes = array('class' => 'product_main_image');
         $imagecached = theme('imagecache', 'product_main_product_page', 
-                file_uncreate_url($image), 
+                $image, 
                 $alt, $imgtitle, $attributes);
         $image = "
                 <a href='$image' rel='prettyphoto[item_image]'>
@@ -65,7 +68,7 @@ if (isset($node->amazon_data)) {
 	}
 	
 	$external_link = $page ? t("Get \"!item\" from !external_link.", array("!item" => $node->title, "!external_link" => l(t("Amazon"), $node->amazon_data['detailpageurl'], array("absolute" => true,
-"attributes" => array('target' =>"_amazon" )
+"attributes" => array()     // javascript ruining this ('target' =>"_amazon" )
 )))) : "";
 	//$external_link .=  $node->amazon_data['detailpageurl']; This URL is already encoded, when it shouldn't be. i.e.:
 	//  encode   key=variable  so the equals sign is gone and it's just text.

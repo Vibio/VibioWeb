@@ -190,6 +190,5 @@
 	top: 4px;
 }
 .profile_progress {
-	float: left;
-	margin-right: 5px;
+	display:none;
 }

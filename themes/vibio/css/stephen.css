@@ -621,6 +621,8 @@ div.item-list{
 }
 .front div.item-list{
 	background:none;
+	height:15px;
+	margin-bottom: 0px;
 }
 div.item-list ul.pager{
 	text-align: right;
@@ -695,4 +697,23 @@ ul.pager li.pager-next a{
 }
 .front.logged-in #footer{
 	background:none
+}
+/*Connection Finder Page*/
+#no-friends-top{
+	font-size:15px;
+	font-weight:bold;
+	margin-top:10px;
+}
+#no-friends-mid{
+	text-align:center
+}
+#no-friends-bot{
+	width: 490px;
+	margin:-40px auto 0;	
+}
+#no-friends-bot p{
+	float: left;
+}
+p#no-friends-fb{
+	margin:7px 0 0 10px
 }

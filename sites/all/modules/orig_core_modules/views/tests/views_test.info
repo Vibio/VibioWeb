@@ -7,9 +7,9 @@ hidden = TRUE
 files[] = views_test.module
 files[] = views_test.install
 
-; Information added by drupal.org packaging script on 2011-10-07
-version = "6.x-3.0-alpha4"
+; Information added by drupal.org packaging script on 2011-11-02
+version = "6.x-3.0-rc2"
 core = "6.x"
 project = "views"
-datestamp = "1318005707"
+datestamp = "1320268839"
 

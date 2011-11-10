@@ -45,6 +45,8 @@ if ($relationships)
 }
 else 
 {
-  echo t('No relationships found');
+  echo('<div id="no-friends-top">Didn’t find anyone to connect to?</div><div id="no-friends-mid"><img src="sites/all/themes/vibio/images/no_friends.png" /></div>
+  <div id="no-friends-bot"><p>Connect your Facebook account to see which friends use Vibio</p><p id="no-friends-fb">
+<a href="/fb/add-account" class="fb_link_account"><img src="/themes/vibio/images/facebook/link-account.png"></a></p></div> ');
 }
 ?>

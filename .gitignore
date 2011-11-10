@@ -4,6 +4,7 @@ settings.php
 modules/vibio/facebook/compare_with_facebook_module_fb
 WELCOME_TO_DEV
 WELCOME_TO_MESH
+WELCOME_TO_*
 modules/memcache
 modules/memcache/*
 

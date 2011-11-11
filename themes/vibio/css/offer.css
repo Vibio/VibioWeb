@@ -196,3 +196,9 @@ div#edit-field-offer-expires-0-value-datepicker-popup-0-wrapper .description, di
 div.node-type-offer-neg-seller ul.links{
 	display:none
 }
+
+#content-area a.offer-button{
+background: url('../images/btn_make_offer.png') no-repeat;
+width: 37px;
+height: 185px;
+}

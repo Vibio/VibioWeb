@@ -11,7 +11,7 @@ $display_args = array(
 	"!end"		=> min($view->total_rows, $view->pager['items_per_page']*($view->pager['current_page'])+1),
 	"!total"	=> $view->total_rows,
 );
-echo "<!-- sites/default/themes/vibio/templates/views/user_collection/views-view-grid--user-collection.tpl.php -->\n";
+echo "<!-- sites/default/themes/vibio/templates/views/user_collection/views-view-grid--user-collection.tpl.php --> \n";
 //echo l($collections_link_text, "user/{$view->args[0]}/inventory")."<br />";
 echo t("Viewing !start - !end of !total", $display_args);
 ?>

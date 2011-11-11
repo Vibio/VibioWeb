@@ -66,7 +66,7 @@ $t_args=array("!title"=>l($product->title,"node/{$item_nid}"),"!view_link"=>l(t(
 if($item_nid) {
 if(!$cids) {
 //exit(t("\"!title\" has been added to your inventory! You can !view_link or !close_link", $t_args));
-exit(t("\"!title\" has been added to your inventory! !view_link",$t_args));
+exit(t("<div id='add-congrats'><h2>Congratulations</h2><p>\"!title\" has been added to your inventory! !view_link</p></div>",$t_args));
 }
 $collection_names=array();
 foreach($cids as $cid) {
@@ -77,10 +77,10 @@ if(count($cids)>1) {
 $key=count($cids)-1;
 $collection_names[$key]="and {$collection_names[$key]}";
 $t_args['!collection']=implode(", ",$collection_names);
-exit(t('"!title" has been added to your !collection collections. !view_link',$t_args));
+exit(t('<div id="add-congrats"><h2>Congratulations</h2><p>"!title" has been added to your !collection collections. !view_link</p></div>',$t_args));
 }
 $t_args['!collection']=implode(", ",$collection_names);
-exit(t('"!title" has been added to your !collection collection. !view_link',$t_args));
+exit(t('<div id="add-congrats"><h2>Congratulations</h2><p>"!title" has been added to your !collection collection. !view_link</p></div>',$t_args));
 }
 exit(t("There was an error adding the item to your inventory. Please try again later. !close_link",$t_args));
 }

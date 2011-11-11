@@ -43,6 +43,7 @@ body {
  * Header
  */
 #header {
+	height: 82px
 }
 
 #header .section {

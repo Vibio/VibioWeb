@@ -1,0 +1,11 @@
+/* $Id: modalframe.parent.css,v 1.1.2.4 2010/01/02 06:07:14 markuspetrux Exp $ */
+
+/**
+ * jQuery UI Dialog classes.
+ */
+.modalframe-page-content{
+	padding:0 1em;
+}
+.modalframe-page-content p{
+	margin:0
+}

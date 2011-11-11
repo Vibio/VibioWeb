@@ -436,6 +436,9 @@ ul.links li {
   margin: 0;
   padding: 5px 0;
 }
+.logged-in .rounded_content{
+	padding:0
+}
 
 .rounded_left_side {
   border-top-left-radius: 4px;

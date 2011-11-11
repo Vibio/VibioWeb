@@ -489,14 +489,19 @@ div.views-field.views-field-nid{
 #block-block-14,#block-block-19{
 	height: 70px
 }
+#node-23081 .content{
+	margin-top:40px;
+}
 /*Hiding the about us page title*/
 .page-about h1#page_title,.page-team h1#page_title{
 	display: none
 }
 #about-top-p{
 	font-size: 28px;
-	line-height: 46px;
+	line-height: 39px;
 	margin: 1px 0 38px;
+	font-weight:100;
+	letter-spacing:1px;
 }
 #block-block-14 .content,#block-block-19 .content{
 	position: absolute;
@@ -515,6 +520,7 @@ div.views-field.views-field-nid{
 #about-footer{
 	clear: both;
 	line-height: 22px;
+	padding:0 0 10px 20px;
 }
 #about-footer p{
 	float: left;
@@ -526,32 +532,6 @@ div.views-field.views-field-nid{
 }
 #about-copy{
 	clear: both
-}
-/*Terms of Use Page*/
-.terms-header{
-	font-size: 13px;
-	color: #00AEF0;
-	margin-bottom: 0;
-}
-#node-23080 div#terms-top{
-	border-bottom: none;
-}
-
-#node-23080 div.content div{
-	border-bottom: 1px solid #CCCCCC;
-	clear: both;
-}
-
-#node-23080 div p{
-	float: right;
-	width:495px;
-}
-#node-23080 ul{
-	width: 395px;
-	float: right;
-	margin:0 40px 0;
-}
-#modalframe-page-content{
 }
 /*New Search Results*/
 #search_type_submenu_0 a{
@@ -621,6 +601,8 @@ div.item-list{
 }
 .front div.item-list{
 	background:none;
+	height:15px;
+	margin-bottom: 0px;
 }
 div.item-list ul.pager{
 	text-align: right;
@@ -695,4 +677,121 @@ ul.pager li.pager-next a{
 }
 .front.logged-in #footer{
 	background:none
+}
+/*Connection Finder Page*/
+#no-friends-top{
+	font-size:15px;
+	font-weight:bold;
+	margin-top:10px;
+}
+#no-friends-mid{
+	text-align:center
+}
+#no-friends-bot{
+	width: 490px;
+	margin:-40px auto 0;	
+}
+#no-friends-bot p{
+	float: left;
+}
+p#no-friends-fb{
+	margin:7px 0 0 10px
+}
+/*Add product Congrats*/
+#add-congrats h2{
+	font-size:22px;
+	font-weight:bold;
+	text-align: center;	
+}
+#add-congrats{
+	font-size:13px
+}
+/*More empty text views when user is new to avoid white screen of death*/
+#no-collections img, #no-activity img{
+	text-align:center;
+}
+#no-collections{
+	position: relative
+}
+a.add-collect{
+	position: absolute;
+	top:7px;
+	left:115px;
+}
+/*Recent Activity no activity*/
+h2.page-description{
+background:url("../images/long_border.png") no-repeat scroll 0 32px transparent;
+height:43px;
+margin: 0 0 20px;
+padding: 0;
+}
+ #no-activity p{
+ 	font-weight: bold;
+ }
+/*FAQ page*/
+#node-23084 h2, #node-23082 h2{
+	color:#106F93;
+	font-size:22px;
+	font-weight:normal;
+	margin:0 0 10px 0;
+}
+#node-23084 h3, #node-23082 h3{
+	font-weight:bold;
+	margin:0;
+	line-height: 13px;
+	font-size:13px;
+}
+#node-23084 p{
+	margin: 0 0 1em;
+}
+#node-23084 ul{
+	height:30px;
+	margin-bottom:20px
+}
+.faq-left{
+	float:left;
+	width:230px;
+	padding-top:7px;
+}
+.faq-right{
+	width:490px;
+	float:left
+}
+/*Privacy Page*/
+.privacy{
+	border-bottom: 1px solid #CCCCCC;
+	padding-top:10px
+}
+.privacy-sub{
+	padding-left:208px;
+}
+#node-23082 h2{
+	color:#106F93;
+	font-size:15px;
+	font-weight:bold;
+	margin:0 0 10px 0;
+}
+#node-23082 p, #node-23082 ul{
+	width:487px;
+	margin: 0 0 1em;
+}
+/*Terms of Use Page*/
+.terms-header{
+	font-size: 13px;
+	color: #106F93;
+	margin-bottom: 0;
+}
+#node-23080 div#terms-top{
+	border-bottom: none;
+}
+
+#node-23080 div.content div{
+	border-bottom: 1px solid #CCCCCC
+}
+
+#node-23080 div p{
+	padding-left:208px;
+}
+#node-23080 ul{
+	padding-left:222px;
 }

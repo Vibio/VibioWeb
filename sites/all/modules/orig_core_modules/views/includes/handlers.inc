@@ -376,21 +376,6 @@ class views_handler extends views_object {
   }
 
   /**
-   * Get the value that's supposed to be rendered.
-   *
-   * @param $values
-   *   An object containing all retrieved values.
-   * @param $field
-   *   Optional name of the field where the value is stored.
-   */
-  function get_value($values, $field = NULL) {
-    $alias = isset($field) ? $this->aliases[$field] : $this->field_alias;
-    if (isset($values->{$alias})) {
-      return $values->{$alias};
-    }
-  }
-
-  /**
    * Sanitize the value for output.
    *
    * @param $value
@@ -1654,7 +1639,7 @@ class views_join {
           // And now deal with the value and the operator.  Set $q to
           // a single-quote for non-numeric values and the
           // empty-string for numeric values, then wrap all values in $q.
-          $raw_value = $this->db_safe($info['value']);
+          $raw_value = $this->db_safe($info['value'], $info);
           $q = (empty($info['numeric']) ? "'" : '');
 
           if (is_array($raw_value)) {
@@ -1696,7 +1681,7 @@ class views_join {
    * so something that needs floats in their joins needs to do their
    * own type checking.
    */
-  function db_safe($input) {
+  function db_safe($input, $info) {
     if (is_array($input)) {
       $output = array();
       foreach ($input as $value) {

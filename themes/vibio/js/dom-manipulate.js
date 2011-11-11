@@ -1,4 +1,4 @@
-3/**
+/**
 * @author Craig Tockman - Reoder Elements up and down the DOM
 */
 
@@ -22,9 +22,9 @@ $(document).ready(function() {
 		$(this).prev().removeClass('hover-shadow');
 	});
 	//places h1 page titles over the tabs on some pages
-	$(".not-logged-in h1#page_title").remove().insertBefore("div.tabs");
-	$(".page-contacts h1#page_title").remove().insertBefore("#friends");
-	$(".section-user h1#page_title").remove().insertAfter("div.tabs");
+	$(".not-logged-in h1#page_title").insertBefore("div.tabs");
+	$(".page-contacts h1#page_title").insertBefore("#friends");
+	$(".section-user h1#page_title").insertAfter("div.tabs");
 
 	//places forgot password snippet above page lost password form
 	$(".not-logged-in h1#page_title").remove().insertBefore("div.tabs");

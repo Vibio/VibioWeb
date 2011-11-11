@@ -219,17 +219,17 @@ class views_handler_field extends views_handler {
       $elements = variable_get('views_field_rewrite_elements', array(
         '' => t('- Use default -'),
         '0' => t('- None -'),
-        'div' => t('DIV'),
-        'span' => t('SPAN'),
-        'h1' => t('H1'),
-        'h2' => t('H2'),
-        'h3' => t('H3'),
-        'h4' => t('H4'),
-        'h5' => t('H5'),
-        'h6' => t('H6'),
-        'p' => t('P'),
-        'strong' => t('STRONG'),
-        'em' => t('EM'),
+        'div' => 'DIV',
+        'span' => 'SPAN',
+        'h1' => 'H1',
+        'h2' => 'H2',
+        'h3' => 'H3',
+        'h4' => 'H4',
+        'h5' => 'H5',
+        'h6' => 'H6',
+        'p' => 'P',
+        'strong' => 'STRONG',
+        'em' => 'EM',
       ));
     }
 
@@ -296,6 +296,21 @@ class views_handler_field extends views_handler {
   function element_wrapper_classes($row_index = NULL) {
     $classes = $this->tokenize_value($this->options['element_wrapper_class'], $row_index);
     return views_css_safe($classes);
+  }
+
+  /**
+   * Get the value that's supposed to be rendered.
+   *
+   * @param $values
+   *   An object containing all retrieved values.
+   * @param $field
+   *   Optional name of the field where the value is stored.
+   */
+  function get_value($values, $field = NULL) {
+    $alias = isset($field) ? $this->aliases[$field] : $this->field_alias;
+    if (isset($values->{$alias})) {
+      return $values->{$alias};
+    }
   }
 
   function option_definition() {

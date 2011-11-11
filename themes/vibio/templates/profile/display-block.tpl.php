@@ -80,7 +80,7 @@ $contacts_menu =
 );
 // !!! children menus look like: user/$uid/something
 $profile_menu =
-	l("Profile", "user/$uid", array(
+	l("Profile", "user/$uid/activity", array(
 	attributes => array(
 		'title' => 'My Profile',
 		'class' => $taint_path == 'profile' ? "profile-b active" : 'profile-b inactive',

@@ -90,7 +90,7 @@
  *   $db_url = 'pgsql://username:password@localhost/databasename';
  */
 #SEE BELOW for local settings.php on this server instance, was:  $db_url = 'mysqli://root:vibio@localhost/vibio';
-#$db_url = 'mysqli://root:simonsaysFWarvsgESAE@127.0.0.1/vibio';
+$db_url = 'mysqli://root:simonsaysFWarvsgESAE@127.0.0.1/vibio';
 $db_prefix = 'drupal_';
 
 /**
@@ -241,4 +241,4 @@ ini_set('url_rewriter.tags',        '');
 
 //override any settings
 $settings_file = dirname(__FILE__)."/../../../local/settings.php";
-require_once($settings_file);
+#require_once($settings_file);

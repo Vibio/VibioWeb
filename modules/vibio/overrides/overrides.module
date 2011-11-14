@@ -165,6 +165,14 @@ function overrides_form_system_file_system_settings_alter(&$form, &$state)
 	);
 }
 
+
+/* Vibio 1.0 used a hybrid Public-Private-Unique Filesystem
+ * This function alters-back 
+	/var/www/vibio/uploads
+ * to 
+	sites/uploads
+ * Especially needed for imagecache.
+ */
 function overrides_file_url_alter(&$path)
 {
 	$upload_dir = file_directory_path();

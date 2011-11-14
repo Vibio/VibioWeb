@@ -259,7 +259,7 @@ function profile_ext_theme(&$existing, $type, $theme, $path)
  *  case.  
  * His code will be kept and commented in stub function below this.
  * My code is a little sloppy but clear
- *   -- Stephen
+ *   -- Stephen'
  */
 function profile_ext_display_block($u)
 {	
@@ -303,10 +303,6 @@ function profile_ext_display_block($u)
 	$vars['buying'] = count($view->result);
 
 
-
-
-
-
 	//$pic_nelson = $u->picture ? file_create_url($u->picture) : "/themes/vibio/images/icons/default_user_large.png";
   $alt = "Your picture";
   $title = '';
@@ -319,48 +315,6 @@ function profile_ext_display_block($u)
 	$pic = theme('imagecache', "little_profile_pic", $u->picture, $alt, $title, $attributes);
 	// fire it to this template: templates/profile/display-block
 	return theme("profile_ext_displayblock", $u, $pic, $vars);
-}
-
-
-
-function NELSONs____profile_ext_display_block___archived_in_place($u)
-{	
-	$cache_key = "profile_display_block:{$u->uid}";
-	$cache_time = 60*5; // 5 minutes
-	
-	if ($cache = cache_get($cache_key, "cache"))
-	{
-		$items = $cache->data;
-	}
-	else
-	{
-		module_load_include("inc", "profile_ext");
-		$items = "";
-		
-		if (module_exists("privatemsg"))
-		{
-			$theme_args = array(
-				"image"	=> "/themes/vibio/images/icons/mail.png",
-				"title"	=> t("Messages"),
-				"count"	=> privatemsg_unread_count($u),
-				"href"	=> url("messages"),
-			);
-			$items .= theme("profile_ext_displayblock_item", $theme_args);
-		}
-		
-		$theme_args = array(
-			"image" => "/themes/vibio/images/icons/messages.png",
-			"title"	=> t("Notifications"),
-			"count"	=> profile_ext_get_dashboard_notifications($u->uid, $tabs),
-			"href"	=> url("my-dashboard/notifications"),
-		);
-		$items .= theme("profile_ext_displayblock_item", $theme_args);
-		
-		cache_set($cache_key, $items, "cache", time() + $cache_time);
-	}
-	
-	$pic = $u->picture ? file_create_url($u->picture) : "/themes/vibio/images/icons/default_user_large.png";
-	return theme("profile_ext_displayblock", $u, $pic, $items);
 }
 
 function profile_ext_get_progress($uid)

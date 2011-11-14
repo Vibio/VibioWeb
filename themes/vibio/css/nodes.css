@@ -89,8 +89,19 @@
 }
 
 .product_main_image, .node_view_item_image {
-  max-width: 250px;
+  width: 248px;
+  height:248px;
   border: 1px solid #CCCCCC;
+}
+
+.product_image {
+  float: left;
+  padding: 25px;
+  background: #FFFFFF;
+  border: 1px solid #CCCCCC;
+  margin-right: 28px;
+  width:300px;
+  height:300px;
 }
 
 .node_view_item_image {
@@ -124,14 +135,6 @@
   padding: 0;
   color: #727272;
   font-size: 18px;
-}
-
-.product_image {
-  float: left;
-  padding: 25px;
-  background: #FFFFFF;
-  border: 1px solid #CCCCCC;
-  margin-right: 28px;
 }
 
 .node_vibio_item_title {

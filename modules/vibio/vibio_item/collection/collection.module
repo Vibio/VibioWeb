@@ -233,7 +233,11 @@ function collection_preprocess_collection_list_item_preview(&$vars)
 	{
 		$vars['item']->offer2buy_price = t("Not for Sale");
 	}
-
+	//If the offer2buy module is active...
+	if(module_exists('offer2buy')){
+		//Insert an offer button or not for sale image
+		$vars['offer_button'] = theme('offer_button', $vars['item'], $user->uid);
+	}
 }
 
 function collection_preprocess_page(&$vars)

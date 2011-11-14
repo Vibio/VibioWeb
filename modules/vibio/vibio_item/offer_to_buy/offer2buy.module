@@ -284,6 +284,8 @@ function offer2buy_nodeapi(&$node, $op, $a3=null, $a4=null)
 
 function offer2buy_theme(&$existing, $type, $theme, $path)
 {
+	global $user;
+
 	return array(
 		"offer2buy_init"		=> array(
 			"arguments"	=> array("nid" => false, "offer_type" => "new"),
@@ -325,7 +327,35 @@ function offer2buy_theme(&$existing, $type, $theme, $path)
 			"template"	=> "templates/offer2buy/offer-popup",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+		'offer_button' => array(
+			'arguments'	=> array('item' => NULL, 'uid' => $user->uid),
+		),
 	);
+}
+
+/**
+ * This function generates a button to make an offer for an item.
+ *
+ * @param <object> $item The item's nid. Assumes that the given item is purchasable.
+ * @param <int> $uid The buyer's uid, defaults to current user.
+ * @return <string> HTML
+ */
+function theme_offer_button($item, $uid){
+  //See if the item is for sale (1 == TRUE)
+  if ($item->offer2buy[settings][is_on_sale] == 1) {
+    //Provide a button to make an offer.
+    $offer_button = l(t('Make Offer'), "offer/$item->nid/$uid", array('attributes' =>array('class'=> 'make-modal offer-button'))); // action_button_link'));
+  }else{
+    //Not for sale text
+    $nfs_text = t("Just showing my style: Not For Sale");
+    //Provide not for sale image
+    $offer_button = "<div class='not_for_sale'><img
+                          src='/themes/vibio/images/item/not_for_sale.png'
+                                alt='$nfs_text'
+                                title='$nfs_text'/></div>";
+  }
+  
+  return $offer_button;
 }
 
 function offer2buy_get_settings($nid=false)
@@ -357,7 +387,7 @@ function offer2buy_preprocess_product_owner(&$vars) {
 
 	// Uh oh: no design for an item page ready yet, no ux.  Maybe it should
 	// be a popup?  Maybe expand in place?
-	$vars['shortlink'] = l("Item details:", "node/" . $item->nid );
+	$vars['shortlink'] = l("Item Details:", "node/" . $item->nid );
 	// weird url format: ?highlight=107 highlights that user (= that user's item)
 
 
@@ -374,7 +404,7 @@ function offer2buy_preprocess_product_owner(&$vars) {
 	$offer_nid = $row[0]['nid'];
 	//!!! Some if this not used in v1.1 ... soon want to differentiate
 	// between new offers and editing offers.
-$owner_uid = $vars['item']['user']['uid'];
+	$owner_uid = $vars['item']['user']['uid'];
 	$owner = user_load( $owner_uid );
 	$vars['username'] = "Name: " . $owner->name; // also found in the item array
 	// alternate UX: add /collection to the link 
@@ -387,28 +417,15 @@ $owner_uid = $vars['item']['user']['uid'];
 		//  seller can use the same url this way.
 		$uid = $user->uid;
 
-		// Is it on sale?
-		// dpm($item->offer2buy[settings][is_on_sale]); i
-		//0 = not for sale, 1 = for sale
-		if ($item->offer2buy[settings][is_on_sale] == 1) {
-			$vars['offer2buy'] = l($text, "offer/$nid/$uid", array(attributes=>array('class'=> 'make-modal'))); // action_button_link'));
-			// Price.
-			// Note that "insert" is complex... test.  Is price always a number?
-			if ( $item->offer2buy[settings][price] > 0 ) {
-				$vars['price'] = $item->offer2buy[settings][price];
-			}
+		//provide an offer button for owner.tpl.php
+		$vars['offer2buy'] = theme('offer_button', $item, $uid);	
+		
+		if ( $item->offer2buy[settings][price] > 0 ) {
+			$vars['price'] = $item->offer2buy[settings][price];
+		}
 		// Next: is "negotiable" something to add here?
 
-		} else {
-			$nfs_text = t("Just showing my style: Not For Sale");
-			//$vars['offer2buy'] = "<div class='not_for_sale'>$nfs_text</div>";
-			$vars['offer2buy'] = "<div class='not_for_sale'><img
-			  src='/themes/vibio/images/item/not_for_sale.png'
-				alt='$nfs_text'
-				title='$nfs_text'	 /></div>";	
-		}
 	}
-
 }
 
 function offer2buy_preprocess_page(&$vars)

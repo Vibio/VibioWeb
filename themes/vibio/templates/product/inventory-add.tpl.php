@@ -20,7 +20,7 @@ echo "
 
 
 echo "
-	<a class='inventory_add' id='inventory_add_{$nid}'>I already have this item</a>
+	<div class='already-have-link'><a class='inventory_add' id='inventory_add_{$nid}'>I already have this item</a></div>
 ";
 
 

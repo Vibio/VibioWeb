@@ -58,9 +58,8 @@ $Connection = $GLOBALS['user']->uid ? "<div class='row'><div class='header'>Conn
 echo "
 	<div class='item_owner {$item['user']['highlight']}'>
 		{$item['user']['picture']}
-		<div class='action'>$offer2buy
-		$price</div>
-		$usernamelink
+		<div class='action'><p>$offer2buy</p><p>$price</p></div>
+		<div class='username'>$usernamelink</div>
 		<div class='item_info'>
 			$shortlink
 			<div class='row'>$teaser</div>

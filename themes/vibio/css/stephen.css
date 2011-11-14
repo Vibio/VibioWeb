@@ -181,24 +181,34 @@ a #profile_ext_displayblock_image {
 }
 /*Upper Left Sidebar*/
 #upper_title {
-	background: url(/themes/vibio/images/upper_title.png) no-repeat 0 0;
-	height: 40px;
+	height: 43px;
 	display: block;
+	width:192px;
+	text-indent: -9999px;
 }
 #upper_title a {
-	font-size: 15px;
-	font-weight: bold;
-	line-height: 42px;
-	color: #999;
-}
-#upper_title a.active {
-	color: #20a0d1;
+	height: 43px;
+	float: left;
+	width:95px;
+	display: block;
 }
 #upper_title .home-b {
-	padding: 10px 26px;
+	background: url(../images/btn_home.png) repeat scroll -1px 45px transparent;
+}
+#upper_title .home-b:hover{
+	background-position:-1px 90px;
+}
+#upper_title a.home-b.active {
+	background-position:-1px 0px;
+}
+#upper_title a.profile-b.active{
+	background-position: 0 0px;
 }
 #upper_title .profile-b {
-	padding: 10px 21px;
+	background: url(../images/btn_profile.png) repeat scroll 0 45px transparent;
+}
+#upper_title .profile-b:hover{
+	background-position: 0 90px;
 }
 /*Sidebar Little Profile Pic*/
 #profile_ext_displayblock_user_section {
@@ -445,6 +455,7 @@ div.box div.search-links{
 	background: none;
 	float:none;
 	color:#1691bd;
+	margin-bottom:20px
 }
 
 .product_node_data .inventory_add:hover{

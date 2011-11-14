@@ -1,4 +1,6 @@
-
+.already-have-link{
+	margin-top:20px;
+}
 .external_short_link {
 	float: right;
 	position: absolute;
@@ -97,6 +99,9 @@ padding: 0;
 
 .product_snippet_expand {
   display: none;
+}
+.product_snippet_expand, .product_snippet{
+	margin-bottom:30px;
 }
 
 /*

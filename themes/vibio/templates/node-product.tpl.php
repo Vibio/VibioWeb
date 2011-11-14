@@ -197,6 +197,9 @@ else
 
 echo "
 	<h1 id='product_description'>Description</h1>
+	<div class='external_short_link'>
+       $external_it_link<a id='info-button' class='automodal' href='/product-help'><span class='tab'>Info</span></a>
+   </div>
 	<div class='product_image'>
 		$price_image
 		$image

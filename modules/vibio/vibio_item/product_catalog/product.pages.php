@@ -11,15 +11,22 @@ $image=_product_get_image($product->nid,true);
 $out="  <div id='inventory_top'><span class='bold-text'>So you own this item and want to add it to your Collections?</span><br />
 Vibio is for people who possess a unique sense of style so<br />
 make it good!</div>
-		<table width='100%' class='inventory_add_pinfo'><tr class='inventory_border_top'><td>&nbsp;</td></tr>
+		<table width='100%' class='inventory_add_pinfo'>
+		<tr class='inventory_border_top'>
+			<td>&nbsp;</td><td>&nbsp;</td>
+		</tr>
 		<tr>
-			<td></td><td class='inventory_add_image'>
-				<img src='$image' />
-			</td>
+		<td class='inventory_add_image'>
+			<img src='$image' />
+		</td>
 			<td class='inventory_title'>
 				{$product->title}
 			</td>
-		</tr><tr class='inventory_border_bottom'><td>&nbsp;</td></tr></table>
+		</tr>
+		<tr class='inventory_border_bottom'>
+			<td>&nbsp;</td><td>&nbsp;</td>
+		</tr>
+		</table>
 	";
 $out.=drupal_get_form("product_ajax_add_form",$product);
 exit($out);

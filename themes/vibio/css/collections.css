@@ -14,13 +14,13 @@
 	position: relative;
 }
 .collection_list_collection .collection_image {
-	margin-right: 10px;
-	padding: 5px 0px 2px 5px;
+	margin:0  10px 10px 0;
+	padding: 5px;
 	border: 1px solid #CCCCCC;
 	background: #FFFFFF;
+	height: 152px;
 }
 .collection_list_collection .collection_image img {
-	max-width: 77px;min-width 100px;
 	border: 1px solid #CCCCCC;
 }
 .collections_view_header {
@@ -33,11 +33,11 @@
 .collection_image {
 	float: left;
 	margin-right: 10px;
-	width: 85px;
 }
 .collection_summary {
 	float: left;
-	width: 595px;
+	width: 555px;
+	margin-bottom:10px;
 }
 .collection_summary h3 {
 
@@ -63,6 +63,8 @@
 	text-align: center;
 	font-size: 15px;
 	font-weight: bold;
+	border-top: 1px solid #CCCCCC;
+	padding-top:5px;
 }
 .collection_preview_init span:hover {
 	text-decoration: underline
@@ -91,18 +93,24 @@
 	border: 1px solid #CCCCCC;
 }
 .collection_list_item_summary {
+
+}
+tr.row-last .collection-preview-boxshadow{
+	border:none
+}
+.collection-preview-boxshadow{
 	border-bottom: 1px solid #CCCCCC;
-	margin: 5px 10px 5px 0px;
 	min-height: 110px;
-	position: relative
+	position: relative;
+	padding: 10px 0 5px 0;
 }
 .collection_list_item_summary div.not_for_sale img{
 	max-width:90px
 }
 .collection_list_item_summary div.not_for_sale{
 	position: absolute;
-	bottom: 11px;
-	right: 1px;
+	bottom: 5px;
+	right: 0px;
 }
 .collection_list_item_summary span.item_price {
 	width: 60px;
@@ -120,6 +128,7 @@
 	vertical-align: top;
 }
 td.col-1 {
+	padding-right: 10px;
 }
 td.col-2 {
 	padding-left: 10px;

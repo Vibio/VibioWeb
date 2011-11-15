@@ -51,7 +51,7 @@ span.ui-icon{
 }
 
 .ui-dialog {
-	position: absolute;
+	top:100px;
 }
 
 .ui-widget-overlay {

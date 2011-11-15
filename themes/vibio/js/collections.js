@@ -20,7 +20,7 @@ $(document).ready(function()
 					.attr("src", "/themes/vibio/images/collections/expand.png")
 					.end()
 				.find("span")
-					.html(Drupal.t("Expand Item List"));
+					.html(Drupal.t("View this collection"));
 					
 			if (loading.length)
 			{

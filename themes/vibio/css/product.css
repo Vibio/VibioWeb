@@ -57,6 +57,7 @@ div.product_owners_results div.action div.row{
 	width: 109px;
 	height: 28px;
 }
+
 #content-area div.product_owners_results div.action a.offer-button:hover{
 	background-position: 0px -42px;
 }

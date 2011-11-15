@@ -31,8 +31,8 @@ echo "
 			<a href='$collection_url'>
 				<h3>{$collection->collection_title}</h3>
 			</a>
-			<span class='collection_item_count'>Number of items: $total_items</span>
-			<span class='manage_collection_link'>$manage_link</span>
+			<div class='collection_item_count'>Number of items: $total_items</div>
+			<div class='manage_collection_link'>$manage_link</div>
 			{$collection->share_html}
 			<div class='clear'></div>
 			<p>{$collection->collection_description}</p>

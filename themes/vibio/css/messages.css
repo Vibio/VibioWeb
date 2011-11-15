@@ -11,42 +11,49 @@
 div.messages,
 div.status,
 div.warning,
-div.error /* Important messages (status, warning, and error) for the user */ {
-  min-height: 21px;
-  margin: 0 0 5px;
-  border: 2px solid #ff7;
-  padding: 5px 5px 5px 35px; /* LTR */
-  color: #000;
-  background-color: #ffc;
-  background-image: url(../images/messages-status.png);
+div.error,
+div.notice /* Important messages (status, warning, and error) for the user */ {
+  position:absolute;
+  min-height: 44px;
+  margin: 0;
+  padding: 29px 5px 5px 78px; /* LTR */
+  background-image: url(../images/message_icons.png);
   background-repeat: no-repeat;
-  background-position: 5px 5px; /* LTR */
+   box-shadow: 0 2px 10px 0px rgba(0,0,0,.5);
+  -moz-box-shadow: 0 2px 10px 0px rgba(0,0,0,.5);
+  -webkit-box-shadow: 0 2px 10px 0 rgba(0,0,0,.5);
+  top:29px;
+  right:124px;
+  width:417px;
+  z-index: 1000;
 }
 
 div.status /* Normal priority messages */ {
+	background-color:#CCECFF;
+	border:2px solid #7AC8FF;
+	background-position: 0px 14px;
 }
-
-div.warning /* Medium priority messages */ {
-  border-color: #fc0;
-  background-image: url(../images/messages-warning.png);
+div.notice /* Normal priority messages */ {
+	background-color:#EAF7DA;
+	border:2px solid #BEE78D;
+	background-position: 0px -78px;
+	padding:15px 5px 15px 78px;
 }
 
 div.warning,
 tr.warning {
-  color: #000; /* Drupal core uses #220 */
-  background-color: #ffc;
-}
-
-div.error /* High priority messages. See also the .error declaration in pages.css. */ {
-  /* border: 1px solid #d77; */ /* Drupal core uses: 1px solid #d77 */
-  border-color: #c00;
-  background-image: url(../images/messages-error.png);
+  color: #556720; /* Drupal core uses #220 */
+  background-color:#FFF7C2;
+  border:2px solid #FFE180;
+  background-position: 0px -268px;
 }
 
 div.error,
 tr.error {
-  color: #900; /* Drupal core uses #200 */
-  background-color: #fee;
+  color: #556720; /* Drupal core uses #220 */
+  background-color:#FFD9DA;
+  border:2px solid #FFABAD;
+  background-position: 4px -174px;
 }
 
 div.messages ul {

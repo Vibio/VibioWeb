@@ -40,8 +40,26 @@ padding: 0;
 }
 
 .product_owners_results {
+	margin-top:10px
 }
-
+div.product_owners_results div.action div.row{
+	font-size:13px;
+	padding-left: 5px;
+}
+.ask-price{
+	margin-top: 20px;
+	width: 109px;
+}
+#content-area div.product_owners_results div.action a.offer-button{
+	display: block;
+	text-indent:-9999px;
+	background: url(../images/btn_make_offer_1.png) no-repeat 0 0;
+	width: 109px;
+	height: 28px;
+}
+#content-area div.product_owners_results div.action a.offer-button:hover{
+	background-position: 0px -42px;
+}
 .item_owner .action {
 	width: 140px;
 	float: right; /* Carolyn should play */
@@ -54,9 +72,11 @@ padding: 0;
 	background: #FFFFFF;
 	width: 44px;
 	float: left;
-	margin: 7px 18px 0 0;
+	margin: 0px 18px 0 0;
 }
-
+.breadcrumb-sep{
+	padding:0 4px;
+}
 .product_owners_results .item_owner .picture img {
     max-width: 42px;
     max-height: 42px;
@@ -71,6 +91,15 @@ padding: 0;
 	float: left;
 	font-size:13px;
 	width: 430px; /* it was 500, which messed up flow with .item_owner .action above */
+}
+
+.item_owner .item_info .row .header{
+	font-weight:bold;
+	padding-top:10px;
+}
+.item_owner .item_info .row .dos_display{
+	font-weight:bold;
+	padding-top:10px;
 }
 
 .item-square .inventory_add, 

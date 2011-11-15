@@ -159,8 +159,10 @@ if ($page)
 			<div class='product_extra_data'>
 				$product_images
 				<h3>$owners_header</h3>
+				<img src='/themes/vibio/images/long_border.png' />
 				$product_owners
 				<p>$external_link</p>
+				
 			</div>
 		";
 

@@ -342,7 +342,7 @@ function offer2buy_theme(&$existing, $type, $theme, $path)
  */
 function theme_offer_button($item, $uid){
   //See if the item is for sale (1 == TRUE)
-  if ($item->offer2buy[settings][is_on_sale] == 1) {
+  if ($item->offer2buy[settings][is_on_sale] == TRUE || $item->offer2buy[settings][is_on_sale] == 1) {
     //Provide a button to make an offer.
     $offer_button = l(t('Make Offer'), "offer/$item->nid/$uid", array('attributes' =>array('class'=> 'make-modal offer-button'))); // action_button_link'));
   }else{

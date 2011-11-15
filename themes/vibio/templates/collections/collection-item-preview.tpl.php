@@ -18,4 +18,5 @@ echo "<!-- sites/default/themes/vibio/templates/collections/collection-item-prev
 		$offer_button
 	</div>
 ";
+//print_r($item);
 ?>

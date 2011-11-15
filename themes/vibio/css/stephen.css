@@ -227,12 +227,20 @@ a #profile_ext_displayblock_image {
 }
 #profile_ext_displayblock_name {
 	line-height: 38px;
+	font-weight: bold;
 }
 /*Sidebar Inbox*/
 #profile_ext_displayblock_subitems {
 	background: url(/themes/vibio/images/inbox.png) no-repeat 5px 0 #FFF;
 	width: 190px;
 	height: 164px;
+	padding-bottom:9px;
+}
+#profile_ext_displayblock_subitems a{
+	color:#106F93;
+}
+#profile_ext_displayblock_subitems a:hover{
+	color:#FFFFFF;
 }
 ul.primary_menu_by_hand {
 	margin: 0;
@@ -252,6 +260,13 @@ ul.primary_menu_by_hand li {
 }
 #block-profile_ext-navigation_profile_display {
 	margin: 0
+}
+/*Sidebar recent activity*/
+div.beat-item a{
+	color:#106F93;
+}
+div.beat-item a:hover{
+	color:#00AEF0;
 }
 /*Sidebar Logged Out*/
 #block-user-0 {

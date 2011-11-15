@@ -55,6 +55,9 @@
 .count-1/* Incremental count independent of each region */ {
 }
 .block h2.title/* Block title */ {
+	color:#556270;
+	font-weight:bold;
+	font-size:15px;
 }
 .block .content/* Block's content wrapper */ {
 }

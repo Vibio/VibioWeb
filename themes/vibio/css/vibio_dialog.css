@@ -225,7 +225,7 @@ div#edit-node-price-wrapper{
     overflow: visible;
     padding: 0;
 }
-#modalframe-container p {
+#modalframe-container p, ul {
    margin:0;
 }
 #modalframe-container.modalframe-loaded {

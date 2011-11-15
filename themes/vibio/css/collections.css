@@ -200,19 +200,22 @@ td.col-2 {
 	padding-top: 6px;
 }
 #block-collection-random_collection .collection_owner a, #block-collection-random_collection .collection_title a {
-	color: #79AFBF;
 	font-size: 15px;
 }
 #block-collection-random_collection .collection_title a, #block-collection-random_collection .collection_link a {
-	color: #106F93;
 	font-size: 13px;
+}
+#block-collection-random_collection .collection_title a{
+	color:#106F93;
+}
+#block-collection-random_collection .collection_title a:hover{
+	color:#00AEF0;
 }
 #block-collection-random_collection .collection_link a {
 	font-size: 12px;
 }
 
 #block-collection-random_collection .collection_date_added {
-	color: #859cae;
 	font-size: 12px;
 	margin-top: 10px;
 }

@@ -187,29 +187,6 @@ tr.odd {
   background: none; /* Drupal core uses a #eee background */
 }
 
-div.messages /* Important messages (status, warning, and error) for the user. See also the declarations in messages.css. */ {
-}
-
-div.status /* Normal priority messages */ {
-}
-
-div.warning,
-tr.warning /* Medium priority messages */ {
-  /* border: 1px solid #f0c020; */ /* Drupal core uses: 1px solid #f0c020 */
-}
-
-div.error,
-tr.error /* High priority messages. See also the .error declaration below. */ {
-}
-
-.error /* Errors that are separate from div.messages status messages. */ {
-  /* color: #e55; */ /* Drupal core uses a #e55 background */
-}
-
-.warning /* Warnings that are separate from div.messages status messages. */ {
-  /* color: #e09010; */ /* Drupal core uses a #e09010 background */
-}
-
 div.tabs /* See also the tabs.css file. */ {
 }
 
@@ -479,7 +456,6 @@ ul.links li {
 }
 
 .sidebar .rounded_content a {
-  color: #106f93;
 }
 
 .sidebar .rounded_content a.active {

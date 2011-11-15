@@ -171,8 +171,6 @@ h6{
  * Block-level elements
  */
 p,
-ul,
-ol,
 dl,
 pre,
 table {
@@ -190,8 +188,8 @@ blockquote {
  */
 ul,
 ol {
-  margin-left: 0;
-  padding-left: 2em; /* LTR */
+  margin: 0;
+  padding-left: 1em; /* LTR */
 }
 
 .block ul,

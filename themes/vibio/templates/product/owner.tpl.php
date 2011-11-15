@@ -38,7 +38,7 @@ Need to go up-code to change that.
 
 
 if ( $price ) {
-	$price = "<div class='row'><div class='header'>Asking Price:</div> \$$price</div>";
+	$price = "<div class='row'><div class='header ask-price'>Asking Price:</div><br /> \$$price</div>";
 } else {
 	$price = '';
 }
@@ -53,12 +53,12 @@ There's no design/ux yet on how to get item details.
 I'm thinking it should pop?
 */
 
-$Connection = $GLOBALS['user']->uid ? "<div class='row'><div class='header'>Connection:</div> {$item['user']['link']}</div>" : '';
+$Connection = $GLOBALS['user']->uid ? "<div class='row'><div class='header'>Connection:&nbsp;</div> {$item['user']['link']}</div>" : '';
 
 echo "
 	<div class='item_owner {$item['user']['highlight']}'>
 		{$item['user']['picture']}
-		<div class='action'><p>$offer2buy</p><p>$price</p></div>
+		<div class='action'>$offer2buy $price</div>
 		<div class='username'>$usernamelink</div>
 		<div class='item_info'>
 			$shortlink

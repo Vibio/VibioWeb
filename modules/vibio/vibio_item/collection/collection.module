@@ -236,7 +236,9 @@ function collection_preprocess_collection_list_item_preview(&$vars)
 	//If the offer2buy module is active...
 	if(module_exists('offer2buy')){
 		//Insert an offer button or not for sale image
-		$vars['offer_button'] = theme('offer_button', $vars['item'], $user->uid);
+		$item = $vars['item'];
+		$item->offer2buy['settings']['is_on_sale'] = $vars['item']->for_sale; 
+		$vars['offer_button'] = theme('offer_button', $item, $user->uid);
 	}
 }
 

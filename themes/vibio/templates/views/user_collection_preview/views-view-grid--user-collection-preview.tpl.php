@@ -50,7 +50,7 @@ if ($unshown_items)
 		echo "<tr class='$row_class'>";
 		foreach ($cols as $j => $item) {
 			$result_index = count($cols)*$i + $j;
-			$col_class = "col-".($j + 1);
+			$col_class = "col-".($j + 1);	
 			$td_output = isset($view->result[$result_index]) ? theme("collection_list_item_preview", $view->result[$result_index]) : $item;
 
 			if(strlen($td_output))

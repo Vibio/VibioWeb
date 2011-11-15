@@ -32,9 +32,11 @@ echo t("Viewing !start - !end of !total", $display_args);
 			$td_output = isset($view->result[$result_index]) ? theme("collection_list_item_preview", $view->result[$result_index]) : $item;
 
 			echo "
-				<td class='$col_class'>
-					$td_output
-				</td>
+			<td class='$col_class'>
+				 <div class='collection-preview-boxshadow'>
+						$td_output
+				</div>
+			</td>
 			";
 		}
 		echo "</tr>";

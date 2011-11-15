@@ -199,6 +199,7 @@ function collection_preprocess_collection_list_item_preview(&$vars)
 	$vars['item']->image = file_uncreate_url( _vibio_item_get_image($vars['item']->nid));
         $vars['item']->image = ltrim($vars['item']->image, '/');
 	$vars['item']->for_sale = $vars['item']->node_data_field_posting_type_field_posting_type_value == VIBIO_ITEM_TYPE_SELL;
+	print $vars['item']->for_sale;
 	$vars['item']->node_title = strlen($vars['item']->node_title) > COLLECTION_ITEM_PREVIEW_MAX_TITLE_LENGTH ? substr($vars['item']->node_title, 0, COLLECTION_ITEM_PREVIEW_MAX_TITLE_LENGTH)."..." : $vars['item']->node_title;
 
 /*

@@ -40,7 +40,7 @@
 	margin-bottom:10px;
 }
 .collection_summary h3 {
-
+	line-height:13px;
 	margin: 0;
 }
 .collection_summary p {
@@ -51,6 +51,10 @@
 }
 .collection_summary span.collection_item_count {
 	width: 190px;
+}
+.collection_item_count{
+	margin-top:15px;
+	font-weight: bold;
 }
 .collection_summary span.manage_collection_link {
 	margin-left: 10px;
@@ -143,7 +147,7 @@ td.col-2 {
 	height: auto;
 }
 .collection_categories {
-	
+	font-weight: bold
 }
 .item_updated {
 	display: none;

@@ -231,7 +231,7 @@ function collection_preprocess_collection_list_item_preview(&$vars)
 	}
 	else
 	{
-		$vars['item']->offer2buy_price = t("Not for Sale");
+		$vars['item']->offer2buy_price = t("<span class='bold-text'>Status:</span> Not for Sale");
 	}
 	//If the offer2buy module is active...
 	if(module_exists('offer2buy')){

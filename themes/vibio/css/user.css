@@ -1,7 +1,10 @@
+/*Hiding the Send Invitation button based on user relationships*/
 .connect_you #name_and_friend {}
-.connect_connection #name_and_friend {}
+.connect_connection div#name_and_friend div.friend_actions{ display: none}
 .connect_second #name_and_friend { }
 .connect_none #name_and_friend { }
+
+
 #profile_user_information .mouse_for_friends { 
 	margin-top: 13px;
 	color: #556270;

@@ -94,6 +94,15 @@
 	border-bottom: 1px solid #CCCCCC;
 	margin: 5px 10px 5px 0px;
 	min-height: 110px;
+	position: relative
+}
+.collection_list_item_summary div.not_for_sale img{
+	max-width:90px
+}
+.collection_list_item_summary div.not_for_sale{
+	position: absolute;
+	bottom: 11px;
+	right: 1px;
 }
 .collection_list_item_summary span.item_price {
 	width: 60px;

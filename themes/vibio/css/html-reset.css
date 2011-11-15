@@ -380,3 +380,11 @@ fieldset {
 .hidden {
   display: none;
 }
+
+/*throbber*/
+html.js input.form-autocomplete {
+    background-position: 99% 7px;
+}
+html.js input.throbbing{
+	background-position: 99% -14px;
+}

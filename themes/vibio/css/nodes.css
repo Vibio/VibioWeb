@@ -172,10 +172,10 @@ table.search-results.vibio_item td {
 .item_pricetag {
 	text-align: left;
 	position: absolute;
-	opacity: 0.75;
-	filter: alpha(opacity=75) !important;
 }
-
+.item_pricetag img {
+	border:none;
+}
 .item_pricetag_left {
 	background: transparent url(/themes/vibio/images/item/pricetag_left.png) no-repeat 0 0;
 	height: 26px;

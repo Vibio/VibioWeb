@@ -16,6 +16,7 @@ echo "<!-- sites/default/themes/vibio/templates/collections/collection-item-prev
 		<span class='item_updated'>$updated</span>
 		<span class='item_price'>{$item->offer2buy_price}</span>
 		$offer_button
+		$share_links
 	</div>
 ";
 //print_r($item);

@@ -148,7 +148,7 @@ padding: 0;
 h1#page_title, h1#box_page_title{
 background:url("../images/long_border.png") no-repeat scroll 0 32px transparent;
 height:43px;
-margin: 3px 0 0;
+margin: 3px 0 5px;
 padding: 0;
 }
 

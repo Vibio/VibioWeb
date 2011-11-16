@@ -9,7 +9,8 @@
  * @param <type> $variables
  * @return <type> 
  */
-function vibio_addthis_button($variables) {
+function vibio_addthis_toolbox($variables) {
+  addthis_add_default_js();
   $url = $variables['url'];
   if(module_exists('shorten')){
     $abbreviated_url = shorten_url($url, 'TinyURL');
@@ -18,7 +19,9 @@ function vibio_addthis_button($variables) {
   $node = $variables['node'];
   $description = $node->body;
   return '
-  <!-- AddThis Button BEGIN -->
+  <div class="share-text">
+  Share: 
+  </div>
   <div class="addthis_toolbox addthis_default_style"
     addthis:title="'. $title .'"
     addthis:description="'. $description .'">
@@ -28,8 +31,6 @@ function vibio_addthis_button($variables) {
     addthis:url="'. $abbreviated_url .'"></a>
   <a class="addthis_counter addthis_pill_style"></a>
   </div>
-  <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4eb430ae5c32d849"></script>
-  <!-- AddThis Button END -->
   ';
 }
 

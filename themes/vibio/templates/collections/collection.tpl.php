@@ -33,10 +33,10 @@ echo "
 			</a>
 			<div class='collection_item_count'>Number of items: $total_items</div>
 			<div class='manage_collection_link'>$manage_link</div>
-			{$collection->share_html}
 			<div class='clear'></div>
 			<p>{$collection->collection_description}</p>
 			{$collection->collection_categories}
+			{$collection->share_html}
 		</div>
 		<div class='clear'></div>
 		$preview

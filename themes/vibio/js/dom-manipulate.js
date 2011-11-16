@@ -61,4 +61,5 @@ $(document).ready(function() {
 		$.scrollTo(0, 2000);
 		return false;
 	});
+	$('.section-collections .item-list').insertAfter('h1#page_title');
 });

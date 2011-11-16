@@ -28,7 +28,6 @@
 	right: 22px
 }
 .collection_list_collection {
-	margin-bottom: 25px;
 }
 .collection_image {
 	float: left;
@@ -147,7 +146,9 @@ td.col-2 {
 	height: auto;
 }
 .collection_categories {
-	font-weight: bold
+	font-weight: bold;
+	float:left;
+	margin-bottom: 10px;
 }
 .item_updated {
 	display: none;
@@ -276,3 +277,14 @@ div#block-collection-random_collection .collection_categories,  div#block-collec
 div#block-collection-random_collection .collection_link{
 	display:none;
 }
+
+/*Share buttons*/
+.addthis_default_style{
+	margin-top:10px;
+}
+.share-text{
+	float:left;
+	clear:both;
+	line-height: 18px;
+	font-weight: bold;
+	margin-right: 5px;

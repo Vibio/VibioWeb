@@ -152,39 +152,40 @@ function overrides_user_register_submit($form, &$form_state) {
 
 
 
-function overrides_form_system_file_system_settings_alter(&$form, &$state)
-{
-	$form['file_downloads']['#options'][OVERRIDES_FILE_DOWNLOAD_DIRECT] = t("Separate server");
-	$form['file_downloads']['#description'] .= " ".t("Choosing Separate vhost requires that the File URL is filled in with a valid url that will take you to the File system path.");
-	$form['overrides_file_url'] = array(
-		"#type"			=> "textfield",
-		"#title"		=> t("File URL"),
-		"#description"	=> t("The URL to access the file system path. No trailing slash plz."),
-		"#default_value"=> variable_get("overrides_file_url", ""),
-		"#weight"		=> -5,
-	);
-}
 
+/* Vibio 1.0 used a hybrid Public-Private-Unique Filesystem
+ * This function alters-back 
+	/var/www/vibio/uploads
+ * to 
+	sites/uploads
+ * Especially needed for imagecache.
+
+v1.0, browser settings:
+File System Path:
+/var/www/vibio/uploads
+File URL:
+http://vibio.com/sites/default/files/uploads
+
+ */
 function overrides_file_url_alter(&$path)
 {
-	$upload_dir = file_directory_path();
-	$file_url = variable_get("overrides_file_url", false);
 
-	//stephen: what about getting out of here for imagecache?
-/*
-No. This isn't the right place.  This alters urls being printed,
-not when they are returned.
-grep 'stephen' in imagecache for solution [?]
-	if ( preg_match("sites/default/files/uploads/imagecache", $file_url)) {
-die ($file_url);
-		return;
+
+	// Older files (up to v1.1) have an extra
+	//     /var/www/vibio/uploads/
+	// that needs to be removed
+
+
+  $filepatharray = explode ( '/var/www/vibio/uploads/' , $path);
+	if ($filepatharray[1]) {
+		$path = $filepatharray[0] . $filepatharray[1];
 	}
-*/	
 
+/*  KEEP FOR REFERENCE, v1.0
 	if ($file_url && variable_get('file_downloads', FILE_DOWNLOADS_PUBLIC) == OVERRIDES_FILE_DOWNLOAD_DIRECT && strpos($path, $upload_dir) === 0)
 	{
 		$path = str_replace($upload_dir, $file_url, $path);
-	}
+	}*/
 }
 
 function overrides_form_search_theme_form_alter(&$form, &$state)

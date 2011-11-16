@@ -176,7 +176,10 @@ function collection_preprocess_collection_list_item(&$vars)
 	//Add sharing buttons; requires addthis module
 	$share_html = "";
 	if(module_exists('addthis')){
-		$share_html = theme('addthis_button');
+		global $base_url;
+		$variables['title'] = $vars['collection']->collection_title;
+		$variables['url'] = $base_url . url('collections/'. $vars['collection']->cid);
+		$share_html = theme('addthis_toolbox', $variables);
 	}
 /*
 	if($vars['collection']->is_owner ) {
@@ -215,7 +218,10 @@ function collection_preprocess_collection_list_item_preview(&$vars)
 	}
 */
 	if(module_exists('addthis')){
-                $share_html = theme('addthis_button');
+		global $base_url;
+		$variables['url'] = $base_url . url('node/'. $vars['item']->nid);
+		$variables['title'] = $vars['item']->node_title;
+                $share_html = theme('addthis_button', $variables);
         }
 	$vars['share_links'] = $share_html;
 

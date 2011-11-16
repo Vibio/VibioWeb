@@ -24,12 +24,37 @@ function vibio_addthis_toolbox($variables) {
   </div>
   <div class="addthis_toolbox addthis_default_style"
     addthis:title="'. $title .'"
+    addthis:url="'. $url .'"
     addthis:description="'. $description .'">
   <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
   <a class="addthis_button_tweet"
     tw:via="vibio"
     addthis:url="'. $abbreviated_url .'"></a>
   <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  ';
+}
+
+/**
+ * Adds an individual addthis button, small style.
+ * 
+ * @param <type> $variables
+ * @return <type> 
+ */
+function vibio_addthis_button($variables){
+  addthis_add_default_js();
+  $title = $variables['title'];
+  if($node = $variables['node']){
+  $description = $node->body;
+  }
+  $url = $variables['url'];
+  return '
+  <div class="addthis_toolbox addthis_default_style"
+      addthis:title="'. $title .'"
+      addthis:url="'. $url .'"
+      addthis:description="'. $description .'">
+    <a class="addthis_button_compact"></a>
+    <a class="addthis_counter addthis_bubble_style"></a>  
   </div>
   ';
 }

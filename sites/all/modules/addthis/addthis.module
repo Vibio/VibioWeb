@@ -297,9 +297,8 @@ function addthis_get_custom_services() {
  */
 function addthis_add_default_js() {
   // Check if we've done this already.
-  static $addthis_counter = 0;
-  print $addthis_counter;
   if ($addthis_counter++ > 0) {
+    print 'we already added js';
     return $addthis_counter;
   }
   

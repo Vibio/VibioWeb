@@ -20,7 +20,7 @@ if ($row->nid)
 	{
 		module_load_include("inc", "collection");
 		$access = privacy_get_access_level($row->actor->uid); // this works because other users viewing this view will have the same access level as the current user
-		$image = collection_get_image($row->nid, false, $access);
+		$image = theme('collection_image', $row->nid, 'tiny_profile_pic', $access);
 	}
 	else
 	{
@@ -36,7 +36,7 @@ if ($row->nid)
 }
 
 /* Neither friends nor badges print the second image.  Seems like they
- *  sure should.  Begun work here, realized it's a feature not a bug/priority,
+ *  sure should.  Begun work here, realized its a feature not a bug/priority,
  *  code snippets should get you started...
  */
 //if   [message_id] => heartbeat_become_friends,  $row->uid_target

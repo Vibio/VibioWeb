@@ -10,7 +10,12 @@
  * @return <type> 
  */
 function vibio_addthis_toolbox($variables) {
-  addthis_add_default_js();
+  global $addthis_counter;
+  empty($addthis_counter) ? $addthis_counter = 0 : '';
+  if($addthis_counter < 1){
+    addthis_add_default_js();
+    $addthis_counter++;
+  }
   $url = $variables['url'];
   if(module_exists('shorten')){
     $abbreviated_url = shorten_url($url, 'TinyURL');
@@ -42,7 +47,12 @@ function vibio_addthis_toolbox($variables) {
  * @return <type> 
  */
 function vibio_addthis_button($variables){
-  addthis_add_default_js();
+  global $addthis_counter;
+  empty($addthis_counter) ? $addthis_counter = 0 : '';
+  if($addthis_counter < 1){
+    addthis_add_default_js();
+    $addthis_counter++; 
+  }
   $title = $variables['title'];
   if($node = $variables['node']){
   $description = $node->body;
@@ -121,13 +131,39 @@ function vibio_filter_tips_more_info() {
 
  */
 function vibio_preprocess_search_results(&$variables) {
-	//dsm($variables);
+	/* notes and research:
+ 	dsm(array("variables" => $variables));
+	// If it's owned ($results under some circumstances),
+	// $user has a link to the user (html, boolean)
+	// $node->uid has the owner's uid
+	*/
+
 	if ( $variables['type'] != 'vibio_item' ) {  return; }
 			// this should fix search_type_not_lost --- ToDo!!
-		
+
+
+	// Is it mine?   Could go in preprocess_search_result (singular)?
+	global $user;
+	foreach ( $variables['results'] as $result) {
+		$item = $result['node'];
+		if ( $user->uid == $item->uid ) {
+			$item->thisismine = true;
+		}
+	}
+
+
+
+	// (May change all this if move to masonry javascript) Move
+	//	things into 4 columns		
   $variables['search_results'] = '';
 	$zebra = 1;
-  foreach ($variables['results'] as $result) {
+	// Combine $variables['results'] and $variables['unthemed_other_results']
+	// It's not consistent what these are: results is both local and Amazon,
+	//  if results is local, other is Amazon.  I think. More varieties
+	//  possible.  Keep testing or rebuild from scratch.
+	$all_results = array_merge($variables['results'], $variables['unthemed_other_results']);
+
+  foreach ($all_results as $result) {
 		$z = $result['zebra'] = $zebra%4;
 		$zebra++;
     $variables["search_results_$z"] .= theme('search_result', $result, $variables['type']);

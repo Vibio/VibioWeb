@@ -3,6 +3,7 @@ $collection_url = url("collections/{$collection->cid}");
 $manage_link = $collection->is_owner ? l(t("Rename Collection"), "collections/manage/{$collection->cid}") : "";
 $total_items = t("!count items", array("!count" => $collection->total_items));
 $expand = t("View this collection");
+$collection->user = l($collection->user_name, "user/{$collection->uid}");
 
 if ($show_preview)
 {
@@ -17,11 +18,13 @@ if ($show_preview)
 			</div>
 		</div>
 	";
+	$collection->share_html = null;
 }
 $collection_image = theme('imagecache', 'collection_fixed_fluid_grid_77', $collection->image, $collection->collection_description, $collection->collection_description, '');
 
 echo "
 	<div class='collection_list_collection' id='collection_{$collection->cid}'>
+		<div class='manage_collection_link'>$manage_link</div>
 		<div class='collection_image'>
 			<a href='$collection_url'>
 				{$collection_image}
@@ -32,9 +35,9 @@ echo "
 				<h3>{$collection->collection_title}</h3>
 			</a>
 			<div class='collection_item_count'>Number of items: $total_items</div>
-			<div class='manage_collection_link'>$manage_link</div>
-			<div class='clear'></div>
+			<div class='collection-user'>Collection creator: {$collection->user}</div>
 			<p>{$collection->collection_description}</p>
+			<div class='clear'></div>
 			{$collection->collection_categories}
 			{$collection->share_html}
 		</div>

@@ -119,7 +119,20 @@ function collection_theme(&$existing)
 			"template"	=> "templates/collections/random-collection",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+		"collection_image" => array(
+			"arguments"	=> array('cid' => null, 'imagecache' => 'full_profile_pic', 'access' => FALSE)
+		),
 	);
+}
+
+//This is a theme function to produce collection images. Currently uses collection_get_image; could completly replace
+//when we can refactor the code which uses collection_get_image.
+function theme_collection_image($cid, $imagecache, $access){
+                        $item_image = collection_get_image($cid, false, $access);   
+                        $alt = 'Collection Image';
+                        $title = 'Collection Image';
+                        $attributes = ‘’;
+                        return theme('imagecache', $imagecache, $item_image, $alt, $title, $attributes);
 }
 
 function collection_preprocess_collection_view_collection(&$vars)
@@ -179,6 +192,7 @@ function collection_preprocess_collection_list_item(&$vars)
 		global $base_url;
 		$variables['title'] = $vars['collection']->collection_title;
 		$variables['url'] = $base_url . url('collections/'. $vars['collection']->cid);
+		
 		$share_html = theme('addthis_toolbox', $variables);
 	}
 /*

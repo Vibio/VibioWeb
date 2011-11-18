@@ -30,6 +30,24 @@
 }
 .form-submit/* The submit button */ {
 }
+#edit-uri-request-relationship-cancel, #edit-uri-request-relationship-confirm, #edit-uri-pending-request-confirm,#edit-uri-pending-request-cancel{
+	background:url(../images/btn_send_cancel.png) no-repeat;
+	border:0;
+	height: 29px;
+	width: 80px;
+	text-indent: -9999px;
+	margin-top:20px;
+	cursor: pointer;
+}
+#edit-uri-request-relationship-cancel, #edit-uri-pending-request-cancel{
+	background-position: -82px 0;
+}
+#edit-uri-request-relationship-confirm:hover, #edit-uri-pending-request-confirm:hover{
+	background-position: 0px -40px;
+}
+#edit-uri-request-relationship-cancel:hover, #edit-uri-pending-request-cancel:hover{
+	background-position: -82px -40px;
+}
 .container-inline div, .container-inline label/* Inline labels and form divs */ {
 	display: inline;
 }
@@ -375,8 +393,8 @@ tr.privatemsg-unread{
 }
 /*Invite popoup*/
 form#uri-request-relationship-form{
-	margin: 30px 0 0 20px;
-	width:340px;
+	font-size:13px;
+	padding: 20px 50px 0;
 }
 form#uri-request-relationship-form .description{
 	margin-bottom:20px

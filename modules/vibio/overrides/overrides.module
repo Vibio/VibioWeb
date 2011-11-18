@@ -166,6 +166,18 @@ File System Path:
 File URL:
 http://vibio.com/sites/default/files/uploads
 
+
+The files directory is full of:
+select fid, filepath from drupal_files;
+
+and more recent:
+| 29965 | sites/default/files/uploads/products/B002BTE3JW.jpg                                                       |
+older style:
+| 20346 | /var/www/vibio/uploads/products/B0043RTAHU.jpg                                                            |
+Some images are passed in before this alter as:
+ sites/all/themes/vibio/logo.png
+sites/default/files/uploads/imagecache/product_fixed_fluid_grid//var/www/vibio/uploads/products/B003DIHBFI.jpg  (imagecache makes this work!)
+/var/www/vibio/uploads/products/B0043RTAHU.jpg 
  */
 function overrides_file_url_alter(&$path)
 {
@@ -175,12 +187,30 @@ function overrides_file_url_alter(&$path)
 	//     /var/www/vibio/uploads/
 	// that needs to be removed
 
-
+	// This does not play well with file_create_url and full
+	//  http...etc path names.
+//die($path);
   $filepatharray = explode ( '/var/www/vibio/uploads/' , $path);
 	if ($filepatharray[1]) {
 		$path = $filepatharray[0] . $filepatharray[1];
+
+		/*
+		if ($filepatharray[0] ) {
+			// imagecache is happy
+			// http://staging.vibio.com/sites/default/files/uploads/imagecache/tiny_profile_pic/%252Fproducts/B001JIGTMU.jpg
+			$path = $filepatharray[0] . $filepatharray[1];
+//die("top" . $path);
+		} else {
+			// imagecache gets carried away, does this twice?
+			// staging.vibio.com/sites/default/files/uploads/imagecache/tiny_profile_pic/%252Fsites/default/files/uploads/products/B0042TADJ8.jpg
+			//$path = "/sites/default/files/uploads/" . $filepatharray[1];
+//die("bottom" . $path);
+		} 
+		*/
 	}
 
+
+	return $path; // not needed, but then can call this from elsewhere.
 /*  KEEP FOR REFERENCE, v1.0
 	if ($file_url && variable_get('file_downloads', FILE_DOWNLOADS_PUBLIC) == OVERRIDES_FILE_DOWNLOAD_DIRECT && strpos($path, $upload_dir) === 0)
 	{

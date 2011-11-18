@@ -462,10 +462,13 @@ function product_have_want($nid)
 	return $search_links;
 }
 
+// answer this hook (perhaps other uses):
+//       $extra_images = module_invoke_all("vibio_item_images", $node->nid);
 function product_vibio_item_images($item_nid)
 {
 	module_load_include("inc", "product");
-	
+
+	// is this a serious error that should never happen?	be watchdogged?
 	if (!($nid = _product_nid_from_item($item_nid)))
 	{
 		return array();

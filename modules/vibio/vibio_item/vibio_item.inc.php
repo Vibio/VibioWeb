@@ -330,6 +330,7 @@ function vibio_item_get_image($nid, $imagecachecode, $alt = null, $title = null,
 	$url = _vibio_item_get_image($nid); // could recode and clean this,
 		// previous code takes what we want and runs file_create_url over it,
 		// then I undo that here sloppy fast works fine.
+		// Duplicate code with function file_uncreate_url
 	$pattern = "/sites/";
 	$p = preg_split ( $pattern, $url, 2 );
 	$path ="sites/"  . $p[1];

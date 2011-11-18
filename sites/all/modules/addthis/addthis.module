@@ -297,11 +297,16 @@ function addthis_get_custom_services() {
  */
 function addthis_add_default_js() {
   // Check if we've done this already.
+  static $addthis_counter = 0;
   if ($addthis_counter++ > 0) {
-    print 'we already added js';
     return $addthis_counter;
   }
-  
+//experiment with this next, dsm & die($_SERVER['HTTP_X_REQUESTED_WITH']);
+// look for two varieties
+
+
+	//global $enough_addthis_counters = 1;
+ //print "<p>...and in addthis_add_default"; 
   // Get the base configuration settings array.
   $config = variable_get('addthis_config', array('ui_use_css' => TRUE, 'data_use_cookies' => TRUE,));
   
@@ -341,7 +346,7 @@ function addthis_add_default_js() {
   // used, go ahead and load the cached file.
   if (variable_get('addthis_cache_js', 0) && variable_get('file_downloads', 1) == 1 && $source = addthis_cache_js('http://s7.addthis.com/js/250/addthis_widget.js')) {
     // We need the async fragment in the src argument, so we can't use
-    // drupal_add_js() so far as I know.
+    // drupal_add_js() so far as I know. 
     drupal_set_html_head("<script type='text/javascript' src='" . base_path() . $source . "#async=1'></script>");
   }
   else {

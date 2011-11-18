@@ -28,6 +28,18 @@
 	right: 22px
 }
 .collection_list_collection {
+	border-bottom: 1px solid #CCCCCC;
+	margin-top: 18px;
+}
+div.view-user-collections .collection_list_collection{
+	border:none	
+}
+.manage_collection_link{
+	float:right;
+	padding-right: 22px;
+}
+table.user-collection-preview{
+	margin:0
 }
 .collection_image {
 	float: left;
@@ -94,9 +106,10 @@
 .collection_list_image img {
 	max-height: 100px;
 	border: 1px solid #CCCCCC;
+	max-width: 165px;
 }
 .collection_list_item_summary {
-
+    float: left;
 }
 tr.row-last .collection-preview-boxshadow{
 	border:none
@@ -115,8 +128,19 @@ tr.row-last .collection-preview-boxshadow{
 	bottom: 5px;
 	right: 0px;
 }
-.collection_list_item_summary span.item_price {
-	width: 60px;
+.back-collection{
+	font-size:13px;
+	font-weight:normal;
+	color: #1691bd;
+	padding-left:15px;
+}
+#collection-title-img{
+	position: absolute;
+	top:26px;
+	left:395px;
+}
+.collection-user{
+	font-weight:bold
 }
 .user-collection-preview h5, #collection_sidebar .collection_sidebar_collection h5 {
 	margin: 0;
@@ -282,6 +306,12 @@ div#block-collection-random_collection .collection_link{
 .addthis_default_style{
 	margin-top:10px;
 }
+/*Collection detil page small share buttons*/
+div.collection_list_item_summary .addthis_default_style{
+	margin: 52px 0 0 -3px;
+	width: 80px;
+}
+
 .share-text{
 	float:left;
 	clear:both;

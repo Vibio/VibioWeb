@@ -6,61 +6,87 @@
  *
  * Sensible styling for Drupal's error/warning/status messages.
  */
-
-
-div.messages,
-div.status,
-div.warning,
-div.error,
-div.notice /* Important messages (status, warning, and error) for the user */ {
-  position:absolute;
-  min-height: 44px;
-  margin: 0;
-  padding: 29px 5px 5px 78px; /* LTR */
-  background-image: url(../images/message_icons.png);
-  background-repeat: no-repeat;
-   box-shadow: 0 2px 10px 0px rgba(0,0,0,.5);
-  -moz-box-shadow: 0 2px 10px 0px rgba(0,0,0,.5);
-  -webkit-box-shadow: 0 2px 10px 0 rgba(0,0,0,.5);
-  top:29px;
-  right:124px;
-  width:417px;
-  z-index: 1000;
+div.messages {
+	position: relative;
 }
-
-div.status /* Normal priority messages */ {
-	background-color:#CCECFF;
-	border:2px solid #7AC8FF;
+div.messages div#close-message {
+	background:url(../images/btn_close.png) no-repeat;
+	text-indent:-9999px;
+	cursor: pointer;
+	position: absolute;
+	top: 4px;
+	right: 3px;
+	height: 20px;
+	width: 20px;
+	overflow: hidden;
+}
+div.notice div#close-message {
+	background-position: -40px 0;
+}
+div.error div#close-message {
+	background-position: -80px 0;
+}
+div.warning div#close-message {
+	background-position: -120px 0;
+}
+div.messages, div.status, div.warning, div.error, div.notice/* Important messages (status, warning, and error) for the user */ {
+	position: absolute;
+	min-height: 44px;
+	margin: 0;
+	padding: 15px 5px 15px 78px; /* LTR */
+	background-image: url(../images/message_icons.png);
+	background-repeat: no-repeat;
+	box-shadow: 0 2px 10px 0px rgba(0,0,0,.5);
+	-moz-box-shadow: 0 2px 10px 0px rgba(0,0,0,.5);
+	-webkit-box-shadow: 0 2px 10px 0 rgba(0,0,0,.5);
+	top: 29px;
+	right: 124px;
+	width: 417px;
+	z-index: 1000;
+}
+div.status/* Normal priority messages */ {
+	background-color: #CCECFF;
+	border: 2px solid #7AC8FF;
 	background-position: 0px 14px;
 }
-div.notice /* Normal priority messages */ {
-	background-color:#EAF7DA;
-	border:2px solid #BEE78D;
+div.notice/* Normal priority messages */ {
+	background-color: #EAF7DA;
+	border: 2px solid #BEE78D;
 	background-position: 0px -78px;
-	padding:15px 5px 15px 78px;
+	padding: 15px 5px 15px 78px;
 }
 
-div.warning,
-tr.warning {
-  color: #556720; /* Drupal core uses #220 */
-  background-color:#FFF7C2;
-  border:2px solid #FFE180;
-  background-position: 0px -268px;
+div.warning, tr.warning {
+	color: #556720; /* Drupal core uses #220 */
+	background-color: #FFF7C2;
+	border: 2px solid #FFE180;
+	background-position: 0px -268px;
 }
-
-div.error,
-tr.error {
-  color: #556720; /* Drupal core uses #220 */
-  background-color:#FFD9DA;
-  border:2px solid #FFABAD;
-  background-position: 4px -174px;
+div.error, tr.error {
+	color: #556720; /* Drupal core uses #220 */
+	background-color: #FFD9DA;
+	border: 2px solid #FFABAD;
+	background-position: 4px -174px;
 }
-
 div.messages ul {
-  margin: 0;
-  padding: 0;
+	margin: 0;
+	padding: 0;
 }
-
 div.messages ul li {
-  list-style-type: none;
+	list-style-type: none;
+}
+/*Tooltip Not For Sale*/
+.not_for_sale {
+	position: relative
+}
+.not-sale-popup {
+	background: url(../images/white.png) no-repeat;
+	position: absolute;
+	top: -104px;
+	height: 70px;
+	font-size: 15px;
+	left: -33px;
+	padding: 33px 19px 10px;
+	width: 173px;
+	height: 109px;
 }

@@ -1,6 +1,6 @@
 /**
-* @author Craig Tockman - Reoder Elements up and down the DOM
-*/
+ * @author Craig Tockman - Reoder Elements up and down the DOM
+ */
 
 /*Login button position */
 $(window).load(function() {
@@ -61,5 +61,16 @@ $(document).ready(function() {
 		$.scrollTo(0, 2000);
 		return false;
 	});
-	$('.section-collections .item-list').insertAfter('h1#page_title');
+	/*Messages close button*/
+	$('div.messages').prepend('<div id="close-message">Close</div>');
+	/*Messages close function*/
+	$('div#close-message').click(function() {
+		$('div.messages').fadeOut();
+	});
+	/*Not for Sale Popup*/
+	$('div.product_extra_data div.not_for_sale').hover(function() {
+		$(this).prepend('<div class="not-sale-popup">Many items on Vibio are not for sale. <a href="/about">Find out why</a>.</div>');
+	}, function() {
+		$('.not-sale-popup').remove();
+	});
 });

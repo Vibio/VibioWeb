@@ -150,6 +150,7 @@ function _product_get_image($nid, $is_product=false)
 
 /* stephen: wish we didn't call file_create_url and get full http://...
  *  paths on so much.   Eventually consider recoding whole site...
+ * // Duplicate code with function file_uncreate_url and vibio_item_get_image
  */
 function file_uncreate_url($url) {
 	$pieces = explode("com/", $url);

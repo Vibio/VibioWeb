@@ -303,7 +303,7 @@ function phptemplate_user_relationships_pending_request_approve_link($uid, $rid)
 		"relationships/{$uid}/{$rid}/approve",
 		array(
 			"attributes"=> array(
-				"class"	=> "uri_popup_link",
+				"class"	=> "uri_popup_link approve",
 			),
 			"html"		=> true,
 		)
@@ -317,7 +317,7 @@ function phptemplate_user_relationships_pending_request_disapprove_link($uid, $r
 		"relationships/{$uid}/{$rid}/disapprove",
 		array(
 			"attributes"=> array(
-				"class"	=> "uri_popup_link",
+				"class"	=> "uri_popup_link disapprove",
 			),
 			"html"		=> true,
 		)

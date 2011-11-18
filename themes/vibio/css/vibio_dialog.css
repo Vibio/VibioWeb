@@ -1,3 +1,31 @@
+
+/* trash these useless efforts to quick-theme HAVE popup once find real answer (here to prevent repeat efforts)
+
+.ui-widget-overlay {
+	margin-top: -200px;
+}
+/* moving the HAVE button popup higher... 
+   expect to return to this, fine tune it?  
+   Move it below when things settle
+	
+	Dammit... messes up Close button, the pieces here are separte
+
+.vibio_dialog_content {
+  position: relative;
+  top: -200px;
+}
+.ui-widget-overlay {
+  top: -800px;
+}
+.ui-widget {
+  margin-top: 400px;
+}
+*/
+
+
+
+
+
 #vibio_dialog {
 	/*padding: 10px;
 	background: #375670;*/
@@ -68,6 +96,8 @@ span.ui-icon{
 		Where is the entire file from, what dialog
 		was it expecting, to change automodal?
 		We do want the titlebar --stephen */
+		height:40px;
+		
 }
 
 .ui-dialog-titlebar img {
@@ -83,7 +113,7 @@ span.ui-icon{
 .vibio_dialog_close_button {
 	position: absolute;
 	right: -20px;
-	top: -2px;
+	top: 20px;
 }
 
 #vibio_dialog .views_message {

@@ -4,6 +4,9 @@ $node = $result[node]; //!!! Different from node-view-flag_featured.tpl.php
 $flag = flag_create_link('feature', $node->nid);
 $img = theme('imagecache', 'product_fixed_width', $node->field_main_image[0]['filepath']);
 
+// $mine should be true if it's yours,  true or null
+if ($node->thisismine) { $minetext = "It's mine all mine"; }
+
 // $search_links are have and want buttons
 
 // the views-fluidgrid-item class was drive-by-theming, senseless. 
@@ -18,6 +21,7 @@ $rectangle = "
   			 $img
   		</a>
   	</div>	
+			$minetext
   		<div class='search-links'>$search_links</div>
   		<div class='views-field-title'>
   			<a class='item-title' href='$url'>$title</a>

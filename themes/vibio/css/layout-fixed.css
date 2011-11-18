@@ -141,9 +141,8 @@ body {
 .region-sidebar-first {
   float: left; /* LTR */
   width: 190px;
-  margin-left: 0; /* LTR */
-  margin-right: -200px; /* LTR */ /* Negative value of .region-sidebar-first's width + left margin. */
   padding: 0; /* DO NOT CHANGE. Add padding or margin to .region-sidebar-first .section. */
+ margin: -3px -200px 0 0;
 }
 
 .region-sidebar-first .section {

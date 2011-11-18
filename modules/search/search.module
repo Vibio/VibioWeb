@@ -962,9 +962,11 @@ function do_search($keywords, $type, $join1 = '', $where1 = '1 = 1', $arguments1
 	global $pager_total;
 	$new_search_page_count = 20; // started as 10, and changing it not working
 	 $pager_total = $new_search_page_count;
-	*/
-
   $result = pager_query("$select $sort_parameters", $new_search_page_count, 0, $count_select, $arguments);
+	*/
+	
+	$result = pager_query("$select $sort_parameters", 10, 0, $count_select, $arguments);
+
   $results = array();
   while ($item = db_fetch_object($result)) {
     $results[] = $item;

@@ -177,7 +177,6 @@ function collection_preprocess_collection_view_collection(&$vars)
 
 function collection_preprocess_collection_list_item(&$vars)
 {
-	print_r($vars);
 	if(empty($vars['collection']))
 		return;
 
@@ -189,7 +188,8 @@ function collection_preprocess_collection_list_item(&$vars)
 
 	//Add sharing buttons; requires addthis module
 	$share_html = "";
-	if(module_exists('addthis')){
+	//show preview= 1 on the collections page, null on collection. We don't want to add sharing on collections page for right now.
+	if(module_exists('addthis') && empty($vars['show_preview'])){
 		global $base_url;
 		$variables['title'] = $vars['collection']->collection_title;
 		$variables['url'] = $base_url . url('collections/'. $vars['collection']->cid);
@@ -232,7 +232,8 @@ function collection_preprocess_collection_list_item_preview(&$vars)
 			$share_html .= theme("tweetassist_tweet", "node", $vars['item']->nid);
 	}
 */
-	if(module_exists('addthis')){
+        //show preview= 1 on the collections page, null on collection. We don't want to add sharing on collections page for right now.
+        if(module_exists('addthis') && empty($vars['show_preview'])){
 		global $base_url;
 		$variables['url'] = $base_url . url('node/'. $vars['item']->nid);
 		$variables['title'] = $vars['item']->node_title;

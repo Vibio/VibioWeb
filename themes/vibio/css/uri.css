@@ -1,6 +1,6 @@
-#uri-remove-relationship-form,#uri-pending-request-action-form,#uri-request-relationship-form{
+#uri-remove-relationship-form, #uri-pending-request-action-form, #uri-request-relationship-form {
 	margin: 20px 20px 0;
-	font-size:13px;
+	font-size: 13px;
 }
 img.uri_edit_busy_indicator {
 	display: none;
@@ -11,59 +11,54 @@ img.uri_edit_busy_indicator {
 .relationship_extra {
 	font-size: 11px;
 }
-
-#edit-uri-request-relationship-cancel, #edit-uri-request-relationship-confirm{
-	background:url(../images/btn_send_cancel.png) no-repeat;
-	border:0;
-	height: 29px;
-	width: 80px;
-	text-indent: -9999px;
-	margin-top:10px;
-	cursor: pointer;
-}
-#edit-uri-request-relationship-cancel, #edit-uri-pending-request-cancel{
-	background-position: -82px 0;
-}
-#edit-uri-request-relationship-confirm:hover, #edit-uri-pending-request-confirm:hover{
-	background-position: 0px -40px;
-}
-#edit-uri-request-relationship-cancel:hover, #edit-uri-pending-request-cancel:hover{
-	background-position: -82px -40px;
-}
-
 /*relationship buttons*/
-div.profile_notifications_actions table tbody tr td a.approve button, div.profile_notifications_actions table tbody tr td a.disapprove button,input#edit-uri-remove-relationship-confirm,input#edit-uri-remove-relationship-cancel, #edit-uri-pending-request-confirm,#edit-uri-pending-request-cancel{
+#edit-uri-request-relationship-cancel, #edit-uri-request-relationship-confirm, div.profile_notifications_actions table tbody tr td a.approve button, div.profile_notifications_actions table tbody tr td a.disapprove button, input#edit-uri-remove-relationship-confirm, input#edit-uri-remove-relationship-cancel, #edit-uri-pending-request-confirm, #edit-uri-pending-request-cancel {
 	background: url(../images/btn_relationships.png) no-repeat;
 	height: 27px;
 	width: 79px;
 	border: 0;
 	text-indent: -9999px;
 	cursor: pointer;
-	margin-top:10px;	
+	margin-top: 10px;
 }
-input#edit-uri-remove-relationship-confirm, #edit-uri-pending-request-confirm{
+/*Send Cancel buttons*/
+#edit-uri-request-relationship-confirm {
+	background-position: 0 -92px
+}
+#edit-uri-request-relationship-confirm:hover, #edit-uri-pending-request-confirm:hover {
+	background-position: 0 -122px;
+}
+#edit-uri-request-relationship-cancel {
+	background-position: -84px -92px;
+}
+#edit-uri-request-relationship-cancel:hover, #edit-uri-pending-request-cancel:hover {
+	background-position: -84px -122px;
+}
+/* Yes no buttons*/
+input#edit-uri-remove-relationship-confirm, #edit-uri-pending-request-confirm {
 	background-position: 0 -184px
 }
-input#edit-uri-remove-relationship-confirm:hover, #edit-uri-pending-request-confirm:hover{
+input#edit-uri-remove-relationship-confirm:hover, #edit-uri-pending-request-confirm:hover {
 	background-position: 0 -214px
 }
-input#edit-uri-remove-relationship-cancel, #edit-uri-pending-request-cancel{
+input#edit-uri-remove-relationship-cancel, #edit-uri-pending-request-cancel {
 	background-position: -86px -184px
 }
-input#edit-uri-remove-relationship-cancel:hover,#edit-uri-pending-request-cancel:hover{
+input#edit-uri-remove-relationship-cancel:hover, #edit-uri-pending-request-cancel:hover {
 	background-position: -86px -214px
 }
+/*Add Friend Ignore buttons*/
 div.profile_notifications_actions table tbody tr td a.disapprove button {
 	background-position: 1px 0;
 }
-div.profile_notifications_actions table tbody tr td a.disapprove button:hover{
-	background-position:  1px -30px;
+div.profile_notifications_actions table tbody tr td a.disapprove button:hover {
+	background-position: 1px -30px;
 }
 div.profile_notifications_actions table tbody tr td a.approve button {
 	background-position: -86px 0;
-	width:111px;
+	width: 111px;
 }
-div.profile_notifications_actions table tbody tr td a.approve button:hover{
+div.profile_notifications_actions table tbody tr td a.approve button:hover {
 	background-position: -86px -30px;
 }
 #uri_elaborations_edit {

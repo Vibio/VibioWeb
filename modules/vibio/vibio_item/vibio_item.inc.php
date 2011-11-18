@@ -328,13 +328,18 @@ function _vibio_item_get_image($nid)
  */
 function vibio_item_get_image($nid, $imagecachecode, $alt = null, $title = null, $attributes = null) { // for imagecache
 	$url = _vibio_item_get_image($nid); // could recode and clean this,
+//die($url);  eg themes/vibio/images/icons/default_item_large.png
 		// previous code takes what we want and runs file_create_url over it,
 		// then I undo that here sloppy fast works fine.
 		// Duplicate code with function file_uncreate_url
 	$pattern = "/sites/";
 	$p = preg_split ( $pattern, $url, 2 );
-	$path ="sites/"  . $p[1];
-
+	if ($p[1] ) {
+		$path ="sites/"  . $p[1];
+	} else {   // new 20111118
+		$path = $url;
+	}
+//return $url;
 	return theme('imagecache', $imagecachecode, $path, $alt, $title, $attrbutes);
 
 }

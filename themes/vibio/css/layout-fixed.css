@@ -144,7 +144,9 @@ body {
   padding: 0; /* DO NOT CHANGE. Add padding or margin to .region-sidebar-first .section. */
  margin: -3px -200px 0 0;
 }
-
+.not-logged-in .region-sidebar-first{
+	margin-top:0
+}
 .region-sidebar-first .section {
   padding: 0;
 }

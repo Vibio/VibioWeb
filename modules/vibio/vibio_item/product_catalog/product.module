@@ -464,6 +464,7 @@ function product_have_want($nid)
 
 // answer this hook (perhaps other uses):
 //       $extra_images = module_invoke_all("vibio_item_images", $node->nid);
+// I believe this is really "additional" images only.  And only called for that?
 function product_vibio_item_images($item_nid)
 {
 	module_load_include("inc", "product");
@@ -474,7 +475,7 @@ function product_vibio_item_images($item_nid)
 		return array();
 	}
 	
-	return product_images($nid);
+	return product_images($nid);  // an array of urls
 }
 
 function product_set_autoadd($val=true)

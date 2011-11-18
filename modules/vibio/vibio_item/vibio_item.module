@@ -195,8 +195,15 @@ function vibio_item_preprocess_node(&$vars)
 			}
 			
 			$extra_images = module_invoke_all("vibio_item_images", $node->nid);
+
+
+	// Considering this change.
+      /* v1.11 change: extra images now only extra images, not all -stephen */
+      //$images = array_merge($extra_images, $images);
+
+
 			$images = array_merge($extra_images, $images);
-			$vars['item_extra_images'] = theme("vibio_item_images", $images);
+			$vars['item_extra_images'] = theme("vibio_item_images", $extra_images);
 		}
 	}
 }

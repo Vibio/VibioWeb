@@ -125,6 +125,11 @@ function _product_from_item($item_nid)
 /* Does this get the product or item image, prefering one over the other? 
  * With imagecache, this would be real code?
  * Returns the URL of the image
+
+ * What calls this?  Does it return only Additional Images?
+ * If so, what is the point of default images?
+
+
  */ 
 function _product_get_image($nid, $is_product=false)
 {
@@ -166,6 +171,17 @@ function _product_default_image()
 	return "themes/vibio/images/icons/default_item_large.png";
 }
 
+/* Changed function
+   This function appears to produce only ADDITIONAL images,
+			because it is only called with second arg false, 
+			that I see.
+	 and to have long been producing pointless default images
+   when there was no additional image.  Called by
+	function product_vibio_item_images  (additional images)
+   and
+  "This section is for the page starting after "People who have...."
+		  which I'm not sure does anything now anyway (check up on that)
+*/
 function product_images($node, $get_main=false)
 {
 	if (is_numeric($node))
@@ -182,16 +198,23 @@ function product_images($node, $get_main=false)
 	{
 		$images[] = file_create_url($node->field_main_image[0]['filepath']);
 	}
-	
+
 	if (!empty($node->field_images))
-	foreach ($node->field_images as $image)
-	{
-		if (file_exists($image['filepath']))
+		// Somehow, this adds default images in it in some case
+		foreach ($node->field_images as $image)
 		{
-			$images[] = file_create_url($image['filepath']);
+			/* Shit. We load default images and hold on to them.
+			   That probably occurs in the form, our database is probably
+				 full of these:
+			/var/www/vibio/uploads/imagefield_default_images/default_item_200x200.png
+				 pregmatch these out...
+			*/
+			if (file_exists($image['filepath'])
+				&& !preg_match('/default_item/', $image['filepath'])
+				)	{
+				$images[] = file_create_url($image['filepath']);
+			}
 		}
-	}
-	
 	return $images;
 }
 

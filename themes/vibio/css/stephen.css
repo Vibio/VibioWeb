@@ -310,7 +310,7 @@ div.beat-item a:hover{
 	color: #106F93;
 	font-weight: bold;
 	min-height: 255px;
-	margin: 0 -10px;
+	margin: 50px -10px 0;
 }
 .not-logged-in #block-block-5 {
 	display: none;

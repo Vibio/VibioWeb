@@ -260,6 +260,7 @@ function badge_award_back_dated_badges_submit($form, &$state)
 function badge_unearned_list()
 {
 	global $user;
+	global $base_url;
 	
 	$sql = "SELECT *
 			FROM {badge}
@@ -275,7 +276,7 @@ function badge_unearned_list()
 	$out = "";
 	while ($badge = db_fetch_object($res))
 	{
-		$badge->image_src = file_create_url($badge->image);
+                $badge->image_src = $base_url . '/sites/default/files/uploads/' . file_create_url($badge->image);
 		$out .= theme("badge_alert_badge_single", $badge);
 	}
 	
@@ -299,8 +300,8 @@ function badge_unearned_list()
 
 function badge_get_info($badge)
 {
-	$badge->image_src = file_create_url($badge->image);
-	
+	global $base_url;
+        $badge->image_src = $base_url . '/sites/default/files/uploads/' . file_create_url($badge->image);	
 	$out = theme("badge_alert_badge_single", $badge);
 	$out = "
 		<div id='badge_alert_container'>

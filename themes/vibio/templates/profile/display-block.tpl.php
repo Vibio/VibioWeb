@@ -55,7 +55,7 @@ $buying_menu = l("Offers from you", "buying", array(
 );
 // !!! Notifications becoming invitations?
 $notifications_menu =
-	l("Invitations", "notifications", array(
+	l("Notifications", "notifications", array(
 	attributes => array(
 		'title' => 'Connect with other Vibio Users',
 		'class' => $taint_path == 'notifications' ? " active" : '',

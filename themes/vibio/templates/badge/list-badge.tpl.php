@@ -2,7 +2,7 @@
 echo "
 <div class='badge_list_badge'>
 		<div class='badge_image_container'>
-			<img class='badge_image' src='{$badge->image_src}' />
+			{$badge_image}
 		</div>
 		<div class='badge_info'>
 			<h1>{$badge->title}</h1>

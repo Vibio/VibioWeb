@@ -81,9 +81,6 @@ body.not-front, body.front{
 #name-and-slogan /* Wrapper for website name and slogan */ {
   float: left;
 }
-#name-and-slogan img{
-	width:132px;
-}
 
 h1#site-name,
 div#site-name /* The name of the website */ {

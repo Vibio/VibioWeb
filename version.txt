@@ -1,0 +1,6 @@
+Versions
+
+v1.0 Programmed long ago
+v1.1 Thorough redesign, new offers system
+v1.2 Changes to file system and many bug fixes and design improvements
+

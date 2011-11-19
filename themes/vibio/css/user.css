@@ -200,12 +200,9 @@ table.profile_fields td {
 	padding: 0 15px 10px;
 }
 
-/* .profile_edit_link {
-	float: right;
-	display: none;
-	font-size: 10px;
-	color: red;
-} */
+.profile_edit_link {
+	display:none
+}
 
 #profile_about_me, #profile_demographics {
 	width: 690px;

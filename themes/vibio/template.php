@@ -112,9 +112,8 @@ function vibio_filter_tips($tips, $long = FALSE, $extra = '') {
  * filter/tips
  */
 function vibio_filter_tips_more_info() {
-  return 'If you want fancy formatting options, read ' .
-		l(t('this stuff.'), "filter/tips", array('attributes' => 
-			array('class' => "automodal"))) . '<p>';
+  return '<p>If you want fancy formatting options, read ' . l(t('this stuff.'), "filter/tips", array('attributes' => 
+			array('class' => "automodal"))) . '</p>';
 			// at least Private Messages looks bad without <p> at end
 }
 

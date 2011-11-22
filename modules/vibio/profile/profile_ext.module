@@ -309,7 +309,7 @@ function profile_ext_display_block($u)
   $attributes = '';
 
 	if ( !$u->picture ) { /* deal with no pic loaded */
-		$u->picture = "/themes/vibio/images/icons/default_user_large.png";
+		$u->picture = "themes/vibio/images/icons/default_user_large.png";
 	}
 	//elsewhere: $pic = $u->picture ? file_create_url($u->picture) : "/themes/vibio/images/icons/default_user_large.png";
 	$pic = theme('imagecache', "little_profile_pic", $u->picture, $alt, $title, $attributes);

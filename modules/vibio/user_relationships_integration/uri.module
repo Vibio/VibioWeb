@@ -143,9 +143,6 @@ function uri_preprocess_uri_dashboard_notification(&$vars)
 		$rel_actions = "
 			<table>
 				<tr>
-					<td>
-						<img class='uri_edit_busy_indicator' src='/themes/vibio/images/ajax-loader.gif' />
-					</td>
 					<td>$approve</td>
 					<td>$ignore</td>						
 				</tr>

@@ -11,16 +11,16 @@ $(document).ready(function()
 	
 	$("#profile_user_tabs").tabs();
 	
-	$(".profile_editable").hover(
-		function()
-		{
-			$(this).find(".profile_edit_link").fadeIn(200);
-		},
-		function()
-		{
-			$(this).find(".profile_edit_link").fadeOut(200);
-		}
-	);
+	//$(".profile_editable").hover(
+		//function()
+		//{
+			//$(this).find(".profile_edit_link").fadeIn(200);
+		//},
+		//function()
+		//{
+			//$(this).find(".profile_edit_link").fadeOut(200);
+		//}
+	//);
 	
 	$("#profile_change_picture a").click(function()
 	{

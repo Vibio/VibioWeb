@@ -6,19 +6,26 @@ base theme = zen
 
    ; Stephen making quick edits in various places, better
    ;  to separate my work than integrate with each file here 
-stylesheets[all][]   = css/stephen.css
-stylesheets[all][]   = css/travis.css
+stylesheets[all][]   = css/badge.css
+stylesheets[all][]   = css/blocks.css
+stylesheets[all][]   = css/collections.css
+stylesheets[all][]   = css/comments.css
+stylesheets[all][]   = css/facebook.css
+stylesheets[all][]   = css/forms.css
 stylesheets[all][]   = css/html-reset.css
 stylesheets[all][]   = css/layout-fixed.css
-stylesheets[all][]   = css/tabs.css
 stylesheets[all][]   = css/messages.css
-stylesheets[all][]   = css/pages.css
-stylesheets[all][]   = css/views-styles.css
 stylesheets[all][]   = css/nodes.css
-stylesheets[all][]   = css/comments.css
-stylesheets[all][]   = css/forms.css
-stylesheets[all][]   = css/blocks.css
+stylesheets[all][]   = css/offer.css
+stylesheets[all][]   = css/offer2buy.css
+stylesheets[all][]   = css/pages.css
+stylesheets[all][]   = css/profile.css
 stylesheets[all][]   = css/slideshow.css
+stylesheets[all][]   = css/stephen.css
+stylesheets[all][]   = css/tabs.css
+stylesheets[all][]   = css/travis.css
+stylesheets[all][]   = css/uri.css
+stylesheets[all][]   = css/views-styles.css
 
 
   ; Set the conditional stylesheets that are processed by IE.
@@ -30,9 +37,9 @@ scripts[] = js/dom-removal.js
 scripts[] = js/dom-manipulate.js
 scripts[] = js/product.js
 scripts[] = js/select.js
+scripts[] = js/masonry.js
 scripts[] = js/scroll.js
 scripts[] = js/scroll-init.js
-scripts[] = js/masonry.js
 scripts[] = js/fixed-scroll.js
 scripts[] = js/jquery-scrolltofixed-min.js
 scripts[] = js/jquery.scrollTo-1.4.2-min.js
@@ -40,6 +47,7 @@ scripts[] = js/mb_menu.js
 scripts[] = js/mbMenu/inc/mbMenu.js
 scripts[] = js/mbMenu/inc/jquery.hoverIntent.js
 scripts[] = js/mbMenu/inc/jquery.metadata.js
+scripts[] = js/jquery.imagesloaded.js
 
   ; The regions defined in Zen's default page.tpl.php file.  The name in
   ; brackets is the name of the variable in the page.tpl.php file, (e.g.

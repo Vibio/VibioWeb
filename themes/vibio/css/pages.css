@@ -81,9 +81,6 @@ body.not-front, body.front{
 #name-and-slogan /* Wrapper for website name and slogan */ {
   float: left;
 }
-#name-and-slogan img{
-	width:132px;
-}
 
 h1#site-name,
 div#site-name /* The name of the website */ {
@@ -153,9 +150,9 @@ padding: 0;
 }
 
 .section_title{
-	font-size: 22px;
+	font-size: 18px;
 	color: #556270;
-	font-weight: bold;
+	font-weight: 500;
 }
 
 .section_sub_title a{

@@ -457,7 +457,7 @@ function profile_ext_preprocess_user_profile(&$vars)
 			$access = module_exists("privacy") ? privacy_get_access_level($uid) : 1;
 			$edit_me = '';
 			if ( $user->uid == $uid ) {
-				$edit_me = l('Edit "About Me"', 'user/' . $uid . '/edit/About%20Me');
+				$edit_me = l('Edit Information', 'user/' . $uid . '/edit/About%20Me');
 			}
 			$vars['sec_content'] = $edit_me . 
 				theme("profile_ext_profile_info", $uid, $access) .

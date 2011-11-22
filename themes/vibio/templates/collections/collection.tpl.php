@@ -1,6 +1,6 @@
 <?php
 $collection_url = url("collections/{$collection->cid}");
-$manage_link = $collection->is_owner ? l(t("Rename Collection"), "collections/manage/{$collection->cid}") : "";
+$manage_link = $collection->is_owner ? l(t("Edit Collection"), "collections/manage/{$collection->cid}") : "";
 $total_items = t("!count items", array("!count" => $collection->total_items));
 $expand = t("View this collection");
 $collection->user = l($collection->user_name, "user/{$collection->uid}");

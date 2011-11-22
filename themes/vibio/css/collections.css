@@ -25,7 +25,8 @@
 }
 .collections_view_header {
 	position: absolute;
-	right: 22px
+	right: 22px;
+	top:-33px;
 }
 .collection_list_collection {
 	border-bottom: 1px solid #CCCCCC;

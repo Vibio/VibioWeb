@@ -69,7 +69,7 @@ $(document).ready(function() {
 	});
 	/*Not for Sale Popup*/
 	$('div.product_extra_data div.not_for_sale').hover(function() {
-		$(this).prepend('<div class="not-sale-popup">Many items on Vibio are not for sale. <a href="/about">Find out why</a>.</div>');
+		$(this).prepend('<div class="not-sale-popup">Many items on Vibio are not for sale. <a href="/faq#why">Find out why</a>.</div>');
 	}, function() {
 		$('.not-sale-popup').remove();
 	});

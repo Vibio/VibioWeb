@@ -25,10 +25,9 @@ echo $pager;
  *  Then $other_results has the other results.  So Amazon
  *  products can come in EITHER way
 
-$other_results is what?
-
  */
 echo " 
+$search_results
 	<!-- table class='search-results $type' -->
 		<div class='search-col 2'>$search_results_1</div>
 		<div class='search-col 3'>$search_results_2</div>

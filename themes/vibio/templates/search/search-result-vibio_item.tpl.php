@@ -2,10 +2,12 @@
 $node = $result[node]; //!!! Different from node-view-flag_featured.tpl.php
 		// !!! Also, $search_links is set here, not there.
 $flag = flag_create_link('feature', $node->nid);
+//dsm($node->field_main_image[0]['filepath']);
 $img = theme('imagecache', 'product_fixed_width', $node->field_main_image[0]['filepath']);
 
 // $mine should be true if it's yours,  true or null
-if ($node->thisismine) { $minetext = "It's mine all mine"; }
+// Fires for PRODUCTS (merely searched products too)
+//if ($node->thisismine) { $minetext = "It's mine all mine"; }
 
 // $search_links are have and want buttons
 

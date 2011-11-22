@@ -68,7 +68,13 @@ DirectoryIndex index.php
   ExpiresActive On
 
   # Cache all files for 2 weeks after access (A).
-  ExpiresDefault A1209601
+  #regular:
+	#ExpiresDefault A1209601
+	#~2 days before launch
+	#ExpiresDefault A209601
+	#Crazyiness of launch
+	ExpiresDefault A100
+	
 		# Stephen added 1 second, makes our cache unique
 
   <FilesMatch \.php$>

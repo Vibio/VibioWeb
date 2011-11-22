@@ -377,7 +377,11 @@ function product_preprocess_box(&$vars)
 	}
 }
 
-/* first this goes to template.php's vibio_preprocess_search_results ? */
+/* Also note template.php's vibio_preprocess_search_results ? */
+/* This function appears to fire on the first round of the search,
+    not the "only external items" search.  The slightly dizzying:
+    "If it's not an external search, add the external search results here"
+ */
 function product_preprocess_search_results(&$vars)
 {
 	if ($vars['type'] == "vibio_item")

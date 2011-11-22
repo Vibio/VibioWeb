@@ -1170,11 +1170,13 @@ function search_data($keys = NULL, $type = 'node') {
 			//looks fine for users...dsm($results);
       if (isset($results) && is_array($results) && count($results)) {
         if (module_hook($type, 'search_page')) {
-					//die("Search is running"); --> does not trigger for a normal search
+					//die("Search is running"); //--> does not trigger when
+							// ?external_product_search=1 
           return module_invoke($type, 'search_page', $results);
         }
         else {
 					// this fires for users... die("theme me");
+					// And vibio_item ??? 	
           return theme('search_results', $results, $type);
         }
       }

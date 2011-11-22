@@ -135,7 +135,7 @@ function vibio_preprocess_search_results(&$variables) {
 	// If it's owned ($results under some circumstances),
 	// $user has a link to the user (html, boolean)
 	// $node->uid has the owner's uid
-	*/
+	//*/
 
 	if ( $variables['type'] != 'vibio_item' ) {  return; }
 			// this should fix search_type_not_lost --- ToDo!!
@@ -144,7 +144,8 @@ function vibio_preprocess_search_results(&$variables) {
 	// Is it mine?   Could go in preprocess_search_result (singular)?
 	global $user;
 	foreach ( $variables['results'] as $result) {
-		$item = $result['node'];
+		$item = $result['node']; // !!! eyeball: will this fire inappropriately
+				// for products?  Need to check.  Not themed yet, so who knows.
 		if ( $user->uid == $item->uid ) {
 			$item->thisismine = true;
 		}
@@ -160,8 +161,15 @@ function vibio_preprocess_search_results(&$variables) {
 	// It's not consistent what these are: results is both local and Amazon,
 	//  if results is local, other is Amazon.  I think. More varieties
 	//  possible.  Keep testing or rebuild from scratch.
-	$all_results = array_merge($variables['results'], $variables['unthemed_other_results']);
-
+	if(!IsSet($variables['unthemed_other_results'])) {
+		$all_results = $variables['results'];
+	} else {  // hey, if this was a sane one-pass search, we'd need to deal
+						// with only other results, but I don't think that's a case yet?
+		$all_results = array_merge($variables['results'], $variables['unthemed_other_results']);
+	}
+//die("did we get here");
+//dsm($variables['results']);
+//dsm($all_results);
   foreach ($all_results as $result) {
 		$z = $result['zebra'] = $zebra%4;
 		$zebra++;
@@ -263,7 +271,7 @@ Is it really desired for anything ever to go to parent zen theme?
 }
 */
 
-function vibio_preprocess_page(&$vars, $hook)
+function customy_break_Drupal_css_for_no_known_reason_vibio_preprocess_page(&$vars, $hook)
 {
 	zen_preprocess_page($vars, $hook);
 	

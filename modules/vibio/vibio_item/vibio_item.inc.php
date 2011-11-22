@@ -33,6 +33,8 @@ function _vibio_item_search($keys)
 		if ((!variable_get("product_local_search", false) || $_GET['external_product_search']) && ($results = product_external_search($keys)))
 		{
 			$keys = _product_remove_options($keys);
+
+
 //dsm($results);
 // product_external_search is returning 10 results
 // it calls vibio_amazon_product_search($args)

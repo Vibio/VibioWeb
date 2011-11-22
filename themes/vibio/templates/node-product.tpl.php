@@ -24,8 +24,15 @@ if(isset($product_image)){
 if (isset($image))
 {
 	$image = file_uncreate_url($image);
-	//Looks like: pocket watch.jpg
-	$urlimage = "/sites/default/files/uploads/" . $image;	 // new: 20111121 (erase note)
+	//Looks like: pocket watch.jpg  
+	// filesystemhackery 20111121
+	if ( !preg_match('/sites\/default\/files/', $image) ) {
+		$urlimage = "/sites/default/files/uploads/" . $image;	 // new: 20111121 (erase note)
+	} else {
+//die($image);
+		$urlimage = "/$image"; // hey look, terrible, recode!
+	}
+		
 	$pattern = "/^\//";
 	$image = preg_replace($pattern,"",$image);
         $alt = 'Product Image';

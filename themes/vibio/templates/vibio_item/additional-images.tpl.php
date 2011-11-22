@@ -21,7 +21,16 @@ if (!empty($images))
 	foreach ($images as $image)
 	{
 		$imagecached = theme('imagecache', "tiny_profile_pic", $image, "Additional images of this item", "", $attributes) ;
-		$image_pretty = "/sites/default/files/uploads/" . $image; // crap fix hack
+
+		// filesystemhackery 20111121 -> not sure this perfect, where does it fire?:
+		if ( !preg_grep('sites/default/files', $image) ) {
+			die("bad image");
+			$image_pretty = "/sites/default/files/uploads/" . $image; // crap fix hack
+		} else {
+			$image_pretty = $image;
+			die($image);
+		}
+	
 		$image_html .= "
 			<a href='$image_pretty' rel='prettyphoto[item_image]'>
 				$imagecached

@@ -160,6 +160,9 @@ function overrides_user_register_submit($form, &$form_state) {
 	sites/uploads
  * Especially needed for imagecache.
 
+grep this too: filesystemhackery
+
+
 v1.0, browser settings:
 File System Path:
 /var/www/vibio/uploads

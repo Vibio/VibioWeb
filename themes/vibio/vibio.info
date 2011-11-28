@@ -6,6 +6,7 @@ base theme = zen
 
    ; Stephen making quick edits in various places, better
    ;  to separate my work than integrate with each file here 
+	 ; Someone else edited the css's without removing this note.
 stylesheets[all][]   = css/badge.css
 stylesheets[all][]   = css/blocks.css
 stylesheets[all][]   = css/collections.css

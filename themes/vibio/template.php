@@ -274,9 +274,11 @@ Is it really desired for anything ever to go to parent zen theme?
 function customy_break_Drupal_css_for_no_known_reason_vibio_preprocess_page(&$vars, $hook)
 {
 	zen_preprocess_page($vars, $hook);
-	
+/**	
+	//This is Nelson code that seems to hijack Drupal's default drupal_add_css
+	//by adding all css files as @import statements in the HTML head
 	$css = "";
-	
+
 	foreach (drupal_add_css() as $media => $types)
 	{
 		$css .= "<style type='text/css' rel='stylesheet' media='$media'>";
@@ -291,6 +293,7 @@ function customy_break_Drupal_css_for_no_known_reason_vibio_preprocess_page(&$va
 	}
 	
 	$vars['styles'] = $css;
+*/
 }
 
 /* this seems weird to me, don't you have to tell user_picture

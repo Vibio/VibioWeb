@@ -575,7 +575,6 @@ function collection_load($cid)
 			WHERE `cid`=%d";
 	$collection = db_fetch_array(db_query($sql, $cid));
 	$collection = array_merge($collection, module_invoke_all("collection_load", $collection, $as_uid)); // stephen notes: $as_uid, what is it, where from?
-//dsm(array($cid,$collection));
 	return $collection;
 }
 

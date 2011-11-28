@@ -135,6 +135,7 @@ print "<li><a href='/info/profile' id='info-button-small' class='automodal'><spa
 <?php print flag_create_link('feature_users', $uid);  ?>
 <?php
 /* this is from function profile_ext_preprocess_user_profile(&$vars) */
-print $sec_content;
+
+print "<div class='sec_content $sec_content_class'>$sec_content</div>";
 //echo "profile completeness: {$profile['profile_progress']}%";
 ?>

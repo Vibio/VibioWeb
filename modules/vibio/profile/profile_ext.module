@@ -400,6 +400,11 @@ function profile_ext_preprocess_user_profile(&$vars)
 {
 	global $user;
 	module_load_include("inc", "profile_ext");
+
+	// Remove the title from the page!
+	//$vars['title'] = ''; // 20111128 XXXAAA
+dsm($vars);
+
 	
 	$args = explode("/", $_GET['q']);
 	$uid = $args[1];
@@ -423,6 +428,8 @@ function profile_ext_preprocess_user_profile(&$vars)
 	$vars['active'][$sec_page] = 'class="active" ';
 	switch ( $sec_page ) {
 		case "badges":	
+			// titles for badges were done at a different time and style,
+			//  and are here: badges/badge.module  (integrate?)
 			$vars['sec_content'] = 
 				"<div id='user_badges'>" .
 				theme("badge_list", $uid) .
@@ -451,6 +458,7 @@ function profile_ext_preprocess_user_profile(&$vars)
 				!empty($share_html) ? $msg = "<h1 id='page_title'>Collections</h1>" . $share_html : $msg = "<h1 id='page_title'>Collections</h1>";
 			}
 			$vars['sec_content'] =  
+				'<h1 class="page-title-sub">Collections</h1>' .
 				$msg .
 				views_embed_view("user_collections", "default", $uid, $access);
 
@@ -468,6 +476,7 @@ function profile_ext_preprocess_user_profile(&$vars)
 				$edit_me = l('Edit Information', 'user/' . $uid . '/edit/About%20Me');
 			}
 			$vars['sec_content'] = $edit_me . 
+				'<h1 class="page-title-sub">About</h1>' .
 				theme("profile_ext_profile_info", $uid, $access) .
 				profile_ext_public_info($uid);
 
@@ -481,7 +490,9 @@ function profile_ext_preprocess_user_profile(&$vars)
 			$access = module_exists("privacy") ? privacy_get_access_level($uid) : 1;
 //$access = 1; // 4 MYONLY shows nothing looking at someone else; 3 shows it;
 						// 2 shows it, and 1 doesn't!  
-			$vars['sec_content'] = views_embed_view("user_heartbeat_activity", "block_1", $uid, $access);
+			$vars['sec_content'] = 
+				'<h1 class="page-title-sub">Recent Activity</h1>' .
+				views_embed_view("user_heartbeat_activity", "block_1", $uid, $access);
 
     break;
 

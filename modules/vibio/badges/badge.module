@@ -413,9 +413,11 @@ function badge_preprocess_badge_list($vars)
 	if ($user->uid == $vars['uid'])
         {
 		$out .= 
-"<div class='section-intro'><p class='section_title'>Badges Awarded <span class='section_sub_title'><a class='badges_unearned' href='/badge/unearned-list'>What other badges can I earn?</a></span></p>
+"<div class='section-intro'><h1 class='page-title-sub'>Badges Awarded</h1> <span class='section_sub_title'><a class='badges_unearned' href='/badge/unearned-list'>What other badges can I earn?</a></span></p>
 <p class='badges-intro'>Build your social status on Vibio by creating collections of your most prized and unique possessions. Badges are earned when you reach certain milestones.</p></div>
 ";
+	} else {
+		$out .= "<h1 class='page-title-sub'>Badges Awarded</h1>";
 	}
 
 	/* Print badges or no-badges message */

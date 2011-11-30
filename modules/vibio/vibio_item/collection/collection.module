@@ -232,8 +232,15 @@ function collection_preprocess_collection_list_item_preview(&$vars)
 			$share_html .= theme("tweetassist_tweet", "node", $vars['item']->nid);
 	}
 */
-        //show preview= 1 on the collections page, null on collection. We don't want to add sharing on collections page for right now.
-        if(module_exists('addthis') && empty($vars['show_preview'])){
+	//Silly hack for the collections plural page to not make the small share buttons appear.
+	if(!isset($vars['show_preview'])){
+		//If called through AJAX, it's a preview (show_preview = TRUE)
+		$ajax_request = strrpos($_SERVER["REQUEST_URI"], 'ajax');
+		$vars['show_preview'] = !empty($ajax_request);
+	} 
+	//We don't generate the share button if the collection items are being previewed
+	//on the collections page, aka show_preview isn't empty (TRUE)
+	if(module_exists('addthis') && empty($vars['show_preview'])){
 		global $base_url;
 		$variables['url'] = $base_url . url('node/'. $vars['item']->nid);
 		$variables['title'] = $vars['item']->node_title;

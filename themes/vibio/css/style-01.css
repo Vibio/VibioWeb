@@ -10,7 +10,12 @@ img.uri_edit_busy_indicator, #uri_elaborations_edit, .ur_friend_remove img, .vie
 #profile_ext_submenu, .profile_busy_indicator img, #profile_completion_steps_container, .region-footer h2, .element-hidden, #block-menu-secondary-links h2, 
 #search_type_submenu, #user-login-form span.form-required, div.node-type-offer-neg-seller ul.links, .offer2buy_nid, .offer2buy_offer_view_popup, 
 #edit-search-block-form-1-wrapper label, div.form-radios td.form-item-label, div.form-checkboxes td.form-item-label, .grippie, form#user-profile-form legend, .hidden, .fb_dialog, .fb_share_params, 
-.view-user-collections .view-filters, .collection_preview_loading, .collection_preview_items, .item_updated, #collection_sidebar{display:none}
+.view-user-collections .view-filters, .collection_preview_loading, .collection_preview_items, .item_updated, #collection_sidebar, .section-collections h1#page_title, ul.message-actions li.block_author a,
+.section-messages div.privatemsg-view-pager, .section-messages div.message-participants{display:none}
+	/*pager on front page that masonry will re-hide*/
+body.front div.view-flag-featured .pager{
+	display:none;
+}
 
 /*Popup after earning a badge*/
 #badge_alert_container_earned{text-align:center}
@@ -296,9 +301,11 @@ span.privatemsg_autocomplete_name{position:relative; top:-25px}
 .privatemsg-box-fb .avatar-fb{text-align:left}
 .privatemsg-box-fb .left-column{width: 80px; float: left}
 .privatemsg-box-fb .middle-column{text-align: left; float: none; width: 600px}
+div.privatemsg-box-fb div.middle-column div.name{font-size:18px}
 .privatemsg-box-fb .right-column{margin: 0}
+.privatemsg-box-fb div.right-column div.message-body{width: 490px}
 .privatemsg-box-fb .bottom-border{border: none}
-.privatemsg-box-fb{border-bottom: 1px solid #CCC}
+.privatemsg-box-fb{border-bottom: 1px solid #CCC; position: relative}
 /* ebay search results */
 .ebay_search_item{margin-bottom:10px}
 
@@ -828,8 +835,8 @@ tr.row-last .collection-preview-boxshadow{border:none}
 .collection-preview-boxshadow{border-bottom:1px solid #CCC; min-height:110px; position:relative; padding:10px 0 5px 0}
 .collection_list_item_summary div.not_for_sale img{max-width:90px}
 .collection_list_item_summary div.not_for_sale{position:absolute; bottom:5px; right:0px}
-.back-collection{font-size:13px; font-weight:normal; color:#1691bd; padding-left:15px}
-#collection-title-img{position:absolute; top:26px; left:395px}
+.back-collection{font-size:13px; font-weight:normal; color:#1691bd; padding-left:16px}
+#collection-title-img{position:absolute; top:25px; left:397px}
 .collection-user{font-weight:bold}
 .user-collection-preview h5, #collection_sidebar .collection_sidebar_collection h5{margin:0; font-size:13px}
 .user-collection-preview span{color:#404f5a; font-size:12px}
@@ -1116,15 +1123,15 @@ ul.primary li a{ border:0;  display:block;  height:19px;  margin:0;  font-weight
 #block-block-6 p{margin-right:5px; float:left}
 
 /*Info Button for Tabs menu*/
-a#info-small{text-indent:-9999px; display:block; background:url(../images/info_button.png) no-repeat 10px -1px; height:24px; width:36px}
+a#info-small,a#info-button-small{text-indent:-9999px; display:block; background:url(../images/info_button.png) no-repeat 10px -1px; height:24px; width:36px}
 
 a#info-button-small:hover{background-position:-30px -1px}
 
 a#info-button-small:hover span.tab{border-bottom-color:#CFD2D5}
 /*Site wide Info Button*/
-a#info-modal{text-indent:-9999px; display:block; background:url(../images/btn_info.png) no-repeat 10px -1px; height:26px; width:38px}
+a#info-modal, a#info-button{text-indent:-9999px; display:block; background:url(../images/btn_info.png) no-repeat 10px -1px; height:26px; width:38px}
 
-a#info-modal:hover{background-position:-40px -1px}
+a#info-modal:hover, a#info-button:hover{background-position:-40px -1px}
 
 a#add-item-button{text-indent:-9999px; display:block; background:url(../images/btn_add_item.png) no-repeat -1px 0px; height:26px; width:116px}
 
@@ -1267,8 +1274,9 @@ div.profile_notifications_actions table tbody tr td a.disapprove button:hover{ba
 div.profile_notifications_actions table tbody tr td a.approve button{background-position:-86px 0; width:111px}
 div.profile_notifications_actions table tbody tr td a.approve button:hover{background-position:-86px -30px}
 /*Save and Delete buttons*/
-input#edit-delete{background:url(../images/btn_save_delete.png) no-repeat; height:27px; width:79px; border:0; text-indent:-9999px; cursor:pointer}
-input#edit-delete{background-position: 0px -120px; margin:5px 0 0 5px}
+input#edit-delete, ul.message-actions li a{background:url(../images/btn_save_delete.png) no-repeat; border:0; text-indent:-9999px; cursor:pointer}
+input#edit-delete{background-position: 0px -120px; margin:5px 0 0 5px; height:27px; width:79px; }
+ul.message-actions li a{display:block; width: 77px; height: 26px; background-position: 0 -120px; position: absolute; top: 2px; right: 1px}
 input#edit-delete:hover{background-position: 0 -150px}
 #uri_elaborations_edit fieldset{width:480px}
 /*Send Preview New Private Message*/

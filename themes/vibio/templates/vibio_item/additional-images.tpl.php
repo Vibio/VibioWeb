@@ -23,12 +23,15 @@ if (!empty($images))
 		$imagecached = theme('imagecache', "tiny_profile_pic", $image, "Additional images of this item", "", $attributes) ;
 
                 //Make sure that we convert absolute filepaths to relative paths that can be used in a <a> tag
-		if ( !strpos('sites/default/files', $image) ) {
+		//If the path is relative, this should return something
+		$relative_path = strpos('/sites/default/files', $image);
+		//If relative_path is false, we need to make the $image into a relative path	
+		if (empty($relative_path)) {
                         $image_filename = str_replace('/var/www/vibio/uploads/', '', $image);
                         $image_pretty = "/sites/default/files/uploads/" . $image_filename;
+		//Otherwise, we should have a relative path we can use
                 } else {
                         $image_pretty = $image;
-                        die($image);
                 }
 	
 		$image_html .= "

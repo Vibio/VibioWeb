@@ -1271,6 +1271,11 @@ input#edit-delete{background:url(../images/btn_save_delete.png) no-repeat; heigh
 input#edit-delete{background-position: 0px -120px; margin:5px 0 0 5px}
 input#edit-delete:hover{background-position: 0 -150px}
 #uri_elaborations_edit fieldset{width:480px}
+/*Send Preview New Private Message*/
+form#privatemsg-new input#edit-submit{background:url(../images/btn_preview_send.png) no-repeat; height:34px; width:140px; border:0; text-indent:-9999px; cursor:pointer}
+form#privatemsg-new input#edit-submit{background-position:-170px 0; margin:5px 0 0 5px; float: right}
+form#privatemsg-new input#edit-submit:hover{background-position: -170px -50px}
+form#privatemsg-new p {border-bottom: 1px #CCC solid; padding-bottom: 1em}
 .potential_friend{margin-bottom:15px}
 .potential_friend .picture{float:left}
 .potential_friend .potential_friend_summary{float:left; margin-left:10px; width:350px}

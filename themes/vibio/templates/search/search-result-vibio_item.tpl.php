@@ -2,7 +2,15 @@
 $node = $result[node]; //!!! Different from node-view-flag_featured.tpl.php
 		// !!! Also, $search_links is set here, not there.
 $flag = flag_create_link('feature', $node->nid);
-$img = theme('imagecache', 'product_fixed_width', $node->field_main_image[0]['filepath']);
+
+// Get default image... we'll want to somewhat standardize this,
+//  but this might be an exception to standardization.
+//  Are there alternative images that might sometimes exist if the main one doesn't?
+if ($node->field_main_image[0]['filepath']) {
+	$img = theme('imagecache', 'product_fixed_width', $node->field_main_image[0]['filepath']);
+} else {
+	$img = theme('imagecache', 'product_fixed_width', "themes/vibio/images/icons/default_item_large.png");
+}
 
 // $mine should be true if it's yours,  true or null
 // Fires for PRODUCTS (merely searched products too)

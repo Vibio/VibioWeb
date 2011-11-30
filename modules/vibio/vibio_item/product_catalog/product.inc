@@ -196,7 +196,7 @@ function product_images($node, $get_main=false)
 	$images = array();
 	if ($get_main && !empty($node->field_main_image[0]['filepath']))
 	{
-		$images[] = file_create_url($node->field_main_image[0]['filepath']);
+		$images[] = $node->field_main_image[0]['filepath'];
 	}
 
 	if (!empty($node->field_images))
@@ -210,9 +210,11 @@ function product_images($node, $get_main=false)
 				 pregmatch these out...
 			*/
 			if (file_exists($image['filepath'])
-				&& !preg_match('/default_item/', $image['filepath'])
-				)	{
-				$images[] = file_create_url($image['filepath']);
+				&& !preg_match('/default_item/', $image['filepath'])){
+				//because all product images are imagecached later, we shouldn't
+				//need the funky file_create_url() that was creating absolute URLs
+				//and imagecache errors here and for the above main image. -alec 20111128
+				$images[] = $image['filepath'];
 			}
 		}
 	return $images;

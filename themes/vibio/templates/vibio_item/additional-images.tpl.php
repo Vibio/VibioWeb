@@ -24,7 +24,7 @@ if (!empty($images))
 
 		// filesystemhackery 20111121 -> not sure this perfect, where does it fire?:
 		if ( !preg_grep('sites/default/files', $image) ) {
-			die("bad image");
+			//die("bad image");
 			$image_pretty = "/sites/default/files/uploads/" . $image; // crap fix hack
 		} else {
 			$image_pretty = $image;

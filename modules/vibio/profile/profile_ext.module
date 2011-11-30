@@ -453,8 +453,7 @@ function profile_ext_preprocess_user_profile(&$vars)
 			if ( $user->uid == $uid ) {
 				$edit_me = l('Edit Information', 'user/' . $uid . '/edit/About%20Me');
 			}
-			$vars['sec_content'] = $edit_me . 
-				'<h1 class="page-title-sub">About</h1>' .
+			$vars['sec_content'] ='<h1 class="page-title-sub">About Me</h1>' . '<span class="section_sub_title">' . $edit_me . '</span>' . 
 				theme("profile_ext_profile_info", $uid, $access) .
 				profile_ext_public_info($uid);
 

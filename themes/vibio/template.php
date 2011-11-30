@@ -370,6 +370,11 @@ automodal_add('.make-modal', array(
     ,'width'   => 700
     ,'height'  => 605)
 );
+automodal_add('.info-modal', array(
+    'autoFit' => false
+    ,'width'   => 535
+    ,'autoFit' => true)
+);
 
 
 

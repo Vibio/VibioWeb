@@ -127,22 +127,26 @@ if ($page)
 		// Deal with highlighting
 		$uid_highlight=$_GET['highlight']; // no security, passing to boolean ONLY
 		// warning: $data is an array, not well crafted object.
-		foreach ( $data['results'] as $i => $result ) {
-			//print_r($result);
-			if ( $result['user']['uid'] == $uid_highlight ) {
-				// !!! cut, and move to top of $data['results']
-				// add clas for highlight
-				//$data['results']["highlight"] = " highlight"; // boolean, and css class
-				$data['results'][$i]["user"]['highlight'] = " highlight";
 
 
-				$hold = $data['results'][$i];
-				unset($data['results'][$i]);
-				array_unshift($data['results'], $hold); // work despite non-object?
+		// is Invalid argument supplied for foreach()
+		//http://staging.vibio.com/product/hand-made-mens-shoes-designer-driving-moccasin-mens-leather-loafer-slip-model-kenzo-l-110-bl
 
+		// foreach owner you can see...
+		if ( !empty($data['results']) ) {
+			foreach ( $data['results'] as $i => $result ) {
+				//print_r($result);
+				if ( $result['user']['uid'] == $uid_highlight ) {
+					// !!! cut, and move to top of $data['results']
+					$data['results'][$i]["user"]['highlight'] = " highlight";
+
+					$hold = $data['results'][$i];
+					unset($data['results'][$i]);
+					array_unshift($data['results'], $hold); // work despite non-object?
+
+				}
 			}
 		}
-
 		$type_title = $type == "network" ? t("In your network") : t("On Vibio");
 		$product_owners .= "<div class='product_owners_type_container' id='product_type_{$type}'>";
 		//$product_owners .= "<h4 class='product_description'>$type_title</h4>";

@@ -830,6 +830,7 @@ table.user-collection-preview{margin:0}
 .collection_preview_loading{text-align:center}
 .collection_list_image{float:left; margin-right:10px}
 .collection_list_image img{max-height:100px; border:1px solid #CCC; max-width:165px}
+.item_pricetag img{border: none}
 .collection_list_item_summary{    float:left}
 tr.row-last .collection-preview-boxshadow{border:none}
 .collection-preview-boxshadow{border-bottom:1px solid #CCC; min-height:110px; position:relative; padding:10px 0 5px 0}

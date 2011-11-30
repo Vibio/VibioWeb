@@ -24,7 +24,7 @@ if (!empty($images))
 
                 //Make sure that we convert absolute filepaths to relative paths that can be used in a <a> tag
 		//If the path is relative, this should return something
-		$relative_path = strpos('/sites/default/files', $image);
+		$relative_path = strpos($image, '/sites/default/files');
 		//If relative_path is false, we need to make the $image into a relative path	
 		if (empty($relative_path)) {
                         $image_filename = str_replace('/var/www/vibio/uploads/', '', $image);

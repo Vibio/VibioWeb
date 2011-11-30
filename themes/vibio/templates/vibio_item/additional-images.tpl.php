@@ -17,19 +17,19 @@ if (!empty($images))
 	$attributes = array(
 		'class'=>'node_view_item_image'
 		);
-	// images come here as urls
+	//images come here either as filepaths relative to webroot or absolute filepaths
 	foreach ($images as $image)
 	{
 		$imagecached = theme('imagecache', "tiny_profile_pic", $image, "Additional images of this item", "", $attributes) ;
 
-		// filesystemhackery 20111121 -> not sure this perfect, where does it fire?:
-		if ( !preg_grep('sites/default/files', $image) ) {
-			//die("bad image");
-			$image_pretty = "/sites/default/files/uploads/" . $image; // crap fix hack
-		} else {
-			$image_pretty = $image;
-			die($image);
-		}
+                //Make sure that we convert absolute filepaths to relative paths that can be used in a <a> tag
+		if ( !strpos('sites/default/files', $image) ) {
+                        $image_filename = str_replace('/var/www/vibio/uploads/', '', $image);
+                        $image_pretty = "/sites/default/files/uploads/" . $image_filename;
+                } else {
+                        $image_pretty = $image;
+                        die($image);
+                }
 	
 		$image_html .= "
 			<a href='$image_pretty' rel='prettyphoto[item_image]'>

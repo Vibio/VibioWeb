@@ -830,6 +830,7 @@ table.user-collection-preview{margin:0}
 .collection_preview_loading{text-align:center}
 .collection_list_image{float:left; margin-right:10px}
 .collection_list_image img{max-height:100px; border:1px solid #CCC; max-width:165px}
+.item_pricetag img{border: none}
 .collection_list_item_summary{    float:left}
 tr.row-last .collection-preview-boxshadow{border:none}
 .collection-preview-boxshadow{border-bottom:1px solid #CCC; min-height:110px; position:relative; padding:10px 0 5px 0}
@@ -847,7 +848,6 @@ td.col-2{padding-left:10px; border-left:1px solid #CCC}
 .user-collection-preview tr{height:60px}
 .user-collection-preview tr.row-last{height:auto}
 .collection_categories{font-weight:bold; float:left; margin-bottom:10px}
-
 #collection_main .collection_summary{width:400px}
 #collection_sidebar h5{margin:10px 0 0}
 .collection_sidebar_collection{margin-top:25px; width:135px}
@@ -1010,11 +1010,10 @@ div.box div.search-links{height:35px}
 .inventory_add:hover{background-position:-100px 0px; z-index:500}
 .inventory_want{background-position:2px -30px}
 .inventory_want:hover{background-position:-98px -30px}
+.section-search div.search-links{margin-top: -55px}
 /*Have linke Product description*/
 .product_node_data .inventory_add{background:none; float:none; color:#1691bd; margin-bottom:20px}
-
 .product_node_data .inventory_add:hover{background-position:0px -56px}
-
 div.views-field.views-field-nid{position:absolute; width:128px; left:-6px; height:2px}
 /*Add product header*/
 #add-product h2{font-size:18px}

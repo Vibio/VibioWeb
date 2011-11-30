@@ -425,7 +425,7 @@ function _vibio_offer_simplify_pay($current_seller, $current_buyer) {
 		return "<div class='simple done'>Pay Received</div>";
 	} elseif ( $current_buyer->field_pay_sent[0][value] != 'no' ) {
 		$how = $current_buyer->field_pay_sent[0][value];	
-		return "<div class='simple ontrack'>Pay Sent: $how</div>";
+		return "<div class='simple ontrack'>Payment Sent: $how</div>";
 	} elseif ( $current_seller->field_accept[0][value]  == 'accept') {
 		return "<div class='simple ontrack'>Payment Due?</div>";
 	}	else {

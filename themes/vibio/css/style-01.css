@@ -12,7 +12,7 @@ img.uri_edit_busy_indicator, #uri_elaborations_edit, .ur_friend_remove img, .vie
 #edit-search-block-form-1-wrapper label, div.form-radios td.form-item-label, div.form-checkboxes td.form-item-label, .grippie, form#user-profile-form legend, .hidden, .fb_dialog, .fb_share_params, 
 .view-user-collections .view-filters, .collection_preview_loading, .collection_preview_items, .item_updated, #collection_sidebar, .section-collections h1#page_title, ul.message-actions li.block_author a,
 .section-messages div.privatemsg-view-pager, .section-messages div.message-participants{display:none}
-	/*pager on front page that masonry will re-hide*/
+/*pager on front page that masonry will re-hide*/
 body.front div.view-flag-featured .pager{
 	display:none;
 }
@@ -724,51 +724,22 @@ dd{ margin:0 0 0 2em;  padding:0}
  * http://meyerweb.com/eric/thoughts/2007/06/11/who-ordered-the-link-states
  */
 a:link{color:#79AFBF; text-decoration:none}
-
 a:visited{color:#496F8E}
-
-a:hover, 
-a:focus{color:#00AEF0}
-
-a:active{}
-
+a:hover, a:focus{color:#00AEF0}
+a:active, a:focus {outline: 0}
 /*Inside main body content */
 #content-area a:link{color:#106F93; text-decoration:none}
-
 #content-area a:visited{color:#496F8E}
-
 #content-area a:hover, 
 #content-area a:focus{color:#00AEF0}
-
-/*
- * Tables
- *
- * Drupal provides table styling which is only useful for its admin section
- * forms, so we override this default CSS. (We set it back in forms.css.)
- */
 table{ border-collapse:collapse;  /* width:100%; */ /* Prevent cramped-looking tables */}
-
 th, 
 thead th, 
 tbody th{ text-align:left; /* LTR */ padding:0;  border-bottom:none}
-
 tbody{ border-top:none}
-
-/*
- * Abbreviations
- */
 abbr{ border-bottom:1px dotted #666;  cursor:help;  white-space:nowrap}
-
 abbr.created /* Date-based "abbreviations"show computer-friendly timestamps which are not human-friendly. */{ border:none;  cursor:auto;  white-space:normal}
-
-/*
- * Images
- */
 img{ border:0}
-
-/*
- * Horizontal rules
- */
 hr{ height:1px;  border:1px solid #666}
 
 /*
@@ -902,7 +873,6 @@ div.search-flag{position:relative; top:10px}
 .selling-top-text{float:left; width:525px}
 .selling_item_info div.teaser_item_pic{    float:left;     margin-right:15px;     background:#FFF}
 .teaser_item_sought{color:#79AFBF; font-size:18px}
-
 .selling_item_info div.teaser_item_pic img{   max-width:150px;    border:1px solid #CCC  }
 .teaser_item_buyer{margin:10px 0 28px}
 .teaser_item_asking{margin:10px 0 10px 2px}
@@ -924,16 +894,13 @@ img.item-square-image{ /* should be done with imagecache */height:180px; width:1
 div.over-item{position:absolute; top:10px}
 .item-square div.over-item a{color:#eee}
 .item-square:hover div.over-item a{color:black}
-
 /* search results, items in an image-rectangle in multiple places */
 .item-rectangle{position:relative; /* make it the parent */}
 .col1, .col2{width:230px; float:left; display:block}
 .col3{width:230px; float:right; display:block}
 .col0{background:blue}
-
 .item-rectangle div.over-item a{color:#eee}
 .item-rectangle:hover div.over-item a{color:#000}
-
 a#profile_ext_displayblock_image{display:block; float:left}
 /*Upper Left Sidebar*/
 #upper_title{height:43px; display:block; width:192px; text-indent:-9999px}
@@ -955,7 +922,7 @@ a#profile_ext_displayblock_image{display:block; float:left}
 #profile_ext_displayblock_subitems a:hover{color:#FFF}
 ul.primary_menu_by_hand{margin:0; list-style:none; padding:33px 0px 0px 15px; width:163px}
 ul.primary_menu_by_hand li{margin:0 0 5px 0; height:16px}
-.menu_with_count_count{background:url(/themes/vibio/images/blue_bubble.png) no-repeat 5px 0; width:47px; height:19px; text-align:center}
+.menu_with_count_count{background:url(/themes/vibio/images/blue_bubble.png) no-repeat 5px 0; width:47px; height:19px; text-align:center; line-height: 18.5px}
 #block-profile_ext-navigation_profile_display{margin:0}
 /*Sidebar recent activity*/
 div.beat-item a{color:#106F93}
@@ -966,7 +933,6 @@ div.beat-item a:hover{color:#00AEF0}
 #block-user-0 .menu_header{text-align:center; color:#00AEF0}
 #edit-name-wrapper.form-item{margin-bottom:0; font-size:15px; font-weight:normal}
 #edit-pass-wrapper.form-item{margin:4px 0; font-size:15px; font-weight:normal}
-
 /*Sidebar Featured USer*/
 #block-views-flag_featured_users-block_1{background:url(../images/featured_member.png) no-repeat 8px 33px; padding:0 16px}
 #block-views-flag_featured_users-block_1 h2{padding-top:14px}
@@ -979,7 +945,6 @@ div.beat-item a:hover{color:#00AEF0}
 #connect-nav li{margin-bottom:7px}
 #content-copyright{clear:both; font-size:9px; color:#FFF; padding-top:7px}
 #content-copyright p{margin:0}
-
 #connection-top{padding-top:65px; height:17px}
 #content-social a{background:url(../images/sidebar_social.png) no-repeat; display:block; height:21px; text-indent:-9999px; float:left; margin:4px 3px 0 0}
 #connect-nav a:hover{color:#00AEF0}
@@ -996,14 +961,11 @@ a#content-email{background-position:-82px -1px; width:22px}
 #front-p3{margin-top:45px}
 #facebook-large{cursor:pointer}
 .item-rectangle{position:relative; /* make it the parent */padding:5px}
-
 /*fluid elements on the featured and search results pages -ct*/
 .views-fluidgrid-item img:hover{opacity:0.4;  filter:alpha(opacity=40); /* For IE8 and earlier */}
 .hover-shadow{opacity:0.4;  filter:alpha(opacity=40); /* For IE8 and earlier */}
-
 /*Search links height on search results page*/
 div.box div.search-links{height:35px}
-
 /*Have and Want Buttons*/
 .inventory_add, .inventory_want{background:url(../images/want_have.png) no-repeat; height:26px; width:53px; border:none; text-indent:-9999px; cursor:pointer; float:left; z-index:500}
 .inventory_add{background-position:0px 0px}
@@ -1020,7 +982,6 @@ div.views-field.views-field-nid{position:absolute; width:128px; left:-6px; heigh
 #add-product-l{float:left; width:235px; text-align:center}
 #add-product-r{float:left; width:415px}
 #add-product-r p{line-height:22px}
-
 /*Share Widget*/
 .addthis_button_facebook_like{width:75px}
 .addthis_button_tweet{width:98px}
@@ -1028,7 +989,6 @@ div.views-field.views-field-nid{position:absolute; width:128px; left:-6px; heigh
 /*about us page*/
 #block-block-14, #block-block-19{height:70px}
 #node-23081 .content{margin-top:40px}
-
 #about-top-p{font-size:28px; line-height:39px; margin:1px 0 38px; font-weight:100; letter-spacing:1px}
 #block-block-14 .content, #block-block-19 .content{position:absolute; top:6px; right:9px}
 #about-left{float:left; width:250px}
@@ -1052,7 +1012,6 @@ img.team_tooltip{height:124px; width:228px; position:absolute; right:-187px; top
 div.item-list{background:#E7E7E7; height:30px; margin-bottom:20px}
 .front div.item-list{background:none; height:15px; margin-bottom:0px}
 div.item-list ul.pager{text-align:right; padding-top:0.4em; float:right}
-
 .item-list .pager li{    background:url(../images/pagination.png) no-repeat;  display:block;  float:left;  list-style-type:none;  height:20px;  width:20px;  padding:0px;  line-height:1.5em;  margin:0 2px;  text-align:center}
 .item-list .pager li a{padding:2px 5px}
 ul.pager li.pager-item{background-position:-48px -2px}
@@ -1098,68 +1057,45 @@ h2.page-description{background:url("../images/long_border.png") no-repeat scroll
 /*Terms of Use Page*/
 .terms-header{font-size:13px; color:#106F93; margin-bottom:0}
 #node-23080 div#terms-top{border-bottom:none}
-
 #node-23080 div.content div{border-bottom:1px solid #CCC}
-
 #node-23080 div p{padding-left:208px}
 #node-23080 ul{padding-left:222px}
 /*Tabs*/
 div.tabs{ margin:10px 0 15px 0}
-
 ul.primary{ border:0;  margin:0;  padding:0; /* LTR */ list-style:none;  white-space:nowrap;  line-height:normal}
-
 ul.primary li{ float:left; /* LTR */ margin:0;  padding:0;  position:relative}
-
 div.tabs_big ul.primary li a{ height:31px}
-
 ul.primary li a{ border:0;  display:block;  height:19px;  margin:0;  font-weight:bold;  text-decoration:none;  padding:0;  background-color:transparent}
-
 /*Site Wide Info Button. 7 is default, 6 is for search pages, 11 for add/product page, 17 home page, 16 selling page, 15 buying page*/
 #block-block-7, #block-block-11, #block-block-15, #block-block-16, #block-block-17, #block-block-18{position:absolute; top:4px; right:3px; margin:0}
 #block-block-6{position:absolute; top:4px; right:-12px; margin:0}
 #block-block-11{top:0}
 #block-block-7 p, #block-block-6 p, #block-block-11 p, #block-block-15 p, #block-block-16 p, #block-block-17 p, #block-block-18 p{margin:0}
 #block-block-6 p{margin-right:5px; float:left}
-
 /*Info Button for Tabs menu*/
 a#info-small,a#info-button-small{text-indent:-9999px; display:block; background:url(../images/info_button.png) no-repeat 10px -1px; height:24px; width:36px}
-
 a#info-button-small:hover{background-position:-30px -1px}
-
 a#info-button-small:hover span.tab{border-bottom-color:#CFD2D5}
 /*Site wide Info Button*/
 a#info-modal, a#info-button{text-indent:-9999px; display:block; background:url(../images/btn_info.png) no-repeat 10px -1px; height:26px; width:38px}
-
 a#info-modal:hover, a#info-button:hover{background-position:-40px -1px}
-
 a#add-item-button{text-indent:-9999px; display:block; background:url(../images/btn_add_item.png) no-repeat -1px 0px; height:26px; width:116px}
-
 a#add-item-button:hover{background-position:-1px -42px}
-
 a#info-modal:hover span.tab{border-bottom-color:#CFD2D5}
-
 div.tabs_big ul.primary li a .tab{ height:31px;  padding-top:5px;  padding-right:11px;  font-weight:bold}
-
 ul.primary li a .tab, .blank-li span.tab{ display:block;  margin:0;  padding:0 11px 5px;  border-width:0;  font-size:15px;  border-bottom:7px solid #cfd2d5;   font-weight:bold;  color:#556270}
-
 .blank-li span.tab{padding:0 0 5px}
-
 li.blank-li{width:335px}
-
 ul.primary li a:hover{ background-color:transparent}
-
 ul.primary li a:hover .tab{ border-bottom:7px solid #00AEF0;   color:#00AEF0}
-
 ul.primary li.active a, 
 ul.primary li.active a:hover, 
 ul.primary li.ui-state-active a, 
 ul.primary li.ui-state-active a:hover{ background:transparent;  border-width:0;  color:black}
-
 ul.primary li.active a .tab, 
 ul.primary li.active a:hover .tab, 
 ul.primary li.ui-state-active a .tab, 
 ul.primary li.ui-state-active a:hover .tab{ border-bottom:7px solid #00AEF0;  color:#00AEF0}
-
 .tab-seperator{position:absolute; right:-2px; color:#556270}
 
 ul.secondary{ margin:0;  padding:0 0 0 5px; /* LTR */  border-bottom:1px solid #c0c0c0;   list-style:none;   white-space:nowrap;   background:url(../images/tab-secondary-bg.png) repeat-x left bottom}
@@ -1273,7 +1209,9 @@ div.profile_notifications_actions table tbody tr td a.disapprove button:hover{ba
 div.profile_notifications_actions table tbody tr td a.approve button{background-position:-86px 0; width:111px}
 div.profile_notifications_actions table tbody tr td a.approve button:hover{background-position:-86px -30px}
 /*Save and Delete buttons*/
-input#edit-delete, ul.message-actions li a{background:url(../images/btn_save_delete.png) no-repeat; border:0; text-indent:-9999px; cursor:pointer}
+form#collection-edit input#edit-submit, input#edit-delete, ul.message-actions li a{background:url(../images/btn_save_delete.png) no-repeat; border:0; text-indent:-9999px; cursor:pointer}
+form#collection-edit input#edit-submit{background-position: 0px 0px; height:27px; width:77px}
+form#collection-edit input#edit-submit:hover{background-position: 0px -30px}
 input#edit-delete{background-position: 0px -120px; margin:5px 0 0 5px; height:27px; width:79px; }
 ul.message-actions li a{display:block; width: 77px; height: 26px; background-position: 0 -120px; position: absolute; top: 2px; right: 1px}
 input#edit-delete:hover{background-position: 0 -150px}

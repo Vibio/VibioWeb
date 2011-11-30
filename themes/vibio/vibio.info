@@ -4,29 +4,7 @@ screenshot = screenshot.png
 core       = 6.x
 base theme = zen
 
-   ; Stephen making quick edits in various places, better
-   ;  to separate my work than integrate with each file here 
-stylesheets[all][]   = css/badge.css
-stylesheets[all][]   = css/blocks.css
-stylesheets[all][]   = css/collections.css
-stylesheets[all][]   = css/comments.css
-stylesheets[all][]   = css/facebook.css
-stylesheets[all][]   = css/forms.css
-stylesheets[all][]   = css/html-reset.css
-stylesheets[all][]   = css/layout-fixed.css
-stylesheets[all][]   = css/messages.css
-stylesheets[all][]   = css/nodes.css
-stylesheets[all][]   = css/offer.css
-stylesheets[all][]   = css/offer2buy.css
-stylesheets[all][]   = css/pages.css
-stylesheets[all][]   = css/profile.css
-stylesheets[all][]   = css/slideshow.css
-stylesheets[all][]   = css/stephen.css
-stylesheets[all][]   = css/tabs.css
-stylesheets[all][]   = css/travis.css
-stylesheets[all][]   = css/uri.css
-stylesheets[all][]   = css/views-styles.css
-
+stylesheets[all][]   = css/style-01.css
 
   ; Set the conditional stylesheets that are processed by IE.
 conditional-stylesheets[if IE][all][]       = css/ie.css

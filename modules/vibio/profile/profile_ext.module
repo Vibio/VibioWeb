@@ -15,15 +15,7 @@ function profile_ext_menu()
 	// overwrite the normal user profile page from user module.	
 	// user module uses:   $items['user/%user_uid_optional'] = array(
 
-	$menu['profile/%user'] = array(
-		"title"				=> "User Profile", //rewritten
-			// title rewritten in main code, instead of this way.	
-		"page callback"		=> "profile_ext_profile",
-		"access callback"	=> "profile_ext_access_dashboard",
-		"file"				=> "profile_ext.pages.inc",
-		"type"				=> MENU_NORMAL_ITEM,
-		"menu_name"	=> "primary",	
-	);
+
   /* Stephen, code-build menu creation */
 /* is the user menu item from core the parent? I think so.
   $items['user'] = array(
@@ -53,7 +45,10 @@ function profile_ext_menu()
 	 * ERROR: this seemed to test ok, and then later (I thought I was
     *  clearing cache?) create nasty "Access Denied" even for adming.
    */
-  $menu['user/%user/activities'] = array(  /* default, for now  */
+
+
+/* ERASE THIS 2011 12 01 
+  $menu['user/%user/activities'] = array(  
     "title"       => "Activity",
 		'page arguments'=> array(1),
     //'type'=> MENU_DEFAULT_LOCAL_TASK,
@@ -62,6 +57,7 @@ function profile_ext_menu()
     //'file' => 'user.pages.inc',
 		'file path' => drupal_get_path('module', 'user'),
   );
+*/
   /*$menu['user/%user/collections'] = array(
     "title"       => "Collections",
     'access callback' => 'user_view_access', puttering, think through
@@ -85,14 +81,6 @@ function profile_ext_menu()
 
 	/*--- Nelson's work below here, Stephen's recent additions above ---*/	
 	
-	$menu['my-dashboard'] = array(
-		"title"				=> "My Dashboard",
-		"page callback"		=> "profile_ext_dashboard",
-		"access callback"	=> "profile_ext_access_dashboard",
-		"file"				=> "profile_ext.pages.inc",
-		"type"				=> MENU_SUGGESTED_ITEM,
-	);
-	
 	$menu['profile/%user/change-picture'] = array(
 		"title"				=> "Change Picture",
 		"page callback"		=> "profile_ext_change_picture",
@@ -102,24 +90,6 @@ function profile_ext_menu()
 		"file"				=> "profile_ext.pages.inc",
 		"type"				=> MENU_CALLBACK,
 	);
-
- 	/* stephen: not needed:	
-	foreach (module_invoke_all("profile_ext_menuitems") as $href => $title_callback)
-	{
-		$menu["my-dashboard/{$href}"] = array(
-			"title"				=> "My Dashboard",
-			"title callback" 	=> $title_callback,
-			"title arguments"	=> array($href),
-			"page callback"		=> "profile_ext_dashboard",
-			"page arguments"	=> array(1),
-			"access callback"	=> "profile_ext_access_dashboard",
-			"file"				=> "profile_ext.pages.inc",
-			"type"				=> MENU_SUGGESTED_ITEM,
-		);
-	}
-	*/
-
-
 
 	
 	return $menu;
@@ -309,7 +279,7 @@ function profile_ext_display_block($u)
   $attributes = '';
 
 	if ( !$u->picture ) { /* deal with no pic loaded */
-		$u->picture = "/themes/vibio/images/icons/default_user_large.png";
+		$u->picture = "themes/vibio/images/icons/default_user_large.png";
 	}
 	//elsewhere: $pic = $u->picture ? file_create_url($u->picture) : "/themes/vibio/images/icons/default_user_large.png";
 	$pic = theme('imagecache', "little_profile_pic", $u->picture, $alt, $title, $attributes);
@@ -400,6 +370,13 @@ function profile_ext_preprocess_user_profile(&$vars)
 {
 	global $user;
 	module_load_include("inc", "profile_ext");
+
+	// Remove the title from the page!
+	// But this preprocess is for the node.tpl, not page.tpl
+	// This feels not so elegant, seems to work fine.  Code here
+	//  and page.tpl
+	global $skiptitle;
+	$skiptitle = 1;
 	
 	$args = explode("/", $_GET['q']);
 	$uid = $args[1];
@@ -418,11 +395,14 @@ function profile_ext_preprocess_user_profile(&$vars)
 	/* Second half of page depends on third arg, user/uid/second_section */
 	// In v2 redo this, I think, passing these in from menu
 	$sec_page = $args[2]; // user/uid/$sec_page like "about me"
-
+	
 
 	$vars['active'][$sec_page] = 'class="active" ';
 	switch ( $sec_page ) {
 		case "badges":	
+			// titles for badges were done at a different time and style,
+			//  and are here: badges/badge.module  (integrate?)
+			$vars['sec_content_class'] = $sec_page;
 			$vars['sec_content'] = 
 				"<div id='user_badges'>" .
 				theme("badge_list", $uid) .
@@ -433,6 +413,8 @@ function profile_ext_preprocess_user_profile(&$vars)
 		// sucess: /user/1/inventory
     case "inventory":
 		case "collections":
+    $vars['sec_content_class'] = $sec_page;
+
 		$access = module_exists("privacy") ? privacy_get_access_level($uid) : 1;
 			//!!! This shows only what you can see, without quite
 			//	letting you know that, for example, an anoymous
@@ -440,8 +422,18 @@ function profile_ext_preprocess_user_profile(&$vars)
 			if ( $user->uid < 1 ) {
 				$msg = "<h3>Sign in for a better view of " . check_plain($target_user->name) . "'s collections.</h3>";
 			} elseif ( $user->uid != $uid ) {
-				$msg = "<h1 id='page_title'>Collections</h1>";
+				//We can now share the user's collections page
+			      if(module_exists('addthis')){
+				$addthis_variables['title'] = $user->name . "'s Vibio Collections";
+				$path = isset($_GET['q']) ? $_GET['q'] : '<front>';
+				$link = url($path, array('absolute' => TRUE));
+				$addthis_variables['url'] = $link; 
+				$share_html = theme('addthis_toolbox', $addthis_variables);
+			      }
+				!empty($share_html) ? $msg = "<h1 class='page-title-sub'>Collections</h1>" . $share_html : $msg = "<h1 class='page-title-sub'>Collections</h1>";
 			}
+			if (empty($msg)) { $msg = "<h1 class='page-title-sub'>Collections</h1>"; }
+
 			$vars['sec_content'] =  
 				$msg .
 				views_embed_view("user_collections", "default", $uid, $access);
@@ -454,18 +446,23 @@ function profile_ext_preprocess_user_profile(&$vars)
 			//  Or is the Edit link shown if privacy is high enough?
 			//   no, edit is right below, which should be switched to access,
 			//   but not the custom access .... good enough for now
+      $vars['sec_content_class'] = "about";
+
 			$access = module_exists("privacy") ? privacy_get_access_level($uid) : 1;
 			$edit_me = '';
 			if ( $user->uid == $uid ) {
 				$edit_me = l('Edit Information', 'user/' . $uid . '/edit/About%20Me');
 			}
-			$vars['sec_content'] = $edit_me . 
+			$vars['sec_content'] ='<h1 class="page-title-sub">About Me</h1>' . '<span class="section_sub_title">' . $edit_me . '</span>' . 
 				theme("profile_ext_profile_info", $uid, $access) .
 				profile_ext_public_info($uid);
 
 			break;
     case "activity":  // never used, default blank?
     default:
+      $vars['sec_content_class'] = "activity";
+
+
       drupal_set_title($user->name); //(t($user->name));
 			// can't yet tell heartbeat views apart
       //$vars['sec_content'] = views_embed_view("user_hb_incoming_activity");
@@ -473,7 +470,9 @@ function profile_ext_preprocess_user_profile(&$vars)
 			$access = module_exists("privacy") ? privacy_get_access_level($uid) : 1;
 //$access = 1; // 4 MYONLY shows nothing looking at someone else; 3 shows it;
 						// 2 shows it, and 1 doesn't!  
-			$vars['sec_content'] = views_embed_view("user_heartbeat_activity", "block_1", $uid, $access);
+			$vars['sec_content'] = 
+				'<h1 class="page-title-sub">Recent Activity</h1>' .
+				views_embed_view("user_heartbeat_activity", "block_1", $uid, $access);
 
     break;
 

@@ -62,8 +62,9 @@
 										<div id="js_messages_container"></div>
 										
 										<?php
-										echo $content_top;									
-										echo $title ? "<h1 id='page_title' class='title'>$title</h1>" : "";
+										echo $content_top;	
+										global $skiptitle;								
+										echo ($title && !$skiptitle) ? "<h1 id='page_title' class='title'>$title</h1>" : "";
 										echo $tabs ? "<div class='tabs'>$tabs</div>" : "";
 										echo $content;
 										echo $help;

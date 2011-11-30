@@ -635,7 +635,7 @@ function theme_heartbeat_list($messages, HeartbeatAccess $heartbeatAccess, $link
 
   $content = '';
 
-  drupal_add_css(drupal_get_path('module', 'heartbeat') . '/heartbeat.css');
+  //drupal_add_css(drupal_get_path('module', 'heartbeat') . '/heartbeat.css');
 
   $access_type = drupal_strtolower($heartbeatAccess->getAccess());
   $stream = $heartbeatAccess->stream;

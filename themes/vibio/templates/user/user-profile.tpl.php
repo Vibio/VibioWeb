@@ -120,7 +120,7 @@ print "<li {$active[$key]}><a href='/user/$uid/$key' ><span class='tab'>$name</s
 //dsm($active);
 
 //check script in blocks footer section file for the info button href settings
-print "<li><a href='/info/profile' id='info-button-small' class='automodal'><span class=tab>Info</span></a></li><li class='blank-li'><span class='tab'>&nbsp;</span></li></ul></div>";
+print "<li><a href='/info/profile' id='info-button-small' class='info-modal'><span class=tab>Info</span></a></li><li class='blank-li'><span class='tab'>&nbsp;</span></li></ul></div>";
 /*
  $options['attributes']['class'] .= ($tabkey == $active_tab ? ' active' : '');
  $output .= '<li'. $attributes_li .'>'. l($tab['title'], $_GET['q'] . $tabkey, $options) .'</li>';
@@ -135,6 +135,7 @@ print "<li><a href='/info/profile' id='info-button-small' class='automodal'><spa
 <?php print flag_create_link('feature_users', $uid);  ?>
 <?php
 /* this is from function profile_ext_preprocess_user_profile(&$vars) */
-print $sec_content;
+
+print "<div class='sec_content $sec_content_class'>$sec_content</div>";
 //echo "profile completeness: {$profile['profile_progress']}%";
 ?>

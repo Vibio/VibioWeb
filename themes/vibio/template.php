@@ -242,56 +242,6 @@ function vibio_preprocess_user_profile(&$vars)
 	$vars['profile']['social_info'] = theme("user_social_info", arg(1));
 }
 
-/* Not sure what this is for, maybe nothing, generating errors...
-   Remove 20110920 and see if we need any of it 
- */
-
-/* What's this?  Custom menu links, not noticed when doing v1.2 work  
-function vibio_menu_item_link($link)
-{
-
-
-Worried this may have a real function:
-
-	if ($link['type'] & MENU_IS_LOCAL_TASK && $link['path'] == "search/node/%")
-	{
-		return "";
-	}
-
-	/* no longer used? doesn't look important 
-	elseif (strpos($link['router_path'], "my-dashboard/") !== false)
-	{
-		$link['localized_options']['html'] = true;
-	}
-  * /	
-
-	// this loads missing style.css
-Is it really desired for anything ever to go to parent zen theme?
-	return zen_menu_item_link($link);
-}
-*/
-
-function customy_break_Drupal_css_for_no_known_reason_vibio_preprocess_page(&$vars, $hook)
-{
-	zen_preprocess_page($vars, $hook);
-	
-	$css = "";
-	
-	foreach (drupal_add_css() as $media => $types)
-	{
-		$css .= "<style type='text/css' rel='stylesheet' media='$media'>";
-		foreach ($types as $type => $files)
-		{
-			foreach ($files as $file => $preprocess)
-			{
-				$css .= "@import \"/{$file}\";\n";
-			}
-		}
-		$css .= "</style>";
-	}
-	
-	$vars['styles'] = $css;
-}
 
 /* this seems weird to me, don't you have to tell user_picture
  * whose user picture you want? Or is that from the comment  -- Stephen */
@@ -419,6 +369,11 @@ automodal_add('.make-modal', array(
     'autoFit' => false
     ,'width'   => 700
     ,'height'  => 605)
+);
+automodal_add('.info-modal', array(
+    'autoFit' => false
+    ,'width'   => 535
+    ,'autoFit' => true)
 );
 
 

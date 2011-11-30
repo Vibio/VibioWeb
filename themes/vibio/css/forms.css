@@ -30,7 +30,6 @@
 }
 .form-submit/* The submit button */ {
 }
-
 .container-inline div, .container-inline label/* Inline labels and form divs */ {
 	display: inline;
 }
@@ -83,7 +82,6 @@
 	top: 8px !important;
 }
 #edit-search-theme-form-1-wrapper label/* Label that says "Search this site:" */ {
-	
 }
 /*
  * Search (search-block-form.tpl.php)
@@ -311,7 +309,7 @@ form#user-login label {
 form#user-login input#edit-submit {
 	width: 20px;
 	padding: 0;
-	margin:   :0;
+	margin:    :0;
 	background: url(../images/log_in.png) no-repeat;
 	display: block;
 	height: 35px;
@@ -352,62 +350,69 @@ form#user-pass div#edit-name-wrapper {
 form#user-pass div#edit-name-wrapper input#edit-name {
 	width: 449px;
 }
-table.privatemsg-list{
-	margin-bottom:35px;
+/*Private message*/
+
+/*Hide preview and Cancel buttons*/
+form#privatemsg-new input#edit-preview, form#privatemsg-new a#edit-cancel{
+	display:none
 }
-table.privatemsg-list th{
+table.privatemsg-list {
+	margin-bottom: 35px;
+}
+table.privatemsg-list th {
 	border-bottom: 1px solid #CCCCCC;
 }
-.page-messages fieldset.collapsible{
-	border:none;
-	background:#dcdcdc;
-	padding:5px;
+.page-messages fieldset.collapsible {
+	border: none;
+	background: #dcdcdc;
+	padding: 5px;
 	position: relative;
+	font-weight: bold;
 }
-.page-messages fieldset.collapsible legend{
-	position:absolute;
-	top:-21px;
+.page-messages fieldset.collapsible legend {
+	position: absolute;
+	top: -21px;
 }
-td.active{
-	background:none
+td.active {
+	background: none
 }
-tr.privatemsg-unread{
+tr.privatemsg-unread {
 	background: #ccecff;
 }
 /*User account settings*/
-form#user-profile-form{
-	font-size:13px;
-	margin-bottom:75px;
+form#user-profile-form {
+	font-size: 13px;
+	margin-bottom: 75px;
 }
-form#user-profile-form .picture img{
-	border:1px solid #CCCCCC;
+form#user-profile-form .picture img {
+	border: 1px solid #CCCCCC;
 }
-form#user-profile-form fieldset{
-	border-bottom:1px solid #CCCCCC;
-	margin-bottom:0;
+form#user-profile-form fieldset {
+	border-bottom: 1px solid #CCCCCC;
+	margin-bottom: 0;
 }
-form#user-profile-form legend{
-	display:none
+form#user-profile-form legend {
+	display: none
 }
-form#user-profile-form .form-item .description{
-	width:480px;
-	font-size:13px
+form#user-profile-form .form-item .description {
+	width: 480px;
+	font-size: 13px
 }
-.section-user #page_title{
-	margin-top:20px;
+.section-user #page_title {
+	margin-top: 20px;
 	padding-left: 7px;
 }
-form#user-profile-form input#edit-submit{
-	background:url(../images/btn_save.png) no-repeat 0px 0px;
-	height:42px;
-	width:67px;
-	border:none;
-	margin-top:15px;
-	text-indent:-9999px;
-	position:absolute;
-	right:15px;
+form#user-profile-form input#edit-submit {
+	background: url(../images/btn_save.png) no-repeat 0px 0px;
+	height: 42px;
+	width: 67px;
+	border: none;
+	margin-top: 15px;
+	text-indent: -9999px;
+	position: absolute;
+	right: 15px;
 	cursor: pointer;
 }
-form#user-profile-form input#edit-submit:hover{
+form#user-profile-form input#edit-submit:hover {
 	background-position: 0px -55px;
 }

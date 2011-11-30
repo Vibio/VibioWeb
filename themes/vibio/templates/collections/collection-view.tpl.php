@@ -1,8 +1,3 @@
-<style type="text/css">
-	h1#page_title {
-		display: none
-	}
-</style>
 <?php
 $sidebar_header=t("!user Collections",array("!user"=>$collection_owner_name));
 $collections_link=l(t("View Complete List"),"user/{$collection_owner}/inventory");

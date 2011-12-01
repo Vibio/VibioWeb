@@ -26,12 +26,12 @@ if (!empty($images))
 		//If the path is relative, this should return something
 		$relative_path = strpos($image, 'sites/default/files');
 		//If relative_path is false, we need to make the $image into a relative path	
-		if ($relative_path == FALSE) {
+		if ($relative_path === FALSE) {
                         $image_filename = str_replace('/var/www/vibio/uploads/', '', $image);
                         $image_pretty = "/sites/default/files/uploads/" . $image_filename;
 		//Otherwise, we should have a relative path we can use
                 } else {
-                        $image_pretty = $image;
+                        $image_pretty = url($image);
                 }
 	
 		$image_html .= "

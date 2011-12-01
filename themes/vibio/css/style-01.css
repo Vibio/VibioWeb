@@ -45,7 +45,7 @@ body.front div.view-flag-featured .pager{
 .block .content/* Block's content wrapper */{}
 .block-nice_menus ul{padding:0}
 div.sec_content.collections, div.sec_content.about{position: relative}
-div.sec_content.collections div.addthis_toolbox{position: absolute; right: 10px; top:-7px}
+div.sec_content.collections div.addthis_toolbox{position: absolute; right: 10px; top:-7px; width: 231px}
 div.sec_content.collections div.share-text{position: absolute; right: 241px; top:3px}
 #profile_ext_header{border-left:1px solid #345162; float:right; margin:10px 22px 0px 0px; text-align:right; color:#BEE9FF}
 #header-faq{margin-left:36px}

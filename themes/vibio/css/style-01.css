@@ -62,6 +62,9 @@ div.sec_content.collections div.share-text{position: absolute; right: 241px; top
 #profile_ext_headermenu .rootVoice{padding:0 10px}
 #profile_ext_headermenu .rootVoice.selected{}
 #profile_ext_headermenu .rootVoice.selected .mbmenu_arrow_icon{background-image:url(/themes/vibio/images/icons/acct_dropdown_selected.png)}
+/*Congrats popup*/
+div.congrats-popup{padding:0 50px}
+.congrats-popup h2{text-align: center; font-size: 22px}
 /*Username dropdown background*/
 .menuContainer{background:url(../images/username_drop_bgd.png) no-repeat 0 0; width:132px; height:121px; font-weight:bold; padding-top:10px}
 .menuContainer td.voice a{color:#FFF; font-size:12px; padding-left:18px; display:block}
@@ -973,6 +976,7 @@ div.box div.search-links{height:35px}
 .inventory_want{background-position:2px -30px}
 .inventory_want:hover{background-position:-98px -30px}
 .section-search div.search-links{margin-top: -55px}
+.you-own{background: url(../images/you_have_this.png) no-repeat; display: block; text-indent: -9999px; height: 30px; width: 153px; left:-1.2em; position: absolute}
 /*Have linke Product description*/
 .product_node_data .inventory_add{background:none; float:none; color:#1691bd; margin-bottom:20px}
 .product_node_data .inventory_add:hover{background-position:0px -56px}

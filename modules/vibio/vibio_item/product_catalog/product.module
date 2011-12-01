@@ -453,7 +453,7 @@ function product_preprocess_search_result(&$vars)
 	if ($vars['type'] == "vibio_item")
 	{
 		$item_nid = product_user_owns_product($vars['result']['node']->nid);
-		$vars['search_links'] .= $item_nid ? l(t("You Own This!"), "node/{$item_nid}") : theme("product_inventory_add", $vars['result']['node']->nid);
+		$vars['search_links'] .= $item_nid ? l(t("You Own This!"), "node/{$item_nid}", array('attributes' => array('class' => 'you-own'))) : theme("product_inventory_add", $vars['result']['node']->nid);
 		$vars['search_links'] .= $item_nid ? "" : theme("product_inventory_want", $vars['result']['node']->nid); 
 	}
 }
@@ -461,7 +461,7 @@ function product_have_want($nid)
 {
   $vars = array();  // not a preprocess function despite similiarities
 	$item_nid = product_user_owns_product($nid);
-	$search_links .= $item_nid ? l(t("You Own This!"), "node/{$item_nid}") : theme("product_inventory_add", $nid); // theme just creates the button.
+	$search_links .= $item_nid ? l(t("You Own This!"), "node/{$item_nid}", array('attributes' => array('class' => 'you-own'))) : theme("product_inventory_add", $nid); // theme just creates the button.
 	$search_links .= $item_nid ? "" : theme("product_inventory_want", $nid); 
 	return $search_links;
 }

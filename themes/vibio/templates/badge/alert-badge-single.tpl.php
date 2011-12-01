@@ -1,6 +1,5 @@
 <div class="badge_alert_single">
-	<img class='badge_image' src="<?php echo $badge->image_src; ?>"
-		alt="<?php echo $badge->description; ?>" title="<?php echo $badge->description; ?>" />
+	<?php echo $badge->image; ?>
 	<div class="badge_title"><?php echo $badge->title; ?></div>
 	<!--<div class="badge_text"><?php echo $badge->description; ?></div>-->
 </div>

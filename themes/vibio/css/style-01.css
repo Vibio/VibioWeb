@@ -45,7 +45,7 @@ body.front div.view-flag-featured .pager{
 .block .content/* Block's content wrapper */{}
 .block-nice_menus ul{padding:0}
 div.sec_content.collections, div.sec_content.about{position: relative}
-div.sec_content.collections div.addthis_toolbox{position: absolute; right: 10px; top:-7px}
+div.sec_content.collections div.addthis_toolbox{position: absolute; right: 10px; top:-7px; width: 231px}
 div.sec_content.collections div.share-text{position: absolute; right: 241px; top:3px}
 #profile_ext_header{border-left:1px solid #345162; float:right; margin:10px 22px 0px 0px; text-align:right; color:#BEE9FF}
 #header-faq{margin-left:36px}
@@ -62,6 +62,9 @@ div.sec_content.collections div.share-text{position: absolute; right: 241px; top
 #profile_ext_headermenu .rootVoice{padding:0 10px}
 #profile_ext_headermenu .rootVoice.selected{}
 #profile_ext_headermenu .rootVoice.selected .mbmenu_arrow_icon{background-image:url(/themes/vibio/images/icons/acct_dropdown_selected.png)}
+/*Congrats popup*/
+div.congrats-popup{padding:0 50px}
+.congrats-popup h2{text-align: center; font-size: 22px}
 /*Username dropdown background*/
 .menuContainer{background:url(../images/username_drop_bgd.png) no-repeat 0 0; width:132px; height:121px; font-weight:bold; padding-top:10px}
 .menuContainer td.voice a{color:#FFF; font-size:12px; padding-left:18px; display:block}
@@ -769,8 +772,8 @@ html.js input.throbbing{background-position:99% -14px}
 .fb_share_container{float:left; margin-left:10px}
 .collection_list_item_summary .fb_share_container{margin-left:5px}
 .fb_ff_message{margin-bottom:10px}
-.fb_ff_message .fb_message{float:left; width:500px}
-.fb_ff_message .fb_link{float:right}
+.fb_ff_message .fb_message{width:505px; float: left; text-align: right; margin: 6px 10px 0 0}
+.fb_ff_message .fb_link{}
 #block-fb-fb_login{text-align:center}
 .fb-or{color:#00AEF0}
 #block-fb-fb_login .fb_login{margin-top:4px}
@@ -973,6 +976,7 @@ div.box div.search-links{height:35px}
 .inventory_want{background-position:2px -30px}
 .inventory_want:hover{background-position:-98px -30px}
 .section-search div.search-links{margin-top: -55px}
+.you-own{background: url(../images/you_have_this.png) no-repeat; display: block; text-indent: -9999px; height: 30px; width: 153px; left:-1.2em; position: absolute}
 /*Have linke Product description*/
 .product_node_data .inventory_add{background:none; float:none; color:#1691bd; margin-bottom:20px}
 .product_node_data .inventory_add:hover{background-position:0px -56px}

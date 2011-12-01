@@ -94,10 +94,10 @@ if(count($cids)>1) {
 $key=count($cids)-1;
 $collection_names[$key]="and {$collection_names[$key]}";
 $t_args['!collection']=implode(", ",$collection_names);
-exit(t('"!title" has been added to your !collection collections. !view_link',$t_args));
+exit(t('<div class="congrats-popup"><h2>Congratulations</h2>"!title" has been added to your !collection collections. !view_link </div>',$t_args));
 }
 $t_args['!collection']=implode(", ",$collection_names);
-exit(t('"!title" has been added to your !collection collection. !view_link',$t_args));
+exit(t('<div class="congrats-popup"><h2>Congratulations</h2> "!title" has been added to your !collection collection. !view_link </div>',$t_args));
 }
 exit(t("There was an error adding the item to your inventory. Please try again later. !close_link",$t_args));
 }

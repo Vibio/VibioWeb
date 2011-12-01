@@ -168,7 +168,7 @@ function badge_theme()
 {
 	return array(
 		"badge_alert_badge"	=> array(
-			"arguments"	=> array("badge" => false),
+			"arguments"	=> array("badge_image" => false),
 			"template"	=> "templates/badge/alert-badge",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
@@ -459,6 +459,8 @@ function badge_preprocess_badge_alert($vars)
 	{
 		$badge = array_shift($badges);
 		$vars['badge_title'] = t("You've earned the '!title' badge", array("!title" => $badge->title));
+		//Complete formatted badge_image, inserted for the badge_alert_badge_single template.
+		$badge->image = theme('image', $badge->image_src, $badge->description, $badge->description, ''); 
 		$badge_html = theme("badge_alert_badge_single", $badge);
 	}
 	else
@@ -468,7 +470,9 @@ function badge_preprocess_badge_alert($vars)
 		
 		foreach ($badges as $badge)
 		{
-			$badge_html .= theme("badge_alert_badge", $badge);
+			//Pass along a formatted $badge_image to be enclosed within a div in alert_badge.tpl.php
+			$badge_image = theme('image', $badge->image_src, $badge->description, $badge->description, '');
+			$badge_html .= theme("badge_alert_badge", $badge_image);
 		}
 	}
 	

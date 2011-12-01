@@ -769,8 +769,8 @@ html.js input.throbbing{background-position:99% -14px}
 .fb_share_container{float:left; margin-left:10px}
 .collection_list_item_summary .fb_share_container{margin-left:5px}
 .fb_ff_message{margin-bottom:10px}
-.fb_ff_message .fb_message{float:left; width:500px}
-.fb_ff_message .fb_link{float:right}
+.fb_ff_message .fb_message{width:505px; float: left; text-align: right; margin: 6px 10px 0 0}
+.fb_ff_message .fb_link{}
 #block-fb-fb_login{text-align:center}
 .fb-or{color:#00AEF0}
 #block-fb-fb_login .fb_login{margin-top:4px}

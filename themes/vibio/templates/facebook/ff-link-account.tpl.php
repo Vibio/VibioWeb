@@ -1,4 +1,7 @@
 <div class='fb_ff_message'>
+	<div id='fb-message-img'>
+		<img src='/themes/vibio/images/no_friends.png' alt='Invite your Facebook friends'/>
+	</div>
 	<div class='fb_message'>
 		<?php echo $message; ?>
 	</div>

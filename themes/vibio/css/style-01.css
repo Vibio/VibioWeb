@@ -9,9 +9,9 @@ div#block-collection-random_collection .collection_link, form#privatemsg-new inp
 img.uri_edit_busy_indicator, #uri_elaborations_edit, .ur_friend_remove img, .views-throbbing, .view_activity_timestamp, .views-table.cols-2 thead, #block-user-0 .menu_description, 
 #profile_ext_submenu, .profile_busy_indicator img, #profile_completion_steps_container, .region-footer h2, .element-hidden, #block-menu-secondary-links h2, 
 #search_type_submenu, #user-login-form span.form-required, div.node-type-offer-neg-seller ul.links, .offer2buy_nid, .offer2buy_offer_view_popup, 
-#edit-search-block-form-1-wrapper label, div.form-radios td.form-item-label, div.form-checkboxes td.form-item-label, .grippie, form#user-profile-form legend, .hidden, .fb_dialog, .fb_share_params, 
+#edit-search-block-form-1-wrapper label, div.form-radios td.form-item-label, div.form-checkboxes td.form-item-label, .grippie, .hidden, .fb_dialog, .fb_share_params, 
 .view-user-collections .view-filters, .collection_preview_loading, .collection_preview_items, .item_updated, #collection_sidebar, .section-collections h1#page_title, ul.message-actions li.block_author a,
-.section-messages div.privatemsg-view-pager, .section-messages div.message-participants{display:none}
+.section-messages div.privatemsg-view-pager, .section-messages div.message-participants, #edit-privacy-item-default-privacy-setting-wrapper label{display:none}
 /*pager on front page that masonry will re-hide*/
 body.front div.view-flag-featured .pager{
 	display:none;
@@ -223,63 +223,34 @@ ul.links li{ display:inline;  list-style-type:none;  padding:0}
 #block-fb-fb_api_init, #block-fb-fb_dialogs{  padding:0}
 
 .image_reflection{  -webkit-box-reflect:below 0 -webkit-gradient(linear,0 0,0 100%,color-stop(.75,transparent),to(white))}
-
 #content.reflection{  -webkit-box-reflect:below 5px -webkit-gradient(linear,0 0,0 100%,color-stop(.85,transparent),to(white))}
-
 #content-area .rounded_content{  background:transparent url(../images/bg-content-tile.jpg); min-height:749px; padding:6px}
 .sidebar .rounded_content{ color:#556270;  min-height:761px}
-
-.sidebar .rounded_content a{}
-
 .sidebar .rounded_content a.active{ font-weight:bold}
-
 .sidebar .item-list ul, .sidebar ul.menu{ padding:0;  margin:0}
-
 .sidebar .item-list ul li, .sidebar ul.menu li{ padding:0;  margin:5px 0 0;  list-style-type:none;  list-style-image:none}
-
 .sidebar #user-login-form li.openid-link a, #user-login li.openid-link a{ background:none}
-
 .clear{ clear:both;  height:0}
-
 .comment .picture img, .view .picture img, .view-content .picture img{height:42px; width:42px; border:1px solid #CCC}
-
 #block-menu-secondary-links{padding-top:75px}
-
 #block-menu-secondary-links .content{ text-align:center}
-
 #block-menu-secondary-links .content a{ padding:0 15px;  border-left:1px solid #5C6C79}
-
 #block-menu-secondary-links .content a:first-child{ padding-left:0;  border-left:none}
-
 #block-menu-secondary-links ul.menu{margin:0}
-
 #block-menu-secondary-links ul.menu li{list-style-image:none; list-style-type:none; float:left; margin-right:30px}
-
 #block-menu-secondary-links ul.menu li a.active{color:#0092C9}
-
 .region-sidebar-first h2.title{ color:#106F93;  font-size:15px}
-
 #block-user-1{ margin-bottom:2px;  padding-bottom:5px}
-
 .menu_with_count_count{ float:right;  color:#FFF}
-
 .indent{ margin-left:25px}
-
 /* search type selector */
 #search_type_menu_container{float:left; margin-right:-2px; position:relative; top:1px}
-
 #search_type_menu_container:hover{cursor:pointer}
-
 #search_type_menu_container table{margin:0;  position:relative}
-
 #search_type_menu_container table tbody{border-top:0}
-
 img#search_type_current{width:19px; height:19px}
-
 #search_type_menu_container tr{ position:relative;  z-index:0}
-
 #search_type_menu_container td{ padding-right:8px;  position:relative;  z-index:2}
-
 /*Search Buttons dropdown images*/
 a.searchtype_vibio_item{background:url(../images/btn_search_dropdown.png) no-repeat 7px 10px; text-indent:-9999px; display:block; height:42px}
 a.searchtype_vibio_item:hover{background-position:7px -153px}
@@ -296,7 +267,6 @@ h5.menu_header{margin:5px 0 0}
 #user-login-form input[type='text'], #user-login-form input[type="password"]{ border:1px solid #d5d5d5;  -webkit-border-radius:5px;  -moz-border-radius:5px;  border-radius:5px;  -webkit-box-shadow:inset 1px 1px 1px 0px #e3e3e3;  -moz-box-shadow:inset 1px 1px 1px 0px #e3e3e3;  box-shadow:inset 1px 1px 1px 0px #e3e3e3;   height:30px;  width:158px;  padding:0 5px;  font-size:13px}
 #user-login-form #edit-openid-identifier{width:115px}
 #user-login-form div.form-item#edit-name-wrapper{margin-top:0}
-
 /* privatemsg */
 img.privatemsg_autocomplete_image{width:40px; margin:5px 5px 5px 0}
 span.privatemsg_autocomplete_name{position:relative; top:-25px}
@@ -311,34 +281,23 @@ div.privatemsg-box-fb div.middle-column div.name{font-size:18px}
 .privatemsg-box-fb{border-bottom: 1px solid #CCC; position: relative}
 /* ebay search results */
 .ebay_search_item{margin-bottom:10px}
-
 .ebay_image{float:left; margin-right:10px}
-
 .ebay_image img{max-height:40px}
-
 .ebay_info{float:left; width:400px}
-
 /* button stuff */
 .button_left{background:transparent url(/themes/vibio/images/buttons/blueButton_L.png) no-repeat 0 0; float:left; width:12px; height:36px}
-
 .button_mid{background:transparent url(/themes/vibio/images/buttons/blueButton_Mid.png) repeat-x 0 0; float:left; padding:5px 10px 0; height:31px; font-weight:bold; color:white}
-
 .button_mid .form-submit{background:transparent; border:none; font-size:18px; color:white}
-
 .button_mid span.form-submit{position:relative; top:3px}
-
 .button_right{background:transparent url(/themes/vibio/images/buttons/blueButton_R.png) no-repeat 0 0; float:left; width:12px; height:36px; position:relative; left:-1px}
-
 .block-nice_menus ul{ margin:0;  padding:0}
 /*Not Logged In Pages*/
 .not-logged-in h1#page_title{margin:1px 0 10px 0px; padding-left:8px}
-
 .not-logged-in div.tabs{margin:0 0 25px}
 .views_slideshow_singleframe_previous{  background:transparent url(../images/arrow-gray-left.png) top left no-repeat;  text-indent:-5000px}
 /* discussion box */
 #neg-discuss{float:left; margin-left:15px; line-height:21px; width:318px}
 #neg-discuss h3{font-size:22px; margin-top:0; font-weight:normal; background:url(../images/long_border.png) no-repeat scroll 0 32px transparent; height:43px; padding:0; width:318px}
-
 .done{color:green; font-weight:bold}
 /* product area */
 #offer_item_offer{font-size:13px; font-weight:bold}
@@ -382,7 +341,6 @@ div#edit-field-offer-expires-0-value-datepicker-popup-0-wrapper .description, di
 #seller-neg-form input#edit-submit{float:right; margin-right:4px}
 #seller-neg-form .attachments{clear:both}
 #offer_top{height:140px; margin-bottom:20px; border-bottom:1px solid #CCC}
-
 #content-area a.offer-button{background:url(../images/btn_make_offer.png) no-repeat; width:37px; height:185px}
 #content-area div.collection_list_item_summary a.offer-button{display:block; text-indent:-9999px; background:url(../images/btn_make_offer_1.png) no-repeat 0 0; width:108px; height:28px; position:absolute; right:10px; bottom:12px}
 #content-area div.collection_list_item_summary a.offer-button:hover{background-position:0 -42px}
@@ -393,33 +351,22 @@ div#edit-field-offer-expires-0-value-datepicker-popup-0-wrapper .description, di
 .node.node-unpublished .picture, 
 .comment.comment-unpublished .picture{ position:relative; /* Otherwise floated pictures will appear below the "Unpublished"text. */}
 .search_result_image{ float:left;  max-height:70px;  max-width:50px}
-
 .product_main_image{ width:248px;  height:248px}
 .node_view_item_image, .product_main_image{border:1px solid #CCC}
 .product_image{ float:left;  padding:25px;  background:#FFF;  border:1px solid #CCC;  margin-right:28px;  width:250px;  height:250px}
-
 .node_view_item_image{ margin-right:15px;  max-height:54px}
-
 .product_node_data{ float:left;  width:345px}
 .product_node_data .item_link h3{ font-size:18px;  margin-bottom:10px}
 .product_description{ color:#2b363d}
-
 .product_extra_data h3{font-size:15px; padding:0; margin:0}
-
 .product_extra_data{ margin-top:10px;  border-bottom:1px solid #CCC;  padding:0;  color:#556270;  font-size:18px}
 #product_type_network div.header{float:left}
 .node_vibio_item_title{ float:left;  font-weight:bold;  color:black;  max-width:475px}
-
 .vibio_item_delete_summary{margin:5px 0 10px}
-
 .vibio_item_delete_summary img{max-width:80px; max-height:80px}
-
 .vibio_item_delete_summary tbody{border-top:none}
-
 .vibio_item_delete_summary .node_info{width:500px; padding-left:10px}
-
 table.search-results.vibio_item td{ vertical-align:top;  padding-bottom:10px}
-
 /* pricetag */
 .item_pricetag{text-align:left; position:absolute}
 .item_pricetag img{border:none}
@@ -581,7 +528,7 @@ form#user-register input#edit-submit.form-submit{position:absolute; right:71px; 
 .page-user-register form#user-register input#edit-submit.form-submit{right:16px; bottom:82px; background:url(../images/create_new_account.png) no-repeat; width:185px; height:39px; border:none; text-indent:-9999px; display:block}
 #user-register div.description{font-size:13px; margin-top:18px}
 #edit-pass-pass1-wrapper{margin:0}
-#edit-pass-pass2-wrapper{margin:0}
+#edit-pass-pass2-wrapper{margin:10px 0 0 0}
 #user-register div.form-item label{width:450px}
 #user-register div.form-item div.description{}
 #user-register span.password-result{padding-left:125px; background-repeat:no-repeat; background-position:0 4px}
@@ -593,12 +540,12 @@ form#user-register input#edit-submit.form-submit{position:absolute; right:71px; 
 img#searchtype_vibio_item, img#searchtype_user{margin-left:10px}
 img#searchtype_vibio_item{margin-top:10px}
 img#searchtype_user{margin-top:10px}
-a.add_friend{background:url(../images/add_friend.png) no-repeat 0px 0px; width:111px; height:28px; display:block; border:none; text-indent:-9999px}
-a.add_friend:hover{background-position:-0px -38px}
+button.add_connection{margin-top: 10px}
+a.add_friend, button.add_connection{background:url(../images/add_friend.png) no-repeat 0px 0px; width:111px; height:28px; display:block; border:none; text-indent:-9999px}
+a.add_friend:hover, button.add_connection:hover{background-position:-0px -38px}
 /*Add Product form*/
 #edit-title, #edit-body, #edit-collection-info-cid{width:460px}
 #add-product{margin-top:18px}
-
 /*button styles*/
 /*User Login Form*/
 form#user-login{width:360px; background:#e5e7ea; border-radius:4px; -moz-border-radius:4px; margin:0; padding:5px 0; position:relative; min-height:270px; float:left}
@@ -625,9 +572,12 @@ td.active{background:none}
 tr.privatemsg-unread{background:#ccecff}
 /*User account settings*/
 form#user-profile-form{font-size:13px; margin-bottom:75px}
+form#user-profile-form legend{font-size:15px; font-weight:bold; margin: 15px 0 5px}
 form#user-profile-form .picture img{border:1px solid #CCC}
-form#user-profile-form fieldset{border-bottom:1px solid #CCC; margin-bottom:0}
-form#user-profile-form .form-item .description{width:480px; font-size:13px}
+form#user-profile-form fieldset{ margin-bottom:0}
+form#user-profile-form .form-item .description{width:480px; font-size:13px; margin-top:10px}
+form#user-profile-form table tr td{width: 350px; padding: 10px 0;line-height: 25px}
+form#user-profile-form table th{line-height: 30px}
 .section-user #page_title{margin-top:20px; padding-left:7px}
 form#user-profile-form input#edit-submit{background:url(../images/btn_save.png) no-repeat 0px 0px; height:42px; width:67px; border:none; margin-top:15px; text-indent:-9999px; position:absolute; right:15px; cursor:pointer}
 form#user-profile-form input#edit-submit:hover{background-position:0px -55px}
@@ -1025,10 +975,11 @@ ul.pager li.pager-previous a{display:block}
 ul.pager li.pager-next{background-position:-143px -2px; text-align:left; text-indent:-9999px}
 ul.pager li.pager-next a{display:block}
 /*Back to top*/
-#block-block-22 a{  background:url(../images/back-to-top.png) no-repeat 0 -1px;  width:84px;  height:63px;  display:block}
-#block-block-22 a:hover{background-position:0 -70px}
-#block-block-22{position:relative; margin:0}
+#block-block-22 a, div.topper a{  background:url(../images/back-to-top.png) no-repeat 0 -1px;  width:84px;  height:63px;  display:block}
+#block-block-22 a:hover, div.topper a:hover{background-position:0 -70px}
+#block-block-22, div.topper{position:relative; margin:0}
 #block-block-22 p{position:absolute; right:1px; bottom:-10px; margin:0; text-indent:-9999px}
+div.topper p{position:absolute; right:1px; bottom:-23px; margin:0; text-indent:-9999px}
 .front.logged-in #footer{background:none}
 /*Connection Finder Page*/
 #no-friends-top{font-size:15px; font-weight:bold; margin-top:10px}
@@ -1225,9 +1176,9 @@ form#privatemsg-new input#edit-submit{background:url(../images/btn_preview_send.
 form#privatemsg-new input#edit-submit{background-position:-170px 0; margin:5px 0 0 5px; float: right}
 form#privatemsg-new input#edit-submit:hover{background-position: -170px -50px}
 form#privatemsg-new p {border-bottom: 1px #CCC solid; padding-bottom: 1em}
-.potential_friend{margin-bottom:15px}
+.potential_friend{margin-bottom:10px; padding-bottom:10px; border-bottom: 1px solid #CCC}
 .potential_friend .picture{float:left}
-.potential_friend .potential_friend_summary{float:left; margin-left:10px; width:350px}
+.potential_friend .potential_friend_summary{float:left; margin-left:10px; width:530px; font-size: 18px;}
 .potential_friend .potential_friend_links{float:right}
 .potential_friend_links table{margin:0}
 .uri_notification.profile_notification .profile_notifications_actions{float:right}

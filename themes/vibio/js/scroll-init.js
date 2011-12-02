@@ -15,10 +15,12 @@ $(function() {
 			lastPageHref = $(".pager-last").find('a').attr('href').toString();
 			lastPageHref = lastPageHref.split("=");
 			numOfPages = parseInt(lastPageHref[1]);
+            $('.view.view-flag-featured .view-content').imagesLoaded(function(){
       		$('.view.view-flag-featured .view-content').masonry({
         	columnWidth : 180,
         	itemSelector : '.views-row:visible'
      	 	});
+	    });
 
 
 			$('.view.view-flag-featured .view-content').infinitescroll({
@@ -42,9 +44,11 @@ $(function() {
 			// call masonry as a callback.
 			function() {
         var existingMaterial = $(this);
+				$('.view.view-flag-featured .view-content').imagesLoaded(function(){
           $('.view.view-flag-featured .view-content').masonry({
             appendedContent : existingMaterial
           });
+        });
 				$('div.views-field.views-field-nid').hide();
 				$('div.views-field.views-field-field-main-image-fid').hover(function() {
 					$(this).next().show();

@@ -20,7 +20,6 @@ $(function() {
         	columnWidth : 180,
         	itemSelector : '.views-row:visible'
      	 	});
-	    });
 
 
 			$('.view.view-flag-featured .view-content').infinitescroll({
@@ -63,6 +62,7 @@ $(function() {
 					$(this).prev().removeClass('hover-shadow');
 				});
 			});
+		});
 		}
 
 	}

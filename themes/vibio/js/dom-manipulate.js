@@ -25,6 +25,11 @@ $(document).ready(function() {
 	$(".not-logged-in h1#page_title").insertBefore("div.tabs");
 	$(".page-contacts h1#page_title").insertBefore("#friends");
 	$(".section-user h1#page_title").insertAfter("div.tabs");
+	$(".page-contacts-find-friends h1#page_title").insertAfter("div.tabs");
+    $(".page-contacts-invite h1#page_title").insertAfter("div.tabs");
+
+	//Invite form. Move Email contacts field above Subject field.
+	$("form#invite-form div#edit-email-wrapper").insertAfter("form#invite-form div:eq(1)");
 
 	//places forgot password snippet above page lost password form
 	$(".not-logged-in h1#page_title").remove().insertBefore("div.tabs");

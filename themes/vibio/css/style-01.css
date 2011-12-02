@@ -13,11 +13,8 @@ img.uri_edit_busy_indicator, #uri_elaborations_edit, .ur_friend_remove img, .vie
 .view-user-collections .view-filters, .collection_preview_loading, .collection_preview_items, .item_updated, #collection_sidebar, .section-collections h1#page_title, ul.message-actions li.block_author a,
 .section-messages div.privatemsg-view-pager, .section-messages div.message-participants, #edit-privacy-item-default-privacy-setting-wrapper label{display:none}
 /*pager on front page that masonry will re-hide*/
-body.front div.view-flag-featured .pager{
-	display:none;
-}
+body.front div.view-flag-featured .pager{display:none}
 .page-collections-new h1#page_title{display: block}
-
 /*Popup after earning a badge*/
 #badge_alert_container_earned{text-align:center}
 #badge_alert_container_earned h5{font-size:28px; margin:28px 0 28px}
@@ -213,10 +210,8 @@ ul.links li{ display:inline;  list-style-type:none;  padding:0}
  * Markup free clearing (See:http://www.positioniseverything.net/easyclearing.html )
  */
 .clearfix:after{  content:".";   display:block;   height:0;   clear:both;   visibility:hidden}
-
-.rounded_container{  border-radius:4px;   -moz-border-radius:4px}
-
-.rounded_content{  border-radius:4px;   -moz-border-radius:4px;   margin:0;   padding:5px 0}
+.rounded_container{border-radius:4px;-moz-border-radius:4px}
+.rounded_content{border-radius:4px;-moz-border-radius:4px; margin:0; padding:5px 0}
 .logged-in .rounded_content{padding:0}
 
 .rounded_left_side{  border-top-left-radius:4px;   border-bottom-left-radius:4px;   -moz-border-radius-topleft:4px;   -moz-border-radius-bottomleft:4px;   margin:0;   padding:0 0 0 5px}
@@ -392,11 +387,13 @@ div.messages div#close-message{background:url(../images/btn_close.png) no-repeat
 div.notice div#close-message{background-position:-40px 0}
 div.error div#close-message{background-position:-80px 0}
 div.warning div#close-message{background-position:-120px 0}
-div.messages, div.status, div.warning, div.error, div.notice/* Important messages (status, warning, and error) for the user */{position:absolute; min-height:44px; margin:0; padding:15px 5px 15px 78px; /* LTR */background-image:url(../images/message_icons.png); background-repeat:no-repeat; box-shadow:0 2px 10px 0px rgba(0,0,0,.5); -moz-box-shadow:0 2px 10px 0px rgba(0,0,0,.5); -webkit-box-shadow:0 2px 10px 0 rgba(0,0,0,.5); top:29px; right:124px; width:417px; z-index:1000}
-div.status/* Normal priority messages */{background-color:#CCECFF; border:2px solid #7AC8FF; background-position:0px 14px}
-div.notice/* Normal priority messages */{background-color:#EAF7DA; border:2px solid #BEE78D; background-position:0px -78px; padding:15px 5px 15px 78px}
-div.warning, tr.warning{color:#556720; /* Drupal core uses #220 */background-color:#FFF7C2; border:2px solid #FFE180; background-position:0px -268px}
-div.error, tr.error{color:#556720; /* Drupal core uses #220 */background-color:#FFD9DA; border:2px solid #FFABAD; background-position:4px -174px}
+div.messages, div.status, div.warning, div.error, div.notice{position:absolute; min-height:44px; margin:0; padding:15px 5px 15px 78px;
+background-image:url(../images/message_icons.png); background-repeat:no-repeat; box-shadow:0 2px 10px 0px rgba(0,0,0,.5);
+ -moz-box-shadow:0 2px 10px 0px rgba(0,0,0,.5); -webkit-box-shadow:0 2px 10px 0 rgba(0,0,0,.5); top:29px; right:124px; width:417px; z-index:1000}
+div.status{background-color:#CCECFF; border:2px solid #7AC8FF; background-position:0px 14px}
+div.notice{background-color:#EAF7DA; border:2px solid #BEE78D; background-position:0px -78px; padding:15px 5px 15px 78px}
+div.warning, tr.warning{color:#556720;background-color:#FFF7C2; border:2px solid #FFE180; background-position:0px -268px}
+div.error, tr.error{color:#556720;background-color:#FFD9DA; border:2px solid #FFABAD; background-position:4px -174px; top: -57px}
 div.messages ul{margin:0; padding:0}
 div.messages ul li{list-style-type:none}
 /*Tooltip Not For Sale*/
@@ -980,7 +977,7 @@ h2.page-description{background:url("../images/long_border.png") no-repeat scroll
 #node-23080 div p{padding-left:208px}
 #node-23080 ul{padding-left:222px}
 /*Tabs*/
-div.tabs{ margin:10px 0 15px 0}
+div.tabs{ margin:10px 0 30px 0}
 ul.primary{ border:0;  margin:0;  padding:0; /* LTR */ list-style:none;  white-space:nowrap;  line-height:normal}
 ul.primary li{ float:left; /* LTR */ margin:0;  padding:0;  position:relative}
 div.tabs_big ul.primary li a{ height:31px}

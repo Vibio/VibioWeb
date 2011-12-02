@@ -16,7 +16,9 @@ $image= _product_get_image($product->nid,true);
 //  that function.)
 //This was a quick-fix patch that can be erased in Dec11... fixed in overrides_file_url_alter instead of here:  $image = "/sites/default/files/uploads/" . $image; ... NOPE.  That fix breaks other things.  Here's the hack.  Imagecache
 // this soon.
-$image = "/sites/default/files/uploads/" . $image;
+if(strpos($image, 'sites/default/files') == false){
+	$image = "/sites/default/files/uploads/" . $image;
+}
 
 $out="  <div id='inventory_top'><span class='bold-text'>So you own this item and want to add it to your Collections?</span><br />
 Vibio is for people who possess a unique sense of style so<br />

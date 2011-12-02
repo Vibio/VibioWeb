@@ -16,6 +16,7 @@ img.uri_edit_busy_indicator, #uri_elaborations_edit, .ur_friend_remove img, .vie
 body.front div.view-flag-featured .pager{
 	display:none;
 }
+.page-collections-new h1#page_title{display: block}
 
 /*Popup after earning a badge*/
 #badge_alert_container_earned{text-align:center}
@@ -371,33 +372,19 @@ table.search-results.vibio_item td{ vertical-align:top;  padding-bottom:10px}
 .item_pricetag{text-align:left; position:absolute}
 .item_pricetag img{border:none}
 .item_pricetag_left{background:transparent url(/themes/vibio/images/item/pricetag_left.png) no-repeat 0 0; height:26px; width:25px; float:left}
-
 .item_pricetag_right{background:transparent url(/themes/vibio/images/item/pricetag_right.png) no-repeat right 0; height:26px; float:left}
-
 .item_pricetag_price{margin:0 5px 0 2px; font-weight:bold; position:relative; top:2px}
-
 .offer2buy_action_complete_form, .offer2buy_transaction_cancel_form{float:left; margin-right:15px}
-
 .offer_details, .offer_accept{float:left}
-
 .offer_details{margin-right:15px}
-
 .offer2buy_pending_offer{font-style:italic}
-
 .offer2buy_node_display{float:right; font-weight:bold; color:black}
-
 .offer2buy_popup{float:right; font-size:10px}
-
 .offer2buy_popup a:hover{cursor:pointer}
-
 .node_offer2buy_price{float:right}
-
 #content-area .offer2buy_notification.rounded_content{min-height:0; background:#e0f2ff; border:1px solid #c7e5fd; padding:5px; margin-bottom:15px}
-
 .offer2buy_notification h2{color:#464F54; font-size:1.5em; margin:0}
-
 .offer2buy_notification .view-content tr{background-color:#e0f2ff}
-
 #profiletab_offers .offer2buy_popup{float:none}
 /*messages*/
 div.messages{position:relative}
@@ -408,7 +395,6 @@ div.warning div#close-message{background-position:-120px 0}
 div.messages, div.status, div.warning, div.error, div.notice/* Important messages (status, warning, and error) for the user */{position:absolute; min-height:44px; margin:0; padding:15px 5px 15px 78px; /* LTR */background-image:url(../images/message_icons.png); background-repeat:no-repeat; box-shadow:0 2px 10px 0px rgba(0,0,0,.5); -moz-box-shadow:0 2px 10px 0px rgba(0,0,0,.5); -webkit-box-shadow:0 2px 10px 0 rgba(0,0,0,.5); top:29px; right:124px; width:417px; z-index:1000}
 div.status/* Normal priority messages */{background-color:#CCECFF; border:2px solid #7AC8FF; background-position:0px 14px}
 div.notice/* Normal priority messages */{background-color:#EAF7DA; border:2px solid #BEE78D; background-position:0px -78px; padding:15px 5px 15px 78px}
-
 div.warning, tr.warning{color:#556720; /* Drupal core uses #220 */background-color:#FFF7C2; border:2px solid #FFE180; background-position:0px -268px}
 div.error, tr.error{color:#556720; /* Drupal core uses #220 */background-color:#FFD9DA; border:2px solid #FFABAD; background-position:4px -174px}
 div.messages ul{margin:0; padding:0}
@@ -419,33 +405,22 @@ div.messages ul li{list-style-type:none}
 /*layout-fixed*/
 #page-wrapper, 
 .region-page-closure{ margin-left:auto;  margin-right:auto;  width:960px}
-
 /*Header*/
 #header{height:82px}
-
 #header .section{}
-
 #search-box{}
-
 .region-header{ clear:both; /* Clear the logo */}
-
 /*
  * Main (container for everything else)
  */
 #main-wrapper{ position:relative}
-
 /*Conten*/
 #content, 
 .no-sidebars #content{ float:left; /* LTR */ width:890px;  margin-left:0; /* LTR */ margin-right:-890px; /* LTR */ /* Negative value of #content's width+left margin. */ padding:0; /* DO NOT CHANGE. Add padding or margin to #content .section. */}
-
 .sidebar-first #content{ width:750px;  margin-left:210px; /* LTR */ /* The width of .region-sidebar-first. */ margin-right:-958px; /* LTR */ /* Negative value of #content's width+left margin. */}
-
 .sidebar-second #content{ width:680px;  margin-left:0; /* LTR */ margin-right:-680px; /* LTR */ /* Negative value of #content's width+left margin. */}
-
 .two-sidebars #content{ width:470px;  margin-left:210px; /* LTR */ /* The width of .region-sidebar-first */ margin-right:-680px; /* LTR */ /* Negative value of #content's width+left margin. */}
-
 #content .section{ margin:0;  padding:0}
-
 /*
  * Navigation
  */
@@ -554,12 +529,12 @@ form#user-register{width:480px}
 form#user-register input{width:450px}
 form#user-login .description{padding:10px 0; line-height:20px}
 form#user-login label{font-weight:bold; margin-left:20px}
-form#user-login input#edit-submit{width:20px; padding:0; margin:  :0; background:url(../images/log_in.png) no-repeat; display:block; height:35px; width:73px; border:none; text-indent:-9999px; position:absolute; bottom:10px; right:13px}
+form#user-login input#edit-submit{width:20px; padding:0; margin:0; background:url(../images/log_in.png) no-repeat; display:block; height:35px; width:73px; border:none; text-indent:-9999px; position:absolute; bottom:10px; right:13px; cursor: pointer}
 /*Facebook button User Login PAge*/
 #block-block-12{float:left; margin:75px 0 0 60px; position:relative}
 #block-block-12 .fb-or{top:31px; left:-36px; position:absolute}
 /*Forgot password page*/
-form#user-pass input#edit-submit.form-submit{background:url(../images/btn_submit.png) no-repeat; display:block; text-indent:-9999px; width:82px; height:36px; border:none; float:right}
+form#user-pass input#edit-submit.form-submit{background:url(../images/btn_submit.png) no-repeat; cursor: pointer;display:block; text-indent:-9999px; width:82px; height:36px; border:none; float:right}
 form#user-pass div#edit-name-wrapper{padding-bottom:20px; margin-bottom:20px; border-bottom:1px solid #CCC}
 form#user-pass div#edit-name-wrapper input#edit-name{width:449px}
 /*Private message*/
@@ -583,10 +558,8 @@ form#user-profile-form input#edit-submit{background:url(../images/btn_save.png) 
 form#user-profile-form input#edit-submit:hover{background-position:0px -55px}
 /* Html Reset*/
 body{ font-size:100%; /* Fixes exaggerated text resizing in IE6 and IE7 */ margin:0;  background:#FFF}
-
 #skip-link, 
 #page{ font-size:13px}
-
 body, 
 caption, 
 th, 
@@ -597,30 +570,21 @@ option,
 legend, 
 fieldset{ font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;  color:#556270}
 .bold-text{font-weight:bold}
-
 /*Form Inputs*/
 input.form-text, textarea, select{border:1px solid #CCC; -webkit-border-radius:5px; -moz-border-radius:5px; border-radius:5px; padding:5px; font-size:13px}
-
 div.form-region-footer input.form-submit{background:#556270; color:#FFF; border:1px solid #3d454f; font-size:15px; padding:3px 5px; -webkit-border-radius:5px; -moz-border-radius:5px; border-radius:5px; cursor:pointer}
-
 label{font-size:15px}
-
 pre, 
 code{ font-size:1.1em; /* Monospace fonts can be hard to read */ font-family:"Courier New","DejaVu Sans Mono",monospace}
-
 /*
  * Headings
  */
 h1{ font-size:22px;  margin-top:0;  margin-bottom:0.5em}
-
 h2{ font-size:1.5em;  line-height:1.3em;  margin-top:0.667em; /* Equivalent to 1em in the page's base font:1 / 1.5 = 0.667em */ margin-bottom:0.667em}
-
 h3{ font-size:1.3em;  line-height:1.3em;  margin-top:0.769em; /* Equivalent to 1em in the page's base font:1 / 1.3 = 0.769 */ margin-bottom:0.769em}
-
 h4, 
 h5{ font-size:1.1em;  line-height:1.3em;  margin-top:0.909em; /* Equivalent to 1em in the page's base font:1 / 1.1 = 0.909 */ margin-bottom:0.909em}
 h6{font-size:15px; color:#00AEF0}
-
 /*
  * Block-level elements
  */
@@ -1052,83 +1016,47 @@ ul.primary li.active a:hover .tab,
 ul.primary li.ui-state-active a .tab, 
 ul.primary li.ui-state-active a:hover .tab{ border-bottom:7px solid #00AEF0;  color:#00AEF0}
 .tab-seperator{position:absolute; right:-2px; color:#556270}
-
 ul.secondary{ margin:0;  padding:0 0 0 5px; /* LTR */  border-bottom:1px solid #c0c0c0;   list-style:none;   white-space:nowrap;   background:url(../images/tab-secondary-bg.png) repeat-x left bottom}
-
 ul.secondary li{ float:left; /* LTR */ margin:0 5px 0 0;  padding:5px 0;  border-right:none; /* LTR */}
-
 ul.secondary a{  display:block;   height:24px;   margin:0;   padding:0;   border:1px solid #c0c0c0;   text-decoration:none;   color:#777;   background:url(../images/tab-secondary.png) repeat-x left -56px}
-
 ul.secondary a .tab{ display:block;  height:18px; /* 24px (parent) - 6px (padding) */  margin:0;   padding:3px 8px;   line-height:18px}
-
 ul.secondary a:hover{  background:url(../images/tab-secondary.png) repeat-x left bottom}
-
 ul.secondary a.active, 
 ul.secondary a.active:hover{  border:1px solid #c0c0c0;   color:#000;   background:url(../images/tab-secondary.png) repeat-x left top}
 /*featured item page*/
 .view.view-flag-featured{  width:740px;   position:relative}
-  
 .views-fluidgrid-item .views-field-field-main-image-fid{  width:160px;   border:1px solid #DADADA;   margin:5px;   padding:0}
-
 .views-fluidgrid-item{  margin:0 5px 20px 0;   border:1px solid #DADADA;   background:#fff}
-
 .views-fluidgrid-item .views-field-title{  width:160px;   margin:8px 5px 16px 5px}
-
 .views-fluidgrid-item .field-content{  margin:0;   padding:0}
-
 .search-col{  float:left;   width:177px;   padding:0 0 0 5px;   top:0px}
-
 .search-col .views-fluidgrid-item{  margin:0 0 20px 0!important;   position:relative}
-
 div.search-links{  margin-top:-40px;   margin-left:32px;   position:relative;   width:185px}
-
 .jquery_dropdown_container{  width:230px;   z-index:1;   position:relative}
-
 div.jquery_dropdown_header{  background:url(../images/jquery-dropdown-header.png) left top no-repeat;   border:0;   font-size:13px;   width:220px;   padding-left:10px;   font-weight:bold;   height:24px;   line-height:24px;   overflow:hidden;   text-indent:2px;   color:#666;   position:relative;   z-index:1!important;   font-weight:normal}
-
 ul.jquery_dropdown_list{  border:1px solid #CCC;   background:#fff;   left:0;   margin:0;   padding:0;   position:absolute;   top:24px;   width:205px;   z-index:2!important}
-
 ul.jquery_dropdown_list li{  background:none;   border-bottom:0;   list-style:none outside none;   margin:0;   padding:0;   font-weight:normal}
-
 ul.jquery_dropdown_list li a, 
 ul.jquery_dropdown_list li a:link, 
 ul.jquery_dropdown_list li a:visited{  color:#666;   display:block;   font-size:13px;   text-decoration:none;   width:auto;   padding:0 10px;   height:20px;   line-height:20px;   font-weight:normal}
-
 ul.jquery_dropdown_list li a:hover{  background:url(../images/jquery-dropdown-link-bg.png) left top repeat-x;   color:#000}
-
 .form-item label{  display:block;   font-weight:500!important;   margin-bottom:5px}
-
 #content-area .rounded_content{  min-height:749px;   padding:10px!important}
-
 .page-product-add h1#page_title{  padding-left:10px}
-
 .page-product-add .node-form{   padding:10px}
-
 .page-product-add #field-images-items, 
 .page-product-add #edit-field-main-image-0-ahah-wrapper, 
 .page-product-add .region-content-top{  border-bottom:1px solid #CCC}
-
 .page-product-add .content-add-more{  padding-bottom:20px}
-
 .node-form-has-region-right .form-region-footer{  margin-top:20px}
-
 #content-area fieldset.rounded_content{  background:none!important;   border:1px solid #ccc!important}
-
- 
 .form-region-footer{  text-align:right;   padding-top:10px}
-
 #infscr-loading{  z-index:11111;   position:absolute;   bottom:20px;    left:260px;   background:#FFF;   padding-top:15px;   width:245px;   height:48px;   -webkit-border-radius:5px;   -moz-border-radius:5px;   border-radius:5px;   box-shadow:0 2px 10px 0px rgba(0,0,0,.5);   -moz-box-shadow:0 2px 10px 0px rgba(0,0,0,.5);   -webkit-box-shadow:0 2px 10px 0 rgba(0,0,0,.5)}
-
 #info{  position:absolute;   right:10px;   float:right}
-
 .view.view-flag-featured .view-header{  display:block}
-
 .view.view-flag-featured .view-footer{width:720px; position:fixed; bottom:0px; height:64px}
-
 .view.view-flag-featured .view-footer a span{  font-size:1px}
-
 .view.view-flag-featured .view-footer a:hover{  background-position-y:-69px}
-
 .view.view-flag-featured .view-footer a:active{    background-position-y:-139px}
 #block-block-5{background:url(../images/sidebar_connect.png) no-repeat -1px 0; padding:0; color:#106F93; font-weight:bold; height:255px; width:208px; position:relative}
 #block-block-5 .content{  position:absolute;   top:0px;   left:29px}
@@ -1165,8 +1093,11 @@ div.profile_notifications_actions table tbody tr td a.approve button{background-
 div.profile_notifications_actions table tbody tr td a.approve button:hover{background-position:-86px -30px}
 /*Save and Delete buttons*/
 form#collection-edit input#edit-submit, input#edit-delete, ul.message-actions li a{background:url(../images/btn_save_delete.png) no-repeat; border:0; text-indent:-9999px; cursor:pointer}
-form#collection-edit input#edit-submit{background-position: 0px 0px; height:27px; width:77px}
+form#collection-edit input#edit-submit{background-position: 0px 0px; height:27px; width:77px; float: right; margin-right: 10px}
 form#collection-edit input#edit-submit:hover{background-position: 0px -30px}
+form#collection-edit div#edit-privacy-setting-wrapper{border-bottom: 1px solid #CCC; margin-bottom: 20px; padding-bottom: 20px;}
+form#collection-edit div.description ,form#collection-edit textarea#edit-description, form#collection-edit input#edit-title{width: 460px}
+form#collection-edit div.description{ font-size: 13px; padding: 10px 0 0 25px}
 input#edit-delete{background-position: 0px -120px; margin:5px 0 0 5px; height:27px; width:79px; }
 ul.message-actions li a{display:block; width: 77px; height: 26px; background-position: 0 -120px; position: absolute; top: 2px; right: 1px}
 input#edit-delete:hover{background-position: 0 -150px}

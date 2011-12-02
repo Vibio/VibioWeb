@@ -411,33 +411,28 @@ function profile_ext_preprocess_user_profile(&$vars)
     // eventually, split to collections and inventory, this will be collection,
     // but with only one choice, call it inventory.
 		// sucess: /user/1/inventory
-    case "inventory":
-		case "collections":
-    $vars['sec_content_class'] = $sec_page;
-
+    	case "inventory":
+	case "collections":
+    		$vars['sec_content_class'] = $sec_page;
+		//Access is used to determine which collections you can see
 		$access = module_exists("privacy") ? privacy_get_access_level($uid) : 1;
-			//!!! This shows only what you can see, without quite
-			//	letting you know that, for example, an anoymous
-			//	user can't see much
-			if ( $user->uid < 1 ) {
-				$msg = "<h3>Sign in for a better view of " . check_plain($target_user->name) . "'s collections.</h3>";
-			} else{
-				//We can now share the user's collections page
-			      if(module_exists('addthis')){
-				$addthis_variables['title'] = $user->name . "'s Vibio Collections";
-				$path = isset($_GET['q']) ? $_GET['q'] : '<front>';
-				$link = url($path, array('absolute' => TRUE));
-				$addthis_variables['url'] = $link; 
-				$share_html = theme('addthis_toolbox', $addthis_variables);
-			      }
-				!empty($share_html) ? $msg = "<h1 class='page-title-sub'>Collections</h1>" . $share_html : $msg = "<h1 class='page-title-sub'>Collections</h1>";
-			}
-			$vars['sec_content'] =  
+		//All users can view the collections page; privacy should hide individual collections from this
+		//view if the proper setting are in place.
+		if(module_exists('addthis')){
+			//We can share the user's collections page
+			$addthis_variables['title'] = $user->name . "'s Vibio Collections";
+			$path = isset($_GET['q']) ? $_GET['q'] : '<front>';
+			$link = url($path, array('absolute' => TRUE));
+			$addthis_variables['url'] = $link; 
+			$share_html = theme('addthis_toolbox', $addthis_variables);
+		}
+		!empty($share_html) ? $msg = "<h1 class='page-title-sub'>Collections</h1>" . $share_html : $msg = "<h1 class='page-title-sub'>Collections</h1>";
+		$vars['sec_content'] =  
 				$msg .
 				views_embed_view("user_collections", "default", $uid, $access);
 
 
-			break;
+		break;
     case "about me":
     case "about":
 	    // This is overkill, since "About" is always public?  

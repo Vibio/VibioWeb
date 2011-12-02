@@ -451,7 +451,20 @@ function badge_preprocess_badge_list($vars)
 	$vars['badge_html'] = $out;
 }
 
-function badge_preprocess_badge_alert($vars)
+/**
+* Preprocess for a single badge alert. Generates the image.
+*/
+function badge_preprocess_badge_alert_badge_single(&$vars){
+	$badge = $vars['badge'];
+	if(empty($badge->image_src)){
+		$pos = strpos($badge->image, 'badge');
+                $filename = substr($badge->image, $pos);
+                $badge->image_src = 'sites/default/files/uploads/' . $filename;
+	}
+	$vars['badge_image'] = theme('image', $badge->image_src, $badge->description, $badge->description, '', FALSE);
+}
+
+function badge_preprocess_badge_alert(&$vars)
 {
 	$badges = $vars['badges'];
 	

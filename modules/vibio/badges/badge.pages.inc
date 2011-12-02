@@ -276,7 +276,6 @@ function badge_unearned_list()
 	$out = "";
 	while ($badge = db_fetch_object($res))
 	{
-                $badge->image_src = $base_url . '/sites/default/files/uploads/' . file_create_url($badge->image);
 		$out .= theme("badge_alert_badge_single", $badge);
 	}
 	

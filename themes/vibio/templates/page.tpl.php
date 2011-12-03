@@ -14,10 +14,6 @@
 			// ctools_include('modal');
 			// ctools_modal_add_js();
 		?>
-
-		<!--[if IE]>
-		<link rel="stylesheet" href="/themes/vibio/css/ie.css" />
-		<![endif]-->
 		<?php print $scripts;?>
 		<script type="text/javascript" src="/themes/vibio/js/jquery-ui-1.8.2.custom.min.js"></script>
 		<script type="text/javascript" src="/themes/vibio/js/vibio_dialog.js"></script>

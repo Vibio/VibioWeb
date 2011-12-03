@@ -47,10 +47,10 @@ div.sec_content.collections div.addthis_toolbox{position: absolute; right: 10px;
 div.sec_content.collections div.share-text{position: absolute; right: 241px; top:3px}
 #profile_ext_header{border-left:1px solid #345162; float:right; margin:10px 22px 0px 0px; text-align:right; color:#BEE9FF}
 #header-faq{margin-left:36px}
-#profile_ext_header a, .menuContainer a{color:white}
+#profile_ext_header a, .menuContainer a{color:#FFF}
 .menuContainer table{margin:-3px 0}
 #profile_ext_header table{margin:0; float:left}
-#profile_ext_headermenu{color:white}
+#profile_ext_headermenu{color:#FFF}
 #profile_ext_headermenu img{position:relative; top:-2px}
 #profile_ext_headermenu:hover{cursor:pointer}
 .profile_ext_displayblock_item:first-child{margin-right:5px}
@@ -58,7 +58,6 @@ div.sec_content.collections div.share-text{position: absolute; right: 241px; top
 .profile_ext_displayblock_item img{float:left}
 .profile_ext_displayblock_item span{color:#b5ca3e; float:right; font-size:14px; font-weight:bold}
 #profile_ext_headermenu .rootVoice{padding:0 10px}
-#profile_ext_headermenu .rootVoice.selected{}
 #profile_ext_headermenu .rootVoice.selected .mbmenu_arrow_icon{background-image:url(/themes/vibio/images/icons/acct_dropdown_selected.png)}
 /*Congrats popup*/
 div.congrats-popup{padding:0 50px}

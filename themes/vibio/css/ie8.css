@@ -1,0 +1,42 @@
+/*
+ * @file
+ * CSS targeted specifically for Internet Explorer 8 for Windows.
+ */
+ul.primary li a, ul.primary li a .tab, ul.secondary li a, ul.secondary li a .tab {
+	cursor: pointer;
+}
+/*
+ * Drupal nodes
+ */
+
+.node-unpublished .node-inner > * {
+	position: relative; /* Otherwise these elements will appear below the "Unpublished" text. */
+}
+/*
+ * Drupal admin tables
+ */
+tr.even th, tr.even td, tr.odd th, tr.odd td {
+	border-bottom: 1px solid #ccc; /* IE doesn't display borders on table rows */
+}
+/*
+ * Markup free clearing
+ */
+.clearfix {
+	zoom: 1;
+}
+
+#profile_ext_header {
+	margin-top: 11px;
+}
+#search_type_menu_container {
+	margin-right: -6px;
+	top: 2px;
+}
+.button{top: -1px}
+.region-sidebar-first{width: 196px}
+#edit-search-theme-form-1{padding-top: 10px; height: 24px}
+#profile_ext_displayblock_user_section{width: 190px}
+#block-collection-random_collection{width: 158px}
+#block-heartbeat-connectedheartbeat{width: 160px}
+a{text-decoration: none}
+#collection-title-img{left:386px}

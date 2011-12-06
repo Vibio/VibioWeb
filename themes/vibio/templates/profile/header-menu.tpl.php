@@ -5,27 +5,27 @@ $faq_link = l(t("Help"), "faq", array('attributes' => array('id' => 'user-faq'))
 $logout_link = l(t("Logout"), "logout", array('attributes' => array('id' => 'user-logout')));
 $menu_title = strlen($profile_ext_user->name) > 20 ? substr($profile_ext_user->name, 0, 20)."..." : $profile_ext_user->name
 ?>
-
-<table><tr>
-	<td id="profile_ext_headermenu">
-		<table class="rootVoices"><tr>
-			<td class="rootVoice {menu: 'profile_ext_submenu'}">
-				<div class='mbmenu_arrow_icon'> </div>
-				<div class='mbmenu_title'>
-					<?php echo $menu_title; ?>
-				</div>
-			</td>
-		</tr></table>
-	</td>
-</tr></table>
-
-<div id="profile_ext_submenu">
-	<?php
-	//echo "<a rel='separator'> </a>";
-	echo $edit_account_link;
-	echo $privacy_settings_link;
-	echo $faq_link;
-	//echo "<a rel='separator'> </a>";
-	echo $logout_link;
-	?>
+<div id="profile-menu-wrapper">
+	<div id='profile-menu'>
+		<div class="profile-icon"></div>
+		<div class='profile-username'>
+			<?php echo $menu_title;?>
+		</div><div class='profile-arrow'></div>
+		<div id='profile-submenu'>
+			<ul>
+				<li>
+					<?php echo $edit_account_link;?>
+				</li>
+				<li>
+					<?php echo $privacy_settings_link;?>
+				</li>
+				<li>
+					<?php echo $faq_link;?>
+				</li>
+				<li class='menu-last'>
+					<?php echo $logout_link;?>
+				</li>
+			</ul>
+		</div>
+	</div>
 </div>

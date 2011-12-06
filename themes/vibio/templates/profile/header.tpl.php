@@ -10,7 +10,7 @@ else
 
 echo "
 	<div id='profile_ext_header'>
-		$message <a id='header-faq' href='/faq'>FAQ</a>
+		$message <div id='help-header'><div id='works-icon'></div><a id='how-works' class='works-modal' href='/steps'>How it works</a></div>
 	</div>
 ";
 ?>

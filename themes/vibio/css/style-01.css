@@ -11,7 +11,7 @@ img.uri_edit_busy_indicator, #uri_elaborations_edit, .ur_friend_remove img, .vie
 #search_type_submenu, #user-login-form span.form-required, div.node-type-offer-neg-seller ul.links, .offer2buy_nid, .offer2buy_offer_view_popup, 
 #edit-search-block-form-1-wrapper label, div.form-radios td.form-item-label, div.form-checkboxes td.form-item-label, .grippie, .hidden, .fb_dialog, .fb_share_params, 
 .view-user-collections .view-filters, .collection_preview_loading, .collection_preview_items, .item_updated, #collection_sidebar, .section-collections h1#page_title, ul.message-actions li.block_author a,
-.section-messages div.privatemsg-view-pager, .section-messages div.message-participants, #edit-privacy-item-default-privacy-setting-wrapper label{display:none}
+.section-messages div.privatemsg-view-pager, .section-messages div.message-participants, #edit-privacy-item-default-privacy-setting-wrapper label,#profile-submenu{display:none}
 /*pager on front page that masonry will re-hide*/
 body.front div.view-flag-featured .pager{display:none}
 .page-collections-new h1#page_title{display: block}
@@ -45,31 +45,31 @@ body.front div.view-flag-featured .pager{display:none}
 div.sec_content.collections, div.sec_content.about{position: relative}
 div.sec_content.collections div.addthis_toolbox{position: absolute; right: 10px; top:-7px; width: 231px}
 div.sec_content.collections div.share-text{position: absolute; right: 241px; top:3px}
-#profile_ext_header{border-left:1px solid #345162; float:right; margin:10px 22px 0px 0px; text-align:right; color:#BEE9FF}
-#header-faq{margin-left:36px}
-#profile_ext_header a, .menuContainer a{color:#FFF}
-.menuContainer table{margin:-3px 0}
-#profile_ext_header table{margin:0; float:left}
-#profile_ext_headermenu{color:#FFF}
-#profile_ext_headermenu img{position:relative; top:-2px}
-#profile_ext_headermenu:hover{cursor:pointer}
-.profile_ext_displayblock_item:first-child{margin-right:5px}
-.profile_ext_displayblock_item{background:#36434C; padding:3px; float:left; width:66px; height:20px}
-.profile_ext_displayblock_item img{float:left}
-.profile_ext_displayblock_item span{color:#b5ca3e; float:right; font-size:14px; font-weight:bold}
-#profile_ext_headermenu .rootVoice{padding:0 10px}
-#profile_ext_headermenu .rootVoice.selected .mbmenu_arrow_icon{background-image:url(/themes/vibio/images/icons/acct_dropdown_selected.png)}
 /*Congrats popup*/
 div.congrats-popup{padding:0 50px}
 .congrats-popup h2{text-align: center; font-size: 22px}
 /*Username dropdown background*/
-.menuContainer{background:url(../images/username_drop_bgd.png) no-repeat 0 0; width:132px; height:121px; font-weight:bold; padding-top:10px}
-.menuContainer td.voice a{color:#FFF; font-size:12px; padding-left:18px; display:block}
-.menuContainer td.voice a:hover{color:#00AEF0}
-#mb_profile_ext_submenu.menuContainer td.voice{padding:7px 0}
-#profile_tabs{margin:10px 0; height:30px}
-.mbmenu_arrow_icon{background:url(/themes/vibio/images/icons/acct_dropdown.png) no-repeat; display:block; float:right; height:5px; right:-5px; position:relative; top:7px; width:9px}
-.mbmenu_title{float:right; color:#FFF}
+#profile_ext_header{color:#FFF; float:right; margin-top:10px; width: 217px; position: relative; z-index: 1}
+#profile_ext_header a, .menuContainer a{color:#FFF}
+#profile-menu{overflow: hidden}
+#profile-submenu{position: absolute; left:-5px; top:20px; background:url(../images/username_drop_bgd.png) no-repeat 0 0; font-weight: bold;height:119px; width: 130px}
+#profile-submenu ul{list-style: none; padding:17px 0 0 10px }
+#profile-submenu li{height:26px; width:110px; background: url(../images/menu_seperator.png) no-repeat 1px 20px}
+#profile-submenu li a{padding:5px 0 5px 5px}
+#profile-submenu li.menu-last{background: none}
+#profile-submenu li.menu-last a,#profile-submenu li a#user-faq{padding-right: 55px}
+#profile-menu-wrapper{min-height: 30px; width:122px; float:left}
+#help-header{float: right; margin-right: 4px}
+.profile-username{color: #FFF; padding-left: 21px; cursor: pointer}
+.profile-icon, .profile-arrow, #works-icon{background:url(../images/header_icons.png) no-repeat; display:block}
+.profile-icon{width: 16px; height: 16px; background-position: -30px -9px; position: absolute}
+#works-icon{width:20px; height: 23px; position: absolute; right: 78px; top: -7px}
+.profile-arrow{width:10px; height: 10px;background-position: -50px -14px}
+.profile-arrow, .profile-username{float:left}
+/*First Time Popup*/
+#first-time-popup{background: url(../images/first_time_bgd.png) no-repeat 0 0; height: 621px; width: 510px; position: relative}
+#first-time-button a{background: url(../images/btn_signup.png) no-repeat 0 0; height: 45px; width: 236px; text-indent: -9999px; position: absolute; bottom: 18px; right: 18px; display: block}
+#first-time-button a:hover{background-position:0 -60px}
 .profile_notification >.picture{float:left; margin-right:15px}
 .profile_notifications_summary{float:left; width:550px}
 .profile_busy_indicator{float:right; margin-right:25px}
@@ -107,7 +107,7 @@ body.not-front, body.front{  background:url('../images/bgtile.jpg') repeat scrol
 /*
  * Header
  */
-#header_quick_actions{  width:625px;   height:41px;   float:right;   position:relative;   font-size:15px}
+#header_quick_actions{  width:625px;   height:41px;   float:right;   position:relative;   font-size:12px}
 #header_quick_actions a:hover{color:#00AEF0}
 #logo{  float:left;   margin:0;   padding:0}
 

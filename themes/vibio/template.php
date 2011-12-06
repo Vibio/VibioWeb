@@ -1,4 +1,57 @@
 <?php
+
+/**
+* Adds OG meta data to share an appropriate collection picture with Facebook.
+* Note that vibio_addthis module contains the exact same functionality for vibio
+* product nodes. It'd be great to combine all this functionality in one module, or,
+* alternatively, to use an existing module like nodewords. This was rejected temporarily
+* considering (hopefully) impending changes to the code and uncertainties concerning the
+* adaptability of nodewords.
+*
+* Implements template_views_view__view_name().
+*/
+function vibio_preprocess_views_view__user_collection(&$variables){
+  //This loads the collection, minus the collection image
+  $collection = collection_load($variables['view']->args[1]);
+  //Get the CID from the view arguments, output an absolute link to the collection's image
+  $collection_image = url(collection_get_image($variables['view']->args[1]), array('absolute' => TRUE));
+  $og_image = '<meta property="og:image" content="' . $collection_image . '"/>';
+  $collection_title = $collection['user_name'] . "'s " . $collection['title'] . " Collection";
+  $og_title = '<meta property="og:title" content="' . $collection_title . '"/>';
+  $og_data = $og_title . PHP_EOL . $og_image; 
+  drupal_set_html_head($og_data);
+}
+
+/**
+* Adds OG metadata for the collections (plural) page.
+* 
+* Implements template_views_view__view_name().
+* @TODO: write a og_metadata($array) function that takes an array
+* of og content keyed by og terms and produces the completed og
+* meta data tags.
+*
+*/
+function vibio_preprocess_views_view__user_collections(&$variables){
+  //Get the user's name from their id. 
+  $id = $variables['view']->args[0];
+  $collections_owner = db_result(db_query("SELECT name FROM {users} WHERE uid = %d", $id));
+  //If the name ends in 's', simply add an apostrophe
+  $reverse_name = strrev( $collections_owner);
+  $reverse_name{0} == 's' ? $possessive = "'" : $possessive = "'s";
+  //Generate the info we want to share
+  $collections_title = $collections_owner . $possessive . " Collections"; 
+  $collections_description = "See " . $collections_owner . $possessive . " collections on Vibio.";
+  //Take the first collection's image to represent all the user's collections
+  $collections_image_path = $variables['view']->result[0]->image;
+  $collections_image = url($collections_image_path, array('absolute' => TRUE));  
+  //Put together the metatags
+  $og_title = '<meta property="og:title" content="' . $collections_title .'"/>';
+  $og_description = '<meta property="og:description" content="' . $collections_description .'"/>';
+  $og_image = '<meta property="og:image" content="' . $collections_image . '"/>'; 
+  $og_data = $og_title . PHP_EOL . $og_description . PHP_EOL . $og_image;
+  drupal_set_html_head($og_data);
+}
+
 /**
  * Theme function for AddThis module which generates the AddThis sharing
  * code.
@@ -369,6 +422,11 @@ automodal_add('.make-modal', array(
     'autoFit' => false
     ,'width'   => 700
     ,'height'  => 605)
+);
+automodal_add('.works-modal', array(
+    'autoFit' => false
+    ,'width'   => 543
+    ,'height'  => 670)
 );
 automodal_add('.info-modal', array(
     'autoFit' => false

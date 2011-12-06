@@ -22,7 +22,6 @@ function vibio_addthis_preprocess_node(&$variables){
       $og_image = '<meta property="og:image" content="'. url('themes/vibio/vibio-logo.png') . '" />';
       $variables['product_image'] = url('themes/vibio/images/icons/default_item_large.png');
     }
-
     $og_title = '<meta property="og:title" content="'. $node->title . '" />';
     //Description: message on Facebook wall. Check copy?
     $description = 'Check it out on Vibio!';

@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php print $language -> language;?>" xml:fb="http://ogp.me/ns/fb#" lang="<?php print $language -> language;?>" dir="<?php print $language -> dir;?>">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<title><?php print $head_title;?></title>
 		<?php print $head;?>
 		<meta name="description" content="Vibio is a social commerce tool that lets you buy, sell, and share items within your social graph" />
@@ -14,10 +14,6 @@
 			// ctools_include('modal');
 			// ctools_modal_add_js();
 		?>
-
-		<!--[if IE]>
-		<link rel="stylesheet" href="/themes/vibio/css/ie.css" />
-		<![endif]-->
 		<?php print $scripts;?>
 		<script type="text/javascript" src="/themes/vibio/js/jquery-ui-1.8.2.custom.min.js"></script>
 		<script type="text/javascript" src="/themes/vibio/js/vibio_dialog.js"></script>

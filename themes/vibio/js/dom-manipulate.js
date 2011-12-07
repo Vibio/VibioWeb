@@ -25,6 +25,11 @@ $(document).ready(function() {
 	$(".not-logged-in h1#page_title").insertBefore("div.tabs");
 	$(".page-contacts h1#page_title").insertBefore("#friends");
 	$(".section-user h1#page_title").insertAfter("div.tabs");
+	$(".page-contacts-find-friends h1#page_title").insertAfter("div.tabs");
+	$(".page-contacts-invite h1#page_title").insertAfter("div.tabs");
+
+	//Invite form. Move Email contacts field above Subject field.
+	$("form#invite-form div#edit-email-wrapper").insertAfter("form#invite-form div:eq(1)");
 
 	//places forgot password snippet above page lost password form
 	$(".not-logged-in h1#page_title").remove().insertBefore("div.tabs");
@@ -72,5 +77,22 @@ $(document).ready(function() {
 		$(this).prepend('<div class="not-sale-popup">Many items on Vibio are not for sale. <a href="/faq#why">Find out why</a>.</div>');
 	}, function() {
 		$('.not-sale-popup').remove();
+	});
+	//User dropdown menu
+	$('#profile-menu-wrapper').hover(function() {
+		$('#profile-submenu').fadeIn();
+		$('.profile-arrow').css('background-position','-50px -38px');
+		$('.profile-icon').css('background-position','-30px -36px');
+		$('.profile-username').css('color','#00AEF0');
+	}, function() {
+		$('#profile-submenu').fadeOut();
+		$('.profile-arrow').css('background-position','-50px -14px');
+		$('.profile-icon').css('background-position','-30px -9px');
+		$('.profile-username').css('color','#FFF');
+	});
+	$('a#how-works').hover(function() {
+		$('#works-icon').css('background-position','0px -31px');
+	}, function() {
+		$('#works-icon').css('background-position','0px 0px');
 	});
 });

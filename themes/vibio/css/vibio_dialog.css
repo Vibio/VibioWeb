@@ -87,6 +87,9 @@ span.ui-icon{
 	opacity: 0.5;
 	filter: alpha(opacity=50);
 	position: absolute;
+  /* temp note: position: fixed; fixes the scroll bars... and breaks the 
+     X to close the window */
+  overflow: hidden;
 	top: 0;
 	left: 0;
 }

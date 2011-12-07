@@ -1,22 +1,7 @@
-/* $Id: ie.css,v 1.2.2.1 2010/01/20 20:11:52 johnalbin Exp $ */
-
-/**
- * @file
- * CSS targeted specifically for Internet Explorer for Windows.
- *
- * Any CSS in this file will apply to all versions of IE. You can target
- * specific versions of IE by using conditional comments. See your sub-theme's
- * .info file for an easy way to use them.
- *
- * While building your theme, you should be aware that IE limits Drupal to 31
- * stylesheets total. The work-around for the bug is to enable CSS aggregation
- * under: admin / settings / performance.
- */
-
 /*
- * Tabs
+ * @file
+ * CSS targeted specifically for Internet Explorer 8 for Windows.
  */
-
 ul.primary li a, ul.primary li a .tab, ul.secondary li a, ul.secondary li a .tab {
 	cursor: pointer;
 }
@@ -49,6 +34,9 @@ tr.even th, tr.even td, tr.odd th, tr.odd td {
 }
 .button{top: -1px}
 .region-sidebar-first{width: 196px}
+#edit-search-theme-form-1{padding-top: 10px; height: 24px}
 #profile_ext_displayblock_user_section{width: 190px}
 #block-collection-random_collection{width: 158px}
 #block-heartbeat-connectedheartbeat{width: 160px}
+a{text-decoration: none}
+#collection-title-img{left:386px}

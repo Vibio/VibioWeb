@@ -442,7 +442,7 @@ function user_relationships_api_can_request($requester, $relationship_type) {
     return FALSE;
   }
   if ($requester->uid == 1) {
-    return TRUE;
+//    return TRUE;  ok to overwrite, but this is silly for Vibio
   }
   //if no roles have been set, any user can request
   if (!isset($relationship_type->roles) || !count($relationship_type->roles)) {

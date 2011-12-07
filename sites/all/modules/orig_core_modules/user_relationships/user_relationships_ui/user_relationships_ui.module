@@ -257,9 +257,14 @@ function _user_relationships_ui_actions_between(&$viewer, &$viewed) {
       //draw a single link, or one for each relationship type
       foreach ($all_relationships as $rtid => $relationship) {
         //check this type can be requested
+				// Stephen work here next
         if (!user_relationships_api_can_request($viewer, $relationship) || !user_relationships_api_can_receive($viewed, $relationship)) {
           continue;
         }
+/* hack defense is failing oddly
+$recheck_existing_relationships = user_relationships_load(array('between' => array(711,1), ));
+print_r($recheck_existing_relationships);
+*/
         $list[] = theme('user_relationships_request_relationship_direct_link', $viewed, $relationship);
       }
     }

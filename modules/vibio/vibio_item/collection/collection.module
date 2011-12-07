@@ -126,7 +126,8 @@ function collection_theme(&$existing)
 }
 
 //This is a theme function to produce collection images. Currently uses collection_get_image; could completly replace
-//when we can refactor the code which uses collection_get_image.
+//when we can refactor the code which uses collection_get_image.-->Actually, I'm finding it useful to have separate
+//functions for grabbing image src and full HTML images.
 function theme_collection_image($cid, $imagecache, $access){
                         $item_image = collection_get_image($cid, false, $access);   
                         $alt = 'Collection Image';

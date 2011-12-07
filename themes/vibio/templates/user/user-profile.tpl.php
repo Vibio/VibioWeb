@@ -55,7 +55,11 @@ case 'second':
 $friends_info="<div class='mouse_for_friends'>".$profile['dos']."</div>";
 break;
 case 'none':
-$friends_info="No Connection<div class='mouse_for_friends'>"."Keep connecting with people till you find a common connection.</div>";
+if ($user->uid) { // logged in, no connection
+	$friends_info="No Connection<div class='mouse_for_friends'>"."Keep connecting with people till you find a common connection.</div>";
+} else { // not logged in ... perhaps there really is a connection
+	$friends_info="Unknown Connection: <a href='/user/login'>Log In</a><div class='mouse_for_friends'>You must <a href='/user/login'>Log In</a> to interact with this user</div>";
+}
 break;
 }
 ?>

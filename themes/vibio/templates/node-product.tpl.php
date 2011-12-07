@@ -77,7 +77,7 @@ if (isset($node->amazon_data)) {
 	}
 	
 	$external_link = $page ? t("Get \"!item\" from !external_link.", array("!item" => $node->title, "!external_link" => l(t("Amazon"), $node->amazon_data['detailpageurl'], array("absolute" => true,
-"attributes" => array()     // javascript ruining this ('target' =>"_amazon" )
+"attributes" => array('target' =>"_blank")   
 )))) : "";
 	//$external_link .=  $node->amazon_data['detailpageurl']; This URL is already encoded, when it shouldn't be. i.e.:
 	//  encode   key=variable  so the equals sign is gone and it's just text.

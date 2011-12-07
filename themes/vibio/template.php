@@ -427,7 +427,7 @@ if(module_exists('automodal')){
 	automodal_add('.works-modal', array(
 	    'autoFit' => false
 	    ,'width'   => 543
-	    ,'height'  => 670)
+	    ,'height'  => 675)
 	);
 	automodal_add('.info-modal', array(
 	    'autoFit' => false

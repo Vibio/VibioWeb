@@ -418,21 +418,23 @@ function vibio_user_login_block($form) {
    $form['submit']['#value'] = 'Sign up';
 }
 /*custom automodal widths*/
-automodal_add('.make-modal', array(
-    'autoFit' => false
-    ,'width'   => 700
-    ,'height'  => 605)
-);
-automodal_add('.works-modal', array(
-    'autoFit' => false
-    ,'width'   => 543
-    ,'height'  => 670)
-);
-automodal_add('.info-modal', array(
-    'autoFit' => false
-    ,'width'   => 535
-    ,'autoFit' => true)
-);
+if(module_exists('automodal')){
+	automodal_add('.make-modal', array(
+	    'autoFit' => false
+	    ,'width'   => 700
+	    ,'height'  => 605)
+	);
+	automodal_add('.works-modal', array(
+	    'autoFit' => false
+	    ,'width'   => 543
+	    ,'height'  => 670)
+	);
+	automodal_add('.info-modal', array(
+	    'autoFit' => false
+	    ,'width'   => 535
+	    ,'autoFit' => true)
+	);
+}
 
 
 

@@ -56,8 +56,6 @@ function vibio_amazon_create_product_from_asin($asin) {
     $nid = db_result(db_query($sql, $amazon_data['asin']));
     
     if (!$nid) {
-      dpr('creating new product');
-      dpr($amazon_data);
       // This block was taken almost verbatim from a previous
       // implementation of hook_amazon_item_insert().
       // We might consider refactoring this to a node_save()

@@ -443,16 +443,41 @@ function product_preprocess_search_results(&$vars)
 	}
 }
 
-/* two functions dealing with have-want, one for search, one for view */
-function product_preprocess_search_result(&$vars)
-{
-	if ($vars['type'] == "vibio_item")
-	{
+/**
+ * Preprocessor for the "search_result" theme hook.
+ */
+function product_preprocess_search_result(&$vars) {
+	if ($vars['type'] == "vibio_item") {
 		$item_nid = product_user_owns_product($vars['result']['node']->nid);
-		$vars['search_links'] .= $item_nid ? l(t("You Own This!"), "node/{$item_nid}") : theme("product_inventory_add", $vars['result']['node']->nid);
-		$vars['search_links'] .= $item_nid ? "" : theme("product_inventory_want", $vars['result']['node']->nid); 
+		
+		$search_links = array();
+		$search_links['own_have'] = ($item_nid) ? l(t("You Own This!"), "node/{$item_nid}") : theme("product_inventory_add", $vars['result']['node']->nid);
+		$search_links['want'] = ($item_nid) ? "" : theme("product_inventory_want", $vars['result']['node']->nid);
+		
+    if (!empty($vars['result']['node']->field_main_image[0]['filepath'])) {
+    	$vars['img'] = theme('imagecache', 'product_fixed_width', $node->field_main_image[0]['filepath']);
+    } 
+    else {
+      // Remote images and altered have/want links for Amazon items not yet converted to local products.
+      if ($vars['result']['result_type'] == 'remote') {
+        $vars['img'] = '<img src="' . $vars['result']['amazon_data']['imagesets']['largeimage']['url'] . '" width="160"/>';
+        $search_links['want'] = l(t('Want'), 'product-from-asin', 
+          array(
+            'query' => array('asin' => $vars['result']['amazon_data']['asin']),
+            'attributes' => array('class' => 'inventory_want')
+          ));
+      }
+      else {
+        // Fall back to default.
+    	  $vars['img'] = theme('imagecache', 'product_fixed_width', "themes/vibio/images/icons/default_item_large.png");    
+      }
+    }
 	}
+	
+	$vars['search_links'] = implode("\n", $search_links);
 }
+
+/* two functions dealing with have-want, one for search, one for view */
 function product_have_want($nid)
 {
   $vars = array();  // not a preprocess function despite similiarities

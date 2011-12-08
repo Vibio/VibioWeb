@@ -14,18 +14,18 @@ $flag = flag_create_link('feature', $node->nid);
 // These things are jammed into columns with no fluid anything.
 // Maybe one day a themer may decide to remove the columns.
 ?>
-<div class='views-fluidgrid-item'> 
-	<div class='views-fluidgrid-item-inner'>
-  	<div class='views-field-field-main-image-fid'>
+<div class="views-fluidgrid-item"> 
+	<div class="views-fluidgrid-item-inner">
+  	<div class="views-field-field-main-image-fid">
   		<a href="<?php print $url; ?>" title="<?php print $title; ?>" alt="<?php print $title; ?>">
   			 <?php print $img; ?>
   		</a>
   	</div>	
 			<?php print $minetext; ?>
-  		<div class='search-links'><?php print $search_links; ?></div>
-  		<div class='views-field-title'>
-  			<a class='item-title' href='$url'><?php print $title; ?></a>
+  		<div class="search-links"><?php print $search_links; ?></div>
+  		<div class="views-field-title">
+  			<a class="item-title" href="<?php print $url; ?>"><?php print $title; ?></a>
   		</div>   		                     
-  	<div class='search-flag'><?php print $flag; ?></div>
+  	<div class="search-flag"><?php print $flag; ?></div>
 	</div>
 </div>

@@ -40,7 +40,7 @@
 #product-ajax-add-form #edit-collections-wrapper {
 	width: 95px;
 	float: left;
-	margin-right: 10px
+	margin-right: 10px;
 }
 #product-ajax-add-form #edit-body-wrapper{
 	clear: both
@@ -85,7 +85,7 @@ span.ui-icon {
 	-moz-border-radius: 8px;
 	border: 1px solid #E2E6E9;
 	padding: 5px 10px;
-	margin-top: -70%;
+	margin-left:95px
 }
 .ui-dialog {
 }

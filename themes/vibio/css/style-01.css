@@ -275,7 +275,7 @@ div.privatemsg-box-fb div.middle-column div.name{font-size:18px}
 .views_slideshow_singleframe_previous{  background:transparent url(../images/arrow-gray-left.png) top left no-repeat;  text-indent:-5000px}
 /* discussion box */
 #neg-discuss{float:left; margin-left:15px; line-height:21px; width:318px}
-#neg-discuss h3{font-size:22px; margin-top:0; font-weight:normal; background:url(../images/long_border.png) no-repeat scroll 0 32px transparent; height:43px; padding:0; width:318px}
+#neg-discuss h3{font-size:22px; margin-top:0; font-weight:normal; background:url(../images/short_bar.png) no-repeat scroll 0 32px transparent; height:43px; padding:0; width:318px}
 .done{color:green; font-weight:bold}
 /* product area */
 #offer_item_offer{font-size:13px; font-weight:bold}
@@ -301,10 +301,6 @@ div#offer_neg_buyer input#edit-submit{background:url(../images/btn_make_offer.pn
 div#offer_neg_buyer input#edit-submit:hover{background-position:0px -47px}
 div.form-radios div.form-item{float:left; width:85px; font-size:13px}
 div#seller_info_in_offer .person_pic_seller{font-weight:bold; font-size:13px; margin:18px 0 0 0px; float:left; width:200px}
-#seller-neg-form div.form-item label{clear:both; margin-bottom:15px}
-#seller-neg-form div.form-radios{height:30px}
-#seller-neg-form label{font-weight:500 !important}
-#seller-neg-form div#edit-field-chat-0-value-wrapper{clear:both; margin-top:7px}
 #buyer-for-seller .person_pic_seller{font-weight:bold}
 .person_pic_offer{font-weight:bold}
 #offer_neg_buyer input#edit-field-city-0-value{width:264px}
@@ -316,7 +312,12 @@ div#edit-field-offer-expires-0-value-datepicker-popup-0-wrapper .description, di
 #form-column{clear:left; float:left; width:280px; background:#e5e7ea; border-radius:4px; border-radius:4px; -moz-border-radius:4px; -moz-border-radius:4px; padding:10px}
 #chit-chat .node{font-size:13px}
 /*Offer Review Seller Negotiation form*/
-#seller-neg-form input#edit-submit{float:right; margin-right:4px}
+#seller-neg-form div.form-item label{clear:both; margin-bottom:15px}
+#seller-neg-form div.form-radios{height:30px}
+#seller-neg-form label{font-weight:500 !important}
+#seller-neg-form div#edit-field-chat-0-value-wrapper{clear:both; margin-top:7px}
+#seller-neg-form input#edit-submit{background:url(../images/btn_review_offer.png) no-repeat 0 0; height:37px; width:148px; float:right; text-indent:-9999px; border:none; cursor:pointer}
+#seller-neg-form input#edit-submit:hover{background-position: 0 -48px}
 #seller-neg-form .attachments{clear:both}
 #offer_top{height:140px; margin-bottom:20px; border-bottom:1px solid #CCC}
 #content-area a.offer-button{background:url(../images/btn_make_offer.png) no-repeat; width:37px; height:185px}
@@ -1125,9 +1126,10 @@ table.views-table.cols-2{margin:0; padding-top:0}
 .views_slideshow_singleframe_previous{background:transparent url("../images/arrow-gray-left.png") top left no-repeat; text-indent:-5000px; border:1px solid red}
 .views_slideshow_singleframe_controls .views_slideshow_controls{border:1px solid red}
 /*ipopup*/
-#ipopwrap{font-size: 13px; position: relative}
+#ipopwrap{font-size: 13px; position: relative; min-height: 125px}
 #ipopfaq{position: absolute; top:0; right:20px}
 #ipopwrap p{padding:21px 40px 0 152px}
 #ipopwrap p.inner{padding:0px 40px 0 152px}
 #ipopwrap ul{padding:1px 15px 10px 166px}
-#ipopup{float:left; padding-left: 10px}
+#ipopup{float:left; padding:0 0 10px 10px}
+

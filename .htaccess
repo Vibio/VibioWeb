@@ -105,17 +105,51 @@ DirectoryIndex index.php
   # VirtualDocumentRoot and the rewrite rules are not working properly.
   # For example if your site is at http://example.com/drupal uncomment and
   # modify the following line:
-  # RewriteBase /drupal
+  #RewriteBase /vibio
+
   #
   # If your site is running in a VirtualDocumentRoot at http://example.com/,
   # uncomment the following line:
-  # RewriteBase /
+ #RewriteBase /vibio
 
   # Rewrite URLs of the form 'x' to the form 'index.php?q=x'.
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_URI} !=/favicon.ico
-  RewriteRule ^(.*)$ index.php?q=$1 [L,QSA]
+#  RewriteCond %{REQUEST_FILENAME} !-f
+#  RewriteCond %{REQUEST_FILENAME} !-d
+#  RewriteCond %{REQUEST_URI} !=/favicon.ico
+#  RewriteRule ^(.*)$ /~cataldo/VibioWeb/index.php?q=$1 [L,QSA]
+
+# semi-working
+#  RewriteCond %{HTTP_HOST} ^localhost:8888$
+#  RewriteCond %{REQUEST_URI} !^/vibio/
+#  RewriteCond %{REQUEST_FILENAME} !-f
+#  RewriteCond %{REQUEST_FILENAME} !-d
+#  RewriteRule ^(.*)$ /vibio/$1
+##
+#  RewriteCond %{HTTP_HOST} ^localhost [NC]
+#  RewriteRule ^$ index.php [L]
+
+
+#  Options -Indexes
+#  RewriteEngine on
+#  Options +FollowSymLinks
+#
+#  RewriteCond %{HTTP_HOST} ^localhost:8888$
+#  RewriteCond %{REQUEST_URI} !^/vibio/
+#  RewriteCond %{REQUEST_FILENAME} !-f
+#  RewriteCond %{REQUEST_FILENAME} !-d
+#  RewriteRule ^(.*)$ /vibioA/$1
+#
+#  RewriteCond %{HTTP_HOST} ^localhost:8888 [NC]
+#	# seems to proces twice, or none
+#  RewriteRule ^$ /index.php [L]
+
+   RewriteEngine on
+   #RewriteBase /vibio
+   RewriteCond %{REQUEST_FILENAME} !-f
+   RewriteCond %{REQUEST_FILENAME} !-d
+   RewriteRule ^(.*)$ index.php?q=$1 [L,QSA]
+
 </IfModule>
+
 
 # $Id: .htaccess,v 1.90.2.5 2010/02/02 07:25:22 dries Exp $

@@ -7,5 +7,7 @@ WELCOME_TO_MESH
 WELCOME_TO_*
 modules/memcache
 modules/memcache/*
+sites/default/files
+.htaccess
 robots.txt
 *~

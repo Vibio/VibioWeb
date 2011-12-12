@@ -117,6 +117,11 @@ function sameusername_validate_username($edit)
 
 function sameusername_validate_user_pass_reset($form, &$state)
 {
+	# stephen: strip spaces around email entry, rather than invalidate?
+	# is this a good space? $state['values']['name'] -> because the name
+	# is really the email, right?
+  # we were getting errors when people copy-and-pasted (I think)
+  $state['values']['name'] = trim($state['values']['name']);
 	if (!valid_email_address($state['values']['name']))
 	{
 		form_set_error("name", t("Invalid E-mail address."));

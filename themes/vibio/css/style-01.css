@@ -93,43 +93,30 @@ div.congrats-popup{padding:0 50px}
 .profile_progress{float:left; margin-right:5px}
 /*Pages*/
 body.not-front, body.front{  background:url('../images/bgtile.jpg') repeat scroll 0 0;  margin:0;  padding:0}
-
 #page-wrapper{ padding:10px}
-
 #page_title{ color:#556270}
 #skip-link a, 
 #skip-link a:visited{ position:absolute;  display:block;  left:0;  top:-500px;  width:1px;  height:1px;  overflow:hidden;  text-align:center;  background-color:#666;  color:#fff}
-
 #skip-link a:hover, 
 #skip-link a:active, 
 #skip-link a:focus{ position:static;  width:100%;  height:auto;  padding:2px 0 3px 0}
-
 /*
  * Header
  */
 #header_quick_actions{  width:625px;   height:41px;   float:right;   position:relative;   font-size:12px}
 #header_quick_actions a:hover{color:#00AEF0}
 #logo{  float:left;   margin:0;   padding:0}
-
 #logo img{  vertical-align:bottom}
-
 #name-and-slogan{  float:left}
-
 h1#site-name, 
 div#site-name{  margin:0;   font-size:2em;   line-height:1.3em}
-
 #site-name a:link, 
 #site-name a:visited{  color:#000;   text-decoration:none}
-
 #site-name a:hover, 
 #site-name a:focus{  text-decoration:underline}
-
 .slogan{  background:transparent url(../vibio-tagline.png) no-repeat;   top:33px;   position:relative;   left:130px;   text-indent:-4999px;   width:200px;   height:20px}
-
 p.section_title{background:url("../images/long_border.png") no-repeat scroll 0 30px transparent; height:43px; margin:13px 0 0; padding:0}
-
 h1#page_title, h1#box_page_title, h1#collection-title, h1.page-title-sub{background:url("../images/long_border.png") no-repeat scroll 0 32px transparent; height:43px; margin:3px 0 5px; padding:0}
-
 .section_title{font-size:18px; color:#556270; font-weight:500}
 .section-intro{position: relative}
 .section_sub_title{position: absolute; top: 9px; left: 180px}
@@ -144,6 +131,8 @@ h3.title /* Comment title */{ margin:0}
 tr.even /* Some tables have rows marked even or odd. */{ background:none; /* Drupal core uses a #eee background */}
 tr.odd{ background:none; /* Drupal core uses a #eee background */}
 #profile_tabs{margin-top: 10px}
+#profile_tabs ul.primary {line-height: 24px}
+div#name_and_friend h5{line-height: 32px}
 .help /* Help text on a page */{ margin:1em 0}
 .more-help-link /* Link to more help */{ font-size:0.85em;  text-align:right}
 ul.links /* List of links */{ margin:1em 0}
@@ -321,7 +310,7 @@ div#edit-field-offer-expires-0-value-datepicker-popup-0-wrapper .description, di
 #seller-neg-form .attachments{clear:both}
 #offer_top{height:140px; margin-bottom:20px; border-bottom:1px solid #CCC}
 #content-area a.offer-button{background:url(../images/btn_make_offer.png) no-repeat; width:37px; height:185px}
-#content-area div.collection_list_item_summary a.offer-button{display:block; text-indent:-9999px; background:url(../images/btn_make_offer_1.png) no-repeat 0 0; width:108px; height:28px; position:absolute; right:10px; bottom:12px}
+#content-area div.collection_list_item_summary a.offer-button{display:block; text-indent:-9999px; background:url(../images/btn_make_offer_1.png) no-repeat 0 0; width:108px; height:28px; position: absolute; top:-12px; right: 10px}
 #content-area div.collection_list_item_summary a.offer-button:hover{background-position:0 -42px}
 /*Node*/
 .node-unpublished div.unpublished, 
@@ -381,7 +370,10 @@ div.messages ul{margin:0; padding:0}
 div.messages ul li{list-style-type:none}
 /*Tooltip Not For Sale*/
 .not_for_sale{position:relative}
-.not-sale-popup{background:url(../images/white.png) no-repeat; position:absolute; top:-104px; height:70px; font-size:15px; left:-33px; padding:33px 19px 10px; width:173px; height:109px}
+.not-sale-popup, .make-offer-popup{background:url(../images/white.png) no-repeat;color:#556270;  height:70px; font-size:15px; padding:33px 19px 10px; width:173px;z-index: 500; text-indent:0}
+.not-sale-popup{position:absolute; top:-106px; left:10px}
+#offer-buttons{position: absolute; right: -5px;height: 28px; width: 108px; bottom: 0px}
+.make-offer-popup{position:absolute; top:-109px; left:-6px}
 /*layout-fixed*/
 #page-wrapper, 
 .region-page-closure{ margin-left:auto;  margin-right:auto;  width:960px}
@@ -705,7 +697,7 @@ tr.row-last .collection-preview-boxshadow{border:none}
 .collection_list_item_summary div.not_for_sale img{max-width:90px}
 .collection_list_item_summary div.not_for_sale{position:absolute; bottom:5px; right:0px}
 .back-collection{font-size:13px; font-weight:normal; color:#1691bd; padding-left:16px}
-#collection-title-img{position:absolute; top:25px; left:397px}
+#collection-title-img{position:absolute; top:20px; left:397px}
 .collection-user{font-weight:bold}
 .user-collection-preview h5, #collection_sidebar .collection_sidebar_collection h5{margin:0; font-size:13px}
 .user-collection-preview span{color:#404f5a; font-size:12px}

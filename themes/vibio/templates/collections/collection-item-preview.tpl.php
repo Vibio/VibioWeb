@@ -15,7 +15,7 @@ echo "<!-- sites/default/themes/vibio/templates/collections/collection-item-prev
 		</a>
 		<span class='item_updated'>$updated</span>
 		<span class='item_price'>{$item->offer2buy_price}</span>
-		$offer_button
+		<div id='offer-buttons'>$offer_button</div>
 		$share_links
 	</div>
 ";

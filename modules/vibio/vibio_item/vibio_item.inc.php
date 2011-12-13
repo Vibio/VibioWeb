@@ -330,14 +330,17 @@ function _vibio_item_get_image($nid)
  */
 function vibio_item_get_image($nid, $imagecachecode, $alt = null, $title = null, $attributes = null) { // for imagecache
 	$url = _vibio_item_get_image($nid); // could recode and clean this,
-//die($url);  eg themes/vibio/images/icons/default_item_large.png
+    //die($url);  eg themes/vibio/images/icons/default_item_large.png
 		// previous code takes what we want and runs file_create_url over it,
 		// then I undo that here sloppy fast works fine.
 		// Duplicate code with function file_uncreate_url
+
+		// this is semi-working: 
+		//   http://staging.vibio.com/sites/default/files/uploads/thunder2.jpg
 	$pattern = "/sites/";
 	$p = preg_split ( $pattern, $url, 2 );
 	if ($p[1] ) {
-		$path ="sites/"  . $p[1];
+		$path ="sites"  . $p[1];  // changed to remove slash 20111207
 	} else {   // new 20111118
 		$path = $url;
 	}

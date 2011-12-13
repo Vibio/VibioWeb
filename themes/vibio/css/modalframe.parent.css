@@ -3,6 +3,9 @@
 /**
  * jQuery UI Dialog classes.
  */
+div.ui-dialog{
+	top: 100px;
+}
 .modalframe {
   color: #000000;
   background-color: #ffffff;

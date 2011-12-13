@@ -9,4 +9,5 @@ modules/memcache
 modules/memcache/*
 sites/default/files
 .htaccess
+nbproject
 robots.txt

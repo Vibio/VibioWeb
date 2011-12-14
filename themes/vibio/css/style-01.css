@@ -1126,7 +1126,11 @@ table.views-table.cols-2{margin:0; padding-top:0}
 #ipopwrap ul{padding:1px 15px 10px 166px}
 #ipopup{float:left; padding:0 0 10px 10px}
 /*Invite Module*/
-#invite-box{background: #c2e4f0; width: 713px; height: 328px; padding: 10px 8px}
-#invite-header{background:#c2e4f0;padding:17px 20px; border-bottom: 1px solid #9db8c4}
-#invite-box ul{list-style: none}
-#invite-box li{float: left}
+#invite-box{background:url(../images/invite_bgd.png) no-repeat; height: 329px; margin-top: 10px}
+#invite-header{padding:22px; margin-bottom: 8px}
+#invite-box ul{list-style: none; margin: 0; padding: 0}
+#invite-box li{float: left; margin: 0 8px}
+#invite-box li a{display: block; width: 227px; height: 232px; background: url(../images/invite_active.png) no-repeat; text-indent: -9999px}
+#invite-box a.invite-fb:hover,#invite-box a.invite-tw:hover,#invite-box a.invite-em:hover{background: url(../images/invite_hover.png) no-repeat}
+#invite-box a.invite-tw,#invite-box a.invite-tw:hover{background-position: -243px 0}
+#invite-box a.invite-em,#invite-box a.invite-em:hover{background-position: -487px 0}

@@ -6,13 +6,12 @@
  * $email_url
  */
 ?>
-
+<div id="invite-box">
 <div id="invite-header">
 	Send an invitation to your friends to connect with you on Vibio!
 	<br />
 	Use Facebook, Twitter, and email to expand your circle.
 </div>
-<div id="invite-box">
 	<ul>
 		<li>
 			<a href="<?php print $fb_link;?>" id="fb-request" class="invite-fb">Send an invitation through your Facebook account</a>

@@ -102,7 +102,7 @@ $(document).ready(function()
 			}
 			else
 			{
-				FB.login(fb_callback, { perms: fb_settings.perms });
+				FB.login(fb_callback, { scope: fb_settings.perms });
 			}
 		});
 		
@@ -112,7 +112,7 @@ $(document).ready(function()
 	$(".fb_link_account").live("click", function()
 	{
 		var callback = $(this).hasClass("fb_link_account_ajax") ? "link_ajax" : "link";
-		FB.login(fb_login_callbacks[callback], { perms: fb_settings.perms });
+		FB.login(fb_login_callbacks[callback], { scope: fb_settings.perms });
 		return false;
 	});
 	

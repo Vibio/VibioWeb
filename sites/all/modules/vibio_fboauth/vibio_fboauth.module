@@ -1,0 +1,64 @@
+<?php
+
+/*
+ * This module copies some needed code from Nelson's Facebook module to keep
+ * the old links available while using fboauth as the authentication module.
+ * @todo: make fboauth a dependency
+ * @todo: add the splash page top block (4?) here
+ * @todo: add the facebook button for user login page block (12?) here
+ */
+
+/**
+ * Defines theme function for the fb login block that goes below the
+ * normal vibio sign in.
+ *
+ * @todo: rename to reflect the fboauth dependency, move the template file
+ * into the module?
+ * 
+ * @param <type> $existing
+ * @param <type> $type
+ * @param <type> $theme
+ * @param <type> $path
+ * @return <type>
+ */
+function vibio_fboauth_theme(&$existing, $type, $theme, $path)
+{
+	return array(
+		"fb_login_block"	=> array(
+			"arguments"	=> array(),
+			"template"	=> "templates/facebook/login-block",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+  );
+}
+
+/**
+ * Prints out the content for the fb login block
+ * @param <type> $op
+ * @param <type> $delta
+ * @param <type> $edit
+ * @return <type>
+ */
+function vibio_fboauth_block($op="list", $delta=0, $edit=array())
+{
+	switch ($op)
+	{
+		case "list":
+			return array(
+				"fb_login"			=> array(
+					"info"	=> t("Facebook Login"),
+				),
+			);
+		case "view":
+			switch ($delta)
+			{
+				case "fb_login":
+					return array(
+						"subject"	=> "",
+						"content"	=> theme("fb_login_block"),
+					);
+			}
+	}
+}
+
+

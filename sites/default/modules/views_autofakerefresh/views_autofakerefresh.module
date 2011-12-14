@@ -60,7 +60,7 @@ function _next_offset () {
 	//  we get empty text ) ... changed, start at 20, go down, then
 	//  loop to 60.
 	if ( $offset < 0 ) {
-		$offset = -60;
+		$offset = 60;
 	}
 	return $offset - 1;
 }

@@ -7,25 +7,21 @@
  */
 ?>
 
-<ul>
-  <li>
-    <a href="<?php print $fb_link; ?>" id="fb-request">
-      <img src="sites/all/themes/images/fb-invite.jpg" />
-    </a>
-  </li>
-  <li>
-    <a href="<?php print $twitter_link; ?>">
-      <img src="sites/all/themes/images/twitter-invite.jpg" />
-    </a>
-  </li>
-  <li>
-    <a href="<?php print $email_link; ?>">
-      <img src="sites/all/themes/images/email-invite.jpg" />
-    </a>
-  </li>
-</ul>
-<p>cheese</p>
-
-
-
-
+<div id="invite-header">
+	Send an invitation to your friends to connect with you on Vibio!
+	<br />
+	Use Facebook, Twitter, and email to expand your circle.
+</div>
+<div id="invite-box">
+	<ul>
+		<li>
+			<a href="<?php print $fb_link;?>" id="fb-request" class="invite-fb">Send an invitation through your Facebook account</a>
+		</li>
+		<li>
+			<a href="<?php print $twitter_link;?>" class="invite-tw">Send an invitation through your Twitter account</a>
+		</li>
+		<li>
+			<a href="<?php print $email_link;?>" class="invite-em">Send an invitation through your Email account</a>
+		</li>
+	</ul>
+</div>

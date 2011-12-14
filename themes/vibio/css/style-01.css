@@ -489,7 +489,7 @@ img#searchtype_vibio_item, img#searchtype_user{margin-left:10px}
 img#searchtype_vibio_item{margin-top:10px}
 img#searchtype_user{margin-top:10px}
 button.add_connection{margin-top: 10px}
-a.add_friend, button.add_connection{background:url(../images/add_friend.png) no-repeat 0px 0px; width:111px; height:28px; display:block; border:none; text-indent:-9999px}
+a.add_friend, button.add_connection{background:url(../images/btn_add_contact.png) no-repeat 0px 0px; width:111px; height:28px; display:block; border:none; text-indent:-9999px}
 a.add_friend:hover, button.add_connection:hover{background-position:-0px -38px}
 /*Add Product form*/
 #edit-title, #edit-body, #edit-collection-info-cid{width:460px}

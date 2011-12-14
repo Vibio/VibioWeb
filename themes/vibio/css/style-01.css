@@ -360,11 +360,11 @@ div.messages div#close-message{background:url(../images/btn_close.png) no-repeat
 div.notice div#close-message{background-position:-40px 0}
 div.error div#close-message{background-position:-80px 0}
 div.warning div#close-message{background-position:-120px 0}
-div.messages, div.status, div.warning, div.error, div.notice{position:absolute; min-height:44px; margin:0; padding:15px 5px 25px 78px;
+div.messages, div.status, div.warning, div.error, div.notice{position:absolute; min-height:44px; margin:0; padding:20px 22px 20px 78px;
 background-image:url(../images/message_icons.png); background-repeat:no-repeat; box-shadow:0 2px 10px 0px rgba(0,0,0,.5);
  -moz-box-shadow:0 2px 10px 0px rgba(0,0,0,.5); -webkit-box-shadow:0 2px 10px 0 rgba(0,0,0,.5); top:29px; right:124px; width:417px; z-index:1000}
 div.status{background-color:#CCECFF; border:2px solid #7AC8FF; background-position:0px 14px}
-div.notice{background-color:#EAF7DA; border:2px solid #BEE78D; background-position:0px -78px; padding:15px 5px 15px 78px}
+div.notice{background-color:#EAF7DA; border:2px solid #BEE78D; background-position:0px -78px;margin-top:20px}
 div.warning, tr.warning{color:#556720;background-color:#FFF7C2; border:2px solid #FFE180; background-position:0px -268px}
 div.error, tr.error{color:#556720;background-color:#FFD9DA; border:2px solid #FFABAD; background-position:4px -174px; top: -57px}
 div.messages ul{margin:0; padding:0}

@@ -66,7 +66,8 @@ function fb_user($op, &$edit, &$u, $category=null)
 			if ($edit['fb_id'])
 			{
 				module_load_include("inc", "fb");
-				fb_save_user($u, $edit['fb_id'], true);
+				fb_save_user($u, $edit['fb_id'], true); // true is $signup_save which
+						// is somehow related to is_signup
 				$edit['fb_id'] = null;
 			}
 			break;

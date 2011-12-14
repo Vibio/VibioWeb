@@ -102,7 +102,22 @@ $(document).ready(function()
 			}
 			else
 			{
-				FB.login(fb_callback, { perms: fb_settings.perms });
+
+/* first fix, creates new errors:
+	//http://developers.facebook.com/docs/reference/javascript/FB.login/
+				FB.login(fb_callback, { scope: fb_settings.perms });
+*/
+/* notes from web:
+    $url = $facebook->getLoginUrl(array(
+        'canvas' => 1,
+        'fbconnect' => 0
+    ));
+
+    echo "<script type='text/javascript'>top.location.href = '$url';</script>";
+
+				//FB.getLoginUrl();
+FB.Connect.requireSession();
+*/
 			}
 		});
 		
@@ -112,7 +127,7 @@ $(document).ready(function()
 	$(".fb_link_account").live("click", function()
 	{
 		var callback = $(this).hasClass("fb_link_account_ajax") ? "link_ajax" : "link";
-		FB.login(fb_login_callbacks[callback], { perms: fb_settings.perms });
+		FB.login(fb_login_callbacks[callback], { scope: fb_settings.perms });
 		return false;
 	});
 	

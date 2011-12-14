@@ -1,0 +1,4 @@
+; $Id$
+name = Vibio Invite
+description = Adds a block where users can invite friends from FB, Twitter, or Email.
+core = 6.x

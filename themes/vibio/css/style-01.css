@@ -93,43 +93,30 @@ div.congrats-popup{padding:0 50px}
 .profile_progress{float:left; margin-right:5px}
 /*Pages*/
 body.not-front, body.front{  background:url('../images/bgtile.jpg') repeat scroll 0 0;  margin:0;  padding:0}
-
 #page-wrapper{ padding:10px}
-
 #page_title{ color:#556270}
 #skip-link a, 
 #skip-link a:visited{ position:absolute;  display:block;  left:0;  top:-500px;  width:1px;  height:1px;  overflow:hidden;  text-align:center;  background-color:#666;  color:#fff}
-
 #skip-link a:hover, 
 #skip-link a:active, 
 #skip-link a:focus{ position:static;  width:100%;  height:auto;  padding:2px 0 3px 0}
-
 /*
  * Header
  */
 #header_quick_actions{  width:625px;   height:41px;   float:right;   position:relative;   font-size:12px}
 #header_quick_actions a:hover{color:#00AEF0}
 #logo{  float:left;   margin:0;   padding:0}
-
 #logo img{  vertical-align:bottom}
-
 #name-and-slogan{  float:left}
-
 h1#site-name, 
 div#site-name{  margin:0;   font-size:2em;   line-height:1.3em}
-
 #site-name a:link, 
 #site-name a:visited{  color:#000;   text-decoration:none}
-
 #site-name a:hover, 
 #site-name a:focus{  text-decoration:underline}
-
 .slogan{  background:transparent url(../vibio-tagline.png) no-repeat;   top:33px;   position:relative;   left:130px;   text-indent:-4999px;   width:200px;   height:20px}
-
 p.section_title{background:url("../images/long_border.png") no-repeat scroll 0 30px transparent; height:43px; margin:13px 0 0; padding:0}
-
 h1#page_title, h1#box_page_title, h1#collection-title, h1.page-title-sub{background:url("../images/long_border.png") no-repeat scroll 0 32px transparent; height:43px; margin:3px 0 5px; padding:0}
-
 .section_title{font-size:18px; color:#556270; font-weight:500}
 .section-intro{position: relative}
 .section_sub_title{position: absolute; top: 9px; left: 180px}
@@ -144,6 +131,8 @@ h3.title /* Comment title */{ margin:0}
 tr.even /* Some tables have rows marked even or odd. */{ background:none; /* Drupal core uses a #eee background */}
 tr.odd{ background:none; /* Drupal core uses a #eee background */}
 #profile_tabs{margin-top: 10px}
+#profile_tabs ul.primary {line-height: 24px}
+div#name_and_friend h5{line-height: 32px}
 .help /* Help text on a page */{ margin:1em 0}
 .more-help-link /* Link to more help */{ font-size:0.85em;  text-align:right}
 ul.links /* List of links */{ margin:1em 0}
@@ -199,7 +188,8 @@ ul.links li{ display:inline;  list-style-type:none;  padding:0}
 .rounded_left_side{  border-top-left-radius:4px;   border-bottom-left-radius:4px;   -moz-border-radius-topleft:4px;   -moz-border-radius-bottomleft:4px;   margin:0;   padding:0 0 0 5px}
 
 #block-fb-fb_api_init, #block-fb-fb_dialogs{  padding:0}
-
+#block-vibio_fboauth-fb_login{text-align: center}
+#block-vibio_fboauth-fb_login div.fb_login{margin-top: 10px}
 .image_reflection{  -webkit-box-reflect:below 0 -webkit-gradient(linear,0 0,0 100%,color-stop(.75,transparent),to(white))}
 #content.reflection{  -webkit-box-reflect:below 5px -webkit-gradient(linear,0 0,0 100%,color-stop(.85,transparent),to(white))}
 #content-area .rounded_content{  background:transparent url(../images/bg-content-tile.jpg); min-height:749px; padding:6px}
@@ -321,7 +311,7 @@ div#edit-field-offer-expires-0-value-datepicker-popup-0-wrapper .description, di
 #seller-neg-form .attachments{clear:both}
 #offer_top{height:140px; margin-bottom:20px; border-bottom:1px solid #CCC}
 #content-area a.offer-button{background:url(../images/btn_make_offer.png) no-repeat; width:37px; height:185px}
-#content-area div.collection_list_item_summary a.offer-button{display:block; text-indent:-9999px; background:url(../images/btn_make_offer_1.png) no-repeat 0 0; width:108px; height:28px; position:absolute; right:10px; bottom:12px}
+#content-area div.collection_list_item_summary a.offer-button{display:block; text-indent:-9999px; background:url(../images/btn_make_offer_1.png) no-repeat 0 0; width:108px; height:28px; position: absolute; top:-12px; right: 10px}
 #content-area div.collection_list_item_summary a.offer-button:hover{background-position:0 -42px}
 /*Node*/
 .node-unpublished div.unpublished, 
@@ -370,18 +360,21 @@ div.messages div#close-message{background:url(../images/btn_close.png) no-repeat
 div.notice div#close-message{background-position:-40px 0}
 div.error div#close-message{background-position:-80px 0}
 div.warning div#close-message{background-position:-120px 0}
-div.messages, div.status, div.warning, div.error, div.notice{position:absolute; min-height:44px; margin:0; padding:15px 5px 15px 78px;
+div.messages, div.status, div.warning, div.error, div.notice{position:absolute; min-height:44px; margin:0; padding:20px 22px 20px 78px;
 background-image:url(../images/message_icons.png); background-repeat:no-repeat; box-shadow:0 2px 10px 0px rgba(0,0,0,.5);
  -moz-box-shadow:0 2px 10px 0px rgba(0,0,0,.5); -webkit-box-shadow:0 2px 10px 0 rgba(0,0,0,.5); top:29px; right:124px; width:417px; z-index:1000}
 div.status{background-color:#CCECFF; border:2px solid #7AC8FF; background-position:0px 14px}
-div.notice{background-color:#EAF7DA; border:2px solid #BEE78D; background-position:0px -78px; padding:15px 5px 15px 78px}
+div.notice{background-color:#EAF7DA; border:2px solid #BEE78D; background-position:0px -78px;margin-top:20px}
 div.warning, tr.warning{color:#556720;background-color:#FFF7C2; border:2px solid #FFE180; background-position:0px -268px}
 div.error, tr.error{color:#556720;background-color:#FFD9DA; border:2px solid #FFABAD; background-position:4px -174px; top: -57px}
 div.messages ul{margin:0; padding:0}
 div.messages ul li{list-style-type:none}
 /*Tooltip Not For Sale*/
 .not_for_sale{position:relative}
-.not-sale-popup{background:url(../images/white.png) no-repeat; position:absolute; top:-104px; height:70px; font-size:15px; left:-33px; padding:33px 19px 10px; width:173px; height:109px}
+.not-sale-popup, .make-offer-popup{background:url(../images/white.png) no-repeat;color:#556270;  height:70px; font-size:15px; padding:33px 19px 10px; width:173px;z-index: 500; text-indent:0}
+.not-sale-popup{position:absolute; top:-106px; left:10px}
+#offer-buttons{position: absolute; right: -5px;height: 28px; width: 108px; bottom: 0px}
+.make-offer-popup{position:absolute; top:-109px; left:-6px}
 /*layout-fixed*/
 #page-wrapper, 
 .region-page-closure{ margin-left:auto;  margin-right:auto;  width:960px}
@@ -496,8 +489,8 @@ img#searchtype_vibio_item, img#searchtype_user{margin-left:10px}
 img#searchtype_vibio_item{margin-top:10px}
 img#searchtype_user{margin-top:10px}
 button.add_connection{margin-top: 10px}
-a.add_friend, button.add_connection{background:url(../images/add_friend.png) no-repeat 0px 0px; width:111px; height:28px; display:block; border:none; text-indent:-9999px}
-a.add_friend:hover, button.add_connection:hover{background-position:-0px -38px}
+a.add_friend, button.add_connection,div.profile_notifications_actions table tbody tr td a.approve button{background:url(../images/btn_add_contact.png) no-repeat 0px 0px; width:111px; height:28px; display:block; border:none; text-indent:-9999px}
+a.add_friend:hover, button.add_connection:hover,div.profile_notifications_actions table tbody tr td a.approve button:hover{background-position:-0px -38px}
 /*Add Product form*/
 #edit-title, #edit-body, #edit-collection-info-cid{width:460px}
 #add-product{margin-top:18px}
@@ -705,7 +698,7 @@ tr.row-last .collection-preview-boxshadow{border:none}
 .collection_list_item_summary div.not_for_sale img{max-width:90px}
 .collection_list_item_summary div.not_for_sale{position:absolute; bottom:5px; right:0px}
 .back-collection{font-size:13px; font-weight:normal; color:#1691bd; padding-left:16px}
-#collection-title-img{position:absolute; top:25px; left:397px}
+#collection-title-img{position:absolute; top:20px; left:397px}
 .collection-user{font-weight:bold}
 .user-collection-preview h5, #collection_sidebar .collection_sidebar_collection h5{margin:0; font-size:13px}
 .user-collection-preview span{color:#404f5a; font-size:12px}
@@ -1055,7 +1048,7 @@ ul.jquery_dropdown_list li a:hover{  background:url(../images/jquery-dropdown-li
 .uri_edit_elaboartion{color:#9AA753}
 .relationship_extra{font-size:11px}
 /*relationship buttons*/
-#edit-uri-request-relationship-cancel, #edit-uri-request-relationship-confirm, div.profile_notifications_actions table tbody tr td a.approve button, div.profile_notifications_actions table tbody tr td a.disapprove button, input#edit-uri-remove-relationship-confirm, input#edit-uri-remove-relationship-cancel, #edit-uri-pending-request-confirm, #edit-uri-pending-request-cancel{background:url(../images/btn_relationships.png) no-repeat; height:27px; width:79px; border:0; text-indent:-9999px; cursor:pointer; margin-top:10px}
+#edit-uri-request-relationship-cancel, #edit-uri-request-relationship-confirm, div.profile_notifications_actions table tbody tr td a.disapprove button, input#edit-uri-remove-relationship-confirm, input#edit-uri-remove-relationship-cancel, #edit-uri-pending-request-confirm, #edit-uri-pending-request-cancel{background:url(../images/btn_relationships.png) no-repeat; height:27px; width:79px; border:0; text-indent:-9999px; cursor:pointer; margin-top:10px}
 /*Send Cancel buttons*/
 #edit-uri-request-relationship-confirm{background-position:0 -92px}
 #edit-uri-request-relationship-confirm:hover, #edit-uri-pending-request-confirm:hover{background-position:0 -122px}
@@ -1069,8 +1062,8 @@ input#edit-uri-remove-relationship-cancel:hover, #edit-uri-pending-request-cance
 /*Add Friend Ignore buttons*/
 div.profile_notifications_actions table tbody tr td a.disapprove button{background-position:1px 0}
 div.profile_notifications_actions table tbody tr td a.disapprove button:hover{background-position:1px -30px}
-div.profile_notifications_actions table tbody tr td a.approve button{background-position:-86px 0; width:111px}
-div.profile_notifications_actions table tbody tr td a.approve button:hover{background-position:-86px -30px}
+div.profile_notifications_actions table tbody tr td a.approve button{background-position:0px 1px; width:111px; margin-top: 10px}
+div.profile_notifications_actions table tbody tr td a.approve button:hover{background-position:0px -37px}
 /*Save and Delete buttons*/
 form#collection-edit input#edit-submit, input#edit-delete, ul.message-actions li a{background:url(../images/btn_save_delete.png) no-repeat; border:0; text-indent:-9999px; cursor:pointer}
 form#collection-edit input#edit-submit{background-position: 0px 0px; height:27px; width:77px; float: right; margin-right: 10px}
@@ -1132,4 +1125,12 @@ table.views-table.cols-2{margin:0; padding-top:0}
 #ipopwrap p.inner{padding:0px 40px 0 152px}
 #ipopwrap ul{padding:1px 15px 10px 166px}
 #ipopup{float:left; padding:0 0 10px 10px}
-
+/*Invite Module*/
+#invite-box{background:url(../images/invite_bgd.png) no-repeat; height: 329px; margin-top: 10px}
+#invite-header{padding:22px; margin-bottom: 8px}
+#invite-box ul{list-style: none; margin: 0; padding: 0}
+#invite-box li{float: left; margin: 0 8px}
+#invite-box li a{display: block; width: 227px; height: 232px; background: url(../images/invite_active.png) no-repeat; text-indent: -9999px}
+#invite-box a.invite-fb:hover,#invite-box a.invite-tw:hover,#invite-box a.invite-em:hover{background: url(../images/invite_hover.png) no-repeat}
+#invite-box a.invite-tw,#invite-box a.invite-tw:hover{background-position: -243px 0}
+#invite-box a.invite-em,#invite-box a.invite-em:hover{background-position: -487px 0}

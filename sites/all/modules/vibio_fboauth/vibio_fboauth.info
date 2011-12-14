@@ -1,0 +1,4 @@
+; $Id$
+name = Vibio Fboauth
+description = Provides some glue code to make use of Fboauth as the authentication agent
+core = 6.x

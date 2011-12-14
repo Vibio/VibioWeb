@@ -72,27 +72,40 @@ $(document).ready(function() {
 	$('div#close-message').click(function() {
 		$('div.messages').fadeOut();
 	});
+	//User dropdown menu
+	$('#profile-menu-wrapper').hover(function() {
+		$('#profile-submenu').fadeIn();
+		$('.profile-arrow').css('background-position', '-50px -38px');
+		$('.profile-icon').css('background-position', '-30px -36px');
+		$('.profile-username').css('color', '#00AEF0');
+	}, function() {
+		$('#profile-submenu').fadeOut();
+		$('.profile-arrow').css('background-position', '-50px -14px');
+		$('.profile-icon').css('background-position', '-30px -9px');
+		$('.profile-username').css('color', '#FFF');
+	});
+	$('a#how-works').hover(function() {
+		$('#works-icon').css('background-position', '0px -31px');
+	}, function() {
+		$('#works-icon').css('background-position', '0px 0px');
+	});
 	/*Not for Sale Popup*/
-	$('div.product_extra_data div.not_for_sale').hover(function() {
+	$('#offer-buttons .not_for_sale, .action .not_for_sale').hover(function() {
 		$(this).prepend('<div class="not-sale-popup">Many items on Vibio are not for sale. <a href="/faq#why">Find out why</a>.</div>');
 	}, function() {
 		$('.not-sale-popup').remove();
 	});
-	//User dropdown menu
-	$('#profile-menu-wrapper').hover(function() {
-		$('#profile-submenu').fadeIn();
-		$('.profile-arrow').css('background-position','-50px -38px');
-		$('.profile-icon').css('background-position','-30px -36px');
-		$('.profile-username').css('color','#00AEF0');
+	$('#offer-buttons a.offer-button').hover(function() {
+		$(this).prepend('<div class="make-offer-popup">Many items on Vibio are not for sale. <a href="/faq#buy">Find out why</a>.</div>');
 	}, function() {
-		$('#profile-submenu').fadeOut();
-		$('.profile-arrow').css('background-position','-50px -14px');
-		$('.profile-icon').css('background-position','-30px -9px');
-		$('.profile-username').css('color','#FFF');
+		$('.make-offer-popup').remove();
 	});
-	$('a#how-works').hover(function() {
-		$('#works-icon').css('background-position','0px -31px');
+	$('.action a').hover(function() {
+		$(this).prepend('<div class="make-offer-popup">Many items on Vibio are not for sale. <a href="/faq#buy">Find out why</a>.</div>');
 	}, function() {
-		$('#works-icon').css('background-position','0px 0px');
+		$('.make-offer-popup').remove();
 	});
+	//$('#offer-buttons .not_for_sale').prepend('<div class="not-sale-popup">Many items on Vibio are not for sale. <a href="/faq#why">Find out why</a>.</div>');
+	//$('#offer-buttons a.offer-button').prepend('<div class="make-offer-popup">Many items on Vibio are not for sale. <a href="/faq#buy">Find out why</a>.</div>');
+
 });

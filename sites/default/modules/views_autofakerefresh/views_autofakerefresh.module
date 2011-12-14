@@ -37,7 +37,7 @@ function views_autofakerefresh_views_pre_view(&$view, &$display_id, &$args) {
 }
 
 /* Get offset from url, and add 1. */
-function _next_offset () {
+function _next_offset_orig () {
 	$offset = 0;
 	if ( is_numeric($_GET['offset']) ) {
 		$offset = $_GET['offset'];
@@ -48,4 +48,19 @@ function _next_offset () {
 		$offset = 0;
 	}
 	return $offset + 1;
+}
+
+/* Get offset from url, and add 1. */
+function _next_offset () {
+	$offset = 20;
+	if ( is_numeric($_GET['offset']) ) {
+		$offset = $_GET['offset'];
+	}
+	// Let's do most recent 120?  (Don't set too high or 
+	//  we get empty text ) ... changed, start at 20, go down, then
+	//  loop to 60.
+	if ( $offset < 0 ) {
+		$offset = 60;
+	}
+	return $offset - 1;
 }

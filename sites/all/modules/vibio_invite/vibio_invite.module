@@ -1,0 +1,128 @@
+<?php
+
+/**
+ * Menu link to an invite page
+ */
+function vibio_invite_menu(){
+  $items['vibio_invite'] = array(
+    'title' => 'Vibio Invite',
+    'page callback' => 'vibio_invite_display_page',
+    'description' => 'Invite friends to Vibio',
+    'access callback' => 'user_access',
+    'access arguments' => array('administer site configuration'),
+  );
+
+  $items['admin/vibio_invite'] = array(
+    'title' => 'Vibio Invite Settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('vibio_invite_admin'),
+    'description' => 'Settings for Vibio cross-platform invitations',
+    'access callback' => 'user_access',
+    'access arguments' => array('administer site configuration'),
+  );
+  return $items;
+}
+
+function vibio_invite_admin($form, &$form_state){
+  global $user;
+  $username = $user->name;
+  $form['twitter_message'] = array(
+      '#type' => 'textarea',
+      '#title' => 'Twitter Message',
+      '#description' => 'This is the message that will be posted to twitter along with
+        an invitation URL to Vibio. Remember that the invitation URL will be about
+        25 characters, so keep your message short.',
+      '#default_value' => "Checkout " . $username . "'s collections on Vibio and start your own.",
+  );
+
+  $form['invite_link'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Invitation Link',
+      '#description' => 'The page that invited users will be sent to, relative to webroot',
+  );
+
+  return $form;
+
+  //@todo add an ajax callback to have a dynamic facebook message for the request.
+}
+
+/**
+ * Sets the admin variables.
+ * 
+ * @param <type> $form
+ * @param <type> $form_state
+ */
+function vibio_invite_admin_submit($form, &$form_state){
+  variable_set('vibio_invite_twitter_message', $form_state['values']['twitter_message']);
+  variable_set('vibio_invite_link', $form_state['values']['invite_link']);
+}
+
+/**
+ * Block definition, implements hook_block()
+ *
+ * @param <type> $op
+ * @param <type> $delta
+ * @param <type> $edit
+ * @return string
+ */
+function vibio_invite_block($op = 'list', $delta = 'vibio_invite', $edit = array()) {
+  if ($op == 'list') {
+    $block['vibio_invite']['info'] = t('Vibio Invites');
+    $block['vibio_invite']['visibility'] = 0;
+    $block['vibio_invite']['pages'] = 'vibio_invite';
+    return $block;
+  }
+  elseif ($op == 'view' && $delta == 'vibio_invite') {
+    //Add the JS for the FB request dialog and possibly for twitter
+    drupal_add_js(drupal_get_path('module', 'vibio_invite') . '/js/vibio_invite.js');
+    $block['subject'] = t('Invite Friends');
+    $block['content'] = theme('vibio_invite_display');
+    return $block;
+  }
+}
+
+/**
+ * Implementes hook_theme()
+ *
+ * @return Array
+ */
+function vibio_invite_theme(){
+  return array(
+      'vibio_invite_display' => array(
+          'template' => 'templates/vibio-invite-block-content',
+          'path' => drupal_get_path('module', 'vibio_invite'),
+      )
+  );  
+}
+
+/**
+ * Generates the link variables for the invite block template
+ *
+ * @return string
+ */
+function vibio_invite_preprocess_vibio_invite_display(&$vars){
+  $url = variable_get('vibio_invite_link');
+  //URL to send an invitation message via Twitter
+  if(module_exists('shorten')){
+    $twitter_url = shorten_url($url, 'TinyURL');
+  }else{
+    $twitter_url = $url;
+  }
+  $twitter_message = variable_get('vibio_invite_twitter_message');
+
+  $vars['twitter_url'] = 'http://twitter.com/home?status=' . $twitter_message . $twitter_url; //array('attributes' => array('target' => '_blank')));
+
+  //Facebook URL for request
+  //@TODO make sure that no JS users are sent to a page that warns them
+  $vars['fb_url'] = l('Facebook', '', array('attributes' => array('id' => 'fb-request')));
+
+  //URL to the current email invite page
+  $vars['email_url'] = url('contacts/invite');
+}
+
+function vibio_invite_display_page(){
+  return theme('vibio_invite_display');
+}
+
+
+?>

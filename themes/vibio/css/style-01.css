@@ -489,8 +489,8 @@ img#searchtype_vibio_item, img#searchtype_user{margin-left:10px}
 img#searchtype_vibio_item{margin-top:10px}
 img#searchtype_user{margin-top:10px}
 button.add_connection{margin-top: 10px}
-a.add_friend, button.add_connection{background:url(../images/btn_add_contact.png) no-repeat 0px 0px; width:111px; height:28px; display:block; border:none; text-indent:-9999px}
-a.add_friend:hover, button.add_connection:hover{background-position:-0px -38px}
+a.add_friend, button.add_connection,div.profile_notifications_actions table tbody tr td a.approve button{background:url(../images/btn_add_contact.png) no-repeat 0px 0px; width:111px; height:28px; display:block; border:none; text-indent:-9999px}
+a.add_friend:hover, button.add_connection:hover,div.profile_notifications_actions table tbody tr td a.approve button:hover{background-position:-0px -38px}
 /*Add Product form*/
 #edit-title, #edit-body, #edit-collection-info-cid{width:460px}
 #add-product{margin-top:18px}
@@ -1048,7 +1048,7 @@ ul.jquery_dropdown_list li a:hover{  background:url(../images/jquery-dropdown-li
 .uri_edit_elaboartion{color:#9AA753}
 .relationship_extra{font-size:11px}
 /*relationship buttons*/
-#edit-uri-request-relationship-cancel, #edit-uri-request-relationship-confirm, div.profile_notifications_actions table tbody tr td a.approve button, div.profile_notifications_actions table tbody tr td a.disapprove button, input#edit-uri-remove-relationship-confirm, input#edit-uri-remove-relationship-cancel, #edit-uri-pending-request-confirm, #edit-uri-pending-request-cancel{background:url(../images/btn_relationships.png) no-repeat; height:27px; width:79px; border:0; text-indent:-9999px; cursor:pointer; margin-top:10px}
+#edit-uri-request-relationship-cancel, #edit-uri-request-relationship-confirm, div.profile_notifications_actions table tbody tr td a.disapprove button, input#edit-uri-remove-relationship-confirm, input#edit-uri-remove-relationship-cancel, #edit-uri-pending-request-confirm, #edit-uri-pending-request-cancel{background:url(../images/btn_relationships.png) no-repeat; height:27px; width:79px; border:0; text-indent:-9999px; cursor:pointer; margin-top:10px}
 /*Send Cancel buttons*/
 #edit-uri-request-relationship-confirm{background-position:0 -92px}
 #edit-uri-request-relationship-confirm:hover, #edit-uri-pending-request-confirm:hover{background-position:0 -122px}
@@ -1062,8 +1062,8 @@ input#edit-uri-remove-relationship-cancel:hover, #edit-uri-pending-request-cance
 /*Add Friend Ignore buttons*/
 div.profile_notifications_actions table tbody tr td a.disapprove button{background-position:1px 0}
 div.profile_notifications_actions table tbody tr td a.disapprove button:hover{background-position:1px -30px}
-div.profile_notifications_actions table tbody tr td a.approve button{background-position:-86px 0; width:111px}
-div.profile_notifications_actions table tbody tr td a.approve button:hover{background-position:-86px -30px}
+div.profile_notifications_actions table tbody tr td a.approve button{background-position:0px 1px; width:111px; margin-top: 10px}
+div.profile_notifications_actions table tbody tr td a.approve button:hover{background-position:0px -37px}
 /*Save and Delete buttons*/
 form#collection-edit input#edit-submit, input#edit-delete, ul.message-actions li a{background:url(../images/btn_save_delete.png) no-repeat; border:0; text-indent:-9999px; cursor:pointer}
 form#collection-edit input#edit-submit{background-position: 0px 0px; height:27px; width:77px; float: right; margin-right: 10px}

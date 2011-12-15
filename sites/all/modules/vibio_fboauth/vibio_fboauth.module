@@ -83,28 +83,30 @@ function vibio_fboauth_network_find_friends($uid, &$potentials, $existing, &$err
 
     $errors[] = $message . $link;
 		return false;
-	}
-  //If the user is connected to FB but doesn't have any friends...
-	elseif (!($friends = vibio_fboauth_fboauth_action_find_friends())){
-    //Themed link to initiate friend finding process
-    $find_friends_link = fboauth_action_display('vibio_fboauth_find_friends');
-    $token_replacement = array("!fb_refresh" => $find_friends_link);
-    //@todo: troubleshoot this case; not sure if this will happen with the new code
-		$errors[] = t("Your Facebook session has expired, please !fb_refresh to see which of your Facebook friends are using Vibio", $token_replacement);
-		return false;
-	}
-
-  //Friends data was generated in the conditional above
-  //@todo: consider refactoring; makes code more confusing
-  //Friends is an array of Vibio users who are potential friends
-	foreach ($friends as $friend){
-    //Create a $potential object to represent potential friends
-		$potential = new stdClass;
-		$potential->info = _network_get_userinfo($friend->uid);
-		$potential->src = "fb";
-		$potential->link = url('http://www.facebook.com/profile.php', array('query' => array('id' => $friend->fbid), 'external' => TRUE));
-    //Create an array of $potential friend objects keyed by vibio uid
-		$potentials[$friend_uid] = $potential;
+    //If the user is connected to FB...
+  }else{
+    //If no fb_friend info has been posted yet...
+    if(empty($_POST['fb_friends'])){
+      //Provide a themed link to initiate friend finding process
+      $find_friends_link = fboauth_action_display('vibio_fboauth_find_friends');
+      $token_replacement = array("!fb_refresh" => $find_friends_link);
+      //@todo: troubleshoot this case; not sure if this will happen with the new code
+      $errors[] = t("Your Facebook session has expired, please !fb_refresh to see which of your Facebook friends are using Vibio", $token_replacement);
+      return false; 
+    }else{
+      //The fboauth action has already run and we can get friends from it
+      $friends = $_POST['fb_friends'];
+      //Friends is an array of Vibio users who are potential friends
+      foreach ($friends as $friend){
+        //Create a $potential object to represent potential friends
+        $potential = new stdClass;
+        $potential->info = _network_get_userinfo($friend->uid);
+        $potential->src = "fb";
+        $potential->link = url('http://www.facebook.com/profile.php', array('query' => array('id' => $friend->fbid), 'external' => TRUE));
+        //Create an array of $potential friend objects keyed by vibio uid
+        $potentials[$friend_uid] = $potential;
+      }
+    }
 	}
 }
 
@@ -144,12 +146,12 @@ function vibio_fboauth_fboauth_actions(){
  * @global <type> $user
  * @return stdClass
  */
-function vibio_fboauth_fboauth_action_find_friends(){
+function vibio_fboauth_fboauth_action_find_friends($app_id, $access_token){
   global $user;
   module_load_include('inc', 'fboauth', 'includes/fboauth.fboauth');
   $vibio_friends = array();
   //Execute graph query to get friend fbids
-  $fb_friends = fboauth_graph_query('me', array('friends'));
+  $fb_friends = fboauth_graph_query('me/friends', $access_token);
   //@todo: Debugging, remove
   print_r($fb_friends);
   //See if the friends are on Vibio
@@ -164,5 +166,6 @@ function vibio_fboauth_fboauth_action_find_friends(){
     }
   }
   
-  return $vibio_friends;
+  $_POST['fb_friends'] = $vibio_friends;
+  return 'contacts/find-friends';
 }

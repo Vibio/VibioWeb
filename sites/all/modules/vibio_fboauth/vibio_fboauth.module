@@ -87,13 +87,14 @@ function vibio_fboauth_network_find_friends($uid, &$potentials, $existing, &$err
   }else{
     //If the user has no friends from FB on Vibio
     if($_SESSION['vibio_friends'] == 'none'){
-      $errors[] = t("We're sorry, it doesn't seem that any of your Facebook friends are on Vibio.");
+      //@todo: Add an invite link once the invitation system is done
+      $errors[] = t("We're sorry, it doesn't seem that any of your Facebook friends are on Vibio. Why not invite some?");
+      //Clear $_SESSION['vibio_friends'] so they can try later in their session if they want.
+      $_SESSION['vibio_friends'] = '';
       return false;
     }
     //If no fb_friend info has been added to the SESSION yet...
     elseif(empty($_SESSION['vibio_friends'])){
-      //@todo remove debuggin info
-      print_r($_SESSION['vibio_friends']);
       //Provide a themed link to initiate friend finding process
       $find_friends_link = fboauth_action_display('vibio_fboauth_find_friends');
       $token_replacement = array("!fb_refresh" => $find_friends_link);
@@ -103,8 +104,6 @@ function vibio_fboauth_network_find_friends($uid, &$potentials, $existing, &$err
     }else{
       //The fboauth action has already run and we can get friends from it
       $friends = $_SESSION['vibio_friends'];
-      //@todo remove debugging
-      print_r($friends);
       //Friends is an array of Vibio users who are potential friends
       foreach ($friends as $friend){
         //Create a $potential object to represent potential friends
@@ -177,9 +176,6 @@ function vibio_fboauth_fboauth_action_find_friends($app_id, $access_token){
       $vibio_friends[$uid] = $vibio_friend;
     }
   }
-  //@todo: Debugging, remove
-  //print_r($vibio_friends);
-  //exit();
   //If we don't find any friends from FB on Vibio...
   if(empty($vibio_friends)){
     $_SESSION['vibio_friends'] = 'none';

@@ -85,8 +85,15 @@ function vibio_fboauth_network_find_friends($uid, &$potentials, $existing, &$err
 		return false;
     //If the user is connected to FB...
   }else{
+    //If the user has no friends from FB on Vibio
+    if($_POST['vibio_friends'] == FALSE){
+      $errors[] = t("We're sorry, it doesn't seem that any of your Facebook friends are on Vibio.");
+      return false;
+    }
     //If no fb_friend info has been posted yet...
-    if(empty($_POST['vibio_friends'])){
+    elseif(empty($_POST['vibio_friends'])){
+      //@todo remove debuggin info
+      print_r($_POST['vibio_friends']);
       //Provide a themed link to initiate friend finding process
       $find_friends_link = fboauth_action_display('vibio_fboauth_find_friends');
       $token_replacement = array("!fb_refresh" => $find_friends_link);
@@ -96,6 +103,8 @@ function vibio_fboauth_network_find_friends($uid, &$potentials, $existing, &$err
     }else{
       //The fboauth action has already run and we can get friends from it
       $friends = $_POST['vibio_friends'];
+      //@todo remove debugging
+      print_r($friends);
       //Friends is an array of Vibio users who are potential friends
       foreach ($friends as $friend){
         //Create a $potential object to represent potential friends
@@ -153,7 +162,7 @@ function vibio_fboauth_fboauth_action_find_friends($app_id, $access_token){
   //Execute graph query to get friend fbids
   $fb_friends = fboauth_graph_query('me/friends', $access_token);
   //@todo: Debugging, remove
-  print_r($fb_friends);
+  dsm($fb_friends);
   //See if the friends are on Vibio
   foreach($fb_friends as $fbid){
     if($uid = fboauth_uid_load($fbid)){
@@ -165,8 +174,13 @@ function vibio_fboauth_fboauth_action_find_friends($app_id, $access_token){
       $vibio_friends[$uid] = $vibio_friend;
     }
   }
-  //Return the data to be used by the friend finder
-  $_POST['vibio_friends'] = $vibio_friends;
+  //If we don't find any friends from FB on Vibio...
+  if(empty($vibio_friends)){
+    $_POST['vibio_friends'] = FALSE;
+  }else{
+    //Return the data to be used by the friend finder
+    $_POST['vibio_friends'] = $vibio_friends;
+  }
   //Set the redirect destination
   $_REQUEST['destination'] = 'contacts/find-friends';
   return 'contacts/find-friends';

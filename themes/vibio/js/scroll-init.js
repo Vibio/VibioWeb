@@ -35,7 +35,7 @@ $(function() {
 				errorCallback : function() {
 					$('#infscr-loading').animate({
 						opacity : .8
-					}, 2000).fadeOut('normal');
+					}, 500).fadeOut('normal');
 					//fade out the error message after 2 seconds
 
 				}

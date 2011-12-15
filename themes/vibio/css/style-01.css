@@ -997,9 +997,12 @@ ul.secondary a:hover{  background:url(../images/tab-secondary.png) repeat-x left
 ul.secondary a.active, 
 ul.secondary a.active:hover{  border:1px solid #c0c0c0;   color:#000;   background:url(../images/tab-secondary.png) repeat-x left top}
 /*featured item page*/
+.infscr-pages{}
+.view.view-flag-featured .views-row-last{}
+.view.view-flag-featured .view-content{width: 725px;}
 .view.view-flag-featured{  width:740px;   position:relative}
-.views-fluidgrid-item .views-field-field-main-image-fid{  width:160px;   border:1px solid #DADADA;   margin:5px;   padding:0}
-.views-fluidgrid-item{  margin:0 5px 20px 0;   border:1px solid #DADADA;   background:#fff}
+.views-fluidgrid-item .views-field-field-main-image-fid{  width:160px;   border:1px solid #CCCCCC;   margin:5px;   padding:0}
+.views-fluidgrid-item{width:170px; float:left;  margin:0 5px 20px 0;   border:1px solid #CCCCCC;   background:#fff}
 .views-fluidgrid-item .views-field-title{  width:160px;   margin:8px 5px 16px 5px}
 .views-fluidgrid-item .field-content{  margin:0;   padding:0}
 .search-col{  float:left;   width:177px;   padding:0 0 0 5px;   top:0px}

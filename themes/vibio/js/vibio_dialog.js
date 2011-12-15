@@ -23,7 +23,6 @@ var vibio_dialog = {
 			draggable : false,
 			autoOpen : false,
 			width : 550,
-			zindex: 5000,
 			open : function() {
 				vibio_dialog.center();
 			}

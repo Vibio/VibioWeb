@@ -146,7 +146,7 @@ function vibio_fboauth_fboauth_actions(){
  */
 function vibio_fboauth_fboauth_action_find_friends(){
   global $user;
-  module_load_include('fboauth.inc', 'fboauth');
+  module_load_include('inc', 'fboauth', 'includes/fboauth.fboauth');
   $vibio_friends = array();
   //Execute graph query to get friend fbids
   $fb_friends = fboauth_graph_query('me', array('friends'));

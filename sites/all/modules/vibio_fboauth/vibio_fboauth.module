@@ -162,7 +162,8 @@ function vibio_fboauth_fboauth_action_find_friends($app_id, $access_token){
   //Execute graph query to get friend fbids
   $fb_friends = fboauth_graph_query('me/friends', $access_token);
   //@todo: Debugging, remove
-  dsm($fb_friends);
+  print_r($fb_friends);
+  exit();
   //See if the friends are on Vibio
   foreach($fb_friends as $fbid){
     if($uid = fboauth_uid_load($fbid)){

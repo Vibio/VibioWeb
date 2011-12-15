@@ -1137,3 +1137,4 @@ table.views-table.cols-2{margin:0; padding-top:0}
 #invite-box a.invite-fb:hover,#invite-box a.invite-tw:hover,#invite-box a.invite-em:hover{background: url(../images/invite_hover.png) no-repeat}
 #invite-box a.invite-tw,#invite-box a.invite-tw:hover{background-position: -243px 0}
 #invite-box a.invite-em,#invite-box a.invite-em:hover{background-position: -487px 0}
+.top-tabs-sep{font-size: 16px; position: absolute; top: 0; color: #556270}

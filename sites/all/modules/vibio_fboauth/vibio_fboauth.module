@@ -77,7 +77,7 @@ function vibio_fboauth_network_find_friends($uid, &$potentials, $existing, &$err
     //Prompt user to connect w/FB
     //@todo: replace with fboauth action
 		$message = t("Connect your Facebook account to see which friends use Vibio");
-    $link_attributes = fboauth_action_link_properties('connect');
+    $link_attributes = fboauth_action_link_properties('vibio_fboauth_find_friends');
     //Puts a fb button inside the link.
     $link = l('<img src="/themes/vibio/images/btn_fb_login.png" id="facebook-large" class="fb_login"/>', $link_attributes['href'], array('query' => $link_attributes['query'], 'html' => TRUE));
 
@@ -86,7 +86,7 @@ function vibio_fboauth_network_find_friends($uid, &$potentials, $existing, &$err
     //If the user is connected to FB...
   }else{
     //If no fb_friend info has been posted yet...
-    if(empty($_POST['fb_friends'])){
+    if(empty($_POST['vibio_friends'])){
       //Provide a themed link to initiate friend finding process
       $find_friends_link = fboauth_action_display('vibio_fboauth_find_friends');
       $token_replacement = array("!fb_refresh" => $find_friends_link);
@@ -95,7 +95,7 @@ function vibio_fboauth_network_find_friends($uid, &$potentials, $existing, &$err
       return false; 
     }else{
       //The fboauth action has already run and we can get friends from it
-      $friends = $_POST['fb_friends'];
+      $friends = $_POST['vibio_friends'];
       //Friends is an array of Vibio users who are potential friends
       foreach ($friends as $friend){
         //Create a $potential object to represent potential friends
@@ -165,7 +165,9 @@ function vibio_fboauth_fboauth_action_find_friends($app_id, $access_token){
       $vibio_friends[$uid] = $vibio_friend;
     }
   }
-  
-  $_POST['fb_friends'] = $vibio_friends;
+  //Return the data to be used by the friend finder
+  $_POST['vibio_friends'] = $vibio_friends;
+  //Set the redirect destination
+  $_REQUEST['destination'] = 'contacts/find-friends';
   return 'contacts/find-friends';
 }

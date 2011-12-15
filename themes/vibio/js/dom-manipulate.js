@@ -105,7 +105,4 @@ $(document).ready(function() {
 	}, function() {
 		$('.make-offer-popup').remove();
 	});
-	//$('#offer-buttons .not_for_sale').prepend('<div class="not-sale-popup">Many items on Vibio are not for sale. <a href="/faq#why">Find out why</a>.</div>');
-	//$('#offer-buttons a.offer-button').prepend('<div class="make-offer-popup">Many items on Vibio are not for sale. <a href="/faq#buy">Find out why</a>.</div>');
-
 });

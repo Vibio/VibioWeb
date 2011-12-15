@@ -102,7 +102,22 @@ $(document).ready(function()
 			}
 			else
 			{
+
+/* first fix, creates new errors:
+	//http://developers.facebook.com/docs/reference/javascript/FB.login/
 				FB.login(fb_callback, { scope: fb_settings.perms });
+*/
+/* notes from web:
+    $url = $facebook->getLoginUrl(array(
+        'canvas' => 1,
+        'fbconnect' => 0
+    ));
+
+    echo "<script type='text/javascript'>top.location.href = '$url';</script>";
+
+				//FB.getLoginUrl();
+FB.Connect.requireSession();
+*/
 			}
 		});
 		

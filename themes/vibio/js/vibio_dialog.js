@@ -9,7 +9,7 @@ var vibio_dialog = {
 
 		this.dialog.html(content).dialog("open");
 		this.dialog.html(content).dialog({
-			position : ['center', 81]
+			position : ['center', 30]
 		});
 	},
 	init : function() {
@@ -23,6 +23,7 @@ var vibio_dialog = {
 			draggable : false,
 			autoOpen : false,
 			width : 550,
+			zindex: 5000,
 			open : function() {
 				vibio_dialog.center();
 			}

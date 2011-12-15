@@ -114,7 +114,7 @@ function vibio_invite_preprocess_vibio_invite_display(&$vars){
 
   //Facebook URL for request
   //@TODO make sure that no JS users are sent to a page that warns them
-  $vars['fb_url'] = l('Facebook', '', array('attributes' => array('id' => 'fb-request')));
+  $vars['fb_url'] = url('', array('attributes' => array('id' => 'fb-request')));
 
   //URL to the current email invite page
   $vars['email_url'] = url('contacts/invite');

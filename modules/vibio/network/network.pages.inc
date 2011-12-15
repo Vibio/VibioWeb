@@ -1,5 +1,31 @@
 <?php
 //  ajax defaulted to true in last version, default to false give own page.
+/**
+ * This code defines/uses hook_network_find_friends to find friends from external
+ * social networks.
+ *
+ * 		$potential = new stdClass;
+		$potential->info = _network_get_userinfo($friend_uid);
+		$potential->src = "fb";
+		$potential->link = fb_profile_link($friend->id);
+    //Create an array of $potential friend objects keyed by vibio uid
+		$potentials[$friend_uid] = $potential;
+ *
+ *
+ *
+ * Currently the only implementation that I (alec) know of is in Nelson's Facebook
+ * module. I'm going to look at this code and possibly refactor it while I write
+ * a new hook that works with fboauth, which is the new module we're using for FB
+ * authentication.
+ *
+ *
+ *
+ * @global <type> $user
+ * @param <type> $uid
+ * @param <type> $ajax
+ * @param <type> $specific_modules
+ * @return <type>
+ */
 function network_find_friends($uid=false, $ajax=false, $specific_modules=false)
 {
 drupal_set_title("Connection Finder"); // !!! bad bad bad, why doesn't the code below work? note that invite didn't work either. ~/src/modules/vibio/user_relationships_integration$ vim uri.module  is somehow overpowering?  rush...

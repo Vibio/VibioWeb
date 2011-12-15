@@ -1,7 +1,9 @@
 <?php
+// delivered was $is_signup, see table
+//  select * from drupal_fb_users
 function badge_give_badge($bid, $uid=false, $delivered=false)
 {
-	if (!$uid)
+	if (!$uid)  
 	{
 		global $user;
 		

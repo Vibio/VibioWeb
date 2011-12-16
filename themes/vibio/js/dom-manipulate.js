@@ -119,4 +119,5 @@ $(document).ready(function() {
 	}, function() {
 		$('.make-offer-popup').remove();
 	});
+	$('div.tabs ul.tabs li:eq(1) a, div.tabs ul.tabs li:eq(2) a, div.tabs ul.tabs li:eq(3) a').append('<span class="top-tabs-sep">|</span>');
 });

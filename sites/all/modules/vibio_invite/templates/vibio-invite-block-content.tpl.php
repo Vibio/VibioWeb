@@ -14,13 +14,13 @@
 </div>
 	<ul>
 		<li>
-			<a href="<?php print $fb_link;?>" id="fb-request" class="invite-fb">Send an invitation through your Facebook account</a>
+			<a href="<?php print $fb_url;?>" id="fb-request" class="invite-fb">Send an invitation through your Facebook account</a>
 		</li>
 		<li>
-			<a href="<?php print $twitter_link;?>" class="invite-tw">Send an invitation through your Twitter account</a>
+			<a href="<?php print $twitter_url;?>" class="invite-tw">Send an invitation through your Twitter account</a>
 		</li>
 		<li>
-			<a href="<?php print $email_link;?>" class="invite-em">Send an invitation through your Email account</a>
+			<a href="<?php print $email_url;?>" class="invite-em">Send an invitation through your Email account</a>
 		</li>
 	</ul>
 </div>

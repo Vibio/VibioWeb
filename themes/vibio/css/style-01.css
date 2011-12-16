@@ -360,11 +360,11 @@ div.messages div#close-message{background:url(../images/btn_close.png) no-repeat
 div.notice div#close-message{background-position:-40px 0}
 div.error div#close-message{background-position:-80px 0}
 div.warning div#close-message{background-position:-120px 0}
-div.messages, div.status, div.warning, div.error, div.notice{position:absolute; min-height:44px; margin:0; padding:15px 5px 25px 78px;
+div.messages, div.status, div.warning, div.error, div.notice{position:absolute; min-height:44px; margin:0; padding:20px 22px 20px 78px;
 background-image:url(../images/message_icons.png); background-repeat:no-repeat; box-shadow:0 2px 10px 0px rgba(0,0,0,.5);
  -moz-box-shadow:0 2px 10px 0px rgba(0,0,0,.5); -webkit-box-shadow:0 2px 10px 0 rgba(0,0,0,.5); top:29px; right:124px; width:417px; z-index:1000}
 div.status{background-color:#CCECFF; border:2px solid #7AC8FF; background-position:0px 14px}
-div.notice{background-color:#EAF7DA; border:2px solid #BEE78D; background-position:0px -78px; padding:15px 5px 15px 78px}
+div.notice{background-color:#EAF7DA; border:2px solid #BEE78D; background-position:0px -78px;margin-top:20px}
 div.warning, tr.warning{color:#556720;background-color:#FFF7C2; border:2px solid #FFE180; background-position:0px -268px}
 div.error, tr.error{color:#556720;background-color:#FFD9DA; border:2px solid #FFABAD; background-position:4px -174px; top: -57px}
 div.messages ul{margin:0; padding:0}
@@ -997,9 +997,12 @@ ul.secondary a:hover{  background:url(../images/tab-secondary.png) repeat-x left
 ul.secondary a.active, 
 ul.secondary a.active:hover{  border:1px solid #c0c0c0;   color:#000;   background:url(../images/tab-secondary.png) repeat-x left top}
 /*featured item page*/
+.infscr-pages{}
+.view.view-flag-featured .views-row-last{}
+.view.view-flag-featured .view-content{width: 725px;}
 .view.view-flag-featured{  width:740px;   position:relative}
-.views-fluidgrid-item .views-field-field-main-image-fid{  width:160px;   border:1px solid #DADADA;   margin:5px;   padding:0}
-.views-fluidgrid-item{  margin:0 5px 20px 0;   border:1px solid #DADADA;   background:#fff}
+.views-fluidgrid-item .views-field-field-main-image-fid{  width:160px;   border:1px solid #CCCCCC;   margin:5px;   padding:0}
+.views-fluidgrid-item{width:170px; float:left;  margin:0 5px 20px 0;   border:1px solid #CCCCCC;   background:#fff}
 .views-fluidgrid-item .views-field-title{  width:160px;   margin:8px 5px 16px 5px}
 .views-fluidgrid-item .field-content{  margin:0;   padding:0}
 .search-col{  float:left;   width:177px;   padding:0 0 0 5px;   top:0px}
@@ -1134,3 +1137,4 @@ table.views-table.cols-2{margin:0; padding-top:0}
 #invite-box a.invite-fb:hover,#invite-box a.invite-tw:hover,#invite-box a.invite-em:hover{background: url(../images/invite_hover.png) no-repeat}
 #invite-box a.invite-tw,#invite-box a.invite-tw:hover{background-position: -243px 0}
 #invite-box a.invite-em,#invite-box a.invite-em:hover{background-position: -487px 0}
+.top-tabs-sep{font-size: 16px; position: absolute; top: 0; color: #556270}

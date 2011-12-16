@@ -9,7 +9,7 @@ function vibio_invite_menu(){
     'page callback' => 'vibio_invite_display_page',
     'description' => 'Invite friends to Vibio',
     'access callback' => 'user_access',
-    'access arguments' => array('administer site configuration'),
+    'access arguments' => array('access content'),
   );
 
   $items['admin/vibio_invite'] = array(
@@ -119,6 +119,8 @@ function vibio_invite_preprocess_vibio_invite_display(&$vars){
 }
 
 function vibio_invite_display_page(){
+  //Add basic FB scripts
+  vibio_fboauth_add_js();
   //Add the JS for the FB request dialog and possibly for twitter
   drupal_add_js(drupal_get_path('module', 'vibio_invite') . '/js/vibio_invite.js');
   return theme('vibio_invite_display');

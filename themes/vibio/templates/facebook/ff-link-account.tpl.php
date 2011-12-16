@@ -8,7 +8,7 @@
 	<div class='fb_link'>
 		<?php
 		echo "
-			<a href='{$href->url}' class='{$href->class}'>
+			<a href='{$href}'>
 				<img src='{$fb_image}' />
 			</a>
 		";

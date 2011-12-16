@@ -73,8 +73,6 @@ function vibio_invite_block($op = 'list', $delta = 'vibio_invite', $edit = array
     return $block;
   }
   elseif ($op == 'view' && $delta == 'vibio_invite') {
-    //Add the JS for the FB request dialog and possibly for twitter
-    drupal_add_js(drupal_get_path('module', 'vibio_invite') . '/js/vibio_invite.js');
     $block['subject'] = t('Invite Friends');
     $block['content'] = theme('vibio_invite_display');
     return $block;
@@ -121,6 +119,8 @@ function vibio_invite_preprocess_vibio_invite_display(&$vars){
 }
 
 function vibio_invite_display_page(){
+  //Add the JS for the FB request dialog and possibly for twitter
+  drupal_add_js(drupal_get_path('module', 'vibio_invite') . '/js/vibio_invite.js');
   return theme('vibio_invite_display');
 }
 

@@ -512,13 +512,15 @@ form#user-pass input#edit-submit.form-submit{background:url(../images/btn_submit
 form#user-pass div#edit-name-wrapper{padding-bottom:20px; margin-bottom:20px; border-bottom:1px solid #CCC}
 form#user-pass div#edit-name-wrapper input#edit-name{width:449px}
 /*Private message*/
-table.privatemsg-list{margin-bottom:35px}
+table.privatemsg-list{margin:0 0 35px}
 table.privatemsg-list th{border-bottom:1px solid #CCC}
 .page-messages fieldset.collapsible{background:#dcdcdc;border:none; padding:5px; position:relative; font-weight:bold}
 .page-messages fieldset.collapsed{background: none}
 .page-messages fieldset.collapsible legend{position:absolute; top:-25px}
 td.active{background:none}
-tr.privatemsg-unread{background:#ccecff}
+td.privatemsg-list-participants span.marker{margin-right:5px}
+table.privatemsg-list tr.even, table.privatemsg-list tr.odd{background: #f2f5ff}
+table.privatemsg-list tr.privatemsg-unread{background:#ccecff}
 /*User account settings*/
 form#user-profile-form{font-size:13px; margin-bottom:75px}
 form#user-profile-form legend{font-size:15px; font-weight:bold; margin: 15px 0 5px}
@@ -955,6 +957,7 @@ h2.page-description{background:url("../images/long_border.png") no-repeat scroll
 #node-23080 ul{padding-left:222px}
 /*Tabs*/
 div.tabs{ margin:10px 0 30px 0}
+.page-messages div.tabs{margin-bottom: 17px}
 ul.primary{ border:0;  margin:0;  padding:0; /* LTR */ list-style:none;  white-space:nowrap;  line-height:normal}
 ul.primary li{ float:left; /* LTR */ margin:0;  padding:0;  position:relative}
 div.tabs_big ul.primary li a{ height:31px}

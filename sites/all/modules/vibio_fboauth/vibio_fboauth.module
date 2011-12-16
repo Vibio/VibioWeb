@@ -37,6 +37,33 @@ function vibio_fboauth_theme(&$existing, $type, $theme, $path)
   );
 }
 
+/**
+ * On any page that engages Facebook actions, this function should be called
+ * to activate scripts.
+ *
+ *
+ * @global  $user
+ * @return Boolean
+ */
+function vibio_fboauth_add_js(){
+  $app_id = variable_get('fboauth_id', '');
+
+	//$perms = variable_get("fb_signup_perms", "email");
+	//$fb_uid = $user->uid ? fb_user_has_fb($user->uid) : 0;
+
+	$fb_vars = json_encode(array(
+		"app_id"	=> $app_id,
+	));
+
+	$protocol = $_SERVER['HTTPS'] == "on" ? "https://" : "http://";
+
+  //Adds the FB script to the head
+	drupal_set_html_head("<script type='text/javascript' src='{$protocol}connect.facebook.net/en_US/all.js'></script>");
+	//Makes FB variables available to JS
+  drupal_add_js("var fb_settings = $fb_vars;", "inline");
+	return true;
+}
+
 function vibio_fboauth_preprocess_fb_ff_message(&$vars)
 {
 	switch ($vars['message_type'])

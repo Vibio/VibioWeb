@@ -43,8 +43,9 @@ body.front div.view-flag-featured .pager{display:none}
 .block .content/* Block's content wrapper */{}
 .block-nice_menus ul{padding:0}
 div.sec_content.collections, div.sec_content.about{position: relative}
-div.sec_content.collections div.addthis_toolbox{position: absolute; right: 10px; top:-7px; width: 272px}
-div.sec_content.collections div.share-text{position: absolute; right: 279px; top:3px}
+div.sec_content.collections div.addthis_toolbox, div.sec_content.inventory div.addthis_toolbox{position: absolute; right: 10px; top:-7px; width: 272px}
+div.sec_content.collections div.share-text, div.sec_content.inventory div.share-text{position: absolute; right: 279px; top:3px}
+div.sec_content.inventory{position: relative}
 /*Congrats popup*/
 div.congrats-popup{padding:0 50px}
 .congrats-popup h2{text-align: center; font-size: 22px}
@@ -669,7 +670,7 @@ html.js input.throbbing{background-position:99% -14px}
 .view-user-collections div.view-content{margin-top:6px; position:relative}
 .collection_list_collection .collection_image{margin:0  10px 10px 0; padding:5px; border:1px solid #CCC; background:#FFF; height:152px}
 .collection_list_collection .collection_image img{border:1px solid #CCC}
-.collections_view_header{position:absolute; left:125px; top:-52px}
+.collections_view_header{position:absolute; left:125px; top:-57px}
 .collection_list_collection{border-bottom:1px solid #CCC; margin-top:18px}
 div.view-user-collections .collection_list_collection{border:none}
 .manage_collection_link{float:right; padding-right:22px}

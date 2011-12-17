@@ -512,7 +512,7 @@ form#user-pass input#edit-submit.form-submit{background:url(../images/btn_submit
 form#user-pass div#edit-name-wrapper{padding-bottom:20px; margin-bottom:20px; border-bottom:1px solid #CCC}
 form#user-pass div#edit-name-wrapper input#edit-name{width:449px}
 /*Private message*/
-table.privatemsg-list{margin:0 0 35px}
+table.privatemsg-list{margin:0 0 35px; width:100%}
 table.privatemsg-list th{border-bottom:1px solid #CCC}
 .page-messages fieldset.collapsible{background:#dcdcdc;border:none; padding:5px; position:relative; font-weight:bold}
 .page-messages fieldset.collapsed{background: none}
@@ -1142,3 +1142,9 @@ table.views-table.cols-2{margin:0; padding-top:0}
 #invite-box a.invite-tw,#invite-box a.invite-tw:hover{background-position: -243px 0}
 #invite-box a.invite-em,#invite-box a.invite-em:hover{background-position: -487px 0}
 .top-tabs-sep{font-size: 16px; position: absolute; top: 0; color: #556270}
+/*New amazon button*/
+#external-link{background: url(../images/amazon_bgd.png) -2px 0 no-repeat; height: 85px; font-size: 13px; color: #556270; font-weight: bold; padding: 19px 0 0 23px}
+.external-link-text{float: left; padding-top: 15px}
+#external-link p{margin: 0}
+.purchase-amazon{ float: right; padding-right: 15px}
+.purchase-amazon a{ display: block; height: 43px; width: 204px; background: url(../images/btn_amazon.png) no-repeat; text-indent: -9999px}

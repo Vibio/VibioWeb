@@ -89,7 +89,7 @@ if (isset($node->amazon_data)) {
 else
 {
 	$product_content = theme("product_display", $node, $page);
-$external_link = "We couldn't find this product at Amazon.";
+$external_link = "Be the first Vibio Collector in your network to own this item in your collection.";
 //this is working: dsm(amazon_item_lookup_from_db($node->field_amazon_asin[0]['asin']));
 }
 
@@ -174,7 +174,7 @@ if ($page)
 				<h3>$owners_header</h3>
 				<img src='/themes/vibio/images/long_border.png' />
 				$product_owners
-				<p>$external_link</p>
+				<div id='external-link'><p class='external-link-text'>$external_link</p><p class='purchase-amazon'><a href='#'>Purchase on Amazon</a></p></div>
 				
 			</div>
 		";

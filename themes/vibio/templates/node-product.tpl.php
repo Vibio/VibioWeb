@@ -53,6 +53,7 @@ $sanitary = htmlspecialchars ( $_GET['searchcrumb'],   ENT_QUOTES );
 //$variant = "prod_page";
 $manage_link = theme("product_inventory_manage_link", $node, $sanitary);//, $variant); // For example, the "Have" button, now to be "I already have this item"
 
+//If this node is from amazon...
 if (isset($node->amazon_data)) {
 	/* bug hunt: nodes with field_amazon_asin are returning false here.
    *  returned by: amazon/vibio_amazon.module
@@ -65,31 +66,39 @@ if (isset($node->amazon_data)) {
    *  module weighting problem?   Believe that weighting was the problem/solution.
 
    */
-
+  //Set the product content
 	if (empty($node->body))
 	{
+    //Grab info from amazon to fill in the body
 		$product_content = theme("product_amazon_display", $node, $page);
 	}
 	else
 	{
+    //Combine Vibio data w/Amazon details?
 		$product_content = theme("product_display", $node, $page);
 		$product_content .= theme("vibio_amazon_item_details", $node);
 	}
-	
-	$external_link = $page ? t("Get \"!item\" from !external_link.", array("!item" => $node->title, "!external_link" => l(t("Amazon"), $node->amazon_data['detailpageurl'], array("absolute" => true,
-"attributes" => array('target' =>"_blank")   
-)))) : "";
+	//Set the link to amazon
 	//$external_link .=  $node->amazon_data['detailpageurl']; This URL is already encoded, when it shouldn't be. i.e.:
 	//  encode   key=variable  so the equals sign is gone and it's just text.
 	$external_it_link =  t("Find it on !external_link.", array("!external_link" => l(t("Amazon"), $node->amazon_data['detailpageurl'], array("absolute" => true,
 		"attributes" => array('target' =>"_blank" )
 		))));
+    $amazon_link = "<p class='purchase-amazon'><a href='" . $node->amazon_data['detailpageurl'] . "' target='_blank'>Purchase on Amazon</a></p></div>";
+    //Information about the product that doesn't link externally
+    $notification_text = "";
+    $external_link = "<div id='external-link'><p class='external-link-text'>Be the first Vibio Collector in your network to own this item in your collection."
+    . $amazon_link . "</p>";
+
 
 }
+//If it's not from amazon...
 else
 {
 	$product_content = theme("product_display", $node, $page);
-$external_link = "We couldn't find this product at Amazon.";
+  $external_link = "";
+  //Information about the product that doesn't link externally
+  $notification_text = "We couldn't find this on Amazon.";
 //this is working: dsm(amazon_item_lookup_from_db($node->field_amazon_asin[0]['asin']));
 }
 
@@ -174,7 +183,8 @@ if ($page)
 				<h3>$owners_header</h3>
 				<img src='/themes/vibio/images/long_border.png' />
 				$product_owners
-				<p>$external_link</p>
+				$external_link
+        $notification_text
 				
 			</div>
 		";
@@ -189,7 +199,8 @@ if ($page)
 		$extra_data = "
                         <div class='product_extra_data'>
 				<h3>$non_header</h3>
-				<p>$external_link</p>
+		      $external_link</p>
+          $notification_text
 			</div>
 		";	
 	} 

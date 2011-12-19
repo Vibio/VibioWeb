@@ -59,7 +59,7 @@ function _next_offset () {
 	// Let's do most recent 120?  (Don't set too high or 
 	//  we get empty text ) ... changed, start at 20, go down, then
 	//  loop to 60.
-	if ( $offset < 0 ) {
+	if ( $offset == 0 ) {
 		$offset = 60;
 	}
 	return $offset - 1;

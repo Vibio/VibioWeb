@@ -29,7 +29,48 @@ function vibio_fboauth_theme(&$existing, $type, $theme, $path)
 			"template"	=> "templates/facebook/login-block",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+    "fb_ff_message"		=> array(
+      "arguments"	=> array("message" => "", "href" => false, "message_type" => "link_account"),
+      "template"	=> "templates/facebook/ff-link-account",
+      "path"		=> drupal_get_path("theme", "vibio"),
+		),
   );
+}
+
+/**
+ * On any page that engages Facebook actions, this function should be called
+ * to activate scripts.
+ *
+ *
+ * @global  $user
+ * @return Boolean
+ */
+function vibio_fboauth_add_js(){
+  $app_id = variable_get('fboauth_id', '');
+
+	//$perms = variable_get("fb_signup_perms", "email");
+	//$fb_uid = $user->uid ? fb_user_has_fb($user->uid) : 0;
+
+	$fb_vars = json_encode(array(
+		"app_id"	=> $app_id,
+	));
+
+	$protocol = $_SERVER['HTTPS'] == "on" ? "https://" : "http://";
+
+  //Adds the FB script to the head
+	drupal_set_html_head("<script type='text/javascript' src='{$protocol}connect.facebook.net/en_US/all.js'></script>");
+	//Makes FB variables available to JS
+  drupal_add_js("var fb_settings = $fb_vars;", "inline");
+	return true;
+}
+
+function vibio_fboauth_preprocess_fb_ff_message(&$vars)
+{
+	switch ($vars['message_type'])
+	{
+		case "link_account":
+			$vars['fb_image'] = "/themes/vibio/images/facebook/link-account.png";
+	}
 }
 
 /**
@@ -76,19 +117,18 @@ function vibio_fboauth_network_find_friends($uid, &$potentials, $existing, &$err
 	if (!(fboauth_fbid_load($uid))){
     //Prompt user to connect w/FB
     //@todo: replace with fboauth action
-		$message = t("Connect your Facebook account to see which friends use Vibio");
+		$message = t("Connect your Facebook account to see which friends use Vibio.");
     $link_attributes = fboauth_action_link_properties('vibio_fboauth_find_friends');
     //Puts a fb button inside the link.
-    $link = l('<img src="/themes/vibio/images/btn_fb_login.png" id="facebook-large" class="fb_login"/>', $link_attributes['href'], array('query' => $link_attributes['query'], 'html' => TRUE));
-
-    $errors[] = $message . $link;
+    $href = url($link_attributes['href'], array('query' => $link_attributes['query']));
+    $errors[] = theme("fb_ff_message", $message, $href, "link_account");
 		return false;
     //If the user is connected to FB...
   }else{
     //If the user has no friends from FB on Vibio
     if($_SESSION['vibio_friends'] == 'none'){
       //@todo: Add an invite link once the invitation system is done
-      $errors[] = t("We're sorry, it doesn't seem that any of your Facebook friends are on Vibio. Why not invite some?");
+      $errors[] = t("It doesn't seem that any of your Facebook friends are on Vibio. Why not invite some?");
       //Clear $_SESSION['vibio_friends'] so they can try later in their session if they want.
       $_SESSION['vibio_friends'] = '';
       return false;

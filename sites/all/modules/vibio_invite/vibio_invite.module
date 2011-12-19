@@ -9,7 +9,7 @@ function vibio_invite_menu(){
     'page callback' => 'vibio_invite_display_page',
     'description' => 'Invite friends to Vibio',
     'access callback' => 'user_access',
-    'access arguments' => array('administer site configuration'),
+    'access arguments' => array('access content'),
   );
 
   $items['admin/vibio_invite'] = array(
@@ -23,22 +23,26 @@ function vibio_invite_menu(){
   return $items;
 }
 
-function vibio_invite_admin($form, &$form_state){
-  global $user;
-  $username = $user->name;
+function vibio_invite_admin($form_state){
   $form['twitter_message'] = array(
       '#type' => 'textarea',
       '#title' => 'Twitter Message',
       '#description' => 'This is the message that will be posted to twitter along with
         an invitation URL to Vibio. Remember that the invitation URL will be about
         25 characters, so keep your message short.',
-      '#default_value' => "Checkout " . $username . "'s collections on Vibio and start your own.",
+      '#default_value' => "Join me on @vibio and checkout my collections!",
   );
 
   $form['invite_link'] = array(
       '#type' => 'textfield',
       '#title' => 'Invitation Link',
       '#description' => 'The page that invited users will be sent to, relative to webroot',
+      '#default_value' => 'user/register',
+  );
+
+  $form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Save'),
   );
 
   return $form;
@@ -53,8 +57,10 @@ function vibio_invite_admin($form, &$form_state){
  * @param <type> $form_state
  */
 function vibio_invite_admin_submit($form, &$form_state){
-  variable_set('vibio_invite_twitter_message', $form_state['values']['twitter_message']);
-  variable_set('vibio_invite_link', $form_state['values']['invite_link']);
+  //Adding a space because the URL will be appended the end
+  variable_set('vibio_invite_twitter_message', $form_state['values']['twitter_message'] . ' ');
+  $url = url($form_state['values']['invite_link']);
+  variable_set('vibio_invite_link', $url);
 }
 
 /**
@@ -73,8 +79,6 @@ function vibio_invite_block($op = 'list', $delta = 'vibio_invite', $edit = array
     return $block;
   }
   elseif ($op == 'view' && $delta == 'vibio_invite') {
-    //Add the JS for the FB request dialog and possibly for twitter
-    drupal_add_js(drupal_get_path('module', 'vibio_invite') . '/js/vibio_invite.js');
     $block['subject'] = t('Invite Friends');
     $block['content'] = theme('vibio_invite_display');
     return $block;
@@ -102,6 +106,7 @@ function vibio_invite_theme(){
  */
 function vibio_invite_preprocess_vibio_invite_display(&$vars){
   $url = variable_get('vibio_invite_link');
+  
   //URL to send an invitation message via Twitter
   if(module_exists('shorten')){
     $twitter_url = shorten_url($url, 'TinyURL');
@@ -121,6 +126,10 @@ function vibio_invite_preprocess_vibio_invite_display(&$vars){
 }
 
 function vibio_invite_display_page(){
+  //Add basic FB scripts
+  vibio_fboauth_add_js();
+  //Add the JS for the FB request dialog and possibly for twitter
+  drupal_add_js(drupal_get_path('module', 'vibio_invite') . '/js/vibio_invite.js');
   return theme('vibio_invite_display');
 }
 

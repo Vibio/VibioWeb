@@ -43,8 +43,9 @@ body.front div.view-flag-featured .pager{display:none}
 .block .content/* Block's content wrapper */{}
 .block-nice_menus ul{padding:0}
 div.sec_content.collections, div.sec_content.about{position: relative}
-div.sec_content.collections div.addthis_toolbox{position: absolute; right: 10px; top:-7px; width: 272px}
-div.sec_content.collections div.share-text{position: absolute; right: 279px; top:3px}
+div.sec_content.collections div.addthis_toolbox, div.sec_content.inventory div.addthis_toolbox{position: absolute; right: 10px; top:-7px; width: 272px}
+div.sec_content.collections div.share-text, div.sec_content.inventory div.share-text{position: absolute; right: 279px; top:3px}
+div.sec_content.inventory{position: relative}
 /*Congrats popup*/
 div.congrats-popup{padding:0 50px}
 .congrats-popup h2{text-align: center; font-size: 22px}
@@ -511,13 +512,15 @@ form#user-pass input#edit-submit.form-submit{background:url(../images/btn_submit
 form#user-pass div#edit-name-wrapper{padding-bottom:20px; margin-bottom:20px; border-bottom:1px solid #CCC}
 form#user-pass div#edit-name-wrapper input#edit-name{width:449px}
 /*Private message*/
-table.privatemsg-list{margin-bottom:35px}
+table.privatemsg-list{margin:0 0 35px; width:100%}
 table.privatemsg-list th{border-bottom:1px solid #CCC}
 .page-messages fieldset.collapsible{background:#dcdcdc;border:none; padding:5px; position:relative; font-weight:bold}
 .page-messages fieldset.collapsed{background: none}
 .page-messages fieldset.collapsible legend{position:absolute; top:-25px}
 td.active{background:none}
-tr.privatemsg-unread{background:#ccecff}
+td.privatemsg-list-participants span.marker{margin-right:5px}
+table.privatemsg-list tr.even, table.privatemsg-list tr.odd{background: #f2f5ff}
+table.privatemsg-list tr.privatemsg-unread{background:#ccecff}
 /*User account settings*/
 form#user-profile-form{font-size:13px; margin-bottom:75px}
 form#user-profile-form legend{font-size:15px; font-weight:bold; margin: 15px 0 5px}
@@ -669,7 +672,7 @@ html.js input.throbbing{background-position:99% -14px}
 .view-user-collections div.view-content{margin-top:6px; position:relative}
 .collection_list_collection .collection_image{margin:0  10px 10px 0; padding:5px; border:1px solid #CCC; background:#FFF; height:152px}
 .collection_list_collection .collection_image img{border:1px solid #CCC}
-.collections_view_header{position:absolute; left:125px; top:-52px}
+.collections_view_header{position:absolute; left:125px; top:-57px}
 .collection_list_collection{border-bottom:1px solid #CCC; margin-top:18px}
 div.view-user-collections .collection_list_collection{border:none}
 .manage_collection_link{float:right; padding-right:22px}
@@ -954,6 +957,7 @@ h2.page-description{background:url("../images/long_border.png") no-repeat scroll
 #node-23080 ul{padding-left:222px}
 /*Tabs*/
 div.tabs{ margin:10px 0 30px 0}
+.page-messages div.tabs{margin-bottom: 17px}
 ul.primary{ border:0;  margin:0;  padding:0; /* LTR */ list-style:none;  white-space:nowrap;  line-height:normal}
 ul.primary li{ float:left; /* LTR */ margin:0;  padding:0;  position:relative}
 div.tabs_big ul.primary li a{ height:31px}
@@ -1138,3 +1142,9 @@ table.views-table.cols-2{margin:0; padding-top:0}
 #invite-box a.invite-tw,#invite-box a.invite-tw:hover{background-position: -243px 0}
 #invite-box a.invite-em,#invite-box a.invite-em:hover{background-position: -487px 0}
 .top-tabs-sep{font-size: 16px; position: absolute; top: 0; color: #556270}
+/*New amazon button*/
+#external-link{background: url(../images/amazon_bgd.png) -2px 0 no-repeat; height: 85px; font-size: 13px; color: #556270; font-weight: bold; padding: 19px 0 0 23px}
+.external-link-text{float: left; padding-top: 15px}
+#external-link p{margin: 0}
+.purchase-amazon{ float: right; padding-right: 15px}
+.purchase-amazon a{ display: block; height: 43px; width: 204px; background: url(../images/btn_amazon.png) no-repeat; text-indent: -9999px}

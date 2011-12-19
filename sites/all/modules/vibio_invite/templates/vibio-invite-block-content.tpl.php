@@ -20,7 +20,7 @@ global $user;
 			<a href="<?php print $fb_url;?>" id="fb-request" class="invite-fb" app_id="<?php print $fb_appid; ?>" username="<?php print $user->name; ?>">Send an invitation through your Facebook account</a>
 		</li>
 		<li>
-			<a href="<?php print $twitter_url;?>" class="invite-tw">Send an invitation through your Twitter account</a>
+			<a href="<?php print $twitter_url;?>" class="invite-tw" target="_blank">Send an invitation through your Twitter account</a>
 		</li>
 		<li>
 			<a href="<?php print $email_url;?>" class="invite-em">Send an invitation through your Email account</a>

@@ -47,6 +47,7 @@ function hbi_views_query_alter(&$view, &$query)
 							WHERE `type_id`=heartbeat_activity.`nid`
 								AND `type`='node'
 								AND `uid`=users.`uid`
+                AND `setting`=1
 						)
 						WHEN heartbeat_activity.`nid` > 0 AND heartbeat_activity.`message_id`='heartbeat_add_collection' THEN %d >= (
 							SELECT `setting`

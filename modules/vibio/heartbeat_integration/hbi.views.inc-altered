@@ -25,7 +25,7 @@ function hbi_views_data_alter(&$data)
 		'field'			=> 'uid',
 	);
 }
-
+/**
 function hbi_views_query_alter(&$view, &$query)
 {
 	if ($view->name == "user_hb_incoming_activity")
@@ -75,4 +75,6 @@ function hbi_views_query_alter(&$view, &$query)
 		$query->add_where(0, $sql, $user->uid, $user->uid, $user->uid, PRIVACY_CONNECTION, PRIVACY_CONNECTION, PRIVACY_CONNECTION, PRIVACY_CONNECTION);
 	}
 }
+ *
+ */
 ?>

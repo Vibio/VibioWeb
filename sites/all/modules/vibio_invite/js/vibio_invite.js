@@ -1,5 +1,13 @@
 if(Drupal.jsEnabled){
   $(document).ready(function(){
+    //FB scripts initiated
+    FB.init({
+      appId: fb_settings.app_id,
+      status: true,
+      cookie: true,
+      oauth: true
+    });
+
     //The share button is clicked, initiating the FB dialog
     $('a#fb-request').click(function (event) {
       event.preventDefault();
@@ -13,13 +21,6 @@ if(Drupal.jsEnabled){
     //See http://developers.facebook.com/docs/reference/dialogs/requests/
     function invite(username) {
       //Facebook request dialog initiation.
-      FB.init({
-        appId: fb_settings.app_id,
-        status: true,
-        cookie: true,
-        oauth: true
-      });
-
       FB.ui({
         method: 'apprequests',
         message: "Join " + username + " on Vibio to share your stuff and see your friends' collections.",

@@ -12,6 +12,10 @@ function hbi_views_data_alter(&$data)
 	);
 }
 
+/**
+ * This views_query_alter was making it difficult to filter the view by
+ * privacy, so I opted to delete it and use the UI. Leaving this here incase
+ * I made a mistake--Alec
 function hbi_views_query_alter(&$view, &$query)
 {
 	if ($view->name == "user_hb_incoming_activity")
@@ -62,4 +66,6 @@ function hbi_views_query_alter(&$view, &$query)
 		$query->add_where(0, $sql, $user->uid, $user->uid, $user->uid, PRIVACY_CONNECTION, PRIVACY_CONNECTION, PRIVACY_CONNECTION, PRIVACY_CONNECTION);
 	}
 }
+ * 
+ */
 ?>

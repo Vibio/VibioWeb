@@ -4,7 +4,7 @@
  * Menu link to an invite page
  */
 function vibio_invite_menu(){
-  $items['vibio_invite'] = array(
+  $items['invite'] = array(
     'title' => 'Vibio Invite',
     'page callback' => 'vibio_invite_display_page',
     'description' => 'Invite friends to Vibio',
@@ -105,6 +105,8 @@ function vibio_invite_theme(){
  * @return string
  */
 function vibio_invite_preprocess_vibio_invite_display(&$vars){
+  global $base_url;
+  $app_id = variable_get('fboauth_id', '');
   $url = variable_get('vibio_invite_link');
   
   //URL to send an invitation message via Twitter
@@ -118,18 +120,18 @@ function vibio_invite_preprocess_vibio_invite_display(&$vars){
   $vars['twitter_url'] = 'http://twitter.com/home?status=' . $twitter_message . $twitter_url; //array('attributes' => array('target' => '_blank')));
 
   //Facebook URL for request
-  //@TODO make sure that no JS users are sent to a page that warns them
-  $vars['fb_url'] = url('', array('attributes' => array('id' => 'fb-request')));
+  //@TODO: use request dialog instead of send
+  $vars['fb_url'] = url("https://www.facebook.com/dialog/send", array('query' => array('app_id' => $app_id, 'name' => "Join Vibio to share your collections and see your friends's things", 'link' => $base_url, 'redirect_uri' => $base_url . "/invite")));
 
   //URL to the current email invite page
   $vars['email_url'] = url('contacts/invite');
 }
 
 function vibio_invite_display_page(){
-  //Add basic FB scripts
-  vibio_fboauth_add_js();
+  //In the future we may want to use the FB JS SDK here, but currently having problems-alec
+  //vibio_fboauth_add_js();
   //Add the JS for the FB request dialog and possibly for twitter
-  drupal_add_js(drupal_get_path('module', 'vibio_invite') . '/js/vibio_invite.js');
+  //drupal_add_js(drupal_get_path('module', 'vibio_invite') . '/js/vibio_invite.js');
   return theme('vibio_invite_display');
 }
 

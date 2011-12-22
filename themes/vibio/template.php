@@ -439,8 +439,6 @@ if(module_exists('automodal')){
 	);
 }
 
-
-
 /*function vibio_fieldset($ele)
 {
 	if (!empty($ele['#collapsible']))

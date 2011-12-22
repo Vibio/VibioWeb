@@ -14,3 +14,37 @@ ul{
 	list-style: none;
 }
 li{display: inline}
+
+/*header*/
+#block-block-23{
+	background: url(../images/landing/landing_01.png) no-repeat;
+	height: 60px;
+}
+#block-block-23 p{
+	margin: 0
+}
+#head-image{
+	float: left
+}
+#head-left{
+	padding: 5px 5px 0px 10px;
+	float: left;
+}
+#head-right{
+	float:right;
+}
+#watches{
+	background: url(../images/landing/landing_02.png) no-repeat;
+	height: 571px;
+}
+#watches-text{
+	float: right;
+	height:442px;
+	width: 362px;
+	margin:20px;
+	background: url(../images/landing/box-background.png) no-repeat;
+}
+#node-39527{
+	background: url(../images/landing/landing_03.png) no-repeat;
+	height: 336px;
+}

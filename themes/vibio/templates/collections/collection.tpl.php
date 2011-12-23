@@ -1,6 +1,6 @@
 <?php
 $collection_url = url("collections/{$collection->cid}");
-$manage_link = $collection->is_owner ? l(t("Edit Collection"), "collections/manage/{$collection->cid}") : "";
+$manage_link = $collection->is_owner ? l(t("Edit this Collection"), "collections/manage/{$collection->cid}") : "";
 $total_items = t("!count items", array("!count" => $collection->total_items));
 $expand = t("View this collection");
 $collection->user = l($collection->user_name, "user/{$collection->uid}");
@@ -24,7 +24,7 @@ $collection_image = theme('imagecache', 'collection_fixed_fluid_grid_77', $colle
 
 echo "
 	<div class='collection_list_collection' id='collection_{$collection->cid}'>
-		<div class='manage_collection_link'>$manage_link</div>
+		<div class='manage_collection_link'>$manage_link <br /><a href='/collections/new'>Create New Collection</a></div>
 		<div class='collection_image'>
 			<a href='$collection_url'>
 				{$collection_image}

@@ -414,8 +414,8 @@ function collection_form_vibio_item_node_form_alter(&$form, &$state)
 
 	// Add the collection_info field to this form
 	$form['collection_info'] = array(
-		"#title"		=> t("Collection"),
-		"#description"	=> t("Select which collections to add this item to. Choose all that apply."), //:" . '<p><strong><a href="/collections/new?automodalReload=true" class="automodal">* Add new collection</a></strong>'),
+		"#title"		=> t("Add this item to your Collection(s)"),
+		"#description"	=> t("You can add your item to multiple Collections by holding down the 'Command' or 'Ctrl' key."), //:" . '<p><strong><a href="/collections/new?automodalReload=true" class="automodal">* Add new collection</a></strong>'),
 
 		"#type"			=> "fieldset",
 		"#collapsible"	=> true,

@@ -135,5 +135,19 @@ function vibio_invite_display_page(){
   return theme('vibio_invite_display');
 }
 
+/**
+ * Adds OG meta data on the register page so if we send invites with the register page
+ * as the destination FB will display the correct info.
+ * 
+ * @param <type> $form
+ * @param <type> $form_state
+ */
+function vibio_invite_form_user_register_alter(&$form, &$form_state){
+  global $base_url;
+  $site_image = $base_url . '/'. drupal_get_path('theme', 'vibio') . '/vibio-logo.png';
+  $og_image = '<meta property="og:image" content="' . $site_image . '"/>';
+  drupal_set_html_head($og_image);
+}
+
 
 ?>

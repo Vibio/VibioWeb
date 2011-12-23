@@ -48,24 +48,24 @@
 				</p>
 				<ul id="row-1">
 					<li>
-						<img src="/themes/vibio/images/landing/watch-01.jpg" alt="Some Watch"/>
+						<a href="/collections/315"><img src="/themes/vibio/images/landing/images/watch_1.png" alt="Some Watch"/></a>
 					</li>
 					<li>
-						<img src="/themes/vibio/images/landing/watch-01.jpg" alt="Some Watch"/>
+						<a href="/collections/315"><img src="/themes/vibio/images/landing/images/watch_2.png" alt="Michael Kors Quartz Brown Gem Dial Tortoiseshell Band - Women's Watch"/></a>
 					</li>
 					<li>
-						<img src="/themes/vibio/images/landing/watch-01.jpg" alt="Some Watch"/>
+						<a href="/collections/315"><img src="/themes/vibio/images/landing/images/watch_3.png" alt="Some Watch"/></a>
 					</li>
 				</ul>
 				<ul id="row-2">
 					<li>
-						<img src="/themes/vibio/images/landing/watch-01.jpg" alt="Some Watch"/>
+						<a href="/collections/35"><img src="/themes/vibio/images/landing/images/watch_4.png" alt="Omega Men's 2221.80.00 Seamaster 300M Quartz 'James Bond' Blue Dial Watch "/></a>
 					</li>
 					<li>
-						<img src="/themes/vibio/images/landing/watch-01.jpg" alt="Some Watch"/>
+						<a href="/collections/35"><img src="/themes/vibio/images/landing/images/watch_5.png" alt="Marc Ecko E20058G1 The Brig Gents Watch"/></a>
 					</li>
 					<li>
-						<img src="/themes/vibio/images/landing/watch-01.jpg" alt="Some Watch"/>
+						<a href="/collections/35"><img src="/themes/vibio/images/landing/images/watch_6.png" alt="TAG Heuer Men's CW9110.FC6177 Monaco 69 Ana-Digi Chronograph Watch"/></a>
 					</li>
 				</ul>
 			</div>

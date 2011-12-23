@@ -48,35 +48,35 @@
 				</p>
 				<ul id="row-1">
 					<li>
-						<img src="/themes/vibio/images/landing/watch-01.jpg" alt="Some Watch"/>
+						<a href="/collections/315"><img src="/themes/vibio/images/landing/images/watch_1.png" alt="Some Watch"/></a>
 					</li>
 					<li>
-						<img src="/themes/vibio/images/landing/watch-01.jpg" alt="Some Watch"/>
+						<a href="/collections/315"><img src="/themes/vibio/images/landing/images/watch_2.png" alt="Michael Kors Quartz Brown Gem Dial Tortoiseshell Band - Women's Watch"/></a>
 					</li>
 					<li>
-						<img src="/themes/vibio/images/landing/watch-01.jpg" alt="Some Watch"/>
+						<a href="/collections/315"><img src="/themes/vibio/images/landing/images/watch_3.png" alt="Some Watch"/></a>
 					</li>
 				</ul>
 				<ul id="row-2">
 					<li>
-						<img src="/themes/vibio/images/landing/watch-01.jpg" alt="Some Watch"/>
+						<a href="/collections/35"><img src="/themes/vibio/images/landing/images/watch_4.png" alt="Omega Men's 2221.80.00 Seamaster 300M Quartz 'James Bond' Blue Dial Watch "/></a>
 					</li>
 					<li>
-						<img src="/themes/vibio/images/landing/watch-01.jpg" alt="Some Watch"/>
+						<a href="/collections/35"><img src="/themes/vibio/images/landing/images/watch_5.png" alt="Marc Ecko E20058G1 The Brig Gents Watch"/></a>
 					</li>
 					<li>
-						<img src="/themes/vibio/images/landing/watch-01.jpg" alt="Some Watch"/>
+						<a href="/collections/35"><img src="/themes/vibio/images/landing/images/watch_6.png" alt="TAG Heuer Men's CW9110.FC6177 Monaco 69 Ana-Digi Chronograph Watch"/></a>
 					</li>
 				</ul>
 			</div>
 			<div id="featured-2">
-				<h1>Find one of a kind items</h1>
+				<h1>FIND ONE OF A KIND ITEMS</h1>
 				<p>
 					Discover unique and vintage items by checking out what collectors have or want. If you find something that would be perfect for your collection, make an offer to the seller and be ready to negotiate a price.
 				</p>
 			</div>
 			<div id="featured-3">
-				<h1>Trade and Sell your treasures</h1>
+				<h1>TRADE AND SELL YOUR TREASURES</h1>
 				<p>
 					Vibio makes it easy to list, negotiate and sell your items.
 				</p>

@@ -108,22 +108,23 @@ $(document).ready(function() {
 	}, function() {
 		$('.not-sale-popup').remove();
 	});
-	$('#offer-buttons a.offer-button').hover(function() {
+	$('.make-offer').hover(function() {
 		$(this).prepend('<div class="make-offer-popup">Negotiate a price with this seller. <a href="/faq#buy">Find out how</a>.</div>');
 	}, function() {
 		$('.make-offer-popup').remove();
 	});
-	$('.action a').hover(function() {
-		$(this).prepend('<div class="make-offer-popup">Negotiate a price with this seller. <a href="/faq#buy">Find out how</a>.</div>');
-	}, function() {
-		$('.make-offer-popup').remove();
-	});
-	$('div.tabs ul.tabs li:eq(1) a, div.tabs ul.tabs li:eq(2) a, div.tabs ul.tabs li:eq(3) a').append('<span class="top-tabs-sep">|</span>');
+	
 	/*Messages moving of elements per ian's comp*/
-	$("table.privatemsg-list thead tr th:eq(2)").remove().insertBefore("table.privatemsg-list thead tr th:eq(1)"); //th
-	$("table.privatemsg-list tr.odd td:eq(2)").insertBefore("table.privatemsg-list tr.odd td:eq(1)"); //td
-$("table.privatemsg-list tr.even td:eq(2)").insertBefore("table.privatemsg-list tr.even td:eq(1)"); //td
-$("td.privatemsg-list-subject span.marker").prependTo("tr.privatemsg-unread td.privatemsg-list-participants"); //marker
+	$('div.tabs ul.tabs li:eq(1) a, div.tabs ul.tabs li:eq(2) a, div.tabs ul.tabs li:eq(3) a').append('<span class="top-tabs-sep">|</span>');
+	
+	$("table.privatemsg-list thead tr th:eq(2)").remove().insertBefore("table.privatemsg-list thead tr th:eq(1)");
+	//th
+	$("table.privatemsg-list tr.odd td:eq(2)").insertBefore("table.privatemsg-list tr.odd td:eq(1)");
+	//td
+	$("table.privatemsg-list tr.even td:eq(2)").insertBefore("table.privatemsg-list tr.even td:eq(1)");
+	//td
+	$("td.privatemsg-list-subject span.marker").prependTo("tr.privatemsg-unread td.privatemsg-list-participants");
+	//marker
 	//Change table header to small caps
-	$("table.privatemsg-list th").css('font-variant','small-caps');
+	$("table.privatemsg-list th").css('font-variant', 'small-caps');
 });

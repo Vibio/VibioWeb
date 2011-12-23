@@ -375,7 +375,9 @@ div.messages ul li{list-style-type:none}
 .not-sale-popup, .make-offer-popup{background:url(../images/white.png) no-repeat;color:#556270;  height:70px; font-size:15px; padding:33px 19px 10px; width:173px;z-index: 500; text-indent:0}
 .not-sale-popup{position:absolute; top:-106px; left:10px}
 #offer-buttons{position: absolute; right: -5px;height: 28px; width: 108px; bottom: 0px}
-.make-offer-popup{position:absolute; top:-109px; left:-6px}
+.make-offer{position: relative; padding-top: 20px}
+.action .make-offer-popup{position:absolute; top:-90px; left:-6px}
+#offer-buttons .make-offer-popup{position:absolute; top:-121px; left:-15px}
 /*layout-fixed*/
 #page-wrapper, 
 .region-page-closure{ margin-left:auto;  margin-right:auto;  width:960px}

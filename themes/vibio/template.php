@@ -2,7 +2,7 @@
 
 /**
  * Adds OG meta data for the front page, effectively representing Vibio to FB.
- * 
+ *
  * @param <type> $variables
  */
 function vibio_preprocess_page(&$variables){
@@ -10,11 +10,9 @@ function vibio_preprocess_page(&$variables){
     global $base_url;
     $site_image = $base_url . '/'. drupal_get_path('theme', 'vibio') . '/vibio-logo.png';
     $og_image = '<meta property="og:image" content="' . $site_image . '"/>';
-    drupal_set_html_head($og_image);
-    
-    //This is apparently necessary, see http://api.drupal.org/api/drupal/includes--common.inc/function/drupal_set_html_head/6#comment-4614
-    $variables['head'] = drupal_get_html_head();
 
+    //This is apparently necessary, see http://api.drupal.org/api/drupal/includes--common.inc/function/drupal_set_html_head/6#comment-4614
+    $variables['head'] .= $og_image;
   }
 }
 

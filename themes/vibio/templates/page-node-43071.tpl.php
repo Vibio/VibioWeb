@@ -70,13 +70,13 @@
 				</ul>
 			</div>
 			<div id="featured-2">
-				<h1>FIND ONE OF A KIND ITEMS</h1>
+				<h1>Find one of a kind items</h1>
 				<p>
 					Discover unique and vintage items by checking out what collectors have or want. If you find something that would be perfect for your collection, make an offer to the seller and be ready to negotiate a price.
 				</p>
 			</div>
 			<div id="featured-3">
-				<h1>TRADE AND SELL YOUR TREASURES</h1>
+				<h1>Trade and Sell your treasures</h1>
 				<p>
 					Vibio makes it easy to list, negotiate and sell your items.
 				</p>

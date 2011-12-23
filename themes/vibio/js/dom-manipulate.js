@@ -102,19 +102,19 @@ $(document).ready(function() {
 	}, function() {
 		$('#works-icon').css('background-position', '0px 0px');
 	});
-	/*Not for Sale Popup*/
+	/*Not for Sale Popup and Make Offer Popup*/
 	$('#offer-buttons .not_for_sale, .action .not_for_sale').hover(function() {
 		$(this).prepend('<div class="not-sale-popup">Many items on Vibio are not for sale. <a href="/faq#why">Find out why</a>.</div>');
 	}, function() {
 		$('.not-sale-popup').remove();
 	});
 	$('#offer-buttons a.offer-button').hover(function() {
-		$(this).prepend('<div class="make-offer-popup">Many items on Vibio are not for sale. <a href="/faq#buy">Find out why</a>.</div>');
+		$(this).prepend('<div class="make-offer-popup">Negotiate a price with this seller. <a href="/faq#buy">Find out how</a>.</div>');
 	}, function() {
 		$('.make-offer-popup').remove();
 	});
 	$('.action a').hover(function() {
-		$(this).prepend('<div class="make-offer-popup">Many items on Vibio are not for sale. <a href="/faq#buy">Find out why</a>.</div>');
+		$(this).prepend('<div class="make-offer-popup">Negotiate a price with this seller. <a href="/faq#buy">Find out how</a>.</div>');
 	}, function() {
 		$('.make-offer-popup').remove();
 	});

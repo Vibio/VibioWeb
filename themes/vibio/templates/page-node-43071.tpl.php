@@ -84,5 +84,32 @@
 			<?php echo $content_bottom;?>
 			<?php echo $footer;?>
 		</div>
+		<script type="text/javascript">
+			$(document).ready(function() {
+
+				$('#nav ul li:eq(0)').click(function() {
+					$('li').removeClass('active');
+					$(this).addClass('active');
+					$('#photo-3, #photo-2').hide();
+					$('#photo-1').fadeIn();
+				});
+				$('#nav ul li:eq(1)').click(function() {
+					$('li').removeClass('active');
+					$(this).addClass('active');
+					$('#photo-1, #photo-3').hide();
+					$('#photo-2').fadeIn();
+				});
+				$('#nav ul li:eq(2)').click(function() {
+					$('li').removeClass('active');
+					$(this).addClass('active');
+					$('#photo-1, #photo-2').hide();
+					$('#photo-3').fadeIn();
+				});
+			});
+			$(window).load(function() {
+				$('#photo-2, #photo-3').hide();
+			});
+
+		</script>
 	</body>
 </html>

@@ -48,24 +48,24 @@
 				</p>
 				<ul id="row-1">
 					<li>
-						<a href="/collections/315"><img src="/themes/vibio/images/landing/images/watch_1.png" alt="Some Watch"/></a>
+						<a href="/collections/315" target="_blank"><img src="/themes/vibio/images/landing/images/watch_1.png" alt="Some Watch"/></a>
 					</li>
 					<li>
-						<a href="/collections/315"><img src="/themes/vibio/images/landing/images/watch_2.png" alt="Michael Kors Quartz Brown Gem Dial Tortoiseshell Band - Women's Watch"/></a>
+						<a href="/collections/315" target="_blank"><img src="/themes/vibio/images/landing/images/watch_2.png" alt="Michael Kors Quartz Brown Gem Dial Tortoiseshell Band - Women's Watch"/></a>
 					</li>
 					<li>
-						<a href="/collections/315"><img src="/themes/vibio/images/landing/images/watch_3.png" alt="Some Watch"/></a>
+						<a href="/collections/315" target="_blank"><img src="/themes/vibio/images/landing/images/watch_3.png" alt="Some Watch"/></a>
 					</li>
 				</ul>
 				<ul id="row-2">
 					<li>
-						<a href="/collections/35"><img src="/themes/vibio/images/landing/images/watch_4.png" alt="Omega Men's 2221.80.00 Seamaster 300M Quartz 'James Bond' Blue Dial Watch "/></a>
+						<a href="/collections/35" target="_blank"><img src="/themes/vibio/images/landing/images/watch_4.png" alt="Omega Men's 2221.80.00 Seamaster 300M Quartz 'James Bond' Blue Dial Watch "/></a>
 					</li>
 					<li>
-						<a href="/collections/35"><img src="/themes/vibio/images/landing/images/watch_5.png" alt="Marc Ecko E20058G1 The Brig Gents Watch"/></a>
+						<a href="/collections/35" target="_blank"><img src="/themes/vibio/images/landing/images/watch_5.png" alt="Marc Ecko E20058G1 The Brig Gents Watch"/></a>
 					</li>
 					<li>
-						<a href="/collections/35"><img src="/themes/vibio/images/landing/images/watch_6.png" alt="TAG Heuer Men's CW9110.FC6177 Monaco 69 Ana-Digi Chronograph Watch"/></a>
+						<a href="/collections/35" target="_blank"><img src="/themes/vibio/images/landing/images/watch_6.png" alt="TAG Heuer Men's CW9110.FC6177 Monaco 69 Ana-Digi Chronograph Watch"/></a>
 					</li>
 				</ul>
 			</div>
@@ -84,5 +84,32 @@
 			<?php echo $content_bottom;?>
 			<?php echo $footer;?>
 		</div>
+		<script type="text/javascript">
+			$(document).ready(function() {
+
+				$('#nav ul li:eq(0)').click(function() {
+					$('li').removeClass('active');
+					$(this).addClass('active');
+					$('#photo-3, #photo-2').hide();
+					$('#photo-1').fadeIn();
+				});
+				$('#nav ul li:eq(1)').click(function() {
+					$('li').removeClass('active');
+					$(this).addClass('active');
+					$('#photo-1, #photo-3').hide();
+					$('#photo-2').fadeIn();
+				});
+				$('#nav ul li:eq(2)').click(function() {
+					$('li').removeClass('active');
+					$(this).addClass('active');
+					$('#photo-1, #photo-2').hide();
+					$('#photo-3').fadeIn();
+				});
+			});
+			$(window).load(function() {
+				$('#photo-2, #photo-3').hide();
+			});
+
+		</script>
 	</body>
 </html>

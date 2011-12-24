@@ -19,7 +19,7 @@ a:hover {
 a:visited {
 	color: #496F8E
 }
-#head-right, #watches-text p, #slide-left p, ul, #featured-1, #featured-2 p, #featured-3 p,.region-footer {
+#head-right, #watches-text p, #slide-left p, ul, #featured-1, #featured-2 p, #featured-3 p, .region-footer {
 	font-family: Helvetica;
 }
 #wrapper {
@@ -99,7 +99,9 @@ p {
 	color: #79AFBF;
 }
 #slide-right {
-	position: relative
+	position: relative;
+	float: left;
+	width: 630px;
 }
 ul {
 	list-style: none;
@@ -107,30 +109,44 @@ ul {
 	padding: 0;
 }
 li {
-	display: inline
+	float: left;
+}
+.active {
+	color: red;
+	background: url(../images/landing/images/hover_slide.png) no-repeat;
 }
 #slide-right li {
-	margin: 0;
-	padding: 0;
-	padding: 3px 5px;
 	text-align: center;
-	width: 10px;
 	cursor: pointer;
-	font-size: 15px
+	font-size: 15px;
+	
+}
+#slide-right li a {
+	text-decoration: none;
+	height: 23px;
+	width: 22px;
+	display: block;
+	line-height: 24px;
 }
 #slide-right li:hover {
-	background: #000000
+	background: url(../images/landing/images/hover_slide.png) no-repeat 0 -23px;
 }
 #nav {
 	margin: 0;
 	padding: 0;
 	position: absolute;
-	top: 20px;
-	right: 21px;
-	width: 65px;
+	top: 18px;
+	right: 14px;
+	width: 73px;
 }
 #photos {
-	padding-top: 43px
+	padding-top: 43px;
+}
+#photo-2, #photo-3 {
+	text-align: center;
+	margin-right: 21px;
+	background:#000000;
+	padding-top: 5px
 }
 #featured-1 {
 	color: #556371;
@@ -159,7 +175,7 @@ li {
 	font-size: 26px;
 	margin-top: 0
 }
-#content-bottom-left{
+#content-bottom-left {
 	color: #556371;
 	width: 424px;
 	float: left;
@@ -167,10 +183,10 @@ li {
 	margin: 68px 61px 0 30px;
 	line-height: 34px
 }
-#facebook-bottom{
+#facebook-bottom {
 	margin: 10px 0 28px
 }
-#content-bottom-right{
+#content-bottom-right {
 	padding-top: 15px
 }
 .region-footer {
@@ -179,7 +195,7 @@ li {
 	text-align: right;
 	font-size: 11px;
 }
-.region-footer p{
+.region-footer p {
 	padding: 20px 20px 0 0;
 }
 .clears, .clearfix {

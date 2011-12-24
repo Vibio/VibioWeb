@@ -42,6 +42,7 @@
 			<?php
 			echo $content;
 			?>
+			<div id="seperator-1"></div>
 			<div id="featured-1">
 				<p id="text">
 					Watches Featured on Vibio

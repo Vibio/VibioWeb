@@ -1,0 +1,14 @@
+name = Node reference auto-create
+description = Defines a nodereference widget for auto-creating nodes. The widget auto-creates a node and then updates its title on change.
+php = 5
+core = 6.x
+package = CCK
+dependencies[] = content
+dependencies[] = nodereference
+
+; Information added by drupal.org packaging script on 2011-02-25
+version = "6.x-1.x-dev"
+core = "6.x"
+project = "nodereference_autocreate"
+datestamp = "1298619745"
+

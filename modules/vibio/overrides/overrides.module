@@ -69,6 +69,8 @@ function overides_remessagify_seller_form_submit($form, &$form_state) {
 
 function overrides_form_alter($form, &$state, $id)
 {
+
+
 	// stephen 20110901
 	// add another function to the submit process, at the end, which 
 	//	re-sets the drupal_set_message.

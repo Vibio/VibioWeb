@@ -31,7 +31,13 @@ function product_admin(&$state)
 	));
 }
 
-function product_ajax_add_form($state, $product)
+/* function product_ajax_add_form($state, $product, $possess)
+  This is a somewhat dizzying form: when you want to add an item,
+   instead you call this function to add a product, then add all the pieces
+   to add an item instead.
+  possess = have, want, like
+*/
+function product_ajax_add_form($state, $product, $possess)
 {
 	global $user;
 	
@@ -43,6 +49,29 @@ function product_ajax_add_form($state, $product)
 		),
 	);
 	
+	// Add Possession value
+ 	switch($possess) {
+		case 'like':
+			$possess_int = 30;	
+			break;
+		case 'want':
+			$possess_int = 20;
+			break;
+		default:
+			$possess_int = 10;
+	}
+
+	$form['field_have_want_like'] = array(
+		"#title"		=> t("$possess ... Have it, Want it, Like it?"),
+		"#type"			=> "select",
+		"#options" => array(
+			10 => "Have",
+			20 => "Want",
+			30 => "Like"
+		),
+		"#default_value"=> $possess_int,
+	);
+
 	if (module_exists("collection"))
 	{
 		module_load_include("inc", "collection");
@@ -90,6 +119,28 @@ function product_ajax_add_form($state, $product)
 		"#options"		=> _privacy_options(),
 		"#default_value"=> privacy_get($user->uid, "account_setting", "item_default"),
 	);
+
+	// Figure out how to get default collections
+	// new_collection.  Have to create form field by hand.  Everything else
+	//  in this odd form is blank or super-custom.
+	// We're getting an item via the $product.
+
+// $edit[$field->name], -> I see this in demos, but where could #edit come from
+	// Can I load a blank node?  Or see how cck module does it?
+
+	// If change "Create new collection" replace every instance in code
+	$form['collection'] = array(
+		"#title"		=> t("Choose Collection"),
+// Oh, please just use defaults and keep things simpler...
+		"#type"			=> "select",
+		"#options" => array("Create new collection", "test", "books", "more", "what if more than 5", "and another", "why is collections with height not this", "fix this crazy form grep this"),
+//		"#options"		=> _privacy_options(),
+//		"#default_value"=> privacy_get($user->uid, "account_setting", "item_default"),
+
+// THIS CHANGES THE WAY THE FORM LOOKS, taller      "#multiple"   => true,
+
+	);
+	
 	
 	$form['submit'] = array(
 		"#type"	=> "submit",

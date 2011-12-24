@@ -1,0 +1,243 @@
+<?php
+// $Id: nodereference_field.test,v 1.1 2009/06/12 18:31:17 boombatower Exp $
+
+/**
+ * @file
+ * Tests for nodereference_field.
+ */
+
+module_load_include('test', 'nodereference_autocreate');
+
+/**
+ * Test nodereference_field CCK functionality.
+ */
+class NodeReferenceFieldTestCase extends NodeReferenceAutocreateFunctionalBaseTestCase {
+
+  /**
+   * Text field added to content type.
+   */
+  protected $fieldText;
+
+  /**
+   * Administrative settings set for the nodereference_autocreate field.
+   */
+  protected $adminSettings;
+
+  /**
+   * Old node type array.
+   */
+  protected $typeOld;
+
+  /**
+   * Old text field array.
+   */
+  protected $fieldTextOld;
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Node reference field',
+      'description' => 'Create custom content type and ensure that referenced fields behave as they should.',
+      'group' => 'CCK',
+    );
+  }
+
+  public function setUp() {
+    parent::setUp('content', 'text', 'optionwidgets', 'nodereference', 'nodereference_autocreate', 'nodereference_field');
+    $required_permissions = array(
+      'administer content types',
+      'access content',
+      'administer nodes',
+      'access administration pages'
+    );
+    $this->user = $this->drupalCreateUser($required_permissions);
+    $this->drupalLogin($this->user);
+  }
+
+  /**
+   * Test adding a content type and ensure that it functions correctly when
+   * adding and saving node values.
+   */
+  public function testAddContentType() {
+    $this->createContentType();
+    $this->checkAutoCreate();
+
+    $this->addTextField();
+    $this->addTextFieldMultiple();
+    $this->referenceTextField();
+    $this->referenceTextFieldMultiple();
+    $this->createNode();
+
+    // Set the referenced type to a different node type to check a
+    // non-recursive relationship.
+    $this->typeOld = $this->type;
+    $this->fieldTextOld = $this->fieldText;
+
+    $this->createContentType();
+    $this->addTextField();
+    $this->referenceTextField($this->typeOld['type']);
+    $this->referenceTextField(NULL, $this->fieldTextOld['_add_new_field[field_name]']);
+    $this->createNodeNonRecusive();
+
+  }
+
+  /**
+   * Add a text field to the custom content type.
+   */
+  public function addTextField() {
+    // Add field to content type.
+    $this->fieldText = array(
+      '_add_new_field[label]' => $this->randomName(),
+      '_add_new_field[field_name]' => strtolower($this->randomName()),
+      '_add_new_field[type]' => 'text',
+      '_add_new_field[widget_type]' => 'text_textfield',
+    );
+    $this->drupalPost($this->type['url'] . '/fields', $this->fieldText, 'Save');
+
+    // Save text field
+    $this->drupalPost(NULL, array(), 'Save field settings');
+    $this->assertText('Added field ' . $this->fieldText['_add_new_field[label]'] . '.', 'Field save successful');
+  }
+
+  /**
+   * Add a text field to the custom content type.
+   */
+  public function addTextFieldMultiple() {
+    // Add field to content type.
+    $this->fieldTextMultiple = array(
+      '_add_new_field[label]' => $this->randomName(),
+      '_add_new_field[field_name]' => strtolower($this->randomName()),
+      '_add_new_field[type]' => 'text',
+      '_add_new_field[widget_type]' => 'text_textfield',
+    );
+    $this->drupalPost($this->type['url'] . '/fields', $this->fieldTextMultiple, 'Save');
+
+    // Save text field
+    $edit = array(
+      'multiple' => 1,
+    );
+    $this->drupalPost(NULL, $edit, 'Save field settings');
+    $this->assertText('Added field ' . $this->fieldTextMultiple['_add_new_field[label]'] . '.', 'Field (multiple) save successful');
+  }
+
+  /**
+   * Reference the text field in the nodereference_autocreate field settings.
+   */
+  public function referenceTextField($content_type = NULL, $text_field = NULL) {
+    if ($content_type) {
+      $edit = array(
+        'referenceable_types[' . $this->type['type'] . ']' => FALSE,
+        'referenceable_types[' . $content_type . ']' => TRUE,
+      );
+      $this->drupalPost($this->type['url'] . '/fields/field_' . $this->field['_add_new_field[field_name]'], $edit, 'Save field settings');
+      return;
+    }
+
+    if (!$text_field) {
+      $text_field = $this->fieldText['_add_new_field[field_name]'];
+    }
+
+    $this->adminSettings = array(
+      'nodereference_field_fieldset_title' => $this->randomName(),
+      'nodereference_field_fieldset_description' => $this->randomName(48),
+      'referenceable_fields[title][region]' => 'enabled',
+      'referenceable_fields[title][weight]' => -1,
+      'referenceable_fields[field_' . $text_field . '][region]' => 'enabled',
+      'referenceable_fields[field_' . $text_field . '][weight]' => 0,
+    );
+    $this->drupalPost($this->type['url'] . '/fields/field_' . $this->field['_add_new_field[field_name]'], $this->adminSettings, 'Save field settings');
+    $this->assertRaw(t('Saved field %label.', array('%label' => $this->field['_add_new_field[label]'])), 'Field reference successfully saved');
+  }
+
+  /**
+   * Ensure that the option is not given to reference a multiple value field.
+   */
+  public function referenceTextFieldMultiple() {
+    $this->drupalGet($this->type['url'] . '/fields/field_' . $this->field['_add_new_field[field_name]']);
+    $this->assertNoFieldByName('referenceable_fields[field_' . $this->fieldTextMultiple['_add_new_field[field_name]'] . '][region]', '', 'Reference to multiple value field no displayed.');
+  }
+
+  /**
+   * Create node using drupalPost() to ensure that the field widgets displays
+   * properly and saves values.
+   */
+  public function createNode() {
+    // Ensure that the fieldset title and description are displayed correctly.
+    $this->drupalGet('node/add/' . str_replace('_', '-', $this->type['type']));
+    $this->assertText($this->adminSettings['nodereference_field_fieldset_title'], 'Fieldset title found');
+    $this->assertText($this->adminSettings['nodereference_field_fieldset_description'], 'Fieldset description found');
+
+    // Set some values on node and ensure that it saves properly.
+    $field_name = 'field_' . $this->field['_add_new_field[field_name]'] . '[0][nid][nid]';
+    $field_name_text_local = 'field_' . $this->fieldText['_add_new_field[field_name]'] . '[0][value]';
+    $field_name_text_foreign = 'nodereference_field_field_' . $this->fieldText['_add_new_field[field_name]'] . '[0][value]';
+    $edit = array(
+      'title' => $this->randomName(),
+      'body' => $this->randomName(80),
+      $field_name => $this->randomName(),
+      $field_name_text_local => $this->randomName(),
+      $field_name_text_foreign => $this->randomName(),
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+
+    // Find link to referenced node.
+    $title = $edit[$field_name];
+    $link = $this->xpath('//a[text()="' . $title . '"]');
+    if ($this->assertTrue($link, 'Found link to sub node')) {
+      $link = $link[0];
+
+      // The link should be in the form 'node/#', grab the nid from the end and
+      // load the node object.
+      $parts = explode('/', $link['href']);
+      $node = node_load(array_pop($parts));
+
+      $this->assertEqual($node->title, $title, 'Node title matches');
+
+      // Ensure that the title of the node reference has the foreign field value.
+      $this->drupalGet("node/{$node->nid}/edit");
+      $this->assertFieldByName($field_name_text_local, $edit[$field_name_text_foreign], 'Field reference value found');
+    }
+  }
+
+  /**
+   * Create a node using the recursive nodereference_field relationship.
+   */
+  public function createNodeNonRecusive() {
+    // Ensure that the fieldset title and description are displayed correctly.
+    $this->drupalGet('node/add/' . str_replace('_', '-', $this->type['type']));
+    $this->assertText($this->adminSettings['nodereference_field_fieldset_title'], 'Fieldset title found');
+    $this->assertText($this->adminSettings['nodereference_field_fieldset_description'], 'Fieldset description found');
+
+    // Set some values on node and ensure that it saves properly.
+    $field_name_foreign = 'field_' . $this->field['_add_new_field[field_name]'] . '[0][nid][nid]';
+    $field_name_text_foreign = 'nodereference_field_field_' . $this->fieldTextOld['_add_new_field[field_name]'] . '[0][value]';
+    $edit = array(
+      'title' => $this->randomName(),
+      'body' => $this->randomName(80),
+      $field_name_foreign => $this->randomName(),
+      $field_name_text_foreign => $this->randomName(),
+    );
+    $this->drupalPost(NULL, $edit, 'Save');
+
+    // Get the NID of the parent node.
+    $parts = explode('/', $this->getUrl());
+    $nid = array_pop($parts);
+
+    // Find link to referenced node.
+    $title = $edit[$field_name_foreign];
+    $link = $this->xpath('//a[text()="' . $title . '"]');
+    if ($this->assertTrue($link, 'Found link to sub node')) {
+      $link = $link[0];
+
+      // The link should be in the form 'node/#', grab the nid from the end and
+      // load the node object.
+      $parts = explode('/', $link['href']);
+      $node = node_load(array_pop($parts));
+
+      $this->assertEqual($node->title, $title, 'Node title matches');
+
+      // Ensure that the title of the node reference has the foreign field value.
+      $this->drupalGet("node/$nid/edit");
+      $this->assertFieldByName($field_name_text_foreign, $edit[$field_name_text_foreign], 'Field reference value found');
+    }
+  }
+}

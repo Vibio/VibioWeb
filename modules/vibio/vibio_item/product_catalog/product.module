@@ -213,11 +213,21 @@ function product_theme()
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
 		// Create the want link/button, that's all.
+/*
+v1.0: not like HAVE button
 		"product_inventory_want"=> array(
 			"arguments"	=> array("nid"	=> false),
 			"template"	=> "templates/product/inventory-want",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+*/
+// v1.5: like HAVE button
+		"product_inventory_want"	=> array(
+			"arguments"	=> array("nid"	=> false, "searchcrumb" => "", $variant => "addtest"),
+			"template"	=> "templates/product/inventory-want",
+			"path"		=> drupal_get_path("theme", "vibio"),
+		),
+	
 		"product_inventory_manage_link"	=> array(
 			"arguments"	=> array("product"	=> false, "searchcrumb" => ""), //, "variant" => "test"),
 			"template"	=> "templates/product/inventory-manage-link",
@@ -244,6 +254,7 @@ function product_preprocess_node(&$vars)
 	}
 }
 
+// Make an item have the same title as the parent Product
 function product_form_vibio_item_node_form_alter(&$form, &$state)
 {
 	$product = node_load($form['#node']->product_nid);
@@ -260,13 +271,15 @@ function product_form_vibio_item_node_form_alter(&$form, &$state)
 	);
 }
 
+// This should run during a normal node/add, any other time?
 function product_form_alter(&$form, &$state, $id)
 {
+	// New Item/Product via: /product/add
 	if ($id == "product_node_form")
 	{
+		// Fiddles with the form, unset then set some components
 		_vibio_item_unset($form, "product");
 		_vibio_item_defaults($form, "product");
-
 		// Replace node_form_submit with our similar wrapper
 		$form['buttons']['submit']['#submit'] = array('product_node_form_submit_wrapper');
 	}
@@ -447,19 +460,22 @@ function product_preprocess_search_results(&$vars)
 	}
 }
 
-/* two functions dealing with have-want, one for search, one for view */
+/* two functions dealing with have-want buttons, 
+     one for search, one for view
+		 main question is do you own this product alread. */
 function product_preprocess_search_result(&$vars)
 {
 	if ($vars['type'] == "vibio_item")
 	{
 		$item_nid = product_user_owns_product($vars['result']['node']->nid);
 		$vars['search_links'] .= $item_nid ? l(t("You Own This!"), "node/{$item_nid}", array('attributes' => array('class' => 'you-own'))) : theme("product_inventory_add", $vars['result']['node']->nid);
+		// ToDo: figure out something like product_user_wants_product
 		$vars['search_links'] .= $item_nid ? "" : theme("product_inventory_want", $vars['result']['node']->nid); 
 	}
 }
 function product_have_want($nid)
 {
-  $vars = array();  // not a preprocess function despite similiarities
+  //$vars = array();  // not a preprocess function despite similiarities
 	$item_nid = product_user_owns_product($nid);
 	$search_links .= $item_nid ? l(t("You Own This!"), "node/{$item_nid}", array('attributes' => array('class' => 'you-own'))) : theme("product_inventory_add", $nid); // theme just creates the button.
 	$search_links .= $item_nid ? "" : theme("product_inventory_want", $nid); 

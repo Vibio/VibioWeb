@@ -1,0 +1,21 @@
+<?php
+// $Id: nodereference_field.install,v 1.1 2009/06/12 18:31:17 boombatower Exp $
+
+/**
+ * @file
+ * Provide install/uninstall functionality.
+ */
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function nodereference_field_uninstall() {
+  global $conf;
+
+  // Remove all variable settings.
+  foreach ($conf as $key => $value) {
+    if (substr($key, 0, 19) == 'nodereference_field') {
+      variable_del($key);
+    }
+  }
+}

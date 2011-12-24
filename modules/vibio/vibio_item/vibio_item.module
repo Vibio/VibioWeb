@@ -53,8 +53,20 @@ function vibio_item_form_alter(&$form, &$state, $id)
 	
 	if ($id == "vibio_item_node_form")
 	{	
-		_vibio_item_unset($form);
+		// Also of note:
+		// modules/vibio/vibio_item/collection/collection.module:function collection_form_vibio_item_node_form_alter(&$form, &$state)
+		// change title, set product_product_nid: function product_form_vibio_item_node_form_alter(&$form, &$state)
+/*
+print "<h1>State</h1>";
+    print "<pre>";
+    print_r($state);
+    print "</pre>";
+//die("done");
+*/
+		_vibio_item_unset($form); // unset revisions, paths, attachments 
+														  //  stuff we don't need.
 		_vibio_item_defaults($form);
+		_vibio_item_include_collection($form);  // new_collections
 	}
 	elseif ($id == "search_form" && $form['module']['#value'] == "vibio_item" && $user->uid > 0 && !module_exists("product"))
 	{
@@ -359,4 +371,16 @@ function vibio_item_views_api()
 		"api"	=> 2,
 	);
 }
+
+
+// new_collection
+/* Add a new collection when saving the node */
+/* Should this be node_api or node_save -> is there a presave? */
+function vibio_item_node_api(&$node, $op) {
+  // Let modules modify the node before it is saved to the database.
+
+
+}	
+
+
 ?>

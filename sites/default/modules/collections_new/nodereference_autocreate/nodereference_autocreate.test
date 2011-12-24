@@ -1,0 +1,178 @@
+<?php
+
+/**
+ * @file
+ * Tests for nodereference_autocreate.
+ */
+
+/**
+ * Todo: Convert this to unit test after next simpltest backport from 7
+ */
+class NodeReferenceAutocreateUnitTestCase extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Node Reference Autocreate Unit Tests',
+      'description' => '',
+      'group' => 'CCK',
+    );
+  }
+
+  public function setUp() {
+    parent::setUp('content', 'nodereference', 'nodereference_autocreate');
+  }
+
+  /**
+   * Test that hook_widget_info() returns the expected widget array.
+   */
+  public function testHookWidgetInfo() {
+    $expected = array(
+      'nodereference_autocreate' => array(
+        'label' => t('Auto-create node'),
+        'field types' => array('nodereference'),
+        'multiple values' => CONTENT_HANDLE_CORE,
+        'callbacks' => array(
+          'default value' => CONTENT_CALLBACK_DEFAULT,
+        ),
+      ),
+    );
+    $this->assertEqual(nodereference_autocreate_widget_info(), $expected, 'hook_widget_info() is correct');
+  }
+}
+
+/**
+ * Base function test.
+ */
+class NodeReferenceAutocreateFunctionalBaseTestCase extends DrupalWebTestCase {
+
+  protected $user;
+  protected $type;
+  protected $field;
+
+  /**
+   * Create a new content type and add a nodereferences_autocreate field.
+   */
+  public function createContentType() {
+    // Create content type.
+    $this->type = array(
+      'name' => $this->randomName(),
+      'type' => strtolower($this->randomName()),
+      'description' => $this->randomName(),
+    );
+    $this->drupalPost('admin/content/types/add', $this->type, 'Save content type');
+    $this->assertText("The content type {$this->type['name']} has been added.", 'Content type save successful');
+
+    $this->type['url'] = 'admin/content/node-type/' . str_replace('_', '-', $this->type['type']);
+
+    // Add field to content type.
+    $this->field = array(
+      '_add_new_field[label]' => $this->randomName(),
+      '_add_new_field[field_name]' => strtolower($this->randomName()),
+      '_add_new_field[type]' => 'nodereference',
+      '_add_new_field[widget_type]' => 'nodereference_autocreate',
+    );
+    $this->drupalPost($this->type['url'] . '/fields', $this->field, 'Save');
+
+    // Attempt to select multiple referenceable types.
+    $edit = array(
+      'multiple' => 1, // Unlimited.
+      'referenceable_types[page]' => TRUE,
+      'referenceable_types[' . $this->type['type'] . ']' => TRUE,
+    );
+    $this->drupalPost(NULL, $edit, 'Save field settings');
+    $this->assertText('Only one content type can be referenced for widgets of type Auto-create node.', 'Only one referenced type allowed.');
+
+    // Only select a single referenceable type and save field.
+    $edit = array(
+      'multiple' => 1, // Unlimited.
+      'referenceable_types[page]' => FALSE,
+      'referenceable_types[' . $this->type['type'] . ']' => TRUE,
+    );
+    $this->drupalPost(NULL, $edit, 'Save field settings');
+    $this->assertText('Added field ' . $this->field['_add_new_field[label]'] . '.', 'Field save successful');
+  }
+
+  /**
+   * Check that save and update operations work as expected. A node should be
+   * created with specified title and upon change it should be updated.
+   */
+  public function checkAutoCreate() {
+    $pre_max_nid = db_result(db_query('SELECT MAX(nid) FROM {node}'));
+
+    $field_name = 'field_' . $this->field['_add_new_field[field_name]'] . '[0][nid][nid]';
+    $edit = array(
+      'title' => $this->randomName(),
+      'body' => $this->randomName(80),
+      $field_name => $this->randomName(),
+    );
+    $this->drupalPost('node/add/' . str_replace('_', '-', $this->type['type']), $edit, 'Save');
+
+    $post_max_nid = db_result(db_query('SELECT MAX(nid) FROM {node}'));
+
+    // Compare the pre and post max nid to check for node creation.
+    $this->assertTrue($post_max_nid > $pre_max_nid, 'Node created');
+
+    // Find link to referenced node.
+    $title = $edit[$field_name];
+    $link = $this->xpath('//a[text()="' . $title . '"]');
+    if ($this->assertTrue($link, 'Found link to sub node')) {
+      $link = $link[0];
+
+      // The link should be in the form 'node/#', grab the nid from the end and
+      // load the node object.
+      $parts = explode('/', $link['href']);
+      $node = node_load(array_pop($parts));
+
+      $this->assertEqual($node->title, $title, 'Node title matches');
+
+      // Get the NID of the parent node.
+      $parts = explode('/', $this->getUrl());
+      $nid = array_pop($parts);
+
+      // Ensure that the title of the node reference is displayed without [nid:].
+      $this->drupalGet("node/$nid/edit");
+      $this->assertFieldByName($field_name, $node->title, 'Node reference field contains only title');
+
+      // Update the referenced node's title through the parent node and check
+      // that it is updated.
+      $edit = array(
+        $field_name => $this->randomName(),
+      );
+      $this->drupalPost(NULL, $edit, 'Save');
+
+      $this->drupalGet("node/$nid/edit");
+      $this->assertFieldByName($field_name, $edit[$field_name], 'Node reference field contains modified title');
+    }
+  }
+}
+
+/**
+ * Function test implementation.
+ */
+class NodeReferenceAutocreateFunctionalTestCase extends NodeReferenceAutocreateFunctionalBaseTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Node Reference Autocreate Functional Tests',
+      'description' => '',
+      'group' => 'CCK',
+    );
+  }
+
+  public function setUp() {
+    parent::setUp('content', 'text', 'optionwidgets', 'nodereference', 'nodereference_autocreate');
+    $required_permissions = array(
+      'administer content types',
+      'access content',
+      'administer nodes',
+      'access administration pages'
+    );
+    $this->user = $this->drupalCreateUser($required_permissions);
+    $this->drupalLogin($this->user);
+  }
+
+  public function testAddContentType() {
+    $this->createContentType();
+    $this->checkAutoCreate();
+  }
+}

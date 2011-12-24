@@ -1,0 +1,517 @@
+<?php
+// $Id: nodereference_field.module,v 1.2 2009/06/12 19:58:18 boombatower Exp $
+
+/**
+ * @file
+ * Defines a field type for referencing one node's field from another.
+ */
+
+/**
+ * Implementation of hook_menu().
+ */
+function nodereference_field_menu() {
+  $items = array();
+
+  $items['nodereference_field/js_add_more/%/%'] = array(
+    'title' => 'Add more',
+    'page callback' => 'nodereference_field_js_add_more',
+    'page arguments' => array(2, 3),
+    'access arguments' => array('access content'),
+    'file' => 'nodereference_field.pages.inc',
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Implementation of hook_theme().
+ */
+function nodereference_field_theme() {
+  return array(
+    'nodereference_field_content_field_edit_form' => array(
+      'arguments' => array('fieldset' => array()),
+      'file' => 'nodereference_field.admin.inc',
+    ),
+    'nodereference_field_node_edit' => array(
+      'arguments' => array('fieldset' => array()),
+      'file' => 'nodereference_field.pages.inc',
+    ),
+    'nodereference_field_node_view' => array(
+      'arguments' => array('field' => array()),
+      'file' => 'nodereference_field.pages.inc',
+    ),
+  );
+}
+
+/**
+ * Implementation of hook_nodeapi().
+ *
+ * Load values for referenced fields from foreign nodes just like cck does for
+ * local fields.
+ */
+function nodereference_field_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
+  if ($op == 'load' || $op == 'view') {
+    $type = content_types($node->type);
+    if ($type['fields']) {
+      foreach ($type['fields'] as $field) {
+        if ($field['widget']['type'] == 'nodereference_autocreate' &&
+          ($referenceable_fields = variable_get('nodereference_field_' . $field['field_name'] . '_fields', array()))) {
+
+            if ($op == 'load') {
+              nodereference_field_nodeapi_load($node, $type, $field, $referenceable_fields);
+            }
+            else {
+              nodereference_field_nodeapi_view($node, $type, $field, $referenceable_fields);
+            }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Load field values for referenced fields into $node.
+ *
+ * @param $node
+ *   Node to load referenced field values into.
+ * @param $type
+ *   Content type array of information, as returned by content_types().
+ * @param $field
+ *   Field definition to which referenced fields relate.
+ * @param $referenceable_fields
+ *   Referenceable fields for the current field.
+ */
+function nodereference_field_nodeapi_load(&$node, $type, $field, $referenceable_fields) {
+  if (!isset($node->$field['field_name'])) {
+    // On node creation do not try to load values.
+    return;
+  }
+
+  // Cycle through all the rows for the nodereference_autocreate field.
+  foreach ($node->$field['field_name'] as $row_key => $value) {
+    if (!is_numeric($value['nid'])) {
+      continue;
+    }
+
+    // Load referenced node so values for referenced fields can be
+    // extracted and store the values on the parent node with the
+    // appropriate $row_key.
+    $referenced_node = node_load($value['nid']);
+    foreach ($referenceable_fields as $field_name => $field) {
+      if ($field_name != 'title' && $field['region'] == 'enabled') {
+        // Prefix foreign field name with 'nodereference_field_' to prevent conflict
+        // in the case of self-reference.
+        $field_name_foreign = $field_name;
+        $field_name_local = 'nodereference_field_' . $field_name_foreign;
+
+        // Initialize local field array if not set. All referenced
+        // values for this field will be stored in this array.
+        if (!isset($node->$field_name_local)) {
+          $node->$field_name_local = array();
+        }
+
+        // Assuming the the referenced field is is a single value field
+        // then it will be found at index 0. Se the local value at the
+        // $row_key to the foreign value at index 0 so as to allow for
+        // multiple references to foreign fields.
+        $value_local = &$node->$field_name_local;
+        $value_foreign = &$referenced_node->$field_name_foreign;
+        $value_local[$row_key] = $value_foreign[0];
+      }
+    }
+  }
+}
+
+/**
+ * Add the referenced field values into the $node->content array for rendering.
+ *
+ * @param $node
+ *   Node to load referenced field values into.
+ * @param $type
+ *   Content type array of information, as returned by content_types().
+ * @param $field
+ *   Field definition to which referenced fields relate.
+ * @param $referenceable_fields
+ *   Referenceable fields for the current field.
+ */
+function nodereference_field_nodeapi_view(&$node, $type, $field, $referenceable_fields) {
+  // Follow cck view rules, only display if cck has added the display
+  // information for the nodereference_autocreate field.
+  if (isset($node->content[$field['field_name']])) {
+    // Specifiy theme function to render fields as table.
+    $node->content[$field['field_name']]['#theme'] = 'nodereference_field_node_view';
+
+    $items = $node->content[$field['field_name']]['field']['items'];
+    foreach ($items as $row_key => &$item) {
+      // Load the referenced node and build the content array.
+      $referenced_node = node_load($item['#item']['nid']);
+      $referenced_node = node_build_content($referenced_node, FALSE);
+      foreach ($referenceable_fields as $field_name => $field) {
+        if ($field_name != 'title' && $field['region'] == 'enabled') {
+          // Prefix foreign field name with 'nodereference_field_' to prevent conflict
+          // in the case of self-reference.
+          $field_name_foreign = $field_name;
+          $field_name_local = 'nodereference_field_' . $field_name_foreign;
+
+          // Load the entire field definition from the foreign node into the
+          // local node the first time through. After that just load the
+          // individual items.
+          if (!isset($node->content[$field_name_local])) {
+            $node->content[$field_name_local] = $referenced_node->content[$field_name_foreign];
+            $node->content[$field_name_local]['#weight'] = $field['weight'];
+          }
+          else {
+            $node->content[$field_name_local]['field']['items'][$row_key] = $referenced_node->content[$field_name_foreign]['field']['items'][0];
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implementation of hook_form_alter().
+ *
+ * Add referenced fields to node forms were applicable.
+ */
+function nodereference_field_form_alter(&$form, $form_state, $form_id) {
+  // Check that the form is a node add or node edit form.
+  if (isset($form['type']) && isset($form['#node']) && $form['type']['#value'] . '_node_form' == $form_id) {
+    $type = content_types($form['#node']->type);
+    if ($type['fields']) {
+      foreach ($type['fields'] as $field) {
+        if ($field['widget']['type'] == 'nodereference_autocreate' &&
+          ($referenceable_fields = variable_get('nodereference_field_' . $field['field_name'] . '_fields', array()))) {
+
+          if (!in_array('nodereference_field_node_form_submit', $form['#submit'])) {
+            // Add submit handler for saving referenced field values.
+            $form['#submit'][] = 'nodereference_field_node_form_submit';
+          }
+
+          // Add referenced fields and place inside fieldset.
+          nodereference_field_element_alter($form, $field, $referenceable_fields);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Add referenced fields and place inside fieldset.
+ *
+ * @param $form
+ *   Form to make modficiation to.
+ * @param $field
+ *   Field to alter and add referenced fields for.
+ * @param $referenceable_fields
+ *   List of referenceable fields from field settings.
+ */
+function nodereference_field_element_alter(&$form, $field, $referenceable_fields) {
+  // Following definition per content_multiple_value_form() in
+  // content.node_form.inc.
+  $field_name_css = str_replace('_', '-', $field['field_name']);
+
+  // Place container around original field in preparation for referenced
+  // fields to be placed inside.
+  $container = $field['field_name'] . '_container';
+  $form[$container] = array(
+    '#type' => 'fieldset',
+    '#title' => variable_get('nodereference_field_' . $field['field_name'] . '_title', ''),
+    '#description' => variable_get('nodereference_field_' . $field['field_name'] . '_description', ''),
+    '#weight' => $form[$field['field_name']]['#weight'],
+    '#theme' => 'nodereference_field_node_edit',
+    '#prefix' => '<div id="' . $field_name_css . '-items">',
+    '#suffix' => '</div>',
+    '#field_name' => $field['field_name'],
+  );
+
+  // Use the assigned value for the weight.
+  $form[$field['field_name']]['#weight'] = $referenceable_fields['title']['weight'];
+
+  // Remove the default theme call to 'content_multiple_values' to
+  // to allow 'nodereference_field_node_edit' to completly override the
+  // theme output. It is necessary for mulitple values since the
+  // default theme functions renders a table with only the
+  // nodereference_autocreate field.
+  $form[$field['field_name']]['#theme'] = '';
+
+  // Place the nodereference_autocreate field inside the container.
+  $form[$container][$field['field_name']] = $form[$field['field_name']];
+
+  // Remove original field definition.
+  unset($form[$field['field_name']]);
+
+  // Load referenced field definitions.
+  $type = nodereference_autocreate_type_get($field['referenceable_types']);
+  $referenced_type = content_types($type);
+  $referenced_fields = $referenced_type['fields'];
+
+  // On node creation there are no values set for the field. Add a
+  // blank value for the nodereference_autocreate field so that the
+  // loop behaves normally and inserts blank fields.
+  if (!isset($form['#node']->$field['field_name'])) {
+    $form['#node']->$field['field_name'] = array(array('nid' => NULL));
+  }
+
+  // If the field stores multiple values then add a blank field at
+  // the end of the array for inserting.
+  if ($field['multiple'] >= 1) {
+    $field_values = &$form['#node']->$field['field_name'];
+    $field_values[] = array('nid' => NULL);
+
+    // See content_multiple_value_form() in content.node_form.inc for
+    // original definition.
+    $path = &$form[$container][$field['field_name']][$field['field_name'] . '_add_more']['#ahah']['path'];
+    $path = str_replace('content/js_add_more/', 'nodereference_field/js_add_more/', $path);
+  }
+
+  foreach ($form['#node']->$field['field_name'] as $row_key => $value) {
+    foreach ($referenceable_fields as $field_name => $referenceable_field) {
+      $field = $referenced_fields[$field_name];
+      if ($field_name != 'title' && $referenceable_field['region'] == 'enabled') {
+        // Prefix foreign field name with 'nodereference_field_' to prevent conflict
+        // in the case of self-reference.
+        $field_name_foreign = $field_name;
+        $field_name_local = 'nodereference_field_' . $field_name_foreign;
+
+        // Maintain $field definition for content_field_form() by editing name
+        // after it has been placed in #field_info.
+        $form['#field_info'][$field_name_local] = $field;
+        $form['#field_info'][$field_name_local]['field_name'] = $field_name_local;
+
+        // Temporarily switch the $node foreign field value with the local field
+        // value in order to trick content_field_form() into using the value.
+        $node = &$form['#node'];
+        $temp = $node->$field_name_foreign;
+        $node->$field_name_foreign = $node->$field_name_local;
+
+        // Shift the value at the $row_key to the first position so it
+        // is used by cck when the field loads the default value.
+        $temp_value = &$node->$field_name_foreign;
+        $store = $temp_value[0];
+        $temp_value[0] = $temp_value[$row_key];
+
+        // Load the field form element.
+        $form_element = (array) content_field_form($form, $form_state, $field);
+        $form_element = (array) $form_element[$field_name];
+
+        // Revert all value modification.
+        $node->$field_name_foreign = $temp;
+
+        // Change all the field name references to the local field name.
+        $form_element['#field_name'] = $field_name_local;
+        foreach (element_children($form_element) as $key) {
+          $form_element[$key]['#field_name'] = $field_name_local;
+        }
+
+        // Use the weight assigned to the referenceable_field instead
+        // of the weight related to the foreign node.
+        $form_element['#weight'] = $referenceable_field['weight'];
+
+        // Add the field element to the container. The first time the
+        // field is added to the container use the whole $form_element.
+        // The second time only place the specific field for the
+        // $row_key offset.
+        if (!isset($form[$container][$field_name_local])) {
+          $form[$container][$field_name_local] = $form_element;
+        }
+        else {
+          $form[$container][$field_name_local][$row_key] = $form_element[0];
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Additional node form submit handler.
+ *
+ * Used to store referenced field values on foreign nodes.
+ */
+function nodereference_field_node_form_submit($form, &$form_state) {
+  $type = content_types($form['#node']->type);
+  if ($type['fields']) {
+    foreach ($type['fields'] as $field) {
+      if ($field['widget']['type'] == 'nodereference_autocreate' &&
+        ($referenceable_fields = variable_get('nodereference_field_' . $field['field_name'] . '_fields', array()))) {
+        $field['field_name'];
+
+        foreach ($form_state['values'][$field['field_name']] as $row_key => $value) {
+          if (!is_numeric($value['nid'])) {
+            continue;
+          }
+
+          // Reset the node cache to ensure that any changes made to referenced
+          // node by cck, such as nodereference_autocreate title change, are
+          // not overriden.
+          $referenced_node = node_load($value['nid'], NULL, TRUE);
+
+          foreach ($referenceable_fields as $field_name => $referenceable_field) {
+            if ($field_name != 'title' && $referenceable_field['region'] == 'enabled') {
+              // Prefix foreign field name with 'nodereference_field_' to prevent conflict
+              // in the case of self-reference.
+              $field_name_foreign = $field_name;
+              $field_name_local = 'nodereference_field_' . $field_name_foreign;
+
+              // In case of a multiple value nodereference field assign the
+              // current value related to the current referenced node given by
+              // the NID at nodereference[$key] to the first value on the foreign
+              // node. This assumes that the foreign node does not have a
+              // multiple value field being referenced.
+              $referenced_node->$field_name_foreign = array($form_state['values'][$field_name_local][$row_key]);
+            }
+          }
+
+          node_save($referenced_node);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implementation of hook_form_FORM_ID_alter(): content_field_edit_form.
+ *
+ * Add the nodereference_field fieldset to the nodereference_autocreate settings
+ * page.
+ */
+function nodereference_field_form_content_field_edit_form_alter(&$form, $form_state) {
+  if ($form['#field']['widget']['type'] != 'nodereference_autocreate') {
+    // If widget type is not nodereference_autocreate then nodereference_field does
+    // not apply.
+    return;
+  }
+
+  // Define nodereference_field fieldset.
+  $form['field']['nodereference_field'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Field references'),
+    '#description' => t('Field references will extract their value from the referenced node.'),
+    '#collapsible' => TRUE,
+  );
+
+  // Allow title and description of containing fieldset to be customized.
+  $form['field']['nodereference_field']['fieldset'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Fieldset'),
+    '#description' => t('The title and description displayed on the fieldset surrounding the ' .
+      'nodereference_autocreate field and referenced fields on the node edit form.'),
+  );
+  $form['field']['nodereference_field']['fieldset']['nodereference_field_fieldset_title'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Title'),
+    '#default_value' => variable_get('nodereference_field_' . $form['#field']['field_name'] . '_title', ''),
+  );
+  $form['field']['nodereference_field']['fieldset']['nodereference_field_fieldset_description'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Description'),
+    '#default_value' => variable_get('nodereference_field_' . $form['#field']['field_name'] . '_description', ''),
+  );
+
+  // Extract the currently referenceable types reguardless of new or
+  // pre-existing field.
+  $referenceable_types = $form_state['post']['referenceable_types'] ? $form_state['post']['referenceable_types'] :
+    $form['field']['referenceable_types']['#default_value'];
+  $type = content_types(nodereference_autocreate_type_get($referenceable_types));
+
+  $form['field']['nodereference_field']['referenceable_fields'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Fields'),
+    '#description' => t('The fields listed below are defined on the referenced content type. Enabled fields ' .
+      'will be displayed along side the node reference auto-create field and will be editable to the user. ' .
+      'Please note that fields that may contain multiple values will not be displayed in the list. ' .
+      'Fields on top will be displayed in the left-most column of the table when edited or viewed.'),
+    '#tree' => TRUE,
+    '#theme' => 'nodereference_field_content_field_edit_form',
+  );
+  $weight_delta = round(count($type['fields']) / 2);
+
+  $referenceable_fields = variable_get('nodereference_field_' . $form['#field']['field_name'] . '_fields', array());
+  if (isset($type['fields'])) {
+    // Add node title and body fields.
+    $type['fields'][] = array(
+      'field_name' => 'title',
+      'type' => '',
+      'widget' => array(
+        'label' => t('Title'),
+      ),
+    );
+//    $type['fields'][] = array(
+//      'field_name' => 'body',
+//      'type' => '',
+//      'widget' => array(
+//        'label' => t('Body'),
+//      ),
+//    );
+
+    foreach ($type['fields'] as $field) {
+      if ($field['type'] == 'nodereference' || $field['multiple'] >= 1) {
+        // Prevent infinite references and references to multiple value fields.
+        continue;
+      }
+
+      $row = array();
+
+      $row['label'] = array(
+        '#type' => 'item',
+        '#value' => $field['widget']['label'],
+      );
+      $row['name'] = array(
+        '#type' => 'item',
+        '#value' => $field['field_name'],
+      );
+      $row['type'] = array(
+        '#type' => 'item',
+        '#value' => $field['type'],
+      );
+      $row['weight'] = array(
+        '#type' => 'weight',
+        '#default_value' => isset($referenceable_fields[$field['field_name']]) ? $referenceable_fields[$field['field_name']]['weight'] : 0,
+        '#delta' => $weight_delta,
+      );
+      $row['#weight'] = $row['weight']['#default_value']; // For element_sort().
+      $row['region'] = array(
+        '#type' => 'select',
+        '#default_value' => isset($referenceable_fields[$field['field_name']]) ? $referenceable_fields[$field['field_name']]['region'] : 'disabled',
+        '#options' => array(
+          'enabled' => t('Enabled'),
+          'disabled' => t('Disabled'),
+        ),
+      );
+
+      $form['field']['nodereference_field']['referenceable_fields'][$field['field_name']] = $row;
+    }
+  }
+
+  $form['#submit'][] = 'nodereference_field_content_field_edit_form_submit';
+}
+
+/**
+ * Store the nodereference_field settings.
+ */
+function nodereference_field_content_field_edit_form_submit($form, &$form_state) {
+  $field_name = $form_state['values']['field_name'];
+  variable_set('nodereference_field_' . $field_name . '_title', $form_state['values']['nodereference_field_fieldset_title']);
+  variable_set('nodereference_field_' . $field_name . '_description', $form_state['values']['nodereference_field_fieldset_description']);
+  variable_set('nodereference_field_' . $field_name . '_fields', $form_state['values']['referenceable_fields']);
+}
+
+/**
+ * Implementation of hook_form_FORM_ID_alter(): content_field_remove_form.
+ *
+ * Add submit handler to field remove form.
+ */
+function nodereference_field_form_content_field_remove_form_alter(&$form, $form_state) {
+  $form['#submit'][] = 'nodereference_field_content_field_remove_form_submit';
+}
+
+/**
+ * Remove the related configuration variables for the deleted field.
+ */
+function nodereference_field_content_field_remove_form_submit($form, &$form_state) {
+  $field_name = $form_state['values']['field_name'];
+  variable_del('nodereference_field_' . $field_name . '_title');
+  variable_del('nodereference_field_' . $field_name . '_description');
+  variable_del('nodereference_field_' . $field_name . '_fields');
+}

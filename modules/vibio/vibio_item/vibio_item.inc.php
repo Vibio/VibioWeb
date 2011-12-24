@@ -226,6 +226,15 @@ function _vibio_item_access($node)
 	return privacy_get($node->uid, "node", $node->nid) <= privacy_get_access_level($node->uid);
 }
 
+/* _vibio_item_include_collection(&$form)         // new_collections
+  Load the fields from the Collection CCK, and add them to the form.
+	Have to do it here, not just in template, so validation works.
+*/
+function _vibio_item_include_collection(&$form) {
+	
+}
+
+
 function _vibio_item_unset(&$form, $type="vibio_item")
 {
 	if ($type == "vibio_item")

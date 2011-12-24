@@ -1,0 +1,184 @@
+<?php
+
+/**
+ * @file
+ * Defines a nodereference widget for auto-creating nodes. The widget
+ * auto-creates a node and then updates its title on change.
+ */
+
+/**
+ * Implementation of hook_widget_info().
+ */
+function nodereference_autocreate_widget_info() {
+  return array(
+    'nodereference_autocreate' => array(
+      'label' => t('Auto-create node'),
+      'field types' => array('nodereference'),
+      'multiple values' => CONTENT_HANDLE_CORE,
+      'callbacks' => array(
+        'default value' => CONTENT_CALLBACK_DEFAULT,
+      ),
+    ),
+  );
+}
+
+/**
+ * Implementation of hook_widget().
+ */
+function nodereference_autocreate_widget(&$form, &$form_state, $field, $items, $delta = 0) {
+  switch ($field['widget']['type']) {
+    case 'nodereference_autocreate':
+      $element = array(
+        '#type' => 'text_textfield',
+        '#default_value' => isset($items[$delta]) ? $items[$delta] : NULL,
+        '#value_callback' => 'nodereference_autocreate_value',
+        '#process' => array('nodereference_autocreate_process'),
+      );
+      break;
+  }
+  return $element;
+}
+
+/**
+ * Value for a nodereference auto-create element.
+ *
+ * Substitute in the node title for the node ID.
+ */
+function nodereference_autocreate_value($element, $edit = FALSE) {
+  $field_key = $element['#columns'][0];
+  if ($nid = $element['#default_value'][$field_key]) {
+    $value = db_result(db_query(db_rewrite_sql('SELECT n.title FROM {node} n WHERE n.nid = %d'), $nid));
+    return array($field_key => $value);
+  }
+  return array($field_key => NULL);
+}
+
+/**
+ * Process an individual element.
+ *
+ * @see nodereference_autocomplete_process()
+ */
+function nodereference_autocreate_process($element, $edit, $form_state, $form) {
+  $field_key = $element['#columns'][0];
+
+  $element[$field_key] = array(
+    '#type' => 'text_textfield',
+    '#default_value' => isset($element['#value']) ? $element['#value'] : '',
+    // The following values were set by the content module and need to be
+    // passed down to the nested element.
+    '#title' => $element['#title'],
+    '#required' => $element['#required'],
+    '#description' => $element['#description'],
+    '#field_name' => $element['#field_name'],
+    '#type_name' => $element['#type_name'],
+    '#delta' => $element['#delta'],
+    '#columns' => $element['#columns'],
+  );
+  if (empty($element[$field_key]['#element_validate'])) {
+    $element[$field_key]['#element_validate'] = array();
+  }
+  array_unshift($element[$field_key]['#element_validate'], 'nodereference_autocreate_validate');
+
+  return $element;
+}
+
+/**
+ * Validate an individual element.
+ *
+ * Create a node with the specified value on first save. Update title of
+ * referenced node on each additional save.
+ */
+function nodereference_autocreate_validate($element, &$form_state) {
+  $field_name = $element['#field_name'];
+  $type_name = $element['#type_name'];
+  $field = content_fields($field_name, $type_name);
+  $field_key  = $element['#columns'][0];
+  $delta = $element['#delta'];
+  $value = $element['#value'][$field_key];
+  $nid = NULL;
+
+  if ($value) {
+    // Load the current value stored in the database.
+    $self = node_load($form_state['values']['nid']);
+    $current_nid = $self->$field_name;
+    $current_nid = $current_nid[$delta]['nid'];
+
+    if ($current_nid) {
+      // Referenced node exists, update its title if changed.
+      $referenced_node = node_load($current_nid);
+      if ($referenced_node->title != $value) {
+        $referenced_node->title = $value;
+        node_save($referenced_node);
+      }
+
+      $nid = $referenced_node->nid;
+    }
+    else {
+      // Create a new node with the specified title.
+      $node = new stdClass();
+      $node->type = nodereference_autocreate_type_get($field['referenceable_types']);
+      $node->title = $value;
+      node_save($node);
+
+      if (!$node->nid) {
+        form_error($element[$field_key], t('%name: failed to create sub node.', array('%name' => t($field['widget']['label']))));
+      }
+      else {
+        $nid = $node->nid;
+      }
+    }
+  }
+  form_set_value($element, $nid, $form_state);
+}
+
+/**
+ * Implementation of hook_form_FORM_ID_alter(): content_field_edit_form.
+ */
+function nodereference_autocreate_form_content_field_edit_form_alter(&$form, $form_state) {
+  if ($form['#field']['widget']['type'] == 'nodereference_autocreate') {
+    $form['field']['referenceable_types']['#description'] .= t('Only one type can be referenced when using the ' .
+      'auto-create node widget. The node type referenced will be used when creating a node.');
+
+    $form['#validate'][] = 'nodereference_autocreate_content_field_edit_form_validate';
+  }
+}
+
+/**
+ * Validate nodereference setting form.
+ *
+ * If widget type is nodereference_autocreate then check for multiple selected
+ * referenceable types.
+ */
+function nodereference_autocreate_content_field_edit_form_validate($form, &$form_state) {
+  if ($form_state['values']['widget_type'] == 'nodereference_autocreate') {
+    $count = 0;
+    if ($form_state['values']['referenceable_types']) {
+      foreach ($form_state['values']['referenceable_types'] as $type => $enabled) {
+        if ($enabled) {
+          $count++;
+        }
+      }
+
+      if ($count > 1) {
+        form_set_error('referenceable_types', t('Only one content type can be referenced for widgets of type <em>Auto-create node</em>.'));
+      }
+    }
+  }
+}
+
+/**
+ * Get the referenced type.
+ *
+ * @param $referenceable_types
+ *   Referenceable types from field form.
+ * @return
+ *   Referenced type.
+ */
+function nodereference_autocreate_type_get(array $referenceable_types) {
+  foreach ($referenceable_types as $type => $enabled) {
+    if ($enabled) {
+      return $type;
+    }
+  }
+  return NULL;
+}

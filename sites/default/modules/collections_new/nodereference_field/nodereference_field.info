@@ -1,0 +1,14 @@
+; $Id: nodereference_field.info,v 1.1 2009/06/12 18:31:17 boombatower Exp $
+name = Node reference field
+description = Defines a field type for referencing one node's field from another.
+php = 5
+core = 6.x
+package = CCK
+dependencies[] = nodereference_autocreate
+
+; Information added by drupal.org packaging script on 2009-11-11
+version = "6.x-1.0"
+core = "6.x"
+project = "nodereference_field"
+datestamp = "1257906040"
+

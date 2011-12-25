@@ -1,6 +1,22 @@
 <?php
 
 /**
+ * Adds OG meta data for the front page, effectively representing Vibio to FB.
+ *
+ * @param <type> $variables
+ */
+function vibio_preprocess_page(&$variables){
+  if(drupal_is_front_page()){
+    global $base_url;
+    $site_image = $base_url . '/'. drupal_get_path('theme', 'vibio') . '/vibio-logo.png';
+    $og_image = '<meta property="og:image" content="' . $site_image . '"/>';
+
+    //This is apparently necessary, see http://api.drupal.org/api/drupal/includes--common.inc/function/drupal_set_html_head/6#comment-4614
+    $variables['head'] .= $og_image;
+  }
+}
+
+/**
 * Adds OG meta data to share an appropriate collection picture with Facebook.
 * Note that vibio_addthis module contains the exact same functionality for vibio
 * product nodes. It'd be great to combine all this functionality in one module, or,
@@ -438,8 +454,6 @@ if(module_exists('automodal')){
 	    ,'draggable' => false)
 	);
 }
-
-
 
 /*function vibio_fieldset($ele)
 {

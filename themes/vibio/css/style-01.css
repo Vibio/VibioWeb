@@ -375,7 +375,9 @@ div.messages ul li{list-style-type:none}
 .not-sale-popup, .make-offer-popup{background:url(../images/white.png) no-repeat;color:#556270;  height:70px; font-size:15px; padding:33px 19px 10px; width:173px;z-index: 500; text-indent:0}
 .not-sale-popup{position:absolute; top:-106px; left:10px}
 #offer-buttons{position: absolute; right: -5px;height: 28px; width: 108px; bottom: 0px}
-.make-offer-popup{position:absolute; top:-109px; left:-6px}
+.make-offer{position: relative; padding-top: 20px}
+.action .make-offer-popup{position:absolute; top:-90px; left:-6px}
+#offer-buttons .make-offer-popup{position:absolute; top:-121px; left:-15px}
 /*layout-fixed*/
 #page-wrapper, 
 .region-page-closure{ margin-left:auto;  margin-right:auto;  width:960px}
@@ -675,7 +677,7 @@ html.js input.throbbing{background-position:99% -14px}
 .collections_view_header{position:absolute; left:125px; top:-57px}
 .collection_list_collection{border-bottom:1px solid #CCC; margin-top:18px}
 div.view-user-collections .collection_list_collection{border:none}
-.manage_collection_link{float:right; padding-right:22px}
+.manage_collection_link{float:right; padding-right:22px; text-align: right}
 table.user-collection-preview{margin:0}
 .collection_image{float:left; margin-right:10px}
 .collection_summary{float:left; width:420px; margin-bottom:10px}
@@ -755,7 +757,8 @@ div.collection_list_item_summary .addthis_default_style{margin:52px 0 0 -3px; wi
 .comment p{margin-top:0}
 .comment .comment_details{font-size:11px}
 .comment table{margin:0}
-a.local_action_button{padding:6px; color:white; font-weight:bold; margin:6px; display:block}
+a.local_action_button{padding:6px 0; color:white; font-weight:bold; margin: 0; display:block}
+#product-manage-ul{list-style: square; padding-left: 17px;}
 /* feature-this flag */
 div.search-flag{position:relative; top:10px}
 /* offers page, see also selling page */

@@ -75,6 +75,51 @@ function product_ajax_add_complete() {
 		$state['values']['o2b_is_negotiable']=false;
 		$state['values']['o2b_allow_offer_views']=true;
 	}
+/*print '<pre>';
+print_r($state);
+die("here");*/
+	// Possession setting
+	//$state['values']['field_have_want_like'] = array(array("value"=>30));
+	// How do we figure out what this should be formatted as?
+	//field_have_want_like[value]
+
+//print_r(array("post is" =>$p)); [field_have_want_like]
+
+/*
+	$state['values']['field_have_want_like'][0]['value'] = 30; 
+	$state['values']['field_have_want_like'] = 20; //*
+	$state['values']['field_have_want_like']['value'] = 30; // this looks right?
+	$state['values']['have_want_like'][0]['value'] = 30; 
+	$state['values']['have_want_like'] = 20; //* 
+	$state['values']['have_want_like']['value'] = 30;
+	$state['field_have_want_like']['#value']['value'] = 20;
+	$state['field_have_want_like']['value']['#value'] = 30;
+*/
+
+
+	// Ok... so this replaces a blank field.  It all looks right,
+	//  but continues to get blanked out, doesn't seem to be saved.
+	// The form is showing this value correctly when I edit the form,
+	//  somehow not print_r'ing after the form is saved... 
+	$state['values']['field_have_want_like'] = array('value' => 30);
+$state['values']['field_have_want_like'][0] =   array('value' => 10);
+$state['values']['field_have_want_like'] = 10;
+$node->field_have_want_like = Array
+                (
+                    '0' => Array
+                        (
+                            'value' => 20
+                        )
+
+                );
+
+
+ 
+	// it must be something like this, but what:
+	// $state['values']['collection_info']['cid']=$cids;	
+
+	// just jam it on the node instead?
+	//print_r($node);
 
 	/* Here's v1.0 collections stuff */
 
@@ -101,24 +146,19 @@ function product_ajax_add_complete() {
 	$messages=drupal_get_messages();
 	$item_nid=$state['nid'];
 
-
-	//Ok, I can't get the state to work.  See "historical" copy of this file
-	//  for many efforts.
-	// Let's go back to my world
-	//  to deal with the have_want_like button.  Terribly innefficient...
+	//Ok, I can't get the state to work.  Let's go back to my world
+	// to deal with the have_want_like button.  Terribly innefficient...
 	$node = node_load($item_nid);
-	// make sure form not tampered, $p is an integer
-	$possess = (int)$p[field_have_want_like];
+//MAKE SURE $p is an integer
 	$node->field_have_want_like = Array
                 (
                     '0' => Array
                         (
-                            'value' => $possess
+                            'value' => $p[field_have_want_like]
                         )
 
                 );
 	node_save($node);
-
 
 
 
@@ -128,6 +168,17 @@ function product_ajax_add_complete() {
 	if (!$state['nid']) {
 		exit(t("There was an error adding the item to your inventory. Please try again later. !close_link",$t_args));
 	}
+
+/*
+print_r($node);
+// Note: $node->title, $node->nid were never set.  There's only enough $node
+//  to get drupal_execute to work.
+exit("This code drives me crazy.  I just tried to save " . $node->title . 
+" 
+with nid " . $node->nid .
+" from product " . $product->title);
+*/
+
 
 
 	/* COLLECTIONS Integration? */

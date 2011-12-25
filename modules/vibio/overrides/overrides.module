@@ -66,9 +66,28 @@ function overides_remessagify_seller_form_submit($form, &$form_state) {
 
 	drupal_set_message(t("Response to offer was successful")); // !!! test for failure in future version
 }
+function example_after_build($form, &$form_state) {
+  // TODO: Stuff!
+	print "<h1>Form</h1>";
+	print "<pre>";
+	print_r($form);
+	print "</pre>";
+	print "<hr>";
+  print "<h1>State</h1>";
+  print "<pre>";
+  print_r($form_state['values']['field_have_want_like']);
+  print "</pre>";
 
+  return $form;
+}
 function overrides_form_alter($form, &$state, $id)
 {
+
+
+if ( $id == 'vibio_item_node_form' ) {
+//die("Yes we get here");
+	//$form['#after_build'][] = 'example_after_build';
+}
 
 
 	// stephen 20110901

@@ -3,7 +3,7 @@ $sidebar_header=t("!user Collections",array("!user"=>$collection_owner_name));
 $collections_link=l(t("View Complete List"),"user/{$collection_owner}/inventory");
 echo "
 
-<h1 id='collection-title'>Collection Detail<img id='collection-title-img' src='/themes/vibio/images/btn_arrow.png'/><span class='back-collection'><a href='/user/{$collection_owner}/collections'>Back to {$sidebar_header}</a></span></h1>
+<p id='collection-title-detail'>Collection Detail <img id='collection-title-arrow' src='/themes/vibio/images/btn_arrow.png'/><span class='back-collection'><a href='/user/{$collection_owner}/collections'>Back to {$sidebar_header}</a></span></p>
 	<div id='collection_main'>
 		{$collection_display}
 	</div>

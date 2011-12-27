@@ -164,7 +164,7 @@ if ($page) {
 	$extra_data = '';
 
 	if ($any_collectors) {
-		$owners_header = t("Collectors who have !title in their inventory", array("!title" => $node -> title));
+		$owners_header = t("Collectors who have !title in their collections:", array("!title" => $node -> title));
 		$extra_data = "
 			<div class='product_extra_data'>
 				$product_images

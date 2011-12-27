@@ -702,9 +702,9 @@ tr.row-last .collection-preview-boxshadow{border:none}
 .collection-preview-boxshadow{border-bottom:1px solid #CCC; min-height:110px; position:relative; padding:10px 0 5px 0}
 .collection_list_item_summary div.not_for_sale img{max-width:90px}
 .collection_list_item_summary div.not_for_sale{position:absolute; bottom:5px; right:0px}
-.back-collection{font-size:13px; font-weight:normal; color:#1691bd; padding-left:16px}
-#collection-title-arrow{position:absolute; top:20px; left:397px}
-#collection-title-detail{font-size:22px; font-weight:bold}
+.back-collection{font-size:13px; font-weight:normal; color:#1691bd}
+#collection-title-arrow{padding: 5px 1px 0 5px}
+#collection-title-detail{font-size:22px; font-weight:bold;}
 .collection-user{font-weight:bold}
 .user-collection-preview h5, #collection_sidebar .collection_sidebar_collection h5{margin:0; font-size:13px}
 .user-collection-preview span{color:#404f5a; font-size:12px}

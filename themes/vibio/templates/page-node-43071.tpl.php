@@ -35,13 +35,14 @@
 						<?php print $link;?>
 					</p>
 					<p id="manual">
-						OR <a href="/user/register">Sign Up Manually</a>
+						OR <a href="/user/register" target="_blank" >Sign Up Manually</a>
 					</p>
 				</div>
 			</div>
 			<?php
 			echo $content;
 			?>
+			<div id="seperator-1"></div>
 			<div id="featured-1">
 				<p id="text">
 					Watches Featured on Vibio

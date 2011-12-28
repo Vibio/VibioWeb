@@ -117,7 +117,7 @@ div#site-name{  margin:0;   font-size:2em;   line-height:1.3em}
 #site-name a:focus{  text-decoration:underline}
 .slogan{  background:transparent url(../vibio-tagline.png) no-repeat;   top:33px;   position:relative;   left:130px;   text-indent:-4999px;   width:200px;   height:20px}
 p.section_title{background:url("../images/long_border.png") no-repeat scroll 0 30px transparent; height:43px; margin:13px 0 0; padding:0}
-h1#page_title, h1#box_page_title, h1#collection-title, h1.page-title-sub{background:url("../images/long_border.png") no-repeat scroll 0 32px transparent; height:43px; margin:3px 0 5px; padding:0}
+h1#page_title, h1#box_page_title, #collection-title-detail, h1.page-title-sub{background:url("../images/long_border.png") no-repeat scroll 0 32px transparent; height:43px; margin:3px 0 5px; padding:0}
 .section_title{font-size:18px; color:#556270; font-weight:500}
 .section-intro{position: relative}
 .section_sub_title{position: absolute; top: 9px; left: 180px}
@@ -702,8 +702,9 @@ tr.row-last .collection-preview-boxshadow{border:none}
 .collection-preview-boxshadow{border-bottom:1px solid #CCC; min-height:110px; position:relative; padding:10px 0 5px 0}
 .collection_list_item_summary div.not_for_sale img{max-width:90px}
 .collection_list_item_summary div.not_for_sale{position:absolute; bottom:5px; right:0px}
-.back-collection{font-size:13px; font-weight:normal; color:#1691bd; padding-left:16px}
-#collection-title-img{position:absolute; top:20px; left:397px}
+.back-collection{font-size:13px; font-weight:normal; color:#1691bd}
+#collection-title-arrow{padding: 5px 1px 0 5px}
+#collection-title-detail{font-size:22px; font-weight:bold;}
 .collection-user{font-weight:bold}
 .user-collection-preview h5, #collection_sidebar .collection_sidebar_collection h5{margin:0; font-size:13px}
 .user-collection-preview span{color:#404f5a; font-size:12px}

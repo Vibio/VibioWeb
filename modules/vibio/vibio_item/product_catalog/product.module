@@ -51,8 +51,8 @@ function product_menu()
      * that looks kindof silly as a "message" instead of just part of the 
      * page.  
 			 And sets to true, what is this: $_SESSION['product']['auto_add'] = $val;
-			 I see functions to set and clear that, but does it do anythign?	
- 			 A little afraid to touch things...
+       Alec->According to Stephen notes in product.pages.php, this variable
+     * indicates whether to create a new item along with the new product.
      */
 		"product/add"			=> array(
 			"title"				=> "Add New Product",

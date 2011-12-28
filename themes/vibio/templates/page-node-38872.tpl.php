@@ -35,7 +35,7 @@
 						<?php print $link;?>
 					</p>
 					<p id="manual">
-						OR <a href="/user/register">Sign Up Manually</a>
+						OR <a href="/user/register" target="_blank" >Sign Up Manually</a>
 					</p>
 				</div>
 			</div>

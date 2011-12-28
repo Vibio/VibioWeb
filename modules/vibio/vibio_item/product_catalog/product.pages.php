@@ -90,12 +90,24 @@ function product_ajax_add_complete() {
   exit(t("There was an error adding the item to your inventory. Please try again later. !close_link", $t_args));
 }
 
+/**
+ * After a new product has been created, adds an item to the current user's
+ * collection of that product type.
+ * 
+ * @global <type> $user
+ * @param <type> $product
+ * @param <type> $quick_add
+ * @return <type>
+ */
 function product_add_to_inventory($product, $quick_add=false) {
   global $user;
+  //If the user already has this type of product...
   if ($item_id = product_user_owns_product($product->nid, $user->uid)) {
+    //Go to the existing item page and display a message
     drupal_set_message(t("You already own this item!"));
     drupal_goto("node/{$item_id}");
   }
+  //Populate basic item data
   module_load_include("inc", "node", "node.pages");
   $form_id = "vibio_item_node_form";
   $node = new stdClass;
@@ -104,11 +116,21 @@ function product_add_to_inventory($product, $quick_add=false) {
   $node->type = "vibio_item";
   $node->product_nid = $product->nid;
   node_object_prepare($node);
-  if ($quick_add) {
-    $state['values'] = array("title" => $product->title, "name" => $user->name, "op" => t("Save"), "field_posting_type" => array(array("value" => VIBIO_ITEM_TYPE_OWN,),),);
-    if ($product->collection_info && module_exists("collection")) {
-      $state['values']['collection_info']['cid'] = $product->collection_info['cid'];
+  //If this is a quick_add...
+  //Note: there was a bug where the add_item buttons where setting $quick_add to 1,
+  //which did not parse to TRUE. Hense the !empty, which should work for numerical
+  //and boolean values. @TODO: Find the error and replace with booleans.
+  if (!empty($quick_add)) {
+    //Prepopulate the item title and username with $product info
+    $state['values'] = array("title" => $product->title, "name" => $user->name, 
+        "op" => t("Save"), "field_posting_type" => array(array("value" => VIBIO_ITEM_TYPE_OWN,),),);
+    //If there is collection info, add it
+    print_r($product);
+    //This formerly refered to $product->collection_info--Alec
+    if ($_POST['collection_info'] && module_exists("collection")) {
+      $state['values']['collection_info']['cid'] = $_POST['collection_info']['cid'];
     }
+    //If there is privacy info, add it
     if ($product->privacy_setting && module_exists("privacy")) {
       $state['values']['privacy_setting'] = $product->privacy_setting;
     }

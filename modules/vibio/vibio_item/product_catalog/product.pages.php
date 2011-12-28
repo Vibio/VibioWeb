@@ -117,12 +117,18 @@ function product_add_to_inventory($product, $quick_add=false) {
   $node->product_nid = $product->nid;
   node_object_prepare($node);
   //If this is a quick_add...
-  if ($quick_add) {
+  //Note: there was a bug where the add_item buttons where setting $quick_add to 1,
+  //which did not parse to TRUE. Hense the !empty, which should work for numerical
+  //and boolean values. @TODO: Find the error and replace with booleans.
+  if (!empty($quick_add)) {
     //Prepopulate the item title and username with $product info
-    $state['values'] = array("title" => $product->title, "name" => $user->name, "op" => t("Save"), "field_posting_type" => array(array("value" => VIBIO_ITEM_TYPE_OWN,),),);
+    $state['values'] = array("title" => $product->title, "name" => $user->name, 
+        "op" => t("Save"), "field_posting_type" => array(array("value" => VIBIO_ITEM_TYPE_OWN,),),);
     //If there is collection info, add it
-    if ($product->collection_info && module_exists("collection")) {
-      $state['values']['collection_info']['cid'] = $product->collection_info['cid'];
+    print_r($product);
+    //This formerly refered to $product->collection_info--Alec
+    if ($_POST['collection_info'] && module_exists("collection")) {
+      $state['values']['collection_info']['cid'] = $_POST['collection_info']['cid'];
     }
     //If there is privacy info, add it
     if ($product->privacy_setting && module_exists("privacy")) {

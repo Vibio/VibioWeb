@@ -10,17 +10,19 @@
  * If Vibio chooses to enable further services through the contact_importer
  * module, those services urls will be available under the variable name
  * as the service is named by contact_importer
+ *
+ * Note that you must put the class contact-importer-link on the links...
  */
 ?>
 
 <ul>
   <li>
-    <a class="automodal" href="<?php print $gmail;?>">Gmail</a>
+    <a class="contact-importer-link" href="<?php print $gmail;?>">Gmail</a>
   </li>
   <li>
-    <a class="automodal" href="<?php print $yahoo;?>">Yahoo</a>
+    <a class="contact-importer-link" href="<?php print $yahoo;?>">Yahoo</a>
   </li>
   <li>
-    <a class="automodal" href="<?php print $livehotmail;?>">Hotmail</a>
+    <a class="contact-importer-link" href="<?php print $livehotmail;?>">Hotmail</a>
   </li>
 </ul>

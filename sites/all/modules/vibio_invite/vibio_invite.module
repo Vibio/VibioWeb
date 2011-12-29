@@ -225,11 +225,8 @@ function vibio_invite_form_contact_importer_form_alter(&$form, &$form_state){
     }
     //Had trouble with this; wasn't passing $form_state correctly?
     //$form = drupal_get_form('contact_importer_form', TRUE);
-    //This is major cheating to get the $form_state in without creating an infinite
-    //loop. I suspect the infinite loop came from contact_importer using its own
-    //system to do a multi-step form instead of the Drupal way...
+    //Make sure you put the class contact-importer-link on the links...
     $form = drupal_rebuild_form('contact_importer_form', $form_state);
-   // $form = contact_importer_form($form_state);
   }
 }
 

@@ -4,14 +4,7 @@
  * Menu link to an invite page
  */
 function vibio_invite_menu(){
-  $items['invite'] = array(
-    'title' => 'Vibio Invite',
-    'page callback' => 'vibio_invite_display_page',
-    'description' => 'Invite friends to Vibio',
-    'access callback' => 'user_access',
-    'access arguments' => array('access content'),
-  );
-
+  //Admin URL. Frontend defined in vibio_invite_menu_alter() below.
   $items['admin/vibio_invite'] = array(
     'title' => 'Vibio Invite Settings',
     'page callback' => 'drupal_get_form',
@@ -21,6 +14,27 @@ function vibio_invite_menu(){
     'access arguments' => array('administer site configuration'),
   );
   return $items;
+}
+
+/**
+ * Alter the invite.module url to work with the vibio_invite system.
+ * 
+ * See invite.module. Note that invite has been hacked, so we're relying
+ * on hacked code which may change in the future.
+ * @TODO: change invite.module to standard contrib
+ * 
+ * @param <type> $items 
+ */
+function vibio_invite_menu_alter(&$items){
+  $items['contacts/invite/email'] = $items['contacts/invite'];
+  $items['contacts/invite'] = array(
+    'title' => 'Vibio Invite',
+    'page callback' => 'vibio_invite_display_page',
+    'description' => 'Invite friends to Vibio',
+    'access callback' => 'user_access',
+    'access arguments' => array('access content'),
+  );
+
 }
 
 function vibio_invite_admin($form_state){
@@ -95,7 +109,11 @@ function vibio_invite_theme(){
       'vibio_invite_display' => array(
           'template' => 'templates/vibio-invite-block-content',
           'path' => drupal_get_path('module', 'vibio_invite'),
-      )
+      ),
+      'vibio_invite_providers' => array(
+          'template' => 'templates/vibio-invite-providers',
+          'path' => drupal_get_path('module', 'vibio_invite'),
+      ),
   );  
 }
 
@@ -124,7 +142,22 @@ function vibio_invite_preprocess_vibio_invite_display(&$vars){
   $vars['fb_url'] = url("https://www.facebook.com/dialog/send", array('query' => array('app_id' => $app_id, 'name' => "Join Vibio to share your collections and see your friends's things", 'link' => $base_url, 'redirect_uri' => $base_url . "/invite")));
 
   //URL to the current email invite page
-  $vars['email_url'] = url('contacts/invite');
+  $vars['email_url'] = url('contacts/invite/email');
+}
+
+/**
+ * Prepopulates vibio-invite-providers.tpl.php with the appropriate urls to initiate
+ * the contact importation from the selected provider.
+ * 
+ * @param <type> $vars
+ */
+function vibio_invite_preprocess_vibio_invite_providers(&$vars){
+    $enabled_providers = _contact_importer_providers_enabled();
+    //Creates variables for each provider url
+    foreach ($enabled_providers as $provider_name => $provider) {
+      $favicon = !empty($provider['favicon']) ? $provider['favicon'] : '';
+      $vars[$provider_name] = url('contact_importer/' . $provider_name);
+    }
 }
 
 function vibio_invite_display_page(){
@@ -148,6 +181,112 @@ function vibio_invite_form_user_register_alter(&$form, &$form_state){
   $og_image = '<meta property="og:image" content="' . $site_image . '"/>';
   drupal_set_html_head($og_image);
 }
+
+/**
+ * Form alter to add contact_import buttons to the invite module's
+ * front-facing UI form.
+ *
+ * Implements hook_form_FORM_ID_alter()
+ *
+ * @param <type> $form
+ * @param <type> $form_state
+ */
+function vibio_invite_form_invite_form_alter(&$form, &$form_state){
+  //Add a contact_importer form
+  $form['contact_importer'] = array(
+      '#value' => theme('vibio_invite_providers'),
+  );
+  //Bind contact_importer to the invite "To" field
+  if (module_exists('contact_importer')) {
+    //Custom implementation of contact_importer_bind_to_form()
+    vibio_invite_importer_bind_form($form, 'email');
+  }
+}
+
+/**
+ * Skip the service selection screen for contact_importer and go straight to
+ * providing credentials for the service indicated in the url contact_importer/%service
+ *
+ * Implements hook_form_FORM_ID_alter()
+ * 
+ * @param <type> $form
+ * @param <type> $form_state
+ */
+function vibio_invite_form_contact_importer_form_alter(&$form, &$form_state){
+  if($form_state['storage']['step'] == 'select_provider' && arg(1)) {
+    //@SEE: http://drupal.org/node/906450
+    // Remove any emails stored from a previous attempt.
+    contact_importer_set_contacts(NULL);
+    $form_state['storage']['providers'] = _contact_importer_providers();
+    if(array_key_exists(arg(1), $form_state['storage']['providers'])) {
+      $form_state['storage']['provider'] = $form_state['storage']['providers'][arg(1)];
+      $form_state['storage']['provider']['provider_name'] = arg(1);
+      $form_state['storage']['step'] = 'credentials';
+    }
+    //Had trouble with this; wasn't passing $form_state correctly?
+    //$form = drupal_get_form('contact_importer_form', TRUE);
+    //This is major cheating to get the $form_state in without creating an infinite
+    //loop. I suspect the infinite loop came from contact_importer using its own
+    //system to do a multi-step form instead of the Drupal way...
+    $form = drupal_rebuild_form('contact_importer_form', $form_state);
+   // $form = contact_importer_form($form_state);
+  }
+}
+
+
+/**
+ * Bind Contact Importer to the given field on the given form.
+ *
+ * I've customized this for vibio to not add description text below the
+ * text field. Instead, we're adding links in vibio_invite_form_invite_form_alter().
+ *
+ * @param array &$form
+ *  FAPI form array.
+ * @param string $field_name
+ *  The field to bind to.
+ * @return boolean
+ *  TRUE on successful binding, else FALSE.
+ */
+function vibio_invite_importer_bind_form(&$form, $field_name) {
+
+  // We can only bind to one form per page.
+  static $has_run = FALSE;
+
+  if (!$has_run && user_access('access contact importer') &&
+    $_GET['q'] != 'contact_importer' && $_GET['q'] != 'contact_importer_js'
+  ) {
+
+    // Get a reference to the field if it exists.
+    $field_reference =& _contact_importer_find_field($form, $field_name);
+    if (empty($field_reference)) {
+      return FALSE;
+    }
+
+    // When a modal pop-up is used, this class tells Contact Importer to put the email addresses here.
+    $class = 'contact-importer-destination';
+    if (isset($field_reference['#attributes']['class'])) {
+      $field_reference['#attributes']['class'] .= ' '. $class;
+    }
+    else {
+      $field_reference['#attributes']['class'] = $class;
+    }
+
+    // If the user has already imported contacts, but they don't have Javascript, they will be
+    // redirected back here.
+    $field_reference['#default_value'] = contact_importer_get_contacts();
+
+    // Initiate Contact Importer.
+    // It is important that this happens after saved contacts are retrieved above.
+    contact_importer_add_js();
+
+    // The link to import the contacts is added in
+    // vibio_invite_form_invite_form_alter().
+
+    return $has_run = TRUE;
+  }
+  return FALSE;
+}
+
 
 
 ?>

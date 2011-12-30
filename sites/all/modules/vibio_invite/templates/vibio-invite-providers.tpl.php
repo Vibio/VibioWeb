@@ -15,14 +15,15 @@
  */
 ?>
 
-<ul>
-  <li>
-    <a class="contact-importer-link" href="<?php print $gmail;?>">Gmail</a>
-  </li>
-  <li>
-    <a class="contact-importer-link" href="<?php print $yahoo;?>">Yahoo</a>
-  </li>
-  <li>
-    <a class="contact-importer-link" href="<?php print $livehotmail;?>">Hotmail</a>
-  </li>
+<ul id="providers-ul">
+	<li id="connect-top">Connect with friends faster by importing your contacts from your webmail account</li>
+	<li>
+		<a class="contact-importer-link invite-gmail" href="<?php print $gmail;?>">Gmail</a>
+	</li>
+	<li>
+		<a class="contact-importer-link invite-hm" href="<?php print $livehotmail;?>">Hotmail</a>
+	</li>
+	<li>
+		<a class="contact-importer-link invite-yahoo" href="<?php print $yahoo;?>">Yahoo</a>
+	</li>
 </ul>

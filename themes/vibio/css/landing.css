@@ -4,10 +4,10 @@ body {
 	font-family: 'Quicksand', Sans-serif;
 	background: url(../images/landing/bgnoise_lg.png) repeat;
 	color: #CCCCCC;
-	font-weight: 100;
+	font-weight: 400;
 }
 h1, h2 {
-	font-weight: 100;
+	font-weight: 400;
 }
 a:link {
 	color: #00AEF0;
@@ -53,7 +53,7 @@ p {
 	height: 570px;
 }
 #record{
-	background: url(../images/landing/record_banner.png) no-repeat;
+	background: url(../images/landing/images/record_banner.png) no-repeat;
 	height: 570px;
 }
 #watches-text {

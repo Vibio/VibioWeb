@@ -217,7 +217,7 @@ li {
 .clears, .clearfix {
 	clear: both
 }
-.region-header, .region-footer, #watches, #node-38872, #node-43071, #node-48820 {
+.region-header, .region-footer, #watches, #node-38872, #node-43071, #node-48820, #record {
 	background-size: 100% auto;
 	min-width: 1005px;
 }

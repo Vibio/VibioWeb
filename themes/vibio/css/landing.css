@@ -181,7 +181,7 @@ li {
 	font-size: 26px;
 	margin-top: 0
 }
-.region-content-bottom{
+.region-content-bottom {
 	background: url(../images/landing/dashline_short.png) no-repeat 20px 32px;
 	padding-top: 18px;
 }
@@ -194,13 +194,13 @@ li {
 	line-height: 34px;
 }
 #facebook-bottom {
-	margin:38px 0 25px
+	margin: 38px 0 25px
 }
 #content-bottom-right {
 	padding-top: 15px
 }
 .region-footer {
-	background: url(../images/landing/landing_04.png) no-repeat;-moz-binding;
+	background: url(../images/landing/landing_04.png) no-repeat;
 	height: 60px;
 	text-align: right;
 	font-size: 11px;
@@ -210,4 +210,8 @@ li {
 }
 .clears, .clearfix {
 	clear: both
+}
+.region-header, .region-footer, #watches {
+	background-size: 100% auto;
+	min-width: 1005px;
 }

@@ -52,6 +52,10 @@ p {
 	background: url(../images/landing/landing_02.png) no-repeat;
 	height: 570px;
 }
+#record{
+	background: url(../images/landing/record_banner.png) no-repeat;
+	height: 570px;
+}
 #watches-text {
 	float: right;
 	height: 400px;
@@ -159,7 +163,8 @@ li {
 	margin: 36px 10px 0 20px;
 }
 #featured-1 li {
-	height: 120px
+	height: 120px;
+	margin: 0 5px 5px 0;
 }
 #text {
 	margin-bottom: 9px

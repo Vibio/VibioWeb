@@ -28,13 +28,14 @@ function vibio_invite_menu(){
 function vibio_invite_menu_alter(&$items){
   $items['contacts/invite/email'] = $items['contacts/invite'];
   $items['contacts/invite'] = array(
-    'title' => 'Vibio Invite',
+    'title' => 'Expand your circle',
     'page callback' => 'vibio_invite_display_page',
     'description' => 'Invite friends to Vibio',
     'access callback' => 'user_access',
     'access arguments' => array('access content'),
+    'type' => MENU_LOCAL_TASK, //MENU_NORMAL_ITEM,
+		'weight' => 6,
   );
-
 }
 
 function vibio_invite_admin($form_state){

@@ -79,10 +79,11 @@ p {
 #facebook, #manual {
 	text-align: center
 }
-#node-38872, #node-43071 {
+#node-38872, #node-43071, #node-48820{
 	background: url(../images/landing/landing_03.png) no-repeat;
 	height: 336px;
 }
+#node-38872 div.content, #node-43071 div.content, #node-48820 div.content{width: 1004px; margin: 0 auto}
 #slide-left {
 	width: 312px;
 	float: left;
@@ -211,7 +212,7 @@ li {
 .clears, .clearfix {
 	clear: both
 }
-.region-header, .region-footer, #watches {
+.region-header, .region-footer, #watches, #node-38872, #node-43071, #node-48820 {
 	background-size: 100% auto;
 	min-width: 1005px;
 }

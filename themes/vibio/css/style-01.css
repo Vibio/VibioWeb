@@ -1168,6 +1168,9 @@ a.invite-yahoo:hover{background: url(../images/btn_yahoo_hover.png) no-repeat;}
 #contact-importer-form-1 #edit-submit{margin-top: 10px; cursor:pointer; text-indent: -9999px; background: url(../images/btns_expand_circle.png) -3px -3px no-repeat; border:none; width: 182px; height: 34px}
 #contact-importer-form-1 #edit-submit:hover{background: url(../images/btns_expand_circle.png) -3px -40px no-repeat}
 #contact-importer-form-1 .form-item{margin: 0}
+div#network_ff_messages {padding: 1px 10px 20px;}
+#fb-refresh{background: url(../images/fb_refresh_01.png) no-repeat 1px 1px; height: 79px; width: 730px; position: relative}
+#fb-refresh button{cursor:pointer; text-indent: -9999px; background:  url(../images/btn_fb_refresh.png) no-repeat; border: none; width: 266px; height: 51px; position: absolute; right: 15px; top: 15px}
 /*New amazon button*/
 #external-link{background: url(../images/amazon_bgd.png) -2px 0 no-repeat; height: 85px; font-size: 13px; color: #556270; font-weight: bold; padding: 19px 0 0 23px}
 .external-link-text{float: left; padding-top: 15px}

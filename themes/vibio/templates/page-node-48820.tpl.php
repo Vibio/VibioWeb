@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php print $language -> language;?>" xml:fb="http://ogp.me/ns/fb#" lang="<?php print $language -> language;?>" dir="<?php print $language -> dir;?>">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<link rel="shortcut icon" href="/sites/all/themes/vibio/favicon.ico" type="image/x-icon" />
 		<title><?php print $head_title;?></title>
 		<meta name="description" content="Vibio is a social commerce tool that lets you buy, sell, and share items within your social graph" />
 		<meta name="keywords" content="social commerce, inventory, buy, sell, share, social graph, friends, trade, collections" />
@@ -13,10 +14,10 @@
 		<?php
 		echo $header;
 		?>
-		<div id="watches">
+		<div id="record">
 			<div id="watches-text">
-				<h1>DO WATCHES GET YOUR GEARS GOING?</h1>
-				<h2>Broadcast your collection on Vibio!</h2>
+				<h1>DO VINYLS “DO IT” FOR YOU?</h1>
+				<h2>Broadcast it to the world on Vibio!</h2>
 				<p>
 					Vibio is a site for people who are interested in sharing, trading and expressing themselves through the things they want and have.
 				</p>
@@ -44,28 +45,28 @@
 		<div id="seperator-1"></div>
 		<div id="featured-1">
 		<p id="text">
-		Watches Featured on Vibio
+		Turntables and LP's featured on Vibio
 		</p>
 		<ul id="row-1">
 		<li>
-		<a href="/collections/315" target="_blank"><img src="/themes/vibio/images/landing/images/watch_1.png" alt="Some Watch"/></a>
+		<a href="/collections/315" target="_blank"><img src="/themes/vibio/images/landing/images/record_01.png" alt="Some Record"/></a>
 		</li>
 		<li>
-		<a href="/collections/315" target="_blank"><img src="/themes/vibio/images/landing/images/watch_2.png" alt="Michael Kors Quartz Brown Gem Dial Tortoiseshell Band - Women's Watch"/></a>
+		<a href="/collections/315" target="_blank"><img src="/themes/vibio/images/landing/images/record_02.png" alt="Some Record"/></a>
 		</li>
 		<li>
-		<a href="/collections/315" target="_blank"><img src="/themes/vibio/images/landing/images/watch_3.png" alt="Some Watch"/></a>
+		<a href="/collections/315" target="_blank"><img src="/themes/vibio/images/landing/images/record_03.png" alt="Some record"/></a>
 		</li>
 		</ul>
 		<ul id="row-2">
 		<li>
-		<a href="/collections/35" target="_blank"><img src="/themes/vibio/images/landing/images/watch_4.png" alt="Omega Men's 2221.80.00 Seamaster 300M Quartz 'James Bond' Blue Dial Watch "/></a>
+		<a href="/collections/35" target="_blank"><img src="/themes/vibio/images/landing/images/record_04.png" alt="Some Record"/></a>
 		</li>
 		<li>
-		<a href="/collections/35" target="_blank"><img src="/themes/vibio/images/landing/images/watch_5.png" alt="Marc Ecko E20058G1 The Brig Gents Watch"/></a>
+		<a href="/collections/35" target="_blank"><img src="/themes/vibio/images/landing/images/record_05.png" alt="Some Record"/></a>
 		</li>
 		<li>
-		<a href="/collections/35" target="_blank"><img src="/themes/vibio/images/landing/images/watch_6.png" alt="TAG Heuer Men's CW9110.FC6177 Monaco 69 Ana-Digi Chronograph Watch"/></a>
+		<a href="/collections/35" target="_blank"><img src="/themes/vibio/images/landing/images/record_06.png" alt="Some Record"/></a>
 		</li>
 		</ul>
 		</div>

@@ -1164,6 +1164,10 @@ a.invite-yahoo{height: 104px; background: url(../images/btn_yahoo_active.png) no
 a.invite-gmail:hover{background: url(../images/btn_gmail_hover.png) no-repeat;}
 a.invite-hm:hover{background: url(../images/btn_hm_hover.png) no-repeat;}
 a.invite-yahoo:hover{background: url(../images/btn_yahoo_hover.png) no-repeat;}
+#contact-importer-form-1{margin-left: 15px}
+#contact-importer-form-1 #edit-submit{margin-top: 10px; cursor:pointer; text-indent: -9999px; background: url(../images/btns_expand_circle.png) -3px -3px no-repeat; border:none; width: 182px; height: 34px}
+#contact-importer-form-1 #edit-submit:hover{background: url(../images/btns_expand_circle.png) -3px -40px no-repeat}
+#contact-importer-form-1 .form-item{margin: 0}
 /*New amazon button*/
 #external-link{background: url(../images/amazon_bgd.png) -2px 0 no-repeat; height: 85px; font-size: 13px; color: #556270; font-weight: bold; padding: 19px 0 0 23px}
 .external-link-text{float: left; padding-top: 15px}

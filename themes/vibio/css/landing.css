@@ -80,9 +80,12 @@ p {
 #login {
 	margin: 12px 0 60px
 }
-#facebook, #manual {
+#manual {
 	text-align: center
 }
+#facebook{width: 266px; margin: 0 auto 10px}
+#facebook-bottom a,#facebook a{background: url(../images/btn_signup_with_facebook.png) no-repeat 0 -3px; width:266px; height: 48px; display: block; text-indent: -9999px}
+#facebook-bottom a:hover,#facebook a:hover{background-position: 0 -51px}
 #node-38872, #node-43071, #node-48820{
 	background: url(../images/landing/landing_03.png) no-repeat;
 	height: 336px;

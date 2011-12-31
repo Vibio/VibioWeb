@@ -29,7 +29,7 @@
 					if (module_exists('fboauth')) {
 						$link_attributes = fboauth_action_link_properties('connect');
 						//Puts a fb button inside the link.
-						$link = l('<img src="/themes/vibio/images/btn_fb_login.png" id="facebook-large" class="fb_login"/>', $link_attributes['href'], array('query' => $link_attributes['query'], 'html' => TRUE));
+						$link = l('Facebook Connect', $link_attributes['href'], array('query' => $link_attributes['query'], 'html' => TRUE));
 					}
 					?>
 					<?php print $link;?>

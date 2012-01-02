@@ -1,0 +1,128 @@
+<?php
+/**
+* Implementation of hook_feeds_node_processor_targets_alter().
+*/
+function vibio_collection_migrate_feeds_node_processor_targets_alter(&$targets, $content_type) {
+  if ($content_type == 'collection') {
+    $targets['default'] = array(
+      'name' => t('Default Collection?'),
+      'description' => t('Is this the default collection?'),
+      'callback' => 'vibio_collection_migrate_set_default', // See 2)
+    );
+    
+    $targets['cid'] = array(
+      'name' => t('CID'),
+      'description' => t('CID, make sure they are unique'),
+      'optional_unique' => TRUE,
+      'callback' => 'vibio_collection_migrate_set_cid', // See 2)
+    );
+    
+    $targets['item_nids'] = array(
+      'name' => t('Collection Items'),
+      'description' => t('Associate vibio_items with appropriate collections'),
+      'callback' => 'vibio_collection_migrate_set_item_nids', // See 2)
+    );
+
+  }
+}
+
+
+function vibio_collection_migrate_set_cid($node, $target, $value){
+//Nothing happens, we don't want to map this actually :)
+}
+
+/**
+ * Mapping the default collection value to various collections. If a record
+ * exists in the old DB for a given collection, that means that it's the user's
+ * default.
+ *
+ * @param <type> $node
+ * @param <type> $target
+ * @param <type> $value
+ */
+function vibio_collection_migrate_set_default($node, $target, $value){
+  if(!empty($value)){
+    $node->field_default_collection[0]['value'] = 1;
+  }
+}
+
+function vibio_collection_migrate_set_item_nids($node, $target, $value){
+  $collection_nid = $node->nid;
+  $item = node_load($value);
+
+  //Insert $item_nid into the field_collection
+  $item->field_collection_nid[0]['value'] = $collection_nid;
+  node_save($item);
+}
+
+function vibio_collection_migrate_menu(){
+      $items['vibio_collection_migrate_collections'] = array(
+      'page callback' => 'vibio_collection_migrate_collections',
+      'access arguments'    => array('access content'),
+      'type'                => MENU_CALLBACK
+    );
+    return $items;
+}
+
+function vibio_collection_migrate_collections(){
+// connect with mysql server
+  $server = 'localhost';
+  $database_user_name = 'root';
+  $database_password = 'root';
+  $database_name = 'vibio_local';
+
+
+  $mysql_server = $server; // Server name
+  $mysql_userName = $database_user_name;
+  $mysql_password = $database_password;
+  mysql_connect($mysql_server, $mysql_userName, $mysql_password);
+  mysql_select_db($database_name);
+
+  //construct query
+
+  $query = 'select title, description, created, updated, drupal_collection.cid, drupal_collection.uid, item_nid, drupal_collection_user_defaults.uid AS default_collection from (drupal_collection left join drupal_collection_items on drupal_collection.cid = drupal_collection_items.cid)
+left join drupal_collection_user_defaults on drupal_collection.cid = drupal_collection_user_defaults.cid';
+  $count = 0;
+  $result = mysql_query($query) or die(mysql_error() . '<br />' . $query);
+  //takes every row of results from the query and inserts it as a new object in
+  //the current D7 db
+  $previous_cid = null;
+  $previous_nid = null;
+  while($row = mysql_fetch_array($result)){
+    $cid = $row['cid'];
+    $title = $row['title'];
+    $description = $row['description'];
+    $created = $row['created'];
+    $updated = $row['updated'];
+    $uid = $row['uid'];
+    $item_nid = $row['item_nid'];
+    $default_collection = $row['default_collection'];
+    $collection = new stdClass();
+
+    //If it's a new collection entry...
+    if($previous_cid != $cid){
+      //Port collection
+      $collection->title = $title;
+      $collection->description = $description;
+      $collection->created = $created;
+      $collection->uid = $uid;
+      $collection->field_default_collection[0]['value'] = !empty($default_collection) ? 1 : 0;
+      $collection = node_save($collection);
+      //Associate items with the new collection
+      if(!empty($item_nid)){
+        $item = node_load($item_nid);
+        $item->field_collection[0]['value'] = $collection->nid;
+        node_save($item);
+        //Keep a record for the next loop, incase there are more items to associate
+        $previous_nid = $collection->nid;
+      }
+      $previous_cid = $cid;
+    }else{
+      //The collection has already been entered, record more items
+        $item = node_load($item_nid);
+        $item->field_collection[0]['value'] = $collection->nid;
+        node_save($item);
+    }
+  }
+}
+?>

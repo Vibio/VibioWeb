@@ -69,7 +69,7 @@ function vibio_collection_migrate_collections(){
   $server = 'localhost';
   $database_user_name = 'root';
   $database_password = 'root';
-  $database_name = 'vibio_local';
+  $database_name = 'vibio_local1';
 
 
   $mysql_server = $server; // Server name
@@ -103,26 +103,32 @@ left join drupal_collection_user_defaults on drupal_collection.cid = drupal_coll
     if($previous_cid != $cid){
       //Port collection
       $collection->title = $title;
+      $collection->type = 'collection';
+      $collection->language = 'en-US';
       $collection->description = $description;
       $collection->created = $created;
       $collection->uid = $uid;
-      $collection->field_default_collection[0]['value'] = !empty($default_collection) ? 1 : 0;
+      $collection->field_default[0]['value'] = !empty($default_collection) ? 1 : 0;
       $collection = node_save($collection);
       //Associate items with the new collection
       if(!empty($item_nid)){
         $item = node_load($item_nid);
         $item->field_collection[0]['value'] = $collection->nid;
         node_save($item);
-        //Keep a record for the next loop, incase there are more items to associate
+
+//        db_query('UPDATE drupal_collection_items SET cid=%d WHERE item_nid=%d', $collection->nid, $item_nid);
+        //Keep a record for the next loop, in case there are more items to associate
         $previous_nid = $collection->nid;
       }
       $previous_cid = $cid;
     }else{
       //The collection has already been entered, record more items
+    //    db_query('UPDATE drupal_collection_items SET cid=%d WHERE item_nid=%d', $previous_nid, $item_nid);
+     
         $item = node_load($item_nid);
         $item->field_collection[0]['value'] = $collection->nid;
         node_save($item);
-    }
+      }
   }
 }
 ?>

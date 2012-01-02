@@ -49,24 +49,24 @@
 		</p>
 		<ul id="row-1">
 		<li>
-		<a href="/collections/315" target="_blank"><img src="/themes/vibio/images/landing/images/record_01.png" alt="Some Record"/></a>
+		<a href="/collections/370" target="_blank"><img src="/themes/vibio/images/landing/images/record_01.png" alt="Some Record"/></a>
 		</li>
 		<li>
-		<a href="/collections/315" target="_blank"><img src="/themes/vibio/images/landing/images/record_02.png" alt="Some Record"/></a>
+		<a href="/collections/370" target="_blank"><img src="/themes/vibio/images/landing/images/record_02.png" alt="Some Record"/></a>
 		</li>
 		<li>
-		<a href="/collections/315" target="_blank"><img src="/themes/vibio/images/landing/images/record_03.png" alt="Some record"/></a>
+		<a href="/collections/370" target="_blank"><img src="/themes/vibio/images/landing/images/record_03.png" alt="Some record"/></a>
 		</li>
 		</ul>
 		<ul id="row-2">
 		<li>
-		<a href="/collections/35" target="_blank"><img src="/themes/vibio/images/landing/images/record_04.png" alt="Some Record"/></a>
+		<a href="/collections/370" target="_blank"><img src="/themes/vibio/images/landing/images/record_04.png" alt="Some Record"/></a>
 		</li>
 		<li>
-		<a href="/collections/35" target="_blank"><img src="/themes/vibio/images/landing/images/record_05.png" alt="Some Record"/></a>
+		<a href="/collections/370" target="_blank"><img src="/themes/vibio/images/landing/images/record_05.png" alt="Some Record"/></a>
 		</li>
 		<li>
-		<a href="/collections/35" target="_blank"><img src="/themes/vibio/images/landing/images/record_06.png" alt="Some Record"/></a>
+		<a href="/collections/370" target="_blank"><img src="/themes/vibio/images/landing/images/record_06.png" alt="Some Record"/></a>
 		</li>
 		</ul>
 		</div>

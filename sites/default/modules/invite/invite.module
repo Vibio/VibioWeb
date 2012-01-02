@@ -147,6 +147,8 @@ function invite_menu() {
   // Frontend menu items
 		// temp note, ok to upgrade over this: I think this callback would need
 		// to change to fit into the ajax system.
+  // Code in vibio_invite relies upon the contacts/invite url structure
+  //@TODO: Change to standard contrib code
 	$contacts_menu = 'contacts/';
   $items[$contacts_menu . 'invite'] = array(
     'title' => 'Expand your circle',

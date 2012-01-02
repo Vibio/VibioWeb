@@ -79,7 +79,7 @@ if (isset($node -> amazon_data)) {
 	$amazon_link = "<p class='purchase-amazon'><a href='" . $node -> amazon_data['detailpageurl'] . "' target='_blank'>Purchase on Amazon</a></p></div>";
 	//Information about the product that doesn't link externally
 	$notification_text = "";
-	$external_link = "<div id='external-link'><p class='external-link-text'>Be the first Vibio Collector in your network to own this item in your collection." . $amazon_link . "</p>";
+	$external_link = "<div id='external-link'><p class='external-link-text'>Be the first Vibio Collector in your network to have this item in your collection." . $amazon_link . "</p>";
 
 }
 //If it's not from amazon...

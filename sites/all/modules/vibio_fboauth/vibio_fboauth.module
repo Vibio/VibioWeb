@@ -139,7 +139,7 @@ function vibio_fboauth_network_find_friends($uid, &$potentials, $existing, &$err
       $find_friends_link = fboauth_action_display('vibio_fboauth_find_friends');
       $token_replacement = array("!fb_refresh" => $find_friends_link);
       //@todo: troubleshoot this case; not sure if this will happen with the new code
-      $errors[] = t("Your Facebook session has expired, please !fb_refresh to see which of your Facebook friends are using Vibio", $token_replacement);
+      $errors[] = t("<div id='fb-refresh'>!fb_refresh</div>", $token_replacement);
       return false; 
     }else{
       //The fboauth action has already run and we can get friends from it

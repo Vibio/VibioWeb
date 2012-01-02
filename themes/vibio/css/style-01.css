@@ -1146,9 +1146,36 @@ table.views-table.cols-2{margin:0; padding-top:0}
 #invite-box a.invite-tw,#invite-box a.invite-tw:hover{background-position: -243px 0}
 #invite-box a.invite-em,#invite-box a.invite-em:hover{background-position: -487px 0}
 .top-tabs-sep{font-size: 16px; position: absolute; top: 0; color: #556270}
+#invite-form div{width:480px;}
+#invite-form{ position: relative}
+#invite-form .description{margin-top: 5px; margin-bottom: 25px}
+#invite-form .invite-message{border-bottom: 1px solid #CCCCCC; margin-bottom: 20px}
+#invite-form #edit-submit{cursor:pointer; float:right; margin-right:10px; text-indent: -9999px; background: url(../images/btns_expand_circle.png) no-repeat 0px -132px; border: none; height: 33px; width:135px; }
+#invite-form #edit-submit:hover{background-position: 0 -169px}
+#invite-form ul{padding-left:12px; position: absolute; top: 0; right: 0;height: 518px;border-left: 1px solid #CCCCCC}
+#invite-form .resizable-textarea textarea{width: 458px}
+/*Invite connection provider*/
+#providers-ul{list-style: none; width: 231px}
+#providers-ul a{display: block; text-indent: -9999px}
+li#connect-top{background: url(../images/connect_top.png) no-repeat; height: 82px; padding: 20px 28px 0}
+a.invite-gmail{height: 102px; background: url(../images/btn_gmail_active.png) no-repeat;}
+a.invite-hm{height: 103px; background: url(../images/btn_hm_active.png) no-repeat;}
+a.invite-yahoo{height: 104px; background: url(../images/btn_yahoo_active.png) no-repeat;}
+a.invite-gmail:hover{background: url(../images/btn_gmail_hover.png) no-repeat;}
+a.invite-hm:hover{background: url(../images/btn_hm_hover.png) no-repeat;}
+a.invite-yahoo:hover{background: url(../images/btn_yahoo_hover.png) no-repeat;}
+#contact-importer-form-1{margin-left: 15px}
+#contact-importer-form-1 #edit-submit{margin-top: 10px; cursor:pointer; text-indent: -9999px; background: url(../images/btns_expand_circle.png) -3px -3px no-repeat; border:none; width: 182px; height: 34px}
+#contact-importer-form-1 #edit-submit:hover{background: url(../images/btns_expand_circle.png) -3px -40px no-repeat}
+#contact-importer-form-1 .form-item{margin: 0}
+div#network_ff_messages {padding: 1px 10px 20px;}
+#fb-refresh{background: url(../images/fb_refresh_01.png) no-repeat 1px 1px; height: 79px; width: 730px; position: relative}
+#fb-refresh button{cursor:pointer; text-indent: -9999px; background:  url(../images/btn_fb_refresh.png) no-repeat; border: none; width: 266px; height: 51px; position: absolute; right: 15px; top: 15px}
 /*New amazon button*/
 #external-link{background: url(../images/amazon_bgd.png) -2px 0 no-repeat; height: 85px; font-size: 13px; color: #556270; font-weight: bold; padding: 19px 0 0 23px}
 .external-link-text{float: left; padding-top: 15px}
 #external-link p{margin: 0}
 .purchase-amazon{ float: right; padding-right: 15px}
 .purchase-amazon a{ display: block; height: 43px; width: 204px; background: url(../images/btn_amazon.png) no-repeat; text-indent: -9999px}
+/*Invite page hidden elements*/
+#invite-form .invite-message .opening, #invite-form #edit-email-wrapper .contact-importer-message, #invite-form .form-item:first-child{display:none}

@@ -158,7 +158,8 @@ function _product_get_image($nid, $is_product=false)
  * // Duplicate code with function file_uncreate_url and vibio_item_get_image
  */
 function file_uncreate_url($url) {
-	$pieces = explode("com/", $url);
+  $host = $_SERVER['HTTP_HOST'] . '/';
+	$pieces = explode($host, $url);
 	if(count($pieces) > 1){
 		return $pieces[1];
 	}else{

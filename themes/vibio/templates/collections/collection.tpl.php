@@ -1,10 +1,10 @@
 <?php
-$collection_url = url("collections/{$collection->cid}");
-$manage_link = $collection->is_owner ? l(t("Edit this Collection"), "collections/manage/{$collection->cid}") : "";
+$collection_url = url("collections/{$collection->nid}");
+$manage_link = $collection->is_owner ? l(t("Edit this Collection"), "collections/manage/{$collection->nid}") : "";
 $add_collection_link = $collection->is_owner ? l(t("Create New Collection"), "collections/new") : "";
 $total_items = t("!count items", array("!count" => $collection->total_items));
 $expand = t("View this collection");
-$collection->user = l($collection->user_name, "user/{$collection->uid}");
+$collection->user = l($collection->users_name, "user/{$collection->users_uid}");
 
 if ($show_preview)
 {
@@ -24,7 +24,7 @@ if ($show_preview)
 $collection_image = theme('imagecache', 'collection_fixed_fluid_grid_77', $collection->image, $collection->collection_description, $collection->collection_description, '');
 
 echo "
-	<div class='collection_list_collection' id='collection_{$collection->cid}'>
+	<div class='collection_list_collection' id='collection_{$collection->nid}'>
 		<div class='manage_collection_link'>$manage_link <br /> $add_collection_link</div>
 		<div class='collection_image'>
 			<a href='$collection_url'>
@@ -33,7 +33,7 @@ echo "
 		</div>
 		<div class='collection_summary'>
 			<a href='$collection_url'>
-				<h3>{$collection->collection_title}</h3>
+				<h3>{$collection->node_title}</h3>
 			</a>
 			<div class='collection_item_count'>Number of items: $total_items</div>
 			<div class='collection-user'>Collection creator: {$collection->user}</div>

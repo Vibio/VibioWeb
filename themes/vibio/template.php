@@ -47,7 +47,7 @@ function vibio_preprocess_views_view__user_collection(&$variables){
 * meta data tags.
 *
 */
-function vibio_preprocess_views_view__user_collections(&$variables){
+function vibio_preprocess_views_view__user_collections1(&$variables){
   //Get the user's name from their id. 
   $id = $variables['view']->args[0];
   $collections_owner = db_result(db_query("SELECT name FROM {users} WHERE uid = %d", $id));

@@ -20,8 +20,8 @@ function tweetassist_tweet_item($nid)
 function tweetassist_tweet_collection($cid)
 {
 	$collection = collection_load($cid);
-	$title = strlen($collection['title']) > TWEETASSIST_MAX_TITLE_LENGTH ?
-		substr($collection['title'], 0, TWEETASSIST_MAX_TITLE_LENGTH)."..." : $collection['title'];
+	$title = strlen($collection->title) > TWEETASSIST_MAX_TITLE_LENGTH ?
+		substr($collection->title, 0, TWEETASSIST_MAX_TITLE_LENGTH)."..." : $collection->title;
 	$format = "check out my \"$title\" collection on #vibio [url]";
 	$url = url("collections/{$cid}", array("absolute" => true));
 	

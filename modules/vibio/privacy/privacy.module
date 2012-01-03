@@ -352,7 +352,7 @@ function privacy_product_inventory_quick_add($form_vals)
 function privacy_collection_load($collection)
 {
 	return array(
-		"privacy"	=> privacy_get($collection['uid'], "collection", $collection['cid']),
+		"privacy"	=> privacy_get($collection->uid, "collection", $collection->nid),
 	);
 }
 

@@ -1,6 +1,12 @@
 <?php
 define("COLLECTION_RANDOM_COLLECTION_DESCRIPTION_MAXLENGTH", 64);
 
+/**
+ * Display view of all the user's items
+ * 
+ * @param <type> $uid
+ * @return <type>
+ */
 function collection_view_all_user_items($uid)
 {
 	$sql = "SELECT `name`
@@ -13,27 +19,33 @@ function collection_view_all_user_items($uid)
 	return views_embed_view("user_inventory", "default", $uid, privacy_get_access_level($uid));
 }
 
+/**
+ * Display view of a single given collection
+ * 
+ * @param <type> $collection
+ * @return <type>
+ */
 function collection_view_collection($collection)
 {	
-	$access = module_exists("privacy") ? privacy_get_access_level($collection['uid']) : 1;
+	$access = module_exists("privacy") ? privacy_get_access_level($collection->uid) : 1;
 	module_load_include("inc", "collection");
 
 	if ($_GET['preview'])
 	{
-		$output = views_embed_view("user_collection_preview", "default", $collection['uid'], $collection['cid'], $access);
+		$output = views_embed_view("user_collection_preview", "default", $collection->uid, $collection->nid, $access);
 	}
 	else
 	{
 		//drupal_add_css("themes/vibio/css/collections.css");
 		
 		$collection_object = (object) $collection;
-		$collection_object->collection_description = $collection['description'];
-		$collection_object->collection_title = $collection['title'];
+		$collection_object->collection_description = $collection->body;
+		$collection_object->collection_title = $collection->title;
 		
 		$collection_display = theme("collection_list_item", $collection_object, $access, false);
-		$collection_display .= views_embed_view("user_collection", "default", $collection['uid'], $collection['cid'], $access);
-		$sidebar = collection_get_sidebar($collection['uid'], $collection['cid']);
-		$output = theme("collection_view_collection", $collection_object->uid, $collection_display, $sidebar);
+		$collection_display .= views_embed_view("user_collection", "default", $collection->uid, $collection->nid, $access);
+		//$sidebar = collection_get_sidebar($collection['uid'], $collection['cid']);
+		$output = theme("collection_view_collection", $collection_object->uid, $collection_display); //, $sidebar);
 	}
 
 	if ($_GET['ajax'])
@@ -44,6 +56,12 @@ function collection_view_collection($collection)
 	return $output;
 }
 
+/**
+ * Sends the user to an inventory page or tells them they have no collections.
+ *
+ * @global <type> $user
+ * @return <type>
+ */
 function collection_manage()
 {
 	global $user;
@@ -62,10 +80,18 @@ function collection_manage()
 	}
 }
 
+/**
+ * Form for editing a collection
+ * @todo: Make this into a default node edit form?
+ *
+ * @param <type> $state
+ * @param <type> $collection
+ * @return <type>
+ */
 function collection_edit(&$state, $collection=false)
 {
 	module_load_include("inc", "collection");
-	$is_default_collection = $collection && collection_get_user_default() == $collection['cid'];
+	$is_default_collection = $collection && collection_get_user_default() == $collection->nid;
 	
 	$form = array(
 		"set_default"	=> array(
@@ -77,14 +103,14 @@ function collection_edit(&$state, $collection=false)
 		"title"			=> array(
 			"#type"			=> "textfield",
 			"#title"		=> t("Collection Name"),
-			"#default_value"=> $collection['title'],
+			"#default_value"=> $collection->title,
 			"#maxlength"	=> COLLECTION_TITLE_MAX_LENGTH,
 			"#required"		=> true,
 		),
 		"description"	=> array(
 			"#type"			=> "textarea",
 			"#title"		=> t("Description"),
-			"#default_value"=> $collection['description'],
+			"#default_value"=> $collection->body,
 		),
 	);
 	
@@ -92,7 +118,7 @@ function collection_edit(&$state, $collection=false)
 	{
 		$form['cid'] = array(
 			"#type"	=> "value",
-			"#value"=> $collection['cid'],
+			"#value"=> $collection->nid,
 		);
 		if ($is_default_collection)
 		{
@@ -121,6 +147,12 @@ function collection_edit(&$state, $collection=false)
 	return $form;
 }
 
+/**
+ * Validation function for collection_edit form
+ * 
+ * @param <type> $form
+ * @param <type> $state
+ */
 function collection_edit_validate($form, &$state)
 {
 	$vals = $state['values'];
@@ -132,6 +164,15 @@ function collection_edit_validate($form, &$state)
 	}
 }
 
+/**
+ * Submit function for collection_edit form
+ * 
+ * @global  $user
+ * @global  $user
+ * @param <type> $form
+ * @param <type> $state
+ * @return <type>
+ */
 function collection_edit_submit($form, &$state)
 {
 	global $user;
@@ -184,15 +225,26 @@ function collection_edit_submit($form, &$state)
 	drupal_goto("collections/manage");
 }
 
-// aka Showcase Item
+
+
+/**
+ * Displays a showcase collection ("showcase item")
+ *
+ * @param <type> $u
+ * @return <type>
+ */
 function collection_random_collection($u)
 {
 	if (module_exists("network") && ($friends = _network_get_friends($u->uid, 1)) && !empty($friends))
 	{
 		$friend_ids = implode(",", $friends);
-		$sql = "SELECT `cid`
-				FROM {collection} c JOIN {privacy_settings} p
-					ON c.`cid`=p.`type_id`
+    /**
+     * @todo: refactor privacy system to rely on nids exclusively (or switch to
+     * node access)
+     */
+		$sql = "SELECT `nid`
+				FROM {node} c JOIN {privacy_settings} p
+					ON c.`nid`=p.`type_id`
 						AND c.`uid`=p.`uid`
 				WHERE c.`uid` IN ($friend_ids)
 					AND p.`type`='collection'
@@ -202,9 +254,9 @@ function collection_random_collection($u)
 	}
 	else
 	{
-		$sql = "SELECT `cid`
-				FROM {collection} c JOIN {privacy_settings} p
-					ON c.`cid`=p.`type_id`
+		$sql = "SELECT `nid`
+				FROM {node} c JOIN {privacy_settings} p
+					ON c.`nid`=p.`type_id`
 						AND c.`uid`=p.`uid`
 				WHERE p.`type`='collection'
 					AND p.`setting` <= %d
@@ -218,10 +270,14 @@ function collection_random_collection($u)
 	}
 	
 	module_load_include("inc", "collection");
-	
+
+  /*
+   * @todo: refactor to use the standard $collection node object; legacy code dealing
+   * with the old data model is currently supported, but should be depreciated.
+   */
 	$collection = (object) collection_load($cid);
 	$collection->tags = implode(", ", collection_get_categories($collection->cid));
-	$collection->description = strlen($collection->description) > COLLECTION_RANDOM_COLLECTION_DESCRIPTION_MAXLENGTH ?
+	$collection->description = strlen($collection->body) > COLLECTION_RANDOM_COLLECTION_DESCRIPTION_MAXLENGTH ?
 		substr($collection->description, 0, COLLECTION_RANDOM_COLLECTION_DESCRIPTION_MAXLENGTH)."..." : $collection->description;
 	$collection->user = l($collection->user_name, "user/{$collection->uid}");
 	$collection->title = l($collection->title, "collections/{$collection->cid}");

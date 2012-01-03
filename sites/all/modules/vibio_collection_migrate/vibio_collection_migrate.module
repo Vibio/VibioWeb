@@ -105,15 +105,15 @@ left join drupal_collection_user_defaults on drupal_collection.cid = drupal_coll
       $collection->title = $title;
       $collection->type = 'collection';
       $collection->language = 'en-US';
-      $collection->description = $description;
+      $collection->body = $description;
       $collection->created = $created;
       $collection->uid = $uid;
       $collection->field_default[0]['value'] = !empty($default_collection) ? 1 : 0;
-      $collection = node_save($collection);
+      node_save($collection);
       //Associate items with the new collection
       if(!empty($item_nid)){
         $item = node_load($item_nid);
-        $item->field_collection[0]['value'] = $collection->nid;
+        $item->field_collection[0]['nid'] = $collection->nid;
         node_save($item);
 
 //        db_query('UPDATE drupal_collection_items SET cid=%d WHERE item_nid=%d', $collection->nid, $item_nid);
@@ -126,7 +126,7 @@ left join drupal_collection_user_defaults on drupal_collection.cid = drupal_coll
     //    db_query('UPDATE drupal_collection_items SET cid=%d WHERE item_nid=%d', $previous_nid, $item_nid);
      
         $item = node_load($item_nid);
-        $item->field_collection[0]['value'] = $collection->nid;
+        $item->field_collection[0]['nid'] = $previous_nid;
         node_save($item);
       }
   }

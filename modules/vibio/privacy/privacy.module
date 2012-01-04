@@ -374,4 +374,21 @@ function _privacy_options()
 		PRIVACY_ONLYME			=> t("Private to me"),
 	);
 }
+
+/**
+ * Write the record to the node access table according to the privacy
+ * settings on this particular node.
+ * 
+ * @param <type> $node
+ 
+function privacy__node_access_records($node){
+  //Depending on the type of node...
+  switch($node->type)
+    case 'vibio_item'
+    case 'collection'
+      //Load the appropriate record from the privacy table
+      
+}
+ * 
+ */
 ?>

@@ -32,7 +32,7 @@ function collection_view_collection($collection)
 
 	if ($_GET['preview'])
 	{
-		$output = views_embed_view("user_collection_preview", "default", $collection->uid, $collection->nid, $access);
+		$output = views_embed_view("user_collection_preview1", "default", $collection->uid, $collection->nid, $access);
 	}
 	else
 	{
@@ -43,7 +43,7 @@ function collection_view_collection($collection)
 		$collection_object->collection_title = $collection->title;
 		
 		$collection_display = theme("collection_list_item", $collection_object, $access, false);
-		$collection_display .= views_embed_view("user_collection", "default", $collection->uid, $collection->nid, $access);
+		$collection_display .= views_embed_view("user_collection1", "default", $collection->uid, $collection->nid, $access);
 		//$sidebar = collection_get_sidebar($collection['uid'], $collection['cid']);
 		$output = theme("collection_view_collection", $collection_object->uid, $collection_display); //, $sidebar);
 	}

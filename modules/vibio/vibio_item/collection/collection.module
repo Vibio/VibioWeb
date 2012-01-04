@@ -182,6 +182,9 @@ function collection_preprocess_collection_view_collection(&$vars)
 }
 
 /**
+ * Preprocess for displaying a collection's information (see the header for
+ * an individual collection or how the collections are displayed on the collections
+ * page).
  *
  * @todo: Future notes: Presentation, no refactoring for now
  * @global <type> $base_url
@@ -198,13 +201,12 @@ function collection_preprocess_collection_list_item(&$vars)
 	$vars['collection']->is_owner = module_exists("privacy") ? $vars['access'] == PRIVACY_ONLYME : true;
 	$vars['collection']->image = collection_get_image($vars['collection']->nid, false, $vars['access']);
 	$vars['collection']->total_items = collection_get_num_items($vars['collection']->nid, $vars['access']);
-  $vars['collection']->collection_description = $vars['collection']->node_revisions_body;
 	//Add sharing buttons; requires addthis module
 	$share_html = "";
 	//show preview= 1 on the collections page, null on collection. We don't want to add sharing on collections page for right now.
 	if(module_exists('addthis') && empty($vars['show_preview'])){
 		global $base_url;
-		$variables['title'] = $vars['collection']->node_title;
+		$variables['title'] = $vars['collection']->title;
 		$variables['url'] = $base_url . url('collections/'. $vars['collection']->nid);
 		
 		$share_html = theme('addthis_toolbox', $variables);
@@ -228,6 +230,8 @@ function collection_preprocess_collection_list_item(&$vars)
 }
 
 /**
+ * Preprocess for individual items in a collection view
+ *
  * @todo: Future notes: Presentation, no refactoring for now
  * @global $user $user
  * @global  $base_url

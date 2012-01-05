@@ -45,14 +45,14 @@ function vibio_invite_admin($form_state){
       '#description' => 'This is the message that will be posted to twitter along with
         an invitation URL to Vibio. Remember that the invitation URL will be about
         25 characters, so keep your message short.',
-      '#default_value' => "Join me on @vibio and checkout my collections!",
+      '#default_value' => variable_get('vibio_invite_twitter_message', "I've been using @Vibio to share my style online. Create collections of your most prized possessions:"),
   );
 
   $form['invite_link'] = array(
       '#type' => 'textfield',
       '#title' => 'Invitation Link',
-      '#description' => 'The page that invited users will be sent to, relative to webroot',
-      '#default_value' => 'user/register',
+      '#description' => 'The page that invited users will be sent to (full address)',
+      '#default_value' => variable_get('vibio_invite_link', 'www.vibio.com'),
   );
 
   $form['submit'] = array(
@@ -74,7 +74,7 @@ function vibio_invite_admin($form_state){
 function vibio_invite_admin_submit($form, &$form_state){
   //Adding a space because the URL will be appended the end
   variable_set('vibio_invite_twitter_message', $form_state['values']['twitter_message'] . ' ');
-  $url = url($form_state['values']['invite_link']);
+  $url = $form_state['values']['invite_link'];
   variable_set('vibio_invite_link', $url);
 }
 
@@ -129,7 +129,7 @@ function vibio_invite_preprocess_vibio_invite_display(&$vars){
   $url = variable_get('vibio_invite_link');
   
   //URL to send an invitation message via Twitter
-  if(module_exists('shorten')){
+  if(module_exists('shorten') && strlen($url) > 25){
     $twitter_url = shorten_url($url, 'TinyURL');
   }else{
     $twitter_url = $url;

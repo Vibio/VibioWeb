@@ -45,6 +45,8 @@ function privacy_node_nodeapi(&$node, $op, $a3=null, $a4=null){
  * @return int $access value for the given node
  */
 function privacy_node_get($nid){
+  $sql = "SELECT setting FROM {privacy_node} WHERE nid=%d";
+  $access = db_result(db_query($sql, $nid));
   return $access;
 }
 
@@ -56,6 +58,10 @@ function privacy_node_get($nid){
  * @param int $access
  */
 function privacy_node_set($nid, $access){
+  $entry = new stdClass();
+  $entry->nid = $nid;
+  $entry->setting = $access;
+  drupal_write_record('privacy_node', $entry);
   
 }
 
@@ -76,7 +82,10 @@ function privacy_node_delete($nid){
  * @param <type> $access
  */
 function privacy_node_update($nid, $access){
-
+  $entry = new stdClass();
+  $entry->nid = $nid;
+  $entry->setting = $access;
+  drupal_write_record('privacy_node', $entry, 'nid');
 }
 
 //
@@ -109,20 +118,37 @@ function privacy_node_form_product_node_form_alter(&$form, &$state)
  * @param <type> $form
  * @param <type> $state
  */
-function privacy_node_form_vibio_item_node_form_alter(&$form, &$state)
-{
-	if ($form['#node']->nid)
-	{
-		$default_type = "node";
-		$default_typeid = $form['#node']->nid;
-	}
-	else
-	{
-		$default_type = "account_setting";
-		$default_typeid = "item_default";
-	}
+function privacy_node_form_vibio_item_node_form_alter(&$form, &$state){
+  //Only present on the node form
+	if ($form['#node']->nid){
+    $form = array_merge_recursive($form, privacy_node_form($form['#node']->nid));
+  }
+}
 
-	$form = array_merge_recursive($form, _privacy_form($form['#node']->uid, $default_type, $default_typeid));
+/**
+ * Note that, even though it follows Form API naming conventions, this is not
+ * a standalone form.
+ * 
+ */
+function privacy_node_form($nid){
+  return array(
+		"privacy_setting"	=> array(
+			"#title"		=> $custom_title ? $custom_title : t("Privacy Settings"),
+			"#type"			=> "select",
+			"#options"		=> _privacy_options(),
+			"#default_value"=> privacy_node_get($nid),
+		),
+		"#submit"			=> array(
+			"privacy_node_form_submit",
+		),
+	);
+}
+
+function privacy_node_form_submit($form, &$state){
+	$vals = $state['values'];
+	if ($vals['privacy_setting'] && $vals['nid']){
+		privacy_node_set($vals['nid']);
+	}
 }
 
 /**
@@ -132,18 +158,21 @@ function privacy_node_form_vibio_item_node_form_alter(&$form, &$state)
  * @param <type> $form
  * @param <type> $state
  */
-function privacy_node_form_collection_edit_alter(&$form, &$state)
-{
+function privacy_node_form_collection_edit_alter(&$form, &$state){
 	global $user;
 
-	$form = array_merge_recursive($form, _privacy_form($user->uid, "collection", $form['cid']['#value']));
-	$form['privacy_settings']['#weight'] = 9;
-  $form['#submit'][] = 'privacy_node_form_collection_edit_submit';
+	$form = array_merge_recursive($form, privacy_node_form($form['cid']['#value']));
+  $form['submit'][] = 'privacy_node_form_collection_edit_submit';
 }
 
+/**
+ * Submit privacy settings for collection upon saving from the edit collection page.
+ * @param <type> $form
+ * @param <type> $state
+ */
 function privacy_node_form_collection_edit_submit(&$form, &$state){
-  $privacy_setting = $state['values']['privacy_settings'];
-  
+  $privacy_setting = isset($state['values']['privacy_setting']) ? $state['values']['privacy_setting'] : PRIVACY_PUBLIC;
+  privacy_node_set($state['values']['cid'], $privacy_setting);
 }
 
 /**
@@ -157,8 +186,7 @@ function privacy_node_collection_save($vals)
 	global $user;
 	//stephen changing defaults: $privacy_setting = isset($vals['privacy_setting']) ? $vals['privacy_setting'] : PRIVACY_ONLYME;
 	$privacy_setting = isset($vals['privacy_setting']) ? $vals['privacy_setting'] : PRIVACY_PUBLIC;
-
-  privacy_node_set($vals[''], $access)set($user->uid, "collection", $vals['cid'], $privacy_setting);
+  privacy_node_set($vals['cid'], $privacy_setting);
 }
 
 ?>

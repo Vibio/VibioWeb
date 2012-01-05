@@ -91,6 +91,7 @@ function collection_manage()
 function collection_edit(&$state, $collection=false)
 {
 	module_load_include("inc", "collection");
+
 	$is_default_collection = $collection && collection_get_user_default() == $collection->nid;
 	
 	$form = array(
@@ -107,7 +108,7 @@ function collection_edit(&$state, $collection=false)
 			"#maxlength"	=> COLLECTION_TITLE_MAX_LENGTH,
 			"#required"		=> true,
 		),
-		"description"	=> array(
+		"body"	=> array(
 			"#type"			=> "textarea",
 			"#title"		=> t("Description"),
 			"#default_value"=> $collection->body,
@@ -143,7 +144,6 @@ function collection_edit(&$state, $collection=false)
 			"#weight"	=> 11,
 		);
 	}
-	
 	return $form;
 }
 
@@ -158,7 +158,7 @@ function collection_edit_validate($form, &$state)
 	$vals = $state['values'];
 	$op = $state['clicked_button']['#value'];
 
-	if ($op != t("Delete") && strlen($vals['description']) > COLLECTION_DESCRIPTION_MAX_LENGTH)
+	if ($op != t("Delete") && strlen($vals['body']) > COLLECTION_DESCRIPTION_MAX_LENGTH)
 	{
 		form_set_error("description", t("Description cannot be longer than !maxlength characters", array("!maxlength" => COLLECTION_DESCRIPTION_MAX_LENGTH)));
 	}
@@ -180,16 +180,17 @@ function collection_edit_submit($form, &$state)
 	
 	$vals = $state['values'];
 	$vals['title'] = htmlspecialchars($vals['title']);
-	$vals['description'] = htmlspecialchars($vals['description']);
+	$vals['body'] = htmlspecialchars($vals['body']);
 	$op = $state['clicked_button']['#value'];
   //Create collection object
   $collection = new stdClass();
+  foreach($vals as $field_name => $field_value){
+    $collection->$field_name = $field_value;
+  }
+  //@todo refactor, legacy cid variable is actually nid
   $vals['cid'] ? $collection->nid = $vals['cid'] : '';
-  $collection->title = $vals['title'];
-  $collection->body = $vals['description'];
 
   //Delete collection
-  //CID is actually NID; @todo refactor
 	if ($op == t("Delete") && $vals['cid'])
 	{
 		module_load_include("inc", "collection");
@@ -211,7 +212,7 @@ function collection_edit_submit($form, &$state)
 	else
 	{
     node_save($collection);
-		$vals['cid'] = collection_insert($vals);
+		$vals['cid'] = $collection->nid;
 		drupal_set_message(t("!collection collection has been created", array("!collection" => l($vals['title'], "collections/{$vals['cid']}"))));
 	}
 	

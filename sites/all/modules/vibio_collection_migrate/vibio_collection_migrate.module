@@ -101,6 +101,10 @@ left join drupal_collection_user_defaults on drupal_collection.cid = drupal_coll
 
     //If it's a new collection entry...
     if($previous_cid != $cid){
+      //Get privacy access value
+      $sql = "SELECT setting FROM {privacy_settings} WHERE type='collection' AND type_id=%d";
+      $privacy = db_result(db_query($sql, $cid));
+
       //Port collection
       $collection->title = $title;
       $collection->type = 'collection';
@@ -109,6 +113,7 @@ left join drupal_collection_user_defaults on drupal_collection.cid = drupal_coll
       $collection->created = $created;
       $collection->uid = $uid;
       $collection->field_default[0]['value'] = !empty($default_collection) ? 1 : 0;
+      $collection->privacy_setting = $privacy;
       node_save($collection);
       //Associate items with the new collection
       if(!empty($item_nid)){

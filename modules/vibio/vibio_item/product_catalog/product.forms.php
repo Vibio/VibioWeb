@@ -62,7 +62,7 @@ function product_ajax_add_form($state, $product, $possess)
 	}
 
 	$form['field_have_want_like'] = array(
-		"#title"		=> t("$possess ... Have it, Want it, Like it?"),
+		"#title"		=> t("Have it, Want it, Like it?"),
 		"#type"			=> "select",
 		"#options" => array(
 			10 => "Have",

@@ -166,6 +166,7 @@ function collection_edit_validate($form, &$state)
 
 /**
  * Submit function for collection_edit form
+ * @todo: delete, replace with standard node edit form
  * 
  * @global  $user
  * @global  $user
@@ -181,7 +182,14 @@ function collection_edit_submit($form, &$state)
 	$vals['title'] = htmlspecialchars($vals['title']);
 	$vals['description'] = htmlspecialchars($vals['description']);
 	$op = $state['clicked_button']['#value'];
+  //Create collection object
+  $collection = new stdClass();
+  $vals['cid'] ? $collection->nid = $vals['cid'] : '';
+  $collection->title = $vals['title'];
+  $collection->body = $vals['description'];
 
+  //Delete collection
+  //CID is actually NID; @todo refactor
 	if ($op == t("Delete") && $vals['cid'])
 	{
 		module_load_include("inc", "collection");
@@ -189,21 +197,20 @@ function collection_edit_submit($form, &$state)
 		drupal_goto("collections/manage");
 		return;
 	}
-	
+
+  //Update Collection
 	if ($vals['cid'])
 	{
 		global $user;
-		
-		$sql = "UPDATE {collection}
-				SET `title`='%s', `description`='%s', `updated`=%d
-				WHERE `cid`=%d";
-		db_query($sql, $vals['title'], $vals['description'], time(), $vals['cid']);
-		module_invoke_all("collection_update", $user->uid, array($vals['cid']));
-		drupal_set_message(t("!collection has been updated", array("!collection" => l($vals['title'], "collections/{$vals['cid']}"))));
+
+    //Save the node
+ 		node_save($collection);
+
+    drupal_set_message(t("!collection has been updated", array("!collection" => l($vals['title'], "collections/{$vals['cid']}"))));
 	}
 	else
 	{
-		module_load_include("inc", "collection");
+    node_save($collection);
 		$vals['cid'] = collection_insert($vals);
 		drupal_set_message(t("!collection collection has been created", array("!collection" => l($vals['title'], "collections/{$vals['cid']}"))));
 	}

@@ -363,6 +363,7 @@ function collection_nodeapi(&$node, $op, $a3=null, $a4=null)
 					t("!item has been created and added to your !collections collection", $t_args);
 
 				drupal_set_message($message);
+        module_invoke_all('collection_insert', $node->uid, $node->nid);
 			}
     //
 		case "update":
@@ -703,4 +704,5 @@ function collection_title($collection)
 {
 	return $collection->title;
 }
+
 ?>

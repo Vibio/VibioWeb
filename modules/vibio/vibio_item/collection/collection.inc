@@ -216,7 +216,8 @@ function collection_get_user_default($uid=false, $auto_create=false)
 	}
 	
 	collection_set_user_default($uid, $new_collection->nid);
-	module_invoke_all("collection_save", $new_collection);
+  $vals = (array) $new_collection;
+	module_invoke_all("collection_save", $vals);
 
 	return $new_collection->cid;
 }

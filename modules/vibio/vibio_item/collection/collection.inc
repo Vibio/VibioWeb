@@ -247,12 +247,10 @@ function collection_get_image($cid, $absolute=false, $access=false)
 		$access = PRIVACY_ONLYME;
 		
 	$sql = "SELECT n.`nid`
-			FROM {node} n JOIN {content_field_collection} ci JOIN {privacy_settings} p
+			FROM {node} n JOIN {content_field_collection} ci JOIN {privacy_node} p
 				ON n.`nid`=ci.`nid`
-					AND n.`nid`=p.`type_id`
-					AND n.`uid`=p.`uid`
+					AND n.`nid`=p.`nid`
 			WHERE ci.`field_collection_nid`=%d
-				AND p.`type`='node'
 				AND p.`setting` <= %d
 			ORDER BY n.`changed` DESC
 			LIMIT 1";
@@ -297,11 +295,9 @@ function collection_get_num_items($cid, $access=false)
 		$collection = collection_load($cid);
 		
 		$sql = "SELECT COUNT(*)
-				FROM {content_field_collection} ci JOIN {privacy_settings} p
-					ON ci.`nid`=p.`type_id`
+				FROM {content_field_collection} ci JOIN {privacy_node} p
+					ON ci.`nid`=p.`nid`
 				WHERE `field_collection_nid`=%d
-					AND p.`type`='node'
-					AND p.`uid`=%d
 					AND p.`setting` <= %d";
 		return db_result(db_query($sql, $collection->nid, $collection->uid, $access));
 	}

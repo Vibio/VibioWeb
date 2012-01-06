@@ -1,4 +1,9 @@
 <?php
+define("PRIVACY_ONLYME", 4);
+define("PRIVACY_CONNECTION", 3);
+define("PRIVACY_AUTHENTICATED", 2);
+define("PRIVACY_PUBLIC", 1);
+
 
 //
 //CONTROLLER/CRUD
@@ -133,9 +138,9 @@ function privacy_node_form_vibio_item_node_form_alter(&$form, &$state){
 function privacy_node_form($nid){
   return array(
 		"privacy_setting"	=> array(
-			"#title"		=> $custom_title ? $custom_title : t("Privacy Settings"),
+			"#title"		=> t("Privacy Settings"),
 			"#type"			=> "select",
-			"#options"		=> _privacy_options(),
+			"#options"  => privacy_node_options(),
 			"#default_value"=> privacy_node_get($nid),
 		),
 		"#submit"			=> array(
@@ -162,7 +167,7 @@ function privacy_node_form_collection_edit_alter(&$form, &$state){
 	global $user;
 
 	$form = array_merge_recursive($form, privacy_node_form($form['cid']['#value']));
-  $form['submit'][] = 'privacy_node_form_collection_edit_submit';
+  $form['#submit'][] = 'privacy_node_form_collection_edit_submit';
 }
 
 /**
@@ -188,5 +193,59 @@ function privacy_node_collection_save($vals)
 	$privacy_setting = isset($vals['privacy_setting']) ? $vals['privacy_setting'] : PRIVACY_PUBLIC;
   privacy_node_set($vals['cid'], $privacy_setting);
 }
+
+
+//
+//HELPER FUNCTIONS
+//
+function privacy_node_options()
+{
+	return array(
+		PRIVACY_PUBLIC			=> t("Anyone"),
+		PRIVACY_AUTHENTICATED	=> t("Only users with Vibio accounts"),
+		PRIVACY_CONNECTION		=> t("Only my Friends"),
+		PRIVACY_ONLYME			=> t("Private to me"),
+	);
+}
+
+//
+//MODULE INTEGRATION: HOOK IMPLEMENTATIONS
+//
+/**
+ * 
+ * @param <type> $old_uid
+ * @param <type> $node
+ */
+function privacy_node_offer2buy_complete_actions($old_uid, $node){
+  privacy_node_delete($node->nid);
+	privacy_node_set($node->nid, PRIVACY_ONLYME);
+}
+
+/**
+ * Load the privacy setting associated with the collection being loaded.
+ * 
+ * @param <type> $collection
+ * @return <type>
+ */
+function privacy_node_collection_load($collection)
+{
+	return array(
+		"privacy"	=> privacy_node_get($collection->nid),
+	);
+}
+
+/**
+ * Delete privacy record for deleted collection
+ * @todo: do we need this with the nodeapi implementation?
+ *
+ * @param <type> $uid
+ * @param <type> $new_cid
+ * @param <type> $deleted_cid
+ */
+function privacy_node_collection_delete($uid, $new_cid, $deleted_cid)
+{
+  privacy_node_delete($deleted_cid);
+}
+
 
 ?>

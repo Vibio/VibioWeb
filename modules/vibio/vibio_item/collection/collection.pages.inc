@@ -251,11 +251,9 @@ function collection_random_collection($u)
      * node access)
      */
 		$sql = "SELECT `nid`
-				FROM {node} c JOIN {privacy_settings} p
-					ON c.`nid`=p.`type_id`
-						AND c.`uid`=p.`uid`
+				FROM {node} c JOIN {privacy_node} p
+					ON c.`nid`=p.`nid`
 				WHERE c.`uid` IN ($friend_ids)
-					AND p.`type`='collection'
 					AND p.`setting` <= %d
 				ORDER BY RAND()";
 		$access = PRIVACY_CONNECTION;
@@ -263,11 +261,9 @@ function collection_random_collection($u)
 	else
 	{
 		$sql = "SELECT `nid`
-				FROM {node} c JOIN {privacy_settings} p
-					ON c.`nid`=p.`type_id`
-						AND c.`uid`=p.`uid`
-				WHERE p.`type`='collection'
-					AND p.`setting` <= %d
+				FROM {node} c JOIN {privacy_node} p
+					ON c.`nid`=p.`nid`
+					WHERE p.`setting` <= %d
 				ORDER BY RAND()";
 		$access = PRIVACY_PUBLIC;
 	}

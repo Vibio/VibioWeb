@@ -25,6 +25,8 @@ function product_ajax_add() {
 		<div class='inventory_add_image'><img src='$image' /></div>
 		<div class='inventory_title'>{$product->title}</div>
 	";
+
+	// Alter this, put collections downwards, with altered form.
   $out.=drupal_get_form("product_ajax_add_form", $product);
   exit($out);
 }

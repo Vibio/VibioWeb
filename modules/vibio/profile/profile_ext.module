@@ -429,7 +429,7 @@ function profile_ext_preprocess_user_profile(&$vars)
 		!empty($share_html) ? $msg = "<h1 class='page-title-sub'>Collections</h1>" . $share_html : $msg = "<h1 class='page-title-sub'>Collections</h1>";
 		$vars['sec_content'] =  
 				$msg .
-				views_embed_view("user_collections", "default", $uid, $access);
+				views_embed_view("user_collections1", "default", $uid, $access);
 
 
 		break;

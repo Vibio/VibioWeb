@@ -34,16 +34,29 @@ $(document).ready(function() {
 	//places forgot password snippet above page lost password form
 	$(".not-logged-in h1#page_title").remove().insertBefore("div.tabs");
 	$("#block-block-13").remove().insertBefore("form#user-pass");
+
 	//Intial text value for the Search Bar
-	$('input#edit-search-theme-form-1').attr('value', 'Search Items');
-	//Remove search bar text on click of field
+	//Only change if the box is empty...
+	if($('input#edit-search-theme-form-1').val() == '') {
+		//Set the value depending on the current search type
+		if($('input#edit-search-type').val() == 'vibio_item') {
+			$('input#edit-search-theme-form-1').attr('value', 'Search Items');
+		} else {
+			$('input#edit-search-theme-form-1').attr('value', 'Search Users');
+		}
+	}
+
+	//if the search bar has a default value...
 	$("input#edit-search-theme-form-1").focus(function() {
-		$('input#edit-search-theme-form-1').attr('value', '');
+		if($('input#edit-search-theme-form-1').val().indexOf('Search') != -1) {
+			$('input#edit-search-theme-form-1').attr('value', '');
+		}
 	});
 	//Change Serach box text to "Search Users" on click
 	$('img#searchtype_user').click(function() {
 		$('input#edit-search-theme-form-1').attr('value', 'Search Users');
 	});
+	//Make sure that the search
 	//Change Serach box text to "Search Items" on click
 	$('img#searchtype_vibio_item').click(function() {
 		$('input#edit-search-theme-form-1').attr('value', 'Search Items');
@@ -89,23 +102,29 @@ $(document).ready(function() {
 	}, function() {
 		$('#works-icon').css('background-position', '0px 0px');
 	});
-	/*Not for Sale Popup*/
+	/*Not for Sale Popup and Make Offer Popup*/
 	$('#offer-buttons .not_for_sale, .action .not_for_sale').hover(function() {
 		$(this).prepend('<div class="not-sale-popup">Many items on Vibio are not for sale. <a href="/faq#why">Find out why</a>.</div>');
 	}, function() {
 		$('.not-sale-popup').remove();
 	});
-	$('#offer-buttons a.offer-button').hover(function() {
-		$(this).prepend('<div class="make-offer-popup">Many items on Vibio are not for sale. <a href="/faq#buy">Find out why</a>.</div>');
+	$('.make-offer').hover(function() {
+		$(this).prepend('<div class="make-offer-popup">Negotiate a price with this seller. <a href="/faq#buy">Find out how</a>.</div>');
 	}, function() {
 		$('.make-offer-popup').remove();
 	});
-	$('.action a').hover(function() {
-		$(this).prepend('<div class="make-offer-popup">Many items on Vibio are not for sale. <a href="/faq#buy">Find out why</a>.</div>');
-	}, function() {
-		$('.make-offer-popup').remove();
-	});
-	//$('#offer-buttons .not_for_sale').prepend('<div class="not-sale-popup">Many items on Vibio are not for sale. <a href="/faq#why">Find out why</a>.</div>');
-	//$('#offer-buttons a.offer-button').prepend('<div class="make-offer-popup">Many items on Vibio are not for sale. <a href="/faq#buy">Find out why</a>.</div>');
-
+	
+	/*Messages moving of elements per ian's comp*/
+	$('div.tabs ul.tabs li:eq(1) a, div.tabs ul.tabs li:eq(2) a, div.tabs ul.tabs li:eq(3) a').append('<span class="top-tabs-sep">|</span>');
+	
+	$("table.privatemsg-list thead tr th:eq(2)").remove().insertBefore("table.privatemsg-list thead tr th:eq(1)");
+	//th
+	$("table.privatemsg-list tr.odd td:eq(2)").insertBefore("table.privatemsg-list tr.odd td:eq(1)");
+	//td
+	$("table.privatemsg-list tr.even td:eq(2)").insertBefore("table.privatemsg-list tr.even td:eq(1)");
+	//td
+	$("td.privatemsg-list-subject span.marker").prependTo("tr.privatemsg-unread td.privatemsg-list-participants");
+	//marker
+	//Change table header to small caps
+	$("table.privatemsg-list th").css('font-variant', 'small-caps');
 });

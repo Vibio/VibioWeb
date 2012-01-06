@@ -43,8 +43,9 @@ body.front div.view-flag-featured .pager{display:none}
 .block .content/* Block's content wrapper */{}
 .block-nice_menus ul{padding:0}
 div.sec_content.collections, div.sec_content.about{position: relative}
-div.sec_content.collections div.addthis_toolbox{position: absolute; right: 10px; top:-7px; width: 272px}
-div.sec_content.collections div.share-text{position: absolute; right: 279px; top:3px}
+div.sec_content.collections div.addthis_toolbox, div.sec_content.inventory div.addthis_toolbox{position: absolute; right: 10px; top:-7px; width: 272px}
+div.sec_content.collections div.share-text, div.sec_content.inventory div.share-text{position: absolute; right: 279px; top:3px}
+div.sec_content.inventory{position: relative}
 /*Congrats popup*/
 div.congrats-popup{padding:0 50px}
 .congrats-popup h2{text-align: center; font-size: 22px}
@@ -116,7 +117,7 @@ div#site-name{  margin:0;   font-size:2em;   line-height:1.3em}
 #site-name a:focus{  text-decoration:underline}
 .slogan{  background:transparent url(../vibio-tagline.png) no-repeat;   top:33px;   position:relative;   left:130px;   text-indent:-4999px;   width:200px;   height:20px}
 p.section_title{background:url("../images/long_border.png") no-repeat scroll 0 30px transparent; height:43px; margin:13px 0 0; padding:0}
-h1#page_title, h1#box_page_title, h1#collection-title, h1.page-title-sub{background:url("../images/long_border.png") no-repeat scroll 0 32px transparent; height:43px; margin:3px 0 5px; padding:0}
+h1#page_title, h1#box_page_title, #collection-title-detail, h1.page-title-sub{background:url("../images/long_border.png") no-repeat scroll 0 32px transparent; height:43px; margin:3px 0 5px; padding:0}
 .section_title{font-size:18px; color:#556270; font-weight:500}
 .section-intro{position: relative}
 .section_sub_title{position: absolute; top: 9px; left: 180px}
@@ -374,7 +375,9 @@ div.messages ul li{list-style-type:none}
 .not-sale-popup, .make-offer-popup{background:url(../images/white.png) no-repeat;color:#556270;  height:70px; font-size:15px; padding:33px 19px 10px; width:173px;z-index: 500; text-indent:0}
 .not-sale-popup{position:absolute; top:-106px; left:10px}
 #offer-buttons{position: absolute; right: -5px;height: 28px; width: 108px; bottom: 0px}
-.make-offer-popup{position:absolute; top:-109px; left:-6px}
+.make-offer{position: relative; padding-top: 20px}
+.action .make-offer-popup{position:absolute; top:-90px; left:-6px}
+#offer-buttons .make-offer-popup{position:absolute; top:-121px; left:-15px}
 /*layout-fixed*/
 #page-wrapper, 
 .region-page-closure{ margin-left:auto;  margin-right:auto;  width:960px}
@@ -511,13 +514,15 @@ form#user-pass input#edit-submit.form-submit{background:url(../images/btn_submit
 form#user-pass div#edit-name-wrapper{padding-bottom:20px; margin-bottom:20px; border-bottom:1px solid #CCC}
 form#user-pass div#edit-name-wrapper input#edit-name{width:449px}
 /*Private message*/
-table.privatemsg-list{margin-bottom:35px}
+table.privatemsg-list{margin:0 0 35px; width:100%}
 table.privatemsg-list th{border-bottom:1px solid #CCC}
 .page-messages fieldset.collapsible{background:#dcdcdc;border:none; padding:5px; position:relative; font-weight:bold}
 .page-messages fieldset.collapsed{background: none}
 .page-messages fieldset.collapsible legend{position:absolute; top:-25px}
 td.active{background:none}
-tr.privatemsg-unread{background:#ccecff}
+td.privatemsg-list-participants span.marker{margin-right:5px}
+table.privatemsg-list tr.even, table.privatemsg-list tr.odd{background: #f2f5ff}
+table.privatemsg-list tr.privatemsg-unread{background:#ccecff}
 /*User account settings*/
 form#user-profile-form{font-size:13px; margin-bottom:75px}
 form#user-profile-form legend{font-size:15px; font-weight:bold; margin: 15px 0 5px}
@@ -669,10 +674,10 @@ html.js input.throbbing{background-position:99% -14px}
 .view-user-collections div.view-content{margin-top:6px; position:relative}
 .collection_list_collection .collection_image{margin:0  10px 10px 0; padding:5px; border:1px solid #CCC; background:#FFF; height:152px}
 .collection_list_collection .collection_image img{border:1px solid #CCC}
-.collections_view_header{position:absolute; left:125px; top:-52px}
+.collections_view_header{position:absolute; left:125px; top:-57px}
 .collection_list_collection{border-bottom:1px solid #CCC; margin-top:18px}
 div.view-user-collections .collection_list_collection{border:none}
-.manage_collection_link{float:right; padding-right:22px}
+.manage_collection_link{float:right; padding-right:22px; text-align: right}
 table.user-collection-preview{margin:0}
 .collection_image{float:left; margin-right:10px}
 .collection_summary{float:left; width:420px; margin-bottom:10px}
@@ -683,7 +688,7 @@ table.user-collection-preview{margin:0}
 .collection_item_count{margin-top:15px; font-weight:bold}
 .collection_summary span.manage_collection_link{margin-left:10px}
 .collection_preview{width:100%}
-.collection_preview_init{height:16px; text-align:center; font-size:15px; font-weight:bold; border-top:1px solid #CCC; padding-top:5px}
+.collection_preview_init{height:20px; text-align:center; font-size:15px; font-weight:bold; padding-top:5px}
 .collection_preview_init span:hover{text-decoration:underline}
 .collection_preview_init img{margin-right:5px}
 .collection_preview_init.expanded{}
@@ -697,8 +702,9 @@ tr.row-last .collection-preview-boxshadow{border:none}
 .collection-preview-boxshadow{border-bottom:1px solid #CCC; min-height:110px; position:relative; padding:10px 0 5px 0}
 .collection_list_item_summary div.not_for_sale img{max-width:90px}
 .collection_list_item_summary div.not_for_sale{position:absolute; bottom:5px; right:0px}
-.back-collection{font-size:13px; font-weight:normal; color:#1691bd; padding-left:16px}
-#collection-title-img{position:absolute; top:20px; left:397px}
+.back-collection{font-size:13px; font-weight:normal; color:#1691bd}
+#collection-title-arrow{padding: 5px 1px 0 5px}
+#collection-title-detail{font-size:22px; font-weight:bold;}
 .collection-user{font-weight:bold}
 .user-collection-preview h5, #collection_sidebar .collection_sidebar_collection h5{margin:0; font-size:13px}
 .user-collection-preview span{color:#404f5a; font-size:12px}
@@ -752,7 +758,8 @@ div.collection_list_item_summary .addthis_default_style{margin:52px 0 0 -3px; wi
 .comment p{margin-top:0}
 .comment .comment_details{font-size:11px}
 .comment table{margin:0}
-a.local_action_button{padding:6px; color:white; font-weight:bold; margin:6px; display:block}
+a.local_action_button{padding:6px 0; color:white; font-weight:bold; margin: 0; display:block}
+#product-manage-ul{list-style: square; padding-left: 17px;}
 /* feature-this flag */
 div.search-flag{position:relative; top:10px}
 /* offers page, see also selling page */
@@ -954,6 +961,7 @@ h2.page-description{background:url("../images/long_border.png") no-repeat scroll
 #node-23080 ul{padding-left:222px}
 /*Tabs*/
 div.tabs{ margin:10px 0 30px 0}
+.page-messages div.tabs{margin-bottom: 17px}
 ul.primary{ border:0;  margin:0;  padding:0; /* LTR */ list-style:none;  white-space:nowrap;  line-height:normal}
 ul.primary li{ float:left; /* LTR */ margin:0;  padding:0;  position:relative}
 div.tabs_big ul.primary li a{ height:31px}
@@ -997,9 +1005,12 @@ ul.secondary a:hover{  background:url(../images/tab-secondary.png) repeat-x left
 ul.secondary a.active, 
 ul.secondary a.active:hover{  border:1px solid #c0c0c0;   color:#000;   background:url(../images/tab-secondary.png) repeat-x left top}
 /*featured item page*/
+.infscr-pages{}
+.view.view-flag-featured .views-row-last{}
+.view.view-flag-featured .view-content{width: 725px;}
 .view.view-flag-featured{  width:740px;   position:relative}
-.views-fluidgrid-item .views-field-field-main-image-fid{  width:160px;   border:1px solid #DADADA;   margin:5px;   padding:0}
-.views-fluidgrid-item{  margin:0 5px 20px 0;   border:1px solid #DADADA;   background:#fff}
+.views-fluidgrid-item .views-field-field-main-image-fid{  width:160px;   border:1px solid #CCCCCC;   margin:5px;   padding:0}
+.views-fluidgrid-item{width:170px; float:left;  margin:0 5px 20px 0;   border:1px solid #CCCCCC;   background:#fff}
 .views-fluidgrid-item .views-field-title{  width:160px;   margin:8px 5px 16px 5px}
 .views-fluidgrid-item .field-content{  margin:0;   padding:0}
 .search-col{  float:left;   width:177px;   padding:0 0 0 5px;   top:0px}
@@ -1134,3 +1145,10 @@ table.views-table.cols-2{margin:0; padding-top:0}
 #invite-box a.invite-fb:hover,#invite-box a.invite-tw:hover,#invite-box a.invite-em:hover{background: url(../images/invite_hover.png) no-repeat}
 #invite-box a.invite-tw,#invite-box a.invite-tw:hover{background-position: -243px 0}
 #invite-box a.invite-em,#invite-box a.invite-em:hover{background-position: -487px 0}
+.top-tabs-sep{font-size: 16px; position: absolute; top: 0; color: #556270}
+/*New amazon button*/
+#external-link{background: url(../images/amazon_bgd.png) -2px 0 no-repeat; height: 85px; font-size: 13px; color: #556270; font-weight: bold; padding: 19px 0 0 23px}
+.external-link-text{float: left; padding-top: 15px}
+#external-link p{margin: 0}
+.purchase-amazon{ float: right; padding-right: 15px}
+.purchase-amazon a{ display: block; height: 43px; width: 204px; background: url(../images/btn_amazon.png) no-repeat; text-indent: -9999px}

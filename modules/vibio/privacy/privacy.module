@@ -45,6 +45,14 @@ function privacy_theme()
 	);
 }
 
+/**
+ * Implements hook_user to get/set privacy settings associated with users
+ * @param <type> $op
+ * @param <type> $edit
+ * @param <type> $account
+ * @param <type> $category
+ * @return <type>
+ */
 function privacy_user($op, &$edit, &$account, $category=null)
 {
 	switch ($op)
@@ -56,10 +64,13 @@ function privacy_user($op, &$edit, &$account, $category=null)
 				"weight"=> 1,
 			));
 		case "form":
+      //When presenting the user form...
 			if ($category != "privacy_settings")
 			{
 				return;
 			}
+      //...insert the current value of the privacy field.
+      //@todo: refactor. Why not put this in a form alter of the user profile form?
 			$form['privacy_item_default'] = _privacy_fieldset($account->uid, "account_setting", "item_default", true, t("Default Item Privacy"), t("This is the setting that will be automatically populated for items"));
 			$form['heartbeat_activity_settings_select'] = _theme_user_message_select_form(t('Activity Stream'), isset($edit['heartbeat_activity_settings']) ? $edit['heartbeat_activity_settings'] : NULL);
 			return $form;
@@ -75,6 +86,15 @@ function privacy_user($op, &$edit, &$account, $category=null)
 	}
 }
 
+/**
+ * implements hook_nodeapi to get and set privacy values associated with nodes
+ * 
+ * @global <type> $user
+ * @param <type> $node
+ * @param <type> $op
+ * @param <type> $a3
+ * @param <type> $a4
+ */
 function privacy_nodeapi(&$node, $op, $a3=null, $a4=null)
 {
 	if ($node->type == "vibio_item")
@@ -99,6 +119,13 @@ function privacy_nodeapi(&$node, $op, $a3=null, $a4=null)
 	}
 }
 
+/**
+ * Adds privacy settings to the product node form
+ * 
+ * @param <type> $form
+ * @param <type> $state
+ * @return <type>
+ */
 function privacy_form_product_node_form_alter(&$form, &$state) 
 {
 	if (module_exists("product") && !product_get_autoadd(false))
@@ -112,6 +139,12 @@ function privacy_form_product_node_form_alter(&$form, &$state)
 	}
 }
 
+/**
+ * Adds privacy settings to the vibio_item node form
+ * 
+ * @param <type> $form
+ * @param <type> $state
+ */
 function privacy_form_vibio_item_node_form_alter(&$form, &$state)
 {
 	if ($form['#node']->nid)
@@ -128,6 +161,13 @@ function privacy_form_vibio_item_node_form_alter(&$form, &$state)
 	$form = array_merge_recursive($form, _privacy_form($form['#node']->uid, $default_type, $default_typeid));
 }
 
+/**
+ * Adds privacy settings to the collections edit form.
+ *
+ * @global  $user
+ * @param <type> $form
+ * @param <type> $state
+ */
 function privacy_form_collection_edit_alter(&$form, &$state)
 {
 	global $user;
@@ -136,6 +176,12 @@ function privacy_form_collection_edit_alter(&$form, &$state)
 	$form['privacy_settings']['#weight'] = 9;
 }
 
+/**
+ * Sets privacy values when a collection is saved.
+ * 
+ * @global  $user
+ * @param <type> $vals
+ */
 function privacy_collection_save($vals)
 {
 	global $user;
@@ -352,7 +398,7 @@ function privacy_product_inventory_quick_add($form_vals)
 function privacy_collection_load($collection)
 {
 	return array(
-		"privacy"	=> privacy_get($collection['uid'], "collection", $collection['cid']),
+		"privacy"	=> privacy_get($collection->uid, "collection", $collection->nid),
 	);
 }
 
@@ -374,4 +420,21 @@ function _privacy_options()
 		PRIVACY_ONLYME			=> t("Private to me"),
 	);
 }
+
+/**
+ * Write the record to the node access table according to the privacy
+ * settings on this particular node.
+ * 
+ * @param <type> $node
+ 
+function privacy__node_access_records($node){
+  //Depending on the type of node...
+  switch($node->type)
+    case 'vibio_item'
+    case 'collection'
+      //Load the appropriate record from the privacy table
+      
+}
+ * 
+ */
 ?>

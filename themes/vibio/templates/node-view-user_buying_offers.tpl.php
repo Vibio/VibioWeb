@@ -36,13 +36,15 @@ list($chit_chat, $current_buyer, $current_seller) =
 // Seems like collection module is being loaded for me (multiple accounts,
 //  facebook and not facebook, admin and not admin) but not him.
 //module_load_include('inc', 'node', 'node.admin');
-module_load_include('inc', 'collection');
+//@todo refactor module_load_include('inc', 'collection');
 /*
 hm... product 20410 on Simon's was giving an error.
 print '<pre>';
 print_r($item);
 print '</pre>';
 */
+/**
+ * @todo refactor
 $cid = isset($item->collection_info) ? $item->collection_info['cid'] : collection_get_item_cid($item->nid);
 $cid = collection_get_item_cid($item->nid);
 
@@ -58,7 +60,7 @@ if ( $collection['title'] ) {
 		$collection['title'] . "</a></div>";
 }
 
-
+**/
 $item_pic = vibio_item_get_image($item->nid, 'product_fixed_width_teaser');
 // at the moment, product_fixed_width is 180px, product_fixed_width_teaser 120px
 
@@ -69,7 +71,7 @@ $price = $item->offer2buy['settings']['price'];
 <div class="selling_item_info">
 <div class="teaser_item_pic"><?php print $item_pic; ?></div>
 <div class="teaser_item_sought"><?php print $node->field_item_sought[0][view];?></div>
-<div class="teaser_item_collection"><?php print $collection['title']; ?></div>
+<div class="teaser_item_collection"><?php //@todo refactor print $collection['title']; ?></div>
 <div class="teaser_item_buyer"><span class="bold-text">Buyer: <?php print $name;  /* v2: connection level */
  			/* is this up to date in the offer, or do we need to do more to load the
 				 negs */

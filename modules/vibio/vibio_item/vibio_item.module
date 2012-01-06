@@ -250,7 +250,7 @@ function vibio_item_preprocess_vibio_item_user_other_items(&$vars)
 		foreach (collection_get_item_cid($vars['node']->nid) as $cid)
 		{
 			$collection = collection_load($cid);
-			$display .= "<li><a href='/collections/{$cid}'>{$collection['title']}</a></li>";
+			$display .= "<li><a href='/collections/{$cid}'>{$collection->title}</a></li>";
 		}
 		$display .= "</ul>";
 		$display .= t("!view_collections of !user's collections", array("!view_collections" => l(t("View all"), "user/{$u->uid}/inventory"), "!user" => l($u->name, "user/{$u->uid}")));

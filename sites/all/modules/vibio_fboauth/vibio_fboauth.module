@@ -29,7 +29,48 @@ function vibio_fboauth_theme(&$existing, $type, $theme, $path)
 			"template"	=> "templates/facebook/login-block",
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
+    "fb_ff_message"		=> array(
+      "arguments"	=> array("message" => "", "href" => false, "message_type" => "link_account"),
+      "template"	=> "templates/facebook/ff-link-account",
+      "path"		=> drupal_get_path("theme", "vibio"),
+		),
   );
+}
+
+/**
+ * On any page that engages Facebook actions, this function should be called
+ * to activate scripts.
+ *
+ *
+ * @global  $user
+ * @return Boolean
+ */
+function vibio_fboauth_add_js(){
+  $app_id = variable_get('fboauth_id', '');
+
+	//$perms = variable_get("fb_signup_perms", "email");
+	//$fb_uid = $user->uid ? fb_user_has_fb($user->uid) : 0;
+
+	$fb_vars = json_encode(array(
+		"app_id"	=> $app_id,
+	));
+
+	$protocol = $_SERVER['HTTPS'] == "on" ? "https://" : "http://";
+
+  //Adds the FB script to the head
+	drupal_set_html_head("<script type='text/javascript' src='{$protocol}connect.facebook.net/en_US/all.js'></script>");
+	//Makes FB variables available to JS
+  drupal_add_js("var fb_settings = $fb_vars;", "inline");
+	return true;
+}
+
+function vibio_fboauth_preprocess_fb_ff_message(&$vars)
+{
+	switch ($vars['message_type'])
+	{
+		case "link_account":
+			$vars['fb_image'] = "/themes/vibio/images/facebook/link-account.png";
+	}
 }
 
 /**
@@ -61,4 +102,127 @@ function vibio_fboauth_block($op="list", $delta=0, $edit=array())
 	}
 }
 
+/**
+ * Implements hook_network_find_friends, defined in Nelson's network module. This was
+ * copied from Nelson's Facebook module and altered to use fboauth.
+ *
+ * @param <type> $uid
+ * @param Array $potentials Array of FB friends keyed by Vibio ID
+ * @param <type> $existing Friends already on Vibio, from User Relationships
+ * @param <type> $errors
+ * @return <type>
+ */
+function vibio_fboauth_network_find_friends($uid, &$potentials, $existing, &$errors){
+  //See if the current user ($uid) is connected to facebook
+	if (!(fboauth_fbid_load($uid))){
+    //Prompt user to connect w/FB
+    //@todo: replace with fboauth action
+		$message = t("Connect your Facebook account to see which friends use Vibio.");
+    $link_attributes = fboauth_action_link_properties('vibio_fboauth_find_friends');
+    //Puts a fb button inside the link.
+    $href = url($link_attributes['href'], array('query' => $link_attributes['query']));
+    $errors[] = theme("fb_ff_message", $message, $href, "link_account");
+		return false;
+    //If the user is connected to FB...
+  }else{
+    //If the user has no friends from FB on Vibio
+    if($_SESSION['vibio_friends'] == 'none'){
+      //@todo: Add an invite link once the invitation system is done
+      $errors[] = t("It doesn't seem that any of your Facebook friends are on Vibio. Why not invite some?");
+      //Clear $_SESSION['vibio_friends'] so they can try later in their session if they want.
+      $_SESSION['vibio_friends'] = '';
+      return false;
+    }
+    //If no fb_friend info has been added to the SESSION yet...
+    elseif(empty($_SESSION['vibio_friends'])){
+      //Provide a themed link to initiate friend finding process
+      $find_friends_link = fboauth_action_display('vibio_fboauth_find_friends');
+      $token_replacement = array("!fb_refresh" => $find_friends_link);
+      //@todo: troubleshoot this case; not sure if this will happen with the new code
+      $errors[] = t("Your Facebook session has expired, please !fb_refresh to see which of your Facebook friends are using Vibio", $token_replacement);
+      return false; 
+    }else{
+      //The fboauth action has already run and we can get friends from it
+      $friends = $_SESSION['vibio_friends'];
+      //Friends is an array of Vibio users who are potential friends
+      foreach ($friends as $friend){
+        //Create a $potential object to represent potential friends
+        $potential = new stdClass;
+        $potential->info = _network_get_userinfo($friend->uid, $friend);
+        $potential->src = "fb";
+        $potential->link = url('http://www.facebook.com/profile.php', array('query' => array('id' => $friend->fbid), 'external' => TRUE));
+        //Create an array of $potential friend objects keyed by vibio uid
+        $potentials[$friend->uid] = $potential;
+      }
+    }
+	}
+}
 
+/**
+ * Describes an fboauth action that finds a user's FB friends fbids.
+ * Implements hook_fboauth_actions().
+ *
+ * @return string
+ */
+function vibio_fboauth_fboauth_actions(){
+  $actions['vibio_fboauth_find_friends'] = array(
+    // Give you action a human-readable name. This will be used when showing
+    // the user a link to start this action.
+    'title' => t('Find Facebook Friends on Vibio'),
+
+    // Specify the name of your callback function that contains the import.
+    'callback' => 'vibio_fboauth_fboauth_action_find_friends',
+
+    /** Specify permissions you need to do this action. Don't think we need any here...
+     * See the Facebook API for a list: http://developers.facebook.com/docs/authentication/permissions/
+    'permissions' => array(
+      'user_photos', // Gets access to a user's photos.
+    ),
+     *
+     */
+  );
+  return $actions;
+}
+
+/**
+ * Finds the current user's FB friends that are on Vibio. This is utilized as a
+ * callback for the fboauth action described above, called vibio_fboauth_find_friends.
+ *
+ * If you want a full link to this command, use fboauth_action_display('vibio_fboauth_find_friends')
+ *
+ *
+ * @global <type> $user
+ * @return stdClass
+ */
+function vibio_fboauth_fboauth_action_find_friends($app_id, $access_token){
+  global $user;
+  module_load_include('inc', 'fboauth', 'includes/fboauth.fboauth');
+  $vibio_friends = array();
+  //Execute graph query to get friend fbids
+  $query_result = fboauth_graph_query('me/friends', $access_token);
+  $fb_friends = $query_result->data;
+
+  //See if the friends are on Vibio
+  foreach($fb_friends as $fb_friend){
+    $uid = fboauth_uid_load($fb_friend->id);
+
+    if($uid = fboauth_uid_load($fb_friend->id)){
+      //Create an object with info on the vibio friend
+      $vibio_friend = new stdClass;
+      $vibio_friend->uid = $uid;
+      $vibio_friend->fbid = $fb_friend->id;
+      $vibio_friend->name = $fb_friend->name;
+      //add the vibio friend to an array keyed by vibio uid
+      $vibio_friends[$uid] = $vibio_friend;
+    }
+  }
+  //If we don't find any friends from FB on Vibio...
+  if(empty($vibio_friends)){
+    $_SESSION['vibio_friends'] = 'none';
+  }else{
+    //Return the data to be used by the friend finder
+    $_SESSION['vibio_friends'] = $vibio_friends;
+  }
+  //Set the redirect destination
+  $_REQUEST['destination'] = 'contacts/find-friends';
+}

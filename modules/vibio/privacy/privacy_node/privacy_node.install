@@ -1,0 +1,36 @@
+<?php
+function privacy_node_install(){
+
+}
+
+/**
+ * Implements hook_schema(), defining DB structure
+ * 
+ * @return array
+ */
+function privacy_node_schema(){
+  $schema['privacy_node'] = array(
+    'fields' => array(
+      'nid' => array(
+        'description' => 'The primary identifier for a node.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'setting' => array(
+        'description' => 'Privacy access setting.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+    ),
+    'unique keys' => array(
+        'nid' => array('nid'),
+    ),
+    'primary key' => array('nid'),
+  );
+  
+  return $schema;
+}
+
+?>

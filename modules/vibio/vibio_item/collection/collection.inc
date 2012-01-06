@@ -1,4 +1,13 @@
 <?php
+
+/**
+ * Get the $uid's collections.
+ *
+ * @global <type> $user
+ * @staticvar array $user_collections
+ * @param <type> $uid
+ * @return Array the user's collections
+ */
 function collection_get_collections($uid=false)
 {
 	static $user_collections = array();
@@ -11,16 +20,18 @@ function collection_get_collections($uid=false)
 	
 	if (!isset($user_collections[$uid]))
 	{
-		$sql = "SELECT `cid`
-				FROM {collection}
-				WHERE `uid`=%d
+		$sql = "SELECT `nid`
+				FROM {node}
+				WHERE `uid`=%d AND `type`='collection'
 				ORDER BY `title` ASC";
 		$res = db_query($sql, $uid);
 		
 		$collections = array();
+    //Load all the user's collections
 		while ($row = db_fetch_array($res))
 		{
-			$collections[$row['cid']] = collection_load($row['cid']);
+      //key: nid, value: collection object
+			$collections[$row['nid']] = collection_load($row['nid']);
 		}
 		
 		$user_collections[$uid] = $collections;
@@ -29,10 +40,18 @@ function collection_get_collections($uid=false)
 	return $user_collections[$uid];
 }
 
+/**
+ * Inserts a new collection. Depreciated.
+ * @todo: delete, replace all calls with node_save($collection)
+ * @global  $user
+ * @param <type> $vals
+ * @return <type>
+
 function collection_insert($vals)
 {
 	global $user;
-	
+	$collection = new stdClass();
+  $collection->title
 	$sql = "INSERT INTO {collection}
 			SET `uid`=%d, `title`='%s', `description`='%s', `created`=%d";
 	if (!db_query($sql, $user->uid, $vals['title'], $vals['description'], time()))
@@ -46,95 +65,134 @@ function collection_insert($vals)
 	module_invoke_all("collections_insert", $vals);
 	return $vals['cid'];
 }
+ *
+ * @param <type> $cid
+ */
 
+/**
+ * Deletes the given collection. Depreciated.
+ * @todo: delete, replace all calls with node_delete($nid)
+ * @param <type> $cid
+ */
 function collection_delete($cid)
 {
-	$collection = collection_load($cid);
 
-	$sql = "SELECT `item_nid`
-			FROM {collection_items}
-			WHERE `cid`=%d";
+	//$collection = collection_load($cid);
+  $sql = "SELECT `uid`
+      FROM {node}
+      WHERE `nid`=%d";
+  $uid = db_fetch_object(db_query($sql, $cid))->uid;
+
+	$sql = "SELECT `nid`
+			FROM {content_field_collection}
+			WHERE `nid`=%d";
 	$res = db_query($sql, $cid);
 	$num_items = db_affected_rows();
 
-	$sql = "DELETE FROM {collection_user_defaults}
-			WHERE `cid`=%d";
-	db_query($sql, $cid);
+  //Delete the node
+  node_remove($cid);
 
 	if ($num_items)
 	{
-		$new_cid = collection_get_user_default($collection['uid'], true);
+		$new_cid = collection_get_user_default($uid, true);
 		$items = array();
 
 		while ($row = db_fetch_object($res))
 		{
 			$item_cids = collection_get_item_cid($row->item_nid);
-			if (count($item_cids) == 1) // if an item is only in more than one cid, don't transfer it
+			if (count($item_cids) == 0) //If an item is now orphaned, transfer it to the user's unsorted
 			{
-				$items[] = $row->item_nid;
+				$items[] = $row->nid;
 			}
 		}
 
 		collection_transfer_items($items, $new_cid);
 	}
 
-	$sql = "DELETE FROM {collection}
-			WHERE `cid`=%d";
-	db_query($sql, $cid);
-
+  //Let other modules hook in on the collection deletion
 	module_invoke_all("collection_delete", $collection['uid'], $new_cid, $cid);
 	drupal_set_message(t('The collection !title has been deleted', array("!title" => $collection['title'])));
 }
 
+/**
+ * Transfer $items $to_cid
+ * 
+ * @param <type> $items
+ * @param <type> $to_cid
+ */
 function collection_transfer_items($items, $to_cid)
 {
-	$items = implode(",", $items);
-	$sql = "UPDATE {collection_items}
-			SET `cid`=%d
-			WHERE `item_nid` IN ($items)";
-	db_query($sql, $to_cid);
+  foreach($items as $nid){
+    $node = new stdClass();
+    $node->nid = $nid;
+    $node->field_collection[]['nid'] = $to_cid;
+    node_save($node);
+  }
 }
 
+/**
+ * Get the collection id(s) of the given item.
+ *
+ * @param <type> $nid
+ * @return <type>
+ */
 function collection_get_item_cid($nid)
 {
-	$sql = "SELECT `cid`
-			FROM {collection_items}
-			WHERE `item_nid`=%d";
+	$sql = "SELECT `field_collection_nid`
+			FROM {content_field_collection}
+			WHERE `nid`=%d";
 	$res = db_query($sql, $nid);
 	
 	$ret = array();
 	while ($row = db_fetch_array($res))
 	{
-		$ret[$row['cid']] = $row['cid'];
+		$ret[$row['nid']] = $row['nid'];
 	}
 	
 	return $ret;
 }
 
+/**
+ * List of the current user's collections in format key: nid, value: title
+ * format (suitable for a select list).
+ * 
+ * @global  $user
+ * @return <type>
+ */
 function collection_options()
 {
 	global $user;
 	
 	$options = array();
-	foreach (collection_get_collections($user->uid) as $cid => $c)
+	foreach (collection_get_collections($user->uid) as $cid => $collection)
 	{
-		$options[$cid] = $c['title'];
+		$options[$cid] = $collection->title;
 	}
 	
 	return $options;
 }
 
+/**
+ * Get the nid of the user's default collection
+ * 
+ * @global  $user
+ * @param <type> $uid
+ * @param <type> $auto_create
+ * @return <type>
+ */
 function collection_get_user_default($uid=false, $auto_create=false)
 {
+  //If not given a uid, use the current user
 	if (!$uid)
 	{
 		global $user;
 		$uid = $user->uid;
 	}
-	
-	$sql = "SELECT `cid`
-			FROM {collection_user_defaults}
-			WHERE `uid`=%d";
+  
+	//Find the existing default collection
+	$sql = "SELECT `nid`
+			FROM {content_type_collection} LEFT JOIN {node}
+			ON `nid` WHERE `uid`=%d AND `field_default_value`=1";
 	$cid = db_result(db_query($sql, $uid));
 	
 	if ($cid || !$auto_create)
@@ -142,28 +200,40 @@ function collection_get_user_default($uid=false, $auto_create=false)
 		return $cid;
 	}
 	// if there is no default, create one for the user...
-	$vals = array(
+	$new_collection = (object) array(
 		"title"			=> t("Unsorted"),
-		"description"	=> t("My unsorted things."),
+		"body"	=> t("My unsorted things."),
+    "type" => "collection",
+    "uid" => $uid
 	);
-	
-	if (!$vals['cid'] = collection_insert($vals))
+
+  node_save($new_collection);
+
+  //Do we need this case? @todo:delete
+	if (!$new_collection->nid)
 	{
 		return false;
 	}
 	
-	$vals['uid'] = $uid;
-	collection_set_user_default($uid, $vals['cid']);
-	module_invoke_all("collection_save", $vals);
+	collection_set_user_default($uid, $new_collection->nid);
+	module_invoke_all("collection_save", $new_collection);
 
-	return $vals['cid'];
+	return $new_collection->cid;
 }
 
+/**
+ * Set the $uid's default collection to $cid
+ * 
+ * @todo: remove $uid from the signature
+ * @param <type> $uid
+ * @param <type> $cid
+ * @return <type>
+ */
 function collection_set_user_default($uid, $cid)
 {
-	$sql = "REPLACE INTO {collection_user_defaults}
-			SET `uid`=%d, `cid`=%d";
-	return db_query($sql, $uid, $cid);
+	$sql = "REPLACE INTO {content_type_collection}
+			SET `field_default_value`=%d";
+	return db_query($sql, $cid);
 }
 
 //Returns the image for a collection
@@ -176,11 +246,11 @@ function collection_get_image($cid, $absolute=false, $access=false)
 		$access = PRIVACY_ONLYME;
 		
 	$sql = "SELECT n.`nid`
-			FROM {node} n JOIN {collection_items} ci JOIN {privacy_settings} p
-				ON n.`nid`=ci.`item_nid`
+			FROM {node} n JOIN {content_field_collection} ci JOIN {privacy_settings} p
+				ON n.`nid`=ci.`nid`
 					AND n.`nid`=p.`type_id`
 					AND n.`uid`=p.`uid`
-			WHERE ci.`cid`=%d
+			WHERE ci.`field_collection_nid`=%d
 				AND p.`type`='node'
 				AND p.`setting` <= %d
 			ORDER BY n.`changed` DESC
@@ -200,12 +270,25 @@ function collection_get_image($cid, $absolute=false, $access=false)
 	return $image;
 }
 
+/**
+ * Return the path to the default collection image
+ * 
+ * @param Boolean $absolute
+ * @return String
+ */
 function collection_default_image($absolute=false)
 {
 	$default_image = "themes/vibio/images/collections/box.png";
 	return $absolute ? url($default_image, array("absolute" => true)) : "/$default_image";
 }
 
+/**
+ * Return the number of items in a collection
+ *
+ * @param int $cid
+ * @param <type> $access
+ * @return int
+ */
 function collection_get_num_items($cid, $access=false)
 {
 	if (module_exists("privacy") && $access)
@@ -213,35 +296,42 @@ function collection_get_num_items($cid, $access=false)
 		$collection = collection_load($cid);
 		
 		$sql = "SELECT COUNT(*)
-				FROM {collection_items} ci JOIN {privacy_settings} p
-					ON ci.`item_nid`=p.`type_id`
-				WHERE `cid`=%d
+				FROM {content_field_collection} ci JOIN {privacy_settings} p
+					ON ci.`nid`=p.`type_id`
+				WHERE `field_collection_nid`=%d
 					AND p.`type`='node'
 					AND p.`uid`=%d
 					AND p.`setting` <= %d";
-		return db_result(db_query($sql, $collection['cid'], $collection['uid'], $access));
+		return db_result(db_query($sql, $collection->nid, $collection->uid, $access));
 	}
 	
 	$sql = "SELECT COUNT(*)
-			FROM {collection_items}
-			WHERE `cid`=%d";
+			FROM {content_field_collection}
+			WHERE `nid`=%d";
 	return db_result(db_query($sql, $cid));
 }
 
+/**
+ * Get the taxonomy categories a given collection belongs to.
+ * 
+ * @param <type> $cid
+ * @return Array taxonomy categories
+ */
 function collection_get_categories($cid)
 {
 	if (!module_exists("taxonomy") || !module_exists("product"))
 	{
 		return array();
 	}
-	
+	//Get all the product nids that are in the collection
 	$categories = array();
 	$sql = "SELECT pi.`product_nid`
-			FROM {collection_items} ci JOIN {product_items} pi
-				ON ci.`item_nid`=pi.`item_nid`
-			WHERE `cid`=%d";
+			FROM {content_field_collection} ci JOIN {product_items} pi
+				ON ci.`nid`=pi.`item_nid`
+			WHERE ci.`field_collection_nid`=%d";
 	$res = db_query($sql, $cid);
-	
+
+  //Assemble a list of the taxonomy terms associated with those products.
 	while ($row = db_fetch_object($res))
 	{
 		$product = node_load($row->product_nid);
@@ -250,9 +340,22 @@ function collection_get_categories($cid)
 			$categories[$tid] = $term->name;
 		}
 	}
-	
+	//This list is considered the terms for the collection
+  //@todo: refactor collections to use an independent taxonomy
 	return $categories;
 }
+
+/**
+ * Is this for grabbing "showcase item" values?
+ * @todo: delete this hasn't been refactored, not sure if it's necessary. I've commented
+ * out all its calls.
+ *
+ * @global  $user
+ * @param <type> $uid
+ * @param <type> $ignore_cid
+ * @param <type> $max_collections
+ * @param <type> $as_uid
+ * @return <type> 
 
 function collection_get_sidebar($uid, $ignore_cid=0, $max_collections=4, $as_uid=false)
 {
@@ -265,8 +368,8 @@ function collection_get_sidebar($uid, $ignore_cid=0, $max_collections=4, $as_uid
 	if (module_exists("privacy"))
 	{
 		$access = privacy_get_access_level($uid, $as_uid);
-		$sql = "SELECT c.`cid`, c.`title`, c.`description`, COUNT(*) AS num_items
-				FROM {collection} c JOIN {privacy_settings} p JOIN {collection_items} ci
+		$sql = "SELECT n.`nid`, n.`title`, n.`description`, COUNT(*) AS num_items
+				FROM {node} c JOIN {privacy_settings} p JOIN {collection_items} ci
 					ON c.`cid`=p.`type_id`
 						AND c.`uid`=p.`uid`
 						AND c.`cid`=ci.`cid`
@@ -302,7 +405,20 @@ function collection_get_sidebar($uid, $ignore_cid=0, $max_collections=4, $as_uid
 	
 	return $collections;
 }
+*/
 
+/**
+ * Is this for grabbing "showcase item" values?
+ * @todo:delete this hasn't been refactored, not sure if it's necessary. I've commented
+ * out all its calls.
+ * 
+ * @global  $user
+ * @param <type> $cid
+ * @param <type> $owner
+ * @param <type> $as_uid
+ * @param <type> $num_items
+ * @return <type>
+ 
 function collection_get_sidebar_items($cid, $owner=false, $as_uid=false, $num_items=3)
 {
 	//Get the file_uncreate_url() function
@@ -354,4 +470,6 @@ function collection_get_sidebar_items($cid, $owner=false, $as_uid=false, $num_it
 	
 	return $items;
 }
+ * 
+ */
 ?>

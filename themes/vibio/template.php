@@ -1,6 +1,22 @@
 <?php
 
 /**
+ * Adds OG meta data for the front page, effectively representing Vibio to FB.
+ *
+ * @param <type> $variables
+ */
+function vibio_preprocess_page(&$variables){
+  if(drupal_is_front_page()){
+    global $base_url;
+    $site_image = $base_url . '/'. drupal_get_path('theme', 'vibio') . '/vibio-logo.png';
+    $og_image = '<meta property="og:image" content="' . $site_image . '"/>';
+
+    //This is apparently necessary, see http://api.drupal.org/api/drupal/includes--common.inc/function/drupal_set_html_head/6#comment-4614
+    $variables['head'] .= $og_image;
+  }
+}
+
+/**
 * Adds OG meta data to share an appropriate collection picture with Facebook.
 * Note that vibio_addthis module contains the exact same functionality for vibio
 * product nodes. It'd be great to combine all this functionality in one module, or,
@@ -16,7 +32,7 @@ function vibio_preprocess_views_view__user_collection(&$variables){
   //Get the CID from the view arguments, output an absolute link to the collection's image
   $collection_image = url(collection_get_image($variables['view']->args[1]), array('absolute' => TRUE));
   $og_image = '<meta property="og:image" content="' . $collection_image . '"/>';
-  $collection_title = $collection['user_name'] . "'s " . $collection['title'] . " Collection";
+  $collection_title = $collection->user_name . "'s " . $collection->title . " Collection";
   $og_title = '<meta property="og:title" content="' . $collection_title . '"/>';
   $og_data = $og_title . PHP_EOL . $og_image; 
   drupal_set_html_head($og_data);
@@ -31,7 +47,7 @@ function vibio_preprocess_views_view__user_collection(&$variables){
 * meta data tags.
 *
 */
-function vibio_preprocess_views_view__user_collections(&$variables){
+function vibio_preprocess_views_view__user_collections1(&$variables){
   //Get the user's name from their id. 
   $id = $variables['view']->args[0];
   $collections_owner = db_result(db_query("SELECT name FROM {users} WHERE uid = %d", $id));
@@ -438,8 +454,6 @@ if(module_exists('automodal')){
 	    ,'draggable' => false)
 	);
 }
-
-
 
 /*function vibio_fieldset($ele)
 {

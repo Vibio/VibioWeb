@@ -128,6 +128,15 @@ function network_ebay_remove_account($uid)
 	cache_clear_all("userinfo:$uid", "cache_network");
 }
 
+/**
+ * Gets the uids of $uid's existing friends on the vibio network
+ * @todo: replace w/User Relationshp function if needed elsewhere
+ * @todo: 
+ *
+ * @param <type> $uid
+ * @param <type> $rel_type
+ * @return Array Friend uids
+ */
 function _network_get_friends($uid, $rel_type)
 {
 	$cache_key = "friends:{$uid}:{$rel_type}";
@@ -161,6 +170,17 @@ function _network_get_friends($uid, $rel_type)
 	return $friends;
 }
 
+/**
+ * Collates user data. Defines hook_network_get_user_info.
+ *
+ * Grabs username from the user table and any other data you want it
+ * to grab as long as you implement the hook.
+ *
+ * @param <type> $uid
+ * @param <type> $info
+ * @param <type> $reset
+ * @return <type>
+ */
 function _network_get_userinfo($uid, $info=false, $reset=false)
 {
 	$cache_key = "userinfo:{$uid}";

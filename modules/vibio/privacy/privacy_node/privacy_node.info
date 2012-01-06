@@ -2,3 +2,5 @@ name = "Privacy Node"
 description = "Stores privacy settings for vibio_items/collections"
 core = 6.x
 package = "Vibio"
+dependencies[] = "privacy"
+

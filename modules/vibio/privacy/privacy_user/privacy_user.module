@@ -113,4 +113,41 @@ function privacy_privacy_update_user($form, $u, $category)
 	privacy_set($p['privacy_uid'], $p['privacy_type'], $p['privacy_typeid'], $p['privacy_setting']);
 }
 
+//
+//CRUD
+//
+function privacy_user_get($uid, $type, $type_id){
+	if (!$uid || !$type || !$type_id)
+	{
+		return false;
+	}
+
+	$sql = "SELECT `setting`
+			FROM {privacy_user}
+			WHERE `uid`=%d
+				AND `type`='%s'
+				AND `type_id`='%s'";
+	return db_result(db_query($sql, $uid, $type, $type_id));
+}
+
+function privacy_user_set($uid, $type, $type_id, $setting){
+	$sql = "REPLACE INTO {privacy_user}
+			SET `uid`=%d, `type`='%s', `type_id`='%s', `setting`=%d";
+	db_query($sql, $uid, $type, $type_id, $setting);
+}
+
+function privacy_user_del($uid, $type, $type_id){
+	$sql = "DELETE FROM {privacy_user}
+			WHERE `uid`=%d
+				AND `type`='%s'
+				AND `type_id`='%s'";
+	db_query($sql, $uid, $type, $type_id);
+}
+
+function privacy_user_del_user($uid){
+	$sql = "DELETE FROM {privacy_user}
+			WHERE `uid`=%d";
+	db_query($sql, $uid);
+}
+
 ?>

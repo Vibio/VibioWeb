@@ -83,6 +83,9 @@ $item_pic_url = $item->picture;
 
 //dsm($item);
 
+/** Removing old collections code
+ * @todo: refactor
+
 // get collection
 $cid = isset($item->collection_info) ? $item->collection_info['cid'] : collection_get_item_cid($item->nid);
 //trim($cid);
@@ -97,6 +100,8 @@ if ( $collection['title'] ) {
 		$cid . '">' . 
 		$collection['title'] . "</a></div>";
 }
+ *
+ */
 $item_pic = vibio_item_get_image($item->nid, 'product_fixed_width_teaser');
 // at the moment, product_fixed_width is 180px, product_fixed_width_teaser 120px
 
@@ -107,7 +112,7 @@ $price = $item->offer2buy['settings']['price'];
 <div class="selling_item_info">
 <div class="teaser_item_pic"><?php print $item_pic; ?></div>
 <div class="teaser_item_sought"><?php print $node->field_item_sought[0][view];?></div>
-<div class="teaser_item_collection"><?php print $collection['title']; ?></div>
+<div class="teaser_item_collection"><?php// @todo: refactor print $collection['title']; ?></div>
 <div class="teaser_item_buyer"><span class="bold-text">Buyer: <?php print $name;  /* v2: connection level */
  			/* is this up to date in the offer, or do we need to do more to load the
 				 negs */

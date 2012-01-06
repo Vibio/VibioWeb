@@ -32,7 +32,7 @@ function vibio_preprocess_views_view__user_collection(&$variables){
   //Get the CID from the view arguments, output an absolute link to the collection's image
   $collection_image = url(collection_get_image($variables['view']->args[1]), array('absolute' => TRUE));
   $og_image = '<meta property="og:image" content="' . $collection_image . '"/>';
-  $collection_title = $collection['user_name'] . "'s " . $collection['title'] . " Collection";
+  $collection_title = $collection->user_name . "'s " . $collection->title . " Collection";
   $og_title = '<meta property="og:title" content="' . $collection_title . '"/>';
   $og_data = $og_title . PHP_EOL . $og_image; 
   drupal_set_html_head($og_data);
@@ -47,7 +47,7 @@ function vibio_preprocess_views_view__user_collection(&$variables){
 * meta data tags.
 *
 */
-function vibio_preprocess_views_view__user_collections(&$variables){
+function vibio_preprocess_views_view__user_collections1(&$variables){
   //Get the user's name from their id. 
   $id = $variables['view']->args[0];
   $collections_owner = db_result(db_query("SELECT name FROM {users} WHERE uid = %d", $id));

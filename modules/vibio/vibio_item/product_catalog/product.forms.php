@@ -88,7 +88,7 @@ function product_ajax_add_form($state, $product)
 		"#title"		=> t("Privacy Settings"),
 		"#type"			=> "select",
 		"#options"		=> _privacy_options(),
-		"#default_value"=> privacy_get($user->uid, "account_setting", "item_default"),
+		"#default_value"=> privacy_user_get($user->uid, "account_setting", "item_default"),
 	);
 	
 	$form['submit'] = array(

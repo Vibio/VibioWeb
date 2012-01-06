@@ -76,7 +76,7 @@ function product_ajax_add_complete() {
     $collection_names = array();
     foreach ($cids as $cid) {
       $collection = collection_load($cid);
-      $collection_names[] = l($collection['title'], "collections/{$collection['cid']}");
+      $collection_names[] = l($collection->title, "collections/{$collection->nid}");
     }
     if (count($cids) > 1) {
       $key = count($cids) - 1;

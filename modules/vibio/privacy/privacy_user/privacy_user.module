@@ -1,0 +1,153 @@
+<?php
+
+/**
+ * Implements hook_user to get/set privacy settings associated with users
+ * @param <type> $op
+ * @param <type> $edit
+ * @param <type> $account
+ * @param <type> $category
+ * @return <type>
+ */
+function privacy_user($op, &$edit, &$account, $category=null)
+{
+	switch ($op)
+	{
+		case "categories":
+			return array(array(
+				"name"	=> "privacy_settings",
+				"title"	=> t("Privacy Settings"),
+				"weight"=> 1,
+			));
+		case "form":
+      //When presenting the user form...
+			if ($category != "privacy_settings")
+			{
+				return;
+			}
+      //...insert the current value of the privacy field.
+      //@todo: refactor. Why not put this in a form alter of the user profile form?
+			$form['privacy_item_default'] = _privacy_fieldset($account->uid, "account_setting", "item_default", true, t("Default Item Privacy"), t("This is the setting that will be automatically populated for items"));
+			$form['heartbeat_activity_settings_select'] = _theme_user_message_select_form(t('Activity Stream'), isset($edit['heartbeat_activity_settings']) ? $edit['heartbeat_activity_settings'] : NULL);
+			return $form;
+		case "insert":
+			module_invoke_all("privacy_new_user", $edit, $account, $category);
+		case "update":
+			module_invoke_all("privacy_update_user", $edit, $account, $category);
+			break;
+		case "delete":
+			privacy_del_user($account->uid);
+		default:
+			break;
+	}
+}
+
+/**
+ * If an item doesn't have the privacy set on it, resort to the default
+ * privacy setting of the user.
+ *
+ * @global  $user
+ * @param <type> $form_vals
+ * @return <type>
+ */
+function privacy_user_product_inventory_quick_add($form_vals)
+{
+	global $user;
+
+	if ($form_vals['privacy_setting'])
+	{
+		return array();
+	}
+
+	$privacy_setting = privacy_user_get($user->uid, "account_setting", "item_default");
+
+	return array(
+		"privacy_setting" => $privacy_setting ? $privacy_setting : PRIVACY_PUBLIC,
+	);
+}
+
+//@
+function privacy_form_user_profile_form_alter(&$form, &$state)
+{
+	if ($form['_category']['#value'] == "account")
+	{
+		unset($form['heartbeat_activity_settings_select']);
+		return;
+	}
+	elseif ($form['_category']['#value'] != "privacy_settings" || empty($form['heartbeat_activity_settings_select']['heartbeat_activity_settings']))
+	{
+		return;
+	}
+
+	$hidden_messages = _hbi_hidden_messages();
+
+	//hbi_privacy_update_user() is in charge of saving these values.
+	foreach ($form['heartbeat_activity_settings_select']['heartbeat_activity_settings'] as $type_id => $field)
+	{
+		if (!is_array($field))
+		{
+			continue;
+		}
+		elseif (in_array($type_id, $hidden_messages))
+		{
+			unset($form['heartbeat_activity_settings_select']['heartbeat_activity_settings'][$type_id]);
+			continue;
+		}
+
+		$default = privacy_get($form['_account']['#value']->uid, "heartbeat_messages", $type_id);
+		$field = $form['heartbeat_activity_settings_select']['heartbeat_activity_settings'][$type_id]['access'];
+		$field['#options'] = _privacy_options();
+		$field['#default_value'] = $default;
+		$form['heartbeat_activity_settings_select']['heartbeat_activity_settings'][$type_id]['access'] = $field;
+	}
+}
+
+//@todo privacy_user.module
+function privacy_privacy_update_user($form, $u, $category)
+{
+	if ($category != "privacy_settings" || !isset($form['privacy_item_default']))
+	{
+		return;
+	}
+	$p = $form['privacy_item_default'];
+
+	privacy_set($p['privacy_uid'], $p['privacy_type'], $p['privacy_typeid'], $p['privacy_setting']);
+}
+
+//
+//CRUD
+//
+function privacy_user_get($uid, $type, $type_id){
+	if (!$uid || !$type || !$type_id)
+	{
+		return false;
+	}
+
+	$sql = "SELECT `setting`
+			FROM {privacy_user}
+			WHERE `uid`=%d
+				AND `type`='%s'
+				AND `type_id`='%s'";
+	return db_result(db_query($sql, $uid, $type, $type_id));
+}
+
+function privacy_user_set($uid, $type, $type_id, $setting){
+	$sql = "REPLACE INTO {privacy_user}
+			SET `uid`=%d, `type`='%s', `type_id`='%s', `setting`=%d";
+	db_query($sql, $uid, $type, $type_id, $setting);
+}
+
+function privacy_user_del($uid, $type, $type_id){
+	$sql = "DELETE FROM {privacy_user}
+			WHERE `uid`=%d
+				AND `type`='%s'
+				AND `type_id`='%s'";
+	db_query($sql, $uid, $type, $type_id);
+}
+
+function privacy_user_del_user($uid){
+	$sql = "DELETE FROM {privacy_user}
+			WHERE `uid`=%d";
+	db_query($sql, $uid);
+}
+
+?>

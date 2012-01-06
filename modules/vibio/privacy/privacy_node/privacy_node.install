@@ -1,7 +1,18 @@
 <?php
+/**
+ * Creates DB tables
+ */
 function privacy_node_install(){
-
+  drupal_install_schema('privacy_node');
 }
+
+/**
+ * Drops DB tables
+ */
+function privacy_node_uninstall(){
+  drupal_uninstall_schema('privacy_node');
+}
+
 
 /**
  * Implements hook_schema(), defining DB structure

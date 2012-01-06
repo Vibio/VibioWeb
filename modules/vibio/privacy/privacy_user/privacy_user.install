@@ -1,6 +1,16 @@
 <?php
-function privacy_install(){
-  
+/**
+ * Creates DB tables
+ */
+function privacy_user_install(){
+  drupal_install_schema('privacy_node');
+}
+
+/**
+ * Drops DB tables
+ */
+function privacy_user_uninstall(){
+  drupal_uninstall_schema('privacy_node');
 }
 
 /**

@@ -187,6 +187,8 @@ function collection_edit_submit($form, &$state)
   foreach($vals as $field_name => $field_value){
     $collection->$field_name = $field_value;
   }
+  $collection->type = 'collection';
+  $collection->language = 'en-US';
   //@todo refactor, legacy cid variable is actually nid
   $vals['cid'] ? $collection->nid = $vals['cid'] : '';
 
@@ -213,7 +215,7 @@ function collection_edit_submit($form, &$state)
 	if ($vals['cid'])
 	{
 		global $user;
-
+    //Could be admin updating the collection; keep original uid
     //Save the node
  		node_save($collection);
 
@@ -221,6 +223,8 @@ function collection_edit_submit($form, &$state)
 	}
 	else
 	{
+    //New collection; save with the user's uid
+    $collection->uid = $user->uid;;
     node_save($collection);
 		$vals['cid'] = $collection->nid;
 		drupal_set_message(t("!collection collection has been created", array("!collection" => l($vals['title'], "collections/{$vals['cid']}"))));

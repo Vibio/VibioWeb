@@ -69,7 +69,7 @@ function vibio_collection_migrate_collections(){
   $server = 'localhost';
   $database_user_name = 'root';
   $database_password = 'root';
-  $database_name = 'vibio_local1';
+  $database_name = 'vibio_merge';
 
 
   $mysql_server = $server; // Server name

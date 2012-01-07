@@ -32,11 +32,11 @@ function product_admin(&$state)
 }
 
 /* function product_ajax_add_form($state, $product, $possess)
-  This is a somewhat dizzying form: when you want to add an item,
-   instead you call this function to add a product, then add all the pieces
-   to add an item instead.
-  possess = have, want, like
-*/
+ * This is a somewhat dizzying form: when you want to add an item,
+ *  instead you call this function to add a product, then add all the pieces
+ *  to add an item instead.
+ * possess = have, want, like
+ */
 function product_ajax_add_form($state, $product, $possess)
 {
 	global $user;
@@ -44,7 +44,7 @@ function product_ajax_add_form($state, $product, $possess)
 	$form = array(
 		"#action" => url("product/ajax/inventory-add/save"),
 		"nid"	=> array(
-			"#type"	=> "hidden",
+//			"#type"	=> "hidden",
 			"#value"=> $product->nid,
 		),
 	);
@@ -64,6 +64,7 @@ function product_ajax_add_form($state, $product, $possess)
 	$form['field_have_want_like'] = array(
 		"#title"		=> t("Have it, Want it, Like it?"),
 		"#type"			=> "select",
+//      "#type" => "hidden",
 		"#options" => array(
 			10 => "Have",
 			20 => "Want",
@@ -120,6 +121,10 @@ function product_ajax_add_form($state, $product, $possess)
 		"#default_value"=> privacy_get($user->uid, "account_setting", "item_default"),
 	);
 
+	/**** Collections Code detour ****
+	 * Stephen started writing this.  Then we got a different design.
+   * Delete?
+	 */
 	// Figure out how to get default collections
 	// new_collection.  Have to create form field by hand.  Everything else
 	//  in this odd form is blank or super-custom.
@@ -129,6 +134,7 @@ function product_ajax_add_form($state, $product, $possess)
 	// Can I load a blank node?  Or see how cck module does it?
 
 	// If change "Create new collection" replace every instance in code
+/*
 	$form['collection'] = array(
 		"#title"		=> t("Choose Collection"),
 // Oh, please just use defaults and keep things simpler...
@@ -136,11 +142,8 @@ function product_ajax_add_form($state, $product, $possess)
 		"#options" => array("Create new collection", "test", "books", "more", "what if more than 5", "and another", "why is collections with height not this", "fix this crazy form grep this"),
 //		"#options"		=> _privacy_options(),
 //		"#default_value"=> privacy_get($user->uid, "account_setting", "item_default"),
-
-// THIS CHANGES THE WAY THE FORM LOOKS, taller      "#multiple"   => true,
-
 	);
-	
+*/	
 	
 	$form['submit'] = array(
 		"#type"	=> "submit",

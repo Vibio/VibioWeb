@@ -190,9 +190,9 @@ function collection_get_user_default($uid=false, $auto_create=false)
 	}
   
 	//Find the existing default collection
-	$sql = "SELECT `nid`
-			FROM {content_type_collection} LEFT JOIN {node}
-			ON `nid` WHERE `uid`=%d AND `field_default_value`=1";
+	$sql = "SELECT c.nid
+			FROM {content_type_collection} AS c JOIN {node} AS n
+			ON c.nid=n.nid WHERE n.uid=%d AND c.field_default_value=1";
 	$cid = db_result(db_query($sql, $uid));
 	
 	if ($cid || !$auto_create)
@@ -206,7 +206,7 @@ function collection_get_user_default($uid=false, $auto_create=false)
     "type" => "collection",
     "uid" => $uid
 	);
-
+  $new_collection->field_default[]['value'] = 1;
   node_save($new_collection);
 
   //Do we need this case? @todo:delete
@@ -215,7 +215,7 @@ function collection_get_user_default($uid=false, $auto_create=false)
 		return false;
 	}
 	
-	collection_set_user_default($uid, $new_collection->nid);
+	//collection_set_user_default($uid, $new_collection->nid);
   $vals = (array) $new_collection;
 	module_invoke_all("collection_save", $vals);
 
@@ -226,6 +226,7 @@ function collection_get_user_default($uid=false, $auto_create=false)
  * Set the $uid's default collection to $cid
  * 
  * @todo: remove $uid from the signature
+ * @todo: consider depreciating
  * @param <type> $uid
  * @param <type> $cid
  * @return <type>

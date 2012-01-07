@@ -50,6 +50,9 @@ function product_ajax_add_complete() {
     $state['values']['o2b_is_negotiable'] = false;
     $state['values']['o2b_allow_offer_views'] = true;
   }
+  //@todo refactor so this is a submission function added through a form_alter
+  //in collections
+  //@todo refactor into a single select field; no multiple collection selection
   if (module_exists("collection")) {
     $cids = array();
     foreach ($p['collections'] as $cid) {

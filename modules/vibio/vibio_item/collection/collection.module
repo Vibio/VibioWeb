@@ -337,7 +337,7 @@ function collection_nodeapi(&$node, $op, $a3=null, $a4=null)
     //Display a message showing which collections the new vibio_item belongs to
 		case "insert":
       //Get the collections the item is associated with
-			$collection_nids = isset($node->field_collection) ? $node->field_collection : false;
+			$collection_nids = isset($node->field_collection[0]['nid']) ? $node->field_collection : false;
 			if (!$collection_nids)
 			{
 				$collection_nids = implode(",", $collection_nids);
@@ -369,14 +369,18 @@ function collection_nodeapi(&$node, $op, $a3=null, $a4=null)
     //
 		case "update":
       $collection_nids = array();
-      if(isset($node->field_collection)){
+      if(isset($node->field_collection[0]['nid'])){
         foreach($node->field_collection as $collection_record){
           $collection_nids[] = $collection_record['nid'];
+        }
+      }elseif($node->collection_info){
+        //This case is legacy, @todo remove
+        foreach($node->collection_info['cid'] as $cid){
+          $collection_nids[] =  $cid;
         }
       }else{
         $collection_nids = collection_get_item_cid($node->nid);
       }
-			//@todo: is this necessary?
       unset($node->collection_info);
       //Isn't the checking to see if it's an update unnecessary?
 			$old_cids = $op == "update" ? collection_get_item_cid($node->nid) : array();

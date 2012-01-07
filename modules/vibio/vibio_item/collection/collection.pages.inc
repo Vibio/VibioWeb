@@ -199,6 +199,16 @@ function collection_edit_submit($form, &$state)
 		return;
 	}
 
+  //Set or delete this collection as the user's default
+  if ($vals['set_default'])
+	{
+    $collection->field_default[]['value'] = 1;
+	}
+	elseif ($vals['current_default'])
+	{
+    $collection->field_default[]['value'] = 0;
+	}
+
   //Update Collection
 	if ($vals['cid'])
 	{
@@ -216,17 +226,7 @@ function collection_edit_submit($form, &$state)
 		drupal_set_message(t("!collection collection has been created", array("!collection" => l($vals['title'], "collections/{$vals['cid']}"))));
 	}
 	
-	if ($vals['set_default'])
-	{
-		module_load_include("inc", "collection");
-		collection_set_user_default($user->uid, $vals['cid']);
-	}
-	elseif ($vals['current_default'])
-	{	
-		$sql = "DELETE FROM {collection_user_defaults}
-				WHERE `uid`=%d";
-		db_query($sql, $user->uid);
-	}
+
 	
 	$vals['uid'] = $user->uid;
 	module_invoke_all("collection_save", $vals);

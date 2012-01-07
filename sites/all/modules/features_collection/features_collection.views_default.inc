@@ -181,20 +181,19 @@ function features_collection_views_default_views() {
   $handler->display->display_options['arguments']['nid']['not'] = 0;
   /* Argument: Privacy Settings: Currently requested setting (url arg) >= setting */
   $handler->display->display_options['arguments']['setting_requested']['id'] = 'setting_requested';
-  $handler->display->display_options['arguments']['setting_requested']['table'] = 'privacy_settings';
+  $handler->display->display_options['arguments']['setting_requested']['table'] = 'privacy_node';
   $handler->display->display_options['arguments']['setting_requested']['field'] = 'setting_requested';
-  $handler->display->display_options['arguments']['setting_requested']['default_action'] = 'not found';
   $handler->display->display_options['arguments']['setting_requested']['style_plugin'] = 'default_summary';
   $handler->display->display_options['arguments']['setting_requested']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['setting_requested']['default_argument_skip_url'] = 0;
   $handler->display->display_options['arguments']['setting_requested']['break_phrase'] = 0;
   $handler->display->display_options['arguments']['setting_requested']['not'] = 0;
-  /* Filter: Privacy Settings: Privacy Type */
+  /* Filter: Broken/missing handler */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'privacy_settings';
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = 'node';
   $handler->display->display_options['filters']['type']['expose']['operator'] = FALSE;
-  $handler->display->display_options['filters']['type']['case'] = 1;
   /* Filter: Node: Type */
   $handler->display->display_options['filters']['type_1']['id'] = 'type_1';
   $handler->display->display_options['filters']['type_1']['table'] = 'node';
@@ -434,20 +433,19 @@ function features_collection_views_default_views() {
   $handler->display->display_options['arguments']['nid']['not'] = 0;
   /* Argument: Privacy Settings: Currently requested setting (url arg) >= setting */
   $handler->display->display_options['arguments']['setting_requested']['id'] = 'setting_requested';
-  $handler->display->display_options['arguments']['setting_requested']['table'] = 'privacy_settings';
+  $handler->display->display_options['arguments']['setting_requested']['table'] = 'privacy_node';
   $handler->display->display_options['arguments']['setting_requested']['field'] = 'setting_requested';
-  $handler->display->display_options['arguments']['setting_requested']['default_action'] = 'not found';
   $handler->display->display_options['arguments']['setting_requested']['style_plugin'] = 'default_summary';
   $handler->display->display_options['arguments']['setting_requested']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['setting_requested']['default_argument_skip_url'] = 0;
   $handler->display->display_options['arguments']['setting_requested']['break_phrase'] = 0;
   $handler->display->display_options['arguments']['setting_requested']['not'] = 0;
-  /* Filter: Privacy Settings: Privacy Type */
+  /* Filter: Broken/missing handler */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'privacy_settings';
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = 'node';
   $handler->display->display_options['filters']['type']['expose']['operator'] = FALSE;
-  $handler->display->display_options['filters']['type']['case'] = 1;
   /* Filter: Node: Type */
   $handler->display->display_options['filters']['type_1']['id'] = 'type_1';
   $handler->display->display_options['filters']['type_1']['table'] = 'node';
@@ -655,6 +653,15 @@ if (arg(0) == \'user\' && is_numeric(arg(1)) && arg(1) == $user->uid && arg(2) =
   $handler->display->display_options['arguments']['uid']['default_argument_skip_url'] = 0;
   $handler->display->display_options['arguments']['uid']['break_phrase'] = 0;
   $handler->display->display_options['arguments']['uid']['not'] = 0;
+  /* Argument: Privacy Settings: Currently requested setting (url arg) >= setting */
+  $handler->display->display_options['arguments']['setting_requested']['id'] = 'setting_requested';
+  $handler->display->display_options['arguments']['setting_requested']['table'] = 'privacy_node';
+  $handler->display->display_options['arguments']['setting_requested']['field'] = 'setting_requested';
+  $handler->display->display_options['arguments']['setting_requested']['style_plugin'] = 'default_summary';
+  $handler->display->display_options['arguments']['setting_requested']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['setting_requested']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['setting_requested']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['setting_requested']['not'] = 0;
   /* Filter: Node: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';

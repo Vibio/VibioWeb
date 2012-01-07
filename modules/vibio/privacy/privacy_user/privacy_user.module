@@ -1,4 +1,8 @@
 <?php
+define("PRIVACY_ONLYME", 4);
+define("PRIVACY_CONNECTION", 3);
+define("PRIVACY_AUTHENTICATED", 2);
+define("PRIVACY_PUBLIC", 1);
 
 /**
  * Implements hook_user to get/set privacy settings associated with users
@@ -93,7 +97,7 @@ function privacy_form_user_profile_form_alter(&$form, &$state)
 			continue;
 		}
 
-		$default = privacy_get($form['_account']['#value']->uid, "heartbeat_messages", $type_id);
+		$default = privacy_user_get($form['_account']['#value']->uid, "heartbeat_messages", $type_id);
 		$field = $form['heartbeat_activity_settings_select']['heartbeat_activity_settings'][$type_id]['access'];
 		$field['#options'] = _privacy_options();
 		$field['#default_value'] = $default;

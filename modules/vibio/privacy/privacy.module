@@ -45,28 +45,24 @@ function privacy_theme()
 	);
 }
 
-
-function privacy_views_api()
-{
-	return array(
-		"api"	=> 2,
-	);
-}
-
-
 /**
- * Get access of from (defaults to logged in user) to first arg 
+ * For a given context, determines the access level of the current user.
  *
- * Creates, but does it store, an array of privacy levels 
- *  uid_owner x uid_viewer
+ * Examples: If $to_uid =
+ * ...me, access level = 4
+ * ...a connected friend, access level = 3
+ * ...another vibio user, access level = 2
  *
- * Typical: I request to a privacy access for someone else, get  authenticated
- *  or my friends circle, 2 or 3.
- * For myself, get PRIVACY_ONLYME = 4
+ * If my access level >= privacy setting, then I can view the content. In other
+ * words, the higher privacy_get_access_level returns, the more I can access.
  *
- * The higher this returns, the more I can access.
- * @todo: refactor, keep this in privacy.module
- */ 
+ * @global <type> $user
+ * @staticvar array $privacy_access_levels
+ * @param <type> $to_uid
+ * @param <type> $from_uid
+ * @return array An array of access levels, stored as a static variable; is
+ * this crude caching?
+ */
 function privacy_get_access_level($to_uid, $from_uid=null)
 {
 	static $privacy_access_levels = array();
@@ -76,8 +72,9 @@ function privacy_get_access_level($to_uid, $from_uid=null)
 		global $user;
 		$from_uid = $user->uid;
 	}
-	
-	if (!$from_uid) //anonymous user
+
+  //The user is anonymous
+	if (!$from_uid)
 	{
 		return PRIVACY_PUBLIC;
 	}
@@ -88,17 +85,12 @@ function privacy_get_access_level($to_uid, $from_uid=null)
 	
 	if (!$privacy_access_levels[$from_uid][$to_uid])
 	{
-		$network = network_get($from_uid, false, 1); // no idea what this is
+		$network = network_get($from_uid, false, 1); //Finding if this is a connection?
 		$privacy_access_levels[$from_uid][$to_uid] = array_key_exists($to_uid, $network) ? PRIVACY_CONNECTION : PRIVACY_AUTHENTICATED;
 	}
 	
 	return $privacy_access_levels[$from_uid][$to_uid];
 }
-
-
-
-
-
 
 function _privacy_options()
 {

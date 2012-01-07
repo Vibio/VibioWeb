@@ -3,14 +3,14 @@
  * Creates DB tables
  */
 function privacy_user_install(){
-  drupal_install_schema('privacy_node');
+  drupal_install_schema('privacy_user');
 }
 
 /**
  * Drops DB tables
  */
 function privacy_user_uninstall(){
-  drupal_uninstall_schema('privacy_node');
+  drupal_uninstall_schema('privacy_user');
 }
 
 /**
@@ -29,11 +29,17 @@ function privacy_user_schema(){
       ),
       'type' => array(
         'description' => 'The realm of the setting (usually a module or page)',
-        'type' => 'varchar(255)',
+        'type' => 'varchar',
+        'length' => 30,
+        'not null' => TRUE,
+        'default' => '',
       ),
       'type_id' => array(
         'description' => 'The specific id of the setting (usually a field)',
-         'type' => 'varchar(255)',
+         'type' => 'varchar',
+         'length' => 30,
+         'not null' => TRUE,
+         'default' => '',
       ),
       'setting' => array(
         'description' => 'Privacy access setting.',

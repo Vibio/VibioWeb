@@ -4,6 +4,13 @@ define("PRIVACY_CONNECTION", 3);
 define("PRIVACY_AUTHENTICATED", 2);
 define("PRIVACY_PUBLIC", 1);
 
+function privacy_node_views_api()
+{
+	return array(
+		"api"	=> 2,
+	);
+}
+
 
 //
 //CONTROLLER/CRUD
@@ -77,7 +84,9 @@ function privacy_node_set($nid, $access){
  * @param <type> $access
  */
 function privacy_node_delete($nid){
-
+  $sql = "DELETE FROM {privacy_node}
+          WHERE nid=%d";
+  db_query($sql, $nid);
 }
 
 /**

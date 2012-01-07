@@ -1,5 +1,5 @@
 .already-have-link{
-	margin-top:20px;
+	margin-top:5px;
 }
 .external_short_link {
 	float: right;
@@ -63,8 +63,8 @@ div.product_owners_results div.action div.row{
 }
 .item_owner .action {
 	width: 140px;
-	float: right; /* Carolyn should play */
-  /* the not_for_sale.png image is messing up the flow after first-pass */
+	float: right;
+	position: relative
 }
 
 .item_owner .picture {

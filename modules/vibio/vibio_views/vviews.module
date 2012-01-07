@@ -101,7 +101,7 @@ function vviews_collection_update($uid, $cids)
 	{
 		if ($cid)
 		{
-			_vviews_clear_cache(array($uid, $cid), "user_collection", "updating a collection");
+			_vviews_clear_cache(array($uid, $cid), "user_collection1", "updating a collection");
 		}
 	}
 }
@@ -112,16 +112,16 @@ function vviews_collection_delete($uid, $new_cid, $deleted_cid)
 	
 	if ($new_cid)
 	{
-		_vviews_clear_cache(array($uid, $new_cid), "user_collection", $event);
+		_vviews_clear_cache(array($uid, $new_cid), "user_collection1", $event);
 	}
 	
-	_vviews_clear_cache($uid, "user_collections", $event);
+	_vviews_clear_cache($uid, "user_collections1", $event);
 	_vviews_clear_cache($uid, "user_heartbeat_activity", $event); //band aid fix. why should i have to clear your heartbeat?
 }
 
 function vviews_collection_delete_item($uid, $cid, $nid)
 {
-	_vviews_clear_cache(array($uid, $cid), "user_collection", "deleting an item.");
+	_vviews_clear_cache(array($uid, $cid), "user_collection1", "deleting an item.");
 }
 
 function vviews_offer2buy_complete_actions($old_owner_uid, $node)
@@ -130,7 +130,7 @@ function vviews_offer2buy_complete_actions($old_owner_uid, $node)
 	
 	//only have to clear the old owners cache, the new owners cache will be cleared through hook_nodeapi
 	_vviews_clear_cache($old_owner_uid, "user_inventory", $event);
-	_vviews_clear_cache($old_owner_uid, "user_collections", $event);
+	_vviews_clear_cache($old_owner_uid, "user_collections1", $event);
 }
 
 function _vviews_clear_cache($args, $view_name, $event="")

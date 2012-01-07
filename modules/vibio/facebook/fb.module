@@ -66,7 +66,8 @@ function fb_user($op, &$edit, &$u, $category=null)
 			if ($edit['fb_id'])
 			{
 				module_load_include("inc", "fb");
-				fb_save_user($u, $edit['fb_id'], true);
+				fb_save_user($u, $edit['fb_id'], true); // true is $signup_save which
+						// is somehow related to is_signup
 				$edit['fb_id'] = null;
 			}
 			break;
@@ -297,20 +298,36 @@ function fb_collection_update($uid, $cids)
 	fb_register_prompt("share_collection", $cid, "collection");
 }
 
+/**
+ * Implements hook_network_find_friends, defined in Nelson's network module.
+ *
+ * 
+ *
+ * @param <type> $uid
+ * @param Array $potentials Array of FB friends keyed by Vibio ID
+ * @param <type> $existing Friends already on Vibio, from User Relationships
+ * @param <type> $errors
+ * @return <type>
+ */
 function fb_network_find_friends($uid, &$potentials, $existing, &$errors)
 {
 	module_load_include("inc", "fb");
 	
 	if (!(fb_user_has_fb($uid)))
 	{
+    //Prompt user to connect w/FB
+    //@todo: replace with fboauth action
 		$message = t("Connect your Facebook account to see which friends use Vibio");
 		$href = array("url" => url("fb/add-account"), "class" => "fb_link_account");
 		$errors[] = theme("fb_ff_message", $message, (object) $href, "link_account");
 		
 		return false;
 	}
+  //If the user is connected to FB but doesn't have any friends...
 	elseif (!($friends = fb_get_friends($uid)))
 	{
+    //Prompt them to refresh their session
+    //@todo: Do we need this anymore? Don't they refresh everytime they log in?
 		$fb_login_refresh = array(
 			"attributes"	=> array(
 				"class"	=> "fb_login fb_refresh fb_reload",
@@ -323,7 +340,10 @@ function fb_network_find_friends($uid, &$potentials, $existing, &$errors)
 		$errors[] = t("Your Facebook session has expired, please !fb_refresh to see which of your Facebook friends are using Vibio", $t_args);
 		return false;
 	}
-	
+
+  //Friends data was generated in the conditional above
+  //@todo: consider refactoring; makes code more confusing
+  //What's $friends->data?
 	$friends = $friends->data;
 	foreach ($friends as $friend)
 	{
@@ -333,15 +353,22 @@ function fb_network_find_friends($uid, &$potentials, $existing, &$errors)
 		{
 			continue;
 		}
-		
+
+    //Create a $potential object to represent potential friends
 		$potential = new stdClass;
 		$potential->info = _network_get_userinfo($friend_uid);
 		$potential->src = "fb";
 		$potential->link = fb_profile_link($friend->id);
+    //Create an array of $potential friend objects keyed by vibio uid
 		$potentials[$friend_uid] = $potential;
 	}
 }
 
+/**
+ * Creates a properly formated link to the given user's FB profile.
+ * 
+ * @param <type> $vars
+ */
 function fb_preprocess_network_potential_friend(&$vars)
 {
 	if ($vars['friend']->src == "fb")

@@ -1,0 +1,7 @@
+; $Id$
+name = Vibio Invite
+description = Adds a block where users can invite friends from FB, Twitter, or Email.
+dependencies[] = contact_importer
+dependencies[] = invite
+dependencies[] = fboauth
+core = 6.x

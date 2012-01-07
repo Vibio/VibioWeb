@@ -116,7 +116,7 @@ function profile_ext_dashboard($selected_tab=false)
 	
 	if (module_exists("collection"))
 	{
-		$tabs[t("Inventory")] = views_embed_view("user_collections", "default", $user->uid, PRIVACY_ONLYME);
+		$tabs[t("Inventory")] = views_embed_view("user_collections1", "default", $user->uid, PRIVACY_ONLYME);
 	}
 	
 	foreach (module_invoke_all("profile_ext_dashboard", $user->uid) as $title => $tab)

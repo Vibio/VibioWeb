@@ -36,6 +36,7 @@ function product_ajax_add_form($state, $product)
 	global $user;
 	
 	$form = array(
+    //Form submission function is product_ajax_add_complete() in product.pages
 		"#action" => url("product/ajax/inventory-add/save"),
 		"nid"	=> array(
 			"#type"	=> "hidden",
@@ -88,7 +89,7 @@ function product_ajax_add_form($state, $product)
 		"#title"		=> t("Privacy Settings"),
 		"#type"			=> "select",
 		"#options"		=> _privacy_options(),
-		"#default_value"=> privacy_get($user->uid, "account_setting", "item_default"),
+		"#default_value"=> privacy_user_get($user->uid, "account_setting", "item_default"),
 	);
 	
 	$form['submit'] = array(

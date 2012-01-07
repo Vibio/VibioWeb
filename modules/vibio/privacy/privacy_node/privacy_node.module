@@ -70,6 +70,9 @@ function privacy_node_get($nid){
  * @param int $access
  */
 function privacy_node_set($nid, $access){
+  if(empty($access)){
+    $access = privacy_user_get($user->uid, "account_setting", "item_default");
+  }
   $entry = new stdClass();
   $entry->nid = $nid;
   $entry->setting = $access;
@@ -134,9 +137,14 @@ function privacy_node_form_product_node_form_alter(&$form, &$state)
  */
 function privacy_node_form_vibio_item_node_form_alter(&$form, &$state){
   //Only present on the node form
-	if ($form['#node']->nid){
-    $form = array_merge_recursive($form, privacy_node_form($form['#node']->nid));
+  if ($form['#node']->nid) {
+    $nid = $form['#node']->nid;
+  } else {
+    $default_type = "account_setting";
+    $default_typeid = "item_default";
+    $nid = privacy_user_get($form['#node']->uid, $default_type, $default_typeid);
   }
+  $form = array_merge_recursive($form, privacy_node_form($nid));
 }
 
 /**

@@ -338,7 +338,7 @@ function collection_nodeapi(&$node, $op, $a3=null, $a4=null)
 		case "insert":
       //Get the collections the item is associated with
 			$collection_nids = isset($node->field_collection) ? $node->field_collection : false;
-			if ($collection_nids)
+			if (!$collection_nids)
 			{
 				$collection_nids = implode(",", $collection_nids);
 				$sql = "SELECT `nid`, `title`
@@ -368,7 +368,14 @@ function collection_nodeapi(&$node, $op, $a3=null, $a4=null)
 			}
     //
 		case "update":
-			$collection_nids = isset($node->field_collection) ? $node->field_collection : collection_get_item_cid($node->nid);
+      $collection_nids = array();
+      if(isset($node->field_collection)){
+        foreach($node->field_collection as $collection_record){
+          $collection_nids[] = $collection_record['nid'];
+        }
+      }else{
+        $collection_nids = collection_get_item_cid($node->nid);
+      }
 			//@todo: is this necessary?
       unset($node->collection_info);
       //Isn't the checking to see if it's an update unnecessary?
@@ -384,14 +391,13 @@ function collection_nodeapi(&$node, $op, $a3=null, $a4=null)
 				db_query($sql, $node->nid);
 			}
 
-      //Insert the new collection ids in
+      //Insert the new collection ids in. @todo: necessary? Doesn't CCK take care?
       $delta = 0;
 			foreach (array_diff($collection_nids, $old_cids) as $cid)
 			{
         $node->field_collection[$delta]['nid'] = $cid;
         $delta++;
 			}
-      node_save($node);
 
       //Defines hook collection_update
       //@todo: check if there are any implementations that might interfere
@@ -609,7 +615,7 @@ function collection_profile_ext_public_info($uid)
 
 	foreach ($collections as $cid => $c)
 	{
-		if ($c['privacy'] > $access)
+		if ($c->privacy_setting > $access)
 		{
 			unset($collections[$cid]);
 		}
@@ -675,9 +681,9 @@ function collection_access_collection($collection)
 	{
 		return true;
 	}
-	elseif (isset($collection->privacy) && module_exists("privacy"))
+	elseif (isset($collection->privacy_setting) && module_exists("privacy_node"))
 	{
-		return privacy_get_access_level($collection->uid) >= $collection->privacy && user_access("collections viewer");
+		return privacy_get_access_level($collection->uid) >= $collection->privacy_setting && user_access("collections viewer");
 	}
 	else
 	{

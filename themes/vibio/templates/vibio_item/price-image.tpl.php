@@ -1,4 +1,15 @@
 <?php
+if ( $item->field_have_want_like[0]['value'] == VIBIO_ITEM_WANT ) {
+		// css decision: item_pricetag or item_want or both?
+		$image = "want.jpg";
+    echo "
+      <div class='item_pricetag item_want'>
+        <img src='/themes/vibio/images/item/{$image}' />
+      </div>
+    ";	
+}
+//echo "GREPTHISHERE " . print_r($item, true);
+
 if ($item->field_posting_type[0]['value'] == VIBIO_ITEM_TYPE_SELL)
 {
 	if (!$item->offer2buy || $item->offer2buy['settings']['price'] == 0)

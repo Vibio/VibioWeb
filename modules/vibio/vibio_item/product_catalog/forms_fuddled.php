@@ -90,35 +90,22 @@ function product_ajax_add_form($state, $product, $possess)
 	
 	if (module_exists("offer2buy"))
 	{
-		// @ToDo ... one day this will all be javascripted if the form lets 
-		//  you bounce between have and want.  Not sure that will be the usecase.
-
-		if ( $possess_int > 10 ) {  // want, like, etc ... not for Sale
-			$form['posting_type'] = array(
-				"#type"			=> "hidden",  
-				"#title"		=> t("For Sale?"),
-				"#default_value"=> VIBIO_ITEM_TYPE_OWN,
-			);
-			
-	
-		} else { // for sale
-			$form['posting_type'] = array(
-				"#type"			=> "select",
-				"#title"		=> t("For Sale?"),
-				"#options"		=> array(
-					VIBIO_ITEM_TYPE_SELL	=> t("Yes"),
-					VIBIO_ITEM_TYPE_OWN		=> t("No"),
-				),
-			);
-			
-			$form['node_price'] = array(
-				"#type"		=> "textfield",
-				"#title"	=> t("Price"),
-				"#size"		=> 10,
-				"#prefix"	=> "<div class='inventory_add_price'>",
-				"#suffix"	=> "</div>",
-			);
-		}
+		$form['posting_type'] = array(
+			"#type"			=> "select",
+			"#title"		=> t("For Sale?"),
+			"#options"		=> array(
+				VIBIO_ITEM_TYPE_SELL	=> t("Yes"),
+				VIBIO_ITEM_TYPE_OWN		=> t("No"),
+			),
+		);
+		
+		$form['node_price'] = array(
+			"#type"		=> "textfield",
+			"#title"	=> t("Price"),
+			"#size"		=> 10,
+			"#prefix"	=> "<div class='inventory_add_price'>",
+			"#suffix"	=> "</div>",
+		);
 	}
 	
 	$form['body'] = array(

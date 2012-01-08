@@ -52,6 +52,25 @@ $(document).ready(function()
 		return false;
 	});
 	
+	$(".inventory_want").live("click", function()
+	{
+		var nid = $(this).attr("id").split("inventory_want_")[1];
+		vibio_utility.dialog_busy();
+		
+		$.ajax({
+			url: "/product/ajax/inventory-add",
+			type: "post",
+			data: { nid: nid, possess: "want" },
+			success: function(html, stat)
+			{
+				/* remove close button? vibio_dialog.dialog.dialog("close"); */
+				vibio_dialog.create(html);
+			}
+		});
+		
+		return false;
+	});
+	
 	$("#product-ajax-add-form #edit-posting-type").livequery("change", function()
 	{
 		var val = $(this).val();

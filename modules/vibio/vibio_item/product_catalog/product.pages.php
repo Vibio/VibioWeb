@@ -113,6 +113,7 @@ function product_ajax_add_complete() {
     // but this is better than nothing.
 
 	$item_nid=$state['nid']; // is this right? or  "#value"=> $product->nid
+		// I think this might be the product id, even when working?
 
 
 
@@ -133,6 +134,7 @@ function product_ajax_add_complete() {
                         )
 
                 );
+//print_r(array("the node I just added possess value to" => $node));
 	node_save($node);
 
 	//@ToDo  we might want to render the possession level by building the node and rendering fields.

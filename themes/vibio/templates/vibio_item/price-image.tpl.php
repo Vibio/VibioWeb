@@ -1,4 +1,7 @@
 <?php
+
+// I don't have the right field yet in the if,
+//  But this will throw an image instead of the dollar sign.
 if ( $item->field_have_want_like[0]['value'] == VIBIO_ITEM_WANT ) {
 		// css decision: item_pricetag or item_want or both?
 		$image = "want.jpg";
@@ -8,7 +11,8 @@ if ( $item->field_have_want_like[0]['value'] == VIBIO_ITEM_WANT ) {
       </div>
     ";	
 }
-//echo "GREPTHISHERE " . print_r($item, true);
+/*echo "GREPTHISHERE " . print_r($item, true); ... have_want_like field
+not showing up as expected */
 
 if ($item->field_posting_type[0]['value'] == VIBIO_ITEM_TYPE_SELL)
 {

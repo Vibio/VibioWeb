@@ -37,6 +37,8 @@ function product_ajax_add_complete() {
   } elseif (!($product = node_load($p['nid']))) {
     exit(t("Invalid product"));
   }
+	// Now, create an ITEM form amidst this product saving,
+	//  and execute=save the item
   module_load_include("inc", "node", "node.pages");
   $form_id = "vibio_item_node_form";
   $node = new stdClass;
@@ -67,7 +69,10 @@ function product_ajax_add_complete() {
   }
   node_object_prepare($node);
   drupal_execute($form_id, $state, $node);
-  $messages = drupal_get_messages();
+  $message_void = drupal_get_messages(); // this gets rid of messages ...
+		// but if there is an error, then lets see them.  Will need clean-up
+		// but this is better than nothing.
+	
   $item_nid = $state['nid'];
   $t_args = array("!title" => l($product->title, "node/{$item_nid}"), "!view_link" => l(t("View the item"), "node/{$item_nid}"), "!close_link" => l(t("close this window"), "", array("attributes" => array("class" => "vibio_dialog_close_link"))), // being mostly, not completely,deprecated
   );
@@ -90,7 +95,14 @@ function product_ajax_add_complete() {
     $t_args['!collection'] = implode(", ", $collection_names);
     exit(t('<div class="congrats-popup"><h2>Congratulations</h2> "!title" has been added to your !collection collection. !view_link </div>', $t_args));
   }
-  exit(t("There was an error adding the item to your inventory. Please try again later. !close_link", $t_args));
+
+	// Problems!  no $item_nid = $state['nid'];
+	// @ToDo Improve the error messages
+	if ($message_void['error']) {
+		exit(t("There was an error adding the item to your inventory. <br/><br/>" .$message_void['error'][0] .  "<br/><br/>!close_link"   , $t_args));    // there could be more than one message, but this is a clean decent start
+	} else {
+  	exit(t("There was an error adding the item to your inventory. Please try again later.</br/>" . print_r($message_void, true). "!close_link"   , $t_args));   
+	}
 }
 
 /**

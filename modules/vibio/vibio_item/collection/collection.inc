@@ -293,14 +293,14 @@ function collection_get_num_items($cid, $access=false)
 {
 	if (module_exists("privacy") && $access)
 	{
-		$collection = collection_load($cid);
+		//$collection = collection_load($cid);
 		
 		$sql = "SELECT COUNT(*)
 				FROM {content_field_collection} ci JOIN {privacy_node} p
 					ON ci.`nid`=p.`nid`
 				WHERE `field_collection_nid`=%d
 					AND p.`setting` <= %d";
-		return db_result(db_query($sql, $collection->nid, $collection->uid, $access));
+		return db_result(db_query($sql, $cid, $access));
 	}
 	
 	$sql = "SELECT COUNT(*)

@@ -86,6 +86,16 @@ function product_ajax_add_form($state, $product, $possess)
 			"#options"		=> collection_options(),
 			"#default_value"=> $default,
 		);
+		
+		$form['collections_new'] = array(
+			"#type"			=> "textfield",
+			"#title"		=> t("Or, Create New Collection"),
+        "#size"   => 30,
+        "#prefix" => "<div class='create_new_collection'>",
+        "#suffix" => "</div>",
+		);
+
+
 	}
 	
 	if (module_exists("offer2buy"))

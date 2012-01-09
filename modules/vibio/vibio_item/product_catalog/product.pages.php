@@ -68,9 +68,14 @@ function product_ajax_add_complete() {
 		exit(t("Invalid product".$p['nid']));
 	}
 
+	
+	module_load_include("inc","node","node.pages");
+
+
+
+
   // Now, create an ITEM form amidst this product saving,
   //  and execute=save the item
-	module_load_include("inc","node","node.pages");
 	$form_id="vibio_item_node_form";
 	$node=new stdClass;
 	$node->uid=$user->uid;
@@ -84,14 +89,56 @@ function product_ajax_add_complete() {
 		$state['values']['o2b_allow_offer_views']=true;
 	}
 
-	// have_want_like
-	$state['values']['field_have_want_like'] =array( array("value"=>20));
-
+	// have_want_like   @ToDo
+	//$state['values']['field_have_want_like'] =array( array("value"=>20));
 
   //@todo refactor so this is a submission function added through a form_alter
   //in collections
   //@todo refactor into a single select field; no multiple collection selection
 	if(module_exists("collection")) {
+
+		// Create a new collection if requested
+		//exit($p['collections_new']);
+		// Can I do 2 drupal_executes in a row? think so, but watch
+		if ( $p['collections_new'] ) {
+			$form_id_new_col="collection_node_form";
+			$node_new_col=new stdClass;
+			$node_new_col->uid=$user->uid;
+			$node_new_col->name=$user->name;
+			$node_new_col->type="collection";
+			$state_new_col['values']=array(
+				//"privacy_setting" => PRIVACY_CONNECTION, // from privacy module.  Loaded?
+				"privacy_setting" => 1, // ** this should work, but doesn't seem to.
+				"name"=>$user->name . "hows this",
+				"title"=>check_plain($p['collections_new']),
+				"op"=>t("Save"));
+			//@ToDo  Do I need to set privacy, or do the defaults just fire up?
+			// !!! Have to set it.
+			//$collection->privacy_setting
+		  
+			node_object_prepare($node_new_col);
+			drupal_execute($form_id_new_col,$state_new_col,$node_new_col);
+			$cid=$state_new_col['nid'];
+			if ( !$cid ) {
+				exit("Sorry, we were unable to create your new collection.  Please try again
+					or contact tech support.");
+			}
+//exit("Is cid $cid " . print_r($node_new_col,true));
+
+			// If problems with privacy, force it here:
+			module_load_include("inc","privacy","privacy.module");  // needed??
+			privacy_node_update($cid, PRIVACY_PUBLIC); // 1 is PRIVACY SETTING
+
+			//@ToDo Error detection here instead of at end of process?  
+			//@ToDo skip other cid
+			$p['collections'] = array( $cid );
+		}
+
+		// Save collections into form state, whether select or new
+		//  Note: it is intended that a new collection trumps collections
+		//  the user has selected.  I could imagine that we choose the other use case
+		//  instead -- but then have to deal with the difficulty in un-selecting
+		//  all collections.
 		$cids=array();
 		foreach($p['collections'] as $cid) {
 			$cids[$cid]=$cid;

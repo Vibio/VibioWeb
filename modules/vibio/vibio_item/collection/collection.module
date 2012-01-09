@@ -201,6 +201,7 @@ function collection_preprocess_collection_list_item(&$vars)
   //@todo access variable, is that ok?
 	$vars['collection']->is_owner = module_exists("privacy_node") ? $vars['access'] == PRIVACY_ONLYME : true;
 	$vars['collection']->image = collection_get_image($vars['collection']->nid, false, $vars['access']);
+  //@todo: total_items is cached for anonymous users.
 	$vars['collection']->total_items = collection_get_num_items($vars['collection']->nid, $vars['access']);
 	//Add sharing buttons; requires addthis module
 	$share_html = "";

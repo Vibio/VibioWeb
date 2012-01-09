@@ -60,7 +60,7 @@ function _product_get_owners($nid, $as_uid, $type="network", $page=0)
   //@todo SQL performance check?
 	$sql = "SELECT n.`nid`, n.`title`, u.`uid`, u.`name`, u.`picture`
 			FROM {node} n JOIN {users} u JOIN {privacy_node} p
-				ON n.`uid`=u.`uid` AND p.`nid`=n.`id`
+				ON n.`uid`=u.`uid` AND p.`nid`=n.`nid`
 			WHERE p.`setting` <= %d
 				AND u.`uid` != %d
 				$network_check

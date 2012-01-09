@@ -382,8 +382,13 @@ function offer2buy_preprocess_product_owner(&$vars) {
 	//dpm($item); 
 
 	// Teaser and links to item
-	$vars['teaser'] = $item->teaser; // in design this is ~30chars, but I think
-		// I like longer?
+  if(!$item->teaser){
+    //@todo should privacy be concerned with this; you need to be a connection to message?
+    $contact_link = l($item->name, 'messages/new/' . $item->uid);
+    $vars['teaser'] = 'Ask ' . $contact_link . ' about this item.';
+  }else{
+    $vars['teaser'] = $item->teaser;
+  }
 
 	// Uh oh: no design for an item page ready yet, no ux.  Maybe it should
 	// be a popup?  Maybe expand in place?

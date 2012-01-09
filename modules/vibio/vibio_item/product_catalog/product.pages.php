@@ -180,6 +180,13 @@ function product_add_new() {
   return drupal_get_form($form_id, $node);
 }
 
+/**
+ * This function generates html output displaying the owners of a product
+ * $_POST['product'] defined in the post request to the page.
+ *
+ * @global  $user
+ * @return <type>
+ */
 function _product_get_owners_page() {
   global $user;
   $p = $_POST;
@@ -188,7 +195,10 @@ function _product_get_owners_page() {
   }
 // This looks very similar to node-product.tpl
   module_load_include("inc", "product");
+  //Retrieve the owners
   $data = _product_get_owners($p['product'], $user->uid, $p['type'], $p['page']);
+  //Format the owner data w/template file vibio/templates/product/owners.tpl.php
+  //Single owner is formatted with owner.tpl.php
   $output = theme("product_owners", $p['type'], $data);
   if ($p['ajax']) {
     exit($output);

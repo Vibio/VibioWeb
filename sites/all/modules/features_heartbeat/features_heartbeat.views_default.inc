@@ -98,21 +98,13 @@ print theme(\'views_autofakerefresh\', $interval);
   $handler->display->display_options['sorts']['timestamp']['table'] = 'heartbeat_activity';
   $handler->display->display_options['sorts']['timestamp']['field'] = 'timestamp';
   $handler->display->display_options['sorts']['timestamp']['order'] = 'DESC';
-  /* Argument: Heartbeat activity: Currently requested user (url argument) carried out the activity */
-  $handler->display->display_options['arguments']['uid_requested']['id'] = 'uid_requested';
-  $handler->display->display_options['arguments']['uid_requested']['table'] = 'heartbeat_activity';
-  $handler->display->display_options['arguments']['uid_requested']['field'] = 'uid_requested';
-  $handler->display->display_options['arguments']['uid_requested']['style_plugin'] = 'default_summary';
-  $handler->display->display_options['arguments']['uid_requested']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['uid_requested']['default_argument_skip_url'] = 0;
-  $handler->display->display_options['arguments']['uid_requested']['break_phrase'] = 0;
-  $handler->display->display_options['arguments']['uid_requested']['not'] = 0;
-  /* Argument: Privacy Settings: Currently requested setting (url arg) >= setting */
-  $handler->display->display_options['arguments']['setting_requested']['id'] = 'setting_requested';
-  $handler->display->display_options['arguments']['setting_requested']['table'] = 'privacy_node';
-  $handler->display->display_options['arguments']['setting_requested']['field'] = 'setting_requested';
-  $handler->display->display_options['arguments']['setting_requested']['style_plugin'] = 'default_summary';
-  $handler->display->display_options['arguments']['setting_requested']['default_argument_type'] = 'fixed';
+  /* Filter: Privacy Settings: Privacy Setting */
+  $handler->display->display_options['filters']['setting']['id'] = 'setting';
+  $handler->display->display_options['filters']['setting']['table'] = 'privacy_node';
+  $handler->display->display_options['filters']['setting']['field'] = 'setting';
+  $handler->display->display_options['filters']['setting']['operator'] = '<=';
+  $handler->display->display_options['filters']['setting']['value']['value'] = '1';
+  $handler->display->display_options['filters']['setting']['allow_null'] = 1;
 
   /* Display: Block */
   $handler = $view->new_display('block', 'Block', 'block_1');
@@ -131,7 +123,6 @@ print theme(\'views_autofakerefresh\', $interval);
 $interval = 5000;
 print theme(\'views_autofakerefresh\', $interval);
 ?>'),
-    t('All'),
     t('Block'),
     t('more'),
   );

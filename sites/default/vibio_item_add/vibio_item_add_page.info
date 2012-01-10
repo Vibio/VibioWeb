@@ -1,7 +1,0 @@
-; $Id$
-name = "Vibio Item Add Page"
-description = "Navigable pages and blocks for adding items and when necessary products.  Functions to actually add items to the database will be elsewhere/already exist elsewhere."
-core = 6.x
-package = "Vibio"
-dependencies[] = vibio_item
-

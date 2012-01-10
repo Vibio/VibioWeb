@@ -109,7 +109,8 @@ function product_ajax_add_complete() {
 			$state_new_col['values']=array(
 				//"privacy_setting" => PRIVACY_CONNECTION, // from privacy module.  Loaded?
 				"privacy_setting" => 1, // ** this should work, but doesn't seem to.
-				"name"=>$user->name . "hows this",
+					// see: If problems with privacy, force it here:    below
+				"name"=>$user->name,
 				"title"=>check_plain($p['collections_new']),
 				"op"=>t("Save"));
 			//@ToDo  Do I need to set privacy, or do the defaults just fire up?

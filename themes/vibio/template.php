@@ -14,6 +14,9 @@ function vibio_preprocess_page(&$variables){
     //This is apparently necessary, see http://api.drupal.org/api/drupal/includes--common.inc/function/drupal_set_html_head/6#comment-4614
     $variables['head'] .= $og_image;
   }
+  if ($variables['node']->type != "" && arg(2) != 'edit') {
+    $variables['template_files'][] = "page-node-" . $variables['node']->type;
+  }
 }
 
 /**

@@ -42,6 +42,8 @@
 	padding-top:6px;
 	color: #FFF;
 	display: inline;
+	width: 465px;
+	float: left;
 }
 .profile_option,.profile_friends{
 	float: left;
@@ -285,7 +287,5 @@ button.add_connection:hover{
 	background-position: -1px -49px;
 }
 div#name_and_friend div.friend_actions{
-	position: absolute;
-	right: 23px;
-	bottom: -19px
+
 }

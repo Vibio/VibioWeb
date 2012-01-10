@@ -456,6 +456,12 @@ if(module_exists('automodal')){
 	    ,'autoFit' => true
 	    ,'draggable' => false)
 	);
+		automodal_add('.video-modal', array(
+	    'autoFit' => false
+	    ,'width'   => 530
+	    ,'height'  => 320
+	    ,'draggable' => false)
+	);
 }
 
 /*function vibio_fieldset($ele)

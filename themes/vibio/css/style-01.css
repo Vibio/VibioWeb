@@ -123,7 +123,6 @@ h1#page_title, h1#box_page_title, #collection-title-detail, h1.page-title-sub{ba
 .section_sub_title{position: absolute; top: 9px; left: 180px}
 div.sec_content.about span.section_sub_title{left: 90px}
 .section_sub_title a{font-size:13px; color:#106F93; font-weight:normal; padding-left:20px}
-
 .region-content-top{position:relative}
 .breadcrumb{ padding-bottom:0}
 h1.title, /* The title of the page */

@@ -21,7 +21,8 @@ function _product_get_product_owners($nid, $as_uid=false)
 }
 
 // I think this gets all the owners of an item, in network or not
-//  Defaults to in-network only (stephen: deprecate this)
+//  Defaults to in-network only.  (Might get in-network OR not-in-network,
+//  and be run twice if you want them all.)
 function _product_get_owners($nid, $as_uid, $type="network", $page=0)
 {
 	$depth = 3;

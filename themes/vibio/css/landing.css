@@ -52,6 +52,10 @@ p {
 	background: url(../images/landing/landing_02.png) no-repeat;
 	height: 570px;
 }
+#comics {
+	background: url(../images/landing/images/comic_banner.png) no-repeat;
+	height: 570px;
+}
 #record {
 	background: url(../images/landing/images/record_banner.png) no-repeat;
 	height: 570px;
@@ -195,6 +199,10 @@ li {
 #text {
 	margin-bottom: 9px
 }
+#text-comic {
+	margin-bottom: 9px;
+	font-size:18px;
+}
 #featured-2, #featured-3 {
 	float: left;
 	margin-top: 62px;
@@ -243,7 +251,7 @@ li {
 .clears, .clearfix {
 	clear: both
 }
-.region-header, .region-footer, #watches, #node-38872, #node-43071, #node-48820, #record, #sliders {
+.region-header, .region-footer, #comics, #watches, #node-38872, #node-43071, #node-48820, #record, #sliders {
 	background-size: 100% auto;
 	min-width: 1005px;
 }

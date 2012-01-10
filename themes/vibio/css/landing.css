@@ -49,15 +49,15 @@ p {
 	padding: 22px 24px 0 0;
 }
 #watches {
-	background: url(../images/landing/landing_02.png) no-repeat;
+	background: url(../images/landing/images/watches_banner.jpg) no-repeat;
 	height: 570px;
 }
 #comics {
-	background: url(../images/landing/images/comic_banner.png) no-repeat;
+	background: url(../images/landing/images/comic_banner.jpg) no-repeat;
 	height: 570px;
 }
 #record {
-	background: url(../images/landing/images/record_banner.png) no-repeat;
+	background: url(../images/landing/images/record_banner.jpg) no-repeat;
 	height: 570px;
 }
 #watches-text {

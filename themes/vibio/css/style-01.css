@@ -734,7 +734,6 @@ td.col-2{padding-left:10px; border-left:1px solid #CCC}
 #block-collection-random_collection .collection_title a{color:#106F93}
 #block-collection-random_collection .collection_title a:hover{color:#00AEF0}
 #block-collection-random_collection .collection_link a{font-size:12px}
-
 #block-collection-random_collection .collection_date_added{font-size:12px; margin-top:10px}
 /*Bottom Sidebar*/
 .region-sidebar-first .rounded_content{}
@@ -747,7 +746,6 @@ td.col-2{padding-left:10px; border-left:1px solid #CCC}
 .addthis_default_style{margin-top:10px}
 /*Collection detil page small share buttons*/
 div.collection_list_item_summary .addthis_default_style{margin:52px 0 0 -3px; width:80px}
-
 .share-text{float:left; clear:both; line-height:18px; font-weight:bold; margin-right:5px}
 /*Comments*/
 #comments{ margin:1em 0}
@@ -888,7 +886,7 @@ div.views-field.views-field-nid{position:absolute; width:128px; left:-6px; heigh
 #block-block-14, #block-block-19{height:70px}
 #node-23081 .content{margin-top:40px}
 #about-top-p{font-size:28px; line-height:39px; margin:1px 0 38px; font-weight:100; letter-spacing:1px}
-#block-block-14 .content, #block-block-19 .content{position:absolute; top:6px; right:9px}
+#block-block-14 .content, #block-block-19 .content{position:absolute; top:6px; left:-17px}
 #video-icon{position: absolute; top: 1px; right: 25px}
 #about-left{float:left; width:250px}
 #about-right{float:left; width:454px; line-height:22px}

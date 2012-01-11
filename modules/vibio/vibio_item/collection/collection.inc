@@ -11,13 +11,13 @@
 function collection_get_collections($uid=false)
 {
 	static $user_collections = array();
-	
+
 	if (!$uid)
 	{
 		global $user;
 		$uid = $user->uid;
 	}
-	
+
 	if (!isset($user_collections[$uid]))
 	{
 		$sql = "SELECT `nid`
@@ -25,7 +25,7 @@ function collection_get_collections($uid=false)
 				WHERE `uid`=%d AND `type`='collection'
 				ORDER BY `title` ASC";
 		$res = db_query($sql, $uid);
-		
+
 		$collections = array();
     //Load all the user's collections
 		while ($row = db_fetch_array($res))
@@ -33,10 +33,10 @@ function collection_get_collections($uid=false)
       //key: nid, value: collection object
 			$collections[$row['nid']] = collection_load($row['nid']);
 		}
-		
+
 		$user_collections[$uid] = $collections;
 	}
-	
+
 	return $user_collections[$uid];
 }
 
@@ -58,10 +58,10 @@ function collection_insert($vals)
 	{
 		return false;
 	}
-	
+
 	$vals['cid'] = db_last_insert_id("collection", "cid");
 	$vals['uid'] = $user->uid;
-	
+
 	module_invoke_all("collections_insert", $vals);
 	return $vals['cid'];
 }
@@ -116,7 +116,7 @@ function collection_delete($cid)
 
 /**
  * Transfer $items $to_cid
- * 
+ *
  * @param <type> $items
  * @param <type> $to_cid
  */
@@ -142,39 +142,39 @@ function collection_get_item_cid($nid)
 			FROM {content_field_collection}
 			WHERE `nid`=%d";
 	$res = db_query($sql, $nid);
-	
+
 	$ret = array();
 	while ($row = db_fetch_array($res))
 	{
-		$ret[$row['nid']] = $row['nid'];
+		$ret[$row['field_collection_nid']] = $row['field_collection_nid'];
 	}
-	
+
 	return $ret;
 }
 
 /**
  * List of the current user's collections in format key: nid, value: title
  * format (suitable for a select list).
- * 
+ *
  * @global  $user
  * @return <type>
  */
 function collection_options()
 {
 	global $user;
-	
+
 	$options = array();
 	foreach (collection_get_collections($user->uid) as $cid => $collection)
 	{
 		$options[$cid] = $collection->title;
 	}
-	
+
 	return $options;
 }
 
 /**
  * Get the nid of the user's default collection
- * 
+ *
  * @global  $user
  * @param <type> $uid
  * @param <type> $auto_create
@@ -188,13 +188,13 @@ function collection_get_user_default($uid=false, $auto_create=false)
 		global $user;
 		$uid = $user->uid;
 	}
-  
+
 	//Find the existing default collection
 	$sql = "SELECT c.nid
 			FROM {content_type_collection} AS c JOIN {node} AS n
 			ON c.nid=n.nid WHERE n.uid=%d AND c.field_default_value=1";
 	$cid = db_result(db_query($sql, $uid));
-	
+
 	if ($cid || !$auto_create)
 	{
 		return $cid;
@@ -214,7 +214,7 @@ function collection_get_user_default($uid=false, $auto_create=false)
 	{
 		return false;
 	}
-	
+
 	//collection_set_user_default($uid, $new_collection->nid);
   $vals = (array) $new_collection;
 	module_invoke_all("collection_save", $vals);
@@ -224,7 +224,7 @@ function collection_get_user_default($uid=false, $auto_create=false)
 
 /**
  * Set the $uid's default collection to $cid
- * 
+ *
  * @todo: remove $uid from the signature
  * @todo: consider depreciating
  * @param <type> $uid
@@ -246,7 +246,7 @@ function collection_get_image($cid, $absolute=false, $access=false)
 
 	if (!$access)
 		$access = PRIVACY_ONLYME;
-		
+
 	$sql = "SELECT n.`nid`
 			FROM {node} n JOIN {content_field_collection} ci JOIN {privacy_node} p
 				ON n.`nid`=ci.`nid`
@@ -272,7 +272,7 @@ function collection_get_image($cid, $absolute=false, $access=false)
 
 /**
  * Return the path to the default collection image
- * 
+ *
  * @param Boolean $absolute
  * @return String
  */
@@ -294,7 +294,7 @@ function collection_get_num_items($cid, $access=false)
 	if (module_exists("privacy") && $access)
 	{
 		//$collection = collection_load($cid);
-		
+
 		$sql = "SELECT COUNT(*)
 				FROM {content_field_collection} ci JOIN {privacy_node} p
 					ON ci.`nid`=p.`nid`
@@ -302,7 +302,7 @@ function collection_get_num_items($cid, $access=false)
 					AND p.`setting` <= %d";
 		return db_result(db_query($sql, $cid, $access));
 	}
-	
+
 	$sql = "SELECT COUNT(*)
 			FROM {content_field_collection}
 			WHERE `nid`=%d";
@@ -311,7 +311,7 @@ function collection_get_num_items($cid, $access=false)
 
 /**
  * Get the taxonomy categories a given collection belongs to.
- * 
+ *
  * @param <type> $cid
  * @return Array taxonomy categories
  */
@@ -343,13 +343,78 @@ function collection_get_categories($cid)
 	return $categories;
 }
 
-function collection_get_related_content($vibio_item){
-  $taxonomy = array();
-  foreach($vibio_item->taxonomy as $term){
-    $taxonomy[] = 
+/**
+ * Get the currently viewed item nid
+ */
+function collection_get_viewed_item($vibio_item = null){
+  if(empty($vibio_item)){
+    //Determine the terms for whatever is being viewed
+    switch(arg(0)){
+      case 'node':
+        $nid = (int) arg(1);
+        break;
+      case 'product':
+      case 'item':
+        $real_path = drupal_get_normal_path(arg(1));
+        $real_path_parts = explode('/', $real_path);
+        $nid = (int) $real_path_parts[1];
+        break;
+      case 'collections':
+      //Do something here to find terms similar to the collection's items
+      case 'default':
+      //Set up some default featured items?
+      break;
+    }
   }
-  //find a collection that shares a taxonomy term
+  //$viewed_item = node_load($nid);
+  return $nid;
+}
 
+/**
+ * Load an item related to $vibio_item
+ */
+function collection_get_related($vibio_item){
+  if (!empty($vibio_item->taxonomy)) {
+    $terms = array();
+    foreach ($vibio_item->taxonomy as $term) {
+      $terms[] = $term->tid;
+    }
+  }else{
+    $terms = taxonomy_node_get_terms($vibio_item);
+  }
+
+  //find nodes that shares the taxonomy term
+  $related = taxonomy_select_nodes($terms);
+  $related_nids = array();
+  while ($row = db_fetch_object($related)) {
+    $related_nids[] = $row->nid;
+  }
+
+  //Pick a random nid
+  $related_nid = $related_nids[rand(0, count($related_nids))];
+
+  return $related_nid;
+}
+
+function collection_display_related($vibio_item = false){
+  /**
+  //Get a currently viewed object
+  $viewed_item = collection_get_viewed_item();
+  
+  //Get related nid
+  $related_nid = collection_get_related($viewed_item);
+
+  //Populate the data
+  $related_node = node_load($related_nid);
+  */
+  
+  //This is a solution using similarterm module; my custom solution
+  //above could be used in the future or deleted--Alec
+  $nid = collection_get_viewed_item();
+  
+  $related_nodes = views_get_view_result('similarterms', $nid);
+  //Theme it and return the markup
+  return theme('collection_related_item', $related_nodes[0]);
 }
 
 /**
@@ -362,7 +427,7 @@ function collection_get_related_content($vibio_item){
  * @param <type> $ignore_cid
  * @param <type> $max_collections
  * @param <type> $as_uid
- * @return <type> 
+ * @return <type>
 
 function collection_get_sidebar($uid, $ignore_cid=0, $max_collections=4, $as_uid=false)
 {
@@ -371,7 +436,7 @@ function collection_get_sidebar($uid, $ignore_cid=0, $max_collections=4, $as_uid
 		global $user;
 		$as_uid = $user->uid;
 	}
-	
+
 	if (module_exists("privacy"))
 	{
 		$access = privacy_get_access_level($uid, $as_uid);
@@ -401,7 +466,7 @@ function collection_get_sidebar($uid, $ignore_cid=0, $max_collections=4, $as_uid
 				LIMIT %d";
 		$res = db_query($sql, $uid, $ignore_cid, $max_collections);
 	}
-	
+
 	$collections = array();
 	while ($c = db_fetch_object($res))
 	{
@@ -409,7 +474,7 @@ function collection_get_sidebar($uid, $ignore_cid=0, $max_collections=4, $as_uid
 		$c->image = collection_get_image($c->cid);
 		$collections[] = $c;
 	}
-	
+
 	return $collections;
 }
 */
@@ -418,14 +483,14 @@ function collection_get_sidebar($uid, $ignore_cid=0, $max_collections=4, $as_uid
  * Is this for grabbing "showcase item" values?
  * @todo:delete this hasn't been refactored, not sure if it's necessary. I've commented
  * out all its calls.
- * 
+ *
  * @global  $user
  * @param <type> $cid
  * @param <type> $owner
  * @param <type> $as_uid
  * @param <type> $num_items
  * @return <type>
- 
+
 function collection_get_sidebar_items($cid, $owner=false, $as_uid=false, $num_items=3)
 {
 	//Get the file_uncreate_url() function
@@ -435,7 +500,7 @@ function collection_get_sidebar_items($cid, $owner=false, $as_uid=false, $num_it
 		global $user;
 		$as_uid = $user->uid;
 	}
-	
+
 	if (module_exists("privacy"))
 	{
 		if (!$owner)
@@ -443,7 +508,7 @@ function collection_get_sidebar_items($cid, $owner=false, $as_uid=false, $num_it
 			$collection = collection_load($cid);
 			$owner = $collection['cid'];
 		}
-		
+
 		$access = privacy_get_access_level($owner, $as_uid);
 		$sql = "SELECT ci.`item_nid`, n.`title`
 				FROM {collection_items} ci JOIN {node} n JOIN {privacy_settings} p
@@ -467,16 +532,16 @@ function collection_get_sidebar_items($cid, $owner=false, $as_uid=false, $num_it
 				LIMIT %d";
 		$res = db_fetch_object($sql, $cid, $num_items);
 	}
-	
+
 	$items = array();
 	while ($item = db_fetch_object($res))
 	{
 		$item->image = file_uncreate_url(_vibio_item_get_image($item->item_nid));
 		$items[] = $item;
 	}
-	
+
 	return $items;
 }
- * 
+ *
  */
 ?>

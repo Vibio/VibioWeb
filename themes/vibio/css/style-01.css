@@ -640,18 +640,12 @@ hr{ height:1px;  border:1px solid #666}
  * Forms
  */
 form{ margin:0;  padding:0}
-
 fieldset{border:none}
-
 /* jquery progress bars */
 .ui-progressbar{ border:1px solid black;  border-radius:4px;  -moz-border-radius:4px;  height:10px;  width:125px}
-
 .ui-progressbar .ui-progressbar-value{ height:100%;  background:#B5CFDE}
-
 .ui-progressbar .ui-corner-left{ border-bottom-left-radius:4px;  border-top-left-radius:4px;  -moz-border-radius-topleft:4px;  -moz-border-radius-bottomleft:4px}
-
 .ui-progressbar .ui-corner-right{ border-bottom-right-radius:4px;  border-top-right-radius:4px;  -moz-border-radius-topright:4px;  -moz-border-radius-bottomright:4px}
-
 /*throbber*/
 html.js input.form-autocomplete{ background-position:99% 7px}
 html.js input.throbbing{background-position:99% -14px}
@@ -662,9 +656,9 @@ html.js input.throbbing{background-position:99% -14px}
 .fb_login_button:hover{cursor:pointer}
 .fb_share_container{float:left; margin-left:10px}
 .collection_list_item_summary .fb_share_container{margin-left:5px}
-.fb_ff_message{margin-bottom:10px}
-.fb_ff_message .fb_message{width:505px; float: left; text-align: right; margin: 6px 10px 0 0}
-.fb_ff_message .fb_link{}
+.fb_ff_message{margin:10px 0}
+.fb_ff_message .fb_message{width:430px; float: left; margin:30px 0 0 21px}
+#fb-message-img{background: url(../images/fb_refresh_01.png) no-repeat; height: 67px; padding-top: 15px}
 #block-fb-fb_login{text-align:center}
 .fb-or{color:#00AEF0}
 #block-fb-fb_login .fb_login{margin-top:4px}
@@ -1166,7 +1160,7 @@ a.invite-yahoo:hover{background: url(../images/btn_yahoo_hover.png) no-repeat;}
 #contact-importer-form-1 #edit-submit{margin-top: 10px; cursor:pointer; text-indent: -9999px; background: url(../images/btns_expand_circle.png) -3px -3px no-repeat; border:none; width: 182px; height: 34px}
 #contact-importer-form-1 #edit-submit:hover{background: url(../images/btns_expand_circle.png) -3px -40px no-repeat}
 #contact-importer-form-1 .form-item{margin: 0}
-div#network_ff_messages {padding: 1px 10px 20px;}
+div#network_ff_messages {padding: 1px 10px 0}
 #fb-refresh{background: url(../images/fb_refresh_01.png) no-repeat 1px 1px; height: 79px; width: 730px; position: relative}
 #fb-refresh button{cursor:pointer; text-indent: -9999px; background:  url(../images/btn_fb_refresh.png) no-repeat; border: none; width: 266px; height: 51px; position: absolute; right: 15px; top: 15px}
 /*New amazon button*/

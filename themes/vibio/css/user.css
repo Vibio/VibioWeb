@@ -286,3 +286,9 @@ button.add_connection:hover{
 div.connect_you .friend_info{
 	float:none
 }
+div.connect_none .friend_info{
+	    color: #556270;
+}
+div#profile_user_information.connect_none .mouse_for_friends{
+	margin-top: 0;
+}

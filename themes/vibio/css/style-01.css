@@ -117,7 +117,7 @@ div#site-name{  margin:0;   font-size:2em;   line-height:1.3em}
 #site-name a:focus{  text-decoration:underline}
 .slogan{  background:transparent url(../vibio-tagline.png) no-repeat;   top:33px;   position:relative;   left:130px;   text-indent:-4999px;   width:200px;   height:20px}
 p.section_title{background:url("../images/long_border.png") no-repeat scroll 0 30px transparent; height:43px; margin:13px 0 0; padding:0}
-h1#page_title, h1#box_page_title, #collection-title-detail, h1.page-title-sub{background:url("../images/long_border.png") no-repeat scroll 0 32px transparent; height:43px; margin:3px 0 5px; padding:0}
+h1#page_title, h1#box_page_title, #collection-title-detail, h1.page-title-sub{background:url("../images/long_border.png") no-repeat scroll 0 32px transparent; height:43px; margin:20px 0 5px; padding:0}
 .section_title{font-size:18px; color:#556270; font-weight:500}
 .section-intro{position: relative}
 .section_sub_title{position: absolute; top: 9px; left: 180px}

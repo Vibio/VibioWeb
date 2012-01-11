@@ -343,6 +343,15 @@ function collection_get_categories($cid)
 	return $categories;
 }
 
+function collection_get_related_content($vibio_item){
+  $taxonomy = array();
+  foreach($vibio_item->taxonomy as $term){
+    $taxonomy[] = 
+  }
+  //find a collection that shares a taxonomy term
+
+}
+
 /**
  * Is this for grabbing "showcase item" values?
  * @todo: delete this hasn't been refactored, not sure if it's necessary. I've commented

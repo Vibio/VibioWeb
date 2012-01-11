@@ -23,14 +23,12 @@ if ($relationships)
 
 		if (variable_get("user_relationships_show_user_pictures", false))
 		{
-			$row = "<td>".theme("user_picture", $this_user)."</td>".$row;
+			$row = "<td style='width:60px'>".theme("user_picture", $this_user)."</td>".$row;
 		}
-
-		$row .= "<td class='ur_friend_busy'>$busy_indicator</td>";
 
 		if ($remove_link)
 		{
-			$row .= "<td class='ur_friend_remove'>$remove_link</td>";
+			$row .= "<td style='width:100px' class='ur_friend_remove'>$remove_link</td>";
 		}
 
 		$row = "<tr>$row</tr>";

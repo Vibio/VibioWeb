@@ -6,7 +6,7 @@
 
 
 #profile_user_information .mouse_for_friends { 
-	margin-top: 13px;
+	margin-top: 8px;
 	color: #556270;
 }
 
@@ -49,7 +49,7 @@
 	float: left;
 }
 a.profile_friends{
-	margin: 20px 10px; 
+	margin: 17px 10px; 
 }
 a.profile_option{
 	display: block;
@@ -57,7 +57,7 @@ a.profile_option{
 	width: 254px;
 	background: url(../images/add_item.png) no-repeat 0 0;
 	text-indent: -9999px;
-	margin-top: 10px;
+	margin-top: 5px;
 }
 /*
 #content-area #profile_user_summary.rounded_content {
@@ -268,9 +268,6 @@ table.user_external_accounts td ul {
 #message-link{
 	text-indent: -9999px;
 }
-.dos_display{
-	margin-top: 13px;
-}
 .dos_display a:link{
 	color:#106F93;
 }
@@ -286,6 +283,6 @@ button.add_connection{
 button.add_connection:hover{
 	background-position: -1px -49px;
 }
-div#name_and_friend div.friend_actions{
-
+div.connect_you .friend_info{
+	float:none
 }

@@ -1,5 +1,4 @@
 <?php
-// $Id: similarterms.module,v 1.28.2.2 2010/09/09 13:58:19 jjeff Exp $
 
 /**
   * Implementation of hook_views_api.

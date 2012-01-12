@@ -3,6 +3,7 @@
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 		<title><?php print $head_title;?></title>
+		<link rel="shortcut icon" href="/sites/all/themes/vibio/favicon.ico" type="image/x-icon" />
 		<meta name="description" content="404 Page not found - Vibio is a social commerce tool that lets you buy, sell, and share items within your social graph" />
 		<meta name="keywords" content="social commerce, inventory, buy, sell, share, social graph, friends, trade, collections" />
 		<style type="text/css">

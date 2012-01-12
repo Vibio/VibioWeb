@@ -311,7 +311,8 @@ function collection_get_num_items($cid, $access=false)
 
 /**
  * Get the taxonomy categories a given collection belongs to.
- *
+ * @todo: depreciate all calls as we move collection taxonomy into the
+ * taxonomy DB table
  * @param <type> $cid
  * @return Array taxonomy categories
  */
@@ -351,6 +352,7 @@ function collection_get_viewed_item($vibio_item = null){
     //Determine the terms for whatever is being viewed
     switch(arg(0)){
       case 'node':
+      case 'collections':
         $nid = (int) arg(1);
         break;
       case 'product':
@@ -359,7 +361,6 @@ function collection_get_viewed_item($vibio_item = null){
         $real_path_parts = explode('/', $real_path);
         $nid = (int) $real_path_parts[1];
         break;
-      case 'collections':
       //Do something here to find terms similar to the collection's items
       case 'default':
       //Set up some default featured items?
@@ -372,7 +373,7 @@ function collection_get_viewed_item($vibio_item = null){
 
 /**
  * Load an item related to $vibio_item
- */
+
 function collection_get_related($vibio_item){
   if (!empty($vibio_item->taxonomy)) {
     $terms = array();
@@ -395,6 +396,7 @@ function collection_get_related($vibio_item){
 
   return $related_nid;
 }
+*/
 
 function collection_display_related($vibio_item = false){
   /**
@@ -412,7 +414,7 @@ function collection_display_related($vibio_item = false){
   //above could be used in the future or deleted--Alec
   $nid = collection_get_viewed_item();
   
-  $related_nodes = views_get_view_result('similarterms', $nid);
+  $related_nodes = views_get_view_result('similarterms', 'default', $nid);
   //Theme it and return the markup
   return theme('collection_related_item', $related_nodes[0]);
 }

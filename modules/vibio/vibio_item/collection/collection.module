@@ -76,6 +76,8 @@ function collection_block($op="list", $delta=0, $edit=array())
 				),
 			);
 		case "view":
+      module_load_include("inc", "collection", "collection.pages");
+      module_load_include('inc', 'collection');
 			switch ($delta)
 			{
         case "related_collection":
@@ -85,7 +87,7 @@ function collection_block($op="list", $delta=0, $edit=array())
           );
 				case "random_collection":
 					global $user;
-					module_load_include("inc", "collection", "collection.pages");
+
 
 					return array(
 						"subject"	=> "",

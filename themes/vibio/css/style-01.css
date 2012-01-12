@@ -287,8 +287,8 @@ div#chit-chat .content{padding-bottom:5px; border-bottom:1px solid #CCC}
 div#seller_info_in_offer .person_pic{margin-top:18px}
 div#buyer-for-seller .person_pic{margin:0 10px 68px 0}
 div#offer_neg_buyer .person_pic{margin:0 10px 10px 0}
-div#offer_neg_buyer input#edit-submit{background:url(../images/btn_make_offer.png) no-repeat; height:37px; width:185px; text-indent:-9999px; border:none; float:right; cursor:pointer; margin-right:3px}
-div#offer_neg_buyer input#edit-submit:hover{background-position:0px -47px}
+div#offer_neg_buyer input#edit-submit{background:url(../images/btn_preview_send.png) no-repeat -170px 0; height:37px; width:185px; text-indent:-9999px; border:none; float:right; cursor:pointer; margin-right:3px}
+div#offer_neg_buyer input#edit-submit:hover{background-position:-170px -50px}
 div.form-radios div.form-item{float:left; width:85px; font-size:13px}
 div#seller_info_in_offer .person_pic_seller{font-weight:bold; font-size:13px; margin:18px 0 0 0px; float:left; width:200px}
 #buyer-for-seller .person_pic_seller{font-weight:bold}
@@ -306,11 +306,11 @@ div#edit-field-offer-expires-0-value-datepicker-popup-0-wrapper .description, di
 #seller-neg-form div.form-radios{height:30px}
 #seller-neg-form label{font-weight:500 !important}
 #seller-neg-form div#edit-field-chat-0-value-wrapper{clear:both; margin-top:7px}
-#seller-neg-form input#edit-submit{background:url(../images/btn_review_offer.png) no-repeat 0 0; height:37px; width:148px; float:right; text-indent:-9999px; border:none; cursor:pointer}
-#seller-neg-form input#edit-submit:hover{background-position: 0 -48px}
+#seller-neg-form input#edit-submit{background:url(../images/btn_preview_send.png) no-repeat -170px 0; height:37px; width:148px; float:right; text-indent:-9999px; border:none; cursor:pointer}
+#seller-neg-form input#edit-submit:hover{background-position: -170px -50px}
 #seller-neg-form .attachments{clear:both}
 #offer_top{height:140px; margin-bottom:20px; border-bottom:1px solid #CCC}
-#content-area a.offer-button{background:url(../images/btn_make_offer.png) no-repeat; width:37px; height:185px}
+#content-area a.offer-button{background:url(../images/btn_preview_send.png) no-repeat; width:37px; height:185px}
 #content-area div.collection_list_item_summary a.offer-button{display:block; text-indent:-9999px; background:url(../images/btn_make_offer_1.png) no-repeat 0 0; width:108px; height:28px; position: absolute; top:-12px; right: 10px}
 #content-area div.collection_list_item_summary a.offer-button:hover{background-position:0 -42px}
 /*Node*/

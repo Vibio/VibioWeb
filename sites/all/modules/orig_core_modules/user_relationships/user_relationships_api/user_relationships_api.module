@@ -140,7 +140,9 @@ function _user_relationships_generate_query($param = array(), $options = array()
     $extra[] = "ORDER BY {$order}";
   }
 	// stephen: I apologize for sticking this here.
-	$extra[] = "ORDER BY requestee_name";
+  if (isset($include_user_info) && $include_user_info){
+    $extra[] = "ORDER BY requestee_name";
+  }
 
 
 

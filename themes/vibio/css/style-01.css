@@ -117,13 +117,12 @@ div#site-name{  margin:0;   font-size:2em;   line-height:1.3em}
 #site-name a:focus{  text-decoration:underline}
 .slogan{  background:transparent url(../vibio-tagline.png) no-repeat;   top:33px;   position:relative;   left:130px;   text-indent:-4999px;   width:200px;   height:20px}
 p.section_title{background:url("../images/long_border.png") no-repeat scroll 0 30px transparent; height:43px; margin:13px 0 0; padding:0}
-h1#page_title, h1#box_page_title, #collection-title-detail, h1.page-title-sub{background:url("../images/long_border.png") no-repeat scroll 0 32px transparent; height:43px; margin:3px 0 5px; padding:0}
+h1#page_title, h1#box_page_title, #collection-title-detail, h1.page-title-sub{background:url("../images/long_border.png") no-repeat scroll 0 32px transparent; height:43px; margin:20px 0 5px; padding:0}
 .section_title{font-size:18px; color:#556270; font-weight:500}
 .section-intro{position: relative}
 .section_sub_title{position: absolute; top: 9px; left: 180px}
 div.sec_content.about span.section_sub_title{left: 90px}
 .section_sub_title a{font-size:13px; color:#106F93; font-weight:normal; padding-left:20px}
-
 .region-content-top{position:relative}
 .breadcrumb{ padding-bottom:0}
 h1.title, /* The title of the page */
@@ -641,18 +640,12 @@ hr{ height:1px;  border:1px solid #666}
  * Forms
  */
 form{ margin:0;  padding:0}
-
 fieldset{border:none}
-
 /* jquery progress bars */
 .ui-progressbar{ border:1px solid black;  border-radius:4px;  -moz-border-radius:4px;  height:10px;  width:125px}
-
 .ui-progressbar .ui-progressbar-value{ height:100%;  background:#B5CFDE}
-
 .ui-progressbar .ui-corner-left{ border-bottom-left-radius:4px;  border-top-left-radius:4px;  -moz-border-radius-topleft:4px;  -moz-border-radius-bottomleft:4px}
-
 .ui-progressbar .ui-corner-right{ border-bottom-right-radius:4px;  border-top-right-radius:4px;  -moz-border-radius-topright:4px;  -moz-border-radius-bottomright:4px}
-
 /*throbber*/
 html.js input.form-autocomplete{ background-position:99% 7px}
 html.js input.throbbing{background-position:99% -14px}
@@ -663,9 +656,9 @@ html.js input.throbbing{background-position:99% -14px}
 .fb_login_button:hover{cursor:pointer}
 .fb_share_container{float:left; margin-left:10px}
 .collection_list_item_summary .fb_share_container{margin-left:5px}
-.fb_ff_message{margin-bottom:10px}
-.fb_ff_message .fb_message{width:505px; float: left; text-align: right; margin: 6px 10px 0 0}
-.fb_ff_message .fb_link{}
+.fb_ff_message{margin:10px 0}
+.fb_ff_message .fb_message{width:430px; float: left; margin:30px 0 0 21px}
+#fb-message-img{background: url(../images/fb_refresh_01.png) no-repeat; height: 67px; padding-top: 15px}
 #block-fb-fb_login{text-align:center}
 .fb-or{color:#00AEF0}
 #block-fb-fb_login .fb_login{margin-top:4px}
@@ -734,7 +727,6 @@ td.col-2{padding-left:10px; border-left:1px solid #CCC}
 #block-collection-random_collection .collection_title a{color:#106F93}
 #block-collection-random_collection .collection_title a:hover{color:#00AEF0}
 #block-collection-random_collection .collection_link a{font-size:12px}
-
 #block-collection-random_collection .collection_date_added{font-size:12px; margin-top:10px}
 /*Bottom Sidebar*/
 .region-sidebar-first .rounded_content{}
@@ -747,7 +739,6 @@ td.col-2{padding-left:10px; border-left:1px solid #CCC}
 .addthis_default_style{margin-top:10px}
 /*Collection detil page small share buttons*/
 div.collection_list_item_summary .addthis_default_style{margin:52px 0 0 -3px; width:80px}
-
 .share-text{float:left; clear:both; line-height:18px; font-weight:bold; margin-right:5px}
 /*Comments*/
 #comments{ margin:1em 0}
@@ -888,7 +879,8 @@ div.views-field.views-field-nid{position:absolute; width:128px; left:-6px; heigh
 #block-block-14, #block-block-19{height:70px}
 #node-23081 .content{margin-top:40px}
 #about-top-p{font-size:28px; line-height:39px; margin:1px 0 38px; font-weight:100; letter-spacing:1px}
-#block-block-14 .content, #block-block-19 .content{position:absolute; top:6px; right:9px}
+#block-block-14 .content, #block-block-19 .content{position:absolute; top:6px; left:-17px}
+#video-icon{position: absolute; top: 1px; right: 25px}
 #about-left{float:left; width:250px}
 #about-right{float:left; width:454px; line-height:22px}
 #about-footer{clear:both; line-height:22px; padding:0 0 10px 20px}
@@ -1168,8 +1160,8 @@ a.invite-yahoo:hover{background: url(../images/btn_yahoo_hover.png) no-repeat;}
 #contact-importer-form-1 #edit-submit{margin-top: 10px; cursor:pointer; text-indent: -9999px; background: url(../images/btns_expand_circle.png) -3px -3px no-repeat; border:none; width: 182px; height: 34px}
 #contact-importer-form-1 #edit-submit:hover{background: url(../images/btns_expand_circle.png) -3px -40px no-repeat}
 #contact-importer-form-1 .form-item{margin: 0}
-div#network_ff_messages {padding: 1px 10px 20px;}
-#fb-refresh{background: url(../images/fb_refresh_01.png) no-repeat 1px 1px; height: 79px; width: 730px; position: relative}
+div#network_ff_messages {padding: 1px 10px 0}
+#fb-refresh{background: url(../images/fb_refresh_01.png) no-repeat 1px 1px; height: 79px; width: 730px; position: relative;margin:10px 0}
 #fb-refresh button{cursor:pointer; text-indent: -9999px; background:  url(../images/btn_fb_refresh.png) no-repeat; border: none; width: 266px; height: 51px; position: absolute; right: 15px; top: 15px}
 /*New amazon button*/
 #external-link{background: url(../images/amazon_bgd.png) -2px 0 no-repeat; height: 85px; font-size: 13px; color: #556270; font-weight: bold; padding: 19px 0 0 23px}

@@ -1,0 +1,3 @@
+<?php
+
+include_once('vibio_product_displays.features.inc');

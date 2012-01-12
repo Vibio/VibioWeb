@@ -136,4 +136,43 @@ left join drupal_collection_user_defaults on drupal_collection.cid = drupal_coll
       }
   }
 }
+
+/**
+ * Script for filling in collection taxonomy based on the products contained
+ * within the collection.
+ */
+
+function vibio_collection_migrate_taxonomy(){
+  $sql = "SELECT nid FROM {node} WHERE type='collection'";
+  $collection_nids = db_query($sql);
+
+  while($collection = db_fetch_array($collection_nids)){
+    $node = node_load($collection['nid']);
+    vibio_collection_taxonomy_migrate_categories($node);
+  }
+
+}
+
+function vibio_collection_taxonomy_migrate_categories($node)
+{
+	//Get all the product nids that are in the collection
+	$categories = array();
+	$sql = "SELECT pi.`product_nid`
+			FROM {content_field_collection} ci JOIN {product_items} pi
+				ON ci.`nid`=pi.`item_nid`
+			WHERE ci.`field_collection_nid`=%d";
+	$res = db_query($sql, $node->nid);
+  $terms = array();
+  //Assemble a list of the taxonomy terms associated with those products.
+	while ($row = db_fetch_object($res))
+	{
+		$product = node_load($row->product_nid);
+		foreach (taxonomy_node_get_terms_by_vocabulary($product, variable_get("vibio_amazon_category_id", 1)) as $tid => $term)
+		{
+			$terms[] = $term;
+		}
+	}
+  taxonomy_node_save($node, $terms);
+}
+
 ?>

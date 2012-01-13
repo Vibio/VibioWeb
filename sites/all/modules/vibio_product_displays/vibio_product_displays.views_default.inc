@@ -68,11 +68,11 @@ function vibio_product_displays_views_default_views() {
   $handler->display->display_options['fields']['field_main_image_fid']['link_to_node'] = 0;
   $handler->display->display_options['fields']['field_main_image_fid']['label_type'] = 'none';
   $handler->display->display_options['fields']['field_main_image_fid']['format'] = 'product_fixed_fluid_grid_linked';
-  /* Field: Get have and want buttons from nid */
+  /* Field: Node ID */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
   $handler->display->display_options['fields']['nid']['table'] = 'node';
   $handler->display->display_options['fields']['nid']['field'] = 'nid';
-  $handler->display->display_options['fields']['nid']['ui_name'] = 'Get have and want buttons from nid';
+  $handler->display->display_options['fields']['nid']['ui_name'] = 'Node ID';
   $handler->display->display_options['fields']['nid']['label'] = '';
   $handler->display->display_options['fields']['nid']['alter']['alter_text'] = 0;
   $handler->display->display_options['fields']['nid']['alter']['make_link'] = 0;
@@ -129,13 +129,16 @@ function vibio_product_displays_views_default_views() {
   $handler->display->display_options['filters']['type']['table'] = 'node';
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
-    'product' => 'product',
+    'vibio_item' => 'vibio_item',
   );
-  /* Filter: Global: PHP */
-  $handler->display->display_options['filters']['php']['id'] = 'php';
-  $handler->display->display_options['filters']['php']['table'] = 'views';
-  $handler->display->display_options['filters']['php']['field'] = 'php';
-  $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
+  /* Filter: Content: For Sale? (field_posting_type) - Allowed values */
+  $handler->display->display_options['filters']['field_posting_type_value_many_to_one']['id'] = 'field_posting_type_value_many_to_one';
+  $handler->display->display_options['filters']['field_posting_type_value_many_to_one']['table'] = 'node_data_field_posting_type';
+  $handler->display->display_options['filters']['field_posting_type_value_many_to_one']['field'] = 'field_posting_type_value_many_to_one';
+  $handler->display->display_options['filters']['field_posting_type_value_many_to_one']['value'] = array(
+    2 => '2',
+  );
+  $handler->display->display_options['filters']['field_posting_type_value_many_to_one']['reduce_duplicates'] = 0;
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
@@ -146,7 +149,6 @@ function vibio_product_displays_views_default_views() {
   $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   $handler->display->display_options['path'] = 'all_products_for_sale';
-  $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'All Products for Sale';
   $handler->display->display_options['menu']['weight'] = '0';
   $translatables['all_products_for_sale'] = array(

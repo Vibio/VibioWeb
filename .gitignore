@@ -11,3 +11,5 @@ sites/default/files
 .htaccess
 nbproject
 robots.txt
+*~
+tags

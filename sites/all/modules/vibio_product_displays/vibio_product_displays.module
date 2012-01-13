@@ -1,0 +1,20 @@
+<?php
+
+include_once('vibio_product_displays.features.inc');
+
+function vibio_product_displays_menu() {
+  $items['for-sale'] = array(
+    'title' => t('For Sale'),
+    'description' => t('View products that people have and are selling.'),
+    'type' => MENU_NORMAL,
+    'page callback' => 'vibio_product_displays_for_sale',
+    'access arguments' => array('access content'),
+  );
+  return $items;
+}
+
+function vibio_product_displays_for_sale() {
+  $content = views_embed_view('all_products_for_sale', 'page');
+  return $content;
+}
+

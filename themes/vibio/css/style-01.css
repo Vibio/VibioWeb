@@ -14,6 +14,7 @@ img.uri_edit_busy_indicator, #uri_elaborations_edit, .ur_friend_remove img, .vie
 .section-messages div.privatemsg-view-pager, .section-messages div.message-participants, #edit-privacy-item-default-privacy-setting-wrapper label,#profile-submenu{display:none}
 /*pager on front page that masonry will re-hide*/
 body.front div.view-flag-featured .pager{display:none}
+.item-list .pager li.pager-ellipsis{display:none}
 .page-collections-new h1#page_title{display: block}
 /*Popup after earning a badge*/
 #badge_alert_container_earned{text-align:center}

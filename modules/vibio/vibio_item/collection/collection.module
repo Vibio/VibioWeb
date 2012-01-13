@@ -276,7 +276,11 @@ function collection_preprocess_collection_list_item_preview(&$vars)
 
 
 	/* Possession level: Have, Want, Like */
-	$possess= $vars['item']->node_data_field_have_want_like_field_have_want_like_value;
+	// A hack to get it from database
+	vibio_item_have_want_value_retrieval($vars['item']);
+	$possess = $vars['item']->field_have_want_like[0]['value'];
+
+	//$possess= $vars['item']->node_data_field_have_want_like_field_have_want_like_value;
 //print_r($vars['item']->node_data_field_have_want_like_field_have_want_like_value);
 //print_r($vars['item']);
 //Somewhere it's getting lost since merge with Alec's Collection code
@@ -321,8 +325,6 @@ function collection_preprocess_collection_list_item_preview(&$vars)
 			$vars['item']->for_sale = '';
 		}
 	}
-$vars['item']->offer2buy_price = "Possess: " . $possess;
-
 }
 
 

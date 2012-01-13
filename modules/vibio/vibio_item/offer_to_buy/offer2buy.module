@@ -392,7 +392,8 @@ function offer2buy_preprocess_product_owner(&$vars) {
     $vars['teaser'] = $item->teaser;
   }
 
-$vars['teaser'] = print_r($vars, true);
+	//$vars['teaser'] = print_r($vars, true); ... 
+	//   does not include possession
 
 	// Uh oh: no design for an item page ready yet, no ux.  Maybe it should
 	// be a popup?  Maybe expand in place?

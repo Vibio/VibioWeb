@@ -18,6 +18,6 @@ echo "<!-- sites/default/themes/vibio/templates/collections/collection-item-prev
 		<div id='offer-buttons'>$offer_button</div>
 		$share_links
 	</div>
-";
-//print_r($item);
+" 
+;
 ?>

@@ -104,7 +104,7 @@ div#offer_neg_buyer input#edit-submit{
 	border:none;
 	float:right;
 	cursor:pointer;
-	margin-right: 3px;
+	margin-right: -41px;
 }
 div#offer_neg_buyer input#edit-submit:hover{
 	background-position: 0px -47px;

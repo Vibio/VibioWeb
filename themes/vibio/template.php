@@ -13,7 +13,7 @@ function vibio_preprocess_page(&$variables){
     $og_text = '<meta property="og:description" content="Vibio is a social commerce network for people who possess a unique sense of style."/>';
 
     //This is apparently necessary, see http://api.drupal.org/api/drupal/includes--common.inc/function/drupal_set_html_head/6#comment-4614
-    $variables['head'] .= $og_image;
+    $variables['head'] .= $og_image . $og_text;
   }
   if ($variables['node']->type != "" && arg(2) != 'edit') {
     $variables['template_files'][] = "page-node-" . $variables['node']->type;

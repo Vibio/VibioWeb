@@ -277,13 +277,15 @@ function collection_preprocess_collection_list_item_preview(&$vars)
 
 	/* Possession level: Have, Want, Like */
 	// A hack to get it from database
+	// Odd partial-loading node issue (grep this)
+
+	// Somewhat similar to:
+	// function theme_offer_button($item, $uid){
+	// I'm not sure why this isn't one style (don't think it is one design)
+	//  and then unite code.
+
 	vibio_item_have_want_value_retrieval($vars['item']);
 	$possess = $vars['item']->field_have_want_like[0]['value'];
-
-	//$possess= $vars['item']->node_data_field_have_want_like_field_have_want_like_value;
-//print_r($vars['item']->node_data_field_have_want_like_field_have_want_like_value);
-//print_r($vars['item']);
-//Somewhere it's getting lost since merge with Alec's Collection code
 
 	if ( $possess <= 10 ) {   // Have, including original not-set default
 		if (!$vars['item']->for_sale && $vars['item']->users_uid == $user->uid)

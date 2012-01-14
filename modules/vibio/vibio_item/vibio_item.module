@@ -3,6 +3,9 @@ require_once("vibio_item.inc.php");
 
 define("VIBIO_ITEM_TYPE_OWN", 1);
 define("VIBIO_ITEM_TYPE_SELL", 2);
+define("VIBIO_ITEM_HAVE", 10);
+define("VIBIO_ITEM_WANT", 20);
+define("VIBIO_ITEM_LIKE", 30);
 
 function vibio_item_exit($destination=null)
 {
@@ -238,7 +241,7 @@ function vibio_item_preprocess_vibio_item_user_other_items(&$vars)
 		foreach (collection_get_item_cid($vars['node']->nid) as $cid)
 		{
 			$collection = collection_load($cid);
-			$display .= "<li><a href='/collections/{$cid}'>{$collection['title']}</a></li>";
+			$display .= "<li><a href='/collections/{$cid}'>{$collection->title}</a></li>";
 		}
 		$display .= "</ul>";
 		$display .= t("!view_collections of !user's collections", array("!view_collections" => l(t("View all"), "user/{$u->uid}/inventory"), "!user" => l($u->name, "user/{$u->uid}")));
@@ -256,11 +259,10 @@ function vibio_item_profile_ext_public_info($uid)
 	$access = privacy_get_access_level($uid);
 	
 	$sql = "SELECT COUNT(*)
-			FROM {node} n JOIN {privacy_settings} p
-				ON n.`nid`=p.`type_id`
+			FROM {node} n JOIN {privacy_node} p
+				ON n.`nid`=p.`nid`
 					AND n.`uid`=p.`uid`
 			WHERE n.`uid`=%d
-				AND p.`type`='node'
 				AND p.`setting` <= %d";
 	$total_items = db_result(db_query($sql, $uid, $access));
 /* latest item no longer needed	

@@ -1,0 +1,268 @@
+<?php
+define("PRIVACY_ONLYME", 4);
+define("PRIVACY_CONNECTION", 3);
+define("PRIVACY_AUTHENTICATED", 2);
+define("PRIVACY_PUBLIC", 1);
+
+function privacy_node_views_api()
+{
+	return array(
+		"api"	=> 2,
+	);
+}
+
+
+//
+//CONTROLLER/CRUD
+//
+
+/**
+ * Controller for basic privacy CRUD actions with collection/vibio_item nodes.
+ * 
+ * @global <type> $user
+ * @param <type> $node
+ * @param <type> $op
+ * @param <type> $a3
+ * @param <type> $a4
+ */
+function privacy_node_nodeapi(&$node, $op, $a3=null, $a4=null){
+  if ($node->type == "vibio_item" || $node->type == 'collection'){
+		global $user;
+
+		switch ($op){
+			case "load":
+				$node->privacy_setting = privacy_node_get($user->uid, "node", $node->nid);
+				break;
+			case "delete":
+        privacy_node_delete($node->nid);
+				break;
+			case "update":
+        //@todo: not sure about this case
+        if($node->privacy_setting){
+          privacy_node_update($node->nid, $node->privacy_setting);
+        }
+			case "insert":
+        privacy_node_set($node->nid, $node->privacy_setting);
+				break;
+			default:
+				break;
+		}
+	}
+}
+
+/**
+ * Retrieves the access value associated with the given $nid.
+ *
+ * @param <type> $nid
+ * @return int $access value for the given node
+ */
+function privacy_node_get($nid){
+  $sql = "SELECT setting FROM {privacy_node} WHERE nid=%d";
+  $access = db_result(db_query($sql, $nid));
+  return $access;
+}
+
+/**
+ * Sets the $access value for a given $nid. If the node exists, will update
+ * the $access value.
+ *
+ * @param int $nid
+ * @param int $access
+ */
+function privacy_node_set($nid, $access){
+  if(empty($access)){
+    $access = privacy_user_get($user->uid, "account_setting", "item_default");
+  }
+  $entry = new stdClass();
+  $entry->nid = $nid;
+  $entry->setting = $access;
+  drupal_write_record('privacy_node', $entry);
+  
+}
+
+/**
+ * Deletes the privacy setting for $nid.
+ * 
+ * @param <type> $nid
+ * @param <type> $access
+ */
+function privacy_node_delete($nid){
+  $sql = "DELETE FROM {privacy_node}
+          WHERE nid=%d";
+  db_query($sql, $nid);
+}
+
+/**
+ * Updates the $access value of an exisiting $nid.
+ *
+ * @param <type> $nid
+ * @param <type> $access
+ */
+function privacy_node_update($nid, $access){
+  $entry = new stdClass();
+  $entry->nid = $nid;
+  $entry->setting = $access;
+  drupal_write_record('privacy_node', $entry, 'nid');
+}
+
+//
+//PRESENTATION/UI
+//
+
+/**
+ * Adds privacy settings to the product node form
+ *
+ * @param <type> $form
+ * @param <type> $state
+ * @return <type>
+ */
+function privacy_node_form_product_node_form_alter(&$form, &$state)
+{
+	if (module_exists("product") && !product_get_autoadd(false))
+	{
+		return;
+	}
+
+	if (!$form['#node']->nid)
+	{
+		privacy_node_form_vibio_item_node_form_alter($form, $state);
+	}
+}
+
+/**
+ * Adds privacy settings to the vibio_item node form
+ *
+ * @param <type> $form
+ * @param <type> $state
+ */
+function privacy_node_form_vibio_item_node_form_alter(&$form, &$state){
+  //Only present on the node form
+  if ($form['#node']->nid) {
+    $nid = $form['#node']->nid;
+  } else {
+    $default_type = "account_setting";
+    $default_typeid = "item_default";
+    $nid = privacy_user_get($form['#node']->uid, $default_type, $default_typeid);
+  }
+  $form = array_merge_recursive($form, privacy_node_form($nid));
+}
+
+/**
+ * Note that, even though it follows Form API naming conventions, this is not
+ * a standalone form.
+ * 
+ */
+function privacy_node_form($nid){
+  return array(
+		"privacy_setting"	=> array(
+			"#title"		=> t("Privacy Settings"),
+			"#type"			=> "select",
+			"#options"  => privacy_node_options(),
+			"#default_value"=> privacy_node_get($nid),
+		),
+		"#submit"			=> array(
+			"privacy_node_form_submit",
+		),
+	);
+}
+
+function privacy_node_form_submit($form, &$state){
+	$vals = $state['values'];
+	if ($vals['privacy_setting'] && $vals['nid']){
+		privacy_node_set($vals['nid']);
+	}
+}
+
+/**
+ * Adds privacy settings to the collections edit form.
+ *
+ * @global  $user
+ * @param <type> $form
+ * @param <type> $state
+ */
+function privacy_node_form_collection_edit_alter(&$form, &$state){
+	global $user;
+
+	$form = array_merge_recursive($form, privacy_node_form($form['cid']['#value']));
+  $form['#submit'][] = 'privacy_node_form_collection_edit_submit';
+}
+
+/**
+ * Submit privacy settings for collection upon saving from the edit collection page.
+ * @param <type> $form
+ * @param <type> $state
+ */
+function privacy_node_form_collection_edit_submit(&$form, &$state){
+  $privacy_setting = isset($state['values']['privacy_setting']) ? $state['values']['privacy_setting'] : PRIVACY_PUBLIC;
+  privacy_node_set($state['values']['cid'], $privacy_setting);
+}
+
+/**
+ * Sets privacy values when a collection is saved.
+ *
+ * @global  $user
+ * @param <type> $vals
+ */
+function privacy_node_collection_save($vals)
+{
+	global $user;
+	//stephen changing defaults: $privacy_setting = isset($vals['privacy_setting']) ? $vals['privacy_setting'] : PRIVACY_ONLYME;
+	$privacy_setting = isset($vals['privacy_setting']) ? $vals['privacy_setting'] : PRIVACY_PUBLIC;
+  privacy_node_set($vals['cid'], $privacy_setting);
+}
+
+
+//
+//HELPER FUNCTIONS
+//
+function privacy_node_options()
+{
+	return array(
+		PRIVACY_PUBLIC			=> t("Anyone"),
+		PRIVACY_AUTHENTICATED	=> t("Only users with Vibio accounts"),
+		PRIVACY_CONNECTION		=> t("Only my Friends"),
+		PRIVACY_ONLYME			=> t("Private to me"),
+	);
+}
+
+//
+//MODULE INTEGRATION: HOOK IMPLEMENTATIONS
+//
+/**
+ * 
+ * @param <type> $old_uid
+ * @param <type> $node
+ */
+function privacy_node_offer2buy_complete_actions($old_uid, $node){
+  privacy_node_delete($node->nid);
+	privacy_node_set($node->nid, PRIVACY_ONLYME);
+}
+
+/**
+ * Load the privacy setting associated with the collection being loaded.
+ * 
+ * @param <type> $collection
+ * @return <type>
+ */
+function privacy_node_collection_load($collection)
+{
+	return array(
+		"privacy"	=> privacy_node_get($collection->nid),
+	);
+}
+
+/**
+ * Delete privacy record for deleted collection
+ * @todo: do we need this with the nodeapi implementation?
+ *
+ * @param <type> $uid
+ * @param <type> $new_cid
+ * @param <type> $deleted_cid
+ */
+function privacy_node_collection_delete($uid, $new_cid, $deleted_cid)
+{
+  privacy_node_delete($deleted_cid);
+}
+
+
+?>

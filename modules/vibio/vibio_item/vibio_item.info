@@ -2,4 +2,4 @@ name = "Vibio Items"
 description = "Some modifications to node usage specifically for the vibio_item content type"
 core = 6.x
 package = "Vibio"
-dependencies[] = privacy
+dependencies[] = privacy_node

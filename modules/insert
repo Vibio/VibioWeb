@@ -1,0 +1,47 @@
+	/* Possession level: Have, Want, Like */
+	$possess= $vars['item']->node_data_field_have_want_like_field_have_want_like_value;
+//print_r($vars['item']->node_data_field_have_want_like_field_have_want_like_value);
+//print_r($vars['item']);
+
+	if ( $possess <= 10 ) {   // Have, including original not-set default
+		if (!$vars['item']->for_sale && $vars['item']->users_uid == $user->uid)
+		{
+			$options = array(
+				"attributes"	=> array(
+					"class"	=> "offer2buy_edit_post_type",
+				),
+			);
+			$vars['item']->offer2buy_price = l(t("Sell"), "offer2buy/ajax/edit-post-type/{$vars['item']->nid}", $options);
+		}
+		elseif ($vars['item']->for_sale && $vars['item']->offer2buy_price > 0)
+		{
+			$vars['item']->offer2buy_price =  "$".$vars['item']->offer2buy_price;
+		}
+		elseif ($vars['item']->for_sale)
+		{
+			$vars['item']->offer2buy_price = t("BXXest Offer");
+		}
+		else
+		{
+			$vars['item']->offer2buy_price = t("<span class='bold-text'>Status:</span> Not for Sale");
+		}
+		//If the offer2buy module is active... =always
+		if(module_exists('offer2buy')){
+			//Insert an offer button or not for sale image
+			$item = $vars['item'];
+			$item->offer2buy['settings']['is_on_sale'] = $vars['item']->for_sale; 
+			$vars['offer_button'] = theme('offer_button', $item, $user->uid);
+		}
+	} else {   // Want, Like, etc
+		if ( $possess == 20 ) { // Want
+			$vars['item']->offer2buy_price = "Wanted";
+			$vars['offer_button'] = 
+				"<div class='wanted'><img src='/themes/vibio/images/item/wanted_button.png'
+					alt='I want this.  Maybe it\'s my birthday today?'
+					title='I want this.'></div>";
+			//override for_sale, if it was set
+			$vars['item']->for_sale = '';
+		}
+	}
+}
+

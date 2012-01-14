@@ -1,4 +1,11 @@
 <?php
+/**
+ * Implementation of the views api to make the depreciated custom collections
+ * data model available to views.
+ * @todo: delete and replace all views with standard node fields
+ */
+
+
 function collection_views_data()
 {
 	return array(
@@ -73,10 +80,17 @@ function collection_views_data()
 	);
 }
 
+/**
+ * Joins collections to the custom privacy system
+ *
+ * @todo: Should this be kept if the privacy system remains unchanged?
+ *
+ * @param array $data
+ */
 function collection_views_data_alter(&$data)
 {
-	$data['privacy_settings']['table']['join']['collection'] = array(
-		"left_field"	=> "cid",
+	$data['privacy_settings']['table']['join']['node'] = array(
+		"left_field"	=> "nid",
 		"field"			=> "type_id",
 	);
 }

@@ -682,7 +682,7 @@ table.user-collection-preview{margin:0}
 .collection_item_count{margin-top:15px; font-weight:bold}
 .collection_summary span.manage_collection_link{margin-left:10px}
 .collection_preview{width:100%}
-.collection_preview_init{height:16px; text-align:center; font-size:15px; font-weight:bold; border-top:1px solid #CCC; padding-top:5px}
+.collection_preview_init{height:20px; text-align:center; font-size:15px; font-weight:bold; padding-top:5px}
 .collection_preview_init span:hover{text-decoration:underline}
 .collection_preview_init img{margin-right:5px}
 .collection_preview_init.expanded{}

@@ -1,0 +1,5 @@
+name = "Privacy User"
+description = "Stores privacy settings for Vibio users"
+core = 6.x
+package = "Vibio"
+dependencies[] = "privacy"

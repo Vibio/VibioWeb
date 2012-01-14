@@ -372,6 +372,7 @@ function offer2buy_get_settings($nid=false)
 }
 
 // previous: sneakily calls the init tpl to spaghetti a straightforward owner tpl
+// that seems to have been removed, delete it?
 function offer2buy_preprocess_product_owner(&$vars) {
 	//	$vars['offer2buy'] = theme("offer2buy_init", $vars['item']['node']['nid'], "button");
 	//dpm($vars);
@@ -381,9 +382,17 @@ function offer2buy_preprocess_product_owner(&$vars) {
 		// like it was partly done upstream of here.  Trace later.
 	//dpm($item); 
 
-	// Teaser and links to item
-	$vars['teaser'] = $item->teaser; // in design this is ~30chars, but I think
-		// I like longer?
+	// Teaser and links to item ... if no teaser, prompt them to ask the owner
+	//  (I don't love this design)
+  if(!$item->teaser){
+    //@todo should privacy be concerned with this; you need to be a connection to message?
+    $contact_link = l($item->name, 'messages/new/' . $item->uid);
+    $vars['teaser'] = 'Ask ' . $contact_link . ' about this item.';
+  }else{
+    $vars['teaser'] = $item->teaser;
+  }
+
+$vars['teaser'] = print_r($vars, true);
 
 	// Uh oh: no design for an item page ready yet, no ux.  Maybe it should
 	// be a popup?  Maybe expand in place?

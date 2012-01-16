@@ -34,8 +34,13 @@ function vibio_preprocess_views_view__user_collection(&$variables){
   //This loads the collection, minus the collection image
   $collection = collection_load($variables['view']->args[1]);
   $image_path = collection_get_image($variables['view']->args[1]);
-  //If it's a default image, set it to the vibio logo
-  strpos($image_path,'box.png') == FALSE ? '' : $image_path = 'themes/vibio/vibio-logo.png';
+  //If it's not a default image...
+  if(strpos($image_path,'box.png') == FALSE && strpos($image_path, 'default_item_large.png') == FALSE){
+    //Do nothing
+  }else{
+    //Set the image path to a Vibio's logo
+    $image_path = 'themes/vibio/vibio-logo.png';
+  }
   //Get the CID from the view arguments, output an absolute link to the collection's image
   $collection_image = url($image_path, array('absolute' => TRUE));
   $og_image = '<meta property="og:image" content="' . $collection_image . '"/>';

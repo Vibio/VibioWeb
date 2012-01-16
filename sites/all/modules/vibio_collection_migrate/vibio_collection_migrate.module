@@ -1,37 +1,5 @@
 <?php
 /**
-* Implementation of hook_feeds_node_processor_targets_alter().
-*/
-function vibio_collection_migrate_feeds_node_processor_targets_alter(&$targets, $content_type) {
-  if ($content_type == 'collection') {
-    $targets['default'] = array(
-      'name' => t('Default Collection?'),
-      'description' => t('Is this the default collection?'),
-      'callback' => 'vibio_collection_migrate_set_default', // See 2)
-    );
-    
-    $targets['cid'] = array(
-      'name' => t('CID'),
-      'description' => t('CID, make sure they are unique'),
-      'optional_unique' => TRUE,
-      'callback' => 'vibio_collection_migrate_set_cid', // See 2)
-    );
-    
-    $targets['item_nids'] = array(
-      'name' => t('Collection Items'),
-      'description' => t('Associate vibio_items with appropriate collections'),
-      'callback' => 'vibio_collection_migrate_set_item_nids', // See 2)
-    );
-
-  }
-}
-
-
-function vibio_collection_migrate_set_cid($node, $target, $value){
-//Nothing happens, we don't want to map this actually :)
-}
-
-/**
  * Mapping the default collection value to various collections. If a record
  * exists in the old DB for a given collection, that means that it's the user's
  * default.
@@ -51,7 +19,7 @@ function vibio_collection_migrate_set_item_nids($node, $target, $value){
   $item = node_load($value);
 
   //Insert $item_nid into the field_collection
-  $item->field_collection_nid[0]['value'] = $collection_nid;
+  $item->field_collection_nid[]['value'] = $collection_nid;
   node_save($item);
 }
 
@@ -65,30 +33,18 @@ function vibio_collection_migrate_menu(){
 }
 
 function vibio_collection_migrate_collections(){
-// connect with mysql server
-  $server = 'localhost';
-  $database_user_name = 'root';
-  $database_password = 'root';
-  $database_name = 'vibio_merge';
-
-
-  $mysql_server = $server; // Server name
-  $mysql_userName = $database_user_name;
-  $mysql_password = $database_password;
-  mysql_connect($mysql_server, $mysql_userName, $mysql_password);
-  mysql_select_db($database_name);
 
   //construct query
-
   $query = 'select title, description, created, updated, drupal_collection.cid, drupal_collection.uid, item_nid, drupal_collection_user_defaults.uid AS default_collection from (drupal_collection left join drupal_collection_items on drupal_collection.cid = drupal_collection_items.cid)
 left join drupal_collection_user_defaults on drupal_collection.cid = drupal_collection_user_defaults.cid';
   $count = 0;
-  $result = mysql_query($query) or die(mysql_error() . '<br />' . $query);
-  //takes every row of results from the query and inserts it as a new object in
-  //the current D7 db
+  //Perform query
+  $result = db_query($query) or die(mysql_error() . '<br />' . $query);
+  //takes every row of results from the query and transfers the old collections
+  //data into standard Drupal data objects
   $previous_cid = null;
   $previous_nid = null;
-  while($row = mysql_fetch_array($result)){
+  while($row = db_fetch_array($result)){
     $cid = $row['cid'];
     $title = $row['title'];
     $description = $row['description'];
@@ -136,4 +92,56 @@ left join drupal_collection_user_defaults on drupal_collection.cid = drupal_coll
       }
   }
 }
+
+/**
+ * Script for filling in collection taxonomy based on the products contained
+ * within the collection.
+ */
+
+function vibio_collection_migrate_taxonomy(){
+  $sql = "SELECT nid FROM {node} WHERE type='collection'";
+  $collection_nids = db_query($sql);
+
+  while($collection = db_fetch_array($collection_nids)){
+    $node = node_load($collection['nid']);
+    vibio_collection_taxonomy_migrate_categories($node);
+  }
+
+}
+
+function vibio_collection_taxonomy_migrate_categories($node)
+{
+	//Get all the product nids that are in the collection
+	$categories = array();
+	$sql = "SELECT pi.`product_nid`
+			FROM {content_field_collection} ci JOIN {product_items} pi
+				ON ci.`nid`=pi.`item_nid`
+			WHERE ci.`field_collection_nid`=%d";
+	$res = db_query($sql, $node->nid);
+  $terms = array();
+  //Assemble a list of the taxonomy terms associated with those products.
+	while ($row = db_fetch_object($res))
+	{
+		$product = node_load($row->product_nid);
+		foreach (taxonomy_node_get_terms_by_vocabulary($product, variable_get("vibio_amazon_category_id", 1)) as $tid => $term)
+		{
+			$terms[] = $term;
+		}
+	}
+  taxonomy_node_save($node, $terms);
+}
+
+/**
+  * Move old privacy schema into the new submodules, privacy_user/privacy_node
+*/
+function vibio_collection_migrate_privacy(){
+
+  $user_sql = "INSERT INTO {privacy_user} (`uid`, `type`, `type_id`, `setting`) SELECT `uid`, `type`, `type_id`, `setting` FROM {privacy_settings} WHERE `type`='account_setting' OR `type`='profile'";
+  db_query($user_sql);
+
+  $node_sql = "INSERT INTO {privacy_node} (`nid`, `setting`) SELECT `type_id`, `setting` FROM {privacy_settings} WHERE `type`='node'";
+  db_query($node_sql);
+
+}
+
 ?>

@@ -277,7 +277,7 @@ function product_add_to_inventory($product,$quick_add=false) {
     $state['values'] = array("title" => $product->title, "name" => $user->name,
         "op" => t("Save"), "field_posting_type" => array(array("value" => VIBIO_ITEM_TYPE_OWN,),),);
     //If there is collection info, add it
-    print_r($product);
+    //print_r($product);
     //This formerly refered to $product->collection_info--Alec
     if ($_POST['collection_info'] && module_exists("collection")) {
       $state['values']['collection_info']['cid'] = $_POST['collection_info']['cid'];

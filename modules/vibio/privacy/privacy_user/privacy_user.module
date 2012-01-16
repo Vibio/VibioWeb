@@ -39,7 +39,7 @@ function privacy_user($op, &$edit, &$account, $category=null)
 			module_invoke_all("privacy_update_user", $edit, $account, $category);
 			break;
 		case "delete":
-			privacy_del_user($account->uid);
+			privacy_user_del($account->uid);
 		default:
 			break;
 	}

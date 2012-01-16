@@ -155,7 +155,7 @@ function vibio_item_preprocess_node(&$vars)
 
 
 			//--> It's a page you have access to
-			/* Stephen: no longer want to biew item pages. Jump to Product */
+			/* Stephen: no longer want to view item pages. Jump to Product */
 			// Would be good to understand what was being doen
 			// with searchcrumb in
 			//  drupal_goto($matches[0], "searchcrumb={$_GET['searchcrumb']}");			
@@ -361,4 +361,16 @@ function vibio_item_views_api()
 		"api"	=> 2,
 	);
 }
+
+// @ToDo rethink this, find out why node_load isn't loading
+// the field_have_want_like
+
+// For now, a quick fix.
+// Sometimes vibio_items are loaded without the have/want status.
+// This is a fix. It would be better to fix all the damn code...
+function vibio_item_have_want_value_retrieval(&$node) {
+	$from_db = node_load($node->nid);
+	$node->field_have_want_like = $from_db->field_have_want_like;
+}
+
 ?>

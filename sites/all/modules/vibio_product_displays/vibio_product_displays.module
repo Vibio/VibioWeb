@@ -36,7 +36,6 @@ function vibio_product_displays_views_pre_render(&$view) {
 
         // Load the image, whatever it is
 
-        // TODO: Look up how to query CCK fields sustainably
         $field = content_fields('field_main_image');
         $db_info = content_database_info($field);
         $table = $db_info['table'];
@@ -48,22 +47,6 @@ function vibio_product_displays_views_pre_render(&$view) {
         $row->{$fid_alias_fid} = $product_image_row->{$fid_col};
         $row->{$fid_alias_list} = $product_image_row->{$list_col};
         $row->{$fid_alias_data} = $product_image_row->{$data_col};
-
-        /* start debug */
-        static $row_printed;
-        static $counter;
-        if (!isset($counter)) {
-          $counter = 0;
-        }
-        if ($row_printed !== TRUE) {
-          watchdog('vibio_product_displays', '!row', array('!row' => dprint_r($row, TRUE)), WATCHDOG_DEBUG);
-          watchdog('vibio_product_displays', '!product_row', array('!product_row' => dprint_r($product_image_row, TRUE)), WATCHDOG_DEBUG);
-          $counter++;
-          if ($counter > 2) {
-            $row_printed = TRUE; // debug
-          }
-        }
-        /* end debug */
       }
     }
   }

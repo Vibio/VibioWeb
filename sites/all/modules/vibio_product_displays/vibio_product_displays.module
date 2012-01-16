@@ -8,7 +8,7 @@ function vibio_product_displays_menu() {
     'description' => t('View products that people have and are selling.'),
     'type' => MENU_NORMAL,
     'page callback' => 'vibio_product_displays_for_sale',
-    'access arguments' => array('access content'),
+    'access callback' => 'user_is_logged_in',
   );
   return $items;
 }

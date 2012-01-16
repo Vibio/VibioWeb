@@ -18,3 +18,54 @@ function vibio_product_displays_for_sale() {
   return $content;
 }
 
+function vibio_product_displays_views_pre_render(&$view) {
+  if ($view->name == 'all_products_for_sale') {
+    $fid_alias = $view->field['field_main_image_fid']->field_alias;
+    // Fake the _list and _data properties
+    $fid_stub = substr($fid_alias, 0, -4);
+    $fid_alias_fid = $fid_stub . '_fid';
+    $fid_alias_list = $fid_alias . '_list';
+    $fid_alias_data = $fid_alias . '_data';
+    foreach ($view->result as $row) {
+      if ($row->{$fid_alias_fid}) {
+        continue;
+      }
+      else {
+        // Grab the image from the parent product
+        $product_nid = db_result(db_query("select product_nid from {product_items} where item_nid=%d", $row->nid));
+
+        // Load the image, whatever it is
+
+        // TODO: Look up how to query CCK fields sustainably
+        $field = content_fields('field_main_image');
+        $db_info = content_database_info($field);
+        $table = $db_info['table'];
+        $fid_col = $db_info['columns']['fid']['column'];
+        $list_col = $db_info['columns']['list']['column'];
+        $data_col = $db_info['columns']['data']['column'];
+        $product_image_row = db_fetch_object(db_query("select $fid_col, $list_col, $data_col from {%s}
+            where nid = %d", $table, $product_nid));
+        $row->{$fid_alias_fid} = $product_image_row->{$fid_col};
+        $row->{$fid_alias_list} = $product_image_row->{$list_col};
+        $row->{$fid_alias_data} = $product_image_row->{$data_col};
+
+        /* start debug */
+        static $row_printed;
+        static $counter;
+        if (!isset($counter)) {
+          $counter = 0;
+        }
+        if ($row_printed !== TRUE) {
+          watchdog('vibio_product_displays', '!row', array('!row' => dprint_r($row, TRUE)), WATCHDOG_DEBUG);
+          watchdog('vibio_product_displays', '!product_row', array('!product_row' => dprint_r($product_image_row, TRUE)), WATCHDOG_DEBUG);
+          $counter++;
+          if ($counter > 2) {
+            $row_printed = TRUE; // debug
+          }
+        }
+        /* end debug */
+      }
+    }
+  }
+}
+

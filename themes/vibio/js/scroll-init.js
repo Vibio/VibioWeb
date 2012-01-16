@@ -8,7 +8,7 @@
 $(function() {
 
 	// encapsulate this run-away script, Features page only
-  var $target_views = $(".view.view-flag-features, .view-all-products-for-sale");
+  var $target_views = $(".view.view-flag-featured, .view-all-products-for-sale");
 	if ($(".view-content", $target_views).length > 0) {
 
 		if ($(".pager-last").find('a').attr('href') != undefined) {

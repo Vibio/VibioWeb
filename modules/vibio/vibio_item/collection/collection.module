@@ -66,17 +66,28 @@ function collection_block($op="list", $delta=0, $edit=array())
 	{
 		case "list":
 			return array(
+        "related_collection" => array(
+          "info" => t("Related Collection"),
+          "cache"=> BLOCK_CACHE_PER_PAGE,
+        ),
 				"random_collection"	=> array(
 					"info"	=> t("Random Collection"),
 					"cache"	=> BLOCK_NO_CACHE,
 				),
 			);
 		case "view":
+      module_load_include("inc", "collection", "collection.pages");
+      module_load_include('inc', 'collection');
 			switch ($delta)
 			{
+        case "related_collection":
+          return array(
+            "subject" => "",
+            "content" => collection_display_related(),
+          );
 				case "random_collection":
 					global $user;
-					module_load_include("inc", "collection", "collection.pages");
+
 
 					return array(
 						"subject"	=> "",
@@ -122,6 +133,11 @@ function collection_theme(&$existing)
 		"collection_image" => array(
 			"arguments"	=> array('cid' => null, 'imagecache' => 'full_profile_pic', 'access' => FALSE)
 		),
+    "collection_related_item" => array(
+			"arguments"	=> array("item" => false),
+			"template"	=> "templates/collections/related-item",
+			"path"		=> drupal_get_path("theme", "vibio"),
+    ),
 	);
 }
 
@@ -397,6 +413,12 @@ function collection_nodeapi(&$node, $op, $a3=null, $a4=null)
     //
 		case "update":
       $collection_nids = array();
+      if($node->collection_info){
+        foreach($node->collection_info['cid'] as $cid){
+          $node->field_collection = array();
+          $node->field_collection[]['nid'] = $cid;
+        }
+      }
       if(isset($node->field_collection[0]['nid'])){
         foreach($node->field_collection as $collection_record){
           $collection_nids[] = $collection_record['nid'];
@@ -488,19 +510,19 @@ function collection_form_product_node_form_alter(&$form, &$state)
 function collection_form_vibio_item_node_form_alter(&$form, &$state)
 {
 	module_load_include("inc", "collection");
-
-	// Empty collections?
+  $options = collection_options();
+	//If there aren't any collections
 	if (!$form['#node']->nid && 
-			(count(collection_options()) < 1 )) {
-		$default_array = collection_get_user_default(false, true);
+			(count($options) < 1 )) {
+		$default = collection_get_user_default(false, true);
 		// collection_options seems to cache, so force it.  This is repeat
 		//  code with collection_get_user_default which I expect will be gone
 		//  in two weeks.
-		$default = $default_array['cid'];
-		$options = array();
+    $options = array();
 		$options[$default] = 'Unsorted';
-	} else {
-		$options = collection_options();
+	}elseif(!$form['#node']->nid){
+    //else grab the collection options
+		$default = collection_get_user_default(false, true);
 	}
 	
 	if ($form['#node']->nid) //existing node
@@ -536,6 +558,12 @@ function collection_form_vibio_item_node_form_alter(&$form, &$state)
 		),
 		*/
 	);
+  $form['#submit'][] = 'collection_vibio_item_submit';
+  print_r($options);
+}
+
+function collection_vibio_item_submit($form, &$form_state){
+  
 }
 
 /**

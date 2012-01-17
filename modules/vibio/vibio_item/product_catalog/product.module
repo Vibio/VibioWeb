@@ -471,6 +471,8 @@ function product_preprocess_search_result(&$vars)
 		$vars['search_links'] .= $item_nid ? "" : theme("product_inventory_want", $vars['result']['node']->nid); 
 	}
 }
+
+// for the Feature view ... maybe elsewhere too?
 function product_have_want($nid)
 {
   //not used? $vars = array();  // not a preprocess function despite similiarities

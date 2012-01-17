@@ -422,12 +422,18 @@ function collection_nodeapi(&$node, $op, $a3=null, $a4=null)
     //
 		case "update":
       $collection_nids = array();
+      //Consolidate all collection nids into field_collection
+      //@todo: eliminate collection_info
       if($node->collection_info){
         foreach($node->collection_info['cid'] as $cid){
           $node->field_collection = array();
           $node->field_collection[]['nid'] = $cid;
         }
+        //Make sure there are no duplicate values in field_collection
+        $node->field_collection = array_unique($node->field_collection);
       }
+
+      //Create a list of new collection_nids to be added
       if(isset($node->field_collection[0]['nid'])){
         foreach($node->field_collection as $collection_record){
           $collection_nids[] = $collection_record['nid'];
@@ -438,28 +444,18 @@ function collection_nodeapi(&$node, $op, $a3=null, $a4=null)
           $collection_nids[] =  $cid;
         }
       }else{
+        //If no collection nids set, get the already set values
         $collection_nids = collection_get_item_cid($node->nid);
       }
       unset($node->collection_info);
-      //Isn't the checking to see if it's an update unnecessary?
-			$old_cids = $op == "update" ? collection_get_item_cid($node->nid) : array();
-			$delete_cids = array_diff($old_cids, $collection_nids);
-      //Delete the collection ids that have been removed
-			if (!empty($delete_cids))
-			{
-				$delete_cids = implode(",", $delete_cids);
-				$sql = "DELETE FROM {content_field_collection}
-						WHERE `nid`=%d
-							AND `field_collection_nid` IN ($delete_cids)";
-				db_query($sql, $node->nid);
-			}
+      unset($node->field_collection);
 
-      //Insert the new collection ids in. @todo: necessary? Doesn't CCK take care?
-      $delta = 0;
+      $old_cids = $op == "update" ? collection_get_item_cid($node->nid) : array();
+
+      //Insert the new collection ids in, deleting the old
 			foreach (array_diff($collection_nids, $old_cids) as $cid)
 			{
-        $node->field_collection[$delta]['nid'] = $cid;
-        $delta++;
+        $node->field_collection[]['nid'] = $cid;
 			}
 
       //Defines hook collection_update

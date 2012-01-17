@@ -163,15 +163,15 @@ function product_ajax_add_complete() {
 			$default=collection_get_user_default($user->uid,true);
 			$cids[$default]=$default;
 		}
-		//$state['values']['collection_info']['cid']=$cids;
-			//ex: $state['values'] = Array ( [cid] => Array ( [49206] => 49206 
+		$state['values']['collection_info']['cid']=$cids;
 
-		
+			//ex: $state['values'] = Array ( [cid] => Array ( [49206] => 49206 		
 	}
 
-	// Not sure when Alec changed what about collections.  But something is changed.
-	$state['values']['field_collection'] = $p['collections'];
-	// Save the item.
+   // $state['values']['collection_info'] = $p['collections'];
+  
+	// Save the item.-->This is a problem; vibio_item is getting saved twice and
+  //doesn't seem to be smart enough to recognize it
 	node_object_prepare($node);
 	drupal_execute($form_id,$state,$node);
 //exit(print_r($node, true));

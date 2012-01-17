@@ -254,7 +254,7 @@ function collection_random_collection($u)
      * @todo: refactor privacy system to rely on nids exclusively (or switch to
      * node access)
      */
-		$sql = "SELECT `nid`
+		$sql = "SELECT c.`nid`
 				FROM {node} c JOIN {privacy_node} p
 					ON c.`nid`=p.`nid`
 				WHERE c.`uid` IN ($friend_ids)
@@ -264,7 +264,7 @@ function collection_random_collection($u)
 	}
 	else
 	{
-		$sql = "SELECT `nid`
+		$sql = "SELECT c.`nid`
 				FROM {node} c JOIN {privacy_node} p
 					ON c.`nid`=p.`nid`
 					WHERE p.`setting` <= %d

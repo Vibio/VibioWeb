@@ -7,7 +7,7 @@ $(document).ready(function() {
   };
   /* Where it says 3000, this is 3 seconds. Adjust to your preference.
    * Script from: http://drupal.org/node/1394032 thanks! */
-  $('.messages.error').delay(3000, function(){
-    $('.messages.error').fadeOut(300);
+  $('.messages').delay(3000, function(){
+    $('.messages').fadeOut(300);
   });
 });

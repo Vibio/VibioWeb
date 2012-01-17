@@ -8,21 +8,22 @@
 $(function() {
 
 	// encapsulate this run-away script, Features page only
-	if($("body").hasClass("front") && $("body").hasClass("logged-in")) {
+  var $target_views = $(".view.view-flag-featured, .view-all-products-for-sale");
+	if ($(".view-content", $target_views).length > 0) {
 
-		if($(".pager-last").find('a').attr('href') != undefined) {
+		if ($(".pager-last").find('a').attr('href') != undefined) {
 			//Get the number of pages from the Views Pager (Use the full pager, it will be hidden with .infinitescroll() anyway)
 			lastPageHref = $(".pager-last").find('a').attr('href').toString();
 			lastPageHref = lastPageHref.split("=");
 			numOfPages = parseInt(lastPageHref[1]);
-            $('.view.view-flag-featured .view-content').imagesLoaded(function(){
-      		$('.view.view-flag-featured .view-content').masonry({
+            $('.view-content', $target_views).imagesLoaded(function(){
+      		$('.view-content', $target_views).masonry({
         	columnWidth : 180,
         	itemSelector : '.views-row:visible'
      	 	});
 
 
-			$('.view.view-flag-featured .view-content').infinitescroll({
+			$('.view-content', $target_views).infinitescroll({
 				navSelector : ".pager", // selector for the paged navigation
 				nextSelector : ".pager .pager-next a", // selector for the NEXT link (to page 2)
 				itemSelector : ".views-row", // selector for all items you'll retrieve
@@ -43,8 +44,8 @@ $(function() {
 			// call masonry as a callback.
 			function() {
         var existingMaterial = $(this);
-				$('.view.view-flag-featured .view-content').imagesLoaded(function(){
-          $('.view.view-flag-featured .view-content').masonry({
+				$('.view-content', $target_views).imagesLoaded(function(){
+          $('.view-content', $target_views).masonry({
             appendedContent : existingMaterial
           });
         });

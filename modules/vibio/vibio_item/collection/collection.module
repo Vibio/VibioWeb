@@ -559,7 +559,6 @@ function collection_form_vibio_item_node_form_alter(&$form, &$state)
 		*/
 	);
   $form['#submit'][] = 'collection_vibio_item_submit';
-  print_r($options);
 }
 
 function collection_vibio_item_submit($form, &$form_state){

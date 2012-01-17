@@ -96,8 +96,7 @@ function product_ajax_add_complete() {
   //in collections
   //@todo refactor into a single select field; no multiple collection selection
 	if(module_exists("collection")) {
-
-		// Create a new collection if requested
+		// **  Create a new collection if requested  **
 		//exit($p['collections_new']);
 		// Can I do 2 drupal_executes in a row? think so, but watch
 		if ( $p['collections_new'] ) {
@@ -124,7 +123,6 @@ function product_ajax_add_complete() {
 				exit("Sorry, we were unable to create your new collection.  Please try again
 					or contact tech support.");
 			}
-//exit("Is cid $cid " . print_r($node_new_col,true));
 
 			// If problems with privacy, force it here:
 			module_load_include("inc","privacy","privacy.module");  // needed??
@@ -135,36 +133,60 @@ function product_ajax_add_complete() {
 			$p['collections'] = array( $cid );
 		}
 
-		// Save collections into form state, whether select or new
+		// ** Save collections into form state, whether select or new **
+
 		//  Note: it is intended that a new collection trumps collections
-		//  the user has selected.  I could imagine that we choose the other use case
-		//  instead -- but then have to deal with the difficulty in un-selecting
-		//  all collections.
+		//  the user has selected, set above.
+
+
+		// This code takes $p['collections'] and does weird things with it.
+		// Alec made the collections code not-weird.
+
+		/* Can we erase all this  $cids[$cid]=$cid; and collection_info
+       stuff?  Note that the default is forced here, and we're removing it,
+			 but code somewhere else seems to force a default anyway.
+   
+       If you're seeing this and the code is stable, erase commented blocks!
+       
+
 		$cids=array();
 		foreach($p['collections'] as $cid) {
+			// Did Alec overwrite this weird stuff?
 			$cids[$cid]=$cid;
 		}
 		if(empty($cids)) {
 			module_load_include("inc","collection");
+			// We might re-implement post-Alec's changes
 			$default=collection_get_user_default($user->uid,true);
 			$cids[$default]=$default;
 		}
 		$state['values']['collection_info']['cid']=$cids;
+			//ex: $state['values'] = Array ( [cid] => Array ( [49206] => 49206 
+
+		*/
 	}
+
+	// Not sure when Alec changed what about collections.  But something is changed.
+	$state['values']['field_collection'] = $p['collections'];
 	// Save the item.
 	node_object_prepare($node);
 	drupal_execute($form_id,$state,$node);
+//exit(print_r($node, true));
+/* ex:   Hm, that's a weird node, seems mushed with state... that is set elsewhere
+Array ( [48833] => Books [49206] => handbags [49187] => I want it [49204] => Jazzy Stuff [48827] => Movies [48998] => Scary Stuff [49032] => Test D [48822] => Unsorted [48821] => Video Games [49189] => Vintage ) stdClass Object ( [uid] => 1 [name] => Vibio [type] => vibio_item [product_nid] => 38860 [status] => 1 [promote] => [sticky] => [created] => 1326760806 [revision] => [comment] => 2 [menu] => Array ( [link_title] => [mlid] => 0 [plid] => 0 [menu_name] => primary-links [weight] => 0 [options] => Array ( ) [module] => menu [expanded] => 0 [hidden] => 0 [has_children] => 0 [customized] => 0 [parent_depth_limit] => 8 ) [body] => [title] => [format] => [pathauto_perform_alias] => 1 )
+*/
+
+
 
 	// Deal with problems --> test this!!!
   $message_void = drupal_get_messages(); // this gets rid of messages ...
     // but if there is an error, then lets see them.  Will need clean-up
     // but this is better than nothing.
+	//exit("message void is " . print_r($message_void,true));
+	//( [error] => Array ( [0] => Collection field is required. [1] => Collection field is required. ) )
 
 	$item_nid=$state['nid']; // is this right? or  "#value"=> $product->nid
 		// I think this might be the product id, even when working?
-
-
-
 
 	//@ToDo switch this over to state, move above execute
 	//Ok, I can't get the state to work.  See "historical" copy of this file
@@ -200,9 +222,6 @@ function product_ajax_add_complete() {
       $possess_words = '';
   }
 	
-
-
-
 	$t_args=array("!title"=>l($product->title,"node/{$item_nid}"),"!view_link"=>l(t("View the item"),"node/{$item_nid}"),"!close_link"=>l(t("close this window"),"",array("attributes"=> array("class"=>"vibio_dialog_close_link"))),  // being mostly, not completely,deprecated
 	);
 

@@ -147,8 +147,11 @@ function product_ajax_add_complete() {
 			 but code somewhere else seems to force a default anyway.
    
        If you're seeing this and the code is stable, erase commented blocks!
-       
-
+    
+				Nope: this is needed for     $collection_names = array();
+				below.  This can all be cleaned up kinda quickly.
+     */
+  
 		$cids=array();
 		foreach($p['collections'] as $cid) {
 			// Did Alec overwrite this weird stuff?
@@ -160,10 +163,10 @@ function product_ajax_add_complete() {
 			$default=collection_get_user_default($user->uid,true);
 			$cids[$default]=$default;
 		}
-		$state['values']['collection_info']['cid']=$cids;
+		//$state['values']['collection_info']['cid']=$cids;
 			//ex: $state['values'] = Array ( [cid] => Array ( [49206] => 49206 
 
-		*/
+		
 	}
 
 	// Not sure when Alec changed what about collections.  But something is changed.

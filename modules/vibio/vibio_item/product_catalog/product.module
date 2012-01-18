@@ -472,7 +472,7 @@ function product_preprocess_search_result(&$vars)
 		$search_links['want'] = ($item_nid) ? "" : theme("product_inventory_want", $vars['result']['node']->nid);
 		
     if (!empty($vars['result']['node']->field_main_image[0]['filepath'])) {
-    	$vars['img'] = theme('imagecache', 'product_fixed_width', $node->field_main_image[0]['filepath']);
+    	$vars['img'] = theme('imagecache', 'product_fixed_width', $vars['result']['node']->field_main_image[0]['filepath']);
     } 
     else {
       // Remote images and altered have/want links for Amazon items not yet converted to local products.

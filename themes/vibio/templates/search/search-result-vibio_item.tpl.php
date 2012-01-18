@@ -8,9 +8,13 @@ $flag = flag_create_link('feature', $node->nid);
 //  but this might be an exception to standardization.
 //  Are there alternative images that might sometimes exist if the main one doesn't?
 if ($node->field_main_image[0]['filepath']) {
+  //The image needs to be formatted
 	$img = theme('imagecache', 'product_fixed_width', $node->field_main_image[0]['filepath']);
-} else {
-	$img = theme('imagecache', 'product_fixed_width', "themes/vibio/images/icons/default_item_large.png");
+} elseif(!empty($img)) {
+  //Do nothing; $img is already set
+}else{
+  //Use default
+  $img = theme('imagecache', 'product_fixed_width', "themes/vibio/images/icons/default_item_large.png");
 }
 
 // $mine should be true if it's yours,  true or null

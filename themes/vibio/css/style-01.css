@@ -1179,3 +1179,16 @@ div#network_ff_messages {padding: 1px 10px 20px;}
 .purchase-amazon a{ display: block; height: 43px; width: 204px; background: url(../images/btn_amazon.png) no-repeat; text-indent: -9999px}
 /*Invite page hidden elements*/
 #invite-form .invite-message .opening, #invite-form #edit-email-wrapper .contact-importer-message, #invite-form .form-item:first-child{display:none}
+/*New Have Want Buttons*/
+/*Want on Product description*/
+a.btn-want, a.btn-have{
+	background:url(../images/btn_have_want_new.png) no-repeat;
+	display:block;
+	text-indent: -9999px;
+}
+a.btn-want{
+	background-position: -65px -2px; width: 62px; height: 38px;
+}
+a.btn-want:hover{
+	background-position: -65px -58px;
+}

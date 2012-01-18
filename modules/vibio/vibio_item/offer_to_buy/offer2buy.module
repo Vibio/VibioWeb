@@ -361,17 +361,11 @@ function theme_offer_button($item, $uid){
 			//Not for sale text
 			$nfs_text = t("Just showing my style: Not For Sale");
 			//Provide not for sale image
-			$offer_button = "<div class='not_for_sale'><img
-														src='/themes/vibio/images/item/not_for_sale.png'
-																	alt='$nfs_text'
-																	title='$nfs_text'/></div>";
+			$offer_button = "<div class='wanted'><a class='btn-want' title='I want this' >I want this</a></div>";
 		}
 	} else {  // Want, Like, etc
     if ( $possess == 20 ) { // Want
-			$offer_button = "<div class='wanted'><img 
-					src='/themes/vibio/images/item/wanted_button.png'
-          alt='I want this.  Maybe it\'s my birthday today?'
-          title='I want this.'></div>";
+			$offer_button = "<div class='wanted'><a class='btn-want' title='I want this' >I want this</a></div>";
 		}
 
 

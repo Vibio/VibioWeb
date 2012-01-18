@@ -16,25 +16,17 @@ function amazon_search_search($op = 'search', $keys = NULL, $skip_access_check =
         return t('Amazon.com');
       }
     case 'search':
-      if ($skip_access_check || user_access('access amazon search')) {
+      if (user_access('access amazon search')) {
         $products = array();
         $items = amazon_search_simple_search($keys);
         foreach ($items as $item) {
-          if (module_exists("vibio_amazon"))
-          {
-            amazon_item_insert($item);
-            $products[] = _vibio_amazon_search_result($item);
-          }
-          else
-          {
-            $products[] = array(
-              'title' => check_plain($item['title']),
-              'link' => check_url($item['detailpageurl']),
-              'type' => check_plain($item['productgroup']),
-              'user' => isset($item['participants']) ? implode(', ', $item['participants']) : '',
-              'snippet' => isset($item['editorialreviews']) ? check_markup($item['editorialreviews'][0]['content']) : '',
-            );
-          }
+          $products[] = array(
+            'title' => check_plain($item['title']),
+            'link' => check_url($item['detailpageurl']),
+            'type' => check_plain($item['productgroup']),
+            'user' => isset($item['participants']) ? implode(', ', $item['participants']) : '',
+            'snippet' => isset($item['editorialreviews']) ? check_markup($item['editorialreviews'][0]['content']) : '',
+          );
         }
         return $products;
       }

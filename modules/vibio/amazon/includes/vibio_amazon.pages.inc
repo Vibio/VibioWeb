@@ -91,8 +91,11 @@ function vibio_amazon_create_product_from_asin($asin, $js = FALSE) {
 
       // Save the relationship between the amazon item and the Drupal node.
       $nid = $node->nid;
-      $sql = "INSERT INTO {amazon_item_node} (nid, asin, module) VALUES (%d,'%s','%s') ON DUPLICATE KEY UPDATE";
-      db_query($sql, $nid, $amazon_data['asin'], 'amazon');
+      $record = array('nid'=> $nid,
+          'asin' => $amazon_data['asin'],
+          'module' => 'amazon');
+      $record = (object)$record;
+      drupal_write_record('amazon_item_node', $record);
     }
   }
 

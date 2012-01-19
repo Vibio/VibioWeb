@@ -226,7 +226,8 @@ function collection_preprocess_collection_list_item(&$vars)
 		global $base_url;
 		$variables['title'] = $vars['collection']->title;
 		$variables['url'] = $base_url . url('collections/'. $vars['collection']->nid);
-		
+		$variables['image'] = $vars['collection']->image;
+
 		$share_html = theme('addthis_toolbox', $variables);
 	}
 /*
@@ -285,7 +286,7 @@ function collection_preprocess_collection_list_item_preview(&$vars)
 		global $base_url;
 		$variables['url'] = $base_url . url('node/'. $vars['item']->nid);
 		$variables['title'] = $vars['item']->node_title;
-                $share_html = theme('addthis_button', $variables);
+    $share_html = theme('addthis_button', $variables);
         }
 	$vars['share_links'] = $share_html;
 
@@ -551,7 +552,7 @@ function collection_form_vibio_item_node_form_alter(&$form, &$state)
 			"#title"		=> t("Collection"),
 			"#options"		=> $options, //collection_options(),
 			"#default_value"=> $default,
-			"#multiple"		=> true,
+			//"#multiple"		=> true,
 		),
 
 		/* this was commented out, why?

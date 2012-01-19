@@ -9,8 +9,16 @@
  * Implements hook_menu().
  */
 function vibio_amazon_menu() {
-  $items['product-from-asin'] = array(
+  $items['product-page-from-asin'] = array(
     'page callback' => 'vibio_amazon_page_product_from_asin',
+    'access arguments' => array('access content'),
+    'file' => 'includes/vibio_amazon.pages.inc',
+    'type' => MENU_CALLBACK,
+  );
+  //product-from-asin/asin/js
+  $items['product-from-asin/%/%'] = array(
+    'page callback' => 'vibio_amazon_create_product_from_asin',
+    'page arguments' => array(1, 2),
     'access arguments' => array('access content'),
     'file' => 'includes/vibio_amazon.pages.inc',
     'type' => MENU_CALLBACK,
@@ -59,20 +67,28 @@ function vibio_amazon_nodeapi(&$node, $op, $a3=null, $a4=null)
 	}
 }
 
-function _vibio_amazon_add_images(&$state, $item)
+/**
+ * Given a new product node (created from an Amazon item), adds image
+ * field data to it.
+ * @param array $node
+ * @param <type> $amazon_item
+ * @return <type>
+ */
+function _vibio_amazon_add_images(&$node, $amazon_item)
 {	
-	if (!isset($item['imagesets']['mediumimage']))
+	if (!isset($amazon_item['imagesets']['mediumimage']))
 	{
 		return;
 	}
+
 	
 	//download the image somewhere...
 	$path = file_directory_path();
-	$item_image = $item['imagesets']['largeimage']['url'];
-	$extension = preg_match('/\.([^\.]+)$/', $item_image, $matches);
+	$amazon_item_image = $amazon_item['imagesets']['largeimage']['url'];
+	$extension = preg_match('/\.([^\.]+)$/', $amazon_item_image, $matches);
 	$extension = $matches[1] ? $matches[1] : "jpg";
-	$file_destination = "{$path}/products/{$item['asin']}.{$extension}";
-	file_put_contents($file_destination, file_get_contents($item_image));
+	$file_destination = "{$path}/products/{$amazon_item['asin']}.{$extension}";
+	file_put_contents($file_destination, file_get_contents($amazon_item_image));
 	
 	//save in {files}..
 	$image_data = image_get_info($file_destination);
@@ -93,7 +109,7 @@ function _vibio_amazon_add_images(&$state, $item)
 	$_SESSION['amazon']['temp_file_fid'] = $file->fid;
 	
 	//add to state
-	$state['values']['field_main_image'] = array(
+	$node->field_main_image = array(
 		array(
 			"fid"			=> $file->fid,
 			"title"			=> basename($file->filename),
@@ -189,7 +205,7 @@ function _vibio_amazon_search_result($item) {
     $item = array(
       'result_type' => 'remote',
       'title'  => $item['title'],
-      'link' => url('product-from-asin', array('query' => array('asin' => $item['asin']))),
+      'link' => url('product-page-from-asin', array('query' => array('asin' => $item['asin']))),
       'amazon_data' => $item,
     );
 

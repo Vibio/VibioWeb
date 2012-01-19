@@ -33,43 +33,54 @@ $(document).ready(function()
 		$(this).attr("href", href);
 	});
 	
-	$(".inventory_add").live("click", function()
-	{
-		var nid = $(this).attr("id").split("inventory_add_")[1];
-		vibio_utility.dialog_busy();
-		
-		$.ajax({
-			url: "/product/ajax/inventory-add",
-			type: "post",
-			data: { nid: nid },
-			success: function(html, stat)
-			{
-				/* remove close button? vibio_dialog.dialog.dialog("close"); */
-				vibio_dialog.create(html);
-			}
-		});
-		
-		return false;
-	});
-	
-	$(".inventory_want").live("click", function()
-	{
-		var nid = $(this).attr("id").split("inventory_want_")[1];
-		vibio_utility.dialog_busy();
-		
-		$.ajax({
-			url: "/product/ajax/inventory-add",
-			type: "post",
-			data: { nid: nid, possess: "want" },
-			success: function(html, stat)
-			{
-				/* remove close button? vibio_dialog.dialog.dialog("close"); */
-				vibio_dialog.create(html);
-			}
-		});
-		
-		return false;
-	});
+    $(".inventory_add").live("click", function()
+    {
+      var nid = $(this).attr("id").split("inventory_add_")[1];
+      vibio_utility.dialog_busy();
+
+      if(nid){
+        have(nid);
+        return false;
+      }else{
+        var asin = $(this).attr("asin");
+        var url = "/product-from-asin/" + asin + "/js";
+        $.ajax({
+          url: url,
+          type: "post",
+          dataType: "json",
+          success: function (data){
+            have(data.nid);
+          }
+        });
+        return false;
+      }
+      return false;
+    });
+
+
+
+    $(".inventory_want").live("click", function()
+    {
+      var nid = $(this).attr("id").split("inventory_want_")[1];
+      vibio_utility.dialog_busy();
+
+      if(nid){
+        want(nid);
+      }else{
+        var asin = $(this).attr("asin");
+        var url = "/product-from-asin/" + asin + "/js";
+        $.ajax({
+          url: url,
+          type: "post",
+          dataType: "json",
+          success: function (data){
+            want(data.nid);
+          }
+        });
+        return false;
+      }
+      return false;
+    });
 	
 	$("#product-ajax-add-form #edit-posting-type").livequery("change", function()
 	{
@@ -112,4 +123,34 @@ $(document).ready(function()
 	  
 	  return false;
 	});
+
+    function want(nid){
+    $.ajax({
+            url: "/product/ajax/inventory-add",
+            type: "post",
+            data: {
+              nid: nid,
+              possess: "want"
+            },
+            success: function(html, stat)
+            {
+              /* remove close button? vibio_dialog.dialog.dialog("close"); */
+              vibio_dialog.create(html);
+            }
+          });
+  }
+
+  function have(nid){
+   		$.ajax({
+			url: "/product/ajax/inventory-add",
+			type: "post",
+			data: {nid: nid},
+			success: function(html, stat)
+			{
+				/* remove close button? vibio_dialog.dialog.dialog("close"); */
+				vibio_dialog.create(html);
+			}
+		});
+  }
+
 });

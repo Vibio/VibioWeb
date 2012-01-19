@@ -44,7 +44,7 @@ function vibio_amazon_page_product_from_asin() {
  * @return int
  *   The node ID of the newly-created node.
  */
-function vibio_amazon_create_product_from_asin($asin) {
+function vibio_amazon_create_product_from_asin($asin, $js = FALSE) {
   $nid = 0;
   
   $items = amazon_item_lookup_from_db(array($asin));
@@ -66,8 +66,9 @@ function vibio_amazon_create_product_from_asin($asin) {
       $product_title = strlen($amazon_data['title']) > 255 ? substr($amazon_data['title'], 0, 255) : $amazon_data['title'];
 
       $publisher = user_load(1);
-      $node = array('type' => 'product');
-      $state['values'] = array(
+      $node = array(
+        'type' => 'product',
+        'uid' => $publisher->uid,
         'title' => $product_title,
         'name' => $publisher->name,
         'op' => t('Save'),
@@ -80,17 +81,29 @@ function vibio_amazon_create_product_from_asin($asin) {
           $vocabulary_id => $tid,
         ),
       );
+      $image_data = array();
+      $node = (object)$node;
 
-      _vibio_amazon_add_images($state, $amazon_data);
-      drupal_execute('product_node_form', $state, (object) $node);
+      _vibio_amazon_add_images($node, $amazon_data);
+      node_submit($node);
+      node_save($node);
       drupal_get_messages(); // Suppress any messages that would be shown to the user.
 
       // Save the relationship between the amazon item and the Drupal node.
-      $nid = $state['nid'];
-      $sql = "REPLACE INTO {amazon_item_node} SET nid = %d, asin = '%s', module = '%s'";
+      $nid = $node->nid;
+      $sql = "INSERT INTO {amazon_item_node} (nid, asin, module) VALUES (%d,'%s','%s') ON DUPLICATE KEY UPDATE";
       db_query($sql, $nid, $amazon_data['asin'], 'amazon');
     }
   }
-  
-  return $nid;
+
+  //If this is a javascript request from the have/want buttons...
+  if($js){
+    //...return JSON
+    drupal_json(array('nid' => $nid));
+    exit();
+  }else{
+    //otherwise operate as a normal function
+    return $nid;
+  }
+
 }

@@ -483,7 +483,12 @@ function product_preprocess_search_result(&$vars)
         $search_links['want'] = l(t('Want'), 'product-from-asin', 
           array(
             'query' => array('asin' => $vars['result']['amazon_data']['asin']),
-            'attributes' => array('class' => 'inventory_want')
+            'attributes' => array('class' => 'inventory_want', 'asin' => $vars['result']['amazon_data']['asin'])
+          ));
+        $search_links['own_have'] = l(t('Have'), 'product-from-asin',
+          array(
+            'query' => array('asin' => $vars['result']['amazon_data']['asin']),
+            'attributes' => array('class' => 'inventory_add', 'asin' => $vars['result']['amazon_data']['asin'])
           ));
       }
       else {

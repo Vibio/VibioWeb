@@ -1,5 +1,5 @@
-.already-have-link{
-	margin-top:5px;
+.already-have-link {
+	margin-top: 5px;
 }
 .external_short_link {
 	float: right;
@@ -9,7 +9,6 @@
 	font-size: 15px;
 	line-height: 28px;
 }
-
 .external_short_link a#info-button {
 	text-indent: -9999px;
 	display: block;
@@ -19,52 +18,55 @@
 	float: right;
 	margin-left: 5px
 }
-
-.external_short_link a#info-button:hover{
+.external_short_link a#info-button:hover {
 	background-position: -40px -1px;
 }
-
 #page_title {
 	display: none;
 }
-
-h1#product_description{
-background:url("../images/long_border.png") no-repeat scroll 0 32px transparent;
-height:43px;
-margin: 0 0 20px;
-padding: 0;
+h1#product_description {
+	background: url("../images/long_border.png") no-repeat scroll 0 32px transparent;
+	height: 43px;
+	margin: 20px 0;
+	padding: 0;
 }
-
 .product_title {
 	margin: 0;
 }
-
 .product_owners_results {
-	margin-top:10px
+	margin-top: 10px
 }
-div.product_owners_results div.action div.row{
-	font-size:13px;
+div.product_owners_results div.action div.row {
+	font-size: 13px;
 	padding-left: 5px;
 }
-.ask-price{
+.ask-price {
 	margin-top: 20px;
 	width: 109px;
 }
-#content-area div.product_owners_results div.action a.offer-button{
+#content-area div.product_owners_results div.action a.offer-button {
 	display: block;
-	text-indent:-9999px;
+	text-indent: -9999px;
 	background: url(../images/btn_make_offer_1.png) no-repeat 0 0;
 	width: 109px;
 	height: 28px;
 }
-
-#content-area div.product_owners_results div.action a.offer-button:hover{
+#content-area div.product_owners_results div.action a.offer-button:hover {
 	background-position: 0px -42px;
+}
+.item_owner{
+	height: 75px;
+	padding: 10px 0;
 }
 .item_owner .action {
 	width: 140px;
 	float: right;
 	position: relative
+}
+
+.item_owner .action .not_for_sale img{
+	position: absolute;
+	right: 16px;
 }
 
 .item_owner .picture {
@@ -75,68 +77,56 @@ div.product_owners_results div.action div.row{
 	float: left;
 	margin: 0px 18px 0 0;
 }
-.breadcrumb-sep{
-	padding:0 4px;
+.breadcrumb-sep {
+	padding: 0 4px;
 }
 .product_owners_results .item_owner .picture img {
-    max-width: 42px;
-    max-height: 42px;
-    border: 1px solid #CCCCCC;
-    
+	max-width: 42px;
+	max-height: 42px;
+	border: 1px solid #CCCCCC;
 }
 .item_owner .picture img {
 	max-width: 40px;
 }
-
 .item_owner .item_info {
 	float: left;
-	font-size:13px;
+	font-size: 13px;
 	width: 430px; /* it was 500, which messed up flow with .item_owner .action above */
 }
-
-.item_owner .item_info .row .header{
-	font-weight:bold;
-	padding-top:10px;
+.item_owner .item_info .row .header {
+	font-weight: bold;
+	padding-top: 10px;
 }
-.item_owner .item_info .row .dos_display{
-	font-weight:bold;
-	padding-top:10px;
+.item_owner .item_info .row .dos_display {
+	font-weight: bold;
+	padding-top: 10px;
 }
-
-.item-square .inventory_add, 
-.item-square .inventory_want {
-  display: none;
+.item-square .inventory_add, .item-square .inventory_want {
+	display: none;
 }
-
-.item-square:hover .inventory_add, 
-.item-square:hover .inventory_want {
-  display: inline;
+.item-square:hover .inventory_add, .item-square:hover .inventory_want {
+	display: inline;
 }
-
 .inventory_add_pinfo {
 	margin: 0;
 	color: #8E9E30;
 }
-
 .inventory_add_image {
 	padding-right: 10px;
 }
-
 .inventory_add_image img {
 	max-width: 100px;
 	max-height: 100px;
 }
-
 .product_snippet_expand {
-  display: none;
+	display: none;
 }
-.product_snippet_expand, .product_snippet{
-	margin-bottom:30px;
+.product_snippet_expand, .product_snippet {
+	margin-bottom: 30px;
 }
-
 /*
-.highlight {
-	background: purple;	
-	border: 2px solid yellow;
-}
-*/
+ .highlight {
+ background: purple;
+ border: 2px solid yellow;
+ }
+ */

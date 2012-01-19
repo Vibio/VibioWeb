@@ -1,18 +1,10 @@
 <div class='fb_ff_message'>
-	<div id='fb-message-img'>
-		<img src='/themes/vibio/images/no_friends.png' alt='Invite your Facebook friends'/>
-	</div>
 	<div class='fb_message'>
-		<?php echo $message; ?>
+		<?php echo $message;?>
 	</div>
-	<div class='fb_link'>
-		<?php
-		echo "
-			<a href='{$href}'>
-				<img src='{$fb_image}' />
-			</a>
-		";
-		?>
+	<div id='fb-message-img'>
+		<div class='fb_link'>
+			<?php echo "<a href='{$href}'><img src='/themes/vibio/images/fb_no_connect.png' /></a>"; ?>
+		</div>
 	</div>
-	<div class="clear"></div>
 </div>

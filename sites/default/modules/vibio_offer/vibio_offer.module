@@ -269,8 +269,10 @@ function vibio_offer_menu() {
   */
 function vibio_offer_page($item_nid, $buyer_uid) {
   if (( $item_nid < 1 || $buyer_uid < 1)) {
-	return "<h1>Offer failed</h1>Sorry, there was a technical problem
-		with this offer.  Please let the webmaster know.";
+	return "<h1>Offer failed</h1>Sorry but before you can make an offer you need to
+    <a href='". $base_url ."/user/register'>have an account</a> and be
+    <a href='". $base_url ."/user/login'>logged in</a>. If you are logged in,
+      please <a href='". $base_url ."/about'>contact Vibio</a>.";
   }
 	/* 1) Load offer.  If doesn't exist, create.  This need to 
 	   	  create rather than return page-not-found is the main reason

@@ -49,11 +49,15 @@ p {
 	padding: 22px 24px 0 0;
 }
 #watches {
-	background: url(../images/landing/landing_02.png) no-repeat;
+	background: url(../images/landing/images/watches_banner.jpg) no-repeat;
 	height: 570px;
 }
-#record{
-	background: url(../images/landing/images/record_banner.png) no-repeat;
+#comics {
+	background: url(../images/landing/images/comic_banner.jpg) no-repeat;
+	height: 570px;
+}
+#record {
+	background: url(../images/landing/images/record_banner.jpg) no-repeat;
 	height: 570px;
 }
 #watches-text {
@@ -83,14 +87,28 @@ p {
 #manual {
 	text-align: center
 }
-#facebook{width: 266px; margin: 0 auto 10px}
-#facebook-bottom a,#facebook a{background: url(../images/btn_signup_with_facebook.png) no-repeat 0 -3px; width:266px; height: 48px; display: block; text-indent: -9999px}
-#facebook-bottom a:hover,#facebook a:hover{background-position: 0 -51px}
-#node-38872, #node-43071, #node-48820{
+#facebook {
+	width: 266px;
+	margin: 0 auto 10px
+}
+#facebook-bottom a, #facebook a {
+	background: url(../images/btn_signup_with_facebook.png) no-repeat 0 -3px;
+	width: 266px;
+	height: 48px;
+	display: block;
+	text-indent: -9999px
+}
+#facebook-bottom a:hover, #facebook a:hover {
+	background-position: 0 -51px
+}
+#node-38872, #node-43071, #node-48820, #sliders {
 	background: url(../images/landing/landing_03.png) no-repeat;
 	height: 336px;
 }
-#node-38872 div.content, #node-43071 div.content, #node-48820 div.content{width: 1004px; margin: 0 auto}
+#node-38872 div.content, #node-43071 div.content, #node-48820 div.content {
+	width: 1004px;
+	margin: 0 auto
+}
 #slide-left {
 	width: 312px;
 	float: left;
@@ -123,6 +141,10 @@ li {
 	color: red;
 	background: url(../images/landing/images/hover_slide.png) no-repeat;
 }
+#sliders .content {
+	margin: 0 auto;
+	width: 1004px;
+}
 #slide-right li {
 	text-align: center;
 	cursor: pointer;
@@ -138,13 +160,18 @@ li {
 #slide-right li:hover {
 	background: url(../images/landing/images/hover_slide.png) no-repeat 0 -23px;
 }
+#nav-cw {
+    float: left;
+    font-size: 12px;
+    padding: 3px 12px;
+}
 #nav {
 	margin: 0;
 	padding: 0;
 	position: absolute;
 	top: 18px;
 	right: 14px;
-	width: 73px;
+	width: 287px;
 }
 #photos {
 	padding-top: 43px;
@@ -171,6 +198,10 @@ li {
 }
 #text {
 	margin-bottom: 9px
+}
+#text-comic {
+	margin-bottom: 9px;
+	font-size:18px;
 }
 #featured-2, #featured-3 {
 	float: left;
@@ -220,7 +251,7 @@ li {
 .clears, .clearfix {
 	clear: both
 }
-.region-header, .region-footer, #watches, #node-38872, #node-43071, #node-48820, #record {
+.region-header, .region-footer, #comics, #watches, #node-38872, #node-43071, #node-48820, #record, #sliders {
 	background-size: 100% auto;
 	min-width: 1005px;
 }

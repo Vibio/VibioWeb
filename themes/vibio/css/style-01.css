@@ -17,7 +17,7 @@ body.front div.view-flag-featured .pager,.pager-ellipsis{display:none}
 .item-list .pager li.pager-ellipsis{display:none}
 .page-collections-new h1#page_title{display: block}
 /*Popup after earning a badge*/
-#badge_alert_container_earned{text-align:center}
+#badge_alert_container_earned{text-align:center; padding: 20px 20px}
 #badge_alert_container_earned h5{font-size:28px; margin:28px 0 28px}
 #badge_alert_container_earned div#badge_alert_footer{text-align:right; font-size:13px; margin:0 13px 25px 0}
 #badge_alert_container_earned .badge_alert_single{min-height:150px; text-align:center}
@@ -1069,15 +1069,19 @@ div.profile_notifications_actions table tbody tr td a.disapprove button:hover{ba
 div.profile_notifications_actions table tbody tr td a.approve button{background-position:0px 1px; width:111px; margin-top: 10px}
 div.profile_notifications_actions table tbody tr td a.approve button:hover{background-position:0px -37px}
 /*Save and Delete buttons*/
-form#collection-edit input#edit-submit, input#edit-delete, ul.message-actions li a{background:url(../images/btn_save_delete.png) no-repeat; border:0; text-indent:-9999px; cursor:pointer}
+form#collection-edit input#edit-submit,.node-form input#edit-submit,input#edit-preview, input#edit-delete, ul.message-actions li a{background:url(../images/btn_save_delete.png) no-repeat; border:0; text-indent:-9999px; cursor:pointer}
+.node-form input#edit-submit{background-position: -3px -72px; width: 77px; height: 26px;}
+.node-form input#edit-submit:hover{background-position: -3px -102px}
+input#edit-preview{background-position: -3px -6px; width: 77px; height: 26px}
+input#edit-preview:hover{background-position: -3px -39px;}
 form#collection-edit input#edit-submit{background-position: 0px 0px; height:27px; width:77px; float: right; margin-right: 10px}
 form#collection-edit input#edit-submit:hover{background-position: 0px -30px}
 form#collection-edit div#edit-privacy-setting-wrapper{border-bottom: 1px solid #CCC; margin-bottom: 20px; padding-bottom: 20px;}
 form#collection-edit div.description ,form#collection-edit textarea#edit-description, form#collection-edit input#edit-title{width: 460px}
 form#collection-edit div.description{ font-size: 13px; padding: 10px 0 0 25px}
-input#edit-delete{background-position: 0px -120px; margin:5px 0 0 5px; height:27px; width:79px; }
+input#edit-delete{background-position: -3px -192px; width: 77px; height: 26px}
 ul.message-actions li a{display:block; width: 77px; height: 26px; background-position: 0 -120px; position: absolute; top: 2px; right: 1px}
-input#edit-delete:hover{background-position: 0 -150px}
+input#edit-delete:hover{background-position: -3px -222px}
 #uri_elaborations_edit fieldset{width:480px}
 /*Send Preview New Private Message*/
 form#privatemsg-new input#edit-submit{background:url(../images/btn_preview_send.png) no-repeat; height:34px; width:140px; border:0; text-indent:-9999px; cursor:pointer}

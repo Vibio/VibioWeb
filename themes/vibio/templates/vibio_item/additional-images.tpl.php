@@ -10,8 +10,7 @@ calls
 modules/vibio/vibio_item/product_catalog/product.inc:function product_images($node, $get_main=false)    returns images as urls
 
  */
-if (!empty($images))
-{
+if (!empty($images)) {
 	$header = t("Additional Images");
 	$image_html = "";
 	$attributes = array(
@@ -27,15 +26,18 @@ if (!empty($images))
 		$relative_path = strpos($image, 'sites/default/files');
 		//If relative_path is false, we need to make the $image into a relative path	
 		if ($relative_path === FALSE) {
-                        //delete: $image_filename = str_replace('/var/www/vibio/uploads/', '', $image);
-                        $image_pretty = "/sites/default/files/uploads/" . $image_filename;
-		//Otherwise, we should have a relative path we can use
-                } else {
-                        $image_pretty = url($image);
-                }
+      //delete: $image_filename = str_replace('/var/www/vibio/uploads/', '', $image);
+      $image_pretty = "/sites/default/files/uploads/" . $image_filename;
+      //Otherwise, we should have a relative path we can use
+    }
+    else {
+      $image_pretty = url($image);
+      // If there are amphersands in the encoded filename, bad stuff'll happen.
+      $image_pretty = str_replace('%2526', '&', $image_pretty);
+    }
 	
 		$image_html .= "
-			<a href='$image_pretty' rel='prettyphoto[item_image]'>
+			<a href=\"{$image_pretty}\" rel=\"prettyphoto[item_image]\">
 				$imagecached
 			</a>";
 	}

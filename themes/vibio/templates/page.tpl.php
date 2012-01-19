@@ -20,6 +20,7 @@
 		<script type="text/javascript" src="/themes/vibio/js/utility.js"></script>
 		<script type="text/javascript" src="/themes/vibio/prettyphoto/js/jquery.prettyPhoto.js"></script>
 		<script type='text/javascript' src='/themes/vibio/js/jquery.livequery.min.js'></script>
+		<script type='text/javascript' src='/themes/vibio/js/error_fade.js'></script>
 	</head>
 	<body class="<?php print $classes;?>">
 	  <div id="fb-root"></div>

@@ -376,7 +376,7 @@ div.messages ul li{list-style-type:none}
 .not-sale-popup, .make-offer-popup{background:url(../images/white.png) no-repeat;color:#556270;  height:70px; font-size:15px; padding:33px 19px 10px; width:173px;z-index: 500; text-indent:0}
 .not-sale-popup{position:absolute; top:-106px; left:10px}
 #offer-buttons{position: absolute; right: -5px;height: 28px; width: 108px; bottom: 14px}
-.make-offer{position: relative; padding-top: 20px}
+.make-offer{position: relative;}
 .action .make-offer-popup{position:absolute; top:-90px; left:-6px}
 #offer-buttons .make-offer-popup{position:absolute; top:-121px; left:-15px}
 /*layout-fixed*/
@@ -690,7 +690,8 @@ table.user-collection-preview{margin:0}
 .collection_preview_init:hover{cursor:pointer}
 .collection_preview_loading{text-align:center}
 .collection_list_image{float:left; margin-right:10px}
-.collection_list_image img{max-height:100px; border:1px solid #CCC; max-width:165px}
+.collection_list_image .item_pricetag{left:-3px; top:7px}
+.collection_list_image img{max-height:100px; border:1px solid #CCC; max-width:165px; min-width: 73px}
 .item_pricetag img{border: none}
 .collection_list_item_summary{    float:left}
 tr.row-last .collection-preview-boxshadow{border:none}
@@ -1092,8 +1093,8 @@ form#collection-edit input#edit-submit,.node-form input#edit-submit,input#edit-p
 .node-form input#edit-submit:hover{background-position: -3px -102px}
 input#edit-preview{background-position: -3px -6px; width: 77px; height: 26px}
 input#edit-preview:hover{background-position: -3px -39px;}
-form#collection-edit input#edit-submit{background-position: 0px 0px; height:27px; width:77px; float: right; margin-right: 10px}
-form#collection-edit input#edit-submit:hover{background-position: 0px -30px}
+form#collection-edit input#edit-submit{background-position: -2px -72px; height:27px; width:80px}
+form#collection-edit input#edit-submit:hover{background-position: -2px -102px}
 form#collection-edit div#edit-privacy-setting-wrapper{border-bottom: 1px solid #CCC; margin-bottom: 20px; padding-bottom: 20px;}
 form#collection-edit div.description ,form#collection-edit textarea#edit-description, form#collection-edit input#edit-title{width: 460px}
 form#collection-edit div.description{ font-size: 13px; padding: 10px 0 0 25px}

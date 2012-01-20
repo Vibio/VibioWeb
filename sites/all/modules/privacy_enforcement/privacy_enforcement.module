@@ -1,0 +1,3 @@
+<?php
+
+include_once('privacy_enforcement.features.inc');

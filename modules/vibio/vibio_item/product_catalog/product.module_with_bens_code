@@ -461,30 +461,14 @@ function product_preprocess_search_results(&$vars)
 /* two functions dealing with have-want buttons, 
      one for search, one for view
      main question is do you own this product alread. */
-// now expanded to own/want/like
 function product_preprocess_search_result(&$vars)
 {
 	if ($vars['type'] == "vibio_item")
 	{
 		$item_nid = product_user_owns_product($vars['result']['node']->nid);
 	
-    switch ($possess) {
-      case '30':
-        $possess_words = 'You Like This!';
-        $you_possess = 'you-like';
-        break;
-      case '20':
-        $possess_words = 'You Want This!';
-        $you_possess = 'you-want';
-        break;
-      default:
-        $possess_words = 'You Own This mow!';
-        $you_possess = 'you-own-it';
-    }
-
 		$search_links = array();
-		// Minor possess changes 20120119
-		$search_links['own_have'] = ($item_nid) ? l(t($possess_words), "node/{$item_nid}", array('attributes' => array('class' => "you-own $you_possess"))) : theme("product_inventory_add", $vars['result']['node']->nid);
+		$search_links['own_have'] = ($item_nid) ? l(t("You Own This!"), "node/{$item_nid}") : theme("product_inventory_add", $vars['result']['node']->nid);
 		$search_links['want'] = ($item_nid) ? "" : theme("product_inventory_want", $vars['result']['node']->nid);
 		
     if (!empty($vars['result']['node']->field_main_image[0]['filepath'])) {
@@ -517,34 +501,13 @@ function product_preprocess_search_result(&$vars)
 	$vars['search_links'] = implode("\n", $search_links);
 }
 
-// for the Feature page ... maybe elsewhere too?
+// for the Feature view ... maybe elsewhere too?
 /* two functions dealing with have-want, one for search, one for view */
 function product_have_want($nid)
 {
   //not used? $vars = array();  // not a preprocess function despite similiarities
 	$item_nid = product_user_owns_product($nid);
-	// get possess level ... repeat code turn to function if doesn't diverge
-	$possess = get_possess(node_load($item_nid));
-
-	switch ($possess) {
-		case '30':
-			$possess_words = 'You Like This!';
-			$you_possess = 'you-like';
-			break;
-		case '20':
-			$possess_words = 'You Want This!';
-			$you_possess = 'you-want';
-			break;
-		default:
-			$possess_words = 'You Own This!';
-			$you_possess = 'you-own-it';
-	}
-
-	//@Craig: feel free to fiddle with the classes.  I left "you-own" for
-	//  for all the possession levels, but you could replace that
-
-
-	$search_links .= $item_nid ? l(t($possess_words), "node/{$item_nid}", array('attributes' => array('class' => "you-own $you_possess"))) : theme("product_inventory_add", $nid); // theme just creates the button.
+	$search_links .= $item_nid ? l(t("You Own This!"), "node/{$item_nid}", array('attributes' => array('class' => 'you-own'))) : theme("product_inventory_add", $nid); // theme just creates the button.
 	$search_links .= $item_nid ? "" : theme("product_inventory_want", $nid); 
 	return $search_links;
 }

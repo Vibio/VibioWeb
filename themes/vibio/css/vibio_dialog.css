@@ -39,11 +39,12 @@
 }
 #product-ajax-add-form #edit-collections-wrapper {
 	float: left;
-	margin-right: 10px;
+	margin:0 10px 0 0;
 	width: 192px
 }
 #product-ajax-add-form #edit-body-wrapper{
-	clear: both
+	clear: both;
+	margin: 0
 }
 #vibio_dialog .inventory_add_image img {
 	max-height: 150px;
@@ -160,13 +161,13 @@ div#edit-node-price-wrapper {
 	height: 65px;
 	margin-bottom: 40px;
 	border-bottom: 1px solid #CCCCCC;
+	margin-top: 0;
 }
 #vibio_dialog form select[multiple] {
 	max-height: 120px;
 	width: 190px
 }
 #product-ajax-add-form .create_new_collection{
-	float:left
 }
 #vibio_dialog form input[type="text"], #vibio_dialog form textarea {
 }

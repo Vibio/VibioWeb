@@ -690,7 +690,8 @@ table.user-collection-preview{margin:0}
 .collection_preview_init:hover{cursor:pointer}
 .collection_preview_loading{text-align:center}
 .collection_list_image{float:left; margin-right:10px}
-.collection_list_image img{max-height:100px; border:1px solid #CCC; max-width:165px}
+.collection_list_image .item_pricetag{left:-4px; top:8px}
+.collection_list_image img{max-height:100px; border:1px solid #CCC; max-width:165px; min-width: 190px}
 .item_pricetag img{border: none}
 .collection_list_item_summary{    float:left}
 tr.row-last .collection-preview-boxshadow{border:none}

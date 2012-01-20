@@ -365,7 +365,7 @@ function vibio_item_views_api()
 // @ToDo rethink this, find out why node_load isn't loading
 // the field_have_want_like
 
-// For now, a quick fix.
+// For now, a quick fix:
 // Sometimes vibio_items are loaded without the have/want status.
 // This is a fix. It would be better to fix all the damn code...
 function vibio_item_have_want_value_retrieval(&$node) {
@@ -373,4 +373,11 @@ function vibio_item_have_want_value_retrieval(&$node) {
 	$node->field_have_want_like = $from_db->field_have_want_like;
 }
 
+
+/* function get_possess($item)
+ *  Get the possession level
+ */
+function get_possess($item) {
+  return $item->field_have_want_like[0]['value'];
+}
 ?>

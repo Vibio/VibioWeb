@@ -430,4 +430,5 @@ function vibio_item_get_category($item_nid)
 	$term = array_shift($product->taxonomy);
 	return $term->tid;
 }
+
 ?>

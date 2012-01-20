@@ -69,7 +69,7 @@ function hbi_privacy_new_user($form, $account, $category)
 		
 		if (!in_array($message_id, $hidden_messages))
 		{
-			privacy_set($account->uid, "heartbeat_messages", $message_id, PRIVACY_PUBLIC);
+			privacy_user_set($account->uid, "heartbeat_messages", $message_id, PRIVACY_PUBLIC);
 		}
 	}
 }
@@ -92,7 +92,7 @@ function hbi_privacy_update_user($form, $user, $category)
 	{
 		foreach ($form['heartbeat_activity_settings'] as $type_id => $access)
 		{
-			privacy_set($user->uid, "heartbeat_messages", $type_id, $access['access']);
+			privacy_user_set($user->uid, "heartbeat_messages", $type_id, $access['access']);
 		}
 	}
 }

@@ -33,7 +33,7 @@ if ($view->args[2] == PRIVACY_ONLYME) {
 
 			echo "
 					<td class='$col_class'>
-					  <div class='collection-preview-boxshadow'>
+					  <div class='collection-preview-boxshadow collections-plural-page'>
 						$td_output
 					  </div>
 					</td>

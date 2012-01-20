@@ -113,16 +113,16 @@ function _vibio_item_search($keys)
 	}
 	
 	// eliminate nodes that the current user isn't allowed to see, based on friendship status
-	if (module_exists("privacy") && !$is_product_search && $target_user != $user->uid)
+	if (module_exists("privacy_node") && !$is_product_search && $target_user != $user->uid)
 	{
-		$join1 .= " JOIN {privacy_settings} p ON p.`type_id`=n.`nid`";
+		$join1 .= " JOIN {privacy_node} p ON p.`nid`=n.`nid`";
 	
 		/*
 		  note that we don't use the "user_item" string. that's because a user shouldn't see their own items in search.
 		  also note that if a node doesn't have a privacy setting set, then it will show up. shouldn't happen, though.
 		*/
+    //@todo check, I replaced "p.`type`='node' AND"
 		$where1 .= "
-			p.`type`='node' AND
 			CASE
 				WHEN p.`setting`=%d THEN 'user_item'
 				WHEN p.`setting`=%d THEN n.uid
@@ -223,7 +223,7 @@ function _vibio_item_access($node)
 		$node = node_load($node);
 	}
 	
-	return privacy_get($node->uid, "node", $node->nid) <= privacy_get_access_level($node->uid);
+	return privacy_node_get($node->nid) <= privacy_get_access_level($node->uid);
 }
 
 function _vibio_item_unset(&$form, $type="vibio_item")
@@ -430,4 +430,5 @@ function vibio_item_get_category($item_nid)
 	$term = array_shift($product->taxonomy);
 	return $term->tid;
 }
+
 ?>

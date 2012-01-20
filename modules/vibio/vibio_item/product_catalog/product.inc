@@ -21,7 +21,8 @@ function _product_get_product_owners($nid, $as_uid=false)
 }
 
 // I think this gets all the owners of an item, in network or not
-//  Defaults to in-network only (stephen: deprecate this)
+//  Defaults to in-network only.  (Might get in-network OR not-in-network,
+//  and be run twice if you want them all.)
 function _product_get_owners($nid, $as_uid, $type="network", $page=0)
 {
 	$depth = 3;
@@ -57,13 +58,11 @@ function _product_get_owners($nid, $as_uid, $type="network", $page=0)
 
 	$network_check = $network ? " AND u.`uid` $network_op ($network)" : "";
 	
-
+  //@todo SQL performance check?
 	$sql = "SELECT n.`nid`, n.`title`, u.`uid`, u.`name`, u.`picture`
-			FROM {node} n JOIN {users} u JOIN {privacy_settings} p
-				ON n.`uid`=u.`uid` AND p.`uid`=n.`uid`
-			WHERE p.`type`='node'
-				AND p.`type_id`=n.`nid`
-				AND p.`setting` <= %d
+			FROM {node} n JOIN {users} u JOIN {privacy_node} p
+				ON n.`uid`=u.`uid` AND p.`nid`=n.`nid`
+			WHERE p.`setting` <= %d
 				AND u.`uid` != %d
 				$network_check
 				AND n.`nid` IN (
@@ -158,7 +157,8 @@ function _product_get_image($nid, $is_product=false)
  * // Duplicate code with function file_uncreate_url and vibio_item_get_image
  */
 function file_uncreate_url($url) {
-	$pieces = explode("com/", $url);
+  $host = $_SERVER['HTTP_HOST'] . '/';
+	$pieces = explode($host, $url);
 	if(count($pieces) > 1){
 		return $pieces[1];
 	}else{

@@ -53,8 +53,14 @@ There's no design/ux yet on how to get item details.
 I'm thinking it should pop?
 */
 
-$Connection = $GLOBALS['user']->uid ? "<div class='row'><div class='header'>Connection:&nbsp;</div> {$item['user']['link']}</div>" : '';
 
+// Connection, like: you You-amelia mendez-Diana Bull-clint 
+if ( $item['user']['link'] ) {   // there is a connection
+	$Connection = $GLOBALS['user']->uid ? "<div class='row'><div class='header'>Connection:&nbsp;</div> {$item['user']['link']}</div>" : '';
+} else {												 // there is no connection
+	$Connection = "<div class='row'><div class='header'>Not connected to this user.</div></div>";
+}
+	
 echo "
 	<div class='item_owner {$item['user']['highlight']}'>
 		{$item['user']['picture']}

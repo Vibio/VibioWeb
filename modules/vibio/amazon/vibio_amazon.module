@@ -1,4 +1,35 @@
 <?php
+
+/**
+ * @file
+ * Additional functionality on top of the Amazon module.
+ */
+ 
+/**
+ * Implements hook_menu().
+ */
+function vibio_amazon_menu() {
+  $items['product-page-from-asin'] = array(
+    'page callback' => 'vibio_amazon_page_product_from_asin',
+    'access arguments' => array('access content'),
+    'file' => 'includes/vibio_amazon.pages.inc',
+    'type' => MENU_CALLBACK,
+  );
+  //product-from-asin/asin/js
+  $items['product-from-asin/%/%'] = array(
+    'page callback' => 'vibio_amazon_create_product_from_asin',
+    'page arguments' => array(1, 2),
+    'access arguments' => array('access content'),
+    'file' => 'includes/vibio_amazon.pages.inc',
+    'type' => MENU_CALLBACK,
+  );
+  
+  return $items;
+}
+
+/**
+ * Implements hook_nodeapi().
+ */
 function vibio_amazon_nodeapi(&$node, $op, $a3=null, $a4=null)
 {
 	if ($node->type != "product")
@@ -36,64 +67,28 @@ function vibio_amazon_nodeapi(&$node, $op, $a3=null, $a4=null)
 	}
 }
 
-function vibio_amazon_amazon_item_insert($item)
-{
-	$sql = "SELECT `nid`
-			FROM {amazon_item_node}
-			WHERE `asin`='%s'";
-	if ($nid = db_result(db_query($sql, $item['asin'])))
-	{
-		return $nid;
-	}
-	
-	module_load_include("inc", "node", "node.pages");
-	$vid = variable_get("vibio_amazon_category_id", 1);
-	$tid = _vibio_amazon_get_vibio_term_from_asin($item['asin'], $vid);
-	$product_title = strlen($item['title']) > 255 ? substr($item['title'], 0, 255) : $item['title'];
-	
-	$publisher = user_load(1);
-	$node = array("type" => "product");
-	$state['values'] = array(
-		"title"	=> $product_title,
-		"name"	=> $publisher->name,
-		"op"	=> t("Save"),
-		"field_amazon_asin"	=> array(
-			array(
-				"asin"	=> $item['asin'],
-			),
-		),
-		"taxonomy"	=> array(
-			$vid => $tid,
-		),
-	);
-	
-	_vibio_amazon_add_images($state, $item);
-	drupal_execute("product_node_form", $state, (object) $node);
-	drupal_get_messages(); // don't want the messages to get set
-	
-	//save the relationship between these items
-	$nid = $state['nid'];
-	$sql = "REPLACE INTO {amazon_item_node}
-			SET `nid`=%d, `asin`='%s', `module`='%s'";
-	db_query($sql, $nid, $item['asin'], 'amazon');
-	
-	return $nid;
-}
-
-function _vibio_amazon_add_images(&$state, $item)
+/**
+ * Given a new product node (created from an Amazon item), adds image
+ * field data to it.
+ * @param array $node
+ * @param <type> $amazon_item
+ * @return <type>
+ */
+function _vibio_amazon_add_images(&$node, $amazon_item)
 {	
-	if (!isset($item['imagesets']['mediumimage']))
+	if (!isset($amazon_item['imagesets']['mediumimage']))
 	{
 		return;
 	}
+
 	
 	//download the image somewhere...
 	$path = file_directory_path();
-	$item_image = $item['imagesets']['largeimage']['url'];
-	$extension = preg_match('/\.([^\.]+)$/', $item_image, $matches);
+	$amazon_item_image = $amazon_item['imagesets']['largeimage']['url'];
+	$extension = preg_match('/\.([^\.]+)$/', $amazon_item_image, $matches);
 	$extension = $matches[1] ? $matches[1] : "jpg";
-	$file_destination = "{$path}/products/{$item['asin']}.{$extension}";
-	file_put_contents($file_destination, file_get_contents($item_image));
+	$file_destination = "{$path}/products/{$amazon_item['asin']}.{$extension}";
+	file_put_contents($file_destination, file_get_contents($amazon_item_image));
 	
 	//save in {files}..
 	$image_data = image_get_info($file_destination);
@@ -114,7 +109,7 @@ function _vibio_amazon_add_images(&$state, $item)
 	$_SESSION['amazon']['temp_file_fid'] = $file->fid;
 	
 	//add to state
-	$state['values']['field_main_image'] = array(
+	$node->field_main_image = array(
 		array(
 			"fid"			=> $file->fid,
 			"title"			=> basename($file->filename),
@@ -146,11 +141,38 @@ function vibio_amazon_product_source()
 	);
 }
 
-function vibio_amazon_product_search($args)
-{
-	// at first glance, this bounces right back to this module. very confusing
-	//  to _vibio_amazon_search_result  - stephen
-	return amazon_search_search("search", $args['keywords'], true);
+/**
+ * Performs a remote search for products using the amazon_search module.
+ *
+ * This gets called via product_external_search() when the "product_source"
+ * Drupal variable is set to "vibio_amazon"
+ *
+ * @param array $args
+ *   An array of search arguments.
+ *
+ * @return array
+ *   An array of search result items, as would be returned by an implementation
+ *   of hook_search().
+ *
+ * @see product_external_search().
+ */
+function vibio_amazon_product_search($args) {
+  $products = array();
+
+  // Do a search via Amazon
+  $items = amazon_search_simple_search($args['keywords']);
+
+  foreach ($items as $item) {
+    // Save the Amazon metadata locally, in case we need to to
+    // turn this into a full Vibio Product node later (when a user
+    // clicks on a remote search result item, for example).
+    amazon_item_insert($item);
+    
+    // Collect the data necessary for display of this item in search results.
+    $products[] = _vibio_amazon_search_result($item);
+  }
+  
+  return $products;
 }
 
 function vibio_amazon_product_search_modify_search_query(&$sql)
@@ -164,25 +186,43 @@ function vibio_amazon_product_search_modify_search_query(&$sql)
 	";
 }
 
-function _vibio_amazon_search_result($item)
-{
-	$sql = "SELECT `nid`
-			FROM {amazon_item_node}
-			WHERE `asin`='%s'";
-	if (!($nid = db_result(db_query($sql, $item['asin']))))
-	{
-		return array();
-	}
-	
-	$node = node_load($nid);
-	$item['node'] = $node;
-	
-	return array(
-		'title'		=> $node->title,
-		'link'		=> $node->path ? url($node->path) : url("node/{$node->nid}"),
-		'extra' 	=> node_invoke_nodeapi($node, 'search result'),
-		'node'		=> $node,
-	);
+/**
+ * Collects the data necessary for displaying an Amazon-retrieved product search result.
+ *
+ * @param array $item
+ *   A search item, as returned from amazon_search_simple_search().
+ *
+ * @return array
+ *   A search item, with any Vibio-specific data added to the array.
+ *
+ * @see amazon_search_simple_search().
+ */
+function _vibio_amazon_search_result($item) {
+  $sql = "SELECT nid FROM {amazon_item_node} WHERE asin = '%s'";
+  if (!$nid = vibio_amazon_local_product($item['asin'])) {
+    // Use the Amazon data directly.
+    // A node will be created on the fly if a user views one of these search results.
+    $item = array(
+      'result_type' => 'remote',
+      'title'  => $item['title'],
+      'link' => url('product-page-from-asin', array('query' => array('asin' => $item['asin']))),
+      'amazon_data' => $item,
+    );
+
+  }
+  else {
+    $node = node_load($nid);
+    
+    $item = array(
+      'result_type' => 'local',
+      'title'  => $node->title,
+      'link' => $node->path ? url($node->path) : url("node/{$node->nid}"),
+      'extra' => node_invoke_nodeapi($node, 'search result'),
+      'node' => $node,
+    );
+  }
+  
+  return $item;
 }
 
 function vibio_amazon_theme()
@@ -337,4 +377,17 @@ function _vibio_amazon_get_vibio_term_from_asin($asin, $vid)
 	
 	return $tid;
 }
-?>
+
+/**
+ * Gets the local node associated with an amazon ASIN, if it exists.
+ *
+ * @param string $asin
+ *   The ASIN for which we wih to grab the local product nid.
+ *
+ * @return int
+ *   The node ID of the matching product, if found. 0 otherwise.
+ */
+function vibio_amazon_local_product($asin) {
+  $sql = "SELECT nid FROM {amazon_item_node} WHERE asin = '%s'";
+  return ($nid = db_result(db_query($sql, $item['asin']))) ? $nid : 0;
+}

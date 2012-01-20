@@ -39,7 +39,7 @@ if(strpos($image, 'sites/default/files') == false){
 	$image = "/sites/default/files/uploads/" . $image;
 }
 if ($_POST['possess'] == 'want') {
-	$top_text = "  <div id='inventory_top'><span class='bold-text'>So you want this item, and think it expresses your unique sense of style?</span><br />Vibio lets you curate your favorite items into your Collections while you wait for birthdays, paychecks or miracles to turn your wants into haves.</div>
+	$top_text = "  <div id='inventory_top'><span class='bold-text'>So you want this item and think it expresses your unique sense of style?</span><br />Vibio lets you curate your favorite items into Collections while you wait for birthdays, paychecks or miracles to turn your wants into haves.</div>
 	";
 } else {
 	$top_text = "  <div id='inventory_top'><span class='bold-text'>So you own this item and want to add it to your Collections?</span><br />Vibio is for people who possess a unique sense of style so make it good!</div>

@@ -228,7 +228,7 @@ function collection_preprocess_collection_list_item(&$vars)
 		$variables['url'] = $base_url . url('collections/'. $vars['collection']->nid);
 		$variables['image'] = $vars['collection']->image;
 
-		$share_html = theme('addthis_toolbox', $variables);
+		$share_html = theme('addthis_toolbox', NULL, $variables);
 	}
 /*
 	if($vars['collection']->is_owner ) {

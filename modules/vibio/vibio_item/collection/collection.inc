@@ -425,7 +425,7 @@ function collection_display_related($vibio_item = false){
 
   $item->node_title = strlen($item->node_title) > COLLECTION_RANDOM_COLLECTION_DESCRIPTION_MAXLENGTH ?
 		substr($item->node_title, 0, COLLECTION_RANDOM_COLLECTION_DESCRIPTION_MAXLENGTH)."..." : $item->node_title;
-  $item->node_title = l($item->node_title, 'collections/' . $item->nid);
+  $item->node_title = l($item->node_title, 'node/' . $item->nid);
   $item->users_name = l($item->users_name, 'user/' . $item->users_uid);
 
   //Choose a random related node for variety

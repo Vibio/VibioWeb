@@ -1078,8 +1078,8 @@ form#collection-edit input#edit-submit,.node-form input#edit-submit,input#edit-p
 .node-form input#edit-submit:hover{background-position: -3px -102px}
 input#edit-preview{background-position: -3px -6px; width: 77px; height: 26px}
 input#edit-preview:hover{background-position: -3px -39px;}
-form#collection-edit input#edit-submit{background-position: -2px -71px; height:27px; width:80px; float: right; margin-right: 10px}
-form#collection-edit input#edit-submit:hover{background-position: -2px -101px}
+form#collection-edit input#edit-submit{background-position: -2px -72px; height:27px; width:80px; margin-right: 10px}
+form#collection-edit input#edit-submit:hover{background-position: -2px -102px}
 form#collection-edit div#edit-privacy-setting-wrapper{border-bottom: 1px solid #CCC; margin-bottom: 20px; padding-bottom: 20px;}
 form#collection-edit div.description ,form#collection-edit textarea#edit-description, form#collection-edit input#edit-title{width: 460px}
 form#collection-edit div.description{ font-size: 13px; padding: 10px 0 0 25px}

@@ -195,7 +195,7 @@ function collection_preprocess_collection_list_item(&$vars)
 		$variables['title'] = $vars['collection']->collection_title;
 		$variables['url'] = $base_url . url('collections/'. $vars['collection']->cid);
 		
-		$share_html = theme('addthis_toolbox', $variables);
+		$share_html = theme('addthis_toolbox', NULL, $variables);
 	}
 /*
 	if($vars['collection']->is_owner ) {

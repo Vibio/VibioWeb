@@ -335,25 +335,47 @@ function offer2buy_theme(&$existing, $type, $theme, $path)
 
 /**
  * This function generates a button to make an offer for an item.
+ *  It has been expanded wiuth not_for_sale and want options
+ *
+ * Somewhat similar to 
+ *  function collection_preprocess_collection_list_item_preview
+ *  "Possession level: Have, Want, Like" 
  *
  * @param <object> $item The item's nid. Assumes that the given item is purchasable.
  * @param <int> $uid The buyer's uid, defaults to current user.
  * @return <string> HTML
  */
 function theme_offer_button($item, $uid){
+	
+  // Start dealing with Have/Want/Like, as well as for sale / not for sale
+	$possess = $item->field_have_want_like[0]['value'];
+
+
   //See if the item is for sale (1 == TRUE)
-  if ($item->offer2buy[settings][is_on_sale] == TRUE || $item->offer2buy[settings][is_on_sale] == 1) {
-    //Provide a button to make an offer.
-    $offer_button = "<div class='make-offer'><a href='/offer/$item->nid/$uid' class='make-modal offer-button'>Make Offer</a></div>"; // action_button_link'));
-  }else{
-    //Not for sale text
-    $nfs_text = t("Just showing my style: Not For Sale");
-    //Provide not for sale image
-    $offer_button = "<div class='not_for_sale'><img
-                          src='/themes/vibio/images/item/not_for_sale.png'
-                                alt='$nfs_text'
-                                title='$nfs_text'/></div>";
-  }
+  if ( $possess <= 10 ) {   // Have, including original not-set default
+
+		if ($item->offer2buy[settings][is_on_sale] == TRUE || $item->offer2buy[settings][is_on_sale] == 1) {
+			//Provide a button to make an offer.
+			$offer_button = "<div class='make-offer'><a href='/offer/$item->nid/$uid' class='make-modal offer-button'>Make Offer</a></div>"; // action_button_link'));
+		}else{
+			//Not for sale text
+			$nfs_text = t("Just showing my style: Not For Sale");
+			//Provide not for sale image
+			$offer_button = "<div class='not_for_sale'><img
+														src='/themes/vibio/images/item/not_for_sale.png'
+																	alt='$nfs_text'
+																	title='$nfs_text'/></div>";
+		}
+	} else {  // Want, Like, etc
+    if ( $possess == 20 ) { // Want
+			$offer_button = "<div class='wanted'><img 
+					src='/themes/vibio/images/item/wanted_button.png'
+          alt='I want this.  Maybe it\'s my birthday today?'
+          title='I want this.'></div>";
+		}
+
+
+	}
   
   return $offer_button;
 }
@@ -372,18 +394,29 @@ function offer2buy_get_settings($nid=false)
 }
 
 // previous: sneakily calls the init tpl to spaghetti a straightforward owner tpl
+// that seems to have been removed, delete it?
 function offer2buy_preprocess_product_owner(&$vars) {
 	//	$vars['offer2buy'] = theme("offer2buy_init", $vars['item']['node']['nid'], "button");
 	//dpm($vars);
 	$nid = $vars['item']['node']['nid'];
 
+	// Odd partial-loading node issue (grep this)
 	$item = node_load($nid);   // seems like this should occur elsewhere, 
 		// like it was partly done upstream of here.  Trace later.
 	//dpm($item); 
 
-	// Teaser and links to item
-	$vars['teaser'] = $item->teaser; // in design this is ~30chars, but I think
-		// I like longer?
+	// Teaser and links to item ... if no teaser, prompt them to ask the owner
+	//  (I don't love this design)
+  if(!$item->teaser){
+    //@todo should privacy be concerned with this; you need to be a connection to message?
+    $contact_link = l($item->name, 'messages/new/' . $item->uid);
+    $vars['teaser'] = 'Ask ' . $contact_link . ' about this item.';
+  }else{
+    $vars['teaser'] = $item->teaser;
+  }
+
+	//$vars['teaser'] = print_r($vars, true); ... 
+	//   does not include possession
 
 	// Uh oh: no design for an item page ready yet, no ux.  Maybe it should
 	// be a popup?  Maybe expand in place?

@@ -75,11 +75,10 @@ table.user-collection-preview{
 	width: 100%;
 }
 .collection_preview_init {
-	height: 16px;
+	height: 20px;
 	text-align: center;
 	font-size: 15px;
 	font-weight: bold;
-	border-top: 1px solid #CCCCCC;
 	padding-top:5px;
 }
 .collection_preview_init span:hover {

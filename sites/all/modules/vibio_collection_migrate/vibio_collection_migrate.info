@@ -1,0 +1,4 @@
+; $Id$
+name = Vibio Collection Migration
+description = Tools for migrating the old collections system to a more Drupalized system
+core = 6.x

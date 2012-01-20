@@ -1,0 +1,397 @@
+135c135
+<                         $attributes = ‘’;
+---
+>                         $attributes = '';
+138a139,143
+> /**
+>  * @todo: Future notes: Presentation, no refactoring for now
+>  * @global  $user
+>  * @param <type> $vars
+>  */
+178a184,193
+> /**
+>  * Preprocess for displaying a collection's information (see the header for
+>  * an individual collection or how the collections are displayed on the collections
+>  * page).
+>  *
+>  * @todo: Future notes: Presentation, no refactoring for now
+>  * @global <type> $base_url
+>  * @param <type> $vars
+>  * @return <type>
+>  */
+185,189c200,204
+< 
+< 	$vars['collection']->is_owner = module_exists("privacy") ? $vars['access'] == PRIVACY_ONLYME : true;
+< 	$vars['collection']->image = collection_get_image($vars['collection']->cid, false, $vars['access']);
+< 	$vars['collection']->total_items = collection_get_num_items($vars['collection']->cid, $vars['access']);
+< 
+---
+>   
+>   //@todo access variable, is that ok?
+> 	$vars['collection']->is_owner = module_exists("privacy_node") ? $vars['access'] == PRIVACY_ONLYME : true;
+> 	$vars['collection']->image = collection_get_image($vars['collection']->nid, false, $vars['access']);
+> 	$vars['collection']->total_items = collection_get_num_items($vars['collection']->nid, $vars['access']);
+195,196c210,211
+< 		$variables['title'] = $vars['collection']->collection_title;
+< 		$variables['url'] = $base_url . url('collections/'. $vars['collection']->cid);
+---
+> 		$variables['title'] = $vars['collection']->title;
+> 		$variables['url'] = $base_url . url('collections/'. $vars['collection']->nid);
+211c226
+< 	$categories = collection_get_categories($vars['collection']->cid);
+---
+> 	$categories = collection_get_categories($vars['collection']->nid);
+217a233,240
+> /**
+>  * Preprocess for individual items in a collection view
+>  *
+>  * @todo: Future notes: Presentation, no refactoring for now
+>  * @global $user $user
+>  * @global  $base_url
+>  * @param <type> $vars
+>  */
+252,295c275,301
+< 	/* Possession level: Have, Want, Like */
+< 	$possess= $vars['item']->node_data_field_have_want_like_field_have_want_like_value;
+< //print_r($vars['item']->node_data_field_have_want_like_field_have_want_like_value);
+< //print_r($vars['item']);
+< 
+< 	if ( $possess <= 10 ) {   // Have, including original not-set default
+< 		if (!$vars['item']->for_sale && $vars['item']->users_uid == $user->uid)
+< 		{
+< 			$options = array(
+< 				"attributes"	=> array(
+< 					"class"	=> "offer2buy_edit_post_type",
+< 				),
+< 			);
+< 			$vars['item']->offer2buy_price = l(t("Sell"), "offer2buy/ajax/edit-post-type/{$vars['item']->nid}", $options);
+< 		}
+< 		elseif ($vars['item']->for_sale && $vars['item']->offer2buy_price > 0)
+< 		{
+< 			$vars['item']->offer2buy_price =  "$".$vars['item']->offer2buy_price;
+< 		}
+< 		elseif ($vars['item']->for_sale)
+< 		{
+< 			$vars['item']->offer2buy_price = t("BXXest Offer");
+< 		}
+< 		else
+< 		{
+< 			$vars['item']->offer2buy_price = t("<span class='bold-text'>Status:</span> Not for Sale");
+< 		}
+< 		//If the offer2buy module is active... =always
+< 		if(module_exists('offer2buy')){
+< 			//Insert an offer button or not for sale image
+< 			$item = $vars['item'];
+< 			$item->offer2buy['settings']['is_on_sale'] = $vars['item']->for_sale; 
+< 			$vars['offer_button'] = theme('offer_button', $item, $user->uid);
+< 		}
+< 	} else {   // Want, Like, etc
+< 		if ( $possess == 20 ) { // Want
+< 			$vars['item']->offer2buy_price = "Wanted";
+< 			$vars['offer_button'] = 
+< 				"<div class='wanted'><img src='/themes/vibio/images/item/wanted_button.png'
+< 					alt='I want this.  Maybe it\'s my birthday today?'
+< 					title='I want this.'></div>";
+< 			//override for_sale, if it was set
+< 			$vars['item']->for_sale = '';
+< 		}
+---
+> 	if (!$vars['item']->for_sale && $vars['item']->users_uid == $user->uid)
+> 	{
+> 		$options = array(
+> 			"attributes"	=> array(
+> 				"class"	=> "offer2buy_edit_post_type",
+> 			),
+> 		);
+> 		$vars['item']->offer2buy_price = l(t("Sell"), "offer2buy/ajax/edit-post-type/{$vars['item']->nid}", $options);
+> 	}
+> 	elseif ($vars['item']->for_sale && $vars['item']->offer2buy_price > 0)
+> 	{
+> 		$vars['item']->offer2buy_price =  "$".$vars['item']->offer2buy_price;
+> 	}
+> 	elseif ($vars['item']->for_sale)
+> 	{
+> 		$vars['item']->offer2buy_price = t("Best Offer");
+> 	}
+> 	else
+> 	{
+> 		$vars['item']->offer2buy_price = t("<span class='bold-text'>Status:</span> Not for Sale");
+> 	}
+> 	//If the offer2buy module is active...
+> 	if(module_exists('offer2buy')){
+> 		//Insert an offer button or not for sale image
+> 		$item = $vars['item'];
+> 		$item->offer2buy['settings']['is_on_sale'] = $vars['item']->for_sale; 
+> 		$vars['offer_button'] = theme('offer_button', $item, $user->uid);
+298a305,308
+> /**
+>  * @todo: Future notes: Presentation, no refactoring for now
+>  * @param <type> $vars
+>  */
+304a315,325
+> /**
+>  * Associates vibio_items with collection nodes
+>  * @todo: refactor, associating vibio_items through the $item->field_collection
+>  *
+>  * @global <type> $user
+>  * @param <type> $node
+>  * @param <type> $op
+>  * @param <type> $a3
+>  * @param <type> $a4
+>  * @return <type>
+>  */
+311c332
+< 
+---
+>   //$node is a vibio_item
+314d334
+< 
+316a337
+>     //Display a message showing which collections the new vibio_item belongs to
+318,319c339,341
+< 			$cids = isset($node->collection_info) ? $node->collection_info['cid'] : false;
+< 			if ($cids)
+---
+>       //Get the collections the item is associated with
+> 			$collection_nids = isset($node->field_collection[0]['nid']) ? $node->field_collection : false;
+> 			if (!$collection_nids)
+321,324c343,346
+< 				$cids = implode(",", $cids);
+< 				$sql = "SELECT `cid`, `title`
+< 						FROM {collection}
+< 						WHERE `cid` IN ($cids)";
+---
+> 				$collection_nids = implode(",", $collection_nids);
+> 				$sql = "SELECT `nid`, `title`
+> 						FROM {node}
+> 						WHERE `nid` IN ($collection_nids)";
+330c352
+< 					$collections[] = l($row->title, "collections/{$row->cid}");
+---
+> 					$collections[] = l($row->title, "collections/{$row->nid}");
+332a355
+>         //Value substitutions for item creation message
+337c360,361
+< 
+---
+>           
+>         //Display message
+342a367
+>         module_invoke_all('collection_insert', $node->uid, $node->nid);
+343a369
+>     //
+345,347c371,385
+< 			$cids = isset($node->collection_info) ? $node->collection_info['cid'] : collection_get_item_cid($node->nid);
+< 			unset($node->collection_info);
+< 
+---
+>       $collection_nids = array();
+>       if(isset($node->field_collection[0]['nid'])){
+>         foreach($node->field_collection as $collection_record){
+>           $collection_nids[] = $collection_record['nid'];
+>         }
+>       }elseif($node->collection_info){
+>         //This case is legacy, @todo remove
+>         foreach($node->collection_info['cid'] as $cid){
+>           $collection_nids[] =  $cid;
+>         }
+>       }else{
+>         $collection_nids = collection_get_item_cid($node->nid);
+>       }
+>       unset($node->collection_info);
+>       //Isn't the checking to see if it's an update unnecessary?
+349c387,388
+< 			$delete_cids = array_diff($old_cids, $cids);
+---
+> 			$delete_cids = array_diff($old_cids, $collection_nids);
+>       //Delete the collection ids that have been removed
+353,355c392,394
+< 				$sql = "DELETE FROM {collection_items}
+< 						WHERE `item_nid`=%d
+< 							AND `cid` IN ($delete_cids)";
+---
+> 				$sql = "DELETE FROM {content_field_collection}
+> 						WHERE `nid`=%d
+> 							AND `field_collection_nid` IN ($delete_cids)";
+359,363c398,400
+< 			$sql = "INSERT INTO {collection_items}
+< 					(`cid`, `item_nid`) VALUES";
+< 			$vals = array();
+< 			$args = array();
+< 			foreach (array_diff($cids, $old_cids) as $cid)
+---
+>       //Insert the new collection ids in. @todo: necessary? Doesn't CCK take care?
+>       $delta = 0;
+> 			foreach (array_diff($collection_nids, $old_cids) as $cid)
+365,367c402,403
+< 				$vals[] = "(%d, %d)";
+< 				$args[] = $cid;
+< 				$args[] = $node->nid;
+---
+>         $node->field_collection[$delta]['nid'] = $cid;
+>         $delta++;
+370,376c406,408
+< 			if (!empty($vals))
+< 			{
+< 				$sql .= implode(",", $vals);
+< 				db_query($sql, $args);
+< 			}
+< 
+< 			module_invoke_all("collection_update", $user->uid, array_unique(array_merge($cids, $old_cids)));
+---
+>       //Defines hook collection_update
+>       //@todo: check if there are any implementations that might interfere
+> 			module_invoke_all("collection_update", $user->uid, array_unique(array_merge($collection_nids, $old_cids)));
+380,381c412,413
+< 			$sql = "DELETE FROM {collection_items}
+< 					WHERE `item_nid`=%d";
+---
+> 			$sql = "DELETE FROM {content_field_collection}
+> 					WHERE `nid`=%d";
+382a415,417
+> 
+>       //Defines hook collection_delete_item
+>       //@todo: check if there are any implementations that might interfere
+387a423,426
+> /**
+>  *
+>  * @return <type>
+>  */
+394a434,439
+> /**
+>  *
+>  * @param <type> $form
+>  * @param <type> $state
+>  * @return <type> 
+>  */
+407a453,459
+> /**
+>  * Adds a collections form to when adding a new product (implies item creation).
+>  *
+>  * @todo: delete function in a later refactoring
+>  * @param <type> $form
+>  * @param <type> $state 
+> **/
+434,435c486,487
+< 		"#title"		=> t("Collection"),
+< 		"#description"	=> t("Select which collections to add this item to. Choose all that apply."), //:" . '<p><strong><a href="/collections/new?automodalReload=true" class="automodal">* Add new collection</a></strong>'),
+---
+> 		"#title"		=> t("Add this item to your Collection(s)"),
+> 		"#description"	=> t("You can add your item to multiple Collections by holding down the 'Command' or 'Ctrl' key."), //:" . '<p><strong><a href="/collections/new?automodalReload=true" class="automodal">* Add new collection</a></strong>'),
+460a513,518
+> /**
+>  *
+>  * @global $user $user
+>  * @param <type> $form_vals
+>  * @return <type>
+>  */
+470,476c528,534
+< 	}
+< 
+< 	return array(
+< 		"collection_info"	=> array(
+< 			"cid"	=> array($default => $default),
+< 		),
+< 	);
+---
+> 	}else{
+>     return array(
+>       "collection_info"	=> array(
+>         "cid"	=> array($default => $default),
+>       ),
+>     );
+>   }
+492,494c550,552
+< 
+< 	$sql = "DELETE FROM {collection_items}
+< 			WHERE `item_nid`=%d";
+---
+>   
+> 	$sql = "DELETE FROM {content_field_collection}
+> 			WHERE `nid`=%d";
+497,500c555,556
+< 	$sql = "INSERT INTO {collection_items}
+< 			(`cid`, `item_nid`) VALUES
+< 			(%d, %d)";
+< 	db_query($sql, $new_cid, $node->nid);
+---
+>   $node->field_collection[]['nid'] = $new_cid;
+>   node_save($node);
+550a607,613
+> /**
+>  * Returns the number of collections an external viewer is allowed to see
+>  * according to the privacy settings?
+>  * 
+>  * @param <type> $uid
+>  * @return <type>
+>  */
+559c622
+< 		if ($c['privacy'] > $access)
+---
+> 		if ($c->privacy_setting > $access)
+571a635,641
+> /**
+>  * Check on user login to see if the user has created 100 collections in 6 months,
+>  * award badge if they have.
+>  * 
+>  * @param <type> $uid
+>  * @return <type>
+>  */
+578,579c648,649
+< 			FROM {collection}
+< 			WHERE `uid`=%d";
+---
+> 			FROM {node}
+> 			WHERE `uid`=%d AND `type`='collection'";
+598,602c668,676
+< 	$sql = "SELECT c.*, u.name AS user_name
+< 			FROM {collection} c JOIN {users} u ON c.`uid`=u.`uid`
+< 			WHERE `cid`=%d";
+< 	$collection = db_fetch_array(db_query($sql, $cid));
+< 	$collection = array_merge($collection, module_invoke_all("collection_load", $collection, $as_uid)); // stephen notes: $as_uid, what is it, where from?
+---
+> 
+>   $collection = node_load($cid);
+> 
+>   //For legacy purposes, @todo delete
+>   $collection->description = $collection->body;
+>   $collection->user_name = $collection->name;
+> 
+>   //Add further data to the collection object
+> 	$collection = (object) array_merge((array) $collection, (array) module_invoke_all("collection_load", $collection, $as_uid)); // stephen notes: $as_uid, what is it, where from?
+610c684
+< 	if ($user->uid == $collection['uid'])
+---
+> 	if ($user->uid == $collection->uid)
+614c688
+< 	elseif (isset($collection['privacy']) && module_exists("privacy"))
+---
+> 	elseif (isset($collection->privacy_setting) && module_exists("privacy_node"))
+616c690
+< 		return privacy_get_access_level($collection['uid']) >= $collection['privacy'] && user_access("collections viewer");
+---
+> 		return privacy_get_access_level($collection->uid) >= $collection->privacy_setting && user_access("collections viewer");
+627c701
+< 
+---
+>   //If $collection is an nid...
+629a704
+>     //...grab the author's uid
+631,633c706,708
+< 				FROM {collection}
+< 				WHERE `cid`=%d";
+< 		$collection = db_fetch_array(db_query($sql, $collection));
+---
+> 				FROM {node}
+> 				WHERE `nid`=%d";
+> 		$collection = db_fetch_object(db_query($sql, $collection));
+636c711
+< 	return $user->uid == $collection['uid'];
+---
+> 	return $user->uid == $collection->uid;
+641c716
+< 	return $collection['title'];
+---
+> 	return $collection->title;
+642a718
+> 

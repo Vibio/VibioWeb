@@ -40,6 +40,7 @@
 #product-ajax-add-form #edit-collections-wrapper {
 	float: left;
 	margin-right: 10px;
+	width: 240px
 }
 #product-ajax-add-form #edit-body-wrapper{
 	clear: both

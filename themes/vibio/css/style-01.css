@@ -859,16 +859,19 @@ a#content-email{background-position:-82px -1px; width:22px}
 div.box div.search-links{height:35px}
 /*Have and Want Buttons*/
 .inventory_add, .inventory_want{background:url(../images/want_have.png) no-repeat; height:26px; width:53px; border:none; text-indent:-9999px; cursor:pointer; float:left; z-index:500}
-.inventory_add{background-position:0px 0px}
+.inventory_add{background-position:0px 0px; position: absolute; right: 28px}
 .inventory_add:hover{background-position:-100px 0px; z-index:500}
-.inventory_want{background-position:2px -30px}
+.inventory_want{background-position:2px -30px; position: absolute; left: 28px}
 .inventory_want:hover{background-position:-98px -30px}
 .section-search div.search-links{margin-top: -55px}
-.you-own{background: url(../images/you_have_this.png) no-repeat; display: block; text-indent: -9999px; height: 30px; width: 153px; left:-1.2em; position: absolute}
+.you-want{background: url(../images/item/flag_want.png) no-repeat; display: block; text-indent: -9999px; 
+height: 80px; width: 80px; left:-4px; top:-4px; position: absolute}
+.you-own-it{background: url(../images/item/flag_have.png) no-repeat; display: block; text-indent: -9999px; 
+height: 80px; width: 80px; left:-4px; top:-4px; position: absolute}
 /*Have linke Product description*/
 .product_node_data .inventory_add{background:none; float:none; color:#1691bd; margin-bottom:20px}
 .product_node_data .inventory_add:hover{background-position:0px -56px}
-div.views-field.views-field-nid{position:absolute; width:128px; left:-6px; height:2px}
+div.views-field.views-field-nid{width:128px; left:0px; height:35px}
 /*Add product header*/
 #add-product h2{font-size:18px}
 #add-product-l{float:left; width:235px; text-align:center}
@@ -1007,13 +1010,13 @@ ul.secondary a.active:hover{  border:1px solid #c0c0c0;   color:#000;   backgrou
 .view.view-flag-featured .views-row-last{}
 .view.view-flag-featured .view-content{width: 725px;}
 .view.view-flag-featured{  width:740px;   position:relative}
-.views-fluidgrid-item .views-field-field-main-image-fid{  width:160px;   border:1px solid #CCCCCC;   margin:5px;   padding:0}
+.views-fluidgrid-item .views-field-field-main-image-fid{  width:160px; position:relative;  border:1px solid #CCCCCC;   margin:5px;   padding:0}
 .views-fluidgrid-item{width:170px; float:left;  margin:0 5px 20px 0;   border:1px solid #CCCCCC;   background:#fff}
 .views-fluidgrid-item .views-field-title{  width:160px;   margin:8px 5px 16px 5px}
 .views-fluidgrid-item .field-content{  margin:0;   padding:0}
 .search-col{  float:left;   width:177px;   padding:0 0 0 5px;   top:0px}
 .search-col .views-fluidgrid-item{  margin:0 0 20px 0!important;   position:relative}
-div.search-links{  margin-top:-40px;   margin-left:32px;   position:relative;   width:185px}
+div.search-links{  margin-top:-40px;   margin-left:32px;   width:185px}
 .jquery_dropdown_container{  width:230px;   z-index:1;   position:relative}
 div.jquery_dropdown_header{  background:url(../images/jquery-dropdown-header.png) left top no-repeat;   border:0;   font-size:13px;   width:220px;   padding-left:10px;   font-weight:bold;   height:24px;   line-height:24px;   overflow:hidden;   text-indent:2px;   color:#666;   position:relative;   z-index:1!important;   font-weight:normal}
 ul.jquery_dropdown_list{  border:1px solid #CCC;   background:#fff;   left:0;   margin:0;   padding:0;   position:absolute;   top:24px;   width:205px;   z-index:2!important}

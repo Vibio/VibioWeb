@@ -1,6 +1,5 @@
 <?php
-//THIS IS HACKED!!!! Added a 'node' object in the array passed to the theme_addthis_x()
-//by addthis_link()
+
 /**
  * @file
  * Provides integration with the AddThis.com bookmarking & sharing service.
@@ -85,7 +84,6 @@ function addthis_link($type, $node = NULL, $teaser = FALSE) {
     'title' => theme($addthis_widget_type, NULL, array(
       'url' => url('node/' . $node->nid, array('absolute' => TRUE)),
       'title' => $node->title,
-      'node' => $node, //This is a hacked line
     )),
     'html' => TRUE,
   );

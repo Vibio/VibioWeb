@@ -1,28 +1,14 @@
-<?php
+#!/usr/bin/env drush
+
 /**
- * Mapping the default collection value to various collections. If a record
- * exists in the old DB for a given collection, that means that it's the user's
- * default.
- *
- * @param <type> $node
- * @param <type> $target
- * @param <type> $value
+ * Aggregated migration script to be run from Drush
  */
-function vibio_collection_migrate_set_default($node, $target, $value){
-  if(!empty($value)){
-    $node->field_default_collection[0]['value'] = 1;
-  }
-}
 
-function vibio_collection_migrate_set_item_nids($node, $target, $value){
-  $collection_nid = $node->nid;
-  $item = node_load($value);
+  vibio_collection_migrate_privacy();
+  vibio_collection_migrate_collections();
+  vibio_collection_migrate_taxonomy();
 
-  //Insert $item_nid into the field_collection
-  $item->field_collection_nid[]['value'] = $collection_nid;
-  node_save($item);
-}
-
+//Functions follow
 function vibio_collection_migrate_menu(){
       $items['vibio_collection_migrate_collections'] = array(
       'page callback' => 'vibio_collection_migrate_collections',
@@ -143,5 +129,3 @@ function vibio_collection_migrate_privacy(){
   db_query($node_sql);
 
 }
-
-?>

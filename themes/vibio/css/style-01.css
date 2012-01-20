@@ -1,5 +1,6 @@
 /*Combination of old Css files - Craig Tockman Vibio 11-28-2011*/
 /*Hide things with CSS display:none*/
+div#edit-field-have-want-like-wrapper, 
 div#block-collection-random_collection .collection_item_count,  div#block-collection-random_collection .collection_description, 
 div#block-collection-random_collection .collection_categories,  div#block-collection-random_collection .collection_date_added, 
 div#block-collection-random_collection .collection_link, form#privatemsg-new input#edit-preview, form#privatemsg-new a#edit-cancel, 

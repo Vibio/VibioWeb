@@ -82,7 +82,7 @@ function product_ajax_add_form($state, $product, $possess)
 		$form['collections'] = array(
 			"#type"			=> "select",
 			"#title"		=> t("Collection(s)"),
-			//"#multiple"		=> true,
+			"#multiple"		=> true,
 			"#options"		=> collection_options(),
 			"#default_value"=> $default,
 		);

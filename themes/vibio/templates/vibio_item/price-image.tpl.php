@@ -4,7 +4,7 @@
 //  But this will throw an image instead of the dollar sign.
 if ( $item->field_have_want_like[0]['value'] == VIBIO_ITEM_WANT ) {
 		// css decision: item_pricetag or item_want or both?
-		$image = "want.jpg";
+		$image = "flag_want.png";
     echo "
       <div class='item_pricetag item_want'>
         <img src='/themes/vibio/images/item/{$image}' />

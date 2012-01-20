@@ -429,7 +429,7 @@ function profile_ext_preprocess_user_profile(&$vars)
 		!empty($share_html) ? $msg = "<h1 class='page-title-sub'>Collections</h1>" . $share_html : $msg = "<h1 class='page-title-sub'>Collections</h1>";
 		$vars['sec_content'] =  
 				$msg .
-				views_embed_view("user_collections", "default", $uid, $access);
+				views_embed_view("user_collections1", "default", $uid, $access);
 
 
 		break;
@@ -511,7 +511,7 @@ function profile_ext_preprocess_profile_ext_profile_info(&$vars)
 	global $user;
 	$u = user_load($vars[uid]);
 		
-	if ($vars['access'] >= privacy_get($vars['uid'], "profile", "profile_about_me"))
+	if ($vars['access'] >= privacy_user_get($vars['uid'], "profile", "profile_about_me"))
 	{
 		module_load_include("inc", "profile_ext", "profile_ext.pages");
 		
@@ -522,7 +522,7 @@ function profile_ext_preprocess_profile_ext_profile_info(&$vars)
 		$vars['profile_external_accounts'] = profile_ext_manage_external_accounts($vars['uid']);
 	}
 	
-	if ($vars['access'] >= privacy_get($vars['uid'], "profile", "profile_demographics"))
+	if ($vars['access'] >= privacy_user_get($vars['uid'], "profile", "profile_demographics"))
 	{
 		module_load_include("inc", "profile_ext", "profile_ext.pages");
 		
@@ -545,7 +545,7 @@ function profile_ext_access_dashboard()
 
 function profile_ext_access_profile($user, $category)
 {
-	$privacy_setting = privacy_get($user->uid, "profile", "profile_{$category}");
+	$privacy_setting = privacy_user_get($user->uid, "profile", "profile_{$category}");
 	return user_access("access user profiles") && privacy_get_access_level($user->uid) >= $privacy_setting;
 }
 
@@ -571,7 +571,7 @@ function profile_ext_form_user_profile_form_alter(&$form, &$state)
 	if (in_array($category, $profile_categories))
 	{
 		$form_category = $form['_category']['#value'];
-		$form[$form_category]['privacy_settings_fieldset'] = _privacy_fieldset($form['_account']['#value']->uid, "profile", "profile_{$category}");
+		$form[$form_category]['privacy_settings_fieldset'] = _privacy_user_fieldset($form['_account']['#value']->uid, "profile", "profile_{$category}");
 		$form['#submit'][] = "_privacy_form_submit";
 	}
 }

@@ -1,0 +1,58 @@
+<?php
+/**
+ * Creates DB tables
+ */
+function privacy_user_install(){
+  drupal_install_schema('privacy_user');
+}
+
+/**
+ * Drops DB tables
+ */
+function privacy_user_uninstall(){
+  drupal_uninstall_schema('privacy_user');
+}
+
+/**
+ * Implements hook_schema().
+ * 
+ * @return array
+ */
+function privacy_user_schema(){
+  $schema['privacy_user'] = array(
+    'fields' => array(
+      'uid' => array(
+        'description' => 'The primary identifier for a user',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'type' => array(
+        'description' => 'The realm of the setting (usually a module or page)',
+        'type' => 'varchar',
+        'length' => 30,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'type_id' => array(
+        'description' => 'The specific id of the setting (usually a field)',
+         'type' => 'varchar',
+         'length' => 30,
+         'not null' => TRUE,
+         'default' => '',
+      ),
+      'setting' => array(
+        'description' => 'Privacy access setting.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('uid', 'type', 'type_id'),
+    'indexes' => array('uid' => array('uid')),
+  );
+
+  return $schema;
+}
+
+?>

@@ -66,17 +66,28 @@ function collection_block($op="list", $delta=0, $edit=array())
 	{
 		case "list":
 			return array(
+        "related_collection" => array(
+          "info" => t("Related Collection"),
+          "cache"=> BLOCK_CACHE_PER_PAGE,
+        ),
 				"random_collection"	=> array(
 					"info"	=> t("Random Collection"),
 					"cache"	=> BLOCK_NO_CACHE,
 				),
 			);
 		case "view":
+      module_load_include("inc", "collection", "collection.pages");
+      module_load_include('inc', 'collection');
 			switch ($delta)
 			{
+        case "related_collection":
+          return array(
+            "subject" => "",
+            "content" => collection_display_related(),
+          );
 				case "random_collection":
 					global $user;
-					module_load_include("inc", "collection", "collection.pages");
+
 
 					return array(
 						"subject"	=> "",
@@ -122,6 +133,11 @@ function collection_theme(&$existing)
 		"collection_image" => array(
 			"arguments"	=> array('cid' => null, 'imagecache' => 'full_profile_pic', 'access' => FALSE)
 		),
+    "collection_related_item" => array(
+			"arguments"	=> array("item" => false),
+			"template"	=> "templates/collections/related-item",
+			"path"		=> drupal_get_path("theme", "vibio"),
+    ),
 	);
 }
 
@@ -132,10 +148,15 @@ function theme_collection_image($cid, $imagecache, $access){
                         $item_image = collection_get_image($cid, false, $access);   
                         $alt = 'Collection Image';
                         $title = 'Collection Image';
-                        $attributes = ‘’;
+                        $attributes = '';
                         return theme('imagecache', $imagecache, $item_image, $alt, $title, $attributes);
 }
 
+/**
+ * @todo: Future notes: Presentation, no refactoring for now
+ * @global  $user
+ * @param <type> $vars
+ */
 function collection_preprocess_collection_view_collection(&$vars)
 {
 	global $user;
@@ -176,25 +197,37 @@ function collection_preprocess_collection_view_collection(&$vars)
 	}
 }
 
+/**
+ * Preprocess for displaying a collection's information (see the header for
+ * an individual collection or how the collections are displayed on the collections
+ * page).
+ *
+ * @todo: Future notes: Presentation, no refactoring for now
+ * @global <type> $base_url
+ * @param <type> $vars
+ * @return <type>
+ */
 function collection_preprocess_collection_list_item(&$vars)
 {
 	if(empty($vars['collection']))
 		return;
 
 	module_load_include("inc", "collection");
-
-	$vars['collection']->is_owner = module_exists("privacy") ? $vars['access'] == PRIVACY_ONLYME : true;
-	$vars['collection']->image = collection_get_image($vars['collection']->cid, false, $vars['access']);
-	$vars['collection']->total_items = collection_get_num_items($vars['collection']->cid, $vars['access']);
-
+  
+  //@todo access variable, is that ok?
+	$vars['collection']->is_owner = module_exists("privacy_node") ? $vars['access'] == PRIVACY_ONLYME : true;
+	$vars['collection']->image = collection_get_image($vars['collection']->nid, false, $vars['access']);
+  //@todo: total_items is cached for anonymous users.
+	$vars['collection']->total_items = collection_get_num_items($vars['collection']->nid, $vars['access']);
 	//Add sharing buttons; requires addthis module
 	$share_html = "";
 	//show preview= 1 on the collections page, null on collection. We don't want to add sharing on collections page for right now.
 	if(module_exists('addthis') && empty($vars['show_preview'])){
 		global $base_url;
-		$variables['title'] = $vars['collection']->collection_title;
-		$variables['url'] = $base_url . url('collections/'. $vars['collection']->cid);
-		
+		$variables['title'] = $vars['collection']->title;
+		$variables['url'] = $base_url . url('collections/'. $vars['collection']->nid);
+		$variables['image'] = $vars['collection']->image;
+
 		$share_html = theme('addthis_toolbox', $variables);
 	}
 /*
@@ -208,13 +241,21 @@ function collection_preprocess_collection_list_item(&$vars)
  */
 	$vars['collection']->share_html = $share_html;
 
-	$categories = collection_get_categories($vars['collection']->cid);
+	$categories = collection_get_categories($vars['collection']->nid);
 	if(!empty($categories)) {
 		$category_text = t("Tags: !categories", array("!categories" => implode(", ", $categories)));
 		$vars['collection']->collection_categories = "<span class='collection_categories'>$category_text</span>";
 	}
 }
 
+/**
+ * Preprocess for individual items in a collection view
+ *
+ * @todo: Future notes: Presentation, no refactoring for now
+ * @global $user $user
+ * @global  $base_url
+ * @param <type> $vars
+ */
 function collection_preprocess_collection_list_item_preview(&$vars)
 {
 	global $user;
@@ -245,129 +286,200 @@ function collection_preprocess_collection_list_item_preview(&$vars)
 		global $base_url;
 		$variables['url'] = $base_url . url('node/'. $vars['item']->nid);
 		$variables['title'] = $vars['item']->node_title;
-                $share_html = theme('addthis_button', $variables);
+    $share_html = theme('addthis_button', $variables);
         }
 	$vars['share_links'] = $share_html;
 
-	if (!$vars['item']->for_sale && $vars['item']->users_uid == $user->uid)
-	{
-		$options = array(
-			"attributes"	=> array(
-				"class"	=> "offer2buy_edit_post_type",
-			),
-		);
-		$vars['item']->offer2buy_price = l(t("Sell"), "offer2buy/ajax/edit-post-type/{$vars['item']->nid}", $options);
-	}
-	elseif ($vars['item']->for_sale && $vars['item']->offer2buy_price > 0)
-	{
-		$vars['item']->offer2buy_price =  "$".$vars['item']->offer2buy_price;
-	}
-	elseif ($vars['item']->for_sale)
-	{
-		$vars['item']->offer2buy_price = t("Best Offer");
-	}
-	else
-	{
-		$vars['item']->offer2buy_price = t("<span class='bold-text'>Status:</span> Not for Sale");
-	}
-	//If the offer2buy module is active...
-	if(module_exists('offer2buy')){
-		//Insert an offer button or not for sale image
-		$item = $vars['item'];
-		$item->offer2buy['settings']['is_on_sale'] = $vars['item']->for_sale; 
-		$vars['offer_button'] = theme('offer_button', $item, $user->uid);
+
+
+	/* Possession level: Have, Want, Like */
+	// A hack to get it from database
+	// Odd partial-loading node issue (grep this)
+
+	// Somewhat similar to:
+	// function theme_offer_button($item, $uid){
+	// I'm not sure why this isn't one style (don't think it is one design)
+	//  and then unite code.
+
+	vibio_item_have_want_value_retrieval($vars['item']);
+	$possess = $vars['item']->field_have_want_like[0]['value'];
+
+	if ( $possess <= 10 ) {   // Have, including original not-set default
+		if (!$vars['item']->for_sale && $vars['item']->users_uid == $user->uid)
+		{
+			$options = array(
+				"attributes"	=> array(
+					"class"	=> "offer2buy_edit_post_type",
+				),
+			);
+			$vars['item']->offer2buy_price = l(t("Sell"), "offer2buy/ajax/edit-post-type/{$vars['item']->nid}", $options);
+		}
+		elseif ($vars['item']->for_sale && $vars['item']->offer2buy_price > 0)
+		{
+			$vars['item']->offer2buy_price =  "$".$vars['item']->offer2buy_price;
+		}
+		elseif ($vars['item']->for_sale)
+		{
+			$vars['item']->offer2buy_price = t("Best Offer");
+		}
+		else
+		{
+			$vars['item']->offer2buy_price = t("<span class='bold-text'>Status:</span> Not for Sale");
+		}
+		//If the offer2buy module is active... =always
+		if(module_exists('offer2buy')){
+			//Insert an offer button or not for sale image
+			$item = $vars['item'];
+			$item->offer2buy['settings']['is_on_sale'] = $vars['item']->for_sale; 
+			$vars['offer_button'] = theme('offer_button', $item, $user->uid);
+		}
+	} else {   // Want, Like, etc
+		if ( $possess == 20 ) { // Want
+			$vars['item']->offer2buy_price = "Wanted";
+			$vars['offer_button'] = 
+				"<div class='wanted'><img src='/themes/vibio/images/item/wanted_button.png'
+					alt='I want this.  Maybe it\'s my birthday today?'
+					title='I want this.'></div>";
+			//override for_sale, if it was set
+			$vars['item']->for_sale = '';
+		}
 	}
 }
 
+
+/**
+ * @todo: Future notes: Presentation, no refactoring for now
+ * @param <type> $vars
+ */
 function collection_preprocess_page(&$vars)
 {
 	drupal_add_js("themes/vibio/js/collections.js");
 	drupal_add_css("themes/vibio/css/collections.css");
 }
 
+/**
+ * Associates vibio_items with collection nodes
+ * @todo: refactor, associating vibio_items through the $item->field_collection
+ *
+ * @global <type> $user
+ * @param <type> $node
+ * @param <type> $op
+ * @param <type> $a3
+ * @param <type> $a4
+ * @return <type>
+ */
 function collection_nodeapi(&$node, $op, $a3=null, $a4=null)
 {
 	if ($node->type != "vibio_item")
 	{
 		return;
 	}
-
+  //$node is a vibio_item
 	global $user;
 	module_load_include("inc", "collection");
-
 	switch ($op)
 	{
+    //Display a message showing which collections the new vibio_item belongs to
 		case "insert":
-			$cids = isset($node->collection_info) ? $node->collection_info['cid'] : false;
-			if ($cids)
+      $collection_nids = array();
+      //Get the collections the item is associated with
+      //field_collection is typically used by the edit item form
+      if(isset($node->field_collection[0]['nid'])){
+        $collection_nids = $node->field_collection;
+      }
+      //collection_info is used by product.pages.php; ie the have/want popups
+      if(isset($node->collection_info)){
+        $collection_nids = array_merge($collection_nids, $node->collection_info['cid']);
+      }
+			//$collection_nids = isset($node->field_collection[0]['nid']) ? $node->field_collection : false;
+			if ($collection_nids)
 			{
-				$cids = implode(",", $cids);
-				$sql = "SELECT `cid`, `title`
-						FROM {collection}
-						WHERE `cid` IN ($cids)";
+				$collection_nids = implode(",", $collection_nids);
+				$sql = "SELECT `nid`, `title`
+						FROM {node}
+						WHERE `nid` IN ($collection_nids)";
 				$res = db_query($sql);
 
 				$collections = array();
 				while ($row = db_fetch_object($res))
 				{
-					$collections[] = l($row->title, "collections/{$row->cid}");
+					$collections[] = l($row->title, "collections/{$row->nid}");
 				}
 
+        //Value substitutions for item creation message
 				$t_args = array(
 					"!item" 		=> l($node->title, "node/{$node->nid}"),
 					"!collections"	=> implode(", ", $collections),
 				);
-
+          
+        //Display message
 				$message = count($collections) > 1 ?
 					t("!item has been created and added to the following collections: !collections", $t_args) :
 					t("!item has been created and added to your !collections collection", $t_args);
 
 				drupal_set_message($message);
+        module_invoke_all('collection_insert', $node->uid, $node->nid);
 			}
+    //
 		case "update":
-			$cids = isset($node->collection_info) ? $node->collection_info['cid'] : collection_get_item_cid($node->nid);
-			unset($node->collection_info);
+      $collection_nids = array();
+      //Consolidate all collection nids into field_collection
+      //@todo: eliminate collection_info
+      if($node->collection_info){
+        foreach($node->collection_info['cid'] as $cid){
+          $node->field_collection = array();
+          $node->field_collection[]['nid'] = $cid;
+        }
+        //Make sure there are no duplicate values in field_collection
+        $node->field_collection = array_unique($node->field_collection);
+      }
 
-			$old_cids = $op == "update" ? collection_get_item_cid($node->nid) : array();
-			$delete_cids = array_diff($old_cids, $cids);
-			if (!empty($delete_cids))
+      //Create a list of new collection_nids to be added
+      if(isset($node->field_collection[0]['nid'])){
+        foreach($node->field_collection as $collection_record){
+          $collection_nids[] = $collection_record['nid'];
+        }
+      }elseif($node->collection_info){
+        //This case is legacy, @todo remove
+        foreach($node->collection_info['cid'] as $cid){
+          $collection_nids[] =  $cid;
+        }
+      }else{
+        //If no collection nids set, get the already set values
+        $collection_nids = collection_get_item_cid($node->nid);
+      }
+      unset($node->collection_info);
+      unset($node->field_collection);
+
+      $old_cids = $op == "update" ? collection_get_item_cid($node->nid) : array();
+
+      //Insert the new collection ids in, deleting the old
+			foreach (array_diff($collection_nids, $old_cids) as $cid)
 			{
-				$delete_cids = implode(",", $delete_cids);
-				$sql = "DELETE FROM {collection_items}
-						WHERE `item_nid`=%d
-							AND `cid` IN ($delete_cids)";
-				db_query($sql, $node->nid);
+        $node->field_collection[]['nid'] = $cid;
 			}
 
-			$sql = "INSERT INTO {collection_items}
-					(`cid`, `item_nid`) VALUES";
-			$vals = array();
-			$args = array();
-			foreach (array_diff($cids, $old_cids) as $cid)
-			{
-				$vals[] = "(%d, %d)";
-				$args[] = $cid;
-				$args[] = $node->nid;
-			}
-
-			if (!empty($vals))
-			{
-				$sql .= implode(",", $vals);
-				db_query($sql, $args);
-			}
-
-			module_invoke_all("collection_update", $user->uid, array_unique(array_merge($cids, $old_cids)));
+      //Defines hook collection_update
+      //@todo: check if there are any implementations that might interfere
+			module_invoke_all("collection_update", $user->uid, array_unique(array_merge($collection_nids, $old_cids)));
 			break;
 		case "delete":
 			$cid = collection_get_item_cid($node->nid);
-			$sql = "DELETE FROM {collection_items}
-					WHERE `item_nid`=%d";
+			$sql = "DELETE FROM {content_field_collection}
+					WHERE `nid`=%d";
 			db_query($sql, $node->nid);
+
+      //Defines hook collection_delete_item
+      //@todo: check if there are any implementations that might interfere
 			module_invoke_all("collection_delete_item", $user->uid, $cid, $node->nid);
 			break;
 	}
 }
 
+/**
+ *
+ * @return <type>
+ */
 function collection_views_api()
 {
 	return array(
@@ -375,6 +487,12 @@ function collection_views_api()
 	);
 }
 
+/**
+ *
+ * @param <type> $form
+ * @param <type> $state
+ * @return <type> 
+ */
 function collection_form_product_node_form_alter(&$form, &$state)
 {
 	if (module_exists("product") && !product_get_autoadd(false))
@@ -388,22 +506,29 @@ function collection_form_product_node_form_alter(&$form, &$state)
 	}
 }
 
+/**
+ * Adds a collections form to when adding a new product (implies item creation).
+ *
+ * @todo: delete function in a later refactoring
+ * @param <type> $form
+ * @param <type> $state 
+**/
 function collection_form_vibio_item_node_form_alter(&$form, &$state)
 {
 	module_load_include("inc", "collection");
-
-	// Empty collections?
+  $options = collection_options();
+	//If there aren't any collections
 	if (!$form['#node']->nid && 
-			(count(collection_options()) < 1 )) {
-		$default_array = collection_get_user_default(false, true);
+			(count($options) < 1 )) {
+		$default = collection_get_user_default(false, true);
 		// collection_options seems to cache, so force it.  This is repeat
 		//  code with collection_get_user_default which I expect will be gone
 		//  in two weeks.
-		$default = $default_array['cid'];
-		$options = array();
+    $options = array();
 		$options[$default] = 'Unsorted';
-	} else {
-		$options = collection_options();
+	}elseif(!$form['#node']->nid){
+    //else grab the collection options
+		$default = collection_get_user_default(false, true);
 	}
 	
 	if ($form['#node']->nid) //existing node
@@ -439,8 +564,15 @@ function collection_form_vibio_item_node_form_alter(&$form, &$state)
 		),
 		*/
 	);
+
 }
 
+/**
+ *
+ * @global $user $user
+ * @param <type> $form_vals
+ * @return <type>
+ */
 function collection_product_inventory_quick_add($form_vals)
 {
 	global $user;
@@ -450,13 +582,13 @@ function collection_product_inventory_quick_add($form_vals)
 	if ($form_vals['collection_info']['cid'] || !($default = collection_get_user_default($user->uid, true)))
 	{
 		return array();
-	}
-
-	return array(
-		"collection_info"	=> array(
-			"cid"	=> array($default => $default),
-		),
-	);
+	}else{
+    return array(
+      "collection_info"	=> array(
+        "cid"	=> array($default => $default),
+      ),
+    );
+  }
 }
 
 function collection_offer2buy_complete_actions($old_uid, $node)
@@ -472,15 +604,13 @@ function collection_offer2buy_complete_actions($old_uid, $node)
 	{
 		module_invoke_all("collection_update", $node->uid, array($new_cid));
 	}
-
-	$sql = "DELETE FROM {collection_items}
-			WHERE `item_nid`=%d";
+  
+	$sql = "DELETE FROM {content_field_collection}
+			WHERE `nid`=%d";
 	db_query($sql, $node->nid);
 
-	$sql = "INSERT INTO {collection_items}
-			(`cid`, `item_nid`) VALUES
-			(%d, %d)";
-	db_query($sql, $new_cid, $node->nid);
+  $node->field_collection[]['nid'] = $new_cid;
+  node_save($node);
 
 	module_invoke_all("collection_update", $old_uid, $old_cid);
 }
@@ -531,6 +661,13 @@ function collection_form_views_exposed_form_alter(&$form, &$state)
 	}
 }
 
+/**
+ * Returns the number of collections an external viewer is allowed to see
+ * according to the privacy settings?
+ * 
+ * @param <type> $uid
+ * @return <type>
+ */
 function collection_profile_ext_public_info($uid)
 {
 	module_load_include("inc", "collection");
@@ -539,7 +676,7 @@ function collection_profile_ext_public_info($uid)
 
 	foreach ($collections as $cid => $c)
 	{
-		if ($c['privacy'] > $access)
+		if ($c->privacy_setting > $access)
 		{
 			unset($collections[$cid]);
 		}
@@ -552,14 +689,21 @@ function collection_profile_ext_public_info($uid)
 	));
 }
 
+/**
+ * Check on user login to see if the user has created 100 collections in 6 months,
+ * award badge if they have.
+ * 
+ * @param <type> $uid
+ * @return <type>
+ */
 function collection_badge_user_login($uid) {
 	if (!($badge = badge_load_special("100_collections_6_months")) || badge_user_has_badge($badge->bid, $uid)) {
 		return false;
 	}
 
 	$sql = "SELECT COUNT(*)
-			FROM {collection}
-			WHERE `uid`=%d";
+			FROM {node}
+			WHERE `uid`=%d AND `type`='collection'";
 	$total_collections = db_result(db_query($sql, $uid));
 
 	if ($total_collections >= 100) {
@@ -578,11 +722,15 @@ function collection_load($cid)
 		return false;
 	}
 
-	$sql = "SELECT c.*, u.name AS user_name
-			FROM {collection} c JOIN {users} u ON c.`uid`=u.`uid`
-			WHERE `cid`=%d";
-	$collection = db_fetch_array(db_query($sql, $cid));
-	$collection = array_merge($collection, module_invoke_all("collection_load", $collection, $as_uid)); // stephen notes: $as_uid, what is it, where from?
+
+  $collection = node_load($cid);
+
+  //For legacy purposes, @todo delete
+  $collection->description = $collection->body;
+  $collection->user_name = $collection->name;
+
+  //Add further data to the collection object
+	$collection = (object) array_merge((array) $collection, (array) module_invoke_all("collection_load", $collection, $as_uid)); // stephen notes: $as_uid, what is it, where from?
 	return $collection;
 }
 
@@ -590,13 +738,13 @@ function collection_access_collection($collection)
 {
 	global $user;
 
-	if ($user->uid == $collection['uid'])
+	if ($user->uid == $collection->uid)
 	{
 		return true;
 	}
-	elseif (isset($collection['privacy']) && module_exists("privacy"))
+	elseif (isset($collection->privacy_setting) && module_exists("privacy_node"))
 	{
-		return privacy_get_access_level($collection['uid']) >= $collection['privacy'] && user_access("collections viewer");
+		return privacy_get_access_level($collection->uid) >= $collection->privacy_setting && user_access("collections viewer");
 	}
 	else
 	{
@@ -607,20 +755,22 @@ function collection_access_collection($collection)
 function collection_manage_collection_access($collection)
 {
 	global $user;
-
+  //If $collection is an nid...
 	if (is_numeric($collection))
 	{
+    //...grab the author's uid
 		$sql = "SELECT `uid`
-				FROM {collection}
-				WHERE `cid`=%d";
-		$collection = db_fetch_array(db_query($sql, $collection));
+				FROM {node}
+				WHERE `nid`=%d";
+		$collection = db_fetch_object(db_query($sql, $collection));
 	}
 
-	return $user->uid == $collection['uid'];
+	return $user->uid == $collection->uid;
 }
 
 function collection_title($collection)
 {
-	return $collection['title'];
+	return $collection->title;
 }
+
 ?>

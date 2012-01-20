@@ -1,0 +1,47 @@
+<?php
+/**
+ * Creates DB tables
+ */
+function privacy_node_install(){
+  drupal_install_schema('privacy_node');
+}
+
+/**
+ * Drops DB tables
+ */
+function privacy_node_uninstall(){
+  drupal_uninstall_schema('privacy_node');
+}
+
+
+/**
+ * Implements hook_schema(), defining DB structure
+ * 
+ * @return array
+ */
+function privacy_node_schema(){
+  $schema['privacy_node'] = array(
+    'fields' => array(
+      'nid' => array(
+        'description' => 'The primary identifier for a node.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'setting' => array(
+        'description' => 'Privacy access setting.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+    ),
+    'unique keys' => array(
+        'nid' => array('nid'),
+    ),
+    'primary key' => array('nid'),
+  );
+  
+  return $schema;
+}
+
+?>

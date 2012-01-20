@@ -31,11 +31,18 @@ function product_admin(&$state)
 	));
 }
 
-function product_ajax_add_form($state, $product)
+/* function product_ajax_add_form($state, $product, $possess)
+ * This is a somewhat dizzying form: when you want to add an item,
+ *  instead you call this function to add a product, then add all the pieces
+ *  to add an item instead.
+ * possess = have, want, like
+ */
+function product_ajax_add_form($state, $product, $possess)
 {
 	global $user;
 	
 	$form = array(
+		//Form submission function is product_ajax_add_complete() in product.pages
 		"#action" => url("product/ajax/inventory-add/save"),
 		"nid"	=> array(
 			"#type"	=> "hidden",
@@ -43,6 +50,30 @@ function product_ajax_add_form($state, $product)
 		),
 	);
 	
+	// Add Possession value
+ 	switch($possess) {
+		case 'like':
+			$possess_int = 30;	
+			break;
+		case 'want':
+			$possess_int = 20;
+			break;
+		default:
+			$possess_int = 10;
+	}
+
+	$form['field_have_want_like'] = array(
+		"#title"		=> t("Have it, Want it, Like it?"),
+		"#type"			=> "select",
+//      "#type" => "hidden",
+		"#options" => array(
+			10 => "Have",
+			20 => "Want",
+			30 => "Like"
+		),
+		"#default_value"=> $possess_int,
+	);
+
 	if (module_exists("collection"))
 	{
 		module_load_include("inc", "collection");
@@ -55,26 +86,49 @@ function product_ajax_add_form($state, $product)
 			"#options"		=> collection_options(),
 			"#default_value"=> $default,
 		);
+		
+		$form['collections_new'] = array(
+			"#type"			=> "textfield",
+			"#title"		=> t("Or, Create New Collection"),
+        "#size"   => 30,
+        "#prefix" => "<div class='create_new_collection'>",
+        "#suffix" => "</div>",
+		);
+
+
 	}
 	
 	if (module_exists("offer2buy"))
 	{
-		$form['posting_type'] = array(
-			"#type"			=> "select",
-			"#title"		=> t("For Sale?"),
-			"#options"		=> array(
-				VIBIO_ITEM_TYPE_SELL	=> t("Yes"),
-				VIBIO_ITEM_TYPE_OWN		=> t("No"),
-			),
-		);
-		
-		$form['node_price'] = array(
-			"#type"		=> "textfield",
-			"#title"	=> t("Price"),
-			"#size"		=> 10,
-			"#prefix"	=> "<div class='inventory_add_price'>",
-			"#suffix"	=> "</div>",
-		);
+		// @ToDo ... one day this will all be javascripted if the form lets 
+		//  you bounce between have and want.  Not sure that will be the usecase.
+
+		if ( $possess_int > 10 ) {  // want, like, etc ... not for Sale
+			$form['posting_type'] = array(
+				"#type"			=> "hidden",  
+				"#title"		=> t("For Sale?"),
+				"#default_value"=> VIBIO_ITEM_TYPE_OWN,
+			);
+			
+	
+		} else { // for sale
+			$form['posting_type'] = array(
+				"#type"			=> "select",
+				"#title"		=> t("For Sale?"),
+				"#options"		=> array(
+					VIBIO_ITEM_TYPE_SELL	=> t("Yes"),
+					VIBIO_ITEM_TYPE_OWN		=> t("No"),
+				),
+			);
+			
+			$form['node_price'] = array(
+				"#type"		=> "textfield",
+				"#title"	=> t("Price"),
+				"#size"		=> 10,
+				"#prefix"	=> "<div class='inventory_add_price'>",
+				"#suffix"	=> "</div>",
+			);
+		}
 	}
 	
 	$form['body'] = array(
@@ -88,8 +142,32 @@ function product_ajax_add_form($state, $product)
 		"#title"		=> t("Privacy Settings"),
 		"#type"			=> "select",
 		"#options"		=> _privacy_options(),
-		"#default_value"=> privacy_get($user->uid, "account_setting", "item_default"),
+		"#default_value"=> privacy_user_get($user->uid, "account_setting", "item_default"),
 	);
+
+	/**** Collections Code detour ****
+	 * Stephen started writing this.  Then we got a different design.
+   * Delete?
+	 */
+	// Figure out how to get default collections
+	// new_collection.  Have to create form field by hand.  Everything else
+	//  in this odd form is blank or super-custom.
+	// We're getting an item via the $product.
+
+// $edit[$field->name], -> I see this in demos, but where could #edit come from
+	// Can I load a blank node?  Or see how cck module does it?
+
+	// If change "Create new collection" replace every instance in code
+/*
+	$form['collection'] = array(
+		"#title"		=> t("Choose Collection"),
+// Oh, please just use defaults and keep things simpler...
+		"#type"			=> "select",
+		"#options" => array("Create new collection", "test", "books", "more", "what if more than 5", "and another", "why is collections with height not this", "fix this crazy form grep this"),
+//		"#options"		=> _privacy_options(),
+//		"#default_value"=> privacy_get($user->uid, "account_setting", "item_default"),
+	);
+*/	
 	
 	$form['submit'] = array(
 		"#type"	=> "submit",

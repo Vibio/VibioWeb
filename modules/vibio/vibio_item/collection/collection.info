@@ -4,3 +4,4 @@ package="Vibio"
 core=6.x
 dependencies[] = vibio_item
 dependencies[] = views
+dependencies[] = feature_related_item

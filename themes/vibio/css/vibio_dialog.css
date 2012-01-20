@@ -40,7 +40,7 @@
 #product-ajax-add-form #edit-collections-wrapper {
 	float: left;
 	margin-right: 10px;
-	width: 240px
+	width: 192px
 }
 #product-ajax-add-form #edit-body-wrapper{
 	clear: both
@@ -134,7 +134,7 @@ span.ui-icon {
 	
 }
 #product-ajax-add-form div {
-	margin: 5px 0
+	
 }
 #product-ajax-add-form div#edit-posting-type-wrapper, #product-ajax-add-form div.inventory_add_price {
 	float: left;
@@ -163,6 +163,10 @@ div#edit-node-price-wrapper {
 }
 #vibio_dialog form select[multiple] {
 	max-height: 120px;
+	width: 190px
+}
+#product-ajax-add-form .create_new_collection{
+	float:left
 }
 #vibio_dialog form input[type="text"], #vibio_dialog form textarea {
 }

@@ -571,7 +571,7 @@ function profile_ext_form_user_profile_form_alter(&$form, &$state)
 	if (in_array($category, $profile_categories))
 	{
 		$form_category = $form['_category']['#value'];
-		$form[$form_category]['privacy_settings_fieldset'] = _privacy_fieldset($form['_account']['#value']->uid, "profile", "profile_{$category}");
+		$form[$form_category]['privacy_settings_fieldset'] = _privacy_user_fieldset($form['_account']['#value']->uid, "profile", "profile_{$category}");
 		$form['#submit'][] = "_privacy_form_submit";
 	}
 }

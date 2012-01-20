@@ -31,6 +31,9 @@ if (isset($image)) {
 		// hey look, terrible, recode!
 	}
 
+  // If there are amphersands in the encoded filename, bad stuff'll happen.
+  $urlimage = str_replace('%2526', '&', $urlimage);
+
 	$pattern = "/^\//";
 	$image = preg_replace($pattern, "", $image);
 	$alt = 'Product Image';

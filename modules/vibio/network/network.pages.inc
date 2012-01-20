@@ -87,11 +87,16 @@ drupal_set_title("Connection Finder"); // !!! bad bad bad, why doesn't the code 
 		$friend_user = user_load($friend_uid);
 		$friend->info['uid'] = $friend_uid;
 		$picture = theme("user_picture", $friend_user);
-
+    //If there is no established connection between these two users
+    //_user_relationships_ui_actions_between() returns a ur connection link...
 		if ($action_links = _user_relationships_ui_actions_between($u, $friend_user))
 		{
+      //...and this function themes it
 			$actions = theme("uri_action_list", $action_links);
-		}
+		}else{
+      //If already friends, don't display a link
+      $actions = '';
+    }
 		
 		$out .= theme("network_potential_friend", $friend, $picture, $actions);
 	}

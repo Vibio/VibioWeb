@@ -28,11 +28,16 @@ function privacy_user($op, &$edit, &$account, $category=null)
 			{
 				return;
 			}
+      $form['privacy_item_default'] = _privacy_user_fieldset($account->uid, "account_setting", "item_default", true, t("Default Item Privacy"), t("This is the setting that will be automatically populated for items"));
+      return $form;
+      /*
       //...insert the current value of the privacy field.
       //@todo: refactor. Why not put this in a form alter of the user profile form?
-			$form['privacy_item_default'] = _privacy_fieldset($account->uid, "account_setting", "item_default", true, t("Default Item Privacy"), t("This is the setting that will be automatically populated for items"));
+       * @todo: decide if we want to pursue individualized heartbeat settings.
+       * This comment currently hides the functionality.
 			$form['heartbeat_activity_settings_select'] = _theme_user_message_select_form(t('Activity Stream'), isset($edit['heartbeat_activity_settings']) ? $edit['heartbeat_activity_settings'] : NULL);
-			return $form;
+       * 
+       */
 		case "insert":
 			module_invoke_all("privacy_new_user", $edit, $account, $category);
 		case "update":
@@ -72,6 +77,7 @@ function privacy_user_product_inventory_quick_add($form_vals)
 //@
 function privacy_form_user_profile_form_alter(&$form, &$state)
 {
+  //If we aren't looking at the privacy_settings catefory of the user_profile_form, return a blank.
 	if ($form['_category']['#value'] == "account")
 	{
 		unset($form['heartbeat_activity_settings_select']);
@@ -85,6 +91,7 @@ function privacy_form_user_profile_form_alter(&$form, &$state)
 	$hidden_messages = _hbi_hidden_messages();
 
 	//hbi_privacy_update_user() is in charge of saving these values.
+  //Populate all the values with defaults from the privacy_user table
 	foreach ($form['heartbeat_activity_settings_select']['heartbeat_activity_settings'] as $type_id => $field)
 	{
 		if (!is_array($field))
@@ -114,7 +121,7 @@ function privacy_privacy_update_user($form, $u, $category)
 	}
 	$p = $form['privacy_item_default'];
 
-	privacy_set($p['privacy_uid'], $p['privacy_type'], $p['privacy_typeid'], $p['privacy_setting']);
+	privacy_user_set($p['privacy_uid'], $p['privacy_type'], $p['privacy_typeid'], $p['privacy_setting']);
 }
 
 //
@@ -153,5 +160,82 @@ function privacy_user_del_user($uid){
 			WHERE `uid`=%d";
 	db_query($sql, $uid);
 }
+
+
+/**
+ * Output a privacy field for setting user privacy options.
+ *
+ * @param <type> $uid
+ * @param <type> $type
+ * @param <type> $type_id
+ * @param <type> $as_tree
+ * @param <type> $custom_title
+ * @param <type> $custom_description
+ * @return <type>
+ */
+function _privacy_user_fieldset($uid=false, $type="node", $type_id=false, $as_tree=false, $custom_title=false, $custom_description=false) {
+  $fieldset = array(
+      "#title" => $custom_title ? $custom_title : t("Privacy Settings"),
+      "#description" => $custom_description ? $custom_description : t("This setting controls who is allowed to see this information."),
+      "#type" => "fieldset",
+      "#collapsible" => false,
+      "#tree" => $as_tree
+  );
+
+  return array_merge($fieldset, _privacy_form($uid, $type, $type_id, $custom_title));
+}
+
+/**
+ * Output a privacy form for setting user privacy options.
+ *
+ * @todo: I think privacy_form/fieldset are only used for user privacy; move
+ * them to privacy_user?
+ * @param <type> $uid
+ * @param <type> $type
+ * @param <type> $type_id
+ * @param <type> $custom_title
+ * @return <type>
+ */
+function _privacy_form($uid=false, $type="node", $type_id=false, $custom_title=false) {
+  return array(
+      "privacy_setting" => array(
+          "#title" => $custom_title ? $custom_title : t("Privacy Settings"),
+          "#type" => "select",
+          "#options" => _privacy_options(),
+          "#default_value" => privacy_user_get($uid, $type, $type_id),
+      ),
+      "privacy_type" => array(
+          "#type" => "value",
+          "#value" => $type,
+      ),
+      "privacy_uid" => array(
+          "#type" => "value",
+          "#value" => $uid,
+      ),
+      "privacy_typeid" => array(
+          "#type" => "value",
+          "#value" => $type_id,
+      ),
+      "#submit" => array(
+          "_privacy_form_submit",
+      ),
+  );
+}
+
+/**
+ * Submit the privacy settings form.
+ * 
+ * @param <type> $form
+ * @param <type> $state
+ */
+function _privacy_form_submit($form, &$state)
+{
+        $vals = $state['values'];
+        if ($vals['privacy_uid'] && $vals['privacy_typeid']) //if set, then whatever it is must have already defined these values, so we have everything we need
+        {
+                privacy_user_set($vals['privacy_uid'], $vals['privacy_type'], $vals['privacy_typeid'], $vals['privacy_setting']);
+        }
+}
+
 
 ?>

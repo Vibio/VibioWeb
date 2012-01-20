@@ -9,10 +9,14 @@ function vibio_preprocess_page(&$variables){
   if(drupal_is_front_page()){
     global $base_url;
     $site_image = $base_url . '/'. drupal_get_path('theme', 'vibio') . '/vibio-logo.png';
-    $og_image = '<meta property="og:image" content="' . $site_image . '"/>';
+    $og_image = '<meta property="og:image" content="' . $site_image . '"/>' . PHP_EOL;
+    $og_text = '<meta property="og:description" content="Vibio is a social commerce network for people who possess a unique sense of style."/>';
 
     //This is apparently necessary, see http://api.drupal.org/api/drupal/includes--common.inc/function/drupal_set_html_head/6#comment-4614
-    $variables['head'] .= $og_image;
+    $variables['head'] .= $og_image . $og_text;
+  }
+  if ($variables['node']->type != "" && arg(2) != 'edit') {
+    $variables['template_files'][] = "page-node-" . $variables['node']->type;
   }
 }
 
@@ -29,8 +33,16 @@ function vibio_preprocess_page(&$variables){
 function vibio_preprocess_views_view__user_collection(&$variables){
   //This loads the collection, minus the collection image
   $collection = collection_load($variables['view']->args[1]);
+  $image_path = collection_get_image($variables['view']->args[1]);
+  //If it's not a default image...
+  if(strpos($image_path,'box.png') == FALSE && strpos($image_path, 'default_item_large.png') == FALSE){
+    //Do nothing
+  }else{
+    //Set the image path to a Vibio's logo
+    $image_path = 'themes/vibio/vibio-logo.png';
+  }
   //Get the CID from the view arguments, output an absolute link to the collection's image
-  $collection_image = url(collection_get_image($variables['view']->args[1]), array('absolute' => TRUE));
+  $collection_image = url($image_path, array('absolute' => TRUE));
   $og_image = '<meta property="og:image" content="' . $collection_image . '"/>';
   $collection_title = $collection->user_name . "'s " . $collection->title . " Collection";
   $og_title = '<meta property="og:title" content="' . $collection_title . '"/>';
@@ -78,8 +90,10 @@ function vibio_preprocess_views_view__user_collections1(&$variables){
  * @param <type> $variables
  * @return <type> 
  */
-function vibio_addthis_toolbox($variables) {
+function vibio_addthis_toolbox($html, $variables) {
   global $addthis_counter;
+  global $base_url;
+  
   empty($addthis_counter) ? $addthis_counter = 0 : '';
   if($addthis_counter < 1){
     addthis_add_default_js();
@@ -91,7 +105,14 @@ function vibio_addthis_toolbox($variables) {
   }
   $title = $variables['title'];
   $node = $variables['node'];
+
   $description = $node->body;
+  if($variables['image'] || $node->field_main_image[0]){
+    $image_path = $variables['image'] ? $variables['image'] : $node->field_main_image[0]['filepath'];
+    $pin_image = $base_url . '/' . $image_path; //url() wasn't working?
+  }else{
+    $pin_image = $base_url . '/themes/vibio/vibio-logo.png';
+  }
   return '
   <div class="share-text">
   Share: 
@@ -103,7 +124,13 @@ function vibio_addthis_toolbox($variables) {
   <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
   <a class="addthis_button_tweet"
     tw:via="vibio"
-    addthis:url="'. $abbreviated_url .'"></a>
+    addthis:url="'. $abbreviated_url .'">
+  </a>
+  <a class="addthis_button_pinterest"
+    pi:pinit:url="'. $url .'"
+    pi:pinit:media="'. $pin_image . '"
+    pi:pinit:layout="horizontal">
+  </a>
   <a class="addthis_counter addthis_pill_style"></a>
   </div>
   ';
@@ -451,6 +478,12 @@ if(module_exists('automodal')){
 	    'autoFit' => false
 	    ,'width'   => 535
 	    ,'autoFit' => true
+	    ,'draggable' => false)
+	);
+		automodal_add('.video-modal', array(
+	    'autoFit' => false
+	    ,'width'   => 530
+	    ,'height'  => 320
 	    ,'draggable' => false)
 	);
 }

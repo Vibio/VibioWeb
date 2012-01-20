@@ -140,7 +140,7 @@ function vibio_invite_preprocess_vibio_invite_display(&$vars){
 
   //Facebook URL for request
   //@TODO: use request dialog instead of send
-  $vars['fb_url'] = url("https://www.facebook.com/dialog/send", array('query' => array('app_id' => $app_id, 'name' => "Join Vibio to share your collections and see your friends's things", 'link' => $base_url, 'redirect_uri' => $base_url . "/invite")));
+  $vars['fb_url'] = url("https://www.facebook.com/dialog/send", array('query' => array('app_id' => $app_id, 'name' => "Join Vibio to share your style by creating collections of your most prized possessions", 'link' => $base_url, 'redirect_uri' => $base_url . "/invite")));
 
   //URL to the current email invite page
   $vars['email_url'] = url('contacts/invite/email');
@@ -179,8 +179,9 @@ function vibio_invite_display_page(){
 function vibio_invite_form_user_register_alter(&$form, &$form_state){
   global $base_url;
   $site_image = $base_url . '/'. drupal_get_path('theme', 'vibio') . '/vibio-logo.png';
-  $og_image = '<meta property="og:image" content="' . $site_image . '"/>';
-  drupal_set_html_head($og_image);
+  $og_image = '<meta property="og:image" content="' . $site_image . '"/>' . PHP_EOL;
+  $og_text = '<meta property="og:description" content="Vibio is a social commerce network for people who possess a unique sense of style."/>';
+  drupal_set_html_head($og_image . $og_text);
 }
 
 /**

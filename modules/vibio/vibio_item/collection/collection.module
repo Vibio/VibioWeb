@@ -82,7 +82,7 @@ function collection_block($op="list", $delta=0, $edit=array())
 			{
         case "related_collection":
           return array(
-            "subject" => "",
+            "subject" => t("Showcase Item"),
             "content" => collection_display_related(),
           );
 				case "random_collection":
@@ -90,7 +90,7 @@ function collection_block($op="list", $delta=0, $edit=array())
 
 
 					return array(
-						"subject"	=> "",
+						"subject"	=> t("Showcase Item"),
 						"content"	=> collection_random_collection($user),
 					);
 			}

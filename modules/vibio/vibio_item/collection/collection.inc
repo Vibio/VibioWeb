@@ -1,4 +1,6 @@
 <?php
+define("COLLECTION_RANDOM_COLLECTION_DESCRIPTION_MAXLENGTH", 64);
+
 
 /**
  * Get the $uid's collections.
@@ -414,9 +416,22 @@ function collection_display_related($vibio_item = false){
   //above could be used in the future or deleted--Alec
   $nid = collection_get_viewed_item();
   
-  $related_nodes = views_get_view_result('similarterms', 'default', $nid);
+  $related_nodes = views_get_view_result('related_item', 'default', $nid);
+
+  if(empty($related_nodes)){
+    $related_nodes = views_get_view_result('related_item', 'random_item');
+  }
+  $item = $related_nodes[0];
+
+  $item->node_title = strlen($item->node_title) > COLLECTION_RANDOM_COLLECTION_DESCRIPTION_MAXLENGTH ?
+		substr($item->node_title, 0, COLLECTION_RANDOM_COLLECTION_DESCRIPTION_MAXLENGTH)."..." : $item->node_title;
+  $item->node_title = l($item->node_title, 'node/' . $item->nid);
+  $item->users_name = l($item->users_name, 'user/' . $item->users_uid);
+
+  //Choose a random related node for variety
+  //$random_related = $related_nodes[rand(0, count($related_nodes))];
   //Theme it and return the markup
-  return theme('collection_related_item', $related_nodes[0]);
+  return theme('collection_related_item', $item);
 }
 
 /**

@@ -419,7 +419,7 @@ function collection_display_related($vibio_item = false){
   $related_nodes = views_get_view_result('related_item', 'default', $nid);
 
   if(empty($related_nodes)){
-    $related_nodes = views_get_view_result('related_item', 'random_item', $nid);
+    $related_nodes = views_get_view_result('related_item', 'random_item');
   }
   $item = $related_nodes[0];
 

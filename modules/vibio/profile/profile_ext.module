@@ -433,6 +433,30 @@ function profile_ext_preprocess_user_profile(&$vars)
 
 
 		break;
+	case "want_list":
+    		$vars['sec_content_class'] = $sec_page;
+		//Access is used to determine which collections you can see
+		$access = module_exists("privacy") ? privacy_get_access_level($uid) : 1;
+		//All users can view the collections page; privacy should hide individual collections from this
+		//view if the proper setting are in place.
+		if(module_exists('addthis')){
+			//We can share the user's collections page
+			$addthis_variables['title'] = $user->name . "'s Vibio Want List";
+			$path = isset($_GET['q']) ? $_GET['q'] : '<front>';
+			$link = url($path, array('absolute' => TRUE));
+			$addthis_variables['url'] = $link; 
+			$share_html = theme('addthis_toolbox', $addthis_variables);
+		}
+		!empty($share_html) ? $msg = "<h1 class='page-title-sub'>Want List</h1>" . $share_html : $msg = "<h1 class='page-title-sub'>Want List</h1>";
+		$vars['sec_content'] =  
+				$msg .
+				views_embed_view("user_want_list", "default", $uid, $access);
+
+
+		break;
+ 
+
+
     case "about me":
     case "about":
 	    // This is overkill, since "About" is always public?  

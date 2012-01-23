@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Re-save all audio and video nodes so that their Filefields are populated.
+ * Re-save all offer nodes so their count field is populated.
  */
 function profile_ext_update_6001(&$sandbox) {
   $ret = array();

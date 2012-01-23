@@ -11,7 +11,7 @@ function cck_and_menus_from_v1_1_content_default_fields() {
     'field_name' => 'field_buy_actions',
     'type_name' => 'offer',
     'display_settings' => array(
-      'weight' => '8',
+      'weight' => '1',
       'parent' => '',
       'label' => array(
         'format' => 'inline',
@@ -64,7 +64,7 @@ thanks|Great Experience!
       ),
       'default_value_php' => NULL,
       'label' => 'Actions',
-      'weight' => '8',
+      'weight' => '1',
       'description' => '',
       'type' => 'optionwidgets_buttons',
       'module' => 'optionwidgets',
@@ -76,7 +76,7 @@ thanks|Great Experience!
     'field_name' => 'field_city',
     'type_name' => 'offer',
     'display_settings' => array(
-      'weight' => '-1',
+      'weight' => 0,
       'parent' => '',
       'label' => array(
         'format' => 'inline',
@@ -127,7 +127,7 @@ thanks|Great Experience!
       ),
       'default_value_php' => NULL,
       'label' => 'Shipping Location or City',
-      'weight' => '-1',
+      'weight' => 0,
       'description' => '',
       'type' => 'text_textfield',
       'module' => 'text',
@@ -209,7 +209,7 @@ thanks|Great Experience!
     'field_name' => 'field_offer_expires',
     'type_name' => 'offer',
     'display_settings' => array(
-      'weight' => '-2',
+      'weight' => '-1',
       'parent' => '',
       'label' => array(
         'format' => 'inline',
@@ -270,10 +270,65 @@ thanks|Great Experience!
       'year_range' => '-3:+3',
       'label_position' => 'above',
       'label' => 'Expires',
-      'weight' => '-2',
+      'weight' => '-1',
       'description' => '',
-      'type' => 'date_text',
+      'type' => 'date_select',
       'module' => 'date',
+    ),
+  );
+
+  // Exported field: field_offer_neg_buyer_count
+  $fields['offer-field_offer_neg_buyer_count'] = array(
+    'field_name' => 'field_offer_neg_buyer_count',
+    'type_name' => 'offer',
+    'display_settings' => array(
+      'weight' => '8',
+      'parent' => '',
+      'label' => array(
+        'format' => 'hidden',
+      ),
+      'teaser' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      'full' => array(
+        'format' => 'hidden',
+        'exclude' => 0,
+      ),
+      '4' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '2' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      '3' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+      'token' => array(
+        'format' => 'default',
+        'exclude' => 0,
+      ),
+    ),
+    'widget_active' => '1',
+    'type' => 'nodereference_count',
+    'required' => '0',
+    'multiple' => '0',
+    'module' => 'nodereference_count',
+    'active' => '1',
+    'referenceable_fields' => array(
+      'field_offer' => 'field_offer',
+    ),
+    'widget' => array(
+      'default_value' => NULL,
+      'default_value_php' => NULL,
+      'label' => 'Offer Neg Buyer Count',
+      'weight' => '8',
+      'description' => '',
+      'type' => 'nodereference_count_widget',
+      'module' => 'nodereference_count',
     ),
   );
 
@@ -398,7 +453,7 @@ thanks|Great Experience!
         ),
       ),
       'default_value_php' => NULL,
-      'label' => 'Chat',
+      'label' => 'Message',
       'weight' => '9',
       'description' => '',
       'type' => 'text_textarea',
@@ -461,7 +516,7 @@ thanks|Great Experience!
         ),
       ),
       'default_value_php' => NULL,
-      'label' => 'Shipping Location or City',
+      'label' => 'Ship to',
       'weight' => '-1',
       'description' => '',
       'type' => 'text_textfield',
@@ -844,9 +899,9 @@ other|Other',
     'active' => '1',
     'text_processing' => '0',
     'max_length' => '',
-    'allowed_values' => 'negotiating|Not Yet
-accept|Yes
-decline|Decline',
+    'allowed_values' => 'accept|Accept
+decline|Decline
+negotiating|Not Yet',
     'allowed_values_php' => '',
     'widget' => array(
       'default_value' => array(
@@ -871,7 +926,7 @@ decline|Decline',
       'weight' => '-2',
       'parent' => '',
       'label' => array(
-        'format' => 'hidden',
+        'format' => 'inline',
       ),
       'teaser' => array(
         'format' => 'default',
@@ -918,7 +973,7 @@ decline|Decline',
         ),
       ),
       'default_value_php' => NULL,
-      'label' => 'chat',
+      'label' => 'Message',
       'weight' => '-2',
       'description' => '',
       'type' => 'text_textarea',
@@ -1123,19 +1178,20 @@ Yes',
   // Included for use with string extractors like potx.
   t('Accept Offer');
   t('Actions');
-  t('Chat');
   t('Expires');
   t('Item Received');
   t('Item Sent');
   t('Item Sought');
   t('Latest Offer');
+  t('Message');
   t('Offer');
   t('Offer Discussion Page (nid)');
+  t('Offer Neg Buyer Count');
   t('Pay Received');
   t('Pay Sent');
+  t('Ship to');
   t('Shipping Location or City');
   t('Your Offer');
-  t('chat');
 
   return $fields;
 }

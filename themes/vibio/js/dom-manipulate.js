@@ -108,11 +108,6 @@ $(document).ready(function() {
 	}, function() {
 		$('.not-sale-popup').remove();
 	});
-	$('.make-offer').hover(function() {
-		$(this).prepend('<div class="make-offer-popup">Negotiate a price with this seller. <a href="/faq#buy">Find out how</a>.</div>');
-	}, function() {
-		$('.make-offer-popup').remove();
-	});
 	
 	/*Messages moving of elements per ian's comp*/
 	$('div.tabs ul.tabs li:eq(1) a, div.tabs ul.tabs li:eq(2) a, div.tabs ul.tabs li:eq(3) a').append('<span class="top-tabs-sep">|</span>');

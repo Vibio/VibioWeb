@@ -328,6 +328,11 @@ div#edit-field-offer-expires-0-value-datepicker-popup-0-wrapper .description, di
 .node_view_item_image{ margin-right:15px;  max-height:54px}
 .product_node_data{ float:left;  width:345px}
 .product_node_data .item_link h3{ font-size:18px;  margin-bottom:10px}
+.product_node_data div.already-have-link a{float:left; position: static; background: url(../images/btn_have_want_new.png) no-repeat;
+height: 40px; width:63px; display: block; margin-right: 5px}
+.product_node_data div.already-have-link a.inventory_want{background-position: -65px 0px}
+.product_node_data div.already-have-link a.inventory_want:hover{background-position: -65px -56px}
+.product_node_data div.already-have-link{float:none}
 .product_description{ color:#2b363d}
 .product_extra_data h3{font-size:15px; padding:0; margin:0}
 .product_extra_data{ margin-top:10px;  border-bottom:1px solid #CCC;  padding:0;  color:#556270;  font-size:18px}

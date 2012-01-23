@@ -701,7 +701,7 @@ background:url(../images/long_border.png) no-repeat scroll 0px 31px}
 /*Background Image*/
 #block-collection-related_collection .content >div{line-height:15px}
 #block-collection-related_collection .collection_image{float:none; margin:0; width:auto; padding-top:10px; text-align:center}
-#block-collection-related_collection .collection_image img{border:1px solid #CCC; background:#FFF; padding:5px; max-height:115px; max-width:115px}
+#block-collection-related_collection .collection_image img{border:1px solid #CCC; background:#FFF; padding:5px}
 #block-collection-related_collection .collection_owner{padding-top:6px}
 #block-collection-related_collection .collection_owner a, #block-collection-related_collection .collection_title a{font-size:15px}
 #block-collection-related_collection .collection_title a, #block-collection-related_collection .collection_link a{font-size:13px}

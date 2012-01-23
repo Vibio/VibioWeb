@@ -6,6 +6,15 @@
 function profile_ext_update_6001(&$sandbox) {
   $ret = array();
 
+  $tried_installing = FALSE;
+  while ($tried_installing == FALSE && module_exists('nodereference_count' == FALSE)) {
+    module_enable(array('nodereference_count'));
+    drupal_set_message(t('Nodereference Count has been enabled (if it\'s downloaded.).'));
+    if (module_exists('nodereference_count')) {
+      drupal_install_modules(array('nodereference_count'));
+    }
+    $tried_installing = TRUE;
+  }
   if (module_exists('nodereference_count') == FALSE) {
     $ret['#abort'] = array('success' => FALSE, 
       'query' => 'Please enable Nodereference Count before running this update.');

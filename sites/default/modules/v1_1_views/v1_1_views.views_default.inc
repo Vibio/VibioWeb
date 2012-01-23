@@ -291,6 +291,13 @@ function v1_1_views_views_default_views() {
   $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
   $handler->display->display_options['filters']['uid_current']['value'] = '1';
   $handler->display->display_options['filters']['uid_current']['expose']['operator'] = FALSE;
+  /* Filter: Content: Offer Neg Buyer Count (field_offer_neg_buyer_count) */
+  $handler->display->display_options['filters']['field_offer_neg_buyer_count_value']['id'] = 'field_offer_neg_buyer_count_value';
+  $handler->display->display_options['filters']['field_offer_neg_buyer_count_value']['table'] = 'node_data_field_offer_neg_buyer_count';
+  $handler->display->display_options['filters']['field_offer_neg_buyer_count_value']['field'] = 'field_offer_neg_buyer_count_value';
+  $handler->display->display_options['filters']['field_offer_neg_buyer_count_value']['operator'] = '>';
+  $handler->display->display_options['filters']['field_offer_neg_buyer_count_value']['value']['value'] = '0';
+  $handler->display->display_options['filters']['field_offer_neg_buyer_count_value']['allow_null'] = 1;
   $translatables['user_buying_offers'] = array(
     t('Defaults'),
     t('more'),
@@ -442,6 +449,13 @@ function v1_1_views_views_default_views() {
   $handler->display->display_options['filters']['uid_current']['relationship'] = 'field_item_sought_nid';
   $handler->display->display_options['filters']['uid_current']['value'] = '1';
   $handler->display->display_options['filters']['uid_current']['expose']['operator'] = FALSE;
+  /* Filter: Content: Offer Neg Buyer Count (field_offer_neg_buyer_count) */
+  $handler->display->display_options['filters']['field_offer_neg_buyer_count_value']['id'] = 'field_offer_neg_buyer_count_value';
+  $handler->display->display_options['filters']['field_offer_neg_buyer_count_value']['table'] = 'node_data_field_offer_neg_buyer_count';
+  $handler->display->display_options['filters']['field_offer_neg_buyer_count_value']['field'] = 'field_offer_neg_buyer_count_value';
+  $handler->display->display_options['filters']['field_offer_neg_buyer_count_value']['operator'] = '>';
+  $handler->display->display_options['filters']['field_offer_neg_buyer_count_value']['value']['value'] = '0';
+  $handler->display->display_options['filters']['field_offer_neg_buyer_count_value']['allow_null'] = 1;
 
   /* Display: Block */
   $handler = $view->new_display('block', 'Block', 'block_1');

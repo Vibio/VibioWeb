@@ -263,15 +263,15 @@ function profile_ext_display_block($u)
 	// how many buying and selling offers? Needs rethinking at design level
 
 	// print $GLOBALS['current_view']->total_rows; or num_rows
-	$view = views_get_view('user_selling_offered');	
-	$view->execute_display(); // do one that doesn't have a pager?!!!
-	$vars['selling'] = count($view->result);
-
-	// print $GLOBALS['current_view']->total_rows; or num_rows
 	$view = views_get_view('user_buying_offers');	
 	$view->execute_display(); // do one that doesn't have a pager?!!!
 	$vars['buying'] = count($view->result);
 
+	// print $GLOBALS['current_view']->total_rows; or num_rows
+	$view = views_get_view('user_selling_offered');	
+  // @todo: Change this to use views_get_view_result()
+	$view->execute_display(); // do one that doesn't have a pager?!!!
+	$vars['selling'] = count($view->result);
 
 	//$pic_nelson = $u->picture ? file_create_url($u->picture) : "/themes/vibio/images/icons/default_user_large.png";
   $alt = "Your picture";

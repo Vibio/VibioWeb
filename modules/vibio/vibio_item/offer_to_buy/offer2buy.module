@@ -349,12 +349,14 @@ function theme_offer_button($item, $uid){
 	
   // Start dealing with Have/Want/Like, as well as for sale / not for sale
 	$possess = $item->field_have_want_like[0]['value'];
+  $on_sale = $item->field_posting_type[0]['value'] == VIBIO_ITEM_TYPE_SELL;
+
 
 
   //See if the item is for sale (1 == TRUE)
   if ( $possess <= 10 ) {   // Have, including original not-set default
 
-		if ($item->offer2buy[settings][is_on_sale] == TRUE || $item->offer2buy[settings][is_on_sale] == 1) {
+		if ($on_sale == TRUE || $item->offer2buy['settings']['is_on_sale' ] == 1) {
 			//Provide a button to make an offer.
 			$offer_button = "<div class='make-offer'><a href='/offer/$item->nid/$uid' class='make-modal offer-button'>Make Offer</a></div>"; // action_button_link'));
 		}else{

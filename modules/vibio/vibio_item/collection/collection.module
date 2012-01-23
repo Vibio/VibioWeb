@@ -330,6 +330,8 @@ function collection_preprocess_collection_list_item_preview(&$vars)
 		if(module_exists('offer2buy')){
 			//Insert an offer button or not for sale image
 			$item = $vars['item'];
+      //@TODO: get rid of is_on_sale, properly a DB value in {offer2buy}, or
+      //reconsider the offer data storage in light of performance
 			$item->offer2buy['settings']['is_on_sale'] = $vars['item']->for_sale; 
 			$vars['offer_button'] = theme('offer_button', $item, $user->uid);
 		}

@@ -5,7 +5,8 @@ $num_items = t("!count items", array("!count" => $collection->num_items));
 $link = l(t("Check it out"), "collections/{$collection->cid}", array("attributes" => array("class" => "collection_link")));
 $collection_image = theme('imagecache', 'collection_fixed_fluid_grid_115', $collection->image, $collection->collection_description, $collection->collection_description, '');
 echo "
-	<div class='block-wrapper'><h2>Showcase Item</h2><div class='collection_image'>
+	<div class='block-wrapper'>
+	<h2>Showcase Item</h2><div class='collection_image'>
 		<a href='/collections/{$collection->cid}'>
 			{$collection_image}
 		</a>

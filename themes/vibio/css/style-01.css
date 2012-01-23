@@ -698,7 +698,6 @@ td.col-2{padding-left:10px; border-left:1px solid #CCC}
 .block-wrapper{background: #E5E7EA; padding:0 9px 10px; margin:2px 7px 0; min-height:232px;box-shadow:0 0 1px 1px #CCCCCC}
 #block-collection-random_collection h2{padding:10px 0; color: #106F93;font-size: 15px; margin: 0;
 background:url(../images/long_border.png) no-repeat scroll 0px 31px}
-
 /*Background Image*/
 #block-collection-random_collection .content >div{line-height:15px}
 #block-collection-random_collection .collection_image{float:none; margin:0; width:auto; padding-top:10px; text-align:center}

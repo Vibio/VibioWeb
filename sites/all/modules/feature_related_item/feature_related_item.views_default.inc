@@ -153,6 +153,15 @@ function feature_related_item_views_default_views() {
     'product' => 'product',
     'vibio_item' => 'vibio_item',
   );
+  /* Filter: User: Name */
+  $handler->display->display_options['filters']['uid']['id'] = 'uid';
+  $handler->display->display_options['filters']['uid']['table'] = 'users';
+  $handler->display->display_options['filters']['uid']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid']['operator'] = 'not in';
+  $handler->display->display_options['filters']['uid']['value'] = array(
+    0 => 0,
+    1 => '1',
+  );
 
   /* Display: Block */
   $handler = $view->new_display('block', 'Block', 'block_1');

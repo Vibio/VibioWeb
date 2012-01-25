@@ -306,7 +306,7 @@ p#facebook-bot {
 	margin: 0
 }
 /*different product backgrounds based on node*/
-#node-64877 {
+#node-64877, #node-64893 {
 	background: url(../images/landing/landing_45.png) no-repeat;
 	height: 495px;
 }

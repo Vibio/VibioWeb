@@ -35,8 +35,9 @@
 					</p>
 				</div>
 				<div id="main-mid-right">
-					<iframe src="http://player.vimeo.com/video/33426188?title=0&amp;byline=0&amp;portrait=0" width="469" height="264" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-				</div>
+					<iframe src="http://player.vimeo.com/video/33426188?title=0&amp;byline=0&amp;portrait=0" width="558" height="314" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+					<p id="video-cover"><img src="/themes/vibio/images/landing/landing_60.png" alt="Vibio Video"/></p>
+					</div>
 			</div>
 			<div id="content-mid">
 				<div id="featured-1">

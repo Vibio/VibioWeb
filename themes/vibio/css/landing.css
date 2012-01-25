@@ -269,7 +269,7 @@ li {
 /*node body*/
 #node-content {
 	width: 976px;
-	margin: 25px auto 30px;
+	margin: 25px auto;
 	position: relative;
 }
 #node-details {
@@ -309,4 +309,44 @@ p#facebook-bot {
 #node-64877, #node-64893 {
 	background: url(../images/landing/landing_45.png) no-repeat;
 	height: 495px;
+}
+/*content top*/
+#content-top{
+	width: 1004px;
+	margin:0 auto;
+	height: 400px;
+	background: url(../images/landing/land_04.png) repeat-x;
+	color: #FFFFFF;
+}
+#main-mid-left{
+	width: 320px;
+	height: 210px;
+	margin: 45px 56px 0 22px;
+	float:left
+}
+#create{
+	font-size: 27px;
+	text-shadow: -1px 1px #000;
+	line-height: 38px
+	
+}
+#create-b{
+	margin-top: 25px;
+	font-family: Helvetica;
+	font-size: 15px;
+	font-weight: 100;
+	line-height: 26px
+}
+#main-mid-right{
+	float:left;
+	background: url(../images/landing/landing_12.png) no-repeat 0px 30px;
+	height: 335px;
+	width: 584px;
+	padding: 45px 0 0 16px;
+	position: relative
+}
+#video-cover{
+	position: absolute;
+	top:45px;
+	right:25px;
 }

@@ -2,7 +2,7 @@ body {
 	margin: 0;
 	padding: 0;
 	font-family: 'Quicksand', Sans-serif;
-	background: url(../images/landing/bgnoise_lg.png) repeat;
+	background: url(../images/landing/land_02.png) repeat;
 	color: #CCCCCC;
 	font-weight: 400;
 }
@@ -38,7 +38,6 @@ p {
 	float: left;
 	padding: 4px 0 0 35px;
 }
-
 #head-left {
 	padding: 17px 5px 0 10px;
 	float: left;
@@ -49,7 +48,6 @@ p {
 	font-size: 13px;
 	padding: 22px 24px 0 0;
 }
-
 #header-left {
 	padding: 11px 5px 0 10px;
 	float: left;
@@ -174,9 +172,9 @@ li {
 	background: url(../images/landing/images/hover_slide.png) no-repeat 0 -23px;
 }
 #nav-cw {
-    float: left;
-    font-size: 12px;
-    padding: 3px 12px;
+	float: left;
+	font-size: 12px;
+	padding: 3px 12px;
 }
 #nav {
 	margin: 0;
@@ -214,7 +212,7 @@ li {
 }
 #text-comic {
 	margin-bottom: 9px;
-	font-size:18px;
+	font-size: 18px;
 }
 #featured-2, #featured-3 {
 	float: left;
@@ -267,4 +265,48 @@ li {
 .region-header, .region-footer, #comics, #watches, #node-38872, #node-43071, #node-48820, #record, #sliders {
 	background-size: 100% auto;
 	min-width: 1005px;
+}
+/*node body*/
+#node-content {
+	width: 976px;
+	margin: 25px auto 30px;
+	position: relative;
+}
+#node-details {
+	background: url(../images/landing/land_05.png) no-repeat;
+	height: 480px;
+	width: 305px;
+	padding: 25px 30px 0;
+	position: absolute;
+	top: 5px;
+	right: 8px;
+	color: #191919;
+}
+#node-details h2 {
+	color: #21a4d6;
+	font-size: 31px;
+	font-weight: 100;
+}
+#node-details h3 {
+	font-size: 18px;
+	font-weight: 100;
+}
+#node-details p {
+	font-family: Helvetica;
+	font-size: 14px;
+	font-weight: 100;
+	margin-bottom: 30px;
+}
+p#facebook-mid {
+	text-align: center;
+	margin: 58px 0 18px;
+}
+p#facebook-bot {
+	text-align: center;
+	margin: 0
+}
+/*different product backgrounds based on node*/
+#node-64877 {
+	background: url(../images/landing/landing_45.png) no-repeat;
+	height: 495px;
 }

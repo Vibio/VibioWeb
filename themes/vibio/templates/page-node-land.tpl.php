@@ -21,7 +21,9 @@
 				Already a member? <a href="/user/login" target="_blank">Login</a>
 			</p>
 		</div>
-		<?php echo $content;?>
+		<div id="node-content">
+			<?php echo $content;?>
+		</div>
 		<div id="main">
 			<div id="content-top">
 				<div id="main-mid-left">
@@ -92,24 +94,30 @@
 						?>
 						<?php print $link;?>
 					</p>
-					<p id="facebook-bot">
+					<p id="facebook-top">
 						OR <a href="/user/login">Sign Up Manually</a>
 					</p>
 				</div>
 				<div id="main-bot-mid">
 					<h2>CONNECT WITH US</h2>
 					<ul>
-						<li><a id="fb-site" href="http://www.facebook.com/Vibioinc">KEEP TABS ON FACEBOOK</a></li>
-						<li><a id="tw-site" href="http://twitter.com/vibio">FOLLOW US ON TWITTER</a></li>
-						<li><a id="mu-site" href="">CHECKOUT OUR BAY AREA MEETUP</a></li>
+						<li>
+							<a id="fb-site" href="http://www.facebook.com/Vibioinc">KEEP TABS ON FACEBOOK</a>
+						</li>
+						<li>
+							<a id="tw-site" href="http://twitter.com/vibio">FOLLOW US ON TWITTER</a>
+						</li>
+						<li>
+							<a id="mu-site" href="">CHECKOUT OUR BAY AREA MEETUP</a>
+						</li>
 					</ul>
 				</div>
-			
-			<div id="main-bot-right">
-				<h2>LATEST BLOG POSTS</h2>
+				<div id="main-bot-right">
+					<h2>LATEST BLOG POSTS</h2>
+				</div>
 			</div>
 		</div>
-		</div> <div class="clears"></div>
+		<div class="clears"></div>
 		<div class="footer">
 			<p>
 				Copyright &copy; 2012. Vibio&trade;

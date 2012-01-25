@@ -25,19 +25,22 @@
 			<?php echo $content;?>
 		</div>
 		<div id="main">
-			<div id="content-top">
-				<div id="main-mid-left">
-					<p id="create">
-						CREATE A COLLECTION SPACE THATS UNIQUE TO YOUR INTERESTS
-					</p>
-					<p id="create-b">
-						It’s easy to create your profile, make enviable collections and share your unique items for people to drool over.
-					</p>
-				</div>
-				<div id="main-mid-right">
-					<iframe src="http://player.vimeo.com/video/33426188?title=0&amp;byline=0&amp;portrait=0" width="558" height="314" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-					<p id="video-cover"><img src="/themes/vibio/images/landing/landing_60.png" alt="Vibio Video"/></p>
+			<div id="content-top-wrap">
+				<div id="content-top">
+					<div id="main-mid-left">
+						<p id="create">
+							CREATE A COLLECTION SPACE THATS UNIQUE TO YOUR INTERESTS
+						</p>
+						<p id="create-b">
+							It’s easy to create your profile, make enviable collections and share your unique items for people to drool over.
+						</p>
 					</div>
+					<div id="main-mid-right">
+						<iframe src="http://player.vimeo.com/video/33426188?title=0&amp;byline=0&amp;portrait=0" width="558" height="314" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+						<p id="video-cover"><img src="/themes/vibio/images/landing/landing_60.png" alt="Vibio Video"/>
+						</p>
+					</div>
+				</div>
 			</div>
 			<div id="content-mid">
 				<div id="featured-1">
@@ -72,53 +75,54 @@
 					<p>
 						Discover unique and vintage items by checking out what collectors have or want. If you find something that would be perfect for your collection, make an offer to the seller and be ready to negotiate a price.
 					</p>
-					<div id="featured-3">
-						<h1>TRADE AND SELL YOUR TREASURES</h1>
-						<p>
-							Vibio makes it easy to list, negotiate and sell your items.
-						</p>
-					</div>
 				</div>
-			</div>
-			<div class="content-bot">
-				<div id="main-bot-left">
-					<p id="facebook-top">
-						USE VIBIO FOR FREE
+				<div id="featured-3">
+					<h1>TRADE AND SELL YOUR TREASURES</h1>
+					<p>
+						Vibio makes it easy to list your proud possessions, negotiate to your liking and sell your unique items the way you want. This process is made easy by collectors for collectors.
 					</p>
-					<p id="facebook-mid">
-						<?php
-						if (module_exists('fboauth')) {
-							$link_attributes = fboauth_action_link_properties('connect');
-							//Puts a fb button inside the link.
-							$link = l('<img src="/themes/vibio/images/btn_fb_login.png" id="facebook-large" class="fb_login"/>', $link_attributes['href'], array('query' => $link_attributes['query'], 'html' => TRUE));
-						}
-						?>
-						<?php print $link;?>
-					</p>
-					<p id="facebook-top">
-						OR <a href="/user/login">Sign Up Manually</a>
-					</p>
-				</div>
-				<div id="main-bot-mid">
-					<h2>CONNECT WITH US</h2>
-					<ul>
-						<li>
-							<a id="fb-site" href="http://www.facebook.com/Vibioinc">KEEP TABS ON FACEBOOK</a>
-						</li>
-						<li>
-							<a id="tw-site" href="http://twitter.com/vibio">FOLLOW US ON TWITTER</a>
-						</li>
-						<li>
-							<a id="mu-site" href="">CHECKOUT OUR BAY AREA MEETUP</a>
-						</li>
-					</ul>
-				</div>
-				<div id="main-bot-right">
-					<h2>LATEST BLOG POSTS</h2>
 				</div>
 			</div>
 		</div>
 		<div class="clears"></div>
+		<div class="content-bot">
+			<div id="main-bot-left">
+				<p id="facebook-top">
+					USE VIBIO FOR FREE
+				</p>
+				<p id="facebook-mid">
+					<?php
+					if (module_exists('fboauth')) {
+						$link_attributes = fboauth_action_link_properties('connect');
+						//Puts a fb button inside the link.
+						$link = l('<img src="/themes/vibio/images/btn_fb_login.png" id="facebook-large" class="fb_login"/>', $link_attributes['href'], array('query' => $link_attributes['query'], 'html' => TRUE));
+					}
+					?>
+					<?php print $link;?>
+				</p>
+				<p id="facebook-bot">
+					OR <a href="/user/login" target="_blank">Sign Up Manually</a>
+				</p>
+			</div>
+			<div id="main-bot-mid">
+				<h2>CONNECT WITH US</h2>
+				<ul>
+					<li>
+						<a id="fb-site" href="http://www.facebook.com/Vibioinc" target="_blank">KEEP TABS ON FACEBOOK</a>
+					</li>
+					<li>
+						<a id="tw-site" href="http://twitter.com/vibio" target="_blank">FOLLOW US ON TWITTER</a>
+					</li>
+					<li>
+						<a id="mu-site" href="/" target="_blank">CHECKOUT OUR BAY AREA MEETUP</a>
+					</li>
+				</ul>
+			</div>
+			<div id="main-bot-right">
+				<h2>LATEST BLOG POSTS</h2>
+			</div>
+		</div>
+		</div> <div class="clears"></div>
 		<div class="footer">
 			<p>
 				Copyright &copy; 2012. Vibio&trade;
@@ -126,7 +130,9 @@
 		</div>
 		<script type="text/javascript">
 			$(document).ready(function() {
-
+				$("#video-cover").hover(function() {
+					$(this).fadeOut(900);
+				});
 				$('#nav ul li:eq(0)').click(function() {
 					$('li').removeClass('active');
 					$(this).addClass('active');

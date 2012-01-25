@@ -19,7 +19,7 @@ a:hover {
 a:visited {
 	color: #496F8E
 }
-#head-right, #watches-text p, #slide-left p, ul, #featured-1, #featured-2 p, #featured-3 p, .region-footer {
+#head-right, #watches-text p, #slide-left p, ul, #featured-1, #featured-2 p, #featured-3 p,.footer, .region-footer {
 	font-family: Helvetica;
 }
 #wrapper {
@@ -102,14 +102,14 @@ p {
 	width: 266px;
 	margin: 0 auto 10px
 }
-#facebook-bottom a, #facebook a {
+#facebook-bottom a, #facebook a,#facebook-mid a {
 	background: url(../images/btn_signup_with_facebook.png) no-repeat 0 -3px;
 	width: 266px;
 	height: 48px;
 	display: block;
 	text-indent: -9999px
 }
-#facebook-bottom a:hover, #facebook a:hover {
+#facebook-bottom a:hover, #facebook-mid a:hover, #facebook a:hover {
 	background-position: 0 -51px
 }
 #node-38872, #node-43071, #node-48820, #sliders {
@@ -250,21 +250,17 @@ li {
 #content-bottom-right {
 	padding-top: 15px
 }
-.region-footer {
-	background: url(../images/landing/landing_04.png) no-repeat;
+.region-footer, .footer{
+	background: url(../images/landing/landing_43.png) no-repeat;
 	height: 60px;
 	text-align: right;
 	font-size: 11px;
 }
-.region-footer p {
+.region-footerp, .footer p {
 	padding: 20px 20px 0 0;
 }
 .clears, .clearfix {
 	clear: both
-}
-.region-header, .region-footer, #comics, #watches, #node-38872, #node-43071, #node-48820, #record, #sliders {
-	background-size: 100% auto;
-	min-width: 1005px;
 }
 /*node body*/
 #node-content {
@@ -285,21 +281,19 @@ li {
 #node-details h2 {
 	color: #21a4d6;
 	font-size: 31px;
-	font-weight: 100;
 }
 #node-details h3 {
 	font-size: 18px;
-	font-weight: 100;
+	font-weight: 400
 }
 #node-details p {
 	font-family: Helvetica;
 	font-size: 14px;
-	font-weight: 100;
 	margin-bottom: 30px;
 }
 p#facebook-mid {
 	text-align: center;
-	margin: 58px 0 18px;
+	margin: 58px 19px 18px;
 }
 p#facebook-bot {
 	text-align: center;
@@ -311,42 +305,155 @@ p#facebook-bot {
 	height: 495px;
 }
 /*content top*/
-#content-top{
-	width: 1004px;
-	margin:0 auto;
-	height: 400px;
+#content-top-wrap {
 	background: url(../images/landing/land_04.png) repeat-x;
+}
+#content-top {
+	width: 1004px;
+	margin: 0 auto;
+	height: 400px;
 	color: #FFFFFF;
 }
-#main-mid-left{
+#main-mid-left {
 	width: 320px;
 	height: 210px;
 	margin: 45px 56px 0 22px;
-	float:left
+	float: left
 }
-#create{
+#create {
 	font-size: 27px;
 	text-shadow: -1px 1px #000;
 	line-height: 38px
-	
 }
-#create-b{
+#create-b {
 	margin-top: 25px;
 	font-family: Helvetica;
 	font-size: 15px;
 	font-weight: 100;
 	line-height: 26px
 }
-#main-mid-right{
-	float:left;
+#main-mid-right {
+	float: left;
 	background: url(../images/landing/landing_12.png) no-repeat 0px 30px;
 	height: 335px;
 	width: 584px;
 	padding: 45px 0 0 16px;
 	position: relative
 }
-#video-cover{
+#video-cover {
 	position: absolute;
-	top:45px;
-	right:25px;
+	top: 45px;
+	right: 25px;
+	cursor: pointer
+}
+/*Content Middle*/
+#content-mid {
+	width: 1004px;
+	margin: 0 auto;
+	height: 320px;
+}
+#content-mid #text {
+	font-size: 18px
+}
+#content-mid #featured-1 li {
+	width: 121px;
+	height: 121px;
+}
+/*Images*/
+.s-1 {
+	background: url(../images/landing/landing_14.png) no-repeat 0px 0px
+}
+.s-2 {
+	background: url(../images/landing/landing_15.png) no-repeat 0px 0px
+}
+.s-3 {
+	background: url(../images/landing/landing_16.png) no-repeat 0px 0px
+}
+.s-4 {
+	background: url(../images/landing/landing_17.png) no-repeat 0px 0px
+}
+.s-5 {
+	background: url(../images/landing/landing_18.png) no-repeat 0px 0px
+}
+.s-6 {
+	background: url(../images/landing/landing_19.png) no-repeat 0px 0px
+}
+/*Content Bottom*/
+.content-bot {
+	width: 1004px;
+	padding-top: 47px;
+	margin: 0 auto;
+	background: url(../images/landing/landing_61.png) no-repeat 0px 20px
+}
+#main-bot-left {
+	float: left;
+	width: 292px;
+	height: 248px;
+	background: url(../images/landing/landing_35.png) no-repeat 13px 3px;
+	padding: 38px 0 0 33px;
+}
+#main-bot-left p#facebook-top {
+	font-size: 27px
+}
+#main-bot-left p#facebook-mid {
+	margin: 25px 6px 24px
+}
+#main-bot-left p#facebook-bot {
+	font-size: 13px;
+	margin: 0;
+	font-family: Helvetica;
+}
+.content-bot h2 {
+	font-size: 17px;
+	color: #21a4d6;
+	margin: 0;
+	font-weight: bold;
+	background: url(../images/landing/landing_38.png) no-repeat 10px 25px;
+	padding: 0 0 14px 18px
+}
+#main-bot-mid {
+	float: left;
+	width: 314px;
+	margin-left: 12px;
+}
+#main-bot-mid li a {
+	font-size: 14px;
+	display: block;
+	margin-bottom: 6px;
+	margin-left: 8px
+}
+#main-bot-mid li a:hover{
+	text-decoration: none;
+	color: #FFFFFF;
+}
+#fb-site {
+	padding:27px 75px 23px 48px
+}
+#tw-site {
+	padding:30px 84px 19px 48px
+}
+#mu-site {
+	padding:27px 10px 21px 48px
+}
+a#fb-site:hover{
+	background: url(../images/landing/landing_66.png) no-repeat -10px -5px;
+}
+a#tw-site:hover {
+	background: url(../images/landing/landing_66.png) no-repeat -10px -76px;
+}
+a#mu-site:hover {
+	background: url(../images/landing/landing_66.png) no-repeat -10px -146px;
+}
+#main-bot-mid ul {
+	background: url(../images/landing/landing_42.png) no-repeat 8px 0px;
+	height: 218px
+}
+#main-bot-right {
+	float: left;
+	width: 314px;
+	margin-left: 24px;
+}
+.region-header, .footer, .region-footer, #comics, #watches, #node-38872, #node-43071, #node-48820, #record, #sliders {
+	background-size: 100% auto;
+	min-width: 1005px;
 }

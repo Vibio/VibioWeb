@@ -313,7 +313,7 @@ div#edit-field-offer-expires-0-value-datepicker-popup-0-wrapper .description, di
 #seller-neg-form .attachments{clear:both}
 #offer_top{height:140px; margin-bottom:20px; border-bottom:1px solid #CCC}
 #content-area a.offer-button{background:url(../images/btn_preview_send.png) no-repeat; width:37px; height:185px}
-#content-area div.collection_list_item_summary a.offer-button{display:block; text-indent:-9999px; background:url(../images/btn_make_offer_1.png) no-repeat 0 0; width:108px; height:35px; position: absolute; top:-12px; right: 2px}
+#content-area div.collection_list_item_summary a.offer-button{display:block; text-indent:-9999px; background:url(../images/btn_make_offer_1.png) no-repeat -6px 7px; width:107px;height:88px; position: absolute; top:-12px; right: -4px}
 /*Node*/
 .node-unpublished div.unpublished, 
 .comment-unpublished div.unpublished /* The word "Unpublished"displayed underneath the content. */{ height:0;  overflow:visible;  color:#d8d8d8;  font-size:75px;  line-height:1;  font-family:Impact,"Arial Narrow",Helvetica,sans-serif;  font-weight:bold;  text-transform:uppercase;  text-align:center;  word-wrap:break-word; /* A very nice CSS3 property */}
@@ -378,8 +378,8 @@ div.messages ul li{list-style-type:none}
 /*Tooltip Not For Sale*/
 .not_for_sale{position:relative}
 .not-sale-popup, .make-offer-popup{background:url(../images/white.png) no-repeat;color:#556270;  height:70px; font-size:15px; padding:33px 19px 10px; width:173px;z-index: 500; text-indent:0}
-.not-sale-popup{position:absolute; top:-106px; left:10px}
-#offer-buttons{position: absolute; right: -5px;height: 28px; width: 108px; bottom: 14px}
+.not-sale-popup{position:absolute; top:-80px; left:10px}
+#offer-buttons{position: absolute; right: 4px;height: 28px; width: 108px; bottom: 50px}
 .make-offer{position: relative;}
 .action .make-offer-popup{position:absolute; top:-90px; left:-6px}
 #offer-buttons .make-offer-popup{position:absolute; top:-121px; left:-15px}

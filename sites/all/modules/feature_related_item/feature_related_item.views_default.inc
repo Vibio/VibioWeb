@@ -87,6 +87,7 @@ function feature_related_item_views_default_views() {
   $handler->display->display_options['fields']['field_main_image_fid']['element_label_type'] = '0';
   $handler->display->display_options['fields']['field_main_image_fid']['element_label_colon'] = 0;
   $handler->display->display_options['fields']['field_main_image_fid']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_main_image_fid']['empty'] = '<img src="themes/vibio/images/icons/default_item_large.png"/>';
   $handler->display->display_options['fields']['field_main_image_fid']['hide_empty'] = 0;
   $handler->display->display_options['fields']['field_main_image_fid']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_main_image_fid']['hide_alter_empty'] = 0;
@@ -162,6 +163,11 @@ function feature_related_item_views_default_views() {
     0 => 0,
     1 => '1',
   );
+  /* Filter: Content: Main Image (field_main_image) - list */
+  $handler->display->display_options['filters']['field_main_image_list']['id'] = 'field_main_image_list';
+  $handler->display->display_options['filters']['field_main_image_list']['table'] = 'node_data_field_main_image';
+  $handler->display->display_options['filters']['field_main_image_list']['field'] = 'field_main_image_list';
+  $handler->display->display_options['filters']['field_main_image_list']['value'] = '1';
 
   /* Display: Block */
   $handler = $view->new_display('block', 'Block', 'block_1');
@@ -196,6 +202,7 @@ function feature_related_item_views_default_views() {
     t('Sort by'),
     t('Asc'),
     t('Desc'),
+    t('<img src="themes/vibio/images/icons/default_item_large.png"/>'),
     t('All'),
     t('Block'),
     t('Random Item'),

@@ -313,8 +313,7 @@ div#edit-field-offer-expires-0-value-datepicker-popup-0-wrapper .description, di
 #seller-neg-form .attachments{clear:both}
 #offer_top{height:140px; margin-bottom:20px; border-bottom:1px solid #CCC}
 #content-area a.offer-button{background:url(../images/btn_preview_send.png) no-repeat; width:37px; height:185px}
-#content-area div.collection_list_item_summary a.offer-button{display:block; text-indent:-9999px; background:url(../images/btn_make_offer_1.png) no-repeat 0 0; width:108px; height:28px; position: absolute; top:-12px; right: 10px}
-#content-area div.collection_list_item_summary a.offer-button:hover{background-position:0 -42px}
+#content-area div.collection_list_item_summary a.offer-button{display:block; text-indent:-9999px; background:url(../images/btn_make_offer_1.png) no-repeat 0 0; width:108px; height:35px; position: absolute; top:-12px; right: 2px}
 /*Node*/
 .node-unpublished div.unpublished, 
 .comment-unpublished div.unpublished /* The word "Unpublished"displayed underneath the content. */{ height:0;  overflow:visible;  color:#d8d8d8;  font-size:75px;  line-height:1;  font-family:Impact,"Arial Narrow",Helvetica,sans-serif;  font-weight:bold;  text-transform:uppercase;  text-align:center;  word-wrap:break-word; /* A very nice CSS3 property */}
@@ -1068,7 +1067,8 @@ form#collection-edit div#edit-privacy-setting-wrapper{border-bottom: 1px solid #
 form#collection-edit div.description ,form#collection-edit textarea#edit-description, form#collection-edit input#edit-title{width: 460px}
 form#collection-edit div.description{ font-size: 13px; padding: 10px 0 0 25px}
 input#edit-delete{background-position: -3px -192px; width: 77px; height: 26px}
-ul.message-actions li a{display:block; width: 77px; height: 26px; background-position: 0 -120px; position: absolute; top: 2px; right: 1px}
+ul.message-actions li a{display:block; width: 80px; height: 26px; background-position: 0 -192px; position: absolute; top: 2px; right: 1px}
+ul.message-actions li a:hover{background-position: 0 -222px}
 input#edit-delete:hover{background-position: -3px -222px}
 #uri_elaborations_edit fieldset{width:480px}
 /*Send Preview New Private Message*/

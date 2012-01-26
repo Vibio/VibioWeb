@@ -19,7 +19,7 @@ a:hover {
 a:visited {
 	color: #496F8E
 }
-#head-right, #watches-text p, #slide-left p, ul, #featured-1, #featured-2 p, #featured-3 p,.footer, .region-footer {
+#head-right, #watches-text p, #slide-left p, ul, #featured-1, #featured-2 p, #featured-3 p, .footer, .region-footer {
 	font-family: Helvetica;
 }
 #wrapper {
@@ -102,7 +102,7 @@ p {
 	width: 266px;
 	margin: 0 auto 10px
 }
-#facebook-bottom a, #facebook a,#facebook-mid a {
+#facebook-bottom a, #facebook a, #facebook-mid a {
 	background: url(../images/btn_signup_with_facebook.png) no-repeat 0 -3px;
 	width: 266px;
 	height: 48px;
@@ -250,7 +250,7 @@ li {
 #content-bottom-right {
 	padding-top: 15px
 }
-.region-footer, .footer{
+.region-footer, .footer {
 	background: url(../images/landing/landing_43.png) no-repeat;
 	height: 60px;
 	text-align: right;
@@ -422,20 +422,20 @@ p#facebook-bot {
 	margin-bottom: 6px;
 	margin-left: 8px
 }
-#main-bot-mid li a:hover{
+#main-bot-mid li a:hover {
 	text-decoration: none;
 	color: #FFFFFF;
 }
 #fb-site {
-	padding:27px 75px 23px 48px
+	padding: 27px 75px 23px 48px
 }
 #tw-site {
-	padding:30px 84px 19px 48px
+	padding: 30px 84px 19px 48px
 }
 #mu-site {
-	padding:27px 10px 21px 48px
+	padding: 27px 10px 21px 48px
 }
-a#fb-site:hover{
+a#fb-site:hover {
 	background: url(../images/landing/landing_66.png) no-repeat -10px -5px;
 }
 a#tw-site:hover {
@@ -456,4 +456,34 @@ a#mu-site:hover {
 .region-header, .footer, .region-footer, #comics, #watches, #node-38872, #node-43071, #node-48820, #record, #sliders {
 	background-size: 100% auto;
 	min-width: 1005px;
+}
+#blog-posts{
+	margin:0px 0 0 20px;
+}
+.gf-snippet {
+	color: #556270;
+	font-size: 11px;
+	font-family: Helvetica Neue;
+	
+}
+.gf-relativePublishedDate {
+	display: none !important;
+}
+.gf-title a {
+	color: #106f93
+}
+.gf-title {
+	color: #106f93;
+	font-size: 15px;
+	font-family: Helvetica Neue;
+}
+.gfc-resultsHeader{
+	border-bottom: none !important;
+	display: none;
+}
+.gfc-result{
+	border-bottom: 1px solid #CCCCCC;
+	width: 306px;
+	padding:15px 0px;
+	margin: 0 !important;
 }

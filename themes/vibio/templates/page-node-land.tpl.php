@@ -9,6 +9,25 @@
 		<link rel="stylesheet" href="/themes/vibio/css/landing.css" />
 		<link href='http://fonts.googleapis.com/css?family=Quicksand:300,400' rel='stylesheet' type='text/css'>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+		<script src="https://www.google.com/jsapi?key=ABQIAAAA-ZdntGLOFE_XlaoaJXnvzxRV4xJp77Sw352sD2juZwyOgQ3zihTD6ePVSxQztEtTEJToC_bxgqz_sw" type="text/javascript"></script>
+		<script type="text/javascript">
+			google.load("feeds", "1");
+
+			function OnLoad() {
+				// Create a feed control
+				var feedControl = new google.feeds.FeedControl();
+
+				// Add two feeds.
+				feedControl.addFeed("http://vibio.tumblr.com/rss");
+				feedControl.setNumEntries(3);
+				// Draw it.
+				feedControl.draw(document.getElementById("blog-posts"));
+			}
+
+
+			google.setOnLoadCallback(OnLoad);
+
+		</script>
 	</head>
 	<body class="<?php print $classes;?>">
 		<div class="region-header">
@@ -29,7 +48,7 @@
 				<div id="content-top">
 					<div id="main-mid-left">
 						<p id="create">
-							CREATE A COLLECTION SPACE THATS UNIQUE TO YOUR INTERESTS
+							CREATE A COLLECTION SPACE THAT'S UNIQUE TO YOUR INTERESTS
 						</p>
 						<p id="create-b">
 							It’s easy to create your profile, make enviable collections and share your unique items for people to drool over.
@@ -97,8 +116,7 @@
 						//Puts a fb button inside the link.
 						$link = l('<img src="/themes/vibio/images/btn_fb_login.png" id="facebook-large" class="fb_login"/>', $link_attributes['href'], array('query' => $link_attributes['query'], 'html' => TRUE));
 					}
-					?>
-					<?php print $link;?>
+					?> <?php print $link;?>
 				</p>
 				<p id="facebook-bot">
 					OR <a href="/user/login" target="_blank">Sign Up Manually</a>
@@ -120,6 +138,7 @@
 			</div>
 			<div id="main-bot-right">
 				<h2>LATEST BLOG POSTS</h2>
+				<div id="blog-posts"></div>
 			</div>
 		</div>
 		</div> <div class="clears"></div>
@@ -133,27 +152,6 @@
 				$("#video-cover").hover(function() {
 					$(this).fadeOut(900);
 				});
-				$('#nav ul li:eq(0)').click(function() {
-					$('li').removeClass('active');
-					$(this).addClass('active');
-					$('#photo-3, #photo-2').hide();
-					$('#photo-1').fadeIn();
-				});
-				$('#nav ul li:eq(1)').click(function() {
-					$('li').removeClass('active');
-					$(this).addClass('active');
-					$('#photo-1, #photo-3').hide();
-					$('#photo-2').fadeIn();
-				});
-				$('#nav ul li:eq(2)').click(function() {
-					$('li').removeClass('active');
-					$(this).addClass('active');
-					$('#photo-1, #photo-2').hide();
-					$('#photo-3').fadeIn();
-				});
-			});
-			$(window).load(function() {
-				$('#photo-2, #photo-3').hide();
 			});
 
 		</script>

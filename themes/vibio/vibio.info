@@ -27,6 +27,7 @@ scripts[] = js/mbMenu/inc/mbMenu.js
 scripts[] = js/mbMenu/inc/jquery.hoverIntent.js
 scripts[] = js/mbMenu/inc/jquery.metadata.js
 scripts[] = js/jquery.imagesloaded.js
+scripts[] = js/message_fade.js
 
   ; The regions defined in Zen's default page.tpl.php file.  The name in
   ; brackets is the name of the variable in the page.tpl.php file, (e.g.

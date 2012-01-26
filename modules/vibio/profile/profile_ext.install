@@ -1,0 +1,50 @@
+<?php
+
+/**
+ * Re-save all offer nodes so their count field is populated.
+ */
+function profile_ext_update_6001(&$sandbox) {
+  $ret = array();
+
+  $tried_installing = FALSE;
+  while ($tried_installing == FALSE && module_exists('nodereference_count') == FALSE) {
+    module_enable(array('nodereference_count'));
+    drupal_set_message(t('Nodereference Count has been enabled (if it\'s downloaded.).'));
+    if (module_exists('nodereference_count')) {
+      drupal_install_modules(array('nodereference_count'));
+    }
+    $tried_installing = TRUE;
+  }
+  if (module_exists('nodereference_count') == FALSE) {
+    $ret['#abort'] = array('success' => FALSE, 
+      'query' => 'Please enable Nodereference Count before running this update.');
+    return $ret;
+  }
+
+  if (!isset($sandbox['progress'])) {
+    $sandbox['progress'] = 0;
+    $sandbox['current_nid'] = 0;
+    $sandbox['max'] = db_result(db_query("SELECT COUNT(DISTINCT nid) FROM {node} WHERE type = '%s'", 'offer'));
+  }
+
+  $nodes = db_query_range("SELECT nid FROM {node} WHERE type = '%s' AND nid > %d ORDER BY nid ASC", 'offer', $sandbox['current_nid'], 0, 50);
+  while ($record = db_fetch_object($nodes)) {
+    // Avoid memory overload
+    $node = node_load($record->nid, NULL, TRUE);
+    // Just re-save the node so stuff happens (Node Reference count updated)
+    node_save($node);
+
+    $ret[] = array(
+      'success' => TRUE,
+      'query' => "Update {$node->type} node {$node->nid}.",
+    );
+
+    $sandbox['progress']++;
+    $sandbox['current_nid'] = $node->nid;
+  }
+
+  $ret['#finished'] = empty($sandbox['max']) ? 1 : ($sandbox['progress'] / $sandbox['max']);
+
+  return $ret;
+}
+

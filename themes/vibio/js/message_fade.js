@@ -5,9 +5,9 @@ $(document).ready(function() {
       setTimeout(func,time);
     });
   };
-  /* Where it says 3000, this is 3 seconds. Adjust to your preference.
+  /* Where it says 4000, this is 4 seconds. Adjust to your preference.
    * Script from: http://drupal.org/node/1394032 thanks! */
-  $('.messages').delay(3000, function(){
-    $('.messages').fadeOut(300);
+  $('div.messages').delay(4000, function(){
+    $('div.messages').fadeOut(300);
   });
 });

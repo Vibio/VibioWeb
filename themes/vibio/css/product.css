@@ -47,13 +47,11 @@ div.product_owners_results div.action div.row {
 #content-area div.product_owners_results div.action a.offer-button {
 	display: block;
 	text-indent: -9999px;
-	background: url(../images/btn_make_offer_1.png) no-repeat 0 0;
+	background: url(../images/btn_make_offer_1.png) no-repeat -1px 0;
 	width: 109px;
-	height: 28px;
+	height: 35px;
 }
-#content-area div.product_owners_results div.action a.offer-button:hover {
-	background-position: 0px -42px;
-}
+
 .item_owner{
 	height: 75px;
 	padding: 10px 0;

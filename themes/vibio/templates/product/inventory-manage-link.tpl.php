@@ -15,7 +15,7 @@ if ($is_product_page && $item_id || // PRODUCT page where user owns the product
 		<li>Move this item into different collections</li>
 		<li>Remove this item from your collection</li>
 		<li>Adjust who can view this item (privacy settings)</li>
-		<li>Change status(For Sale/Not For Sale)</li>
+		<li>Change status (For Sale/Not For Sale)</li>
 		</ul>';  // used to be View yours
 		
 }

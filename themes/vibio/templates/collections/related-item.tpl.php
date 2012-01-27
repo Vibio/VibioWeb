@@ -19,8 +19,9 @@ echo "
 		</a>
 	</div>
 	<div class='collection_info'>
-		<div class='collection_owner'>{$item->users_name}</div>
-		<div class='collection_title'>{$item->node_title}</div>
+	<div class='collection_title'>{$item->node_title}</div>
 	</div></div>
 ";
+  /*<div class='collection_owner'>{$item->users_name}</div>*/
 ?>
+

@@ -556,7 +556,7 @@ function collection_form_vibio_item_node_form_alter(&$form, &$state)
 			"#title"		=> t("Collection"),
 			"#options"		=> $options, //collection_options(),
 			"#default_value"=> $default,
-			"#multiple"		=> FALSE,
+			"#multiple"		=> TRUE,
 		),
 
 		/* this was commented out, why?

@@ -19,7 +19,7 @@ function vibio_product_displays_for_sale() {
 }
 
 function vibio_product_displays_views_pre_render(&$view) {
-  if ($view->name == 'all_products_for_sale') {
+  if ($view->name == 'all_products_for_sale' || $view->name == 'Wantlist') {
     $fid_alias = $view->field['field_main_image_fid']->field_alias;
     // Fake the _list and _data properties
     $fid_stub = substr($fid_alias, 0, -4);

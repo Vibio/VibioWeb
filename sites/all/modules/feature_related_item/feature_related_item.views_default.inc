@@ -152,6 +152,7 @@ function feature_related_item_views_default_views() {
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'product' => 'product',
+    'vibio_item' => 'vibio_item',
   );
   /* Filter: User: Name */
   $handler->display->display_options['filters']['uid']['id'] = 'uid';
@@ -192,6 +193,62 @@ function feature_related_item_views_default_views() {
   $handler->display->display_options['arguments']['setting_requested']['field'] = 'setting_requested';
   $handler->display->display_options['arguments']['setting_requested']['style_plugin'] = 'default_summary';
   $handler->display->display_options['arguments']['setting_requested']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter: Node: In moderation */
+  $handler->display->display_options['filters']['moderate']['id'] = 'moderate';
+  $handler->display->display_options['filters']['moderate']['table'] = 'node';
+  $handler->display->display_options['filters']['moderate']['field'] = 'moderate';
+  $handler->display->display_options['filters']['moderate']['value'] = '0';
+  $handler->display->display_options['filters']['moderate']['expose']['operator'] = FALSE;
+  /* Filter: Node: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter: Node: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'vibio_item' => 'vibio_item',
+  );
+  /* Filter: User: Name */
+  $handler->display->display_options['filters']['uid']['id'] = 'uid';
+  $handler->display->display_options['filters']['uid']['table'] = 'users';
+  $handler->display->display_options['filters']['uid']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid']['operator'] = 'not in';
+  $handler->display->display_options['filters']['uid']['value'] = array(
+    0 => 0,
+    1 => '1',
+  );
+  /* Filter: Content: Main Image (field_main_image) - list */
+  $handler->display->display_options['filters']['field_main_image_list']['id'] = 'field_main_image_list';
+  $handler->display->display_options['filters']['field_main_image_list']['table'] = 'node_data_field_main_image';
+  $handler->display->display_options['filters']['field_main_image_list']['field'] = 'field_main_image_list';
+  $handler->display->display_options['filters']['field_main_image_list']['value'] = '1';
+  /* Filter: Taxonomy: Term */
+  $handler->display->display_options['filters']['tid']['id'] = 'tid';
+  $handler->display->display_options['filters']['tid']['table'] = 'term_node';
+  $handler->display->display_options['filters']['tid']['field'] = 'tid';
+  $handler->display->display_options['filters']['tid']['operator'] = 'not';
+  $handler->display->display_options['filters']['tid']['value'] = array(
+    59 => '59',
+    46 => '46',
+    42 => '42',
+    29 => '29',
+    52 => '52',
+    33 => '33',
+    58 => '58',
+    51 => '51',
+    38 => '38',
+    63 => '63',
+    35 => '35',
+    56 => '56',
+  );
+  $handler->display->display_options['filters']['tid']['reduce_duplicates'] = 0;
+  $handler->display->display_options['filters']['tid']['type'] = 'select';
+  $handler->display->display_options['filters']['tid']['vid'] = '2';
   $translatables['related_item'] = array(
     t('Defaults'),
     t('Similar By Terms'),

@@ -153,7 +153,8 @@ function product_ajax_add_complete() {
      */
   
 		$cids=array();
-		foreach($p['collections'] as $cid) {
+    $p['collections'] = (array) $p['collections'];
+		foreach((array) $p['collections'] as $cid) {
 			// Did Alec overwrite this weird stuff?
 			$cids[$cid]=$cid;
 		}

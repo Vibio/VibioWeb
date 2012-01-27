@@ -1,0 +1,12 @@
+name = Node Reference Count
+description = Defines a field type for counting the references to a node.
+dependencies[] = content
+dependencies[] = nodereference
+package = CCK
+core = 6.x
+; Information added by drupal.org packaging script on 2011-03-23
+version = "6.x-1.x-dev"
+core = "6.x"
+project = "nodereference_count"
+datestamp = "1300882432"
+

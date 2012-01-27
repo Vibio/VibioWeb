@@ -1,9 +1,9 @@
 /*Combination of old Css files - Craig Tockman Vibio 11-28-2011*/
 /*Hide things with CSS display:none*/
 div#edit-field-have-want-like-wrapper, 
-div#block-collection-random_collection .collection_item_count,  div#block-collection-random_collection .collection_description, 
-div#block-collection-random_collection .collection_categories,  div#block-collection-random_collection .collection_date_added, 
-div#block-collection-random_collection .collection_link, form#privatemsg-new input#edit-preview, form#privatemsg-new a#edit-cancel, 
+div#block-collection-related_collection .collection_item_count,  div#block-collection-related_collection .collection_description, 
+div#block-collection-related_collection .collection_categories,  div#block-collection-related_collection .collection_date_added, 
+div#block-collection-related_collection .collection_link, form#privatemsg-new input#edit-preview, form#privatemsg-new a#edit-cancel, 
 .not-logged-in #block-block-22, .page-product-add h1#page_title.title, #node-form #field_images_values .delta-order .form-item, img.team_tooltip, 
 .logged-in #block-views-flag_featured_users-block_1, .hide, .popups-box .title, .not-logged-in #block-block-5, 
 .logged-in #block-block-4, .page-about h1#page_title, .page-team h1#page_title, .not-logged-in #block-block-17, 
@@ -313,8 +313,7 @@ div#edit-field-offer-expires-0-value-datepicker-popup-0-wrapper .description, di
 #seller-neg-form .attachments{clear:both}
 #offer_top{height:140px; margin-bottom:20px; border-bottom:1px solid #CCC}
 #content-area a.offer-button{background:url(../images/btn_preview_send.png) no-repeat; width:37px; height:185px}
-#content-area div.collection_list_item_summary a.offer-button{display:block; text-indent:-9999px; background:url(../images/btn_make_offer_1.png) no-repeat 0 0; width:108px; height:28px; position: absolute; top:-12px; right: 10px}
-#content-area div.collection_list_item_summary a.offer-button:hover{background-position:0 -42px}
+#content-area div.collection_list_item_summary a.offer-button{display:block; text-indent:-9999px; background:url(../images/btn_make_offer_1.png) no-repeat -6px 7px; width:107px;height:88px; position: absolute; top:-12px; right: -4px}
 /*Node*/
 .node-unpublished div.unpublished, 
 .comment-unpublished div.unpublished /* The word "Unpublished"displayed underneath the content. */{ height:0;  overflow:visible;  color:#d8d8d8;  font-size:75px;  line-height:1;  font-family:Impact,"Arial Narrow",Helvetica,sans-serif;  font-weight:bold;  text-transform:uppercase;  text-align:center;  word-wrap:break-word; /* A very nice CSS3 property */}
@@ -328,6 +327,11 @@ div#edit-field-offer-expires-0-value-datepicker-popup-0-wrapper .description, di
 .node_view_item_image{ margin-right:15px;  max-height:54px}
 .product_node_data{ float:left;  width:345px}
 .product_node_data .item_link h3{ font-size:18px;  margin-bottom:10px}
+.product_node_data div.already-have-link a{float:left; position: static; background: url(../images/btn_have_want_new.png) no-repeat;
+height: 40px; width:63px; display: block; margin-right: 5px}
+.product_node_data div.already-have-link a.inventory_want{background-position: -65px 0px}
+.product_node_data div.already-have-link a.inventory_want:hover{background-position: -65px -56px}
+.product_node_data div.already-have-link{float:none}
 .product_description{ color:#2b363d}
 .product_extra_data h3{font-size:15px; padding:0; margin:0}
 .product_extra_data{ margin-top:10px;  border-bottom:1px solid #CCC;  padding:0;  color:#556270;  font-size:18px}
@@ -374,8 +378,8 @@ div.messages ul li{list-style-type:none}
 /*Tooltip Not For Sale*/
 .not_for_sale{position:relative}
 .not-sale-popup, .make-offer-popup{background:url(../images/white.png) no-repeat;color:#556270;  height:70px; font-size:15px; padding:33px 19px 10px; width:173px;z-index: 500; text-indent:0}
-.not-sale-popup{position:absolute; top:-106px; left:10px}
-#offer-buttons{position: absolute; right: -5px;height: 28px; width: 108px; bottom: 14px}
+.not-sale-popup{position:absolute; top:-80px; left:10px}
+#offer-buttons{position: absolute; right: 4px;height: 28px; width: 108px; bottom: 50px}
 .make-offer{position: relative;}
 .action .make-offer-popup{position:absolute; top:-90px; left:-6px}
 #offer-buttons .make-offer-popup{position:absolute; top:-121px; left:-15px}
@@ -564,43 +568,27 @@ h3{ font-size:1.3em;  line-height:1.3em;  margin-top:0.769em; /* Equivalent to 1
 h4, 
 h5{ font-size:1.1em;  line-height:1.3em;  margin-top:0.909em; /* Equivalent to 1em in the page's base font:1 / 1.1 = 0.909 */ margin-bottom:0.909em}
 h6{font-size:15px; color:#00AEF0}
-/*
- * Block-level elements
- */
 p, 
 dl, 
 pre, 
 table{ margin:1em 0}
-
 blockquote{ margin:1em 2em}
-
-/*
- * Lists
- *
- * We need to standardize the list item indentation.
- */
 ul, 
 ol{ margin:0;  padding-left:1em; /* LTR */}
-
 .block ul, 
 .item-list ul /* Drupal overrides */{ /*margin:1em 0; */ /*padding:0 0 0 2em; */ /* LTR */}
-
 ul ul, ul ol, 
 ol ol, ol ul, 
 .block ul ul, .block ul ol, 
 .block ol ol, .block ol ul, 
 .item-list ul ul, .item-list ul ol, 
 .item-list ol ol, .item-list ol ul{ margin:0}
-
 li{ margin:0;  padding:0}
-
 .item-list ul li /* Drupal override */{ margin:0;  padding:0;  list-style:inherit}
-
 ul.menu li, 
 li.expanded, 
 li.collapsed, 
 li.leaf /* Drupal override */{ margin:0;  padding:0}
-
 ul{list-style-type:disc}
 ul ul{list-style-type:circle}
 ul ul ul{list-style-type:square}
@@ -608,17 +596,8 @@ ul ul ul ul{list-style-type:circle}
 ol{list-style-type:decimal}
 ol ol{list-style-type:lower-alpha}
 ol ol ol{list-style-type:decimal}
-
 dt{ margin:0;  padding:0}
-
 dd{ margin:0 0 0 2em;  padding:0}
-
-/*
- * Links
- *
- * The order of link states are based on Eric Meyer's article:
- * http://meyerweb.com/eric/thoughts/2007/06/11/who-ordered-the-link-states
- */
 a:link{color:#79AFBF; text-decoration:none}
 a:visited{color:#496F8E}
 a:hover, a:focus{color:#00AEF0}
@@ -637,10 +616,6 @@ abbr{ border-bottom:1px dotted #666;  cursor:help;  white-space:nowrap}
 abbr.created /* Date-based "abbreviations"show computer-friendly timestamps which are not human-friendly. */{ border:none;  cursor:auto;  white-space:normal}
 img{ border:0}
 hr{ height:1px;  border:1px solid #666}
-
-/*
- * Forms
- */
 form{ margin:0;  padding:0}
 fieldset{border:none}
 /* jquery progress bars */
@@ -718,25 +693,14 @@ td.col-2{padding-left:10px; border-left:1px solid #CCC}
 .collection_sidebar_collection_image img{max-width:80px}
 .collection_sidebar_collection_items{float:left}
 .collection_sidebar_collection_items img{display:block; margin-bottom:2px; max-height:25px; max-width:50px}
-#block-collection-random_collection{background:#F6F6F6 url(/themes/vibio/images/showcase.png) no-repeat 5px 0; padding:0 16px; margin-bottom:0; min-height:234px}
-#block-collection-random_collection h2{padding:10px 0}
+#block-collection-related_collection{background: #FFFFFF; margin: 0; padding: 1px 0}
+.block-wrapper{background: #E5E7EA; padding:0 9px 10px; margin:2px 7px 0;box-shadow:0 0 1px 1px #CCCCCC}
+#block-collection-related_collection h2{padding:10px 0; color: #106F93;font-size: 15px; margin: 0;
+background:url(../images/long_border.png) no-repeat scroll 0px 31px}
 /*Background Image*/
-#block-collection-random_collection .content >div{line-height:15px}
-#block-collection-random_collection .collection_image{float:none; margin:0; width:auto; padding-top:10px; text-align:center}
-#block-collection-random_collection .collection_image img{border:1px solid #CCC; background:#FFF; padding:5px; max-height:115px; max-width:115px}
-#block-collection-random_collection .collection_owner{padding-top:6px}
-#block-collection-random_collection .collection_owner a, #block-collection-random_collection .collection_title a{font-size:15px}
-#block-collection-random_collection .collection_title a, #block-collection-random_collection .collection_link a{font-size:13px}
-#block-collection-random_collection .collection_title a{color:#106F93}
-#block-collection-random_collection .collection_title a:hover{color:#00AEF0}
-#block-collection-random_collection .collection_link a{font-size:12px}
-#block-collection-random_collection .collection_date_added{font-size:12px; margin-top:10px}
-
-#block-collection-related_collection{background:#F6F6F6 url(/themes/vibio/images/showcase.png) no-repeat 5px 0; padding:0 16px; margin-bottom:0; min-height:234px}
-#block-collection-related_collection h2{padding:10px 0}
 #block-collection-related_collection .content >div{line-height:15px}
 #block-collection-related_collection .collection_image{float:none; margin:0; width:auto; padding-top:10px; text-align:center}
-#block-collection-related_collection .collection_image img{border:1px solid #CCC; background:#FFF; padding:5px; max-height:115px; max-width:115px}
+#block-collection-related_collection .collection_image img{border:1px solid #CCC; background:#FFF; padding:5px}
 #block-collection-related_collection .collection_owner{padding-top:6px}
 #block-collection-related_collection .collection_owner a, #block-collection-related_collection .collection_title a{font-size:15px}
 #block-collection-related_collection .collection_title a, #block-collection-related_collection .collection_link a{font-size:13px}
@@ -744,11 +708,12 @@ td.col-2{padding-left:10px; border-left:1px solid #CCC}
 #block-collection-related_collection .collection_title a:hover{color:#00AEF0}
 #block-collection-related_collection .collection_link a{font-size:12px}
 #block-collection-related_collection .collection_date_added{font-size:12px; margin-top:10px}
-
 /*Bottom Sidebar*/
 .region-sidebar-first .rounded_content{}
 .heartbeat-messages-wrapper{margin-top:25px}
-#block-heartbeat-connectedheartbeat.block{background:#FFF url(/themes/vibio/images/sidebar_seperator.png) no-repeat scroll 6px 41px; border-bottom-left-radius:4px; border-bottom-right-radius:4px; -moz-border-radius-bottomright:4px; -moz-border-radius-bottomleft:4px}
+#block-heartbeat-connectedheartbeat.block{background:#FFF url(/themes/vibio/images/sidebar_seperator.png) no-repeat scroll 6px 41px;
+border-bottom-left-radius:4px; border-bottom-right-radius:4px; -moz-border-radius-bottomright:4px;
+ -moz-border-radius-bottomleft:4px}
 #block-heartbeat-connectedheartbeat{padding:12px 15px 15px}
 .beat-item{margin-top:10px; padding-bottom:10px; border-bottom:1px solid #ccc}
 .heartbeat-pic-in-block img{height:32px; width:32px; border:1px solid #CCC; float:left; padding:5px; border:solid 1px #CCC; margin-right:7px}
@@ -1102,7 +1067,8 @@ form#collection-edit div#edit-privacy-setting-wrapper{border-bottom: 1px solid #
 form#collection-edit div.description ,form#collection-edit textarea#edit-description, form#collection-edit input#edit-title{width: 460px}
 form#collection-edit div.description{ font-size: 13px; padding: 10px 0 0 25px}
 input#edit-delete{background-position: -3px -192px; width: 77px; height: 26px}
-ul.message-actions li a{display:block; width: 77px; height: 26px; background-position: 0 -120px; position: absolute; top: 2px; right: 1px}
+ul.message-actions li a{display:block; width: 80px; height: 26px; background-position: 0 -192px; position: absolute; top: 2px; right: 1px}
+ul.message-actions li a:hover{background-position: 0 -222px}
 input#edit-delete:hover{background-position: -3px -222px}
 #uri_elaborations_edit fieldset{width:480px}
 /*Send Preview New Private Message*/

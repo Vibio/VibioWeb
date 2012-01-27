@@ -152,6 +152,7 @@ function feature_related_item_views_default_views() {
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'product' => 'product',
+    'vibio_item' => 'vibio_item',
   );
   /* Filter: User: Name */
   $handler->display->display_options['filters']['uid']['id'] = 'uid';

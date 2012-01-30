@@ -123,11 +123,6 @@ function vibio_addthis_toolbox($html, $variables) {
     tw:via="vibio"
     addthis:url="'. $abbreviated_url .'">
   </a>
-  <a class="addthis_button_pinterest"
-    pi:pinit:url="'. $url .'"
-    pi:pinit:media="'. $pin_image . '"
-    pi:pinit:layout="horizontal">
-  </a>
   <a class="addthis_counter addthis_pill_style"></a>
   <a class="addthis_button_pinterest"
     pi:pinit:url="'. $url .'"

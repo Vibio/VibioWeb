@@ -228,7 +228,7 @@ function collection_preprocess_collection_list_item(&$vars)
 		$variables['url'] = $base_url . url('collections/'. $vars['collection']->nid);
 		$variables['image'] = $vars['collection']->image;
 
-		$share_html = theme('addthis_toolbox', $variables);
+		$share_html = theme('addthis_toolbox', NULL, $variables);
 	}
 /*
 	if($vars['collection']->is_owner ) {
@@ -391,6 +391,7 @@ function collection_nodeapi(&$node, $op, $a3=null, $a4=null)
       }
       //collection_info is used by product.pages.php; ie the have/want popups
       if(isset($node->collection_info)){
+        $node->collection_info['cid'] = (array)$node->collection_info['cid'];
         $collection_nids = array_merge($collection_nids, $node->collection_info['cid']);
       }
 			//$collection_nids = isset($node->field_collection[0]['nid']) ? $node->field_collection : false;
@@ -555,7 +556,7 @@ function collection_form_vibio_item_node_form_alter(&$form, &$state)
 			"#title"		=> t("Collection"),
 			"#options"		=> $options, //collection_options(),
 			"#default_value"=> $default,
-			"#multiple"		=> FALSE,
+			"#multiple"		=> TRUE,
 		),
 
 		/* this was commented out, why?

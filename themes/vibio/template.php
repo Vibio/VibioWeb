@@ -90,8 +90,10 @@ function vibio_preprocess_views_view__user_collections1(&$variables){
  * @param <type> $variables
  * @return <type> 
  */
-function vibio_addthis_toolbox($variables) {
+function vibio_addthis_toolbox($html, $variables) {
   global $addthis_counter;
+  global $base_url;
+  
   empty($addthis_counter) ? $addthis_counter = 0 : '';
   if($addthis_counter < 1){
     addthis_add_default_js();
@@ -103,11 +105,15 @@ function vibio_addthis_toolbox($variables) {
   }
   $title = $variables['title'];
   $node = $variables['node'];
+
   $description = $node->body;
+  if($variables['image'] || $node->field_main_image[0]){
+    $image_path = $variables['image'] ? $variables['image'] : $node->field_main_image[0]['filepath'];
+    $pin_image = $base_url . '/' . $image_path; //url() wasn't working?
+  }else{
+    $pin_image = $base_url . '/themes/vibio/vibio-logo.png';
+  }
   return '
-  <div class="share-text">
-  Share: 
-  </div>
   <div class="addthis_toolbox addthis_default_style"
     addthis:title="'. $title .'"
     addthis:url="'. $url .'"
@@ -115,8 +121,14 @@ function vibio_addthis_toolbox($variables) {
   <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
   <a class="addthis_button_tweet"
     tw:via="vibio"
-    addthis:url="'. $abbreviated_url .'"></a>
+    addthis:url="'. $abbreviated_url .'">
+  </a>
   <a class="addthis_counter addthis_pill_style"></a>
+  <a class="addthis_button_pinterest"
+    pi:pinit:url="'. $url .'"
+    pi:pinit:media="'. $pin_image . '"
+    pi:pinit:layout="horizontal">
+  </a>
   </div>
   ';
 }

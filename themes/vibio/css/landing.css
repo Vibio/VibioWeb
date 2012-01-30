@@ -116,7 +116,7 @@ p {
 	background: url(../images/landing/landing_03.png) no-repeat;
 	height: 336px;
 }
-#node-38872 div.content, #node-43071 div.content, #node-48820 div.content, #node-86131 div.content {
+#node-38872 div.content, #node-43071 div.content, #node-48820 div.content{
 	width: 1004px;
 	margin: 0 auto
 }
@@ -300,7 +300,7 @@ p#facebook-bot {
 	margin: 0
 }
 /*different product backgrounds based on node*/
-#node-64877, #node-64893 {
+#node-64877, #node-64893, #node-86131 {
 	background: url(../images/landing/landing_45.png) no-repeat;
 	height: 495px;
 }

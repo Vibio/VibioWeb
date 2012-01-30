@@ -114,9 +114,6 @@ function vibio_addthis_toolbox($html, $variables) {
     $pin_image = $base_url . '/themes/vibio/vibio-logo.png';
   }
   return '
-  <div class="share-text">
-  Share: 
-  </div>
   <div class="addthis_toolbox addthis_default_style"
     addthis:title="'. $title .'"
     addthis:url="'. $url .'"
@@ -126,12 +123,12 @@ function vibio_addthis_toolbox($html, $variables) {
     tw:via="vibio"
     addthis:url="'. $abbreviated_url .'">
   </a>
+  <a class="addthis_counter addthis_pill_style"></a>
   <a class="addthis_button_pinterest"
     pi:pinit:url="'. $url .'"
     pi:pinit:media="'. $pin_image . '"
     pi:pinit:layout="horizontal">
   </a>
-  <a class="addthis_counter addthis_pill_style"></a>
   </div>
   ';
 }

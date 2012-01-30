@@ -11,8 +11,12 @@ Drupal.behaviors.infinitescrollMasonry = function(context) {
 
     $contentSelector = $('.view-content', $viewSelector);
     $contentSelector.infinitescroll({
-        loading.img: '/themes/vibio/images/barloader.gif',
-        loading.finishedMsg: "No more pages to load.", 
+        loading: {
+          img: '/themes/vibio/images/barloader.gif'
+        },
+        state: {
+          finishedMsg: "No more pages to load."
+        },
         debug: false,
         nextSelector: ".pager .pager-next a", // selector for the NEXT link (to page 2)
         navSelector: ".pager", // selector for the paged navigation

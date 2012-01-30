@@ -967,7 +967,7 @@ a#info-modal:hover span.tab{border-bottom-color:#CFD2D5}
 div.tabs_big ul.primary li a .tab{ height:31px;  padding-top:5px;  padding-right:11px;  font-weight:bold}
 ul.primary li a .tab, .blank-li span.tab{ display:block;  margin:0;  padding:0 11px 5px;  border-width:0;  font-size:15px;  border-bottom:7px solid #cfd2d5;   font-weight:bold;  color:#556270}
 .blank-li span.tab{padding:0 0 5px}
-li.blank-li{width:335px}
+li.blank-li{width:258px}
 ul.primary li a:hover{ background-color:transparent}
 ul.primary li a:hover .tab{ border-bottom:7px solid #00AEF0;   color:#00AEF0}
 ul.primary li.active a, 

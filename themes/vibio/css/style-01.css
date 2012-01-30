@@ -685,7 +685,7 @@ td.col-2{padding-left:10px; border-left:1px solid #CCC}
 .minisocialbar div{}
 .user-collection-preview tr{height:60px}
 .user-collection-preview tr.row-last{height:auto}
-.collection_categories{font-weight:bold; float:left; margin-bottom:10px}
+.collection_categories{font-weight:bold; margin-bottom:10px}
 #collection_main .collection_summary{width:400px}
 #collection_sidebar h5{margin:10px 0 0}
 .collection_sidebar_collection{margin-top:25px; width:135px}

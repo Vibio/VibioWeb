@@ -64,3 +64,18 @@ function vibio_product_displays_views_pre_render(&$view) {
   }
 }
 
+function _vibio_product_displays_compare_item_counts($row1, $row2) {
+  $sql = "SELECT COUNT(item_nid) FROM {product_items} WHERE product_nid = %d GROUP BY product_nid";
+  $row1_count = (int) db_result(db_query($sql, $row1->nid)); 
+  $row2_count = (int) db_result(db_query($sql, $row2->nid)); 
+  if ($row1_count > $row2_count) {
+    return 1;
+  }
+  elseif ($row1_count == $row2_count) {
+    return 0;
+  }
+  else {
+    return -1;
+  }
+}
+

@@ -535,7 +535,7 @@ function collection_form_vibio_item_node_form_alter(&$form, &$state)
 		$default = collection_get_user_default(false, true);
 	}
 	
-	if ($form['#node']->nid) //existing node
+	if (isset($form['#node']->nid)) //existing node
 	{
 		$default = collection_get_item_cid($form['#node']->nid);
 	} 

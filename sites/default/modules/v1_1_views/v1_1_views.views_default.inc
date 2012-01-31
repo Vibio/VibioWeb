@@ -62,11 +62,12 @@ function v1_1_views_views_default_views() {
   $handler->display->display_options['fields']['field_main_image_fid']['table'] = 'node_data_field_main_image';
   $handler->display->display_options['fields']['field_main_image_fid']['field'] = 'field_main_image_fid';
   $handler->display->display_options['fields']['field_main_image_fid']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['field_main_image_fid']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_main_image_fid']['alter']['make_link'] = 1;
   $handler->display->display_options['fields']['field_main_image_fid']['alter']['absolute'] = 0;
   $handler->display->display_options['fields']['field_main_image_fid']['alter']['external'] = 0;
   $handler->display->display_options['fields']['field_main_image_fid']['alter']['replace_spaces'] = 0;
   $handler->display->display_options['fields']['field_main_image_fid']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_main_image_fid']['alter']['target'] = '_blank';
   $handler->display->display_options['fields']['field_main_image_fid']['alter']['nl2br'] = 0;
   $handler->display->display_options['fields']['field_main_image_fid']['alter']['word_boundary'] = 1;
   $handler->display->display_options['fields']['field_main_image_fid']['alter']['ellipsis'] = 1;
@@ -79,9 +80,9 @@ function v1_1_views_views_default_views() {
   $handler->display->display_options['fields']['field_main_image_fid']['hide_empty'] = 0;
   $handler->display->display_options['fields']['field_main_image_fid']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_main_image_fid']['hide_alter_empty'] = 0;
-  $handler->display->display_options['fields']['field_main_image_fid']['link_to_node'] = 0;
+  $handler->display->display_options['fields']['field_main_image_fid']['link_to_node'] = 1;
   $handler->display->display_options['fields']['field_main_image_fid']['label_type'] = 'none';
-  $handler->display->display_options['fields']['field_main_image_fid']['format'] = 'product_fixed_fluid_grid_linked';
+  $handler->display->display_options['fields']['field_main_image_fid']['format'] = 'product_fixed_fluid_grid_default';
   /* Field: Get have and want buttons from nid */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
   $handler->display->display_options['fields']['nid']['table'] = 'node';
@@ -113,11 +114,12 @@ function v1_1_views_views_default_views() {
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['make_link'] = 1;
   $handler->display->display_options['fields']['title']['alter']['absolute'] = 0;
   $handler->display->display_options['fields']['title']['alter']['external'] = 0;
   $handler->display->display_options['fields']['title']['alter']['replace_spaces'] = 0;
   $handler->display->display_options['fields']['title']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['target'] = '_blank';
   $handler->display->display_options['fields']['title']['alter']['nl2br'] = 0;
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = 1;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = 1;
@@ -180,6 +182,7 @@ function v1_1_views_views_default_views() {
     t('<a name="top" id="top"></a>'),
     t('feature flag'),
     t('feature'),
+    t('_blank'),
     t('Page'),
   );
 
@@ -287,6 +290,13 @@ function v1_1_views_views_default_views() {
   $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
   $handler->display->display_options['filters']['uid_current']['value'] = '1';
   $handler->display->display_options['filters']['uid_current']['expose']['operator'] = FALSE;
+  /* Filter: Content: Offer Neg Buyer Count (field_offer_neg_buyer_count) */
+  $handler->display->display_options['filters']['field_offer_neg_buyer_count_value']['id'] = 'field_offer_neg_buyer_count_value';
+  $handler->display->display_options['filters']['field_offer_neg_buyer_count_value']['table'] = 'node_data_field_offer_neg_buyer_count';
+  $handler->display->display_options['filters']['field_offer_neg_buyer_count_value']['field'] = 'field_offer_neg_buyer_count_value';
+  $handler->display->display_options['filters']['field_offer_neg_buyer_count_value']['operator'] = '>';
+  $handler->display->display_options['filters']['field_offer_neg_buyer_count_value']['value']['value'] = '0';
+  $handler->display->display_options['filters']['field_offer_neg_buyer_count_value']['allow_null'] = 1;
   $translatables['user_buying_offers'] = array(
     t('Defaults'),
     t('more'),
@@ -438,6 +448,13 @@ function v1_1_views_views_default_views() {
   $handler->display->display_options['filters']['uid_current']['relationship'] = 'field_item_sought_nid';
   $handler->display->display_options['filters']['uid_current']['value'] = '1';
   $handler->display->display_options['filters']['uid_current']['expose']['operator'] = FALSE;
+  /* Filter: Content: Offer Neg Buyer Count (field_offer_neg_buyer_count) */
+  $handler->display->display_options['filters']['field_offer_neg_buyer_count_value']['id'] = 'field_offer_neg_buyer_count_value';
+  $handler->display->display_options['filters']['field_offer_neg_buyer_count_value']['table'] = 'node_data_field_offer_neg_buyer_count';
+  $handler->display->display_options['filters']['field_offer_neg_buyer_count_value']['field'] = 'field_offer_neg_buyer_count_value';
+  $handler->display->display_options['filters']['field_offer_neg_buyer_count_value']['operator'] = '>';
+  $handler->display->display_options['filters']['field_offer_neg_buyer_count_value']['value']['value'] = '0';
+  $handler->display->display_options['filters']['field_offer_neg_buyer_count_value']['allow_null'] = 1;
 
   /* Display: Block */
   $handler = $view->new_display('block', 'Block', 'block_1');

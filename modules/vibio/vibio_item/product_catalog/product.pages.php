@@ -155,7 +155,8 @@ function product_ajax_add_complete() {
 		foreach((array) $p['collections'] as $cid) {
 			// Did Alec overwrite this weird stuff?
 			$cids[$cid]=$cid;
-		}
+	    $state['values']['field_collection'][]['nid'] = $cid;
+    }
 		if(empty($cids)) {
 			module_load_include("inc","collection");
 			// We might re-implement post-Alec's changes

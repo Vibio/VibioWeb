@@ -98,6 +98,8 @@ echo $my_options;
 <?php
 /* The secondary content goes here.
  This replaces the odd $profile['social_info']
+ It's gone through a lot of evolutions and now looks like a normal tab
+  system, but didn't start that way -- refactor and clean up!!
  */
 // Secondary Menu  --> now formatted like tabs (but not really Drupal's tabs)
 /* Still to do:
@@ -113,7 +115,7 @@ echo $my_options;
  */
 $uid=$u->uid;
 // shortcut to move way up this tpl
-$secondary=array('activity'=>"Activity<span class='tab-seperator'>|</span>",'collections'=>"Collections<span class='tab-seperator'>|</span>",'badges'=>"Badges<span class='tab-seperator'>|</span>",'about'=>"About Me<span class='tab-seperator'>|</span>");
+$secondary=array('activity'=>"Activity<span class='tab-seperator'>|</span>",'collections'=>"Collections<span class='tab-seperator'>|</span>",'want_list'=>"Want List<span class='tab-seperator'>|</span>",'badges'=>"Badges<span class='tab-seperator'>|</span>",'about'=>"About Me<span class='tab-seperator'>|</span>");
 print "<div id='profile_tabs'><ul class='primary'>";
 /* primary? css currently calls for it, I think */
 foreach($secondary as $key=>$name) {

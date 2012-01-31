@@ -188,7 +188,8 @@ if ($page) {
 			$non_header = t("Be the first in your network with <em>!title</em>", array("!title" => $node -> title));
 		}
 		$extra_data = "
-                        <div class='product_extra_data'>
+      <div class='product_extra_data'>
+        $product_images
 				<h3>$non_header</h3>
 		      $external_link</p>
           $notification_text

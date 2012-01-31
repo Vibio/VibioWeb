@@ -319,7 +319,7 @@ function vibio_product_displays_views_default_views() {
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['pager']['options']['id'] = '0';
   $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
-  $handler->display->display_options['path'] = 'recent';
+  $handler->display->display_options['path'] = 'recent_products';
   $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'Recent Products';
   $handler->display->display_options['menu']['weight'] = '0';

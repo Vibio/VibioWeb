@@ -13,3 +13,4 @@ nbproject
 robots.txt
 *~
 tags
+*.sw[a-zA-Z0-9]

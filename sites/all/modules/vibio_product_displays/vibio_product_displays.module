@@ -10,11 +10,23 @@ function vibio_product_displays_menu() {
     'page callback' => 'vibio_product_displays_for_sale',
     'access callback' => 'user_is_logged_in',
   );
+  $items['recent'] = array(
+    'title' => t('Recent'),
+    'description' => t("View products that have recently entered people's collections."),
+    'type' => MENU_NORMAL,
+    'page callback' => 'vibio_product_displays_recent',
+    'access callback' => 'user_is_logged_in',
+  );
   return $items;
 }
 
 function vibio_product_displays_for_sale() {
   $content = views_embed_view('all_products_for_sale', 'page');
+  return $content;
+}
+
+function vibio_product_displays_recent() {
+  $content = views_embed_view('recent_products', 'page');
   return $content;
 }
 

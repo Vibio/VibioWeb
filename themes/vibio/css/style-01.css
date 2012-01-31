@@ -237,6 +237,7 @@ h5.menu_header{margin:5px 0 0}
 #user-login-form input[type='text'], #user-login-form input[type="password"]{ border:1px solid #d5d5d5;  -webkit-border-radius:5px;  -moz-border-radius:5px;  border-radius:5px;  -webkit-box-shadow:inset 1px 1px 1px 0px #e3e3e3;  -moz-box-shadow:inset 1px 1px 1px 0px #e3e3e3;  box-shadow:inset 1px 1px 1px 0px #e3e3e3;   height:30px;  width:158px;  padding:0 5px;  font-size:13px}
 #user-login-form #edit-openid-identifier{width:115px}
 #user-login-form div.form-item#edit-name-wrapper{margin-top:0}
+#node-form input#edit-preview-changes{display: none}
 /* privatemsg */
 img.privatemsg_autocomplete_image{width:40px; margin:5px 5px 5px 0}
 span.privatemsg_autocomplete_name{position:relative; top:-25px}

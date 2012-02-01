@@ -45,8 +45,8 @@ body.front div.view-flag-featured .pager{display:none}
 .block .content/* Block's content wrapper */{}
 .block-nice_menus ul{padding:0}
 div.sec_content.want_list, div.sec_content.collections, div.sec_content.about{position: relative}
-div.sec_content.want_list div.addthis_toolbox, div.sec_content.collections div.addthis_toolbox, div.sec_content.inventory div.addthis_toolbox{position: absolute; right: 10px; top:-7px}
-div.sec_content.collections div.share-text, div.sec_content.inventory div.share-text{position: absolute; right: 279px; top:3px}
+div.sec_content.want_list div.addthis_toolbox, div.sec_content.collections div.addthis_toolbox, div.sec_content.inventory div.addthis_toolbox{position: absolute; right: 10px; top:-7px;  width:345px}
+div.sec_content.collections div.share-text, div.sec_content.inventory div.share-text{position: absolute; right: 279px; top:3px; width:345px}
 div.sec_content.inventory{position: relative}
 /*Congrats popup*/
 div.congrats-popup{padding:0 50px}

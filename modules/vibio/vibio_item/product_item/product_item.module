@@ -1,0 +1,265 @@
+<?php
+/**
+ * Implementation of hook_menu().
+ */
+function product_item_menu() {
+  $items['product/new'] = array(
+    'title' => 'Add new product line',
+    'page callback' => 'product_item_wizard',
+
+    'access arguments' => array('access content')
+  );
+  return $items; 
+}
+
+
+/* Note: This code is derived from
+ * http://www.nicklewis.org/using-chaos-tools-form-wizard-build-multistep-forms-drupal-6
+ *
+ * Thanks to Nick Lewis for providing this clear guide to using the CTools
+ * Multistep Form Wizard.
+ */
+
+/*----- PART I CTOOLS WIZARD IMPLMENTATION ----- */
+
+/**
+ * Implements hook_wizard() to setup tasty CTools Multistep-form Madness
+ * 
+ * @return <type>
+ */
+function product_item_wizard(){
+  //Where the step is located in the URL
+  $step = arg(2);
+  // required includes for wizard
+  ctools_include('wizard');
+  ctools_include('object-cache');
+
+  // *** SETUP ARRAY multistep setup ****
+ // these are defined in some docs at end of article
+  $form_info = array(
+    'id' => 'product_line_add',
+    'path' => "product/new/%step",
+    'show trail' => TRUE,
+    'show back' => TRUE,
+    'show cancel' => true,
+    'show return' =>false,
+    'next text' => 'Proceed to next step',
+    'next callback' =>  'product_item_add_subtask_next',
+    'finish callback' => 'product_item_add_subtask_finish',
+    'return callback' => 'product_item_add_subtask_finish',
+    'cancel callback' => 'product_item_add_subtask_cancel',
+   // this controls order, as well as form labels
+    'order' => array(
+      'product' => t('Step 1: Add new product line'),
+      'item' => t('Step 2: Add item to product line'),
+      'review' => t('Step 3: Preview and Create'),
+    ),
+   // here we map a step to a form id.
+    'forms' => array(
+      'product' => array(
+        'form id' => 'product_multistep_form'
+      ),
+      'item' => array(
+        'form id' => 'item_multistep_form'
+      ),
+      'preview' => array(
+        'form id' => 'product_item_review_form'
+      ),
+    ),
+  );
+
+  // *** SETTING THE FORM UP FOR MULTISTEP *** //
+  $form_state = array(
+    'cache name' => NULL,
+  );
+  // no matter the step, you will load your values from the callback page
+  $product_item_data = product_item_get_page_cache(NULL);
+  if (!$product_item_data) {
+    // set form to first step -- we have no data
+    $step = current(array_keys($form_info['order']));
+    // This variable will save all the data through the multi-step process
+    $product_item_data = array('product' => array(), 'item' => array());
+    ctools_object_cache_set('product_item_data_basic', $form_state['cache name'], $product_item_data);
+  }
+  //THIS IS WHERE WILL STORE ALL FORM DATA
+  $form_state['product_item_data'] = $product_item_data;
+
+  // and this is the witchcraft that makes it work
+  $output = ctools_wizard_multistep_form($form_info, $step, $form_state);
+  return $output;
+}
+
+/*----PART 2: The Form Steps (regular form api)  ---- */
+
+function product_multistep_form(&$form, &$form_state){
+  // include the JS for inline form descriptions
+  drupal_add_js(drupal_get_path('module', 'product_item') . 'js/form-description.js');
+
+  // include drupal's node include file
+  require("modules/node/node.pages.inc");
+  $form_id = 'product_node_form';
+
+  //Create the Product Node Form
+  //Basic node array
+  $node = array('type' => 'product', 'uid' => $GLOBALS['user']->uid, 'name' => $GLOBALS['user']->uid);
+  $node_form = drupal_retrieve_form($form_id, $form_state['product_item_data']['product'], $node);
+  // prepare the $node_form. This gets all the form alters run by other modules...
+  drupal_prepare_form($form_id, $node_form, $form_state['product_item_data']['product']);
+
+  //Merge the multistep wizard and the product forms
+  $form = array_merge($node_form, $form);
+
+  //Alter the $form. We're going to undo stuff performed by other modules'
+  //form alters...
+  //@todo: we should stop adding things to the product form
+  //that don't need to be there (item-related stuff)
+  $form['title']['#title'] = t('Product Name');
+  $form['title']['#autocomplete_path'] = 'searchvibio/autocomplete';
+  $form['body_field']['body']['#title'] = t('Product Description');
+  $form['body_field']['body']['#description'] = t("Tell us more about this product: </br>
+    -Who manufactures it?</br>
+    -What version is it? When was it made?</br>
+    -Other notable facts?</br>
+    Please don't include specific details about the item that <b>you</b> personally own...we'll get to that!
+    ");
+  $form['field_main_image'][0]['#title'] = t('Upload Product Photo');
+  $form['taxonomy'][2]['#multiple'] = FALSE;
+  unset($form['taxonomy'][2]['#size']);
+
+
+  $form['field_images']['#access'] = FALSE;
+  $form['collection_info']['#access'] = FALSE;
+  $form['privacy_setting']['#access'] = FALSE;
+
+
+  
+  // Not sure why this is important, but apparently it is...?
+  $form_state['no buttons'] = TRUE;
+}
+
+/**
+ * Save product data into the CTools cache to be retrieved later upon
+ * form submittal.
+ *
+ * @param <type> $from
+ * @param <type> $form_state
+ */
+function product_multistep_form_submit(&$from, &$form_state) {
+  $submitted = $form_state['values'];
+  $form_state['product_item_data']['product'] = $submitted;
+
+  /**If we want to selectively save values, this works:
+  $submitted = $form_state['values'];
+  $save_values = array('name', 'temperment');
+  // maybe don't imitate this foreach
+  foreach($save_values as $value) {
+    // set the values in the cache object -- it gets passed back to the next step
+   // because of all that work we did in the form_info array
+    $form_state['product_item_data']['product']->$value = $submitted[$value];
+  }
+   * 
+   */
+}
+
+
+function item_multistep_form(&$form, &$form_state){
+  // include drupal's node include file
+  require("modules/node/node.pages.inc");
+  $form_id = 'vibio_item_node_form';
+
+  //Create the Item Node Form
+  //Basic node array
+  $node = array('type' => 'vibio_item', 'uid' => $GLOBALS['user']->uid, 'name' => $GLOBALS['user']->uid);
+  // load the $form
+  $node_form = drupal_retrieve_form($form_id, $form_state['product_item_data']['item'], $node);
+  // prepare the $form
+  drupal_prepare_form($form_id, $node_form, $form_state['product_item_data']['item']);
+
+  //Merge the multistep wizard and the item forms
+  $form = array_merge($form, $node_form);
+
+  // Not sure why this is important, but apparently it is...?
+  $form_state['no buttons'] = TRUE;
+}
+
+/**
+ * Save product data into the CTools cache to be retrieved later upon
+ * form submittal.
+ *
+ * @param <type> $from
+ * @param <type> $form_state
+ */
+function item_multistep_form_submit(&$from, &$form_state) {
+
+  //If we don't want to be selective about values, this works:
+  $submitted = $form_state['values'];
+  $form_state['product_item_data']['item'] = $submitted;
+}
+
+function product_item_review_form(&$from, &$form_state){
+  print '<PRE>';
+  print_r_tree($form_state);
+  print '</PRE>';
+}
+
+/*----PART 3  FORM BUTTON CALLBACKS   ---------------------- */
+
+/**
+ * Callback generated when the multistep form is complete
+ * this is where you'd normally save. in this case, drupal_set_message just squaks something
+ */
+function product_item_add_subtask_finish(&$form_state) {
+  $product_item_data = &$form_state['product_item_data'];
+  print_r($product_item_data);
+  // Clear the cache
+  product_item_clear_page_cache($form_state['cache name']);
+  //@todo: redirect to new item page? $form_state['redirect'] = 'wombat';
+}
+
+/**
+ * Callback for the proceed step
+ *
+ */
+function product_item_add_subtask_next(&$form_state) {
+  //Get the current data
+  $product_item_data = &$form_state['product_item_data'];
+  // set the current data in cache
+  $cache = ctools_object_cache_set('product_item_data', $form_state['cache name'], $product_item_data);
+}
+
+/**
+ * Callback generated when the 'cancel' button is clicked.
+ *
+ * All we do here is clear the cache.
+* redirect them to where they started
+* and call them a coward
+ */
+function product_item_add_subtask_cancel(&$form_state) {
+  ctools_object_cache_clear('product_item_data', $form_state['cache name']);
+  //@todo: appropriate cancel step? $form_state['redirect'] = 'wombat';
+  drupal_set_message('You cancled.');
+}
+
+/*----PART 4 CTOOLS FORM STORAGE HANDLERS -- these usually don't have to be very unique  i think some of them are unused.. [ :- ) ]---------------------- */
+
+/**
+ * Remove an item from the object cache.
+ */
+function  product_item_clear_page_cache($name) {
+  ctools_object_cache_clear('product_item_data', $name);
+}
+
+/**
+ * Get the cached changes to a given task handler.
+* (Earl wrote that, not me...)
+ */
+function product_item_get_page_cache($name) {
+  $cache = ctools_object_cache_get('product_item_data', $name);
+  return $cache;
+}
+
+
+
+
+
+?>

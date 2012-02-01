@@ -1,0 +1,8 @@
+name="Product Item"
+description="Handles the creation of products and items through a multi-step form process."
+core=6.x
+package="Vibio"
+dependencies[] = vibio_item
+dependencies[] = privacy_node
+dependencies[] = product
+dependencies[] = ctools

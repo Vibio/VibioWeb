@@ -382,6 +382,9 @@ div.messages ul li{list-style-type:none}
 .not-sale-popup{position:absolute; top:-80px; left:10px}
 #offer-buttons{position: absolute; right: 4px;height: 28px; width: 108px; bottom: 50px}
 #offer-buttons .wanted img{padding-left: 6px}
+
+div.product_owners_results .action .wanted img{padding-left: 3px}
+
 .make-offer{position: relative;}
 .action .make-offer-popup{position:absolute; top:-90px; left:-6px}
 #offer-buttons .make-offer-popup{position:absolute; top:-121px; left:-15px}

@@ -1,16 +1,65 @@
 <?php
+/*
+ * This module provides a multistep form to create new products/items in
+ * a user-friendly manner.
+ *
+ * @TODO: The form alters performed on the product/item node forms should
+ * be transfered to the product and item modules; this is a good start on
+ * cleaning those forms, we just need to find dev hours to implement the
+ * changes site-wide and get rid of the current methods for creating products/items.
+ * product.pages.php and product.forms.php, I'm looking at you--Alec
+ */
+
+
 /**
  * Implementation of hook_menu().
+ *
+ * @TODO: Change access arguments to create content
  */
 function product_item_menu() {
   $items['product/new'] = array(
     'title' => 'Add new product line',
     'page callback' => 'product_item_wizard',
-
     'access arguments' => array('access content')
   );
+  $items['item/want'] = array(
+    'type' => MENU_CALLBACK,
+    'page callback' => 'product_item_want',
+    'access arguments' => array('access content')
+  );
+  $items['item/have'] = array(
+    'type' => MENU_CALLBACK,
+    'page callback' => 'product_item_have',
+    'access arguments' => array('access content')
+  );
+
+
   return $items; 
 }
+
+//@TODO REMOVE
+
+function print_r_tree($data)
+{
+    // capture the output of print_r
+    $out = print_r($data, true);
+
+    // replace something like '[element] => <newline> (' with <a href="javascript:toggleDisplay('...');">...</a><div id="..." style="display: none;">
+    $out = preg_replace('/([ \t]*)(\[[^\]]+\][ \t]*\=\>[ \t]*[a-z0-9 \t_]+)\n[ \t]*\(/iUe',"'\\1<a href=\"javascript:toggleDisplay(\''.(\$id = substr(md5(rand().'\\0'), 0, 7)).'\');\">\\2</a><div id=\"'.\$id.'\" style=\"display: none;\">'", $out);
+
+    // replace ')' on its own on a new line (surrounded by whitespace is ok) with '</div>
+    $out = preg_replace('/^\s*\)\s*$/m', '</div>', $out);
+
+    // print the javascript function toggleDisplay() and then the transformed output
+    echo '<script language="Javascript">function toggleDisplay(id) { document.getElementById(id).style.display = (document.getElementById(id).style.display == "block") ?   "none" : "block"; }</script>'."\n <PRE>$out</PRE>";
+}
+
+function product_item_form_alter(&$form, &$form_state){
+    //@TODO REMOVE
+  print_r_tree($form);
+  print_r_tree($form_state);
+}
+
 
 
 /* Note: This code is derived from
@@ -39,6 +88,7 @@ function product_item_wizard(){
   $form_info = array(
     'id' => 'product_line_add',
     'path' => "product/new/%step",
+    'ajax' => TRUE,
     'show trail' => TRUE,
     'show back' => TRUE,
     'show cancel' => true,
@@ -52,7 +102,7 @@ function product_item_wizard(){
     'order' => array(
       'product' => t('Step 1: Add new product line'),
       'item' => t('Step 2: Add item to product line'),
-      'review' => t('Step 3: Preview and Create'),
+      'preview' => t('Step 3: Preview and Create'),
     ),
    // here we map a step to a form id.
     'forms' => array(
@@ -91,10 +141,13 @@ function product_item_wizard(){
 
 /*----PART 2: The Form Steps (regular form api)  ---- */
 
+/**
+ * Step 1: create a new product
+ * 
+ * @param <type> $form
+ * @param array $form_state
+ */
 function product_multistep_form(&$form, &$form_state){
-  // include the JS for inline form descriptions
-  drupal_add_js(drupal_get_path('module', 'product_item') . 'js/form-description.js');
-
   // include drupal's node include file
   require("modules/node/node.pages.inc");
   $form_id = 'product_node_form';
@@ -148,7 +201,7 @@ function product_multistep_form_submit(&$from, &$form_state) {
   $submitted = $form_state['values'];
   $form_state['product_item_data']['product'] = $submitted;
 
-  /**If we want to selectively save values, this works:
+  /**If we want to selectively save values, code like this could work:
   $submitted = $form_state['values'];
   $save_values = array('name', 'temperment');
   // maybe don't imitate this foreach
@@ -161,25 +214,250 @@ function product_multistep_form_submit(&$from, &$form_state) {
    */
 }
 
-
+/**
+ * Step 2: Create an item to be associated with the product from step 1.
+ * 
+ * @param <type> $form
+ * @param array $form_state
+ */
 function item_multistep_form(&$form, &$form_state){
+
+  //Merge the multistep wizard and the item forms
+  //$current_form = array_merge($node_form, $form);
+  //$form = array();
+
+  //Create a target area for AHAH manipulation
+  $form['target'] = array(
+      '#type' => 'markup',
+      '#prefix' => '<div id="target">',
+      '#suffix' => '</div>'
+  );
+
+  //Are we coming back to this form?
+  if(isset($form_state['product_item_data']['item'])){
+    //If so, retrieve the old data and...
+    $item = $form_state['product_item_data']['item'];
+     //...load it into the appropriate have/want form
+    if($item['have_want'] == 0){
+      $node_form = product_item_have_form($form_state);
+    }else{
+      $node_form = product_item_want_form($form_state);
+    }
+  }else{
+    //If this is a new form, grab the "have" by default
+    $node_form = product_item_have_form($form_state);
+  }
+
+  //This is where we make alterations that apply to both have/want forms
+  $node_form['title']['#access'] = FALSE;
+  unset($node_form['collection_info']['#title']);
+  unset($node_form['collection_info']['#description']);
+  $node_form['collection_info']['cid']['#title'] = t('Add to collection');
+  $node_form['collection_info']['cid']['#multiple'] = FALSE;
+  $node_form['privacy_setting']['#title'] = t('Item can be viewed by');
+
+  unset($node_form['buttons']);
+  //Show the product title at the top
+  $node_form['product_title'] = array(
+    '#type' => 'markup',
+    '#value' => '<h1>' . t($form_state['product_item_data']['product']['title'])
+                . '</h1>',
+    '#weight' => -20,
+  );
+  $node_form['body_field']['#weight'] = -10;
+
+  //Insert the node form into the target area of our existing form
+  $form['target'][] = $node_form;
+
+  // Does this let CTools remove form submit buttons? I'm manually doing this
+  // for the item form, due to the AHAH stuff...
+  $form_state['no buttons'] = TRUE;
+
+}
+
+/**
+ * Returns a default vibio_item node form in array form (not yet rendered by Drupal)
+ * 
+ * @param <type> $form_state
+ * @param <type> $form_id
+ * @param <type> $node
+ * @return <type>
+ */
+function product_item_get_node_form(&$form_state, $form_id, $node){
   // include drupal's node include file
   require("modules/node/node.pages.inc");
-  $form_id = 'vibio_item_node_form';
 
-  //Create the Item Node Form
+  //Create the Node Form
   //Basic node array
-  $node = array('type' => 'vibio_item', 'uid' => $GLOBALS['user']->uid, 'name' => $GLOBALS['user']->uid);
-  // load the $form
+  //load the $form
   $node_form = drupal_retrieve_form($form_id, $form_state['product_item_data']['item'], $node);
   // prepare the $form
   drupal_prepare_form($form_id, $node_form, $form_state['product_item_data']['item']);
 
-  //Merge the multistep wizard and the item forms
-  $form = array_merge($form, $node_form);
+  return $node_form;
+}
 
-  // Not sure why this is important, but apparently it is...?
-  $form_state['no buttons'] = TRUE;
+/**
+ * Outputs a vibio_item node form array configured in a "want" use case.
+ * 
+ * @param <type> $form_state
+ * @return <type>
+ */
+function product_item_want_form(&$form_state){
+  $form_id = 'vibio_item_node_form';
+  $node = array('type' => 'vibio_item', 'uid' => $GLOBALS['user']->uid, 'name' => $GLOBALS['user']->uid);
+  //Get the node form
+  $form = product_item_get_node_form($form_state, $form_id, $node);
+
+  product_item_want_alter_form($form);
+
+  return $form;
+}
+
+function product_item_want_alter_form(&$form){
+  //Add a toggle between have/want versions
+  $form['have_want'] = array(
+      '#type' => 'radios',
+      '#title' => t('Do you Have or Want this item?'),
+      '#default_value' => '1',
+      '#options' => array(t('Have'), t('Want')),
+      '#weight' => -15,
+      '#ahah' => array(
+          'path' => 'item/have',
+          'method' => 'replace',
+          'wrapper' => 'target',
+          'effect' => 'fade',
+      )
+  );
+
+  //Form alterations specific to the "want" case
+  $form['body_field']['body']['#title'] = t('Why do you want this?');
+  unset($form['group_images']);
+}
+
+/**
+ * Returns a rendered vibio_item node form ("want" use case) in JSON for AHAH
+ * forms.
+ * 
+ * @param <type> $form_state
+ */
+function product_item_want(){
+  // The form is generated in an include file which we need to include manually.
+  include_once 'modules/node/node.pages.inc';
+  // We're starting in step #3, preparing for #4.
+  $form_state = array('storage' => NULL, 'submitted' => FALSE);
+  $form_build_id = $_POST['form_build_id'];
+  // Step #4.
+  $form = form_get_cache($form_build_id, $form_state);
+
+  // Preparing for #5.
+  $args = $form['#parameters'];
+  $node = array('type' => 'vibio_item', 'uid' => $GLOBALS['user']->uid, 'name' => $GLOBALS['user']->uid);
+
+  $form_id = 'vibio_item_node_form';
+  $form_state['post'] = $form['#post'] = $_POST;
+  $form['#programmed'] = $form['#redirect'] = FALSE;
+
+  // Step #5.
+  drupal_process_form($form_id, $form, $form_state);
+  // Step #6 and #7 and #8.
+  $form = drupal_rebuild_form($form_id, $form_state, $node, $form_build_id);
+
+  // Step #9: alter the form
+  product_item_want_alter_form($form);
+
+  $output = drupal_render($form);
+  drupal_json(array('status' => TRUE, 'data' => $output));
+}
+
+/**
+ * Outputs a vibio_item node form array configured in a "have" use case.
+ * @param <type> $form_state
+ * @return <type>
+ */
+function product_item_have_form(&$form_state){
+  $form_id = 'vibio_item_node_form';
+  $node = array('type' => 'vibio_item', 'uid' => $GLOBALS['user']->uid, 'name' => $GLOBALS['user']->uid);
+  //Get the node form
+  $form = product_item_get_node_form($form_state, $form_id, $node);
+
+  product_item_have_alter_form($form);
+
+  return $form;
+}
+
+function product_item_have_alter_form(&$form){
+  //Add a toggle between have/want versions
+  $form['have_want'] = array(
+      '#type' => 'radios',
+      '#title' => t('Do you Have or Want this item?'),
+      '#default_value' => '0',
+      '#weight' => -15,
+      '#options' => array(t('Have'), t('Want')),
+      '#ahah' => array(
+          'path' => 'item/want',
+          'method' => 'replace',
+          'wrapper' => 'target',
+          'effect' => 'fade',
+      )
+  );
+
+  //Form alterations specific to the "have" case
+  $form['body_field']['body']['#title'] = t('Add Description');
+  $form['field_main_image'] = $form['group_images']['field_main_image'];
+  $form['field_main_image']['#title'] = t('Upload Item Photos');
+  $form['field_main_image']['#weight'] = 10;
+  $form['field_images'] = $form['group_images']['field_images'];
+  $form['field_images']['#weight'] = 15;
+  unset($form['group_images']);
+  
+  $form['offer2buy']['#collapsible'] = FALSE;
+  $form['field_posting_type']['#default_value'][] = 2;
+  //Only show offer2buy if the item is marked for sale
+  $show_price = $form['field_posting_type']['#default_value'] == 2;
+  $form['offer2buy']['#access'] = $show_price;
+
+  //Make the price setting field into AHAH
+  $form['field_posting_type']['#ahah'] = array(
+    'path' => 'item/show_price/' . $show_price,
+    'method' => 'replace',
+    'wrapper' => 'offer2buy',
+    'effect' => 'fade',
+  );
+
+}
+
+/**
+ * Returns a rendered vibio_item node form (have use case) in JSON for AHAH
+ * forms.
+ * 
+ */
+function product_item_have(){
+  // The form is generated in an include file which we need to include manually.
+  include_once 'modules/node/node.pages.inc';
+  // We're starting in step #3, preparing for #4.
+  $form_state = array('storage' => NULL, 'submitted' => FALSE);
+  $form_build_id = $_POST['form_build_id'];
+  // Step #4.
+  $form = form_get_cache($form_build_id, $form_state);
+
+  // Preparing for #5.
+  $args = $form['#parameters'];
+  $node = array('type' => 'vibio_item', 'uid' => $GLOBALS['user']->uid, 'name' => $GLOBALS['user']->uid);
+  $form_id = 'vibio_item_node_form';
+  $form_state['post'] = $form['#post'] = $_POST;
+  $form['#programmed'] = $form['#redirect'] = FALSE;
+
+  // Step #5.
+  drupal_process_form($form_id, $form, $form_state);
+  // Step #6 and #7 and #8.
+  $form = drupal_rebuild_form($form_id, $form_state, $node, $form_build_id);
+
+  // Step #9: alter the form
+  product_item_have_alter_form($form);
+
+  $output = drupal_render($form);
+  drupal_json(array('status' => TRUE, 'data' => $output));
 }
 
 /**
@@ -189,14 +467,14 @@ function item_multistep_form(&$form, &$form_state){
  * @param <type> $from
  * @param <type> $form_state
  */
-function item_multistep_form_submit(&$from, &$form_state) {
+function item_multistep_form_submit(&$form, &$form_state) {
 
   //If we don't want to be selective about values, this works:
   $submitted = $form_state['values'];
   $form_state['product_item_data']['item'] = $submitted;
 }
 
-function product_item_review_form(&$from, &$form_state){
+function product_item_review_form(&$form, &$form_state){
   print '<PRE>';
   print_r_tree($form_state);
   print '</PRE>';
@@ -235,9 +513,12 @@ function product_item_add_subtask_next(&$form_state) {
 * and call them a coward
  */
 function product_item_add_subtask_cancel(&$form_state) {
+  global $user;
   ctools_object_cache_clear('product_item_data', $form_state['cache name']);
-  //@todo: appropriate cancel step? $form_state['redirect'] = 'wombat';
-  drupal_set_message('You cancled.');
+  //Upon cancelling the form, redirect user to his/her collections page
+  $form_state['redirect'] = 'user/' . $user->uid . '/collections';
+  drupal_set_message('Product creation canceled: no new items were added
+                      to your collections.');
 }
 
 /*----PART 4 CTOOLS FORM STORAGE HANDLERS -- these usually don't have to be very unique  i think some of them are unused.. [ :- ) ]---------------------- */

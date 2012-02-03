@@ -2,6 +2,14 @@
 
 include_once('vibio_product_displays.features.inc');
 
+function vibio_product_displays_init() {
+  _vibio_product_displays_add_page_uri_js();
+}
+
+function _vibio_product_displays_add_page_uri_js() {
+  drupal_add_js(array('vibioProductDisplays' => array('viewUrl' => url(substr(request_uri(), 1), array('absolute' => TRUE)))), 'setting');
+}
+
 function vibio_product_displays_menu() {
   $items['for-sale'] = array(
     'title' => t('For Sale'),

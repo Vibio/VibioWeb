@@ -15,14 +15,15 @@ Drupal.behaviors.infinitescrollMasonry = function(context) {
           img: '/themes/vibio/images/barloader.gif'
         },
         state: {
-          finishedMsg: "No more pages to load."
+          finishedMsg: "No more pages to load.",
+          currPage: "1"
         },
-        debug: false,
+        debug: true,
         nextSelector: ".pager .pager-next a", // selector for the NEXT link (to page 2)
         navSelector: ".pager", // selector for the paged navigation
         itemSelector: ".views-row", // selector for all items you'll retrieve
         animate: false,
-        pathParse: '?page=1',
+        pathParse: [Drupal.settings.vibioProductDisplays.viewUrl + 'home?page=', ""],
 				errorCallback: function() {
         $('#infscr-loading').animate({
 opacity : .8

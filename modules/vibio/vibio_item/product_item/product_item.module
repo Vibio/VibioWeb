@@ -339,34 +339,14 @@ function product_item_want_alter_form(&$form){
  * Returns a rendered vibio_item node form ("want" use case) in JSON for AHAH
  * forms.
  * 
- * @param <type> $form_state
  */
 function product_item_want(){
-  // The form is generated in an include file which we need to include manually.
-  include_once 'modules/node/node.pages.inc';
-  // We're starting in step #3, preparing for #4.
-  $form_state = array('storage' => NULL, 'submitted' => FALSE);
-  $form_build_id = $_POST['form_build_id'];
-  // Step #4.
-  $form = form_get_cache($form_build_id, $form_state);
-
-  // Preparing for #5.
-  $args = $form['#parameters'];
-  $node = array('type' => 'vibio_item', 'uid' => $GLOBALS['user']->uid, 'name' => $GLOBALS['user']->uid);
-
-  $form_id = 'vibio_item_node_form';
-  $form_state['post'] = $form['#post'] = $_POST;
-  $form['#programmed'] = $form['#redirect'] = FALSE;
-
-  // Step #5.
-  drupal_process_form($form_id, $form, $form_state);
-  // Step #6 and #7 and #8.
-  $form = drupal_rebuild_form($form_id, $form_state, $node, $form_build_id);
-
-  // Step #9: alter the form
-  product_item_want_alter_form($form);
-
+  $form_state = $_POST;
+  //Get the form
+  $form = product_item_want_form($form_state);
+  
   $output = drupal_render($form);
+  print($output);
   drupal_json(array('status' => TRUE, 'data' => $output));
 }
 
@@ -433,28 +413,9 @@ function product_item_have_alter_form(&$form){
  * 
  */
 function product_item_have(){
-  // The form is generated in an include file which we need to include manually.
-  include_once 'modules/node/node.pages.inc';
-  // We're starting in step #3, preparing for #4.
-  $form_state = array('storage' => NULL, 'submitted' => FALSE);
-  $form_build_id = $_POST['form_build_id'];
-  // Step #4.
-  $form = form_get_cache($form_build_id, $form_state);
-
-  // Preparing for #5.
-  $args = $form['#parameters'];
-  $node = array('type' => 'vibio_item', 'uid' => $GLOBALS['user']->uid, 'name' => $GLOBALS['user']->uid);
-  $form_id = 'vibio_item_node_form';
-  $form_state['post'] = $form['#post'] = $_POST;
-  $form['#programmed'] = $form['#redirect'] = FALSE;
-
-  // Step #5.
-  drupal_process_form($form_id, $form, $form_state);
-  // Step #6 and #7 and #8.
-  $form = drupal_rebuild_form($form_id, $form_state, $node, $form_build_id);
-
-  // Step #9: alter the form
-  product_item_have_alter_form($form);
+  $form_state = $_POST;
+  //Get the form
+  $form = product_item_want_form($form_state);
 
   $output = drupal_render($form);
   drupal_json(array('status' => TRUE, 'data' => $output));

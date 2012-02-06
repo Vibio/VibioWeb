@@ -22,18 +22,6 @@ function product_item_menu() {
     'page callback' => 'product_item_wizard',
     'access arguments' => array('access content')
   );
-  $items['item/want'] = array(
-    'type' => MENU_CALLBACK,
-    'page callback' => 'product_item_want',
-    'access arguments' => array('access content')
-  );
-  $items['item/have'] = array(
-    'type' => MENU_CALLBACK,
-    'page callback' => 'product_item_have',
-    'access arguments' => array('access content')
-  );
-
-
   return $items; 
 }
 
@@ -102,7 +90,6 @@ function product_item_wizard(){
     'order' => array(
       'product' => t('Step 1: Add new product line'),
       'item' => t('Step 2: Add item to product line'),
-      'preview' => t('Step 3: Preview and Create'),
     ),
    // here we map a step to a form id.
     'forms' => array(
@@ -111,9 +98,6 @@ function product_item_wizard(){
       ),
       'item' => array(
         'form id' => 'item_multistep_form'
-      ),
-      'preview' => array(
-        'form id' => 'product_item_review_form'
       ),
     ),
   );
@@ -221,32 +205,11 @@ function product_multistep_form_submit(&$from, &$form_state) {
  * @param array $form_state
  */
 function item_multistep_form(&$form, &$form_state){
-
-  //Merge the multistep wizard and the item forms
-  //$current_form = array_merge($node_form, $form);
-  //$form = array();
-
-  //Create a target area for AHAH manipulation
-  $form['target'] = array(
-      '#type' => 'markup',
-      '#prefix' => '<div id="target">',
-      '#suffix' => '</div>'
-  );
-
-  //Are we coming back to this form?
-  if(isset($form_state['product_item_data']['item'])){
-    //If so, retrieve the old data and...
-    $item = $form_state['product_item_data']['item'];
-     //...load it into the appropriate have/want form
-    if($item['have_want'] == 0){
-      $node_form = product_item_have_form($form_state);
-    }else{
-      $node_form = product_item_want_form($form_state);
-    }
-  }else{
-    //If this is a new form, grab the "have" by default
-    $node_form = product_item_have_form($form_state);
-  }
+  $js_path = drupal_get_path('module', 'product_item') . 'js/want-have-toggle.js';
+  drupal_add_js($js_path);
+  
+  $node_form = product_item_have_form($form_state);
+ 
 
   //This is where we make alterations that apply to both have/want forms
   $node_form['title']['#access'] = FALSE;
@@ -266,8 +229,7 @@ function item_multistep_form(&$form, &$form_state){
   );
   $node_form['body_field']['#weight'] = -10;
 
-  //Insert the node form into the target area of our existing form
-  $form['target'][] = $node_form;
+  $form = array_merge($node_form, $form);
 
   // Does this let CTools remove form submit buttons? I'm manually doing this
   // for the item form, due to the AHAH stuff...
@@ -298,59 +260,6 @@ function product_item_get_node_form(&$form_state, $form_id, $node){
 }
 
 /**
- * Outputs a vibio_item node form array configured in a "want" use case.
- * 
- * @param <type> $form_state
- * @return <type>
- */
-function product_item_want_form(&$form_state){
-  $form_id = 'vibio_item_node_form';
-  $node = array('type' => 'vibio_item', 'uid' => $GLOBALS['user']->uid, 'name' => $GLOBALS['user']->uid);
-  //Get the node form
-  $form = product_item_get_node_form($form_state, $form_id, $node);
-
-  product_item_want_alter_form($form);
-
-  return $form;
-}
-
-function product_item_want_alter_form(&$form){
-  //Add a toggle between have/want versions
-  $form['have_want'] = array(
-      '#type' => 'radios',
-      '#title' => t('Do you Have or Want this item?'),
-      '#default_value' => '1',
-      '#options' => array(t('Have'), t('Want')),
-      '#weight' => -15,
-      '#ahah' => array(
-          'path' => 'item/have',
-          'method' => 'replace',
-          'wrapper' => 'target',
-          'effect' => 'fade',
-      )
-  );
-
-  //Form alterations specific to the "want" case
-  $form['body_field']['body']['#title'] = t('Why do you want this?');
-  unset($form['group_images']);
-}
-
-/**
- * Returns a rendered vibio_item node form ("want" use case) in JSON for AHAH
- * forms.
- * 
- */
-function product_item_want(){
-  $form_state = $_POST;
-  //Get the form
-  $form = product_item_want_form($form_state);
-  
-  $output = drupal_render($form);
-  print($output);
-  drupal_json(array('status' => TRUE, 'data' => $output));
-}
-
-/**
  * Outputs a vibio_item node form array configured in a "have" use case.
  * @param <type> $form_state
  * @return <type>
@@ -374,12 +283,6 @@ function product_item_have_alter_form(&$form){
       '#default_value' => '0',
       '#weight' => -15,
       '#options' => array(t('Have'), t('Want')),
-      '#ahah' => array(
-          'path' => 'item/want',
-          'method' => 'replace',
-          'wrapper' => 'target',
-          'effect' => 'fade',
-      )
   );
 
   //Form alterations specific to the "have" case
@@ -392,33 +295,8 @@ function product_item_have_alter_form(&$form){
   unset($form['group_images']);
   
   $form['offer2buy']['#collapsible'] = FALSE;
-  $form['field_posting_type']['#default_value'][] = 2;
-  //Only show offer2buy if the item is marked for sale
-  $show_price = $form['field_posting_type']['#default_value'] == 2;
-  $form['offer2buy']['#access'] = $show_price;
-
-  //Make the price setting field into AHAH
-  $form['field_posting_type']['#ahah'] = array(
-    'path' => 'item/show_price/' . $show_price,
-    'method' => 'replace',
-    'wrapper' => 'offer2buy',
-    'effect' => 'fade',
-  );
-
-}
-
-/**
- * Returns a rendered vibio_item node form (have use case) in JSON for AHAH
- * forms.
- * 
- */
-function product_item_have(){
-  $form_state = $_POST;
-  //Get the form
-  $form = product_item_want_form($form_state);
-
-  $output = drupal_render($form);
-  drupal_json(array('status' => TRUE, 'data' => $output));
+  //This isn't setting the display to "yes"; @todo find solution
+  $form['field_posting_type']['#default_value'][]['value'] = 2;
 }
 
 /**
@@ -433,12 +311,6 @@ function item_multistep_form_submit(&$form, &$form_state) {
   //If we don't want to be selective about values, this works:
   $submitted = $form_state['values'];
   $form_state['product_item_data']['item'] = $submitted;
-}
-
-function product_item_review_form(&$form, &$form_state){
-  print '<PRE>';
-  print_r_tree($form_state);
-  print '</PRE>';
 }
 
 /*----PART 3  FORM BUTTON CALLBACKS   ---------------------- */

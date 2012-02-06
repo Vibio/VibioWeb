@@ -1,5 +1,5 @@
 <?php
-define("NETWORK_DEFAULT_DEPTH", 3);
+define("NETWORK_DEFAULT_DEPTH", 1);
 
 function network_menu()
 {

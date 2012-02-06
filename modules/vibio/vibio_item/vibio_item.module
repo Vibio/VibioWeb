@@ -380,4 +380,11 @@ function vibio_item_have_want_value_retrieval(&$node) {
 function get_possess($item) {
   return $item->field_have_want_like[0]['value'];
 }
-?>
+
+/**
+ * Retrieve the parent product's Node ID from {product_items}.
+ */
+function vibio_item_product_nid($item_nid) {
+  return db_result(db_query("select product_nid from {product_items} where item_nid=%d", $item_nid));
+}
+

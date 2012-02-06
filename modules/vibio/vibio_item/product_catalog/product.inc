@@ -107,12 +107,8 @@ function _product_get_owners($nid, $as_uid, $type="network", $page=0)
 	return $data;
 }
 
-function _product_nid_from_item($nid)
-{
-	$sql = "SELECT `product_nid`
-			FROM {product_items}
-			WHERE `item_nid`=%d";
-	return db_result(db_query($sql, $nid));
+function _product_nid_from_item($item_nid) {
+	return vibio_item_product_nid($item_nid);
 }
 
 function _product_from_item($item_nid)

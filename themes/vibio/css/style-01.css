@@ -201,6 +201,7 @@ ul.links li{ display:inline;  list-style-type:none;  padding:0}
 .sidebar .item-list ul li, .sidebar ul.menu li{ padding:0;  margin:5px 0 0;  list-style-type:none;  list-style-image:none}
 .sidebar #user-login-form li.openid-link a, #user-login li.openid-link a{ background:none}
 .clear{ clear:both;  height:0}
+.login-pop{padding: 40px; font-size:20px}
 .comment .picture img, .view .picture img, .view-content .picture img{height:42px; width:42px; border:1px solid #CCC}
 #block-menu-secondary-links{padding-top:75px}
 #block-menu-secondary-links .content{ text-align:center}

@@ -179,8 +179,6 @@ function collection_edit_submit($form, &$state)
 	global $user;
 	
 	$vals = $state['values'];
-	$vals['title'] = htmlspecialchars($vals['title']);
-	$vals['body'] = htmlspecialchars($vals['body']);
 	$op = $state['clicked_button']['#value'];
   //Create collection object
   $collection = new stdClass();
@@ -189,6 +187,8 @@ function collection_edit_submit($form, &$state)
   }
   $collection->type = 'collection';
   $collection->language = 'en-US';
+  $collection->title = htmlspecialchars($vals['title']);
+	$collection->body = htmlspecialchars($vals['body']);
   //@todo refactor, legacy cid variable is actually nid
   $vals['cid'] ? $collection->nid = $vals['cid'] : '';
 
@@ -215,10 +215,16 @@ function collection_edit_submit($form, &$state)
 	if ($vals['cid'])
 	{
 		global $user;
+    //This is terrible code, @todo refactor, just needed vid?
+    $collection_node = node_load($collection->nid);
+    $collection_node->body = $collection->body;
+    $c0llection_node->title = $collection->title;
+    $collection_node->privacy_setting = $collection->privacy_setting;
     //Could be admin updating the collection; keep original uid
     //Save the node
- 		node_save($collection);
-
+ 		node_save($collection_node);
+    $nid = array($collection_node->nid);
+    module_invoke_all("collection_update", $vals['uid'], $nid);
     drupal_set_message(t("!collection has been updated", array("!collection" => l($vals['title'], "collections/{$vals['cid']}"))));
 	}
 	else
@@ -228,12 +234,11 @@ function collection_edit_submit($form, &$state)
     node_save($collection);
 		$vals['cid'] = $collection->nid;
 		drupal_set_message(t("!collection collection has been created", array("!collection" => l($vals['title'], "collections/{$vals['cid']}"))));
+    //Invoke collection_save across all modules; @todo: examine and consider removing
+    $vals['uid'] = $user->uid;
+    module_invoke_all("collection_save", $vals);
 	}
-	
 
-	
-	$vals['uid'] = $user->uid;
-	module_invoke_all("collection_save", $vals);
 	drupal_goto("collections/manage");
 }
 

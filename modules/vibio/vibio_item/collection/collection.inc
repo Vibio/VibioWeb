@@ -92,7 +92,7 @@ function collection_delete($cid)
 	$num_items = db_affected_rows();
 
   //Delete the node
-  node_remove($cid);
+  node_delete($cid);
 
 	if ($num_items)
 	{

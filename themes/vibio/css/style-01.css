@@ -714,12 +714,11 @@ background:url(../images/long_border.png) no-repeat scroll 0px 31px}
 #block-collection-related_collection .collection_link a{font-size:12px}
 #block-collection-related_collection .collection_date_added{font-size:12px; margin-top:10px}
 /*Bottom Sidebar*/
-.region-sidebar-first .rounded_content{}
 .heartbeat-messages-wrapper{margin-top:25px}
-#block-heartbeat-connectedheartbeat.block{background:#FFF url(/themes/vibio/images/sidebar_seperator.png) no-repeat scroll 6px 41px;
+#block-heartbeat-connectedheartbeat.block, #block-heartbeat-publicheartbeat.block{background:#FFF url(/themes/vibio/images/sidebar_seperator.png) no-repeat scroll 6px 41px;
 border-bottom-left-radius:4px; border-bottom-right-radius:4px; -moz-border-radius-bottomright:4px;
  -moz-border-radius-bottomleft:4px}
-#block-heartbeat-connectedheartbeat{padding:12px 15px 15px}
+#block-heartbeat-connectedheartbeat, #block-heartbeat-publicheartbeat{padding:12px 15px 15px}
 .beat-item{margin-top:10px; padding-bottom:10px; border-bottom:1px solid #ccc}
 .heartbeat-pic-in-block img{height:32px; width:32px; border:1px solid #CCC; float:left; padding:5px; border:solid 1px #CCC; margin-right:7px}
 /*Share buttons*/

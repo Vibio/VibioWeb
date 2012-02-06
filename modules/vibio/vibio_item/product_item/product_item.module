@@ -26,7 +26,7 @@ function product_item_menu() {
 }
 
 //@TODO REMOVE
-
+/**
 function print_r_tree($data)
 {
     // capture the output of print_r
@@ -48,7 +48,7 @@ function product_item_form_alter(&$form, &$form_state){
   print_r_tree($form_state);
 }
 
-
+**/
 
 /* Note: This code is derived from
  * http://www.nicklewis.org/using-chaos-tools-form-wizard-build-multistep-forms-drupal-6
@@ -297,6 +297,7 @@ function product_item_have_alter_form(&$form){
   $form['offer2buy']['#collapsible'] = FALSE;
   //This isn't setting the display to "yes"; @todo find solution
   $form['field_posting_type']['#default_value'][]['value'] = 2;
+  $form['field_posting_type']['#weight'] = 0;
 }
 
 /**
@@ -321,10 +322,21 @@ function item_multistep_form_submit(&$form, &$form_state) {
  */
 function product_item_add_subtask_finish(&$form_state) {
   $product_item_data = &$form_state['product_item_data'];
-  print_r($product_item_data);
-  // Clear the cache
+  $product = (object) $product_item_data['product'];
+  $item = (object) $product_item_data['item'];
+
+  node_save($product);
+
+  //Associate Item with the Product @todo: replace with node reference
+  $item->product_nid = $product->nid;
+  node_save($item);
+
+  //Clear the cache
   product_item_clear_page_cache($form_state['cache name']);
-  //@todo: redirect to new item page? $form_state['redirect'] = 'wombat';
+  drupal_set_message('Successfully created a new product and added it to your
+  collections.');
+  //redirect to new item page
+  $form_state['redirect'] = 'node/' . $item->nid;
 }
 
 /**

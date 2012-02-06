@@ -4,9 +4,10 @@ $(document).ready(function () {
 
     if(initRadioValue == 1){
         //...hide elements
-        $('#edit-field-main-image-0-ahah-wrapper, #field-images-items, ' +
-          '#edit-field-posting-type-value-wrapper, ' +
-          '').css('display', 'none');
+        $('#edit-field-main-image-0-ahah-wrapper, ' +
+          '#edit-field-posting-type-value-wrapper').hide();
+        $('div#field-images-items').css('display', 'none');
+        $('div#edit-o2b-price-wrapper').parent().hide();
     }
 
     $('div.form-radios').click(function (){
@@ -14,13 +15,14 @@ $(document).ready(function () {
       //If it's a want form...
       if(radioValue == 1){
         //...hide elements
-        $('#edit-field-main-image-0-ahah-wrapper, #field-images-items, ' +
-          '#edit-field-posting-type-value-wrapper, ' +
-          '').css('display', 'none');
+        $('#edit-field-main-image-0-ahah-wrapper, div#field-images-items, ' +
+          '#edit-field-posting-type-value-wrapper').hide();
+        $('div#field-images-items').css('display', 'none');
+        $('div#edit-o2b-price-wrapper').parent().hide();
       }else{
-         $('#edit-field-main-image-0-ahah-wrapper, #field-images-items, ' +
-          '#edit-field-posting-type-value-wrapper, ' +
-          '').css('display', 'inline');
+        $('#edit-field-main-image-0-ahah-wrapper, div#field-images-items, ' +
+          '#edit-field-posting-type-value-wrapper').show();
+        $('div#field-images-items').css('display', 'inline');
       }
     })
     
@@ -28,15 +30,15 @@ $(document).ready(function () {
     var postingType = $('select#edit-field-posting-type-value').val();
 
     if(postingType == 1){
-      $('div#edit-o2b-price-wrapper').parent().css('display', 'none');
+      $('div#edit-o2b-price-wrapper').parent().hide();
     }
 
     //If offer2buy is toggled on, show the price field.
     $('select#edit-field-posting-type-value').click(function (){
       if($('select#edit-field-posting-type-value').val() == 2){
-        $('div#edit-o2b-price-wrapper').parent().css('display', 'inline');
+        $('div#edit-o2b-price-wrapper').parent().show();
       }else{
-        $('div#edit-o2b-price-wrapper').parent().css('display', 'none');
+        $('div#edit-o2b-price-wrapper').parent().hide();
       }
     })
   }

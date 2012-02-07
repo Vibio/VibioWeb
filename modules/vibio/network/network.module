@@ -167,7 +167,7 @@ function _network_get_friends($uid, $rel_type)
 	);
 	$options = array(
         "include_user_info"	=> FALSE,
-        "limit" => 100,
+        "limit" => "100",
 	);
 	
 	$friends = array();

@@ -1180,3 +1180,7 @@ a.btn-want{
 a.btn-want:hover{
 	background-position: -65px -58px;
 }
+/*Hide upload button on product/new form*/
+.page-product-new #edit-field-main-image-0-filefield-upload,.page-product-new-item #edit-field-main-image-0-filefield-upload, .page-product-new-item #edit-field-images-0-filefield-upload{
+  display: none;
+}

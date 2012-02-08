@@ -167,14 +167,10 @@ function _network_get_friends($uid, $rel_type)
 	);
 	$options = array(
         "include_user_info"	=> FALSE,
-        "limit" => "100",
 	);
 	
 	$friends = array();
-    //Load friend uids of the given $params['user'], limits execution time to 5 seconds
-    //andd 100 friend connection results
-    //@todo: find a performant way to load larger friend networks 
-    set_time_limit(5);
+    
     foreach (user_relationships_load($params, $options) as $rel)
 	{
 		if ($rel->requester_id != $uid)

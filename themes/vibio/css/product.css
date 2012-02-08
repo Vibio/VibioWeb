@@ -47,7 +47,7 @@ div.product_owners_results div.action div.row {
 #content-area div.product_owners_results div.action a.offer-button {
 	display: block;
 	text-indent: -9999px;
-	background: url(../images/btn_make_offer_1.png) no-repeat 0 0;
+	background: url(../images/btn_make_offer_1.png) no-repeat -3px 0;
 	width: 113px;
 	height: 80px;
 }
@@ -64,7 +64,7 @@ div.product_owners_results div.action div.row {
 
 .item_owner .action .not_for_sale img{
 	position: absolute;
-	right: 16px;
+	right: 7px;
 }
 
 .item_owner .picture {

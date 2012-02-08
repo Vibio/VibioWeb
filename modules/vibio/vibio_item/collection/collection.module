@@ -339,7 +339,7 @@ function collection_preprocess_collection_list_item_preview(&$vars)
 		if ( $possess == 20 ) { // Want
 			$vars['item']->offer2buy_price = "Wanted";
 			$vars['offer_button'] = 
-				"<div class='wanted'><img src='/themes/vibio/images/item/wanted_button.png'
+				"<div class='wanted'><img src='/themes/vibio/images/item/wanted_flag.png'
 					alt='I want this.  Maybe it\'s my birthday today?'
 					title='I want this.'></div>";
 			//override for_sale, if it was set

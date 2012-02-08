@@ -501,7 +501,7 @@ function profile_ext_preprocess_user_profile(&$vars)
 	//  is faster than reverse engineering for the moment.
 	// Since network_get shows two degrees out, it's weird.
 	$network = network_get($uid);
-	$me_in_their_wide_network = $network[$user->uid]['friends'];
+	//$me_in_their_wide_network = $network[$user->uid]['friends'];
 
 	// this wants a second parameter of $rel_type... seems like 1 is a default
 	//  elsewhere?
@@ -513,9 +513,9 @@ function profile_ext_preprocess_user_profile(&$vars)
 		$vars['who_to_you'] = 'you';
 	} elseif ( in_array($user->uid, $friends ) ) {
 		$vars['who_to_you'] = 'connection';
-	} elseif ( $me_in_their_wide_network ) {
-		$vars['who_to_you'] = 'second';
-	} else {
+	} //elseif ( $me_in_their_wide_network ) {
+	//	$vars['who_to_you'] = 'second';}
+      else {
 		$vars['who_to_you'] = 'none';
 	}
 

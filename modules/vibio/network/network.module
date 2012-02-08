@@ -182,7 +182,6 @@ function _network_get_friends($uid, $rel_type)
 			$friends[] = $rel->requestee_id;
 		}
 	}
-	set_time_limit(0);
 	cache_set($cache_key, $friends, "cache_network");
 	return $friends;
 }

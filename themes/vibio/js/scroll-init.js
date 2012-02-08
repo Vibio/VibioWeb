@@ -6,7 +6,7 @@
  */
 
 $(function() {
-
+	$('.view-id-Wantlist .view-content').masonry();
 	// encapsulate this run-away script, Features page only
     var $target_views = $(".view.view-flag-featured, .view-all-products-for-sale, .view-recent-products");
 	if ($(".view-content", $target_views).length > 0) {
@@ -69,3 +69,4 @@ $(function() {
 	}
 
 });
+

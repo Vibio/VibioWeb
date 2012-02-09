@@ -121,8 +121,8 @@ function product_item_wizard(){
     'cancel callback' => 'product_item_add_subtask_cancel',
    // this controls order, as well as form labels
     'order' => array(
-      'product' => t('Step 1: List New Product'),
-      'item' => t('Step 2: Add Your Product Description'),
+      'product' => t('1. List New Product'),
+      'item' => t('2. List Your Item Description'),
     ),
    // here we map a step to a form id.
     'forms' => array(

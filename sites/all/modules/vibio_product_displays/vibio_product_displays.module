@@ -64,3 +64,11 @@ function vibio_product_displays_views_pre_render(&$view) {
   }
 }
 
+function computed_field_field_item_count_compute($node, $field, &$node_field) {
+  $node_field[0]['value'] = (int) db_result(db_query("select count(item_nid) from {product_items} where product_nid = %d", $node->nid));
+}
+
+function computed_field_field_item_count_display($field, $element, $node) {
+  return $element['#item']['value'];
+}
+

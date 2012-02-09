@@ -149,7 +149,7 @@ $(document).ready(function()
 			if (xhr.status == 403)
 			{
 				vibio_dialog.dialog.dialog("close");
-				vibio_dialog.create(Drupal.t("You must log in to do this"));
+				vibio_dialog.create(Drupal.t("<p class='login-pop'><a href='/user/login'>You must log in to do this</a></p>"));
 			}
 		});
 	

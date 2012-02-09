@@ -17,15 +17,49 @@
  * @TODO: Change access arguments to create content
  */
 function product_item_menu() {
+  $items['product/amazon/%'] = array(
+    'page callback' => 'product_item_prewizard',
+    'page arguments' => array(2),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK
+  );
   $items['product/new'] = array(
     'title' => 'Add a New Product',
     'page callback' => 'product_item_wizard',
-    'access arguments' => array('access content')
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK
   );
+  
   return $items; 
 }
 
 /**
+ * Starts the product add multistep form with product information already
+ * filled in from Amazon or Vibio.
+ * 
+ * @param <type> $asin
+ */
+function product_item_prewizard($asin = null){
+  module_load_include('inc', 'vibio_amazon', 'includes/vibio_amazon.pages');
+  if(!empty($asin)){
+    ctools_include('object-cache');
+    module_load_include('inc', 'vibio_amazon', 'includes/vibio_amazon.pages');
+    //Create (or retrieve) Vibio product info from the asin
+    $nid = vibio_amazon_create_product_from_asin($asin, FALSE);
+    $product_node = node_load($nid);
+    $product = (array) $product_node;
+
+    $product_item_data = array('product' => $product, 'item' => array());
+
+    product_item_clear_page_cache('prewizard');
+    ctools_object_cache_set('product_item_data', 'prewizard', $product_item_data);
+    print 'got into prewizard';
+  }
+print 'exiting prewizard';
+  drupal_goto('product/new');
+}
+
+
 //@TODO REMOVE
 function print_r_tree($data)
 {
@@ -43,11 +77,10 @@ function print_r_tree($data)
 }
 
 function product_item_form_alter(&$form, &$form_state){
-    //@TODO REMOVE
-  print_r_tree($form);
+  //@TODO REMOVE
   print_r_tree($form_state);
 }
-**/
+
 
 /* Note: This code is derived from
  * http://www.nicklewis.org/using-chaos-tools-form-wizard-build-multistep-forms-drupal-6
@@ -64,11 +97,12 @@ function product_item_form_alter(&$form, &$form_state){
  * @return <type>
  */
 function product_item_wizard(){
-  //Where the step is located in the URL
-  $step = arg(2);
   // required includes for wizard
   ctools_include('wizard');
   ctools_include('object-cache');
+
+  //Where the step is located in the URL
+  $step = arg(2);
 
   // *** SETUP ARRAY multistep setup ****
  // these are defined in some docs at end of article
@@ -103,10 +137,10 @@ function product_item_wizard(){
 
   // *** SETTING THE FORM UP FOR MULTISTEP *** //
   $form_state = array(
-    'cache name' => NULL,
+    'cache name' => 'prewizard',
   );
   // no matter the step, you will load your values from the callback page
-  $product_item_data = product_item_get_page_cache(NULL);
+  $product_item_data = product_item_get_page_cache($form_state['cache name']);
   if (!$product_item_data) {
     // set form to first step -- we have no data
     $step = current(array_keys($form_info['order']));
@@ -367,7 +401,7 @@ function product_item_add_subtask_cancel(&$form_state) {
 /**
  * Remove an item from the object cache.
  */
-function  product_item_clear_page_cache($name) {
+function product_item_clear_page_cache($name) {
   ctools_object_cache_clear('product_item_data', $name);
 }
 
@@ -379,9 +413,6 @@ function product_item_get_page_cache($name) {
   $cache = ctools_object_cache_get('product_item_data', $name);
   return $cache;
 }
-
-
-
 
 
 ?>

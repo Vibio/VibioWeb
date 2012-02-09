@@ -6,3 +6,5 @@ dependencies[] = vibio_item
 dependencies[] = privacy_node
 dependencies[] = product
 dependencies[] = ctools
+dependencies[] = vibio_amazon
+dependencies[] = amazon

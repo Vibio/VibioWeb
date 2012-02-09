@@ -72,3 +72,28 @@ function computed_field_field_item_count_display($field, $element, $node) {
   return $element['#item']['value'];
 }
 
+function _vibio_product_displays_homepage_print_google_conversion_code() {
+  // code to track users who click ad, and then are logged in
+  // assumed to be new users
+  $conversion = '<!-- Google Code for Sign Up Conversion Page -->
+    <script type="text/javascript">
+      /* <![CDATA[ */
+      var google_conversion_id = 1017452623;
+      var google_conversion_language = "en";
+      var google_conversion_format = "3";
+      var google_conversion_color = "ffffff";
+      var google_conversion_label = "J8y9CLGRqgIQz7CU5QM";
+      var google_conversion_value = 0;
+      /* ]]> */
+    </script>
+    <script type="text/javascript" src="http://www.googleadservices.com/pagead/conversion.js">
+    </script>
+    <noscript>
+      <div style="display:inline;">
+      <img height="1" width="1" style="border-style:none;" alt="" src="http://www.googleadservices.com/pagead/conversion/1017452623/?label=J8y9CLGRqgIQz7CU5QM&guid=ON&script=0"/>
+      </div>
+    </noscript>';
+
+  print $conversion;
+}
+

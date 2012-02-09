@@ -1188,3 +1188,48 @@ a.btn-want:hover{
 .page-product-new #edit-field-main-image-0-filefield-upload,.page-product-new-item #edit-field-main-image-0-filefield-upload, .page-product-new-item #edit-field-images-0-filefield-upload{
   display: none;
 }
+/*add new product wizard*/
+.wizard-trail{
+	height: 50px;
+	margin: 20px 0 0;
+	background: url(../images/breadcrumb.png) no-repeat;
+	text-indent: -9999px;
+}
+.page-product-new input{
+	padding: 4px;
+}
+.page-product-new #edit-body, .page-product-new #edit-title{
+	width: 368px
+}
+.page-product-new .form-region-main{
+	margin: 0 9px;
+	position: relative
+}
+.page-product-new label{
+	font-size: 13px;
+	font-weight: bold
+}
+.page-product-new #edit-title-wrapper label{
+	font-size: 15px
+}
+.page-product-new .body-field-wrapper, .page-product-new #edit-taxonomy-2-wrapper, .page-product-new #edit-title-wrapper{
+	width:400px;
+}
+.page-product-new #edit-field-main-image-0-ahah-wrapper{
+	position: absolute;
+	top:52px;
+	right: 10px;
+	border-left:1px solid #CCC;
+	padding: 0 22px;
+	margin-top: 10px;
+	height: 330px
+}
+.page-product-new #edit-field-main-image-0-upload-wrapper{margin-top: 5px}
+.page-product-new #edit-cancel{display: none}
+.page-product-new #edit-next{
+	text-indent: -9999px;
+	background: url(../images/btn_steps.png) no-repeat -2px 1px;
+	height: 45px;
+	width: 160px;
+	border: none;
+}

@@ -29,6 +29,10 @@ function vibio_search_autocomplete_menu(){
 }
 
 function _searchvibio_autocomplete($string){
+  if(strlen($string) < 3){
+    print drupal_to_js(array('Type more characters to see possible product matches.'));
+    exit();
+  }
   //An array of search results as text strings
   $matches = array();
 
@@ -36,7 +40,7 @@ function _searchvibio_autocomplete($string){
   $results = vibio_search_autocomplete_get_data($string);
 
 
-  $matches = vibio_search_autocomplete_display_results($results);
+  $matches = vibio_search_autocomplete_amazon_display_results($results);
 
   // return for JS
   print drupal_to_js($matches);
@@ -50,6 +54,10 @@ function _searchvibio_autocomplete($string){
  * @param <type> $string
  */
 function vibio_search_autocomplete_get_data($string){
+  /**
+   * This code is for Vibio searches; I've opted for strict amazon
+   * searches for performance/data collection reasons. See
+   * https://www.pivotaltracker.com/story/show/24664355
   $results = array();
   $join1 = "INNER JOIN {node} n ON n.nid = i.sid";
   $sort_parameters = "ORDER BY score DESC";
@@ -59,18 +67,34 @@ function vibio_search_autocomplete_get_data($string){
   //that should already be converted into Vibio products?
   $where1 = "n.status = 1 AND n.type='product'";
   
-  $vibio_results_raw = do_search($string, $type, $join1, $where1);
-  $vibio_results_formatted = vibio_search_autocomplete_format_vibio_results($vibio_results_raw);
+  //$vibio_results_raw = do_search($string, $type, $join1, $where1);
+  //$vibio_results_formatted = vibio_search_autocomplete_format_vibio_results($vibio_results_raw);
+**/
 
   $amazon_arguments = array('keywords' => $string);
-  $amazon_results = vibio_amazon_product_search($amazon_arguments);
+  $amazon_results = vibio_search_autocomplete_amazon_quicksearch($string);
 
   //Merge the results
-  $results = array_merge($vibio_results_formatted, $amazon_results);
-
+  //$results = array_merge($vibio_results_formatted, $amazon_results);
+  $results = $amazon_results;
   return $results;
 }
 
+function vibio_search_autocomplete_amazon_quicksearch($string) {
+  $parameters = array(
+      'ResponseGroup' => 'Small',
+      'SearchIndex' => 'All',
+      'Keywords' => urlencode($string),
+  );
+  $raw_results = amazon_http_request('ItemSearch', $parameters);
+  $results = array();
+  foreach($raw_results->Items->Item as $xml) {
+    $item = amazon_item_clean_xml($xml);
+    $results[$item['asin']] = $item;
+  }
+  
+  return $results;
+}
 
 /**
  * Format the results to be displayed in an autocomplete dropdown.
@@ -78,9 +102,10 @@ function vibio_search_autocomplete_get_data($string){
  * @param <type> $results
  * @return <type>
  */
-function vibio_search_autocomplete_display_results($results){
+function vibio_search_autocomplete_amazon_display_results($results){
   $display_results = array();
   foreach ($results as $result){
+    $result['link'] = url('product/amazon/' . $result['asin'], array('external' => TRUE));
     //Get the title of the object and a link to its data to fill the form
     $display_results[] = l($result['title'], $result['link']);
   }

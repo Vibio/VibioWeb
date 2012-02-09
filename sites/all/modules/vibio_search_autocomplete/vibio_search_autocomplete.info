@@ -1,0 +1,6 @@
+; $Id$
+name = Vibio Search Autocomplete
+description = Adds code for an ajax autocomplete field on forms that utilize Vibio's search.
+dependencies[] = vibio_amazon
+dependencies[] = amazon
+core = 6.x

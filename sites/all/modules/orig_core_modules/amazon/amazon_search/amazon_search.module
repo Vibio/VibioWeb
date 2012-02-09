@@ -38,7 +38,14 @@ function amazon_search_search($op = 'search', $keys = NULL, $skip_access_check =
 function amazon_search_simple_search($keywords = '', $parameters = array()) {
   global $pager_page_array, $pager_total;
   $current_page = $_GET['page'] ? $_GET['page'] : 0;
-  $offset = module_exists("product") ? product_set_external_search_page_offset() : 0;
+  //Get the apropriate offset
+  if(module_exists('product')){
+    //@todo: check
+    module_load_include('inc', 'product');
+    $offset = product_set_external_search_page_offset();
+  }else{
+    $offset = 0;
+  }
   $search_page = $current_page - $offset;
   $search_page = $search_page < 0 ? 0 : $search_page;
   

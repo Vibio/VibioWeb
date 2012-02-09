@@ -51,16 +51,15 @@ function product_item_prewizard($asin = null){
 
     $product_item_data = array('product' => $product, 'item' => array());
 
-    product_item_clear_page_cache('prewizard');
-    ctools_object_cache_set('product_item_data', 'prewizard', $product_item_data);
-    print 'got into prewizard';
+    product_item_clear_page_cache(NULL);
+    ctools_object_cache_set('product_item_data', NULL, $product_item_data);
   }
-print 'exiting prewizard';
   drupal_goto('product/new');
 }
 
 
 //@TODO REMOVE
+/**
 function print_r_tree($data)
 {
     // capture the output of print_r
@@ -78,9 +77,10 @@ function print_r_tree($data)
 
 function product_item_form_alter(&$form, &$form_state){
   //@TODO REMOVE
+  print_r_tree($form);
   print_r_tree($form_state);
 }
-
+**/
 
 /* Note: This code is derived from
  * http://www.nicklewis.org/using-chaos-tools-form-wizard-build-multistep-forms-drupal-6
@@ -137,7 +137,7 @@ function product_item_wizard(){
 
   // *** SETTING THE FORM UP FOR MULTISTEP *** //
   $form_state = array(
-    'cache name' => 'prewizard',
+    'cache name' => NULL,
   );
   // no matter the step, you will load your values from the callback page
   $product_item_data = product_item_get_page_cache($form_state['cache name']);
@@ -165,9 +165,38 @@ function product_item_wizard(){
  * @param array $form_state
  */
 function product_multistep_form(&$form, &$form_state){
+  //Add js to move the body field description inside of the body (as long
+  //as there isn't text entered), dissappear on blur
+  drupal_add_js($description_js, 'inline', FALSE, TRUE, FALSE);
+
+  $description_js =
+  "
+    $(document).ready(function() {
+  var textarea = $('#edit-body-wrapper textarea');
+  var description = $('#edit-body-wrapper.description');
+  if(!textarea.value){
+    textarea.val(description);
+  }else{
+    description.hide();
+  }
+
+  textarea.focus(function(){
+    description.hide();
+  });
+
+  textarea.blur(function(){
+    if(!textarea.value()){
+      description.show();
+    }
+  });
+});
+";
+
   // include drupal's node include file
   require("modules/node/node.pages.inc");
   $form_id = 'product_node_form';
+
+
 
   //Create the Product Node Form
   //Basic node array
@@ -202,6 +231,48 @@ function product_multistep_form(&$form, &$form_state){
   $form['privacy_setting']['#access'] = FALSE;
 
 
+  //If there's product data and we're passing through the form for the first time, prepopulate the form
+
+    $product = $form_state['product_item_data']['product'];
+    $amazon_data = $product[0];
+
+    $form['title']['#default_value'] = $product['title'];
+    $tid = key($product['taxonomy']);
+    $form['taxonomy'][2]['#value'] = $tid;
+    $form['taxonomy']['#access'] = FALSE;
+
+    //If we haven't entered a custom body, use the Amazon data
+    if(empty($product['body'])){
+      $form['body_field']['body']['#default_value'] = $amazon_data['editorialreviews'][0]['content'];
+    }else{
+      $form['body_field']['body']['#default_value'] = $product['body'];
+    }
+    
+    $form['field_amazon_asin'][0]['#default_value'] = $product['field_amazon_asin'][0];
+
+    //Form values simple enough to iterate through
+    $populate_fields = array('title', 'nid', 'vid', 'uid', 'created', 'type', 'language', 'format', 'revision', 'name', 'status');
+
+    foreach($populate_fields as $field){
+      $form[$field]['#value'] = $product[$field];
+    }
+    
+    //If there's a pre-existing image...
+    if(!empty($product['field_main_image'][0]['filepath'])){
+      //Remove the photo upload field
+      $form['field_main_image'][0]['#access'] = FALSE;
+
+      //Show the existing image
+      //@todo: allow image upload to replace the existing image
+      $form['product_image_preview'] = array(
+        '#type' => 'markup',
+        '#value' => theme('imagecache', 'product_fixed_width', $product['field_main_image'][0]['filepath'], 'Product Image'),
+        '#weight' => 10,
+      );
+    }
+
+
+
   
   // Not sure why this is important, but apparently it is...?
   $form_state['no buttons'] = TRUE;
@@ -214,7 +285,7 @@ function product_multistep_form(&$form, &$form_state){
  * @param <type> $from
  * @param <type> $form_state
  */
-function product_multistep_form_submit(&$from, &$form_state) {
+function product_multistep_form_submit(&$form, &$form_state) {
   $submitted = $form_state['values'];
   $form_state['product_item_data']['product'] = $submitted;
 }

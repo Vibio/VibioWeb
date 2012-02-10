@@ -121,9 +121,4 @@ $(document).ready(function() {
 	//marker
 	//Change table header to small caps
 	$("table.privatemsg-list th").css('font-variant', 'small-caps');
-	//New Product Add form
-	$('.page-product-new #edit-body').val('This is where you add details that are specific to the item you own. For example: Condition, Damage, History etc');
-	$('.page-product-new #edit-body').focus(function() {
-		$(this).val('');
-	});
 });

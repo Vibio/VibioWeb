@@ -466,6 +466,7 @@ function product_item_add_subtask_finish(&$form_state) {
 
   //Associate Item with the Product @todo: replace with node reference
   $item->product_product_nid = $product->nid;
+  !empty($item->field_main_image[0]['fid']) ? $item->field_main_image[0]['status'] = 1 : '';
   $item->title = $product->title;
   
   //Set have/want value from form radio

@@ -18,6 +18,7 @@ function vibio_preprocess_page(&$variables){
   if ($variables['node']->type != "" && arg(2) != 'edit') {
     $variables['template_files'][] = "page-node-" . $variables['node']->type;
   }
+  drupal_add_js('sites/all/libraries/jquery.ui/external/cookie/jquery.cookie.js');
   drupal_add_js(drupal_get_path('theme', 'vibio') . '/js/homepage.js');
   // Reload JS, cuz one must.
   $variables['scripts'] = drupal_get_js();

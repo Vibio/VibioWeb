@@ -442,11 +442,19 @@ function product_item_add_subtask_finish(&$form_state) {
 
   //Associate Item with the Product @todo: replace with node reference
   $item->product_product_nid = $product->nid;
-  !empty($item->field_main_image[0]['fid']) ? $item->field_main_image[0]['status'] = 1 : '';
   $item->title = $product->title;
+  //Make sure the item photos are saved
+  !empty($item->field_main_image[0]['fid']) ? $item->field_main_image[0]['status'] = 1 : '';
   
   //Set have/want value from form radio
-  $item->field_have_want_like[0]['value'] = $item->have_want == 0 ? VIBIO_ITEM_HAVE : VIBIO_ITEM_WANT;
+  if($item->have_want == 0){
+    $item->field_have_want_like[0]['value'] = VIBIO_ITEM_HAVE;
+  }else{
+    $item->field_have_want_like[0]['value'] = VIBIO_ITEM_WANT;
+    //Wanted items should not be for sale
+    $item->field_posting_type = 1;
+  }
+  
   node_save($item);
 
   //Clear the cache

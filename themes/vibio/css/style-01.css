@@ -1184,3 +1184,124 @@ a.btn-want{
 a.btn-want:hover{
 	background-position: -65px -58px;
 }
+/*Hide upload button on product/new form*/
+.page-product-new #edit-field-main-image-0-filefield-upload,.page-product-new-item #edit-field-main-image-0-filefield-upload, .page-product-new-item #edit-field-images-0-filefield-upload{
+  display: none;
+}
+/*add new product wizard*/
+.wizard-trail{
+	height: 50px;
+	margin: 20px 0 0;
+	background: url(../images/breadcrumb.png) no-repeat;
+	text-indent: -9999px;
+}
+.page-product-new input{
+	padding: 4px;
+}
+.page-product-new #edit-body, .page-product-new-item #edit-body, .page-product-new #edit-title{
+	width: 368px;
+}
+.page-product-new .form-region-main, .page-product-new-item .form-region-main{
+	margin: 0 9px;
+	position: relative;
+	width: 100%;
+}
+.page-product-new label, .page-product-new-item label{
+	font-size: 13px;
+	font-weight: bold
+}
+.page-product-new #edit-title-wrapper label{
+	font-size: 15px
+}
+.page-product-new .body-field-wrapper, .page-product-new #edit-taxonomy-2-wrapper, .page-product-new #edit-title-wrapper{
+	width:400px;
+}
+.page-product-new #edit-field-main-image-0-ahah-wrapper{
+	position: absolute;
+	top:52px;
+	right: 10px;
+	border-left:1px solid #CCC;
+	padding: 0 22px;
+	margin-top: 10px;
+	height: 330px
+}
+.page-product-new #edit-field-main-image-0-upload-wrapper{margin-top: 5px}
+.page-product-new #edit-cancel{display: none}
+.page-product-new #edit-next, .page-product-new-item #edit-return{
+	text-indent: -9999px;
+	background: url(../images/btn_steps.png) no-repeat;
+	height: 45px;
+	width: 161px;
+	border: none;
+}
+
+.page-product-new #edit-next{background-position: -2px 1px}
+.page-product-new-item #edit-return{background-position: -2px -50px}
+/*step 2*/
+.page-product-new-item .wizard-trail{
+	background: url(../images/breadcrumb_2.png) no-repeat;
+}
+.page-product-new-item .form-region-main h1{
+	margin: 15px 0;
+	font-size: 15px;
+}
+.page-product-new-item .body-field-wrapper{
+	clear: both
+}
+.page-product-new-item div.form-radios div.form-item{
+	height: 22px;
+}
+.page-product-new-item fieldset{
+	margin: 0;
+	padding: 0;
+	width: 110px
+}
+.page-product-new-item fieldset.collapsible,
+.page-product-new-item fieldset legend, 
+.page-product-new-item #edit-o2b-price-wrapper .description{
+	display: none
+}
+.page-product-new-item #edit-field-posting-type-value-wrapper{
+	float:left;
+	margin-right: 50px;
+	margin-top: 0
+}
+.page-product-new-item #edit-field-posting-type-value{
+	width:85px
+}
+.page-product-new-item #edit-field-main-image-0-ahah-wrapper{
+	position: absolute;
+	top:80px;
+	right: 19px;
+	border-left:1px solid #CCC;
+	padding: 0 22px;
+	width: 272px
+}
+.page-product-new-item #field-images-items{
+	position: absolute;
+	top:218px;
+	right: 19px;
+	border-left:1px solid #CCC;
+	padding: 0 22px;
+}
+.page-product-new-item .filefield-element .widget-edit{
+	float: none;
+	max-width: 100%;
+	margin-top: 5px
+}
+.page-product-new-item .filefield-element .widget-edit .description{
+	margin-top: 20px
+}
+.page-product-new-item form th, .page-product-new-item form thead th{
+	border-bottom: none;
+	font-size: 15px;
+}
+.page-product-new-item tr.even, .page-product-new-item tr.odd{
+	border: none
+}
+/*Custom Form buttons*/
+.has-js .option{padding: 2px 0 4px 30px; background: url(../images/btn_radio_off.png) no-repeat; cursor: pointer;}
+.has-js label.c_on { background: url(../images/btn_radio_on.png) no-repeat; }
+.has-js .option input{ position: absolute; left: -9999px; }
+
+

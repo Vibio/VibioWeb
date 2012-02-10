@@ -1,0 +1,10 @@
+<?php
+
+/**
+ * Remove existing /home alias so Panels can use it.
+ */
+function vibio_product_displays_update_6001() {
+  path_set_alias(NULL, 'home');
+  drupal_set_message(t('The <em>home</em> alias has been unset.'));
+}
+

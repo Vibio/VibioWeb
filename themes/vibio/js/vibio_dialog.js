@@ -11,6 +11,12 @@ var vibio_dialog = {
 		this.dialog.html(content).dialog({
 			position : ['center', 30]
 		});
+		//Change Form labels
+		$("#edit-collections-wrapper label").html("Add to Collection:");
+		$("#edit-collections-new-wrapper label").html("OR create a new collection");
+		$("#edit-privacy-wrapper label").html("Item Can Be Viewed By:");
+		$("#edit-privacy-wrapper").insertBefore("#edit-body-wrapper");
+		
 	},
 	init : function() {
 		this.reset_options();

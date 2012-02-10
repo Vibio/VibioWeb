@@ -128,7 +128,18 @@ function product_nodeapi(&$node, $op, $a3=null, $a4=null)
 							SET `product_nid`=%d, `item_nid`=%d";
 					db_query($sql, $node->product_product_nid, $node->nid);
 				}
+        if (isset($node->field_product)) {
+          // Populate the Node Reference field
+          $node->field_product[0]['nid'] = $node->product_product_nid;
+        }
 				break;
+      case "update":
+        if (isset($node->field_product) && isset($node->field_product[0]) && empty($node->field_product[0]['nid'])) {
+          // Populate the Node Reference field if it's empty for some reason
+          $product_nid = vibio_item_product_nid($node->nid);
+          $node->field_product[0]['nid'] = $product_nid;
+        }
+        break;
 			case "delete":
 				$sql = "DELETE FROM {product_items}
 						WHERE `item_nid`=%d";

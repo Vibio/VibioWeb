@@ -29,29 +29,32 @@
 	min-height: 55px !important;
 }
 #product-ajax-add-form {
-	clear: both
+	width: 560px
 }
 #vibio_dialog .inventory_add_image {
 	padding: 5px 5px 1px;
 	float: left;
 	border: 1px solid #CCCCCC;
-	margin: 0 10px 10px;
+	margin: 30px 10px 135px;
 }
 #product-ajax-add-form #edit-collections-wrapper {
-	float: left;
-	margin:0 10px 0 0;
-	width: 192px
+	margin-top: 30px;
 }
 #product-ajax-add-form #edit-body-wrapper{
-	clear: both;
 	margin: 0
+}
+#product-ajax-add-form #edit-body{
+	width: 330px;
+	height: 70px
+}
+#edit-collections-new{
+	width: 180px
 }
 #edit-collections-wrapper select{
 	width: 192px;
 	height: 30px;
 }
 #vibio_dialog .inventory_add_image img {
-	max-height: 150px;
 	border: 1px solid #CCCCCC;
 }
 #inventory_top {
@@ -135,7 +138,9 @@ span.ui-icon {
 	padding: 10px 0;
 	text-align: center;
 }
-#vibio_dialog form .form-item label {
+#product-ajax-add-form .form-item label {
+	font-size:13px;
+	font-weight:bold;
 	
 }
 #product-ajax-add-form div {
@@ -157,15 +162,12 @@ div#edit-node-price-wrapper {
 	padding: 0;
 	margin: 0;
 	height: 27px;
-	right: 15px;
+	left:20px;
 	position: absolute;
 	bottom: 8px;
 }
 #product-ajax-add-form div#edit-privacy-wrapper {
-	height: 65px;
-	margin-bottom: 40px;
-	border-bottom: 1px solid #CCCCCC;
-	margin-top: 0;
+
 }
 #vibio_dialog form select[multiple] {
 	max-height: 120px;

@@ -1197,46 +1197,47 @@ a.btn-want:hover{
 	background: url(../images/breadcrumb.png) no-repeat;
 	text-indent: -9999px;
 }
-.page-product-new input, .page-product-new select, .page-product-new-item input, .page-product-new-item select{
+.page-product-new-product input, .page-product-new-product select, .page-product-new input, .page-product-new select, .page-product-new-item input, .page-product-new-item select{
 	padding: 2px 4px;
 	margin-bottom: 20px
 }
-.page-product-new #edit-body-wrapper{
+.page-product-new-product #edit-body-wrapper, .page-product-new #edit-body-wrapper{
 	margin: 0
 }
-.page-product-new .body-field-wrapper p{
+.page-product-new-product .body-field-wrapper, .page-product-new .body-field-wrapper p{
 	margin: 7px 0 20px
 }
-.page-product-new #edit-body, .page-product-new-item #edit-body, .page-product-new #edit-title{
-	width: 368px;
+.page-product-new-product #edit-body, .page-product-new-product #edit-title, .page-product-new #edit-body, .page-product-new-item #edit-body, .page-product-new #edit-title{
+	width: 350px;
 }
-.page-product-new .form-region-main, .page-product-new-item .form-region-main{
+.page-product-new-product .form-region-main,.page-product-new .form-region-main, .page-product-new-item .form-region-main{
 	margin: 0 9px;
 	position: relative;
 	width: 100%;
 }
-.page-product-new label, .page-product-new-item label{
+.page-product-new-product label, .page-product-new label, .page-product-new-item label{
 	font-size: 13px;
 	font-weight: bold
 }
-.page-product-new #edit-title-wrapper label{
+.page-product-new-product #edit-title-wrapper label, .page-product-new #edit-title-wrapper label{
 	font-size: 15px
 }
-.page-product-new .body-field-wrapper, .page-product-new #edit-taxonomy-2-wrapper, .page-product-new #edit-title-wrapper{
+.page-product-new-product .body-field-wrapper, .page-product-new-product #edit-taxonomy-2-wrapper, .page-product-new-product #edit-title-wrapper, .page-product-new .body-field-wrapper, .page-product-new #edit-taxonomy-2-wrapper, .page-product-new #edit-title-wrapper{
 	width:400px;
 }
-.page-product-new #edit-field-main-image-0-ahah-wrapper{
+.page-product-new-product #edit-field-main-image-0-ahah-wrapper, .page-product-new #edit-field-main-image-0-ahah-wrapper{
 	position: absolute;
 	top:52px;
 	right: 10px;
 	border-left:1px solid #CCC;
 	padding: 0 22px;
 	margin-top: 10px;
-	height: 330px
+	height: 330px;
+	width: 294px
 }
-.page-product-new #edit-field-main-image-0-upload-wrapper{margin-top: 5px}
-.page-product-new #edit-cancel{display: none}
-.page-product-new #edit-next, .page-product-new-item #edit-return{
+.page-product-new-product #edit-field-main-image-0-upload-wrapper, .page-product-new #edit-field-main-image-0-upload-wrapper{margin-top: 5px}
+.page-product-new-product #edit-cancel, .page-product-new #edit-cancel{display: none}
+.page-product-new-product #edit-next, .page-product-new #edit-next, .page-product-new-item #edit-return{
 	text-indent: -9999px;
 	background: url(../images/btn_steps.png) no-repeat;
 	height: 45px;
@@ -1244,10 +1245,10 @@ a.btn-want:hover{
 	border: none;
 }
 
-.page-product-new #edit-next{background-position: -2px 1px}
+.page-product-new-product #edit-next, .page-product-new #edit-next{background-position: -2px 1px}
 .page-product-new-item #edit-return{background-position: -2px -50px}
-.page-product-new #edit-field-amazon-asin-0-asin{width: 160px}
-.page-product-new .form-region-footer{border-top:1px solid #CCC; padding-right: 10px}
+.page-product-new-product #edit-field-amazon-asin-0-asin, .page-product-new #edit-field-amazon-asin-0-asin{width: 160px}
+.page-product-new-product .form-region-footer, .page-product-new .form-region-footer{border-top:1px solid #CCC; padding-right: 10px}
 /*step 2*/
 .page-product-new-item .wizard-trail{
 	background: url(../images/breadcrumb_2.png) no-repeat;

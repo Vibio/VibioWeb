@@ -430,13 +430,25 @@ function item_multistep_form_submit(&$form, &$form_state) {
 function product_item_add_subtask_finish(&$form_state) {
   $product_item_data = $form_state['product_item_data'];
   $product = (object) $product_item_data['product'];
+  $item = (object) $product_item_data['item'];
   //If stored image data from amazon is present, use it
   if(!empty($product->image['fid'])){
     $product->field_main_image[0] = $product->image;
   }
   $product->type = 'product';
   
-  $item = (object) $product_item_data['item'];
+  //Put all the item's images in as the product's additional images
+  if($item->field_main_image[0]['fid']){
+    $product->field_images[] = $item->field_main_image[0];
+  } 
+  foreach($item->field_images as $image){
+    $product->field_images[] = $image; 
+  }else{
+    //If the item doesn't have an image, see if we can use the product image
+    if($product->field_main_image[0]['fid']){
+      $item->field_main_image[0] = $product->field_main_image[0];
+    }
+  }
 
   node_save($product);
 

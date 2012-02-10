@@ -1310,6 +1310,9 @@ a.btn-want:hover{
 .page-product-new-item tr.even, .page-product-new-item tr.odd{
 	border: none
 }
+#form-price{
+	clear: both
+}
 /*Custom Form buttons*/
 .has-js .option{padding: 2px 0 4px 30px; background: url(../images/btn_radio_off.png) no-repeat; cursor: pointer;}
 .has-js label.c_on { background: url(../images/btn_radio_on.png) no-repeat; }

@@ -1316,13 +1316,15 @@ a.btn-want:hover{
 .has-js .option input{ position: absolute; left: -9999px; }
 /*Move description into textarea, product add multistep*/
 .page-product-new-product #edit-body-wrapper .description,
-.page-product-new #edit-body-wrapper .description{
+.page-product-new #edit-body-wrapper .description,
+.page-product-new-item #edit-body-wrapper .description{
   position: absolute;
   top: 2.5em;
   left: .5em;
 }
 .page-product-new-product #edit-body-wrapper,
-.page-product-new #edit-body-wrapper{
+.page-product-new #edit-body-wrapper,
+.page-product-new-item #edit-body-wrapper{
   position: relative;
 }
 /*Make autocomplete results span the entire result area*/

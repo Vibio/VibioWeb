@@ -38,6 +38,8 @@ function vibio_amazon_page_product_from_asin() {
 /**
  * Creates a local Drupal product node from Amazon data.
  *
+ *
+ *
  * @param string $asin
  *   The ASIN of the amazon data to convert to a local node.
  *
@@ -48,13 +50,14 @@ function vibio_amazon_create_product_from_asin($asin, $js = FALSE) {
   $nid = 0;
   
   $items = amazon_item_lookup_from_db(array($asin));
+  //If the amazon object is in our DB (as amazon data)...
   if (!empty($items[$asin])) {
     $amazon_data = $items[$asin];
     
     // Check for an existing local node first.
     $sql = "SELECT nid FROM {amazon_item_node} WHERE asin = '%s'";
     $nid = db_result(db_query($sql, $amazon_data['asin']));
-    
+    //...but no Vibio Product has been created...
     if (!$nid) {
       // This block was taken almost verbatim from a previous
       // implementation of hook_amazon_item_insert().
@@ -97,6 +100,18 @@ function vibio_amazon_create_product_from_asin($asin, $js = FALSE) {
       $record = (object)$record;
       drupal_write_record('amazon_item_node', $record);
     }
+  }else{
+    //This handles cases where no Amazon data is in our DB yet
+    //Get the amazon data
+    $asins = array($asin);
+    $items = amazon_item_lookup_from_web($asins);
+    
+    //Insert it into our DB
+    $item = current($items);
+    amazon_item_insert($item);
+  
+    //Create a Vibio Product node
+    $nid = vibio_amazon_create_product_from_asin($asin);
   }
 
   //If this is a javascript request from the have/want buttons...

@@ -8,3 +8,9 @@ Drupal.jsAC.prototype.setStatus = function (status) {
     case 'found':
   }
 };
+
+$(document).ready(function(){
+  $('div.autocomplete-result').click(function(){
+    $(this).children().click();
+  })
+})

@@ -107,7 +107,7 @@ function vibio_search_autocomplete_amazon_display_results($results){
   foreach ($results as $result){
     $result['link'] = url('product/amazon/' . $result['asin'], array('external' => TRUE));
     //Get the title of the object and a link to its data to fill the form
-    $display_results[] = l($result['title'], $result['link']);
+    $display_results[] = '<div class="autocomplete-result">' . l($result['title'], $result['link']) . '</div>';
   }
 
   return $display_results;

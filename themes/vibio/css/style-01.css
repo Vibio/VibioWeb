@@ -1256,7 +1256,6 @@ a.btn-want:hover{
 	padding: 0;
 	width: 110px
 }
-.page-product-new-item fieldset.collapsible,
 .page-product-new-item fieldset legend, 
 .page-product-new-item #edit-o2b-price-wrapper .description{
 	display: none
@@ -1303,5 +1302,23 @@ a.btn-want:hover{
 .has-js .option{padding: 2px 0 4px 30px; background: url(../images/btn_radio_off.png) no-repeat; cursor: pointer;}
 .has-js label.c_on { background: url(../images/btn_radio_on.png) no-repeat; }
 .has-js .option input{ position: absolute; left: -9999px; }
+/*Move description into textarea, product add multistep*/
+.page-product-new-product #edit-body-wrapper .description,
+.page-product-new #edit-body-wrapper .description{
+  position: absolute;
+  top: 2.5em;
+  left: .5em;
+}
+.page-product-new-product #edit-body-wrapper,
+.page-product-new #edit-body-wrapper{
+  position: relative;
+}
+/*Make autocomplete results span the entire result area*/
+.autocomplete-result a{
+  width: 100%;
+  display: block;
+  cursor: pointer;
+}
+
 
 

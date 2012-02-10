@@ -64,7 +64,7 @@ function product_item_prewizard($asin = null){
 
 
 //@TODO REMOVE
-
+/**
 function print_r_tree($data)
 {
     // capture the output of print_r
@@ -87,6 +87,7 @@ function product_item_form_alter(&$form, &$form_state){
   print 'FORM STATE';
   print_r_tree($form_state);
 }
+**/
 
 /* Note: This code is derived from
  * http://www.nicklewis.org/using-chaos-tools-form-wizard-build-multistep-forms-drupal-6

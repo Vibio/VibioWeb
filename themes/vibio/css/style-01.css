@@ -1208,7 +1208,7 @@ a.btn-want:hover{
 	margin: 7px 0 20px
 }
 .page-product-new-product #edit-body, .page-product-new-product #edit-title, .page-product-new #edit-body, .page-product-new-item #edit-body, .page-product-new #edit-title{
-	width: 350px;
+	width: 310px;
 }
 .page-product-new-product .form-region-main,.page-product-new .form-region-main, .page-product-new-item .form-region-main{
 	margin: 0 9px;
@@ -1219,11 +1219,12 @@ a.btn-want:hover{
 	font-size: 13px;
 	font-weight: bold
 }
+
 .page-product-new-product #edit-title-wrapper label, .page-product-new #edit-title-wrapper label{
 	font-size: 15px
 }
 .page-product-new-product .body-field-wrapper, .page-product-new-product #edit-taxonomy-2-wrapper, .page-product-new-product #edit-title-wrapper, .page-product-new .body-field-wrapper, .page-product-new #edit-taxonomy-2-wrapper, .page-product-new #edit-title-wrapper{
-	width:400px;
+	width:335px;
 }
 .page-product-new-product #edit-field-main-image-0-ahah-wrapper, .page-product-new #edit-field-main-image-0-ahah-wrapper{
 	position: absolute;
@@ -1233,10 +1234,10 @@ a.btn-want:hover{
 	padding: 0 22px;
 	margin-top: 10px;
 	height: 330px;
-	width: 294px
+	width: 310px
 }
 .page-product-new-product #edit-field-main-image-0-upload-wrapper, .page-product-new #edit-field-main-image-0-upload-wrapper{margin-top: 5px}
-.page-product-new-product #edit-cancel, .page-product-new #edit-cancel{display: none}
+.page-product-new #edit-cancel{display: none}
 .page-product-new-product #edit-next, .page-product-new #edit-next, .page-product-new-item #edit-return{
 	text-indent: -9999px;
 	background: url(../images/btn_steps.png) no-repeat;
@@ -1250,6 +1251,15 @@ a.btn-want:hover{
 .page-product-new-product #edit-field-amazon-asin-0-asin, .page-product-new #edit-field-amazon-asin-0-asin{width: 160px}
 .page-product-new-product .form-region-footer, .page-product-new .form-region-footer{border-top:1px solid #CCC; padding-right: 10px}
 /*step 2*/
+.page-product-new-item #edit-o2b-price-wrapper{
+	margin: 0
+}
+.page-product-new-item #edit-o2b-price{
+	padding: 3px 4px;
+}
+.page-product-new-item .form-region-right{
+	display:none
+}
 .page-product-new-item .wizard-trail{
 	background: url(../images/breadcrumb_2.png) no-repeat;
 }
@@ -1286,7 +1296,7 @@ a.btn-want:hover{
 	right: 19px;
 	border-left:1px solid #CCC;
 	padding: 0 22px;
-	width: 272px
+	width: 320px
 }
 .page-product-new-item #field-images-items{
 	position: absolute;
@@ -1294,6 +1304,7 @@ a.btn-want:hover{
 	right: 19px;
 	border-left:1px solid #CCC;
 	padding: 0 22px;
+	width: 320px
 }
 .page-product-new-item .filefield-element .widget-edit{
 	float: none;

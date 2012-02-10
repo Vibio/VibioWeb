@@ -108,10 +108,9 @@ $(document).ready(function() {
 	}, function() {
 		$('.not-sale-popup').remove();
 	});
-	
 	/*Messages moving of elements per ian's comp*/
 	$('div.tabs ul.tabs li:eq(1) a, div.tabs ul.tabs li:eq(2) a, div.tabs ul.tabs li:eq(3) a').append('<span class="top-tabs-sep">|</span>');
-	
+
 	$("table.privatemsg-list thead tr th:eq(2)").remove().insertBefore("table.privatemsg-list thead tr th:eq(1)");
 	//th
 	$("table.privatemsg-list tr.odd td:eq(2)").insertBefore("table.privatemsg-list tr.odd td:eq(1)");
@@ -122,4 +121,9 @@ $(document).ready(function() {
 	//marker
 	//Change table header to small caps
 	$("table.privatemsg-list th").css('font-variant', 'small-caps');
+	//New Product Add form
+	$('.page-product-new #edit-body').val('This is where you add details that are specific to the item you own. For example: Condition, Damage, History etc');
+	$('.page-product-new #edit-body').focus(function() {
+		$(this).val('');
+	});
 });

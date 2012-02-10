@@ -152,12 +152,7 @@ function product_multistep_form(&$form, &$form_state){
   $form['title']['#title'] = t('Product Name');
   $form['title']['#autocomplete_path'] = 'searchvibio/autocomplete';
   $form['body_field']['body']['#title'] = t('Product Description');
-  $form['body_field']['body']['#description'] = t("Tell us more about this product: </br>
-    -Who manufactures it?</br>
-    -What version is it? When was it made?</br>
-    -Other notable facts?</br>
-    Please don't include specific details about the item that <b>you</b> personally own...we'll get to that!
-    ");
+  //$form['body_field']['body']['#description'] = t("");
   $form['field_main_image'][0]['#title'] = t('Upload Product Photo');
   $form['taxonomy'][2]['#multiple'] = FALSE;
   unset($form['taxonomy'][2]['#size']);

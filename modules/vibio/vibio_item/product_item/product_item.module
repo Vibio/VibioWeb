@@ -8,6 +8,11 @@
  * cleaning those forms, we just need to find dev hours to implement the
  * changes site-wide and get rid of the current methods for creating products/items.
  * product.pages.php and product.forms.php, I'm looking at you--Alec
+ *
+ * @TODO: Much of the custom JS that makes this form work is in product-item.js,
+ * located in the theme file. I would have used drupal_add_js, but js aggregation
+ * was getting in the way. Moving this JS back into the module might be better.
+ *
  */
 
 
@@ -59,7 +64,7 @@ function product_item_prewizard($asin = null){
 
 
 //@TODO REMOVE
-
+/**
 function print_r_tree($data)
 {
     // capture the output of print_r
@@ -82,6 +87,7 @@ function product_item_form_alter(&$form, &$form_state){
   print 'FORM STATE';
   print_r_tree($form_state);
 }
+**/
 
 /* Note: This code is derived from
  * http://www.nicklewis.org/using-chaos-tools-form-wizard-build-multistep-forms-drupal-6
@@ -170,8 +176,7 @@ function product_item_wizard(){
  */
 function product_multistep_form(&$form, &$form_state){
 
-  //Add some JS effects to the form
-  product_item_add_description_js();
+  //JS is added in product-item.js
 
   //Retrieve product data (essentially from cTools cache)
   $product = $form_state['product_item_data']['product'];
@@ -184,43 +189,6 @@ function product_multistep_form(&$form, &$form_state){
   
   //Remove submit buttons through cTools?
   $form_state['no buttons'] = TRUE;
-}
-
-/**
- * Add js to move the body field description inside of the body (as long
- * as there isn't text entered), dissappear on blur.
- * 
- */
-function product_item_add_description_js() {
-  $description_js =
-          "
-    $(document).ready(function() {
-  var textarea = $('#edit-body-wrapper textarea.form-textarea');
-  var description = $('#edit-body-wrapper .description');
-  if(textarea.val() == ''){
-    description.show();
-  }else{
-    description.hide();
-  }
-
-  textarea.focus(function(){
-    description.hide();
-  });
-
-  description.click(function(){
-    description.hide();
-    textarea.focus();
-  });
-
-  textarea.blur(function(){
-    if(textarea.val() == ''){
-      description.show();
-    }
-  });
-});
-";
-
-  drupal_add_js($description_js, 'inline', 'header', FALSE, TRUE, FALSE);
 }
 
 /**
@@ -414,6 +382,7 @@ function product_item_have_alter_form(&$form){
 
   //Form alterations specific to the "have" case
   $form['body_field']['body']['#title'] = t('Add Description');
+  $form['body_field']['body']['#description'] = t('This is where you add details that are specific to the item you own. <br /> For example: Condition, Damage, History etc.');
   $form['field_main_image'] = $form['group_images']['field_main_image'];
   $form['field_main_image']['#title'] = t('Upload Item Photos');
   $form['field_main_image']['#weight'] = 10;

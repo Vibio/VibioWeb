@@ -436,18 +436,20 @@ function product_item_add_subtask_finish(&$form_state) {
     $product->field_main_image[0] = $product->image;
   }
   $product->type = 'product';
-  
-  //Put all the item's images in as the product's additional images
+
+  //Add the item main image to the product's additional images
   if($item->field_main_image[0]['fid']){
     $product->field_images[] = $item->field_main_image[0];
-  } 
-  foreach($item->field_images as $image){
-    $product->field_images[] = $image; 
   }else{
     //If the item doesn't have an image, see if we can use the product image
     if($product->field_main_image[0]['fid']){
       $item->field_main_image[0] = $product->field_main_image[0];
     }
+  }
+
+  //Put all the item's images in as the product's additional images
+  foreach($item->field_images as $image){
+    $product->field_images[] = $image; 
   }
 
   node_save($product);

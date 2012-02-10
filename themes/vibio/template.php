@@ -6,18 +6,21 @@
  * @param <type> $variables
  */
 function vibio_preprocess_page(&$variables){
-  if(drupal_is_front_page()){
+  if (drupal_is_front_page()) {
     global $base_url;
     $site_image = $base_url . '/'. drupal_get_path('theme', 'vibio') . '/vibio-logo.png';
     $og_image = '<meta property="og:image" content="' . $site_image . '"/>' . PHP_EOL;
     $og_text = '<meta property="og:description" content="Vibio is a social commerce network for people who possess a unique sense of style."/>';
 
-    //This is apparently necessary, see http://api.drupal.org/api/drupal/includes--common.inc/function/drupal_set_html_head/6#comment-4614
+    // This is apparently necessary, see http://api.drupal.org/api/drupal/includes--common.inc/function/drupal_set_html_head/6#comment-4614
     $variables['head'] .= $og_image . $og_text;
   }
   if ($variables['node']->type != "" && arg(2) != 'edit') {
     $variables['template_files'][] = "page-node-" . $variables['node']->type;
   }
+  drupal_add_js(drupal_get_path('theme', 'vibio') . '/js/homepage.js');
+  // Reload JS, cuz one must.
+  $variables['scripts'] = drupal_get_js();
 }
 
 /**

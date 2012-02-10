@@ -20,38 +20,34 @@
  margin-top: 400px;
  }
  */
-
+div.ui-dialog {
+	padding-left: 100px
+}
 #vibio_dialog {
-	/*padding: 10px;
-	 background: #375670;*/
 	border-radius: 8px;
 	-moz-border-radius: 8px;
 	min-height: 55px !important;
 }
 #product-ajax-add-form {
-	clear: both
+	width: 616px;
 }
 #vibio_dialog .inventory_add_image {
-	padding: 5px 5px 1px;
+	padding: 8px 8px 4px;
 	float: left;
 	border: 1px solid #CCCCCC;
-	margin: 0 10px 10px;
+	margin: 30px 30px 93px 20px;
 }
 #product-ajax-add-form #edit-collections-wrapper {
-	float: left;
-	margin:0 10px 0 0;
-	width: 192px
+	margin: 30px 0 0;
 }
-#product-ajax-add-form #edit-body-wrapper{
-	clear: both;
-	margin: 0
+#product-ajax-add-form #edit-body-wrapper {
+	margin-bottom: 28px;
 }
-#edit-collections-wrapper select{
-	width: 192px;
-	height: 30px;
+#product-ajax-add-form #edit-body {
+	width: 318px;
+	height: 55px
 }
 #vibio_dialog .inventory_add_image img {
-	max-height: 150px;
 	border: 1px solid #CCCCCC;
 }
 #inventory_top {
@@ -73,7 +69,7 @@ tr.inventory_border_bottom td, tr.inventory_border_top td {
 	padding: 0 18px;
 	font-size: 15px;
 	font-weight: bold;
-	width:436px;
+	width: 436px;
 	line-height: 20px;
 }
 table.inventory_add_pinfo tr {
@@ -85,15 +81,12 @@ span.ui-icon {
 .vibio_dialog_content {
 	background: white;
 	min-height: 150px;
-	/*overflow: auto;*/
-	position: absolute;
+	overflow: auto;
 	border-radius: 8px;
 	-moz-border-radius: 8px;
 	border: 1px solid #E2E6E9;
 	padding: 5px 10px;
-	margin-left:95px
 }
-
 .ui-widget-overlay {
 	background: #465d70;
 	opacity: 0.5;
@@ -110,7 +103,7 @@ span.ui-icon {
 	 Where is the entire file from, what dialog
 	 was it expecting, to change automodal?
 	 We do want the titlebar --stephen */
-	height: 40px;
+	height: 0px;
 }
 .ui-dialog-titlebar img {
 	position: relative;
@@ -134,46 +127,61 @@ span.ui-icon {
 #dialog_busy_indicator {
 	padding: 10px 0;
 	text-align: center;
+	width: 615px;
+	height: 300px;
 }
-#vibio_dialog form .form-item label {
-	
+#product-ajax-add-form .form-item label {
+	font-size: 13px;
+	font-weight: bold;
 }
-#product-ajax-add-form div {
-	
+#product-ajax-add-form #edit-privacy-wrapper {
+	margin: 20px 0
 }
-#product-ajax-add-form div#edit-posting-type-wrapper, #product-ajax-add-form div.inventory_add_price {
-	float: left;
-	margin: 5px
+#product-ajax-add-form #edit-collections-new-wrapper {
+	margin: 5px 0
 }
+#product-ajax-add-form #edit-collections-new-wrapper label {
+	font-weight: normal !important;
+}
+
 div#edit-node-price-wrapper {
 	margin: 0
 }
+#product-ajax-add-form #edit-posting-type-wrapper{
+	margin: 0;
+	float: left;
+	height: 47px;
+}
+#product-ajax-add-form input, #product-ajax-add-form textarea, #product-ajax-add-form select {
+	padding: 2px 4px;
+	width: 222px
+}
+#product-ajax-add-form input#edit-node-price {
+	width: 102px
+}
+#product-ajax-add-form select#edit-posting-type {
+	width: 82px;
+	margin-right: 47px
+}
 #product-ajax-add-form input#edit-submit {
-	background: url(../images/add_item_product.png) no-repeat;
+	background: url(../images/btn_additem.png) no-repeat;
 	display: block;
 	border: none;
 	text-indent: -9999px;
-	width: 110px;
+	width: 201px;
 	padding: 0;
 	margin: 0;
-	height: 27px;
-	right: 15px;
+	height: 43px;
+	left: 130px;
 	position: absolute;
-	bottom: 8px;
+	cursor: pointer
 }
-#product-ajax-add-form div#edit-privacy-wrapper {
-	height: 65px;
-	margin-bottom: 40px;
-	border-bottom: 1px solid #CCCCCC;
-	margin-top: 0;
+#product-ajax-add-form input#edit-collections-new {
+	width: 212px
 }
 #vibio_dialog form select[multiple] {
 	max-height: 120px;
 	width: 190px
-}
-#product-ajax-add-form .create_new_collection{
-}
-#vibio_dialog form input[type="text"], #vibio_dialog form textarea {
 }
 #vibio_dialog form .description {
 	margin-left: 163px;

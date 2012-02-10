@@ -36,17 +36,15 @@ if(strpos($image, $base_url . '/sites/default/files/uploads') !== FALSE){
 }
 
 $image = theme('imagecache', 'medium_square_standard', $image);
-if ($_POST['possess'] == 'want') {
+/*if ($_POST['possess'] == 'want') {
 	$top_text = "  <div id='inventory_top'><span class='bold-text'>So you want this item and think it expresses your unique sense of style?</span><br />Vibio lets you curate your favorite items into Collections while you wait for birthdays, paychecks or miracles to turn your wants into haves.</div>
 	";
 } else {
 	$top_text = "  <div id='inventory_top'><span class='bold-text'>So you own this item and want to add it to your Collections?</span><br />Vibio is for people who possess a unique sense of style so make it good!</div>
 	";
-}
+}*/ /*<div class='inventory_title'>{$product->title}</div>*/
 $out = $top_text . 
-	"<div class='inventory_add_image'>$image</div>
-   <div class='inventory_title'>{$product->title}</div>
-  ";
+	"<div class='inventory_add_image'>$image</div>";
 
 // Alter this, put collections downwards, with altered form.?
 $out.=drupal_get_form("product_ajax_add_form",$product, $possess);

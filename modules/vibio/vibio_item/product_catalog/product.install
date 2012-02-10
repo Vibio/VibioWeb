@@ -16,4 +16,25 @@ function product_install()
 		db_query($s);
 	}
 }
-?>
+
+/**
+ * Populate the items' Node Reference field.
+ */
+function product_update_6001() {
+  $field = content_fields('field_product');
+  if (empty($field)) {
+    return array('#abort' =>
+      array('success' => FALSE, 'query' => 'Make sure Vibio Item has field_product set up before
+      running this update hook.'),
+    );
+  }
+  $db_info = content_database_info($field);
+  $table = $db_info['table'];
+  $nid_col = $db_info['columns']['nid']['column'];
+  $ret[] = update_sql("UPDATE " . '{' . $table . '}' . " ctvi SET ctvi.{$nid_col} = (SELECT pi.product_nid FROM {product_items} pi WHERE pi.item_nid = ctvi.nid) WHERE ctvi.{$nid_col} IS NULL");
+  if ($ret[0]['success']) {
+    drupal_set_message('The field_product Node Reference field has been filled in for all vibio_item nodes.');
+  }
+  return $ret;
+}
+

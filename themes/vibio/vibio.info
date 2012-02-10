@@ -28,7 +28,7 @@ scripts[] = js/mbMenu/inc/jquery.hoverIntent.js
 scripts[] = js/mbMenu/inc/jquery.metadata.js
 scripts[] = js/jquery.imagesloaded.js
 scripts[] = js/message_fade.js
-scripts[] = js/want-have-toggle.js
+scripts[] = js/product-item.js
 scripts[] = js/vibio_autocomplete.js
 
   ; The regions defined in Zen's default page.tpl.php file.  The name in

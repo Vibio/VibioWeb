@@ -399,6 +399,12 @@ function product_item_have_alter_form(&$form){
   //This isn't setting the display to "yes"; @todo find solution
   $form['field_posting_type']['#default_value'][]['value'] = 2;
   $form['field_posting_type']['#weight'] = -1;
+
+  //Set a div around the for sale/price elements
+  $form['field_posting_type']['#prefix'] = '<div id="form-price">';
+  $form['offer2buy']['#suffix'] = '</div>';
+
+
 }
 
 /**

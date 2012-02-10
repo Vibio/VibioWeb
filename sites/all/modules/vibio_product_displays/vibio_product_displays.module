@@ -20,6 +20,63 @@ function vibio_product_displays_menu() {
   return $items;
 }
 
+function vibio_product_displays_block($op = 'list', $delta = 0, $edit = array()) {
+  switch ($op) {
+    case 'list':
+      $blocks = array();
+      $blocks['filter'] = array(
+          'info' => t('Homepage category filter'),
+          'cache' => BLOCK_NO_CACHE,
+      );
+      return $blocks;
+      break;
+    case 'configure':
+      // TODO: Add setting for which URL argument is the term name. Defaults
+      // to 1 right now.
+      break;
+    case 'save':
+      break;
+    case 'view':
+      // This filter only shows up on the homepage.
+      if ($delta == 'filter' && arg(0) == 'home') {
+        $block['subject'] = t('Filter a Category');
+        $block['content'] = vibio_product_displays_display_block_filter();
+      }
+      return $block;
+      break;
+  }
+}
+
+function vibio_product_displays_display_block_filter() {
+  return drupal_get_form('vibio_product_displays_filter_form');
+}
+
+function vibio_product_displays_filter_form(&$form_state) {
+  // Get a list of terms in the Category vocabulary
+  $vid = vibio_product_displays_get_vocabulary_by_name('Category')->vid;
+  $url_term = str_replace('-', ' ', check_plain(arg(1)));
+  $selected_term = taxonomy_get_term_by_name($url_term);
+  $selected_tid = $selected_term[0]->tid;
+  $form['categories'] = taxonomy_form($vid, array($selected_tid));
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Go'),
+  );
+  return $form;
+}
+
+function vibio_product_displays_filter_form_submit($form, &$form_state) {
+  // Convert the selected category into lowercase and replace spaces with dashes
+  $term = taxonomy_get_term($form_state['values']['categories']);
+  $term_name = $term->name;
+  $url_argument = strtolower(str_replace(' ', '-', $term_name));
+  // TODO: How do I make this preserve the Quicktabs tab? Should I read it from
+  // $_GET?
+  $form_state['redirect'] = array('home/' . $url_argument,
+    drupal_query_string_encode($_GET, array('q')),
+  );
+}
+
 function vibio_product_displays_for_sale() {
   $content = views_embed_view('all_products_for_sale', 'page');
   return $content;
@@ -64,6 +121,10 @@ function vibio_product_displays_views_pre_render(&$view) {
   }
 }
 
+function vibio_product_displays_form_views_exposed_form_popular_products_alter(&$form, &$form_state) {
+  $form['#action'] = request_uri();
+}
+
 function computed_field_field_item_count_compute($node, $field, &$node_field) {
   $node_field[0]['value'] = (int) db_result(db_query("select count(item_nid) from {product_items} where product_nid = %d", $node->nid));
 }
@@ -97,3 +158,22 @@ function _vibio_product_displays_homepage_print_google_conversion_code() {
   print $conversion;
 }
 
+/**
+ * This function will return a vocabulary object which matches the
+ * given name. Will return null if no such vocabulary exists.
+ *
+ * @param String $vocabulary_name
+ *   This is the name of the section which is required
+ * @return Object
+ *   This is the vocabulary object with the name
+ *   or null if no such vocabulary exists
+ */
+function vibio_product_displays_get_vocabulary_by_name($vocabulary_name) {
+  $vocabs = taxonomy_get_vocabularies(NULL);
+  foreach ($vocabs as $vocab_object) {
+    if ($vocab_object->name == $vocabulary_name) {
+      return $vocab_object;
+    }
+  }
+  return NULL;
+}

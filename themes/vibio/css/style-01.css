@@ -1197,8 +1197,15 @@ a.btn-want:hover{
 	background: url(../images/breadcrumb.png) no-repeat;
 	text-indent: -9999px;
 }
-.page-product-new input{
-	padding: 4px;
+.page-product-new input, .page-product-new select, .page-product-new-item input, .page-product-new-item select{
+	padding: 2px 4px;
+	margin-bottom: 20px
+}
+.page-product-new #edit-body-wrapper{
+	margin: 0
+}
+.page-product-new .body-field-wrapper p{
+	margin: 7px 0 20px
 }
 .page-product-new #edit-body, .page-product-new-item #edit-body, .page-product-new #edit-title{
 	width: 368px;
@@ -1239,6 +1246,8 @@ a.btn-want:hover{
 
 .page-product-new #edit-next{background-position: -2px 1px}
 .page-product-new-item #edit-return{background-position: -2px -50px}
+.page-product-new #edit-field-amazon-asin-0-asin{width: 160px}
+.page-product-new .form-region-footer{border-top:1px solid #CCC; padding-right: 10px}
 /*step 2*/
 .page-product-new-item .wizard-trail{
 	background: url(../images/breadcrumb_2.png) no-repeat;

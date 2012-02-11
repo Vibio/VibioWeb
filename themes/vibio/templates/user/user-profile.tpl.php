@@ -44,7 +44,7 @@ $profile['user_picture']="
 switch ($who_to_you) {
 case 'you':
 $friends_info="You";
-$my_options="<div class='profile_options'><a href='/collections/new' class='profile_collections'>Create a Collection</a> <a href='/product/add' class='profile_option'>Add Item to Collection</a></div>
+$my_options="<div class='profile_options'><a href='/collections/new' class='profile_collections'>Create a Collection</a> <a href='/product/new' class='profile_option'>Add Item to Collection</a></div>
 		";
 break;
 case 'connection':

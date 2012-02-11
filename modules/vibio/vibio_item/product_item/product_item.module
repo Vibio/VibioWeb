@@ -31,7 +31,7 @@ function product_item_menu() {
   $items['product/new'] = array(
     'title' => 'Add a New Product',
     'page callback' => 'product_item_wizard',
-    'access arguments' => array('access content'),
+    "access arguments"	=> array("create product content"),
     'type' => MENU_CALLBACK
   );
   

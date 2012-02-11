@@ -3,19 +3,42 @@
 include_once('vibio_product_displays.features.inc');
 
 function vibio_product_displays_menu() {
-  $items['for-sale'] = array(
-    'title' => t('For Sale'),
-    'description' => t('View products that people have and are selling.'),
-    'type' => MENU_NORMAL,
-    'page callback' => 'vibio_product_displays_for_sale',
-    'access callback' => 'user_is_logged_in',
+  $items['home'] = array(
+    'title' => t('Featured by Vibio'),
+    'page callback' => 'vibio_product_displays_popular',
+    'access arguments' => array('access content'),
   );
-  $items['recent'] = array(
+  $items['home/popular'] = array(
+    'title' => t('Popular'),
+    'description' => t('View products that people want and have the most.'),
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'page callback' => 'vibio_product_displays_popular',
+    'access arguments' => array('access content'),
+    'weight' => 0,
+  );
+  $items['home/featured'] = array(
+    'title' => t('Featured'),
+    'description' => t('View products we think are interesting.'),
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'page callback' => 'vibio_product_displays_featured',
+    'access arguments' => array('access content'),
+    'weight' => 0,
+  );
+  $items['home/for-sale'] = array(
+    'title' => t('For sale'),
+    'description' => t('View products that people have and are selling.'),
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'vibio_product_displays_for_sale',
+    'access arguments' => array('access content'),
+    'weight' => 1,
+  );
+  $items['home/recent'] = array(
     'title' => t('Recent'),
     'description' => t("View products that have recently entered people's collections."),
-    'type' => MENU_NORMAL,
+    'type' => MENU_LOCAL_TASK,
     'page callback' => 'vibio_product_displays_recent',
-    'access callback' => 'user_is_logged_in',
+    'access arguments' => array('access content'),
+    'weight' => 2,
   );
   return $items;
 }
@@ -75,6 +98,16 @@ function vibio_product_displays_filter_form_submit($form, &$form_state) {
   $form_state['redirect'] = array('home/' . $url_argument,
     drupal_query_string_encode($_GET, array('q')),
   );
+}
+
+function vibio_product_displays_popular() {
+  $content = views_embed_view('popular_products', 'page');
+  return $content;
+}
+
+function vibio_product_displays_featured() {
+  $content = views_embed_view('flag_featured', 'page');
+  return $content;
 }
 
 function vibio_product_displays_for_sale() {
@@ -155,7 +188,7 @@ function _vibio_product_displays_homepage_print_google_conversion_code() {
       </div>
     </noscript>';
 
-  print $conversion;
+    return $conversion;
 }
 
 /**

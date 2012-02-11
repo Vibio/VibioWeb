@@ -382,7 +382,7 @@ function product_item_have_alter_form(&$form){
 
   //Form alterations specific to the "have" case
   $form['body_field']['body']['#title'] = t('Add Description');
-  $form['body_field']['body']['#description'] = t('This is where you add details that are specific to the item you own. <br /> For example: Condition, Damage, History etc.');
+  $form['body_field']['body']['#description'] = t('This is where you add details that are specific to the item you own. For example: Condition, Damage, History etc.');
   $form['field_main_image'] = $form['group_images']['field_main_image'];
   $form['field_main_image']['#title'] = t('Upload Item Photos');
   $form['field_main_image']['#weight'] = 10;

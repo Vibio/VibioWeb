@@ -19,10 +19,10 @@ function vibio_product_displays_menu() {
   $items['home/featured'] = array(
     'title' => t('Featured'),
     'description' => t('View products we think are interesting.'),
-    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'type' => MENU_LOCAL_TASK,
     'page callback' => 'vibio_product_displays_featured',
     'access arguments' => array('access content'),
-    'weight' => 0,
+    'weight' => 1,
   );
   $items['home/for-sale'] = array(
     'title' => t('For sale'),
@@ -30,7 +30,7 @@ function vibio_product_displays_menu() {
     'type' => MENU_LOCAL_TASK,
     'page callback' => 'vibio_product_displays_for_sale',
     'access arguments' => array('access content'),
-    'weight' => 1,
+    'weight' => 2,
   );
   $items['home/recent'] = array(
     'title' => t('Recent'),
@@ -38,7 +38,7 @@ function vibio_product_displays_menu() {
     'type' => MENU_LOCAL_TASK,
     'page callback' => 'vibio_product_displays_recent',
     'access arguments' => array('access content'),
-    'weight' => 2,
+    'weight' => 3,
   );
   return $items;
 }

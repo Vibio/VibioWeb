@@ -4346,6 +4346,9 @@ a.btn-want:hover {
 	right: 69px;
 	width: 315px !important;
 }
+#autocomplete{
+	z-index: 600
+}
 /*step 2*/
 .page-product-new-item #edit-o2b-price-wrapper {
 	margin: 0

@@ -53,14 +53,15 @@ function product_menu()
 			 And sets to true, what is this: $_SESSION['product']['auto_add'] = $val;
        Alec->According to Stephen notes in product.pages.php, this variable
      * indicates whether to create a new item along with the new product.
-     */
+     
 		"product/add"			=> array(
 			"title"				=> "Add New Product",
 			"page callback"		=> "product_add_new",
-			"access arguments"	=> array("create product content"),
 			"file"				=> "product.pages.php",
 			"type"				=> MENU_CALLBACK,
 		),
+     * 
+     */
 		"product/get-owners"				=> array(
 			"page callback"		=> "_product_get_owners_page",
 			"access arguments"	=> array("access content"),

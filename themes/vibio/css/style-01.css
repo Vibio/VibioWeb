@@ -4365,6 +4365,7 @@ a.btn-want:hover {
 .page-product-new-item .form-region-main h1 {
 	margin: 15px 0;
 	font-size: 15px;
+	max-width: 342px
 }
 .page-product-new-item .body-field-wrapper {
 	clear: both;

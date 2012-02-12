@@ -1,0 +1,159 @@
+<?php
+
+/*
+ * This module provides a search path that gives form fields autocomplete
+ * suggestion ability. It also implements this ability for the "Add Product"
+ * form, extending the functionality to autofill the form with values from
+ * a selected search suggestion.
+ *
+ * 1) Search is triggered
+ * 2) Results returned to browser
+ * 3) Node titles are displayed in the suggestions dropdown
+ * 4) When suggestion is selected an "edit product" page is brought up with
+ *    the data filled in
+ *
+ * A cooler way to do this would be to return results to the browser in JSON
+ * and autofill the form with JS when one of the suggestions was chosen. This
+ * seemed slightly more difficult to do at the time, so I decided a page
+ * refresh would be a more obtainable first step.--Alec
+ */
+
+function vibio_search_autocomplete_menu(){
+  $items['searchvibio/autocomplete'] = array(
+      'title' => 'Autocomplete Vibio Search',
+      'page callback' => '_searchvibio_autocomplete',
+      'access arguments' => array('access content'),  //or whatever permission makes sense
+      'type' => MENU_CALLBACK
+    );
+    return $items;
+}
+
+function _searchvibio_autocomplete($string){
+  if(strlen($string) < 3){
+    print drupal_to_js(array('Type more characters to see possible product matches.'));
+    exit();
+  }
+  //An array of search results as text strings
+  $matches = array();
+
+  //Perform the search, retrieve unformatted data
+  $results = vibio_search_autocomplete_get_data($string);
+
+
+  $matches = vibio_search_autocomplete_amazon_display_results($results);
+
+  // return for JS
+  print drupal_to_js($matches);
+  exit();
+}
+
+/**
+ * Return search results from both vibio and amazon with complete data
+ * objects attached.
+ *
+ * @param <type> $string
+ */
+function vibio_search_autocomplete_get_data($string){
+  /**
+   * This code is for Vibio searches; I've opted for strict amazon
+   * searches for performance/data collection reasons. See
+   * https://www.pivotaltracker.com/story/show/24664355
+  $results = array();
+  $join1 = "INNER JOIN {node} n ON n.nid = i.sid";
+  $sort_parameters = "ORDER BY score DESC";
+  $type = 'node';
+  //This limits search to items created on Vibio
+  //@todo: is this why we get search results with amazon stuff
+  //that should already be converted into Vibio products?
+  $where1 = "n.status = 1 AND n.type='product'";
+  
+  //$vibio_results_raw = do_search($string, $type, $join1, $where1);
+  //$vibio_results_formatted = vibio_search_autocomplete_format_vibio_results($vibio_results_raw);
+**/
+
+  $amazon_arguments = array('keywords' => $string);
+  $amazon_results = vibio_search_autocomplete_amazon_quicksearch($string);
+
+  //Merge the results
+  //$results = array_merge($vibio_results_formatted, $amazon_results);
+  $results = $amazon_results;
+  return $results;
+}
+
+function vibio_search_autocomplete_amazon_quicksearch($string) {
+  $parameters = array(
+      'ResponseGroup' => 'Small',
+      'SearchIndex' => 'All',
+      'Keywords' => urlencode($string),
+  );
+  $raw_results = amazon_http_request('ItemSearch', $parameters);
+  $results = array();
+  foreach($raw_results->Items->Item as $xml) {
+    $item = amazon_item_clean_xml($xml);
+    $results[$item['asin']] = $item;
+  }
+  
+  return $results;
+}
+
+/**
+ * Format the results to be displayed in an autocomplete dropdown.
+ * 
+ * @param <type> $results
+ * @return <type>
+ */
+function vibio_search_autocomplete_amazon_display_results($results){
+  $display_results = array();
+  foreach ($results as $result){
+    $result['link'] = url('product/amazon/' . $result['asin'], array('external' => TRUE));
+    //Get the title of the object and a link to its data to fill the form
+    $display_results[] = '<div class="autocomplete-result">' . l($result['title'], $result['link']) . '</div>';
+  }
+
+  return $display_results;
+}
+
+/**
+ * Retrieve the title of the Vibio nodes produced by the search.
+ *
+ * @param array $raw_results Array of
+ * @return array Formatted Vibio nodes with the title/nid
+ */
+function vibio_search_autocomplete_format_vibio_results($raw_results){
+  $formatted_results = array();
+  $result_nids = '';
+  $i = 0;
+  while($i < count($raw_results) - 1){
+    $result_nids .= $raw_results[$i]->sid . ',';
+    $i++;
+  }
+  
+  //Make sure the last entry doesn't have a comma
+  $result_nids .= $raw_results[$i]->sid;
+
+  // string identifying a content type.
+  $query = "SELECT title, nid FROM {node} WHERE nid IN(".$result_nids.")";
+  $query_results = db_query($query, $result_nids);
+
+  while ($result = db_fetch_array($query_results)){
+    $nid = $result['nid'];
+    $title = $result['title'];
+    $formatted_results[$nid] = array(
+      'result_type' => 'local',
+      'nid' => $nid,
+      'title' => $title,
+      'link' => 'node/' . $nid . '/edit',
+     );
+  }
+
+
+  return $formatted_results;
+}
+
+//FORM MANIPULATION
+function vibio_search_autocomplete_form_product_alter($form, &$form_state){
+  
+}
+
+
+?>

@@ -1,0 +1,528 @@
+<?php
+/*
+ * This module provides a multistep form to create new products/items in
+ * a user-friendly manner.
+ *
+ * @TODO: The form alters performed on the product/item node forms should
+ * be transfered to the product and item modules; this is a good start on
+ * cleaning those forms, we just need to find dev hours to implement the
+ * changes site-wide and get rid of the current methods for creating products/items.
+ * product.pages.php and product.forms.php, I'm looking at you--Alec
+ *
+ * @TODO: Much of the custom JS that makes this form work is in product-item.js,
+ * located in the theme file. I would have used drupal_add_js, but js aggregation
+ * was getting in the way. Moving this JS back into the module might be better.
+ *
+ */
+
+
+/**
+ * Implementation of hook_menu().
+ *
+ * @TODO: Change access arguments to create content
+ */
+function product_item_menu() {
+  $items['product/amazon/%'] = array(
+    'page callback' => 'product_item_prewizard',
+    'page arguments' => array(2),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK
+  );
+  $items['product/new'] = array(
+    'title' => 'Add a New Product',
+    'page callback' => 'product_item_wizard',
+    "access arguments"	=> array("create product content"),
+    'type' => MENU_CALLBACK
+  );
+  
+  return $items; 
+}
+
+/**
+ * Starts the product add multistep form with product information already
+ * filled in from Amazon or Vibio.
+ * 
+ * @param <type> $asin
+ */
+function product_item_prewizard($asin = null){
+  module_load_include('inc', 'vibio_amazon', 'includes/vibio_amazon.pages');
+  if(!empty($asin)){
+    ctools_include('object-cache');
+    module_load_include('inc', 'vibio_amazon', 'includes/vibio_amazon.pages');
+    //Create (or retrieve) Vibio product info from the asin
+    $nid = vibio_amazon_create_product_from_asin($asin, FALSE);
+    $product_node = node_load($nid);
+    $product = (array) $product_node;
+
+    $product_item_data = array('product' => $product, 'item' => array());
+
+    product_item_clear_page_cache(NULL);
+    ctools_object_cache_set('product_item_data', NULL, $product_item_data);
+  }
+  drupal_goto('product/new');
+}
+
+
+//@TODO REMOVE
+/**
+function print_r_tree($data)
+{
+    // capture the output of print_r
+    $out = print_r($data, true);
+
+    // replace something like '[element] => <newline> (' with <a href="javascript:toggleDisplay('...');">...</a><div id="..." style="display: none;">
+    $out = preg_replace('/([ \t]*)(\[[^\]]+\][ \t]*\=\>[ \t]*[a-z0-9 \t_]+)\n[ \t]*\(/iUe',"'\\1<a href=\"javascript:toggleDisplay(\''.(\$id = substr(md5(rand().'\\0'), 0, 7)).'\');\">\\2</a><div id=\"'.\$id.'\" style=\"display: none;\">'", $out);
+
+    // replace ')' on its own on a new line (surrounded by whitespace is ok) with '</div>
+    $out = preg_replace('/^\s*\)\s*$/m', '</div>', $out);
+
+    // print the javascript function toggleDisplay() and then the transformed output
+    echo '<script language="Javascript">function toggleDisplay(id) { document.getElementById(id).style.display = (document.getElementById(id).style.display == "block") ?   "none" : "block"; }</script>'."\n <PRE>$out</PRE>";
+}
+
+function product_item_form_alter(&$form, &$form_state){
+  //@TODO REMOVE
+  print 'FORM';
+  print_r_tree($form);
+  print 'FORM STATE';
+  print_r_tree($form_state);
+}
+**/
+
+/* Note: This code is derived from
+ * http://www.nicklewis.org/using-chaos-tools-form-wizard-build-multistep-forms-drupal-6
+ *
+ * Thanks to Nick Lewis for providing this clear guide to using the CTools
+ * Multistep Form Wizard.
+ */
+
+/*----- PART I CTOOLS WIZARD IMPLMENTATION ----- */
+
+/**
+ * Implements hook_wizard() to setup tasty CTools Multistep-form Madness
+ * 
+ * @return <type>
+ */
+function product_item_wizard(){
+  // required includes for wizard
+  ctools_include('wizard');
+  ctools_include('object-cache');
+
+  //Where the step is located in the URL
+  $step = arg(2);
+
+  // *** SETUP ARRAY multistep setup ****
+ // these are defined in some docs at end of article
+  $form_info = array(
+    'id' => 'product_line_add',
+    'path' => "product/new/%step",
+    'ajax' => TRUE,
+    'show trail' => TRUE,
+    'show back' => TRUE,
+    'show cancel' => true,
+    'show return' =>false,
+    'next text' => 'Proceed to next step',
+    'next callback' =>  'product_item_add_subtask_next',
+    'finish callback' => 'product_item_add_subtask_finish',
+    'return callback' => 'product_item_add_subtask_finish',
+    'cancel callback' => 'product_item_add_subtask_cancel',
+   // this controls order, as well as form labels
+    'order' => array(
+      'product' => t('1. List New Product'),
+      'item' => t('2. List Your Item Description'),
+    ),
+   // here we map a step to a form id.
+    'forms' => array(
+      'product' => array(
+        'form id' => 'product_multistep_form'
+      ),
+      'item' => array(
+        'form id' => 'item_multistep_form'
+      ),
+    ),
+  );
+
+  // *** SETTING THE FORM UP FOR MULTISTEP *** //
+  $form_state = array(
+    'cache name' => NULL,
+  );
+  // no matter the step, you will load your values from the callback page
+  $product_item_data = product_item_get_page_cache($form_state['cache name']);
+  if (!$product_item_data) {
+    // set form to first step -- we have no data
+    $step = current(array_keys($form_info['order']));
+    // This variable will save all the data through the multi-step process
+    $product_item_data = array('product' => array(), 'item' => array());
+    ctools_object_cache_set('product_item_data_basic', $form_state['cache name'], $product_item_data);
+  }elseif(empty($product_item_data['product']['body'])){
+    //We already set the data, this must be the product step
+    $step = 'product';
+  }
+  //THIS IS WHERE WILL STORE ALL FORM DATA
+  $form_state['product_item_data'] = $product_item_data;
+
+  // and this is the witchcraft that makes it work
+  $output = ctools_wizard_multistep_form($form_info, $step, $form_state);
+  return $output;
+}
+
+/*----PART 2: The Form Steps (regular form api)  ---- */
+
+/**
+ * Step 1: create a new product
+ * 
+ * @param <type> $form
+ * @param array $form_state
+ */
+function product_multistep_form(&$form, &$form_state){
+
+  //JS is added in product-item.js
+
+  //Retrieve product data (essentially from cTools cache)
+  $product = $form_state['product_item_data']['product'];
+
+  //Create the Product Node Form and perform specific multistep alterations to it.
+  $node_form = product_item_product_form($product);
+
+  //Merge the multistep wizard and the product forms
+  $form = array_merge($node_form, $form);
+  
+  //Remove submit buttons through cTools?
+  $form_state['no buttons'] = TRUE;
+}
+
+/**
+ * Given product data, return a pre-filled product form for the multistep product
+ * add process.
+ *
+ * @param <type> $product
+ * @return Array Drupal Forms API array
+ */
+function product_item_product_form($product){
+
+  $form_id = 'product_node_form';
+  $node = array('type' => 'product', 'uid' => $GLOBALS['user']->uid, 'name' => $GLOBALS['user']->uid);
+  $form = product_item_get_node_form($product, $form_id, $node);
+  product_item_product_alter_form($form, $product);
+
+  return $form;
+}
+
+/**
+ * Alter the $form. We're going to undo stuff performed by other modules'
+ * form alters...
+ * 
+ * @param <type> $form
+ * @param <type> $product
+ */
+function product_item_product_alter_form(&$form, $product){
+  //@todo: we should stop adding things to the product form
+  //that don't need to be there (item-related stuff)
+  $form['title']['#title'] = t('Product Name');
+  $form['title']['#autocomplete_path'] = 'searchvibio/autocomplete';
+  $form['body_field']['body']['#title'] = t('Product Description');
+  $form['body_field']['body']['#description'] = t("This is where you add generic product information. <br /> For example: Manufacturer, Dimensions, Model/Make, etc.");
+  $form['field_main_image'][0]['#title'] = t('Upload Product Photo');
+  $form['taxonomy'][2]['#multiple'] = FALSE;
+  unset($form['taxonomy'][2]['#size']);
+
+
+  $form['field_images']['#access'] = FALSE;
+  $form['collection_info']['#access'] = FALSE;
+  $form['privacy_setting']['#access'] = FALSE;
+
+
+  //If there's product data and we're passing through the form for the first time, prepopulate the form
+  $amazon_data = $product[0];
+
+  $form['title']['#default_value'] = $product['title'];
+  $tid = key($product['taxonomy']);
+  $form['taxonomy'][2]['#value'] = $tid;
+
+  //If we haven't entered a custom body, use the Amazon data
+  if(empty($product['body'])){
+    $form['body_field']['body']['#default_value'] = $amazon_data['editorialreviews'][0]['content'];
+  }else{
+    $form['body_field']['body']['#default_value'] = $product['body'];
+  }
+
+  $form['field_amazon_asin'][0]['#default_value'] = $product['field_amazon_asin'][0];
+  $form['title']['#default_value'] = $product['title'];
+
+  //Form values that we want in the background
+  $populate_fields = array('nid', 'vid', 'uid', 'created', 'type', 'language', 'format', 'revision', 'name', 'status');
+
+  foreach($populate_fields as $field){
+    $form[$field]['#value'] = $product[$field];
+    $form[$field]['#access'] = FALSE;
+  }
+
+  //If there's a pre-existing image...
+  if(!empty($product['field_main_image'][0]['filepath'])){
+    $image = $product['field_main_image'][0]['filepath'];
+  }elseif(!empty($product['image'])){
+    $image = $product['image']['filepath'];
+  }
+
+  if(!empty($image)){
+    //Hide image field
+    $form['field_main_image'][0]['#access'] = FALSE;
+    //Save the image field data
+    $form['image'] = array('#type' => 'value', '#value' =>$product['field_main_image'][0]);
+    //Show the existing image
+    //@todo: allow image upload to replace the existing image
+    $form['preview_product_image'] = array(
+      '#type' => 'markup',
+      '#value' => '<div id="edit-field-main-image-0-ahah-wrapper">' .
+        theme('imagecache', 'product_fixed_width', $image, 'Product Image')
+        . '</div>',
+      '#weight' => 10,
+    );
+  }
+}
+
+/**
+ * Save product data into the CTools cache to be retrieved later upon
+ * form submittal.
+ *
+ * @param <type> $from
+ * @param <type> $form_state
+ */
+function product_multistep_form_submit(&$form, &$form_state) {
+  $submitted = $form_state['values'];
+  $form_state['product_item_data']['product'] = $submitted;
+}
+
+/**
+ * Step 2: Create an item to be associated with the product from step 1.
+ * 
+ * @param <type> $form
+ * @param array $form_state
+ */
+function item_multistep_form(&$form, &$form_state){
+
+  $node_form = product_item_have_form($form_state);
+ 
+
+  //This is where we make alterations that apply to both have/want forms
+  $node_form['title']['#access'] = FALSE;
+  unset($node_form['collection_info']['#title']);
+  unset($node_form['collection_info']['#description']);
+  $node_form['collection_info']['cid']['#title'] = t('Add to collection');
+  $node_form['collection_info']['cid']['#multiple'] = FALSE;
+  $node_form['collection_info']['#weight'] = 5;
+  $node_form['privacy_setting']['#weight'] = 10;
+  $node_form['privacy_setting']['#title'] = t('Item can be viewed by');
+
+  unset($node_form['buttons']);
+  //Show the product title at the top
+  $node_form['product_title'] = array(
+    '#type' => 'markup',
+    '#value' => '<h1>' . t($form_state['product_item_data']['product']['title'])
+                . '</h1>',
+    '#weight' => -20,
+  );
+  $node_form['body_field']['#weight'] = -10;
+
+  $form = array_merge($node_form, $form);
+
+  // Does this let CTools remove form submit buttons? I'm manually doing this
+  // for the item form, due to the AHAH stuff...
+  $form_state['no buttons'] = TRUE;
+
+}
+
+/**
+ * Returns a default vibio_item node form in array form (not yet rendered by Drupal)
+ * 
+ * @param <type> $form_state
+ * @param <type> $form_id
+ * @param <type> $node
+ * @return <type>
+ */
+function product_item_get_node_form(&$form_state, $form_id, $node){
+  // include drupal's node include file
+  module_load_include('inc', 'node', "node.pages");
+
+  //Create the Node Form
+  $node_form = drupal_retrieve_form($form_id, $form_state, $node);
+  // prepare the $form
+  drupal_prepare_form($form_id, $node_form, $form_state);
+
+  return $node_form;
+}
+
+/**
+ * Outputs a vibio_item node form array configured in a "have" use case.
+ * @param <type> $form_state
+ * @return <type>
+ */
+function product_item_have_form(&$form_state){
+  $form_id = 'vibio_item_node_form';
+  $node = array('type' => 'vibio_item', 'uid' => $GLOBALS['user']->uid, 'name' => $GLOBALS['user']->uid);
+  $item = $form_state['product_item_data']['item'];
+
+  //Get the node form
+  $form = product_item_get_node_form($item, $form_id, $node);
+
+  product_item_have_alter_form($form);
+
+  return $form;
+}
+
+function product_item_have_alter_form(&$form){
+  //Add a toggle between have/want versions
+  $form['have_want'] = array(
+      '#type' => 'radios',
+      '#title' => t('Do you Have or Want this item?'),
+      '#default_value' => '0',
+      '#weight' => -15,
+      '#options' => array(t('Have'), t('Want')),
+  );
+
+  //Form alterations specific to the "have" case
+  $form['body_field']['body']['#title'] = t('Add Description');
+  $form['body_field']['body']['#description'] = t('This is where you add details that are specific to the item you own. For example: Condition, Damage, History etc.');
+  $form['field_main_image'] = $form['group_images']['field_main_image'];
+  $form['field_main_image']['#title'] = t('Upload Item Photos');
+  $form['field_main_image']['#weight'] = 10;
+  $form['field_images'] = $form['group_images']['field_images'];
+  $form['field_images']['#weight'] = 15;
+  unset($form['group_images']);
+  
+  $form['offer2buy']['#collapsible'] = FALSE;
+  $form['offer2buy']['o2b_is_negotiable']['#default_value'] = 1;
+  $form['offer2buy']['o2b_is_negotiable']['#access'] = FALSE;
+  $form['offer2buy']['o2b_allow_offer_views']['#default_value'] = 0;
+  $form['offer2buy']['o2b_allow_offer_views']['#access'] = FALSE;
+
+  //This isn't setting the display to "yes"; @todo find solution
+  $form['field_posting_type']['#default_value'][]['value'] = 2;
+  $form['field_posting_type']['#weight'] = -1;
+
+  //Set a div around the for sale/price elements
+  $form['field_posting_type']['#prefix'] = '<div id="form-price">';
+  $form['offer2buy']['#suffix'] = '</div>';
+
+
+}
+
+/**
+ * Save product data into the CTools cache to be retrieved later upon
+ * form submittal.
+ *
+ * @param <type> $from
+ * @param <type> $form_state
+ */
+function item_multistep_form_submit(&$form, &$form_state) {
+
+  //If we don't want to be selective about values, this works:
+  $submitted = $form_state['values'];
+  $form_state['product_item_data']['item'] = $submitted;
+}
+
+/*----PART 3  FORM BUTTON CALLBACKS   ---------------------- */
+
+/**
+ * Callback generated when the multistep form is complete
+ * this is where you'd normally save. in this case, drupal_set_message just squaks something
+ */
+function product_item_add_subtask_finish(&$form_state) {
+  $product_item_data = $form_state['product_item_data'];
+  $product = (object) $product_item_data['product'];
+  $item = (object) $product_item_data['item'];
+  //If stored image data from amazon is present, use it
+  if(!empty($product->image['fid'])){
+    $product->field_main_image[0] = $product->image;
+  }
+  $product->type = 'product';
+
+  //Add the item main image to the product's additional images
+  if($item->field_main_image[0]['fid']){
+    $product->field_images[] = $item->field_main_image[0];
+  }else{
+    //If the item doesn't have an image, see if we can use the product image
+    if($product->field_main_image[0]['fid']){
+      $item->field_main_image[0] = $product->field_main_image[0];
+    }
+  }
+
+  //Put all the item's images in as the product's additional images
+  foreach($item->field_images as $image){
+    $product->field_images[] = $image; 
+  }
+
+  node_save($product);
+
+  //Associate Item with the Product @todo: replace with node reference
+  $item->product_product_nid = $product->nid;
+  $item->title = $product->title;
+  //Make sure the item photos are saved
+  !empty($item->field_main_image[0]['fid']) ? $item->field_main_image[0]['status'] = 1 : '';
+  
+  //Set have/want value from form radio
+  if($item->have_want == 0){
+    $item->field_have_want_like[0]['value'] = VIBIO_ITEM_HAVE;
+  }else{
+    $item->field_have_want_like[0]['value'] = VIBIO_ITEM_WANT;
+    //Wanted items should not be for sale
+    $item->field_posting_type = 1;
+  }
+  
+  node_save($item);
+
+  //Clear the cache
+  product_item_clear_page_cache($form_state['cache name']);
+  drupal_set_message('Successfully created a new product and added it to your
+  collections.');
+  //redirect to new item page
+  $form_state['redirect'] = 'node/' . $product->nid;
+}
+
+/**
+ * Callback for the proceed step
+ *
+ */
+function product_item_add_subtask_next(&$form_state) {
+  //Get the current data
+  $product_item_data = &$form_state['product_item_data'];
+  // set the current data in cache
+  $cache = ctools_object_cache_set('product_item_data', $form_state['cache name'], $product_item_data);
+}
+
+/**
+ * Callback generated when the 'cancel' button is clicked.
+ *
+ * All we do here is clear the cache.
+* redirect them to where they started
+* and call them a coward
+ */
+function product_item_add_subtask_cancel(&$form_state) {
+  global $user;
+  ctools_object_cache_clear('product_item_data', $form_state['cache name']);
+  //Upon cancelling the form, redirect user to his/her collections page
+  $form_state['redirect'] = 'user/' . $user->uid . '/collections';
+  drupal_set_message('Product creation canceled: no new items were added
+                      to your collections.');
+}
+
+/*----PART 4 CTOOLS FORM STORAGE HANDLERS -- these usually don't have to be very unique  i think some of them are unused.. [ :- ) ]---------------------- */
+
+/**
+ * Remove an item from the object cache.
+ */
+function product_item_clear_page_cache($name) {
+  ctools_object_cache_clear('product_item_data', $name);
+}
+
+/**
+ * Get the cached changes to a given task handler.
+* (Earl wrote that, not me...)
+ */
+function product_item_get_page_cache($name) {
+  $cache = ctools_object_cache_get('product_item_data', $name);
+  return $cache;
+}
+
+
+?>

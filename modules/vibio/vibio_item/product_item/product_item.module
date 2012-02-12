@@ -395,6 +395,7 @@ function product_item_have_alter_form(&$form){
   $form['offer2buy']['o2b_is_negotiable']['#access'] = FALSE;
   $form['offer2buy']['o2b_allow_offer_views']['#default_value'] = 0;
   $form['offer2buy']['o2b_allow_offer_views']['#access'] = FALSE;
+  $form['offer2buy']['o2b_price']['#title'] = t('Asking Price');
 
   //This isn't setting the display to "yes"; @todo find solution
   $form['field_posting_type']['#default_value'][]['value'] = 2;

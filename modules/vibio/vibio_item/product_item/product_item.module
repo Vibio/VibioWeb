@@ -225,8 +225,7 @@ function product_item_product_alter_form(&$form, $product){
   $form['field_main_image'][0]['#title'] = t('Upload Product Photo');
   $form['taxonomy'][2]['#multiple'] = FALSE;
   unset($form['taxonomy'][2]['#size']);
-
-
+  
   $form['field_images']['#access'] = FALSE;
   $form['collection_info']['#access'] = FALSE;
   $form['privacy_setting']['#access'] = FALSE;
@@ -311,6 +310,7 @@ function item_multistep_form(&$form, &$form_state){
   $node_form['collection_info']['cid']['#title'] = t('Add to collection');
   $node_form['collection_info']['cid']['#multiple'] = FALSE;
   $node_form['collection_info']['#weight'] = 5;
+  $node_form['collection_info']['#attributes'] = array('id' => 'collection-fieldset');
   $node_form['privacy_setting']['#weight'] = 10;
   $node_form['privacy_setting']['#title'] = t('Item can be viewed by');
 

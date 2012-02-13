@@ -1,0 +1,78 @@
+diff --git a/context.core.inc b/context.core.inc
+index f169b6f..5498083 100644
+--- a/context.core.inc
++++ b/context.core.inc
+@@ -99,15 +99,6 @@ function context_theme_registry_alter(&$theme_registry) {
+   if (!in_array('context_page_alter', $theme_registry['page']['preprocess functions'])) {
+     array_unshift($theme_registry['page']['preprocess functions'], 'context_page_alter');
+   }
+-  // Reroute theme_blocks() through context_blocks to determine block
+-  // visibility by context. Only override theme_blocks() if a theme
+-  // has not overridden it. It is the responsibility of any themes
+-  // implementing theme_blocks() to take advantage of context block
+-  // visibility on their own.
+-  if (!isset($theme_registry['blocks']['type']) || !in_array($theme_registry['blocks']['type'], array('base_theme_engine', 'theme_engine')) && !isset($theme_registry['blocks']['file'])) {
+-    unset($theme_registry['blocks']['preprocess functions']);
+-    $theme_registry['blocks']['function'] = 'context_blocks';
+-  }
+ }
+ 
+ /**
+@@ -223,20 +214,6 @@ function context_user($op, &$edit, &$account, $category = NULL) {
+ }
+ 
+ /**
+- * BLOCK HANDLING =====================================================
+- */
+-
+-/**
+- * This override of theme_blocks() is called because of an alter of the
+- * theme registry. See context_theme_registry_alter().
+- */
+-function context_blocks($region) {
+-  if ($plugin = context_get_plugin('reaction', 'block')) {
+-    return $plugin->execute($region);
+-  }
+-}
+-
+-/**
+  * THEME FUNCTIONS & RELATED ==========================================
+  */
+ 
+@@ -284,6 +261,20 @@ function context_links($reset = FALSE) {
+ function context_page_alter(&$vars) {
+   module_invoke_all('context_page_condition');
+   module_invoke_all('context_page_reaction');
++
++  // Block handling
++  if ($plugin = context_get_plugin('reaction', 'block')) {
++    global $theme;
++    // Populate all block regions.
++    $regions = system_region_list($theme);
++    // Load all region content assigned via blocks.
++    foreach (array_keys($regions) as $region) {
++      // Prevent left and right regions from rendering blocks when 'show_blocks' == FALSE.
++      if (!(!$vars['show_blocks'] && ($region == 'left' || $region == 'right'))) {
++        drupal_set_content($region, $plugin->execute($region));
++      }
++    }
++  }
+ }
+ 
+ /**
+diff --git a/plugins/context_reaction_block.inc b/plugins/context_reaction_block.inc
+index 7aaedae..ef6188e 100644
+--- a/plugins/context_reaction_block.inc
++++ b/plugins/context_reaction_block.inc
+@@ -305,10 +305,7 @@ class context_reaction_block extends context_reaction {
+         }
+       }
+     }
+-
+-    // Get core blocks only if enabled.
+-    $blocks = !variable_get('context_reaction_block_disable_core', FALSE) ? block_list($region) : array();
+-    $blocks = array_merge($blocks, $context_blocks[$region]);
++    $blocks = $context_blocks[$region];
+ 
+     // Only include empty blocks if all regions should be shown or there are
+     // non-empty blocks in the same region.

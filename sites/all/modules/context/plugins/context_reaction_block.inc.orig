@@ -306,7 +306,10 @@ class context_reaction_block extends context_reaction {
         }
       }
     }
-    $blocks = $context_blocks[$region];
+
+    // Get core blocks only if enabled.
+    $blocks = !variable_get('context_reaction_block_disable_core', FALSE) ? block_list($region) : array();
+    $blocks = array_merge($blocks, $context_blocks[$region]);
 
     // Only include empty blocks if all regions should be shown or there are
     // non-empty blocks in the same region.

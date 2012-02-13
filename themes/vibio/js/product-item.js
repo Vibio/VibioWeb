@@ -69,7 +69,6 @@ $(document).ready(function() {
 					//$('fieldset').addClass('fieldset-right');
 				} else {
 					$('#edit-field-main-image-0-ahah-wrapper, div#field-images-items, ' + '#edit-field-posting-type-value-wrapper').show();
-					$('div#field-images-items').css('display', 'inline');
 					description.html('This is where you add details that are specific to the item you own. For example: Condition, Damage, History etc.');
 					//remove from the right column
 					//$('#edit-privacy-setting-wrapper').removeClass('form-right');

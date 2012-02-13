@@ -2163,10 +2163,11 @@ fieldset {
 }
 /*throbber*/
 html.js input.form-autocomplete {
-	background-position: 99% 7px
+	background-position: 99% 5px;
+	background-image: none;
 }
 html.js input.throbbing {
-	background-position: 99% -14px
+	background-position: 99% -15px
 }
 /*Facebook*/
 .fb_popup #vibio_dialog {
@@ -4231,7 +4232,6 @@ a.btn-want {
 a.btn-want:hover {
 	background-position: -65px -58px;
 }
-
 /*add new product wizard*/
 .wizard-trail {
 	height: 50px;
@@ -4240,7 +4240,7 @@ a.btn-want:hover {
 	text-indent: -9999px;
 }
 /*file upload*/
-.filefield-element .widget-edit{
+.filefield-element .widget-edit {
 	float: none;
 	max-width: none;
 }
@@ -4288,6 +4288,9 @@ a.btn-want:hover {
 	width: 335px;
 }
 .page-product-new-product #edit-field-main-image-0-ahah-wrapper, .page-product-new #edit-field-main-image-0-ahah-wrapper {
+	position:absolute;
+	top:50px;
+	right:27px;
 	border-left: 1px solid #CCC;
 	padding-left: 30px;
 	margin-top: 10px;
@@ -4344,7 +4347,22 @@ a.btn-want:hover {
 	width: 315px !important;
 }
 #autocomplete {
-	z-index: 600
+	z-index: 600;
+	background: #FFFFFF;
+	padding: 0 0 5px 5px;
+	border: 1px solid #CCCCCC;
+	border-top: none;
+	max-width: 310px;
+	margin-left: 2px;
+	-moz-box-shadow: 0 5px 5px #888;
+	-webkit-box-shadow: 0 5px 5px #888;
+	box-shadow: 0 5px 5px #888;
+	-webkit-border-bottom-right-radius: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+	-moz-border-radius-bottomright: 5px;
+	-moz-border-radius-bottomleft: 5px;
+	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
 }
 /*step 2*/
 .page-product-new-item #edit-o2b-price-wrapper {

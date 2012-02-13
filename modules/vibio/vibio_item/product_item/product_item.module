@@ -64,7 +64,6 @@ function product_item_prewizard($asin = null){
 
 
 //@TODO REMOVE
-/**
 function print_r_tree($data)
 {
     // capture the output of print_r
@@ -87,7 +86,6 @@ function product_item_form_alter(&$form, &$form_state){
   print 'FORM STATE';
   print_r_tree($form_state);
 }
-**/
 
 /* Note: This code is derived from
  * http://www.nicklewis.org/using-chaos-tools-form-wizard-build-multistep-forms-drupal-6
@@ -323,8 +321,14 @@ function item_multistep_form(&$form, &$form_state){
     '#weight' => -20,
   );
   $node_form['body_field']['#weight'] = -10;
+  $node_form['field_main_image']['#prefix'] = '<div id="form-column-right">';
 
+  //Add a div around the image fields
+  $form['buttons']['#suffix'] = '</div>';
+  $form['buttons']['#attributes'] = array('id' => 'form-buttons');
+  $form['buttons']['#prefix'] = '';
   $form = array_merge($node_form, $form);
+
 
   // Does this let CTools remove form submit buttons? I'm manually doing this
   // for the item form, due to the AHAH stuff...

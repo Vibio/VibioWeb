@@ -8,7 +8,7 @@
 $(function() {
 	$('.view-id-Wantlist .view-content').masonry();
 	// encapsulate this run-away script, Features page only
-    var $target_views = $(".view.view-flag-featured, .view-all-products-for-sale, .view-recent-products");
+  var $target_views = $(".view.view-flag-featured, .view-all-products-for-sale, .view-recent-products, .view-popular-products");
 	if ($(".view-content", $target_views).length > 0) {
 
 		if ($(".pager-last").find('a').attr('href') != undefined) {

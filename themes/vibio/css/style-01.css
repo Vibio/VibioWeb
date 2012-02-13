@@ -4423,7 +4423,8 @@ a.btn-want:hover {
 	border-left: 1px solid #CCC;
 	padding-left: 30px;
 	width: 338px;
-	padding-top: 20px
+	padding-top: 20px;
+	margin-bottom: 125px;
 }
 .page-product-new-item #field-images-items table{
 	margin-top: 0

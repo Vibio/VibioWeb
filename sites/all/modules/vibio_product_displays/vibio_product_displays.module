@@ -5,22 +5,24 @@ include_once('vibio_product_displays.features.inc');
 function vibio_product_displays_menu() {
   $items['home'] = array(
     'title' => t('Featured by Vibio'),
-    'page callback' => 'vibio_product_displays_popular',
+    'page callback' => 'vibio_product_displays_show_view',
+    'page arguments' => array(1, 'popular_products', 'page'),
     'access arguments' => array('access content'),
   );
   $items['home/popular'] = array(
     'title' => t('Popular'),
     'description' => t('View products that people want and have the most.'),
     'type' => MENU_DEFAULT_LOCAL_TASK,
-    'page callback' => 'vibio_product_displays_popular',
     'access arguments' => array('access content'),
+    'page arguments' => array(2, 'popular_products', 'page'),
     'weight' => 0,
   );
   $items['home/featured'] = array(
     'title' => t('Featured'),
     'description' => t('View products we think are interesting.'),
     'type' => MENU_LOCAL_TASK,
-    'page callback' => 'vibio_product_displays_featured',
+    'page callback' => 'vibio_product_displays_show_view',
+    'page arguments' => array(2, 'flag_featured', 'page'),
     'access arguments' => array('access content'),
     'weight' => 1,
   );
@@ -28,7 +30,8 @@ function vibio_product_displays_menu() {
     'title' => t('For sale'),
     'description' => t('View products that people have and are selling.'),
     'type' => MENU_LOCAL_TASK,
-    'page callback' => 'vibio_product_displays_for_sale',
+    'page callback' => 'vibio_product_displays_show_view',
+    'page arguments' => array(2, 'all_products_for_sale', 'page'),
     'access arguments' => array('access content'),
     'weight' => 2,
   );
@@ -36,7 +39,8 @@ function vibio_product_displays_menu() {
     'title' => t('Recent'),
     'description' => t("View products that have recently entered people's collections."),
     'type' => MENU_LOCAL_TASK,
-    'page callback' => 'vibio_product_displays_recent',
+    'page callback' => 'vibio_product_displays_show_view',
+    'page arguments' => array(2, 'recent_products', 'page'),
     'access arguments' => array('access content'),
     'weight' => 3,
   );
@@ -61,7 +65,7 @@ function vibio_product_displays_block($op = 'list', $delta = 0, $edit = array())
       break;
     case 'view':
       // This filter only shows up on the homepage.
-      if ($delta == 'filter' && arg(0) == 'home') {
+      if ($delta == 'filter') {
         $block['subject'] = t('Filter a Category');
         $block['content'] = vibio_product_displays_display_block_filter();
       }
@@ -95,28 +99,25 @@ function vibio_product_displays_filter_form_submit($form, &$form_state) {
   $url_argument = strtolower(str_replace(' ', '-', $term_name));
   // TODO: How do I make this preserve the Quicktabs tab? Should I read it from
   // $_GET?
-  $form_state['redirect'] = array('home/' . $url_argument,
+  $form_state['redirect/'] = array('home/' . $url_argument,
     drupal_query_string_encode($_GET, array('q')),
   );
 }
 
-function vibio_product_displays_popular() {
-  $content = views_embed_view('popular_products', 'page');
-  return $content;
+function vibio_process_category(&$category) {
+  // Remember the current category in the session
+  if (!empty($category)) {
+    $_SESSION['vibio_product_displays_category'] = $category;
+  }
+  if (empty($category) && !empty($_SESSION['vibio_product_displays_category'])) {
+    $category = $_SESSION['vibio_product_displays_category'];
+  }
 }
 
-function vibio_product_displays_featured() {
-  $content = views_embed_view('flag_featured', 'page');
-  return $content;
-}
-
-function vibio_product_displays_for_sale() {
-  $content = views_embed_view('all_products_for_sale', 'page');
-  return $content;
-}
-
-function vibio_product_displays_recent() {
-  $content = views_embed_view('recent_products', 'page');
+function vibio_product_displays_show_view($category = '', $view_name = 'popular_products', $display = 'page') {
+  vibio_process_category($category);
+  $arguments = array_filter(array($view_name, $display, $category));
+  $content = call_user_func_array('views_embed_view', $arguments);
   return $content;
 }
 

@@ -112,10 +112,6 @@ div.product_owners_results div.action div.row {
 .inventory_add_image {
 	padding-right: 10px;
 }
-.inventory_add_image img {
-	max-width: 100px;
-	max-height: 100px;
-}
 .product_snippet_expand {
 	display: none;
 }

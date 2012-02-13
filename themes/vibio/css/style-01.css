@@ -2937,7 +2937,7 @@ div.box div.search-links {
 	background-position: -98px -30px
 }
 .section-search div.search-links {
-	margin-top: -55px
+	margin-top: -40px
 }
 .you-want {
 	background: url(../images/item/flag_want.png) no-repeat;
@@ -4231,10 +4231,7 @@ a.btn-want {
 a.btn-want:hover {
 	background-position: -65px -58px;
 }
-/*Hide upload button on product/new form*/
-.page-product-new #edit-field-main-image-0-filefield-upload, .page-product-new-item #edit-field-main-image-0-filefield-upload, .page-product-new-item #edit-field-images-0-filefield-upload {
-	display: none;
-}
+
 /*add new product wizard*/
 .wizard-trail {
 	height: 50px;
@@ -4242,11 +4239,14 @@ a.btn-want:hover {
 	background: url(../images/breadcrumb.png) no-repeat;
 	text-indent: -9999px;
 }
+/*file upload*/
+.filefield-element .widget-edit{
+	float: none;
+	max-width: none;
+}
 .page-product-new-product input, .page-product-new-product select, .page-product-new input, .page-product-new select, .page-product-new-item input, .page-product-new-item select {
 	padding: 4px;
 	margin-bottom: 20px;
-	font-size: 12px;
-	color: #999999
 }
 .page-product-new-product #edit-body-wrapper, .page-product-new #edit-body-wrapper {
 	margin: 0 0 7px;
@@ -4288,14 +4288,11 @@ a.btn-want:hover {
 	width: 335px;
 }
 .page-product-new-product #edit-field-main-image-0-ahah-wrapper, .page-product-new #edit-field-main-image-0-ahah-wrapper {
-	position: absolute;
-	top: 52px;
-	right: 10px;
 	border-left: 1px solid #CCC;
 	padding-left: 30px;
 	margin-top: 10px;
-	height: 340px;
-	width: 338px
+	width: 338px;
+	min-height: 300px;
 }
 .page-product-new-product #edit-field-main-image-0-upload-wrapper, .page-product-new #edit-field-main-image-0-upload-wrapper {
 	margin-top: 5px
@@ -4346,7 +4343,7 @@ a.btn-want:hover {
 	right: 69px;
 	width: 315px !important;
 }
-#autocomplete{
+#autocomplete {
 	z-index: 600
 }
 /*step 2*/
@@ -4391,17 +4388,11 @@ a.btn-want:hover {
 	width: 85px
 }
 .page-product-new-item #edit-field-main-image-0-ahah-wrapper {
-	position: absolute;
-	top: 80px;
-	right: 19px;
 	border-left: 1px solid #CCC;
 	padding-left: 30px;
 	width: 338px
 }
 .page-product-new-item #field-images-items {
-	position: absolute;
-	top: 218px;
-	right: 19px;
 	border-left: 1px solid #CCC;
 	padding-left: 30px;
 	width: 338px

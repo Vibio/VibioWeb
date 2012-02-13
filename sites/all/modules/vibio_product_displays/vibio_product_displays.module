@@ -87,6 +87,7 @@ function vibio_product_displays_filter_form(&$form_state) {
   $selected_term = taxonomy_get_term_by_name($url_term);
   $selected_tid = $selected_term[0]->tid;
   $form['categories'] = taxonomy_form($vid, array($selected_tid));
+  $form['categories']['#multiple'] = FALSE;
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Go'),
@@ -101,7 +102,7 @@ function vibio_product_displays_filter_form_submit($form, &$form_state) {
   $term = taxonomy_get_term($form_state['values']['categories']);
   $term_name = $term->name;
   $url_argument = strtolower(str_replace(' ', '-', $term_name));
-  $url_parts = explode('/', substr(request_uri(), 1));
+  $url_parts = explode('/', $_GET['q']);
   $new_category_url_parts = array();
   // Get everything *before* the current category argument
   // That's the base path to the current view
@@ -135,6 +136,12 @@ function vibio_product_displays_show_view($category = '', $view_name = 'popular_
   vibio_process_category($category);
   $arguments = array_filter(array($view_name, $display, $category));
   $content = call_user_func_array('views_embed_view', $arguments);
+  global $user;
+  // Print Google conversion code if logged in
+  // (though I have no clue what this does).
+  if ($user->uid) {
+    $content .= _vibio_product_displays_homepage_print_google_conversion_code();
+  }
   return $content;
 }
 

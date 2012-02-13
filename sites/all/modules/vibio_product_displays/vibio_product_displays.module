@@ -89,6 +89,7 @@ function vibio_product_displays_filter_form(&$form_state) {
   $form['categories'] = taxonomy_form($vid, array($selected_tid));
   $form['categories']['#multiple'] = FALSE;
   unset($form['categories']['#theme']);
+  dpm($form);
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Go'),

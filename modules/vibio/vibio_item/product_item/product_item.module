@@ -324,11 +324,10 @@ function item_multistep_form(&$form, &$form_state){
   );
   $node_form['body_field']['#weight'] = -10;
   $node_form['field_main_image']['#prefix'] = '<div id="form-column-right">';
-
   //Add a div around the image fields
-  $form['buttons']['#suffix'] = '</div>';
+  $form['buttons']['#suffix'] = '</div></div>';
   $form['buttons']['#attributes'] = array('id' => 'form-buttons');
-  $form['buttons']['#prefix'] = '';
+  $form['buttons']['#prefix'] = '<div id="form-buttons">';
   $form = array_merge($node_form, $form);
 
 

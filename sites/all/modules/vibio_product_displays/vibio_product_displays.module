@@ -81,7 +81,9 @@ function vibio_product_displays_display_block_filter() {
 function vibio_product_displays_filter_form(&$form_state) {
   // Get a list of terms in the Category vocabulary
   $vid = vibio_product_displays_get_vocabulary_by_name('Category')->vid;
-  $url_term = str_replace('-', ' ', check_plain(arg(1)));
+  $category = '';
+  vibio_process_category($category);
+  $url_term = str_replace('-', ' ', $category);
   $selected_term = taxonomy_get_term_by_name($url_term);
   $selected_tid = $selected_term[0]->tid;
   $form['categories'] = taxonomy_form($vid, array($selected_tid));
@@ -93,22 +95,37 @@ function vibio_product_displays_filter_form(&$form_state) {
 }
 
 function vibio_product_displays_filter_form_submit($form, &$form_state) {
+  // Store the current category
+  $category  = $_SESSION['vibio_product_displays_category'];
   // Convert the selected category into lowercase and replace spaces with dashes
   $term = taxonomy_get_term($form_state['values']['categories']);
   $term_name = $term->name;
   $url_argument = strtolower(str_replace(' ', '-', $term_name));
-  // TODO: How do I make this preserve the Quicktabs tab? Should I read it from
-  // $_GET?
-  $form_state['redirect/'] = array('home/' . $url_argument,
-    drupal_query_string_encode($_GET, array('q')),
-  );
+  $url_parts = explode('/', substr(request_uri(), 1));
+  $new_category_url_parts = array();
+  // Get everything *before* the current category argument
+  // That's the base path to the current view
+  foreach ($url_parts as $arg) {
+    if ($arg != $category) {
+      $new_category_url_parts[] = $arg;
+    }
+    else {
+      break;
+    }
+  }
+  if (!empty($url_argument)) {
+    $new_category_url_parts[] = $url_argument;
+  }
+  $new_category_url = implode('/', $new_category_url_parts);
+  $form_state['redirect'] = $new_category_url;
 }
 
 function vibio_process_category(&$category) {
-  // Remember the current category in the session
+  // Remember the current category in the session.
   if (!empty($category)) {
     $_SESSION['vibio_product_displays_category'] = $category;
   }
+  // If there is none, then set the category to the stored one.
   if (empty($category) && !empty($_SESSION['vibio_product_displays_category'])) {
     $category = $_SESSION['vibio_product_displays_category'];
   }

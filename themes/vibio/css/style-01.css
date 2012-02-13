@@ -4297,6 +4297,9 @@ a.btn-want:hover {
 	width: 338px;
 	min-height: 300px;
 }
+.page-product-new-product #edit-field-main-image-0-ahah-wrapper img, .page-product-new #edit-field-main-image-0-ahah-wrapper img{
+	border: 1px solid #999999;
+}
 .page-product-new-product #edit-field-main-image-0-upload-wrapper, .page-product-new #edit-field-main-image-0-upload-wrapper {
 	margin-top: 5px
 }
@@ -4365,13 +4368,17 @@ a.btn-want:hover {
 	border-bottom-left-radius: 5px;
 }
 /*step 2*/
+.page-product-new-item #form-column-right{
+	float: right;
+	padding-right: 18px;
+}
 .page-product-new-item #edit-o2b-price-wrapper {
 	margin: 0
 }
 .page-product-new-item #edit-o2b-price {
 	padding: 5px 4px;
 }
-.page-product-new-item .form-region-right {
+.page-product-new-item .form-region-right, .page-product-new-item #edit-field-collection-nid-nid-wrapper {
 	display: none
 }
 .page-product-new-item .wizard-trail {
@@ -4383,8 +4390,10 @@ a.btn-want:hover {
 	max-width: 342px
 }
 .page-product-new-item .body-field-wrapper {
-	clear: both;
-	padding-top: 2px;
+	float:left
+}
+.page-product-new-item #edit-field-main-image-0-upload-wrapper, #edit-field-main-image-0-upload-wrapper .filefield-element{
+	margin-bottom: 0
 }
 .page-product-new-item div.form-radios div.form-item {
 	height: 22px;
@@ -4395,7 +4404,7 @@ a.btn-want:hover {
 	width: 110px
 }
 /*Hi Alec. Look all this fun form stuff hidden with CSS*/
-.page-product-new-item fieldset legend, .page-product-new-item #edit-o2b-price-wrapper .description, .page-product-new-item .body-field-wrapper fieldset, .page-product-new-item #edit-field-product-0-nid-nid-wrapper, .page-product-new-item #edit-field-have-want-like-value-wrapper {
+.page-product-new-item fieldset legend, .page-product-new-item #edit-o2b-price-wrapper .description, .page-product-new-item #edit-field-product-0-nid-nid-wrapper, .page-product-new-item #edit-field-have-want-like-value-wrapper {
 	display: none
 }
 .page-product-new-item #edit-field-posting-type-value-wrapper {
@@ -4413,7 +4422,11 @@ a.btn-want:hover {
 .page-product-new-item #field-images-items {
 	border-left: 1px solid #CCC;
 	padding-left: 30px;
-	width: 338px
+	width: 338px;
+	padding-top: 20px
+}
+.page-product-new-item #field-images-items table{
+	margin-top: 0
 }
 .page-product-new-item fieldset.collapsible {
 	clear: both;
@@ -4429,6 +4442,7 @@ a.btn-want:hover {
 .page-product-new-item .filefield-element .widget-edit .description {
 	margin-top: 20px
 }
+
 .page-product-new-item form th, .page-product-new-item form thead th {
 	border-bottom: none;
 	font-size: 15px;
@@ -4473,6 +4487,7 @@ a.btn-want:hover {
 }
 .page-product-new-product #edit-body-wrapper, .page-product-new #edit-body-wrapper, .page-product-new-item #edit-body-wrapper {
 	position: relative;
+	clear: both;
 }
 /*Make autocomplete results span the entire result area*/
 .autocomplete-result a {

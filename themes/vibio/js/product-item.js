@@ -10,9 +10,14 @@ $(document).ready(function() {
 		$('.page-product-new #edit-field-amazon-asin-0-asin-wrapper label').html('ASIN:');
 		//place cancel button to the left of next button
 		$('.page-product-new #edit-cancel').insertBefore('#edit-next');
-		//place prices input and forsale input after the description textarea
-		$('.page-product-new-item #form-price').insertAfter('.body-field-wrapper');
-		$('.page-product-new-item #edit-privacy-setting-wrapper').insertBefore('#field-images-items');
+		//rearrange and put inside body-filed wrapper on new-item page
+		$('.page-product-new-item .form-region-main div:eq(1)').insertBefore('#edit-body-wrapper');
+		$('.page-product-new-item .form-region-main h1').insertBefore('.body-field-wrapper div:eq(0)');
+		$('.page-product-new-item #form-price').insertAfter('.body-field-wrapper p');
+		$('.page-product-new-item #edit-privacy-setting-wrapper').insertAfter('#form-price');
+		$('.page-product-new-item #collection-fieldset').insertAfter('#edit-privacy-setting-wrapper');	
+		//put field-images-items in form-column-right
+		$('.page-product-new-item #field-images-items').insertAfter('#edit-field-main-image-0-ahah-wrapper');
 
 		var textarea = $('#edit-body-wrapper textarea.form-textarea');
 		var description = $('#edit-body-wrapper .description');

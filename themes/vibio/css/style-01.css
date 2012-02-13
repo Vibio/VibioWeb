@@ -4231,10 +4231,7 @@ a.btn-want {
 a.btn-want:hover {
 	background-position: -65px -58px;
 }
-/*Hide upload button on product/new form*/
-.page-product-new #edit-field-main-image-0-filefield-upload, .page-product-new-item #edit-field-main-image-0-filefield-upload, .page-product-new-item #edit-field-images-0-filefield-upload {
-	display: none;
-}
+
 /*add new product wizard*/
 .wizard-trail {
 	height: 50px;
@@ -4242,11 +4239,14 @@ a.btn-want:hover {
 	background: url(../images/breadcrumb.png) no-repeat;
 	text-indent: -9999px;
 }
+/*file upload*/
+.filefield-element .widget-edit{
+	float: none;
+	max-width: none;
+}
 .page-product-new-product input, .page-product-new-product select, .page-product-new input, .page-product-new select, .page-product-new-item input, .page-product-new-item select {
 	padding: 4px;
 	margin-bottom: 20px;
-	font-size: 12px;
-	color: #999999
 }
 .page-product-new-product #edit-body-wrapper, .page-product-new #edit-body-wrapper {
 	margin: 0 0 7px;

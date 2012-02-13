@@ -4288,14 +4288,11 @@ a.btn-want:hover {
 	width: 335px;
 }
 .page-product-new-product #edit-field-main-image-0-ahah-wrapper, .page-product-new #edit-field-main-image-0-ahah-wrapper {
-	position: absolute;
-	top: 52px;
-	right: 10px;
 	border-left: 1px solid #CCC;
 	padding-left: 30px;
 	margin-top: 10px;
-	height: 340px;
-	width: 338px
+	width: 338px;
+	min-height: 300px;
 }
 .page-product-new-product #edit-field-main-image-0-upload-wrapper, .page-product-new #edit-field-main-image-0-upload-wrapper {
 	margin-top: 5px
@@ -4346,7 +4343,7 @@ a.btn-want:hover {
 	right: 69px;
 	width: 315px !important;
 }
-#autocomplete{
+#autocomplete {
 	z-index: 600
 }
 /*step 2*/
@@ -4391,17 +4388,11 @@ a.btn-want:hover {
 	width: 85px
 }
 .page-product-new-item #edit-field-main-image-0-ahah-wrapper {
-	position: absolute;
-	top: 80px;
-	right: 19px;
 	border-left: 1px solid #CCC;
 	padding-left: 30px;
 	width: 338px
 }
 .page-product-new-item #field-images-items {
-	position: absolute;
-	top: 218px;
-	right: 19px;
 	border-left: 1px solid #CCC;
 	padding-left: 30px;
 	width: 338px

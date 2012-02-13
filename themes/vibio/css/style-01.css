@@ -4335,9 +4335,6 @@ a.btn-want:hover {
 	border-top: 1px solid #CCC;
 	padding-right: 10px
 }
-.page-product-new-item #edit-privacy-setting-wrapper {
-	clear: both
-}
 .form-right {
 	position: absolute;
 	top: 261px;
@@ -4369,8 +4366,7 @@ a.btn-want:hover {
 }
 /*step 2*/
 .page-product-new-item #form-column-right{
-	float: right;
-	padding-right: 18px;
+	float: left;
 }
 .page-product-new-item #edit-o2b-price-wrapper {
 	margin: 0
@@ -4485,6 +4481,10 @@ a.btn-want:hover {
 	width: 312px;
 	font-size: 12px;
 	color: #999999
+}
+/*When collections and privacy move to right column on have want toggle*/
+#form-column-right #collection-fieldset{
+	padding-top: 35px
 }
 .page-product-new-product #edit-body-wrapper, .page-product-new #edit-body-wrapper, .page-product-new-item #edit-body-wrapper {
 	position: relative;

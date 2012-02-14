@@ -4299,7 +4299,7 @@ a.btn-want:hover {
 .page-product-new-product #edit-field-main-image-0-upload-wrapper, .page-product-new #edit-field-main-image-0-upload-wrapper {
 	margin-top: 5px
 }
-.page-product-new div.form-region-footer input.form-submit, .page-product-new-item input#edit-previous, .page-product-new-item input#edit-cancel {
+.page-product-new div.form-region-footer input.form-submit, .page-product-new-item input#edit-previous, .page-product-new-item input#edit-cancel, .page-product-new-product input#edit-cancel {
 	background: none;
 	border: none;
 	border-radius: 0;

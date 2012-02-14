@@ -26,7 +26,7 @@ Drupal.behaviors.views_infinite_scroll = function() {
           var img_location     = 'div.view-id-' + settings.view_name + '.view-display-id-' + settings.display + ' div.view-content'; 
           var pager_selector   = 'div.view-id-' + settings.view_name + '.view-display-id-' + settings.display + ' div.item-list ' + settings.pager_selector;
           $(pager_selector).hide();
-          var handle = $.autopager({
+          $.autopager({
             appendTo: content_selector,
             content: items_selector,
             link: next_selector,
@@ -39,21 +39,6 @@ Drupal.behaviors.views_infinite_scroll = function() {
               Drupal.attachBehaviors();
             }    
           });
-
-          // Trigger autoload if content height is less than doc height already
-          var prev_content_height = $(content_selector).height();
-          do {
-            var last = $(items_selector).filter(':last');
-            if(last.offset().top + last.height() < $(document).scrollTop() + $(window).height()) {
-              last = $(items_selector).filter(':last');
-              handle.autopager('load');
-            }
-            else {
-              break;
-            }
-          }
-          while ($(content_selector).height() > prev_content_height);
-
         }
         else {  
           alert(Drupal.t('Views infinite scroll pager is not compatible with Ajax Views. Please disable "Use Ajax" option.'));

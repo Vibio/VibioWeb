@@ -5,9 +5,9 @@ package = Views
 core = 6.x
 dependencies[] = views
 
-; Information added by drupal.org packaging script on 2011-06-06
-version = "6.x-1.x-dev"
+; Information added by drupal.org packaging script on 2011-05-05
+version = "6.x-1.0"
 core = "6.x"
 project = "views_infinite_scroll"
-datestamp = "1307320813"
+datestamp = "1304622418"
 

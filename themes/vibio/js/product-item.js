@@ -21,7 +21,6 @@ $(document).ready(function() {
 		//put form buttons in form footer
 		$('.page-product-new-item #form-buttons').prependTo('.form-region-footer');
 		//change value inside previous button
-		$('.page-product-new-item #form-buttons input#edit-previous').val('< Go Back');
 		var textarea = $('#edit-body-wrapper textarea.form-textarea');
 		var description = $('#edit-body-wrapper .description');
 		if(textarea.val() == '') {

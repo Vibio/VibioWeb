@@ -4435,7 +4435,8 @@ a.btn-want:hover {
 .page-product-new .form-region-footer{
 	position: relative
 }
-.page-product-new .form-region-footer #edit-cancel{
+.page-product-new .form-region-footer #edit-cancel,
+.page-product-new-product .form-region-footer #edit-cancel{
 	position: absolute;
 	right: 170px;
 	top: 24px;

@@ -15,10 +15,13 @@ $(document).ready(function() {
 		$('.page-product-new-item .form-region-main h1').insertBefore('.body-field-wrapper div:eq(0)');
 		$('.page-product-new-item #form-price').insertAfter('.body-field-wrapper p');
 		$('.page-product-new-item #edit-privacy-setting-wrapper').insertAfter('#form-price');
-		$('.page-product-new-item #collection-fieldset').insertAfter('#edit-privacy-setting-wrapper');	
+		$('.page-product-new-item #collection-fieldset').insertBefore('#edit-privacy-setting-wrapper');
 		//put field-images-items in form-column-right
 		$('.page-product-new-item #field-images-items').insertAfter('#edit-field-main-image-0-ahah-wrapper');
-
+		//put form buttons in form footer
+		$('.page-product-new-item #form-buttons').prependTo('.form-region-footer');
+		//change value inside previous button
+		$('.page-product-new-item #form-buttons input#edit-previous').val('< Go Back');
 		var textarea = $('#edit-body-wrapper textarea.form-textarea');
 		var description = $('#edit-body-wrapper .description');
 		if(textarea.val() == '') {
@@ -72,7 +75,7 @@ $(document).ready(function() {
 					description.html('This is where you add details that are specific to the item you own. For example: Condition, Damage, History etc.');
 					//remove from the right column
 					$('#edit-privacy-setting-wrapper').insertAfter('#form-price');
-					$('#collection-fieldset').insertAfter('#edit-privacy-setting-wrapper');
+					$('#collection-fieldset').insertBefore('#edit-privacy-setting-wrapper');
 					//$('fieldset').removeClass('fieldset-right');
 				}
 			})

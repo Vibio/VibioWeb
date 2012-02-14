@@ -3620,10 +3620,6 @@ ul.jquery_dropdown_list li a:hover {
 	background: none !important;
 	border: 1px solid #ccc !important;
 }
-.form-region-footer {
-	text-align: right;
-	padding-top: 10px
-}
 #infscr-loading {
 	z-index: 11111;
 	position: absolute;
@@ -4261,13 +4257,13 @@ a.btn-want:hover {
 	float: left;
 	margin: 5px 25px 5px 0
 }
-.page-product-new select#edit-taxonomy-2 {
-	width: 228px
+.page-product-new select#edit-taxonomy-2, .page-product-new-item  #edit-collection-info-cid, .page-product-new-item  #edit-privacy-setting {
+	width: 222px
 }
 .page-product-new-product .body-field-wrapper, .page-product-new .body-field-wrapper p {
 	margin: 7px 0 20px
 }
-.page-product-new-product #edit-body, .page-product-new-product #edit-title, .page-product-new #edit-body, .page-product-new-item #edit-body, .page-product-new #edit-title, .page-product-new-item  #edit-collection-info-cid, .page-product-new-item #edit-field-collection-nid-nid {
+.page-product-new-product #edit-body, .page-product-new-product #edit-title, .page-product-new #edit-body, .page-product-new-item #edit-body, .page-product-new #edit-title, .page-product-new-item #edit-field-collection-nid-nid {
 	width: 310px;
 	font-size: 12px;
 	color: #999999
@@ -4288,16 +4284,16 @@ a.btn-want:hover {
 	width: 335px;
 }
 .page-product-new-product #edit-field-main-image-0-ahah-wrapper, .page-product-new #edit-field-main-image-0-ahah-wrapper {
-	position:absolute;
-	top:50px;
-	right:27px;
+	position: absolute;
+	top: 50px;
+	right: 27px;
 	border-left: 1px solid #CCC;
 	padding-left: 30px;
 	margin-top: 10px;
 	width: 338px;
 	min-height: 300px;
 }
-.page-product-new-product #edit-field-main-image-0-ahah-wrapper img, .page-product-new #edit-field-main-image-0-ahah-wrapper img{
+.page-product-new-product #edit-field-main-image-0-ahah-wrapper img, .page-product-new #edit-field-main-image-0-ahah-wrapper img {
 	border: 1px solid #999999;
 }
 .page-product-new-product #edit-field-main-image-0-upload-wrapper, .page-product-new #edit-field-main-image-0-upload-wrapper {
@@ -4326,7 +4322,11 @@ a.btn-want:hover {
 	background-position: -2px 1px
 }
 .page-product-new-item #edit-return {
-	background-position: -2px -50px
+	background-position: -2px -50px;
+	float: right
+}
+.page-product-new-item #edit-privacy-setting-wrapper {
+	clear: both
 }
 .page-product-new-product #edit-field-amazon-asin-0-asin, .page-product-new #edit-field-amazon-asin-0-asin {
 	width: 160px
@@ -4365,7 +4365,7 @@ a.btn-want:hover {
 	border-bottom-left-radius: 5px;
 }
 /*step 2*/
-.page-product-new-item #form-column-right{
+.page-product-new-item #form-column-right {
 	float: left;
 }
 .page-product-new-item #edit-o2b-price-wrapper {
@@ -4383,12 +4383,13 @@ a.btn-want:hover {
 .page-product-new-item .form-region-main h1 {
 	margin: 15px 0;
 	font-size: 15px;
-	max-width: 342px
+	max-width: 340px
 }
 .page-product-new-item .body-field-wrapper {
-	float:left
+	float: left;
+	width: 342px
 }
-.page-product-new-item #edit-field-main-image-0-upload-wrapper, #edit-field-main-image-0-upload-wrapper .filefield-element{
+.page-product-new-item #edit-field-main-image-0-upload-wrapper, #edit-field-main-image-0-upload-wrapper .filefield-element {
 	margin-bottom: 0
 }
 .page-product-new-item div.form-radios div.form-item {
@@ -4417,12 +4418,29 @@ a.btn-want:hover {
 }
 .page-product-new-item #field-images-items {
 	border-left: 1px solid #CCC;
-	padding-left: 30px;
 	width: 338px;
-	padding-top: 20px;
-	margin-bottom: 125px;
+	padding: 20px 0 160px 30px;
+	margin-bottom: 15px;
 }
-.page-product-new-item #field-images-items table{
+.form-region-footer {
+	padding-top: 10px;
+	border-top: 1px solid #CCCCCC
+}
+.page-product-new-item #form-buttons #edit-previous, .page-product-new-item #form-buttons #edit-cancel {
+	margin: 13px 0
+}
+.page-product-new-item #form-buttons #edit-cancel, .page-product-new #edit-next {
+	float: right
+}
+.page-product-new .form-region-footer{
+	position: relative
+}
+.page-product-new .form-region-footer #edit-cancel{
+	position: absolute;
+	right: 170px;
+	top: 24px;
+}
+.page-product-new-item #field-images-items table {
 	margin-top: 0
 }
 .page-product-new-item fieldset.collapsible {
@@ -4439,7 +4457,6 @@ a.btn-want:hover {
 .page-product-new-item .filefield-element .widget-edit .description {
 	margin-top: 20px
 }
-
 .page-product-new-item form th, .page-product-new-item form thead th {
 	border-bottom: none;
 	font-size: 15px;
@@ -4483,8 +4500,22 @@ a.btn-want:hover {
 	color: #999999
 }
 /*When collections and privacy move to right column on have want toggle*/
-#form-column-right #collection-fieldset{
-	padding-top: 35px
+#form-column-right #collection-fieldset, #form-column-right #edit-privacy-setting-wrapper {
+	border-left: 1px solid #CCCCCC;
+	padding-left: 20px;
+}
+#collection-fieldset{
+	width: 225px
+}
+#form-column-right #collection-fieldset {
+	margin-top: 15px;
+	padding-top: 48px;
+}
+#form-column-right #edit-privacy-setting-wrapper {
+	height: 85px
+}
+#block-vibio_product_displays-filter {
+	display: none;
 }
 .page-product-new-product #edit-body-wrapper, .page-product-new #edit-body-wrapper, .page-product-new-item #edit-body-wrapper {
 	position: relative;

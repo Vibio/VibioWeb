@@ -4496,4 +4496,11 @@ a.btn-want:hover {
 	display: block;
 	cursor: pointer;
 }
-
+/*Hide the upload field on the product multistep*/
+.page-product-new-item #edit-field-main-image-0-filefield-upload,
+.page-product-new #edit-field-main-image-0-filefield-upload,
+.page-product-new-product #edit-field-main-image-0-filefield-upload,
+.page-product-new-item #edit-field-images-0-filefield-upload
+{
+    display: none;
+}

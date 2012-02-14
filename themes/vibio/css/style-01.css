@@ -15,11 +15,11 @@ body.front div.view-flag-featured .pager {
 /*Popup after earning a badge*/
 #badge_alert_container_earned {
 	text-align: center;
-	padding: 20px 20px
+	padding: 20px 0 30px;
 }
 #badge_alert_container_earned h5 {
 	font-size: 28px;
-	margin: 28px 0 28px
+	margin: 10px 0
 }
 #badge_alert_container_earned div#badge_alert_footer {
 	text-align: right;
@@ -2782,6 +2782,9 @@ div.beat-item a:hover {
 	margin: 4px 0;
 	font-size: 15px;
 	font-weight: normal
+}
+.front #edit-pass-wrapper.form-item{
+	margin: 1em 0;
 }
 /*Sidebar Featured USer*/
 #block-views-flag_featured_users-block_1 {

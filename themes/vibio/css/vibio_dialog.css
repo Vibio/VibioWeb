@@ -1,28 +1,10 @@
-/* trash these useless efforts to quick-theme HAVE popup once find real answer (here to prevent repeat efforts)
-
- .ui-widget-overlay {
- margin-top: -200px;
- }
- /* moving the HAVE button popup higher...
- expect to return to this, fine tune it?
- Move it below when things settle
-
- Dammit... messes up Close button, the pieces here are separte
-
- .vibio_dialog_content {
- position: relative;
- top: -200px;
- }
- .ui-widget-overlay {
- top: -800px;
- }
- .ui-widget {
- margin-top: 400px;
- }
- */
 div.ui-dialog {
-	padding-left: 100px
+	position: fixed !important;
+	top: 90px !important;
+	padding-left: 100px;
+	
 }
+
 #vibio_dialog {
 	border-radius: 8px;
 	-moz-border-radius: 8px;
@@ -143,11 +125,10 @@ span.ui-icon {
 #product-ajax-add-form #edit-collections-new-wrapper label {
 	font-weight: normal !important;
 }
-
 div#edit-node-price-wrapper {
 	margin: 0
 }
-#product-ajax-add-form #edit-posting-type-wrapper{
+#product-ajax-add-form #edit-posting-type-wrapper {
 	margin: 0;
 	float: left;
 	height: 47px;

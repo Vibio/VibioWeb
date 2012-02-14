@@ -4247,7 +4247,7 @@ a.btn-want:hover {
 .page-product-new-product #edit-body-wrapper, .page-product-new #edit-body-wrapper {
 	margin: 0 0 7px;
 }
-.page-product-new #edit-taxonomy-2-wrapper {
+.page-product-new #edit-taxonomy-2-wrapper, .page-product-new-product #edit-taxonomy-2-wrapper{
 	margin: 5px 0 0;
 }
 .page-product-new #edit-field-amazon-asin-0-asin-wrapper, .page-product-new-product #edit-body, .page-product-new-product #edit-title, .page-product-new #edit-body, .page-product-new-item #edit-field-collection-nid-nid-wrapper, .page-product-new-item #edit-privacy-setting-wrapper {
@@ -4299,7 +4299,7 @@ a.btn-want:hover {
 .page-product-new-product #edit-field-main-image-0-upload-wrapper, .page-product-new #edit-field-main-image-0-upload-wrapper {
 	margin-top: 5px
 }
-.page-product-new div.form-region-footer input.form-submit, .page-product-new-item input#edit-previous, .page-product-new-item input#edit-cancel, .page-product-new-product input#edit-cancel {
+.page-product-new div.form-region-footer input.form-submit, .page-product-new-product div.form-region-footer input.form-submit, .page-product-new-item input#edit-previous, .page-product-new-item input#edit-cancel, .page-product-new-product input#edit-cancel {
 	background: none;
 	border: none;
 	border-radius: 0;
@@ -4429,10 +4429,11 @@ a.btn-want:hover {
 .page-product-new-item #form-buttons #edit-previous, .page-product-new-item #form-buttons #edit-cancel {
 	margin: 13px 0
 }
-.page-product-new-item #form-buttons #edit-cancel, .page-product-new #edit-next {
+.page-product-new-item #form-buttons #edit-cancel, .page-product-new #edit-next, 
+.page-product-new-product #edit-next{
 	float: right
 }
-.page-product-new .form-region-footer{
+.page-product-new .form-region-footer, .page-product-new-product .form-region-footer{
 	position: relative
 }
 .page-product-new .form-region-footer #edit-cancel,

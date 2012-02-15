@@ -47,10 +47,13 @@ $(function() {
 			},
 			// call masonry as a callback.
 			function() {
-        var existingMaterial = $(this);
-				$('.view-content', $target_views).imagesLoaded(function(){
-          $('.view-content', $target_views).masonry({
-            appendedContent : existingMaterial
+        var newMaterial = $(this);
+                newMaterial.hide();
+                $('.view-content', $target_views).imagesLoaded(function(){
+          newMaterial.show();
+          
+            $('.view-content', $target_views).masonry({
+            appendedContent : newMaterial
           });
         });
 				$('div.views-field.views-field-nid').hide();

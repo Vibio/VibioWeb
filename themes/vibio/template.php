@@ -465,8 +465,8 @@ function vibio_user_login_block($form) {
 if(module_exists('automodal')){
 	automodal_add('.make-modal', array(
 	    'autoFit' => false
-	    ,'width'   => 700
-	    ,'height'  => 605
+	    ,'width'   => 740
+	    ,'height'  => 420
 	    ,'draggable' => false)
 	);
 	automodal_add('.works-modal', array(

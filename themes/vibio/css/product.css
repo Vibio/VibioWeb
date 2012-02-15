@@ -47,12 +47,15 @@ div.product_owners_results div.action div.row {
 #content-area div.product_owners_results div.action a.offer-button {
 	display: block;
 	text-indent: -9999px;
-	background: url(../images/btn_make_offer_1.png) no-repeat -3px 0;
+	background: url(../images/btn_product_offer.png) no-repeat scroll -2px 5px transparent;
 	width: 113px;
-	height: 80px;
+	height: 40px;
+	margin-top: 10px;
 }
-
-.item_owner{
+#content-area div.product_owners_results div.action a.offer-button:hover {
+	background-position: -2px -37px;
+}
+.item_owner {
 	height: 75px;
 	padding: 10px 0;
 }
@@ -61,12 +64,10 @@ div.product_owners_results div.action div.row {
 	float: right;
 	position: relative
 }
-
-.item_owner .action .not_for_sale img{
+.item_owner .action .not_for_sale img {
 	position: absolute;
 	right: 7px;
 }
-
 .item_owner .picture {
 	padding: 5px 5px 0;
 	border: 1px solid #CCCCCC;

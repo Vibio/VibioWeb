@@ -87,7 +87,6 @@ function product_item_form_alter(&$form, &$form_state){
   print 'FORM STATE';
   print_r_tree($form_state);
 }
-**/
 
 /* Note: This code is derived from
  * http://www.nicklewis.org/using-chaos-tools-form-wizard-build-multistep-forms-drupal-6
@@ -230,6 +229,8 @@ function product_item_product_alter_form(&$form, $product){
   $form['collection_info']['#access'] = FALSE;
   $form['privacy_setting']['#access'] = FALSE;
 
+  //Remove the form buttons
+  unset($form['buttons']);
 
   //If there's product data and we're passing through the form for the first time, prepopulate the form
   $amazon_data = $product[0];
@@ -239,7 +240,7 @@ function product_item_product_alter_form(&$form, $product){
   $form['taxonomy'][2]['#value'] = $tid;
 
   //If we haven't entered a custom body, use the Amazon data
-  if(empty($product['body'])){
+  if(empty($product['body']) && !empty($amazon_data['editorialreviews'][0]['content'])){
     $form['body_field']['body']['#default_value'] = $amazon_data['editorialreviews'][0]['content'];
   }else{
     $form['body_field']['body']['#default_value'] = $product['body'];
@@ -313,6 +314,9 @@ function item_multistep_form(&$form, &$form_state){
   $node_form['collection_info']['#attributes'] = array('id' => 'collection-fieldset');
   $node_form['privacy_setting']['#weight'] = 10;
   $node_form['privacy_setting']['#title'] = t('Item can be viewed by');
+  //Admins see this element, but the collection_info field should handle things for them.
+  //Don't require it until @todo: we eliminate collection_info
+  $node_form['field_collection']['#required'] = 0;
 
   unset($node_form['buttons']);
   //Show the product title at the top
@@ -475,6 +479,8 @@ function product_item_add_subtask_finish(&$form_state) {
     $item->field_posting_type = 1;
   }
   
+  //Set the field_collection value
+  //$item->field_collection[0]['nid'] = $item->collection_info['cid'];
   node_save($item);
 
   //Clear the cache

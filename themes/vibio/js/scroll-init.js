@@ -32,6 +32,7 @@ $(function() {
 				debug : false,
 				pathParse : '?page=1',
 				animate : false,
+                bufferPx : -300, //Reduce to scroll less?
 				pages : numOfPages, //NEW OPTION: number of pages in the Views Pager
 				errorCallback : function() {
 					$('#infscr-loading').animate({

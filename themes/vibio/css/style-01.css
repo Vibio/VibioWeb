@@ -4287,7 +4287,10 @@ a.btn-want:hover {
 .page-product-new-product .form-region-main, .page-product-new .form-region-main, .page-product-new-item .form-region-main {
 	margin-left: 9px;
 	position: relative;
-	width: 100%;
+	width: 342px;
+}
+.page-product-new-product .form-region-main, .page-product-new .form-region-main{
+	float: left;
 }
 .page-product-new-product label, .page-product-new label, .page-product-new-item label {
 	font-size: 13px;
@@ -4300,14 +4303,11 @@ a.btn-want:hover {
 	width: 335px;
 }
 .page-product-new-product #edit-field-main-image-0-ahah-wrapper, .page-product-new #edit-field-main-image-0-ahah-wrapper {
-	position: absolute;
-	top: 50px;
-	right: 27px;
+	float:left;
 	border-left: 1px solid #CCC;
 	padding-left: 30px;
 	margin-top: 10px;
-	width: 338px;
-	min-height: 300px;
+	min-height: 260px;
 }
 .page-product-new-product #edit-field-main-image-0-ahah-wrapper img, .page-product-new #edit-field-main-image-0-ahah-wrapper img {
 	border: 1px solid #999999;
@@ -4399,11 +4399,14 @@ a.btn-want:hover {
 .page-product-new-item .form-region-main h1 {
 	margin: 15px 0;
 	font-size: 15px;
-	max-width: 340px
+	max-width: 335px
 }
 .page-product-new-item .body-field-wrapper {
 	float: left;
-	width: 342px
+	
+}
+.page-product-new-item .body-field-wrapper, #form-price, #collection-fieldset,#edit-privacy-setting-wrapper{
+	
 }
 .page-product-new-item #edit-field-main-image-0-upload-wrapper, #edit-field-main-image-0-upload-wrapper .filefield-element {
 	margin-bottom: 0
@@ -4449,7 +4452,8 @@ a.btn-want:hover {
 	float: right
 }
 .page-product-new .form-region-footer, .page-product-new-product .form-region-footer {
-	position: relative
+	position: relative;
+	clear:both
 }
 .page-product-new .form-region-footer #edit-cancel, .page-product-new-product .form-region-footer #edit-cancel {
 	position: absolute;
@@ -4461,6 +4465,7 @@ a.btn-want:hover {
 }
 .page-product-new-item fieldset.collapsible {
 	clear: both;
+	margin-bottom: 20px !important;
 }
 .page-product-new-item #edit-collection-info-cid-wrapper {
 	margin: 0

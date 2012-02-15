@@ -5,8 +5,7 @@ div.ui-dialog {
 	
 }
 .node-type-product div.ui-dialog {
-	top: 20px !important;
-	padding-left: 81px;
+	top: 40px !important;
 }
 #vibio_dialog {
 	border-radius: 8px;

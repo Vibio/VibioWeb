@@ -153,9 +153,9 @@ function product_item_wizard(){
     // This variable will save all the data through the multi-step process
     $product_item_data = array('product' => array(), 'item' => array());
     ctools_object_cache_set('product_item_data_basic', $form_state['cache name'], $product_item_data);
-  }elseif(empty($product_item_data['product']['body'])){
+  }elseif(empty($product_item_data['product']['step2'])){
     //We already set the data, this must be the product step
-    $step = 'product';
+    $step = 'product'; 
   }
   //THIS IS WHERE WILL STORE ALL FORM DATA
   $form_state['product_item_data'] = $product_item_data;
@@ -291,6 +291,7 @@ function product_item_product_alter_form(&$form, $product){
 function product_multistep_form_submit(&$form, &$form_state) {
   $submitted = $form_state['values'];
   $form_state['product_item_data']['product'] = $submitted;
+  $form_state['product_item_data']['product']['step2'] = 1;
 }
 
 /**

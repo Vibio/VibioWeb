@@ -32,7 +32,7 @@ $(function() {
 				itemSelector : ".views-row", // selector for all items you'll retrieve
 				loadingImg : '/themes/vibio/images/barloader.gif',
 				donetext : "No more pages to load.",
-				debug : true,
+				debug : false,
 				pathParse : '?page=1',
 				animate : false,
                 bufferPx : -600, //Reduce to scroll less?

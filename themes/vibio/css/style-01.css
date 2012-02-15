@@ -3368,7 +3368,7 @@ ul.primary li a {
 	right: 3px;
 	margin: 0
 }
-#block-block-6 {
+#block-block-6, #block-block-26 {
 	position: absolute;
 	top: 4px;
 	right: -12px;
@@ -3377,10 +3377,10 @@ ul.primary li a {
 #block-block-11 {
 	top: 0
 }
-#block-block-7 p, #block-block-6 p, #block-block-11 p, #block-block-15 p, #block-block-16 p, #block-block-17 p, #block-block-18 p {
+#block-block-7 p, #block-block-6 p, #block-block-26 p, #block-block-11 p, #block-block-15 p, #block-block-16 p, #block-block-17 p, #block-block-18 p {
 	margin: 0
 }
-#block-block-6 p {
+#block-block-6 p, #block-block-26 p{
 	margin-right: 5px;
 	float: left
 }

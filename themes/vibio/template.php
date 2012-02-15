@@ -466,7 +466,7 @@ if(module_exists('automodal')){
 	automodal_add('.make-modal', array(
 	    'autoFit' => false
 	    ,'width'   => 700
-	    ,'height'  => 605
+	    ,'height'  => 420
 	    ,'draggable' => false)
 	);
 	automodal_add('.works-modal', array(

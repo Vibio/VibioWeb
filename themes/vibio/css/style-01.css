@@ -1122,9 +1122,10 @@ div#edit-field-offer-expires-0-value-datepicker-popup-0-wrapper .description, di
 	clear: both
 }
 #offer_top {
-	height: 140px;
-	margin-bottom: 20px;
-	border-bottom: 1px solid #CCC
+	height: 130px;
+	width:350px;
+	margin-bottom: 10px;
+	float: right;
 }
 #content-area a.offer-button {
 	background: url(../images/btn_preview_send.png) no-repeat;

@@ -13,10 +13,13 @@ $(document).ready(function() {
 		//rearrange and put inside body-filed wrapper on new-item page
 		$('.page-product-new-item .form-region-main div:eq(1)').insertBefore('#edit-body-wrapper');
 		$('.page-product-new-item .form-region-main h1').insertBefore('.body-field-wrapper div:eq(0)');
-		$('.page-product-new-item #form-price').insertAfter('.body-field-wrapper p');
+		$('.page-product-new-item #form-price').insertAfter('.body-field-wrapper');
 		$('.page-product-new-item #edit-privacy-setting-wrapper').insertAfter('#form-price');
 		$('.page-product-new-item #collection-fieldset').insertBefore('#edit-privacy-setting-wrapper');
 		//put field-images-items in form-column-right
+		$('.page-product-new  #edit-field-main-image-0-ahah-wrapper').insertAfter('.form-region-main');
+		$('.wizard-trail').insertBefore('.form-region-main');
+		$('.page-product-new-item #form-column-right').insertAfter('.form-region-main');
 		$('.page-product-new-item #field-images-items').insertAfter('#edit-field-main-image-0-ahah-wrapper');
 		//put form buttons in form footer
 		$('.page-product-new-item #form-buttons').prependTo('.form-region-footer');

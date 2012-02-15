@@ -16,23 +16,26 @@ $(function() {
 			lastPageHref = $(".pager-last").find('a').attr('href').toString();
 			lastPageHref = lastPageHref.split("=");
 			numOfPages = parseInt(lastPageHref[1]);
+            
+            //Once images load, arrange them with masonry
             $('.view-content', $target_views).imagesLoaded(function(){
       		$('.view-content', $target_views).masonry({
         	columnWidth : 180,
         	itemSelector : '.views-row:visible'
      	 	});
 
-
+            //Once the document is fully loaded, activate infinitescroll
+            $(document).ready(function(){
 			$('.view-content', $target_views).infinitescroll({
 				navSelector : ".pager", // selector for the paged navigation
 				nextSelector : ".pager .pager-next a", // selector for the NEXT link (to page 2)
 				itemSelector : ".views-row", // selector for all items you'll retrieve
 				loadingImg : '/themes/vibio/images/barloader.gif',
 				donetext : "No more pages to load.",
-				debug : false,
+				debug : true,
 				pathParse : '?page=1',
 				animate : false,
-                bufferPx : -300, //Reduce to scroll less?
+                bufferPx : -600, //Reduce to scroll less?
 				pages : numOfPages, //NEW OPTION: number of pages in the Views Pager
 				errorCallback : function() {
 					$('#infscr-loading').animate({
@@ -64,6 +67,7 @@ $(function() {
 					$(this).prev().removeClass('hover-shadow');
 				});
 			});
+		});
 		});
 		}
 

@@ -938,19 +938,18 @@ div.privatemsg-box-fb div.middle-column div.name {
 }
 /* discussion box */
 #neg-discuss {
+	width: 340px;
 	float: left;
-	margin-left: 15px;
-	line-height: 21px;
-	width: 318px
+}
+#neg-discuss .views-row {
+	padding: 10px 0
 }
 #neg-discuss h3 {
 	font-size: 22px;
-	margin-top: 0;
+	margin: 10px 0 0;
 	font-weight: normal;
 	background: url(../images/short_bar.png) no-repeat scroll 0 32px transparent;
-	height: 43px;
 	padding: 0;
-	width: 318px
 }
 .done {
 	color: green;
@@ -991,10 +990,12 @@ div#buyer-neg-form div.container-inline-date {
 }
 div#product_info_in_offer {
 	float: left;
-	margin: 0 20px 10px 0
+	margin: 0 0 10px 0
 }
 div#product_info_in_offer img, div#seller_info_in_offer img {
-	border: 1px solid #CCC
+	border: 1px solid #CCCCCC;
+	margin-right: 10px;
+	padding: 10px;
 }
 div#seller_info_in_offer .person_pic, div#offer_neg_buyer .person_pic, #buyer-for-seller .person_pic, #neg-discuss img {
 	border: 1px solid #CCC;
@@ -1048,8 +1049,6 @@ div#seller_info_in_offer .person_pic_seller {
 	font-weight: bold;
 	font-size: 13px;
 	margin: 18px 0 0 0px;
-	float: left;
-	width: 200px
 }
 #buyer-for-seller .person_pic_seller {
 	font-weight: bold
@@ -1078,15 +1077,15 @@ div#edit-field-offer-expires-0-value-datepicker-popup-0-wrapper .description, di
 	color: #97a0a9
 }
 #form-column {
-	clear: left;
 	float: left;
-	width: 280px;
+	width: 315px;
 	background: #e5e7ea;
 	border-radius: 4px;
 	border-radius: 4px;
 	-moz-border-radius: 4px;
 	-moz-border-radius: 4px;
-	padding: 10px
+	padding: 10px;
+	margin-right: 15px
 }
 #chit-chat .node {
 	font-size: 13px
@@ -1123,9 +1122,12 @@ div#edit-field-offer-expires-0-value-datepicker-popup-0-wrapper .description, di
 }
 #offer_top {
 	height: 130px;
-	width:350px;
+	width: 340px;
 	margin-bottom: 10px;
 	float: right;
+}
+.node-by-viewer #offer_top{
+
 }
 #content-area a.offer-button {
 	background: url(../images/btn_preview_send.png) no-repeat;
@@ -1423,6 +1425,16 @@ div.messages ul li {
 }
 #offer-buttons .wanted img {
 	padding-left: 6px
+}
+#offer-buttons .for_sale {
+	display: block;
+	text-indent: -9999px;
+	background: url(../images/btn_make_offer_1.png) no-repeat scroll -1px -13px transparent;
+	width: 113px;
+	height: 65px;
+}
+#offer-buttons .for_sale:hover {
+	background-position: -1px -37px;
 }
 div.product_owners_results .action .wanted img {
 	padding-left: 3px
@@ -2784,7 +2796,7 @@ div.beat-item a:hover {
 	font-size: 15px;
 	font-weight: normal
 }
-.front #edit-pass-wrapper.form-item{
+.front #edit-pass-wrapper.form-item {
 	margin: 1em 0;
 }
 /*Sidebar Featured USer*/
@@ -4251,7 +4263,7 @@ a.btn-want:hover {
 .page-product-new-product #edit-body-wrapper, .page-product-new #edit-body-wrapper {
 	margin: 0 0 7px;
 }
-.page-product-new #edit-taxonomy-2-wrapper, .page-product-new-product #edit-taxonomy-2-wrapper{
+.page-product-new #edit-taxonomy-2-wrapper, .page-product-new-product #edit-taxonomy-2-wrapper {
 	margin: 5px 0 0;
 }
 .page-product-new #edit-field-amazon-asin-0-asin-wrapper, .page-product-new-product #edit-body, .page-product-new-product #edit-title, .page-product-new #edit-body, .page-product-new-item #edit-field-collection-nid-nid-wrapper, .page-product-new-item #edit-privacy-setting-wrapper {
@@ -4433,15 +4445,13 @@ a.btn-want:hover {
 .page-product-new-item #form-buttons #edit-previous, .page-product-new-item #form-buttons #edit-cancel {
 	margin: 13px 0
 }
-.page-product-new-item #form-buttons #edit-cancel, .page-product-new #edit-next, 
-.page-product-new-product #edit-next{
+.page-product-new-item #form-buttons #edit-cancel, .page-product-new #edit-next, .page-product-new-product #edit-next {
 	float: right
 }
-.page-product-new .form-region-footer, .page-product-new-product .form-region-footer{
+.page-product-new .form-region-footer, .page-product-new-product .form-region-footer {
 	position: relative
 }
-.page-product-new .form-region-footer #edit-cancel,
-.page-product-new-product .form-region-footer #edit-cancel{
+.page-product-new .form-region-footer #edit-cancel, .page-product-new-product .form-region-footer #edit-cancel {
 	position: absolute;
 	right: 170px;
 	top: 24px;
@@ -4510,7 +4520,7 @@ a.btn-want:hover {
 	border-left: 1px solid #CCCCCC;
 	padding-left: 20px;
 }
-#collection-fieldset{
+#collection-fieldset {
 	width: 225px
 }
 #form-column-right #collection-fieldset {
@@ -4534,10 +4544,6 @@ a.btn-want:hover {
 	cursor: pointer;
 }
 /*Hide the upload field on the product multistep*/
-.page-product-new-item #edit-field-main-image-0-filefield-upload,
-.page-product-new #edit-field-main-image-0-filefield-upload,
-.page-product-new-product #edit-field-main-image-0-filefield-upload,
-.page-product-new-item #edit-field-images-0-filefield-upload
-{
-    display: none;
+.page-product-new-item #edit-field-main-image-0-filefield-upload, .page-product-new #edit-field-main-image-0-filefield-upload, .page-product-new-product #edit-field-main-image-0-filefield-upload, .page-product-new-item #edit-field-images-0-filefield-upload {
+	display: none;
 }

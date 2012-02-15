@@ -55,8 +55,7 @@ div.product_owners_results div.action div.row {
 #content-area div.product_owners_results div.action a.offer-button:hover {
 	background-position: -2px -37px;
 }
-
-.item_owner{
+.item_owner {
 	height: 75px;
 	padding: 10px 0;
 }
@@ -65,12 +64,10 @@ div.product_owners_results div.action div.row {
 	float: right;
 	position: relative
 }
-
-.item_owner .action .not_for_sale img{
+.item_owner .action .not_for_sale img {
 	position: absolute;
 	right: 7px;
 }
-
 .item_owner .picture {
 	padding: 5px 5px 0;
 	border: 1px solid #CCCCCC;

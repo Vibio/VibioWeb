@@ -153,8 +153,8 @@ function product_item_wizard(){
     // This variable will save all the data through the multi-step process
     $product_item_data = array('product' => array(), 'item' => array());
     ctools_object_cache_set('product_item_data_basic', $form_state['cache name'], $product_item_data);
-  }elseif(empty($product_item_data['product']['step2'])){
-    //We already set the data, this must be the product step
+  }elseif(empty($step)){
+    //We already set the data, this must be the product step after Amazon data pulled in
     $step = 'product'; 
   }
   //THIS IS WHERE WILL STORE ALL FORM DATA
@@ -257,24 +257,24 @@ function product_item_product_alter_form(&$form, $product){
     $form[$field]['#access'] = FALSE;
   }
 
-  //If there's a pre-existing image...
+  //Use pre-existing images...
   if(!empty($product['field_main_image'][0]['filepath'])){
-    $image = $product['field_main_image'][0]['filepath'];
+    $image = $product['field_main_image'][0];
   }elseif(!empty($product['image'])){
-    $image = $product['image']['filepath'];
+    $image = $product['image'];
   }
-
+  //Once we've found the appropriate image...
   if(!empty($image)){
     //Hide image field
     $form['field_main_image'][0]['#access'] = FALSE;
     //Save the image field data
-    $form['image'] = array('#type' => 'value', '#value' =>$product['field_main_image'][0]);
+    $form['image'] = array('#type' => 'value', '#value' =>$image);
     //Show the existing image
     //@todo: allow image upload to replace the existing image
     $form['preview_product_image'] = array(
       '#type' => 'markup',
       '#value' => '<div id="edit-field-main-image-0-ahah-wrapper">' .
-        theme('imagecache', 'product_fixed_width', $image, 'Product Image')
+        theme('imagecache', 'product_fixed_width', $image['filepath'], 'Product Image')
         . '</div>',
       '#weight' => 10,
     );

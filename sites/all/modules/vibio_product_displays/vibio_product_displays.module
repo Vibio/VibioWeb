@@ -82,7 +82,7 @@ function vibio_product_displays_filter_form(&$form_state) {
   // Get a list of terms in the Category vocabulary
   $vid = vibio_product_displays_get_vocabulary_by_name('Category')->vid;
   $category = '';
-  vibio_process_category($category);
+  _vibio_product_displays_process_category($category);
   $url_term = str_replace('-', ' ', $category);
   $selected_term = taxonomy_get_term_by_name($url_term);
   $selected_tid = $selected_term[0]->tid;
@@ -98,11 +98,18 @@ function vibio_product_displays_filter_form(&$form_state) {
 
 function vibio_product_displays_filter_form_submit($form, &$form_state) {
   // Store the current category
-  $category  = $_SESSION['vibio_product_displays_category'];
+  $category = $_SESSION['vibio_product_displays_category'];
   // Convert the selected category into lowercase and replace spaces with dashes
   $term = taxonomy_get_term($form_state['values']['categories']);
-  $term_name = $term->name;
-  $url_argument = strtolower(str_replace(' ', '-', $term_name));
+  if ($term) {
+    $term_name = $term->name;
+    $url_argument = strtolower(str_replace(' ', '-', $term_name));
+  }
+  else {
+    // Reset the filter.
+    $url_argument = '';
+    _vibio_product_displays_process_category($url_argument, TRUE);
+  }
   $url_parts = explode('/', $_GET['q']);
   $new_category_url_parts = array();
   // Get everything *before* the current category argument
@@ -122,9 +129,9 @@ function vibio_product_displays_filter_form_submit($form, &$form_state) {
   $form_state['redirect'] = $new_category_url;
 }
 
-function vibio_process_category(&$category) {
+function _vibio_product_displays_process_category(&$category, $reset = FALSE) {
   // Remember the current category in the session.
-  if (!empty($category)) {
+  if (!empty($category) || (empty($category) && $reset)) {
     $_SESSION['vibio_product_displays_category'] = $category;
   }
   // If there is none, then set the category to the stored one.
@@ -134,7 +141,7 @@ function vibio_process_category(&$category) {
 }
 
 function vibio_product_displays_show_view($category = '', $view_name = 'popular_products', $display = 'page') {
-  vibio_process_category($category);
+  _vibio_product_displays_process_category($category);
   $arguments = array_filter(array($view_name, $display, $category));
   $content = call_user_func_array('views_embed_view', $arguments);
   global $user;

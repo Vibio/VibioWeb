@@ -9,18 +9,33 @@ body.front div.view-flag-featured .pager {
 }
 /* Html Reset*/
 
-body{
-	background:url(../images/right_container_texture.png) repeat;
+body {
+	background: url(../images/right_container_texture.png) repeat;
 	margin: 0;
 	padding: 0;
 	font-size: 100%; /* Fixes exaggerated text resizing in IE6 and IE7 */
 }
-
-
-.item-list .pager li.pager-ellipsis {
+/*box shadow*/
+#content-area .rounded_content, .logged-in .sidebar .rounded_content {
+	-webkit-box-shadow: 0px 0px 2px 2px #B5B5B5;
+	-moz-box-shadow: 0px 0px 2px 2px #B5B5B5;
+	-o-box-shadow: 0px 0px 2px 2px #B5B5B5;
+	-ms-box-shadow: 0px 0px 2px 2px #B5B5B5;
+	box-shadow: 0px 0px 2px 2px #B5B5B5;
+}
+/*rounded corners*/
+.rounded_content, .logged-in .sidebar .rounded_content {
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
 }
 .page-collections-new h1#page_title {
 	display: block
+}
+/*Sidebar*/
+.logged-in .sidebar .rounded_content {
+	color: #556270;
+	height: 949px;
 }
 /*Popup after earning a badge*/
 #badge_alert_container_earned {
@@ -614,27 +629,6 @@ ul.links li {
 	clear: both;
 	visibility: hidden
 }
-.rounded_container {
-	border-radius: 4px;
-	-moz-border-radius: 4px
-}
-.rounded_content {
-	border-radius: 4px;
-	-moz-border-radius: 4px;
-	margin: 0;
-	padding: 5px 0
-}
-.logged-in .rounded_content {
-	padding: 0
-}
-.rounded_left_side {
-	border-top-left-radius: 4px;
-	border-bottom-left-radius: 4px;
-	-moz-border-radius-topleft: 4px;
-	-moz-border-radius-bottomleft: 4px;
-	margin: 0;
-	padding: 0 0 0 5px
-}
 #block-fb-fb_api_init, #block-fb-fb_dialogs {
 	padding: 0
 }
@@ -654,10 +648,6 @@ ul.links li {
 	background: transparent url(../images/bg-content-tile.jpg);
 	min-height: 749px;
 	padding: 6px
-}
-.sidebar .rounded_content {
-	color: #556270;
-	min-height: 761px
 }
 .sidebar .rounded_content a.active {
 	font-weight: bold
@@ -1540,7 +1530,7 @@ div.product_owners_results .action .wanted img {
 	float: left; /* LTR */
 	width: 190px;
 	padding: 0; /* DO NOT CHANGE. Add padding or margin to .region-sidebar-first .section. */
-	margin: -3px -200px 0 0
+	margin: 0 -200px 0 0
 }
 .not-logged-in .region-sidebar-first {
 	margin-top: 0
@@ -2689,7 +2679,7 @@ a#profile_ext_displayblock_image {
 }
 /*Upper Left Sidebar*/
 #upper_title {
-	height: 43px;
+	height: 41px;
 	display: block;
 	width: 192px;
 	text-indent: -9999px
@@ -2701,22 +2691,22 @@ a#profile_ext_displayblock_image {
 	display: block
 }
 #upper_title .home-b {
-	background: url(../images/btn_home.png) repeat scroll -1px 45px transparent
+	background: url(../images/btn_home.png) no-repeat -1px -93px
 }
 #upper_title .home-b:hover {
-	background-position: -1px 90px
+	background-position: -1px -48px
 }
 #upper_title a.home-b.active {
-	background-position: -1px 0px
+	background-position: -1px -3px
 }
 #upper_title a.profile-b.active {
-	background-position: 0 0px
+	background-position: 0 -3px
 }
 #upper_title .profile-b {
-	background: url(../images/btn_profile.png) repeat scroll 0 45px transparent
+	background: url(../images/btn_profile.png) no-repeat 0 -93px
 }
 #upper_title .profile-b:hover {
-	background-position: 0 90px
+	background-position: 0 -48px
 }
 /*Sidebar Little Profile Pic*/
 #profile_ext_displayblock_user_section {

@@ -22,50 +22,49 @@
 		<script type='text/javascript' src='/themes/vibio/js/jquery.livequery.min.js'></script>
 	</head>
 	<body class="<?php print $classes;?>">
-	  <div id="fb-root"></div>
+		<div id="fb-root"></div>
+		<div id="header">
+			<div class="section clearfix">
+				<div id="name-and-slogan">
+					<a href="<?php print $front_page;?>" title="<?php print t('Home');?>" rel="home"> <img src='/themes/vibio/vibio-logo.png' /> </a>
+				</div>
+				<div class="slogan">
+					<?php print $site_slogan;?>
+				</div>
+				<?php
+				echo "<div id='header_quick_actions'>";
+				if ($search_box) {
+					echo "<div id='search-box'>{$search_box}</div>";
+				}
+				echo $profile_ext_header;
+				echo "</div>";
+
+				echo $header;
+				?>
+			</div>
+		</div>
 		<div id="page-wrapper">
 			<div id="page">
-				<div id="header">
-					<div class="section clearfix">
-						<div id="name-and-slogan">
-							<a href="<?php print $front_page;?>" title="<?php print t('Home');?>" rel="home"> <img src='/themes/vibio/vibio-logo.png' /> </a>
-						</div>
-						<div class="slogan">
-							<?php print $site_slogan;?>
-						</div>
-						<?php
-						echo "<div id='header_quick_actions'>";
-						if ($search_box) {
-							echo "<div id='search-box'>{$search_box}</div>";
-						}
-						echo $profile_ext_header;
-						echo "</div>";
-
-						echo $header;
-						?>
-					</div>
-				</div>
 				<div id="main-wrapper">
 					<div id="main" class="clearfix<?php
 					if ($primary_links || $navigation) { print ' with-navigation';
 					}
- ?>">
+					?>">
 						<div id="content" class="column">
 							<?php echo $messages;?>
 							<div class="section rounded_container">
 								<div id="content-area">
 									<div class="rounded_content">
 										<div id="js_messages_container"></div>
-										
 										<?php
-										echo $content_top;	
-										global $skiptitle;								
-										echo ($title && !$skiptitle) ? "<h1 id='page_title' class='title'>$title</h1>" : "";
-										echo $tabs ? "<div class='tabs'>$tabs</div>" : "";
-										echo $content;
-										echo $help;
-										echo $content_bottom;
-										echo $feed_icons ? "<div class='feed-icons'>$feed_icons</div>" : "";
+echo $content_top;
+global $skiptitle;
+echo ($title && !$skiptitle) ? "<h1 id='page_title' class='title'>$title</h1>" : "";
+echo $tabs ? "<div class='tabs'>$tabs</div>" : "";
+echo $content;
+echo $help;
+echo $content_bottom;
+echo $feed_icons ? "<div class='feed-icons'>$feed_icons</div>" : "";
 										?>
 									</div>
 								</div>

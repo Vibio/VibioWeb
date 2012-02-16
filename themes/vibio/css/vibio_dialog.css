@@ -145,18 +145,30 @@ div#edit-node-price-wrapper {
 	width: 82px;
 	margin-right: 47px
 }
-#product-ajax-add-form input#edit-submit {
-	background: url(../images/btn_additem.png) no-repeat;
+#product-ajax-add-form input#edit-submit.want-submit, #product-ajax-add-form input#edit-submit.have-submit {
+	background: url(../images/btn_want_have.png) no-repeat;
 	display: block;
 	border: none;
 	text-indent: -9999px;
-	width: 201px;
+	width: 205px;
 	padding: 0;
 	margin: 0;
-	height: 43px;
+	height: 45px;
 	left: 130px;
 	position: absolute;
 	cursor: pointer
+}
+#product-ajax-add-form input#edit-submit.want-submit {
+	background-position: -4px -3px
+}
+#product-ajax-add-form input#edit-submit.want-submit:hover {
+	background-position: -4px -53px
+}
+#product-ajax-add-form input#edit-submit.have-submit {
+	background-position: -4px -143px
+}
+#product-ajax-add-form input#edit-submit.have-submit:hover {
+	background-position: -4px -193px
 }
 #product-ajax-add-form input#edit-collections-new {
 	width: 212px

@@ -211,8 +211,8 @@ if ($page) {
  *  $searchcrumb
  */
 if($user_owns){
-    $header_link = $manage_link;
-    $manage_link = null;
+    $header_link = l('Edit Item', $manage_link);
+    $manage_link = l('Edit your item details to:', $manage_link);
 }else{
     $header_link = 
 	"<div class='external_short_link'>
@@ -233,6 +233,12 @@ echo "
 		$product_content
         $links
         $manage_link     
+        <ul id='product-manage-ul'>
+                    <li>Move this item into different collections</li>
+                                <li>Remove this item from your collection</li>
+                                            <li>Adjust who can view this item (privacy settings)</li>
+                                                        <li>Change status (For Sale/Not For Sale)</li>
+                                                                    </ul>    
     </div>
 	<div class='clear'></div>
 	$extra_data

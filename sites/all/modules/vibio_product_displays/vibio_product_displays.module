@@ -146,40 +146,6 @@ function vibio_product_displays_show_view($category = '', $view_name = 'popular_
   return $content;
 }
 
-function vibio_product_displays_views_pre_render(&$view) {
-  if ($view->name == 'all_products_for_sale' || $view->name == 'Wantlist') {
-    $fid_alias = $view->field['field_main_image_fid']->field_alias;
-    // Fake the _list and _data properties
-    $fid_stub = substr($fid_alias, 0, -4);
-    $fid_alias_fid = $fid_stub . '_fid';
-    $fid_alias_list = $fid_alias . '_list';
-    $fid_alias_data = $fid_alias . '_data';
-    foreach ($view->result as $row) {
-      if ($row->{$fid_alias_fid}) {
-        continue;
-      }
-      else {
-        // Grab the image from the parent product
-        $product_nid = db_result(db_query("select product_nid from {product_items} where item_nid=%d", $row->nid));
-
-        // Load the image, whatever it is
-
-        $field = content_fields('field_main_image');
-        $db_info = content_database_info($field);
-        $table = $db_info['table'];
-        $fid_col = $db_info['columns']['fid']['column'];
-        $list_col = $db_info['columns']['list']['column'];
-        $data_col = $db_info['columns']['data']['column'];
-        $product_image_row = db_fetch_object(db_query("select $fid_col, $list_col, $data_col from {%s}
-            where nid = %d", $table, $product_nid));
-        $row->{$fid_alias_fid} = $product_image_row->{$fid_col};
-        $row->{$fid_alias_list} = $product_image_row->{$list_col};
-        $row->{$fid_alias_data} = $product_image_row->{$data_col};
-      }
-    }
-  }
-}
-
 function vibio_product_displays_form_views_exposed_form_popular_products_alter(&$form, &$form_state) {
   $form['#action'] = request_uri();
 }

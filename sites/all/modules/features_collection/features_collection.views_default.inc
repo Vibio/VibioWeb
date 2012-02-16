@@ -40,10 +40,16 @@ function features_collection_views_default_views() {
   $handler->display->display_options['header']['area']['content'] = '<a name="top" id="top"></a>';
   $handler->display->display_options['header']['area']['format'] = '2';
   $handler->display->display_options['header']['area']['tokenize'] = 0;
+  /* Relationship: Content: Product (field_product) */
+  $handler->display->display_options['relationships']['field_product_nid']['id'] = 'field_product_nid';
+  $handler->display->display_options['relationships']['field_product_nid']['table'] = 'node_data_field_product';
+  $handler->display->display_options['relationships']['field_product_nid']['field'] = 'field_product_nid';
+  $handler->display->display_options['relationships']['field_product_nid']['required'] = 1;
   /* Field: Content: Main Image (field_main_image) */
   $handler->display->display_options['fields']['field_main_image_fid']['id'] = 'field_main_image_fid';
   $handler->display->display_options['fields']['field_main_image_fid']['table'] = 'node_data_field_main_image';
   $handler->display->display_options['fields']['field_main_image_fid']['field'] = 'field_main_image_fid';
+  $handler->display->display_options['fields']['field_main_image_fid']['relationship'] = 'field_product_nid';
   $handler->display->display_options['fields']['field_main_image_fid']['alter']['alter_text'] = 0;
   $handler->display->display_options['fields']['field_main_image_fid']['alter']['make_link'] = 1;
   $handler->display->display_options['fields']['field_main_image_fid']['alter']['absolute'] = 0;
@@ -70,6 +76,7 @@ function features_collection_views_default_views() {
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
   $handler->display->display_options['fields']['nid']['table'] = 'node';
   $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['relationship'] = 'field_product_nid';
   $handler->display->display_options['fields']['nid']['ui_name'] = 'Want/Have';
   $handler->display->display_options['fields']['nid']['label'] = '';
   $handler->display->display_options['fields']['nid']['alter']['alter_text'] = 0;
@@ -95,6 +102,7 @@ function features_collection_views_default_views() {
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['relationship'] = 'field_product_nid';
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['alter']['alter_text'] = 0;
   $handler->display->display_options['fields']['title']['alter']['make_link'] = 1;
@@ -152,8 +160,9 @@ function features_collection_views_default_views() {
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
   $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['relationship'] = 'field_product_nid';
   $handler->display->display_options['filters']['type']['value'] = array(
-    'vibio_item' => 'vibio_item',
+    'product' => 'product',
   );
   /* Filter: Content: Possession (field_have_want_like) */
   $handler->display->display_options['filters']['field_have_want_like_value']['id'] = 'field_have_want_like_value';
@@ -175,6 +184,7 @@ function features_collection_views_default_views() {
     t('Offset'),
     t('Text area'),
     t('<a name="top" id="top"></a>'),
+    t('Product'),
     t('_blank'),
     t('All'),
   );

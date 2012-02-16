@@ -6,24 +6,24 @@ function vibio_product_displays_menu() {
   $items['home'] = array(
     'title' => t('Featured by Vibio'),
     'page callback' => 'vibio_product_displays_show_view',
-    'page arguments' => array(1, 'popular_products', 'page'),
+    'page arguments' => array(1, 'flag_featured', 'page'),
     'access arguments' => array('access content'),
-  );
-  $items['home/popular'] = array(
-    'title' => t('Popular'),
-    'description' => t('View products that people want and have the most.'),
-    'type' => MENU_DEFAULT_LOCAL_TASK,
-    'access arguments' => array('access content'),
-    'page arguments' => array(2, 'popular_products', 'page'),
-    'weight' => 0,
   );
   $items['home/featured'] = array(
     'title' => t('Featured'),
     'description' => t('View products we think are interesting.'),
-    'type' => MENU_LOCAL_TASK,
+    'type' => MENU_DEFAULT_LOCAL_TASK,
     'page callback' => 'vibio_product_displays_show_view',
     'page arguments' => array(2, 'flag_featured', 'page'),
     'access arguments' => array('access content'),
+    'weight' => 0,
+  );
+  $items['home/popular'] = array(
+    'title' => t('Popular'),
+    'description' => t('View products that people want and have the most.'),
+    'type' => MENU_LOCAL_TASK,
+    'access arguments' => array('access content'),
+    'page arguments' => array(2, 'popular_products', 'page'),
     'weight' => 1,
   );
   $items['home/for-sale'] = array(

@@ -4528,9 +4528,6 @@ a.btn-want:hover {
 #form-column-right #edit-privacy-setting-wrapper {
 	height: 85px
 }
-#block-vibio_product_displays-filter {
-	display: none;
-}
 .page-product-new-product #edit-body-wrapper, .page-product-new #edit-body-wrapper, .page-product-new-item #edit-body-wrapper {
 	position: relative;
 	clear: both;

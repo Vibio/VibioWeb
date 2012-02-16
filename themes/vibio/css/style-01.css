@@ -7,6 +7,12 @@ div#edit-field-have-want-like-wrapper, div#block-collection-related_collection .
 body.front div.view-flag-featured .pager {
 	display: none
 }
+body{
+	background:url(../images/right_container_texture.png) repeat;
+	margin: 0;
+	padding: 0;
+}
+
 .item-list .pager li.pager-ellipsis {
 }
 .page-collections-new h1#page_title {
@@ -332,11 +338,6 @@ div.congrats-popup {
 	margin-right: 5px
 }
 /*Pages*/
-body.not-front, body.front {
-	background: url(../images/bgtile.jpg) repeat scroll 0 0;
-	margin: 0;
-	padding: 0
-}
 #page-wrapper {
 	padding: 10px
 }

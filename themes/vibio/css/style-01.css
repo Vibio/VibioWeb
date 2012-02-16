@@ -7,11 +7,15 @@ div#edit-field-have-want-like-wrapper, div#block-collection-related_collection .
 body.front div.view-flag-featured .pager {
 	display: none
 }
+/* Html Reset*/
+
 body{
 	background:url(../images/right_container_texture.png) repeat;
 	margin: 0;
 	padding: 0;
+	font-size: 100%; /* Fixes exaggerated text resizing in IE6 and IE7 */
 }
+
 
 .item-list .pager li.pager-ellipsis {
 }
@@ -1964,12 +1968,6 @@ form#user-profile-form input#edit-submit {
 }
 form#user-profile-form input#edit-submit:hover {
 	background-position: 0px -55px
-}
-/* Html Reset*/
-body {
-	font-size: 100%; /* Fixes exaggerated text resizing in IE6 and IE7 */
-	margin: 0;
-	background: #FFF
 }
 #skip-link, #page {
 	font-size: 13px

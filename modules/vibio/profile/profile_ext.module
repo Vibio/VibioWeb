@@ -257,7 +257,7 @@ function profile_ext_display_block($u)
 	}
 
 	global $user;
-  $vars['friend_count'] = module_exists("network") ? count(_network_get_friends($user->uid, 1)) : 0;
+  $vars['friend_count'] = module_exists("network") ? count(_network_get_friends($u->uid, 1)) : 0;
 
 
 	// how many buying and selling offers? Needs rethinking at design level

@@ -155,35 +155,42 @@ function network_ebay_remove_account($uid)
  */
 function _network_get_friends($uid, $rel_type)
 {
-	$cache_key = "friends:{$uid}:{$rel_type}";
+    //See if we can retrieve cache
+    $cache_key = "friends:{$uid}:{$rel_type}";
 	if ($cache = cache_get($cache_key, "cache_network"))
-	{
-		return $cache->data;
-	}
+    {
+        //If so, return the cache and exit
+        return $cache->data;
+    }
 
+    //If not, start constructing the network array
 	$params = array(
 		"user"		=> $uid,
 		"approved"	=> 1,
 	);
 	$options = array(
-        "include_user_info"	=> FALSE,
+        "include_user_info"	=> TRUE,
 	);
 	
 	$friends = array();
-    
+
+    //Load the related users
     foreach (user_relationships_load($params, $options) as $rel)
 	{
-		if ($rel->requester_id != $uid)
-		{
-			$friends[] = $rel->requester_id;
+        //Insert friend uids, make sure we aren't entering the user's $uid 
+        if ($rel->requester_id != $uid)
+        {
+            $friends[] = $rel->requester_id;
 		}
 		elseif ($rel->requestee_id != $uid)
 		{
 			$friends[] = $rel->requestee_id;
 		}
 	}
-	cache_set($cache_key, $friends, "cache_network");
-	return $friends;
+    //Set the cache
+    cache_set($cache_key, $friends, "cache_network");
+    
+    return $friends;
 }
 
 /**

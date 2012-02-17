@@ -490,7 +490,7 @@ function product_preprocess_search_result(&$vars)
         $you_possess = 'you-want';
         break;
       default:
-        $possess_words = 'You Own This mow!';
+        $possess_words = 'You Own This!';
         $you_possess = 'you-own-it';
     }
 

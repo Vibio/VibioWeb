@@ -17,6 +17,51 @@ function vibio_product_displays_ctools_plugin_api() {
 }
 
 /**
+ * Implementation of hook_flag_default_flags().
+ */
+function vibio_product_displays_flag_default_flags() {
+  $flags = array();
+  // Exported flag: "Sink".
+  $flags['sink'] = array(
+    'content_type' => 'node',
+    'title' => 'Sink',
+    'global' => '1',
+    'types' => array(
+      '0' => 'product',
+    ),
+    'flag_short' => 'sink',
+    'flag_long' => 'Click to make this product sink to the bottom of the list.',
+    'flag_message' => 'Product sunk.',
+    'unflag_short' => 'un-sink',
+    'unflag_long' => 'Click to make this product not sink to the bottom anymore.',
+    'unflag_message' => 'Product un-sunk.',
+    'unflag_denied_text' => '',
+    'link_type' => 'toggle',
+    'roles' => array(
+      'flag' => array(
+        '0' => '4',
+      ),
+      'unflag' => array(
+        '0' => '4',
+      ),
+    ),
+    'show_on_page' => 1,
+    'show_on_teaser' => 0,
+    'show_on_form' => 1,
+    'access_author' => '',
+    'i18n' => 0,
+    'flag_confirmation' => 'This product will sink to the bottom of the list and won\'t show up in the home page views (and maybe others). You sure?',
+    'unflag_confirmation' => 'This product won\'t be sunk anymore. Cool?',
+    'api_version' => 2,
+    'module' => 'vibio_product_displays',
+    'locked' => array(
+      '0' => 'name',
+    ),
+  );
+  return $flags;
+}
+
+/**
  * Implementation of hook_rules_defaults().
  */
 function vibio_product_displays_rules_defaults() {

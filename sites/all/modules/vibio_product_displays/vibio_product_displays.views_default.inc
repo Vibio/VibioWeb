@@ -47,10 +47,19 @@ function vibio_product_displays_views_default_views() {
   $handler->display->display_options['relationships']['field_product_nid']['table'] = 'node_data_field_product';
   $handler->display->display_options['relationships']['field_product_nid']['field'] = 'field_product_nid';
   $handler->display->display_options['relationships']['field_product_nid']['required'] = 1;
+  /* Relationship: Flags: sink counter */
+  $handler->display->display_options['relationships']['flag_count_rel']['id'] = 'flag_count_rel';
+  $handler->display->display_options['relationships']['flag_count_rel']['table'] = 'node';
+  $handler->display->display_options['relationships']['flag_count_rel']['field'] = 'flag_count_rel';
+  $handler->display->display_options['relationships']['flag_count_rel']['relationship'] = 'field_product_nid';
+  $handler->display->display_options['relationships']['flag_count_rel']['label'] = 'sink counter';
+  $handler->display->display_options['relationships']['flag_count_rel']['required'] = 0;
+  $handler->display->display_options['relationships']['flag_count_rel']['flag'] = 'sink';
   /* Field: Content: Main Image (field_main_image) */
   $handler->display->display_options['fields']['field_main_image_fid']['id'] = 'field_main_image_fid';
   $handler->display->display_options['fields']['field_main_image_fid']['table'] = 'node_data_field_main_image';
   $handler->display->display_options['fields']['field_main_image_fid']['field'] = 'field_main_image_fid';
+  $handler->display->display_options['fields']['field_main_image_fid']['relationship'] = 'field_product_nid';
   $handler->display->display_options['fields']['field_main_image_fid']['alter']['alter_text'] = 0;
   $handler->display->display_options['fields']['field_main_image_fid']['alter']['make_link'] = 1;
   $handler->display->display_options['fields']['field_main_image_fid']['alter']['absolute'] = 0;
@@ -77,6 +86,7 @@ function vibio_product_displays_views_default_views() {
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
   $handler->display->display_options['fields']['nid']['table'] = 'node';
   $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['relationship'] = 'field_product_nid';
   $handler->display->display_options['fields']['nid']['ui_name'] = 'Node ID';
   $handler->display->display_options['fields']['nid']['label'] = '';
   $handler->display->display_options['fields']['nid']['alter']['alter_text'] = 0;
@@ -102,6 +112,7 @@ function vibio_product_displays_views_default_views() {
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['relationship'] = 'field_product_nid';
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['alter']['alter_text'] = 0;
   $handler->display->display_options['fields']['title']['alter']['make_link'] = 1;
@@ -124,6 +135,11 @@ function vibio_product_displays_views_default_views() {
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
+  /* Sort criterion: Flags: Flag counter */
+  $handler->display->display_options['sorts']['count']['id'] = 'count';
+  $handler->display->display_options['sorts']['count']['table'] = 'flag_counts';
+  $handler->display->display_options['sorts']['count']['field'] = 'count';
+  $handler->display->display_options['sorts']['count']['relationship'] = 'flag_count_rel';
   /* Sort criterion: Node: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -159,8 +175,9 @@ function vibio_product_displays_views_default_views() {
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
   $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['relationship'] = 'field_product_nid';
   $handler->display->display_options['filters']['type']['value'] = array(
-    'vibio_item' => 'vibio_item',
+    'product' => 'product',
   );
   /* Filter: Content: For Sale? (field_posting_type) - Allowed values */
   $handler->display->display_options['filters']['field_posting_type_value_many_to_one']['id'] = 'field_posting_type_value_many_to_one';
@@ -198,6 +215,7 @@ function vibio_product_displays_views_default_views() {
     t('Text area'),
     t('<a name="top" id="top"></a>'),
     t('Product'),
+    t('sink counter'),
     t('_blank'),
     t('All'),
     t('Page'),
@@ -241,6 +259,13 @@ function vibio_product_displays_views_default_views() {
   $handler->display->display_options['header']['area']['content'] = '<a name="top" id="top"></a>';
   $handler->display->display_options['header']['area']['format'] = '2';
   $handler->display->display_options['header']['area']['tokenize'] = 0;
+  /* Relationship: Flags: sink counter */
+  $handler->display->display_options['relationships']['flag_count_rel']['id'] = 'flag_count_rel';
+  $handler->display->display_options['relationships']['flag_count_rel']['table'] = 'node';
+  $handler->display->display_options['relationships']['flag_count_rel']['field'] = 'flag_count_rel';
+  $handler->display->display_options['relationships']['flag_count_rel']['label'] = 'sink counter';
+  $handler->display->display_options['relationships']['flag_count_rel']['required'] = 0;
+  $handler->display->display_options['relationships']['flag_count_rel']['flag'] = 'sink';
   /* Field: Content: Main Image (field_main_image) */
   $handler->display->display_options['fields']['field_main_image_fid']['id'] = 'field_main_image_fid';
   $handler->display->display_options['fields']['field_main_image_fid']['table'] = 'node_data_field_main_image';
@@ -342,6 +367,11 @@ function vibio_product_displays_views_default_views() {
   $handler->display->display_options['fields']['field_item_count_value']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_item_count_value']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['field_item_count_value']['link_to_node'] = 0;
+  /* Sort criterion: Flags: Flag counter */
+  $handler->display->display_options['sorts']['count']['id'] = 'count';
+  $handler->display->display_options['sorts']['count']['table'] = 'flag_counts';
+  $handler->display->display_options['sorts']['count']['field'] = 'count';
+  $handler->display->display_options['sorts']['count']['relationship'] = 'flag_count_rel';
   /* Sort criterion: Content: Have and want count (field_item_count) */
   $handler->display->display_options['sorts']['field_item_count_value']['id'] = 'field_item_count_value';
   $handler->display->display_options['sorts']['field_item_count_value']['table'] = 'node_data_field_item_count';
@@ -406,6 +436,7 @@ function vibio_product_displays_views_default_views() {
     t('Offset'),
     t('Text area'),
     t('<a name="top" id="top"></a>'),
+    t('sink counter'),
     t('_blank'),
     t('Have and want count'),
     t('All'),
@@ -448,6 +479,13 @@ function vibio_product_displays_views_default_views() {
   $handler->display->display_options['header']['area']['content'] = '<a name="top" id="top"></a>';
   $handler->display->display_options['header']['area']['format'] = '2';
   $handler->display->display_options['header']['area']['tokenize'] = 0;
+  /* Relationship: Flags: sink counter */
+  $handler->display->display_options['relationships']['flag_count_rel']['id'] = 'flag_count_rel';
+  $handler->display->display_options['relationships']['flag_count_rel']['table'] = 'node';
+  $handler->display->display_options['relationships']['flag_count_rel']['field'] = 'flag_count_rel';
+  $handler->display->display_options['relationships']['flag_count_rel']['label'] = 'sink counter';
+  $handler->display->display_options['relationships']['flag_count_rel']['required'] = 0;
+  $handler->display->display_options['relationships']['flag_count_rel']['flag'] = 'sink';
   /* Field: Content: Main Image (field_main_image) */
   $handler->display->display_options['fields']['field_main_image_fid']['id'] = 'field_main_image_fid';
   $handler->display->display_options['fields']['field_main_image_fid']['table'] = 'node_data_field_main_image';
@@ -525,6 +563,11 @@ function vibio_product_displays_views_default_views() {
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = 0;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
+  /* Sort criterion: Flags: Flag counter */
+  $handler->display->display_options['sorts']['count']['id'] = 'count';
+  $handler->display->display_options['sorts']['count']['table'] = 'flag_counts';
+  $handler->display->display_options['sorts']['count']['field'] = 'count';
+  $handler->display->display_options['sorts']['count']['relationship'] = 'flag_count_rel';
   /* Sort criterion: Node: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -590,6 +633,7 @@ function vibio_product_displays_views_default_views() {
     t('Offset'),
     t('Text area'),
     t('<a name="top" id="top"></a>'),
+    t('sink counter'),
     t('_blank'),
     t('All'),
     t('Page'),

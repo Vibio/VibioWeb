@@ -479,6 +479,7 @@ function product_preprocess_search_result(&$vars)
 	if ($vars['type'] == "vibio_item")
 	{
 		$item_nid = product_user_owns_product($vars['result']['node']->nid);
+    $possess = get_possess(node_load($item_nid));
 	
     switch ($possess) {
       case '30':

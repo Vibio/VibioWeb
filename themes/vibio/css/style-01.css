@@ -10,10 +10,14 @@ body.front div.view-flag-featured .pager {
 /* Html Reset*/
 
 body {
-	background: url(../images/right_container_texture.png) repeat;
+	background: url(../images/new_global_background.jpg) repeat;
 	margin: 0;
 	padding: 0;
 	font-size: 100%; /* Fixes exaggerated text resizing in IE6 and IE7 */
+}
+/*fonts*/
+.quicksand {
+	font-family: 'Quicksand', sans-serif;
 }
 /*box shadow*/
 #content-area .rounded_content, .logged-in .sidebar .rounded_content {
@@ -32,10 +36,248 @@ body {
 .page-collections-new h1#page_title {
 	display: block
 }
+/*Header*/
+#header {
+	width: 962px;
+	margin: 0 auto
+}
+#header-bgd {
+	background: url(../images/bgd_header.png) repeat-x;
+}
+#header_quick_actions {
+	width: 440px;
+	height: 41px;
+	float: left;
+	font-size: 12px;
+}
+/*splash page header buttons*/
+#sign-in-btn {
+	list-style: none;
+	padding: 0;
+	margin: 0
+}
+#sign-in-btn li {
+	float: left;
+	width: 104px;
+	text-align: center
+}
+#sign-in-btn li a {
+	display: block;
+	font-size: 13px;
+	padding: 10px;
+	padding: 18px 20px;
+	text-shadow: 1px 2px 0px #000000;
+}
+#sign-in-btn li a:hover {
+	background: url(../images/head_hover.png) no-repeat;
+}
+#header_quick_actions a {
+	color: #FFFFFF
+}
+#header_quick_actions a:hover {
+	color: #00AEF0
+}
+#logo {
+	float: left;
+	margin: 0 64px 0 0
+}
+h1#site-name, div#site-name {
+	margin: 0;
+	font-size: 2em;
+	line-height: 1.3em
+}
+#site-name a:link, #site-name a:visited {
+	color: #000;
+	text-decoration: none
+}
+#site-name a:hover, #site-name a:focus {
+	text-decoration: underline
+}
+/*Username dropdown background*/
+
+#profile-menu {
+	position: relative;
+	cursor: pointer;
+	height: 14px;
+	padding: 18px 57px 18px 19px;
+}
+#profile-menu:hover {
+	background: url(../images/header_hover_1.png) no-repeat
+}
+#profile-submenu {
+	position: absolute;
+	left: 0;
+	top: 44px;
+	background: url(../images/username_drop_bgd.png) no-repeat 0 0;
+	font-weight: bold;
+	height: 119px;
+	width: 130px;
+	z-index: 100;
+}
+#profile-submenu ul {
+	list-style: none;
+	padding: 17px 0 0 10px
+}
+#profile-submenu li {
+	height: 26px;
+	width: 110px;
+	background: url(../images/menu_seperator.png) no-repeat 1px 20px
+}
+#profile-submenu li a {
+	padding: 5px 0 5px 5px
+}
+#profile-submenu li.menu-last {
+	background: none
+}
+#profile-submenu li.menu-last a, #profile-submenu li a#user-faq {
+	padding-right: 55px
+}
+#profile-menu-wrapper {
+	float: left;
+}
+.profile-username {
+	color: #FFF;
+	padding-left: 21px;
+	cursor: pointer;
+}
+.profile-icon, .profile-arrow, #works-icon {
+	background: url(../images/header_icons.png) no-repeat;
+	display: block
+}
+.profile-icon {
+	width: 16px;
+	height: 16px;
+	background-position: -30px -9px;
+	position: absolute
+}
+#works-icon {
+	width: 20px;
+	height: 23px;
+	position: absolute;
+	right: 78px;
+	top: 8px
+}
+.profile-arrow {
+	width: 10px;
+	height: 10px;
+	background-position: -50px -14px
+}
+.profile-arrow, .profile-username {
+	float: left
+}
+/*header collections how works buttons*/
+
+#head-collections, #how-works {
+	padding: 18px 23px;
+	display: block;
+	float: left
+}
+#how-works {
+	padding: 18px 28px;
+	margin-left: 1px;
+}
+#head-collections:hover, #how-works:hover {
+	background: url(../images/header_hover_2.png) no-repeat
+}
+#search-box/* Wrapper for the search form */ {
+	float: right;
+}
+#search {
+	width: 335px;
+	margin-top: 8px;
+}
+#search_type_menu_container {
+}
+#edit-search-theme-form-1-wrapper {
+	float: left;
+	margin: 2px 0 0
+}
+#edit-search-theme-form-1-wrapper input.form-text {
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 0px;
+	-moz-border-radius-bottomright: 0px;
+	-moz-border-radius-bottomleft: 5px;
+	-webkit-border-radius: 5px 0px 0px 5px;
+	border-radius: 5px 0px 0px 5px;
+	height: 28px;
+	margin: 0;
+	padding: 0 5px;
+}
+#edit-search-theme-form-1 {
+	width: 220px;
+	margin: 0;
+	display: block
+}
+/* search type selector */
+#search_type_menu_container {
+	float: left;
+	display: block
+}
+#search_type_menu_container:hover {
+	cursor: pointer
+}
+#search_type_menu_container table {
+	margin: 0;
+}
+#search_type_menu_container table tbody {
+	border-top: 0
+}
+img#search_type_current {
+	width: 19px;
+	height: 19px
+}
+#search_type_menu_container tr {
+
+}
+#search_type_menu_container td {
+
+}
+/*Search Buttons dropdown images*/
+a.searchtype_vibio_item {
+	background: url(../images/btn_search_dropdown.png) no-repeat 7px 10px;
+	text-indent: -9999px;
+	display: block;
+	height: 42px
+}
+a.searchtype_vibio_item:hover {
+	background-position: 7px -153px
+}
+a.searchtype_user {
+	background: url(../images/btn_search_dropdown.png) no-repeat 7px -42px;
+	text-indent: -9999px;
+	display: block;
+	height: 42px
+}
+a.searchtype_user:hover {
+	background-position: 7px -205px
+}
+.search_type_submenu_container {
+	background: url(../images/bgd_search_drop.png) no-repeat 0 0;
+	display: block;
+	height: 113px;
+	width: 114px;
+	top: 2px;
+	left: 6px
+}
+.search_type_submenu_container table {
+	margin: 10px 0 0 0
+}
+.search_type_submenu_container .searchtype_image {
+	margin-bottom: -5px
+}
+#search input[type="submit"] {
+	background: transparent url(../images/btn_search.png) no-repeat 0 -1px;
+	width: 33px;
+	height: 32px;
+	border: none;
+	margin: 2px 0 0;
+	padding: 0;
+	cursor: pointer
+}
 /*Sidebar*/
 .logged-in .sidebar .rounded_content {
 	color: #556270;
-	height: 949px;
+	position: relative;
 }
 /*Popup after earning a badge*/
 #badge_alert_container_earned {
@@ -173,87 +415,6 @@ div.congrats-popup {
 	text-align: center;
 	font-size: 22px
 }
-/*Username dropdown background*/
-#profile_ext_header {
-	color: #FFF;
-	float: right;
-	margin-top: 10px;
-	width: 217px;
-	position: relative;
-	z-index: 1
-}
-#profile_ext_header a, .menuContainer a {
-	color: #FFF
-}
-#profile-menu {
-	overflow: hidden
-}
-#profile-submenu {
-	position: absolute;
-	left: -5px;
-	top: 20px;
-	background: url(../images/username_drop_bgd.png) no-repeat 0 0;
-	font-weight: bold;
-	height: 119px;
-	width: 130px
-}
-#profile-submenu ul {
-	list-style: none;
-	padding: 17px 0 0 10px
-}
-#profile-submenu li {
-	height: 26px;
-	width: 110px;
-	background: url(../images/menu_seperator.png) no-repeat 1px 20px
-}
-#profile-submenu li a {
-	padding: 5px 0 5px 5px
-}
-#profile-submenu li.menu-last {
-	background: none
-}
-#profile-submenu li.menu-last a, #profile-submenu li a#user-faq {
-	padding-right: 55px
-}
-#profile-menu-wrapper {
-	min-height: 30px;
-	width: 122px;
-	float: left
-}
-#help-header {
-	float: right;
-	margin-right: 4px
-}
-.profile-username {
-	color: #FFF;
-	padding-left: 21px;
-	cursor: pointer;
-}
-.profile-icon, .profile-arrow, #works-icon {
-	background: url(../images/header_icons.png) no-repeat;
-	display: block
-}
-.profile-icon {
-	width: 16px;
-	height: 16px;
-	background-position: -30px -9px;
-	position: absolute
-}
-#works-icon {
-	width: 20px;
-	height: 23px;
-	position: absolute;
-	right: 78px;
-	top: -7px
-}
-.profile-arrow {
-	width: 10px;
-	height: 10px;
-	background-position: -50px -14px
-}
-.profile-arrow, .profile-username {
-	float: left
-}
 /*First Time Popup*/
 #first-time-popup {
 	background: url(../images/first_time_bgd.png) no-repeat 0 0;
@@ -380,51 +541,6 @@ div.congrats-popup {
 	width: 100%;
 	height: auto;
 	padding: 2px 0 3px 0
-}
-/*
- * Header
- */
-#header_quick_actions {
-	width: 625px;
-	height: 41px;
-	float: right;
-	position: relative;
-	font-size: 12px
-}
-#header_quick_actions a:hover {
-	color: #00AEF0
-}
-#logo {
-	float: left;
-	margin: 0;
-	padding: 0
-}
-#logo img {
-	vertical-align: bottom
-}
-#name-and-slogan {
-	float: left
-}
-h1#site-name, div#site-name {
-	margin: 0;
-	font-size: 2em;
-	line-height: 1.3em
-}
-#site-name a:link, #site-name a:visited {
-	color: #000;
-	text-decoration: none
-}
-#site-name a:hover, #site-name a:focus {
-	text-decoration: underline
-}
-.slogan {
-	background: transparent url(../vibio-tagline.png) no-repeat;
-	top: 33px;
-	position: relative;
-	left: 130px;
-	text-indent: -4999px;
-	width: 200px;
-	height: 20px
 }
 p.section_title {
 	background: url("../images/long_border.png") no-repeat scroll 0 30px transparent;
@@ -719,67 +835,6 @@ ul.links li {
 .indent {
 	margin-left: 25px
 }
-/* search type selector */
-#search_type_menu_container {
-	float: left;
-	margin-right: -2px;
-	position: relative;
-	top: 1px
-}
-#search_type_menu_container:hover {
-	cursor: pointer
-}
-#search_type_menu_container table {
-	margin: 0;
-	position: relative
-}
-#search_type_menu_container table tbody {
-	border-top: 0
-}
-img#search_type_current {
-	width: 19px;
-	height: 19px
-}
-#search_type_menu_container tr {
-	position: relative;
-	z-index: 0
-}
-#search_type_menu_container td {
-	padding-right: 8px;
-	position: relative;
-	z-index: 2
-}
-/*Search Buttons dropdown images*/
-a.searchtype_vibio_item {
-	background: url(../images/btn_search_dropdown.png) no-repeat 7px 10px;
-	text-indent: -9999px;
-	display: block;
-	height: 42px
-}
-a.searchtype_vibio_item:hover {
-	background-position: 7px -153px
-}
-a.searchtype_user {
-	background: url(../images/btn_search_dropdown.png) no-repeat 7px -42px;
-	text-indent: -9999px;
-	display: block;
-	height: 42px
-}
-a.searchtype_user:hover {
-	background-position: 7px -205px
-}
-.search_type_submenu_container {
-	background: url(../images/bgd_search_drop.png) no-repeat 0 0;
-	display: block;
-	height: 113px;
-	width: 114px
-}
-.search_type_submenu_container table {
-	margin: 10px 0 0 0
-}
-.search_type_submenu_container .searchtype_image {
-	margin-bottom: -5px
-}
 #content-area fieldset.rounded_content {
 	min-height: 0 !important;
 	background: #e0f2ff;
@@ -805,13 +860,6 @@ h5.menu_header {
 	margin-top: 10px
 }
 #user-login-form input[type='text'], #user-login-form input[type="password"] {
-	border: 1px solid #d5d5d5;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-	-webkit-box-shadow: inset 1px 1px 1px 0px #e3e3e3;
-	-moz-box-shadow: inset 1px 1px 1px 0px #e3e3e3;
-	box-shadow: inset 1px 1px 1px 0px #e3e3e3;
 	height: 30px;
 	width: 158px;
 	padding: 0 5px;
@@ -1601,49 +1649,6 @@ div.product_owners_results .action .wanted img {
 .container-inline div, .container-inline label/* Inline labels and form divs */ {
 	display: inline
 }
-#search-box/* Wrapper for the search form */ {
-	float: left;
-	margin-left: 10px;
-	width: 285px
-}
-#search {
-	position: relative;
-	z-index: 0
-}
-#search_type_menu_container {
-	z-index: 1
-}
-#edit-search-theme-form-1-wrapper {
-	left: 0px;
-	top: 0px;
-	z-index: 0
-}
-#edit-search-theme-form-1 {
-	color: #999;
-	border: 3px solid #2c3e53;
-	-webkit-border-radius: 7px;
-	-moz-border-radius: 7px;
-	border-radius: 7px;
-	height: 34px;
-	width: 303px;
-	padding: 0 0 0 85px;
-	position: absolute;
-	right: -106px;
-	top: 0;
-	z-index: 0;
-	font-size: 14px
-}
-#search input[type="submit"] {
-	background: transparent url(../images/search-icon.png) no-repeat top center;
-	width: 25px;
-	height: 24px;
-	border: 0;
-	position: absolute;
-	padding: 0;
-	margin: 0;
-	right: -98px !important;
-	top: 8px !important;
-}
 #user-login-form {
 	text-align: left; /* LTR */
 }
@@ -1761,16 +1766,17 @@ form#user-register input#edit-submit.form-submit {
 	background-image: url(/themes/vibio/images/progress/progressbar_high.png)
 }
 /* ----- Buttons---- */
+#search_type_menu_container table, #search_type_menu_container tbody, #search_type_menu_container tr, #search_type_menu_container td {
+	margin: 0;
+	padding: 0;
+	border: 0
+}
 .button {
 	background: url(/themes/vibio/images/search_button.png) no-repeat 0px 0px;
 	display: block;
-	position: relative;
-	z-index: 0;
-	width: 80px;
-	height: 33px;
+	width: 70px;
+	height: 32px;
 	text-indent: -9999px;
-	top: -0.9px;
-	left: -1px
 }
 img#searchtype_vibio_item, img#searchtype_user {
 	margin-left: 10px
@@ -2680,33 +2686,41 @@ a#profile_ext_displayblock_image {
 /*Upper Left Sidebar*/
 #upper_title {
 	height: 41px;
-	display: block;
 	width: 192px;
-	text-indent: -9999px
+	background: url(../images/btn_sidebar.png) no-repeat -1px -2px;
 }
 #upper_title a {
-	height: 43px;
 	float: left;
-	width: 95px;
-	display: block
+	padding: 11px 24px;
+	text-align: center;
+	display: block;
+	font-weight: bold;
+	font-size: 15px;
+	border-bottom: 1px solid #CCCCCC;
+	width: 47px
 }
-#upper_title .home-b {
-	background: url(../images/btn_home.png) no-repeat -1px -93px
+a.home-b {
+	color: #A3A3A3;
+	border-right: 1px solid #CCCCCC
 }
-#upper_title .home-b:hover {
-	background-position: -1px -48px
+a.profile-b {
+	color: #A3A3A3
 }
-#upper_title a.home-b.active {
-	background-position: -1px -3px
+#upper_title a.home-b:hover {
+	background: url(../images/btn_sidebar.png) no-repeat -1px -45px;
+	color: #FFFFFF
 }
-#upper_title a.profile-b.active {
-	background-position: 0 -3px
+#upper_title a.profile-b:hover {
+	background: url(../images/btn_sidebar.png) no-repeat -98px -45px;
+	color: #FFFFFF
 }
-#upper_title .profile-b {
-	background: url(../images/btn_profile.png) no-repeat 0 -93px
+a.home-b.active {
+	background-position: 0px 0px;
+	color: #00AEF0
 }
-#upper_title .profile-b:hover {
-	background-position: 0 -48px
+a.profile-b.active {
+	background-position: 0px 0px;
+	color: #00AEF0
 }
 /*Sidebar Little Profile Pic*/
 #profile_ext_displayblock_user_section {
@@ -3668,13 +3682,15 @@ ul.jquery_dropdown_list li a:hover {
 	background-position-y: -139px
 }
 #block-block-5 {
-	background: url(../images/sidebar_connect.png) no-repeat -1px 0;
+	background: url(../images/sidebar_connect.png) no-repeat;
 	padding: 0;
+	margin: 0;
 	color: #106F93;
 	font-weight: bold;
 	height: 255px;
 	width: 208px;
-	position: relative
+	position: absolute;
+	right: -8px
 }
 #block-block-5 .content {
 	position: absolute;

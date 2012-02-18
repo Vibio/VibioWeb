@@ -10,10 +10,7 @@
 		<link rel="stylesheet" href="/themes/vibio/css/jquery-ui.tabs.css" />
 		<link rel="stylesheet" href="/themes/vibio/css/vibio_dialog.css" />
 		<link rel="stylesheet" href="/themes/vibio/prettyphoto/css/prettyPhoto.css" />
-		<?php // hack in ctools modal
-			// ctools_include('modal');
-			// ctools_modal_add_js();
-		?>
+		<link href='http://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet' type='text/css'>
 		<?php print $scripts;?>
 		<script type="text/javascript" src="/themes/vibio/js/jquery-ui-1.8.2.custom.min.js"></script>
 		<script type="text/javascript" src="/themes/vibio/js/vibio_dialog.js"></script>
@@ -23,24 +20,17 @@
 	</head>
 	<body class="<?php print $classes;?>">
 		<div id="fb-root"></div>
+	<div id="header-bgd">
 		<div id="header">
-			<div class="section clearfix">
-				<div id="name-and-slogan">
-					<a href="<?php print $front_page;?>" title="<?php print t('Home');?>" rel="home"> <img src='/themes/vibio/vibio-logo.png' /> </a>
-				</div>
-				<div class="slogan">
-					<?php print $site_slogan;?>
+			<div id="logo">
+					<a href="<?php print $front_page;?>" title="<?php print t('Home');?>" rel="home"> <img src='/themes/vibio/images/logo_ribbon.png' /> </a>
 				</div>
 				<?php
-				echo "<div id='header_quick_actions'>";
-				if ($search_box) {
-					echo "<div id='search-box'>{$search_box}</div>";
-				}
-				echo $profile_ext_header;
-				echo "</div>";
-
+				echo "<div id='header_quick_actions'>$profile_ext_header</div>";
+				echo "<div id='search-box'>$search_box</div>";
 				echo $header;
 				?>
+			<div class="section clearfix"></div>
 			</div>
 		</div>
 		<div id="page-wrapper">

@@ -45,10 +45,89 @@ body {
 	background: url(../images/bgd_header.png) repeat-x;
 }
 #header_quick_actions {
-	width: 440px;
 	height: 41px;
 	float: left;
 	font-size: 12px;
+}
+/*header fb logged out*/
+#splash-fb-bgd {
+	background: url(../images/splash_fb.png) repeat-x;
+	position: absolute;
+	left: 0;
+	top: 51px;
+	width: 100%;
+	height: 50px
+}
+#splash-fb {
+	height: 50px;
+	width: 555px;
+	margin: 0 auto;
+	color: #556270;
+	font-size: 16px;
+	font-weight: bold;
+}
+#splash-fb p {
+	float: left
+}
+p#splash-signin {
+	margin: 13px 0 0
+}
+#splash-fb-btn {
+	margin: 9px 15px 0;
+}
+#splash-fb span {
+	margin: 0 15px
+}
+#splash-fb a {
+	color: #FFFFFF;
+	font-weight: 200
+}
+#splash-fb a:hover {
+	color: #556270
+}
+span#or {
+	font-size: 13px;
+	margin: 0 8px 0 0
+}
+/*splash page top content*/
+#splash-top {
+	width: 960px;
+	margin: 21px auto 40px;
+	height: 360px
+}
+#splash-text {
+	width: 345px;
+	float: left;
+	padding-top: 36px;
+	margin-right: 14px
+}
+#splash-video {
+	float: left;
+	padding-top: 30px;
+	position: relative;
+}
+#splash-frame{
+	position: absolute;
+	top: 25px;
+	left: 0;
+	cursor: pointer
+}
+#splash-t1 {
+	font-size: 29px;
+	line-height: 40px;
+	margin: 0
+}
+#splash-t2 {
+	font-size: 15px;
+	line-height: 22px;
+	font-weight: 300;
+	margin: 26px 0 22px;
+}
+#splash-t3 {
+	margin: 0
+}
+#splash-t4 {
+	margin: 10px 0 0 -4px
 }
 /*splash page header buttons*/
 #sign-in-btn {
@@ -79,7 +158,11 @@ body {
 }
 #logo {
 	float: left;
-	margin: 0 64px 0 0
+	margin: 0 64px 0 0;
+}
+.not-logged-in #logo {
+	position: relative;
+	z-index: 200
 }
 h1#site-name, div#site-name {
 	margin: 0;
@@ -1500,18 +1583,10 @@ div.product_owners_results .action .wanted img {
 }
 /*layout-fixed*/
 #page-wrapper, .region-page-closure {
-	margin-left: auto;
-	margin-right: auto;
+	margin: 0 auto;
 	width: 960px
 }
 /*Header*/
-#header {
-	height: 82px
-}
-#header .section {
-}
-#search-box {
-}
 .region-header {
 	clear: both; /* Clear the logo */
 }

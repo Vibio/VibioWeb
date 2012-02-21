@@ -4,7 +4,7 @@ div#edit-field-have-want-like-wrapper, div#block-collection-related_collection .
 	display: none
 }
 /*pager on front page that masonry will re-hide*/
-body.front div.view-flag-featured .pager {
+body.front div.view-flag-featured .pager, .not-logged-in.section-home ul.pager{
 	display: none
 }
 /* Html Reset*/
@@ -106,7 +106,7 @@ span#or {
 	padding-top: 30px;
 	position: relative;
 }
-#splash-frame{
+#splash-frame {
 	position: absolute;
 	top: 25px;
 	left: 0;
@@ -357,6 +357,46 @@ a.searchtype_user:hover {
 	padding: 0;
 	cursor: pointer
 }
+/*New Splash Main Content*/
+
+.front.not-logged-in #content-area .rounded_content, .not-logged-in.section-home #content-area .rounded_content{
+	border: none;
+	-webkit-box-shadow: 0 0 0 0;
+	-moz-box-shadow: 0 0 0 0;
+	-o-box-shadow: 0 0 0 0;
+	-ms-box-shadow: 0 0 0 0;
+	box-shadow: 0 0 0 0;
+	border-radius: 0;
+	-moz-border-radius: 0;
+	-webkit-border-radius: 0;
+	background: url(../images/bgd_masonry.png) no-repeat;
+}
+.front.not-logged-in #page_title, .not-logged-in.section-home  #page_title, 
+.front.not-logged-in h2.title,  .not-logged-in.section-home h2.title, 
+.front.not-logged-in #edit-categories-wrapper label, .not-logged-in.section-home #edit-categories-wrapper label,
+.front.not-logged-in  #info-button , .not-logged-in.section-home #info-button,
+.front.not-logged-in div.item-list, .not-logged-in.section-home div.item-list{
+	display: none
+}
+
+.front.not-logged-in .region-content-top, .not-logged-in.section-home .region-content-top{
+	float: right;
+}
+.front.not-logged-in .tabs, .not-logged-in.section-home .tabs{
+	float:left
+}
+
+.front.not-logged-in .view-display-id-page, .not-logged-in.section-home .view-display-id-page{clear: both}
+
+.front.not-logged-in , .not-logged-in.section-home{}
+.front.not-logged-in , .not-logged-in.section-home{}
+.front.not-logged-in , .not-logged-in.section-home{}
+.front.not-logged-in , .not-logged-in.section-home{}
+.front.not-logged-in , .not-logged-in.section-home{}
+.front.not-logged-in , .not-logged-in.section-home{}
+.front.not-logged-in , .not-logged-in.section-home{}
+
+
 /*Sidebar*/
 .logged-in .sidebar .rounded_content {
 	color: #556270;
@@ -1050,18 +1090,7 @@ div.privatemsg-box-fb div.middle-column div.name {
 	margin: 0;
 	padding: 0
 }
-/*Not Logged In Pages*/
-.not-logged-in h1#page_title {
-	margin: 1px 0 10px 0px;
-	padding-left: 8px
-}
-.not-logged-in div.tabs {
-	margin: 0 0 25px
-}
-.views_slideshow_singleframe_previous {
-	background: transparent url(../images/arrow-gray-left.png) top left no-repeat;
-	text-indent: -5000px
-}
+
 /* discussion box */
 #neg-discuss {
 	width: 340px;

@@ -4,7 +4,7 @@ div#edit-field-have-want-like-wrapper, div#block-collection-related_collection .
 	display: none
 }
 /*pager on front page that masonry will re-hide*/
-body.front div.view-flag-featured .pager, .not-logged-in.section-home ul.pager{
+body.front div.view-flag-featured .pager, .not-logged-in.section-home ul.pager {
 	display: none
 }
 /* Html Reset*/
@@ -359,7 +359,7 @@ a.searchtype_user:hover {
 }
 /*New Splash Main Content*/
 
-.front.not-logged-in #content-area .rounded_content, .not-logged-in.section-home #content-area .rounded_content{
+.front.not-logged-in #content-area .rounded_content, .not-logged-in.section-home #content-area .rounded_content {
 	border: none;
 	-webkit-box-shadow: 0 0 0 0;
 	-moz-box-shadow: 0 0 0 0;
@@ -371,32 +371,37 @@ a.searchtype_user:hover {
 	-webkit-border-radius: 0;
 	background: url(../images/bgd_masonry.png) no-repeat;
 }
-.front.not-logged-in #page_title, .not-logged-in.section-home  #page_title, 
-.front.not-logged-in h2.title,  .not-logged-in.section-home h2.title, 
-.front.not-logged-in #edit-categories-wrapper label, .not-logged-in.section-home #edit-categories-wrapper label,
-.front.not-logged-in  #info-button , .not-logged-in.section-home #info-button,
-.front.not-logged-in div.item-list, .not-logged-in.section-home div.item-list{
+.front.not-logged-in #page_title, .not-logged-in.section-home  #page_title, .front.not-logged-in h2.title, .not-logged-in.section-home h2.title, .front.not-logged-in #edit-categories-wrapper label, .not-logged-in.section-home #edit-categories-wrapper label, .front.not-logged-in  #info-button, .not-logged-in.section-home #info-button, .front.not-logged-in div.item-list, .not-logged-in.section-home div.item-list {
 	display: none
 }
-
-.front.not-logged-in .region-content-top, .not-logged-in.section-home .region-content-top{
+.front.not-logged-in .region-content-top, .not-logged-in.section-home .region-content-top {
 	float: right;
+	margin: 13px 79px 20px 0
 }
-.front.not-logged-in .tabs, .not-logged-in.section-home .tabs{
-	float:left
+.front.not-logged-in .tabs, .not-logged-in.section-home .tabs {
+	float: left
 }
-
-.front.not-logged-in .view-display-id-page, .not-logged-in.section-home .view-display-id-page{clear: both}
-
-.front.not-logged-in , .not-logged-in.section-home{}
-.front.not-logged-in , .not-logged-in.section-home{}
-.front.not-logged-in , .not-logged-in.section-home{}
-.front.not-logged-in , .not-logged-in.section-home{}
-.front.not-logged-in , .not-logged-in.section-home{}
-.front.not-logged-in , .not-logged-in.section-home{}
-.front.not-logged-in , .not-logged-in.section-home{}
-
-
+.front.not-logged-in .view-display-id-page, .not-logged-in.section-home .view-display-id-page {
+	clear: both
+}
+.front.not-logged-in div.tabs, .not-logged-in.section-home div.tabs {
+	margin: 32px 0 20px 25px
+}
+.front.not-logged-in ul.tabs, .not-logged-in.section-home ul.tabs {
+	font-family: 'Quicksand', sans-serif;
+	font-size: 15px
+}
+.front.not-logged-in ul.primary li a:hover .tab, .not-logged-in.section-home ul.primary li a:hover .tab, .front.not-logged-in ul li a, .not-logged-in.section-home ul li a, .front.not-logged-in ul li a span, .not-logged-in.section-home ul li a span, .front.not-logged-in .tab, .not-logged-in.section-home .tab, .front.not-logged-in ul.primary li.active a .tab, .front.not-logged-in ul.primary li.active a:hover .tab, .front.not-logged-in ul.primary li.ui-state-active a .tab, .front.not-logged-in ul.primary li.ui-state-active a:hover .tab, .not-logged-in.section-home ul.primary li.active a .tab, .not-logged-in.section-home ul.primary li.active a:hover .tab, .not-logged-in.section-home ul.primary li.ui-state-active a .tab, .not-logged-in.section-home ul.primary li.ui-state-active a:hover .tab {
+	border-bottom: none
+}
+.front.not-logged-in, .not-logged-in.section-home {
+}
+.front.not-logged-in, .not-logged-in.section-home {
+}
+.front.not-logged-in, .not-logged-in.section-home {
+}
+.front.not-logged-in, .not-logged-in.section-home {
+}
 /*Sidebar*/
 .logged-in .sidebar .rounded_content {
 	color: #556270;
@@ -1090,7 +1095,6 @@ div.privatemsg-box-fb div.middle-column div.name {
 	margin: 0;
 	padding: 0
 }
-
 /* discussion box */
 #neg-discuss {
 	width: 340px;

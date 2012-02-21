@@ -167,6 +167,26 @@ function _product_forsale_owner_mail($nid){
     return $emails_string; 
 }
 
+/**
+ * Returns a comma-separated string with all the email
+ * addresses of the given product $nid's owners.
+ *
+ * WARNING: this uses the admin UID, thus bypassing privacy
+ * settings. It should only be used for admin purposes,
+ * in this case, emailing people about their item being
+ * featured.
+ */
+function _product_get_owner_mail($nid){
+    $owners = _product_get_product_owners($nid, 1);
+    $emails = array(); 
+    foreach($owners['vibio']['results'] as $owner){
+      $emails[] = $owner['user']['mail'];
+    }
+
+    $emails_string = implode($emails, ',');
+    return $emails_string; 
+}
+
 function _product_nid_from_item($item_nid) {
 	return vibio_item_product_nid($item_nid);
 }

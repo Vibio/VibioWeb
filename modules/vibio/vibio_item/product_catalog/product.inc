@@ -59,7 +59,7 @@ function _product_get_owners($nid, $as_uid, $type="network", $page=0)
 	$network_check = $network ? " AND u.`uid` $network_op ($network)" : "";
 	
   //@todo SQL performance check?
-	$sql = "SELECT n.`nid`, n.`title`, u.`uid`, u.`name`, u.`picture`
+	$sql = "SELECT n.`nid`, n.`title`, u.`mail`, u.`uid`, u.`name`, u.`picture`
 			FROM {node} n JOIN {users} u JOIN {privacy_node} p
 				ON n.`uid`=u.`uid` AND p.`nid`=n.`nid`
 			WHERE p.`setting` <= %d
@@ -86,7 +86,8 @@ function _product_get_owners($nid, $as_uid, $type="network", $page=0)
 				"nid"	=> $row['nid'],
 			),
 			"user"	=> array(
-				"picture"	=> theme("user_picture", (object) $row),
+                "mail"      => $row['mail'],
+                "picture"	=> theme("user_picture", (object) $row),
 				//v1.0 
 				//"link"		=> $as_uid && $type == "network" && module_exists("dos") ? theme("dos_display", dos_get($row['uid'], false, $depth)) : "<br />".l($row['name'], "user/{$row['uid']}"),
 				// changes: if user logged in, print friend-chain; if not, print nothing
@@ -105,6 +106,65 @@ function _product_get_owners($nid, $as_uid, $type="network", $page=0)
 	);
 	cache_set($cache_key, $data, "cache_content", time() + PRODUCT_OWNER_CACHE_TTL);
 	return $data;
+}
+
+/**
+ * Given a product $nid, returns data about the sellers of the item and the
+ * items of the specified product type that they are selling.
+ */ 
+function product_get_sellers($nid){
+    $owners = array();
+
+    //Get all the sellers of the given product $nid
+	$sql = "SELECT n.`title`, u.`mail`, u.`uid`, u.`name`, u.`picture`
+			FROM {node} n JOIN {users} u ON n.`uid`=u.`uid`  
+				WHERE n.`nid` IN (
+					SELECT `nid`
+					FROM {content_type_vibio_item}
+                    WHERE `field_product_nid`=%d
+                    AND `field_posting_type_value` = 2
+                )";
+
+	$results = db_query($sql, $nid);
+
+	while ($row = db_fetch_array($results))
+	{
+		$owners[] = array(
+			"node"	=> array(
+				"link"	=> l($row['title'], "node/{$row['nid']}"),
+				"nid"	=> $row['nid'],
+			),
+			"user"	=> array(
+                "mail"      => $row['mail'],
+                "picture"	=> theme("user_picture", (object) $row),
+				//v1.0 
+				//"link"		=> $as_uid && $type == "network" && module_exists("dos") ? theme("dos_display", dos_get($row['uid'], false, $depth)) : "<br />".l($row['name'], "user/{$row['uid']}"),
+				// changes: if user logged in, print friend-chain; if not, print nothing
+				//  instead of printing the owner's name again.
+				"link"		=> $as_uid && $type == "network" && ($GLOBALS['user']->uid > 0) && module_exists("dos") ? theme("dos_display", dos_get($row['uid'], false, $depth)) : "", 
+
+				"uid"     => $row['uid'],  // stephen adds, to highlight
+			),
+		);
+    }
+
+    return $owners;
+}
+
+/*
+ * Return a comma-separated string with all
+ * the email addresses of the given product
+ * $nid's for sale item owners.
+ */
+function _product_forsale_owner_mail($nid){
+    $owners = product_get_sellers($nid);
+    $emails = array(); 
+    foreach($owners as $owner){
+      $emails[] = $owner['user']['mail'];
+    }
+
+    $emails_string = implode($emails, ',');
+    return $emails_string; 
 }
 
 function _product_nid_from_item($item_nid) {

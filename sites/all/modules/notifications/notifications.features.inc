@@ -20,14 +20,15 @@ function notifications_rules_defaults() {
         '#conditions' => array(),
         '#actions' => array(
           '0' => array(
+            '#weight' => 0,
             '#type' => 'action',
             '#settings' => array(
-              'to' => '[node:author-mail]',
+              'to' => '<?php module_load_include("inc", "product"); print _product_get_owner_mail($node->nid); ?>',
               'from' => '',
               'subject' => 'Your Item Was Featured on Vibio',
               'message' => 'Hi [node:author-name],
 
-We thought your item "[node:title]" was so cool we decided to feature it on our front page. It should be up there for a couple days. Please let us know if you\'d like it taken down. Otherwise, kudos for having such awesome style!
+We thought your item "[node:title-raw]" was so cool we decided to feature it on our front page. It should be up there for a couple days. Please let us know if you\'d like it taken down. Otherwise, kudos for having such awesome style!
 
 Best,
 
@@ -38,6 +39,11 @@ Vibio Community Manager',
                   'message' => array(
                     '0' => 'node',
                   ),
+                  'to' => array(
+                    '0' => 'node',
+                  ),
+                ),
+                'rules_input_evaluator_php' => array(
                   'to' => array(
                     '0' => 'node',
                   ),
@@ -55,7 +61,6 @@ Vibio Community Manager',
                 '3' => 'to',
               ),
             ),
-            '#weight' => 0,
           ),
         ),
         '#version' => 6003,

@@ -89,6 +89,8 @@ function vibio_product_displays_filter_form(&$form_state) {
   $form['categories'] = taxonomy_form($vid, array($selected_tid));
   $form['categories']['#multiple'] = FALSE;
   $form['categories']['#size'] = 1;
+  // Make sure they can reset the form
+  $form['categories']['#required'] = FALSE;
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Go'),

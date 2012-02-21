@@ -94,8 +94,8 @@ function vibio_product_displays_filter_form(&$form_state) {
   // checks if a reset (empty) value exists. If it doesn't, it artificially
   // adds one.
   $has_please_choose = FALSE;
-  foreach ($form['categories']['#options'] as $option) {
-    if (key($option->option) == '') {
+  foreach ($form['categories']['#options'] as $key => $option) {
+    if ($key == '') {
       $has_please_choose = TRUE;
       break;
     }

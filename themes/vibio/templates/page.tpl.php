@@ -35,7 +35,7 @@
 		</div>
 		<?php //checks to see if this is the splash page and displays the following. Perhaps it should be moved elsewhere?
 		global $user;
-		if (!$user -> uid) {
+		if (!$user->uid && $is_front) {
 			echo '<div id="splash-fb-bgd">
 <div id="splash-fb"><p>Use Vibio For Free</p><p id="splash-fb-btn">';
 			if (module_exists('fboauth')) {

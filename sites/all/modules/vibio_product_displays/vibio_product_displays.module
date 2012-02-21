@@ -95,7 +95,7 @@ function vibio_product_displays_filter_form(&$form_state) {
   // adds one.
   $has_please_choose = FALSE;
   foreach ($form['categories']['#options'] as $key => $option) {
-    if ($key == '') {
+    if ($key === '') {
       $has_please_choose = TRUE;
       break;
     }

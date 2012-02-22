@@ -371,18 +371,20 @@ a.searchtype_user:hover {
 	-webkit-border-radius: 0;
 	background: url(../images/bgd_masonry.png) no-repeat;
 }
-.front.not-logged-in #page_title, .not-logged-in.section-home  #page_title, .front.not-logged-in h2.title, .not-logged-in.section-home h2.title, .front.not-logged-in #edit-categories-wrapper label, .not-logged-in.section-home #edit-categories-wrapper label, .front.not-logged-in  #info-button, .not-logged-in.section-home #info-button, .front.not-logged-in div.item-list, .not-logged-in.section-home div.item-list {
+.front.not-logged-in #block-heartbeat-publicheartbeat, .not-logged-in.section-home #block-heartbeat-publicheartbeat, .front.not-logged-in #block-collection-related_collection, .not-logged-in.section-home #block-collection-related_collection, .front.not-logged-in #page_title, .not-logged-in.section-home  #page_title, .front.not-logged-in h2.title, .not-logged-in.section-home h2.title, .front.not-logged-in #edit-categories-wrapper label, .not-logged-in.section-home #edit-categories-wrapper label, .front.not-logged-in  #info-button, .not-logged-in.section-home #info-button, .front.not-logged-in div.item-list, .not-logged-in.section-home div.item-list {
 	display: none
 }
 .front.not-logged-in .region-content-top, .not-logged-in.section-home .region-content-top {
-	float: right;
-	margin: 13px 79px 20px 0
+	/*float: right;*/
+	margin: 0
 }
 .front.not-logged-in .tabs, .not-logged-in.section-home .tabs {
 	float: left
 }
 .front.not-logged-in .view-display-id-page, .not-logged-in.section-home .view-display-id-page {
-	clear: both
+	clear: both;
+	margin-left: 10px;
+	width: 650px
 }
 .front.not-logged-in div.tabs, .not-logged-in.section-home div.tabs {
 	margin: 32px 0 20px 25px
@@ -395,26 +397,26 @@ a.searchtype_user:hover {
 	border-bottom: none
 }
 .front.not-logged-in .view.view-flag-featured .view-content, .not-logged-in.section-home .view.view-flag-featured .view-content {
-	width: 750px;
+	width: 670px;
 }
 .front.not-logged-in .views-fluidgrid-item .views-field-field-main-image-fid, .not-logged-in.section-home .views-fluidgrid-item .views-field-field-main-image-fid {
-	width: 190px;
+	width: 180px;
 	margin: 0;
 	padding: 0
 }
 .front.not-logged-in .views-fluidgrid-item, .not-logged-in.section-home .views-fluidgrid-item {
-	width: 200px;
-	padding: 0px;
+	width: auto;
+	padding: 9px 9px 22px;
 	float: none;
-	margin: 0px
+	margin: 0 0 21px;
 }
 .front.not-logged-in .views-fluidgrid-item .views-field-title, .not-logged-in.section-home .views-fluidgrid-item .views-field-title {
-	width: 190px;
+	width: 180px;
 	margin: 0;
 	padding: 0
 }
 .front.not-logged-in .views-fluidgrid-item .field-content, .not-logged-in.section-home .views-fluidgrid-item .field-content {
-	width: 190px;
+	width: 180px;
 	margin: 0;
 	padding: 0
 }
@@ -422,6 +424,18 @@ a.searchtype_user:hover {
 .logged-in .sidebar .rounded_content {
 	color: #556270;
 	position: relative;
+}
+.front.not-logged-in .region-sidebar-first, .not-logged-in.section-home .region-sidebar-first {
+	
+}
+.front.not-logged-in #page-wrapper, .not-logged-in.section-home .region-sidebar-first #page-wrapper {
+	padding: 0
+}
+.front.not-logged-in .views_message, .not-logged-in.section-home .views_message {
+	width: auto
+}
+.front.not-logged-in.sidebar-first #content, .not-logged-in.section-home.sidebar-first #content {
+	
 }
 /*Popup after earning a badge*/
 #badge_alert_container_earned {
@@ -1658,6 +1672,11 @@ div.product_owners_results .action .wanted img {
 	margin-left: 210px; /* LTR */ /* The width of .region-sidebar-first. */
 	margin-right: -958px; /* LTR */ /* Negative value of #content's width+left margin. */
 }
+.front.not-logged-in.sidebar-first #content, .not-logged-in.section-home.sidebar-first #content {
+	width: 666px;
+	margin-left: 294px; /* LTR */ /* The width of .region-sidebar-first. */
+	margin-right: -1255px; /* LTR */ /* Negative value of #content's width+left margin. */
+}
 .sidebar-second #content {
 	width: 680px;
 	margin-left: 0; /* LTR */
@@ -1700,15 +1719,17 @@ div.product_owners_results .action .wanted img {
  */
 .region-sidebar-first {
 	float: left; /* LTR */
-	width: 190px;
 	padding: 0; /* DO NOT CHANGE. Add padding or margin to .region-sidebar-first .section. */
-	margin: 0 -200px 0 0
+	margin: 0 -200px 0 0;
+	width: 190px;
 }
-.not-logged-in .region-sidebar-first {
-	margin-top: 0
-}
+
 .region-sidebar-first .section {
-	padding: 0
+	padding: 0;
+}
+.front.not-logged-in .region-sidebar-first, .not-logged-in.section-home .region-sidebar-first{
+	width: 294px;
+	margin: 0 -668px 0 0;
 }
 /*
  * Second sidebar

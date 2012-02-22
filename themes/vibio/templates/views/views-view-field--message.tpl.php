@@ -7,8 +7,18 @@ $row = $view->result[$view->row_index];
  *  supposed to come from / how it was supposed to be transformed,
  *  but it appears to be right there in the $row->message
  */
+
 $message = "";
 // Get's a second image if it's got an nid (item, product?)
+if ( !$output ) {
+	$output = $row->message;
+}
+$message .= "
+	<div class='views_message'>
+		$output
+	</div>
+";
+
 if ($row->nid)
 {
 	$is_item_message = strpos($row->message_id, "node") !== false || strpos($row->message_id, "item") !== false;
@@ -31,7 +41,7 @@ if ($row->nid)
 			<a href='/node/{$row->nid}'>
 				{$image}
 			</a>
-		</div>
+		</div><div class='clear'></div>
 	";
 }
 
@@ -55,15 +65,6 @@ print '</pre>';
 //  it's never set, not sure how this code ever worked (did it?)...
 // v1.1 force it.  On my personal homepage, $output never[?] appears
 //  to be set
-if ( !$output ) {
-	$output = $row->message;
-}
-$message .= "
-	<div class='views_message'>
-		$output
-	</div>
-	<div class='clear'></div>
-";
 
 echo $message;
 ?>

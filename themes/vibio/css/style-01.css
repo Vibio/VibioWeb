@@ -371,7 +371,7 @@ a.searchtype_user:hover {
 	-webkit-border-radius: 0;
 	background: url(../images/bgd_masonry.png) no-repeat;
 }
-.front.not-logged-in #block-heartbeat-publicheartbeat, .not-logged-in.section-home #block-heartbeat-publicheartbeat, .front.not-logged-in #block-collection-related_collection, .not-logged-in.section-home #block-collection-related_collection, .front.not-logged-in #page_title, .not-logged-in.section-home  #page_title, .front.not-logged-in h2.title, .not-logged-in.section-home h2.title, .front.not-logged-in #edit-categories-wrapper label, .not-logged-in.section-home #edit-categories-wrapper label, .front.not-logged-in  #info-button, .not-logged-in.section-home #info-button, .front.not-logged-in div.item-list, .not-logged-in.section-home div.item-list {
+.front.not-logged-in #block-heartbeat-publicheartbeat, .not-logged-in.section-home #block-heartbeat-publicheartbeat, .front.not-logged-in #block-collection-related_collection, .not-logged-in.section-home #block-collection-related_collection, .front.not-logged-in #page_title, .not-logged-in.section-home  #page_title, .front.not-logged-in #content-area h2.title, .not-logged-in.section-home #content-area h2.title, .front.not-logged-in #edit-categories-wrapper label, .not-logged-in.section-home #edit-categories-wrapper label, .front.not-logged-in  #info-button, .not-logged-in.section-home #info-button, .front.not-logged-in div.item-list, .not-logged-in.section-home div.item-list {
 	display: none
 }
 .front.not-logged-in .region-content-top, .not-logged-in.section-home .region-content-top {
@@ -420,22 +420,55 @@ a.searchtype_user:hover {
 	margin: 0;
 	padding: 0
 }
+.front.not-logged-in h2.title, .not-logged-in.section-home h2.title {
+	background: url(../images/bgd_sidebar_top.png) no-repeat 1px 0;
+	height: 36px;
+	padding: 42px 0 0 10px;
+	font-family: 'Quicksand', sans-serif;
+	color: #666666
+}
+.front.not-logged-in .view-user-hb-incoming-activity tr, .not-logged-in.section-home .view-user-hb-incoming-activity tr {
+	background: url(../images/bgd_sidebar_right.png) repeat-y 0 0;
+}
+.front.not-logged-in .views-field-message div, .not-logged-in.section-home .views-field-message div {
+	width: 233px
+}
+.front.not-logged-in .view-content .picture img, .not-logged-in.section-home .view-content .picture img, .front.not-logged-in .views_node_image_container img, .not-logged-in.section-home .views_node_image_container img {
+	width: 44px;
+	height: 44px;
+	border: 1px solid #D7D7D7
+}
+.front.not-logged-in div.views_message, .not-logged-in.section-home div.views_message {
+	float: left;
+	width: 163px;
+	padding: 0 10px 0 0;
+	font-size: 12px;
+	height: 48px;
+	overflow: hidden;
+}
+.front.not-logged-in div.views_node_image_container, .not-logged-in.section-home div.views_node_image_container {
+	width: auto;
+	margin: 0
+}
+.front.not-logged-in .views-field-picture .picture, .front.not-logged-in .views_node_image_container, .not-logged-in.section-home .views-field-picture .picture, .not-logged-in.section-home .views_node_image_container {
+	margin-right: 9px;
+	background: #FFFFFF;
+	height: 48px;
+	padding: 2px 2px 0px;
+	width: auto;
+	border: 1px solid #D7D7D7
+}
+.front.not-logged-in, .not-logged-in.section-home {
+}
+.front.not-logged-in, .not-logged-in.section-home {
+}
 /*Sidebar*/
 .logged-in .sidebar .rounded_content {
 	color: #556270;
 	position: relative;
 }
-.front.not-logged-in .region-sidebar-first, .not-logged-in.section-home .region-sidebar-first {
-	
-}
 .front.not-logged-in #page-wrapper, .not-logged-in.section-home .region-sidebar-first #page-wrapper {
 	padding: 0
-}
-.front.not-logged-in .views_message, .not-logged-in.section-home .views_message {
-	width: auto
-}
-.front.not-logged-in.sidebar-first #content, .not-logged-in.section-home.sidebar-first #content {
-	
 }
 /*Popup after earning a badge*/
 #badge_alert_container_earned {
@@ -1723,11 +1756,10 @@ div.product_owners_results .action .wanted img {
 	margin: 0 -200px 0 0;
 	width: 190px;
 }
-
 .region-sidebar-first .section {
 	padding: 0;
 }
-.front.not-logged-in .region-sidebar-first, .not-logged-in.section-home .region-sidebar-first{
+.front.not-logged-in .region-sidebar-first, .not-logged-in.section-home .region-sidebar-first {
 	width: 294px;
 	margin: 0 -668px 0 0;
 }
@@ -4112,7 +4144,7 @@ form#privatemsg-new p {
 	float: left
 }
 .views-field-picture, .views-field-message {
-	padding: 10px 0;
+	padding: 9px 0;
 	vertical-align: top
 }
 .views-field-picture .picture, .views_node_image_container {

@@ -15,7 +15,7 @@ $(function() {
     // We logged in?
     if ($('body').hasClass('front.not-logged-in, .not-logged-in.section-home')) {
       $('.view-content', $target_views).masonry({
-  columnWidth : 223,
+  columnWidth : 222,
   itemSelector : '.views-row:visible'
   });
     }

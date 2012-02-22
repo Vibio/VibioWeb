@@ -12,10 +12,19 @@ $(function() {
             
   //Once images load, arrange them with masonry
   $('.view-content', $target_views).imagesLoaded(function(){
-    $('.view-content', $target_views).masonry({
-columnWidth : 180,
-itemSelector : '.views-row:visible'
-});
+    // We logged in?
+    if ($('body').hasClass('.not-logged-in')) {
+      $('.view-content', $target_views).masonry({
+  columnWidth : 200,
+  itemSelector : '.views-row:visible'
+  });
+    }
+    else {
+      $('.view-content', $target_views).masonry({
+  columnWidth : 180,
+  itemSelector : '.views-row:visible'
+  });
+    }
     });
 
 	if ($(".view-content", $target_views).length > 0) {

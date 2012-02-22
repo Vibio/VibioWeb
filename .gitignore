@@ -1,6 +1,8 @@
 sites/default/settings.php
 /var/www/vibio/src/sites/default/settings.php
 settings.php
+sites/all/modules/mail_redirect
+sites/all/modules/mail_redirect/*
 modules/vibio/facebook/compare_with_facebook_module_fb
 WELCOME_TO_DEV
 WELCOME_TO_MESH

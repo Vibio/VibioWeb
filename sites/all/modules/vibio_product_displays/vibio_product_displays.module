@@ -89,6 +89,24 @@ function vibio_product_displays_filter_form(&$form_state) {
   $form['categories'] = taxonomy_form($vid, array($selected_tid));
   $form['categories']['#multiple'] = FALSE;
   $form['categories']['#size'] = 1;
+  // HACK: The Category vocabulary was set to Multiple Select at the time
+  // this was written, and I didn't want to break anything. The below code
+  // checks if a reset (empty) value exists. If it doesn't, it artificially
+  // adds one.
+  $has_please_choose = FALSE;
+  foreach ($form['categories']['#options'] as $key => $option) {
+    if ($key === '') {
+      $has_please_choose = TRUE;
+      break;
+    }
+  }
+  if ($has_please_choose === FALSE) {
+    $backwards_options = array_reverse($form['categories']['#options']);
+    $backwards_options[] = new stdClass();
+    $backwards_option = &end($backwards_options);
+    $backwards_option->option[''] = t('- Please choose -');
+    $form['categories']['#options'] = array_reverse($backwards_options);
+  }
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Go'),

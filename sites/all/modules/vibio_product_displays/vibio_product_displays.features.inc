@@ -50,13 +50,11 @@ function vibio_product_displays_flag_default_flags() {
     'show_on_form' => 1,
     'access_author' => '',
     'i18n' => 0,
-    'flag_confirmation' => 'This product will sink to the bottom of the list and won\'t show up in the home page views (and maybe others). You sure?',
-    'unflag_confirmation' => 'This product won\'t be sunk anymore. Cool?',
-    'api_version' => 2,
     'module' => 'vibio_product_displays',
     'locked' => array(
       '0' => 'name',
     ),
+    'api_version' => 2,
   );
   return $flags;
 }

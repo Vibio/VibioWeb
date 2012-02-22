@@ -35,23 +35,25 @@
 		</div>
 		<?php //checks to see if this is the splash page and displays the following. Perhaps it should be moved elsewhere?
 		global $user;
-		if (!$user -> uid) {
-			echo '<div id="splash-fb-bgd">
-<div id="splash-fb"><p>Use Vibio For Free</p><p id="splash-fb-btn">';
-			if (module_exists('fboauth')) {
-				$link_attributes = fboauth_action_link_properties('connect');
-				//Puts a fb button inside the link.
-				$link = l('<img src="/themes/vibio/images/btn_splash_fb.png" id="facebook-large" class="fb_login"/>', $link_attributes['href'], array('query' => $link_attributes['query'], 'html' => TRUE));
-				$linklarge = l('<img src="/themes/vibio/images/front_big_facebook.png" id="facebook-large" class="fb_login"/>', $link_attributes['href'], array('query' => $link_attributes['query'], 'html' => TRUE));
-				echo $link;
-			}
-			echo "</p><p id='splash-signin'><span id='or'>OR</span><a href='/user/register'>Sign Up Manually</a></p></div></div>";
-			echo "<div id='splash-top'><div id='splash-text'><p id='splash-t1' class='quicksand'>CREATE COLLECTIONS<br>THAT ARE UNIQUE TO<br>YOUR INTERESTS</p><p id='splash-t2'>Vibio is a site for people who are interested in sharing, trading and expressing themselves through the things they want and have.</p><p id='splash-t3'>Sign Up for Free</p><p id='splash-t4'>$linklarge</p></div><div id='splash-video'><iframe src='http://player.vimeo.com/video/31742490?title=0&amp;byline=0&amp;portrait=0' width='585' height='329' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe><div id='splash-frame'><img src='/themes/vibio/images/splash_vid_frame.png' alt='Vibio Video'/></div></div></div><div class='section clearfix'></div>";
-			echo "<script type='text/javascript'>
-				$('#splash-frame').hover(function() {
-					$(this).fadeOut(900);
-				}); </script>";
-}
+                if (!$user->uid ){
+                    if(strpos($_SERVER["REQUEST_URI"], 'home') != FALSE || $is_front) {
+                        echo '<div id="splash-fb-bgd">
+                                <div id="splash-fb"><p>Use Vibio For Free</p><p id="splash-fb-btn">';
+                        if (module_exists('fboauth')) {
+                            $link_attributes = fboauth_action_link_properties('connect');
+                            //Puts a fb button inside the link.
+                            $link = l('<img src="/themes/vibio/images/btn_splash_fb.png" id="facebook-large" class="fb_login"/>', $link_attributes['href'], array('query' => $link_attributes['query'], 'html' => TRUE));
+                            $linklarge = l('<img src="/themes/vibio/images/front_big_facebook.png" id="facebook-large" class="fb_login"/>', $link_attributes['href'], array('query' => $link_attributes['query'], 'html' => TRUE));
+                            echo $link;
+                        }
+                        echo "</p><p id='splash-signin'><span id='or'>OR</span><a href='/user/register'>Sign Up Manually</a></p></div></div>";
+                        echo "<div id='splash-top'><div id='splash-text'><p id='splash-t1' class='quicksand'>CREATE COLLECTIONS<br>THAT ARE UNIQUE TO<br>YOUR INTERESTS</p><p id='splash-t2'>Vibio is a site for people who are interested in sharing, trading and expressing themselves through the things they want and have.</p><p id='splash-t3'>Sign Up for Free</p><p id='splash-t4'>$linklarge</p></div><div id='splash-video'><iframe src='http://player.vimeo.com/video/31742490?title=0&amp;byline=0&amp;portrait=0' width='585' height='329' frameborder='0' webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe><div id='splash-frame'><img src='/themes/vibio/images/splash_vid_frame.png' alt='Vibio Video'/></div></div></div><div class='section clearfix'></div>";
+                        echo "<script type='text/javascript'>
+                            $('#splash-frame').hover(function() {
+                                $(this).fadeOut(900);
+                            }); </script>";
+                    }
+                }
 		?>
 		<div id="page-wrapper">
 			<div id="page">

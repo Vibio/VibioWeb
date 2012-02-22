@@ -375,19 +375,46 @@ a.searchtype_user:hover {
 	display: none
 }
 .front.not-logged-in .region-content-top, .not-logged-in.section-home .region-content-top {
-	/*float: right;*/
+	float: right;
 	margin: 0
 }
 .front.not-logged-in .tabs, .not-logged-in.section-home .tabs {
 	float: left
 }
+/* the select*/
+.front.not-logged-in #edit-categories option, .not-logged-in.section-home #edit-categories option {
+	width: 140px;
+}
+.front.not-logged-in #edit-categories, .not-logged-in.section-home #edit-categories {
+	width: 165px;
+}
+.front.not-logged-in #edit-categories-wrapper, .not-logged-in.section-home #edit-categories-wrapper {
+	width: 173px;
+	margin: 26px 0 0 0;
+	overflow: hidden;
+	height: 31px;
+	line-height: 22px
+}
 .front.not-logged-in .view-display-id-page, .not-logged-in.section-home .view-display-id-page {
 	clear: both;
 	margin-left: 10px;
-	width: 650px
+	width: 650px;
+}
+.customStyleSelectBox {
+	/* Styles For Your Select Box */
+
+}
+.customStyleSelectBox.changed {
+	/* You can use this if you want a different style after user has made a selection */
+}
+/* on the next line we add a down arrow on the right to indicate that it is a select box */
+.customStyleSelectBoxInner {
+	background: url(../images/bgd_select.png) no-repeat 0 0;
+	padding: 5px 5px 8px 15px
 }
 .front.not-logged-in div.tabs, .not-logged-in.section-home div.tabs {
-	margin: 32px 0 20px 25px
+	margin: 32px 0 20px 25px;
+	text-transform: uppercase;
 }
 .front.not-logged-in ul.tabs, .not-logged-in.section-home ul.tabs {
 	font-family: 'Quicksand', sans-serif;

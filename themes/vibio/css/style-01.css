@@ -475,8 +475,21 @@ a.searchtype_user:hover {
 	font-family: 'Quicksand', sans-serif;
 	color: #666666
 }
+#block-views-63bdc4a9fecbc8421e1619b2ba6a09c8, #block-block-28 {
+	margin: 0
+}
+#block-block-28 h2.title {
+	background: url(../images/bgd_blog.png) no-repeat 1px 0;
+	height: 36px;
+	padding: 42px 0 0 10px;
+	font-family: 'Quicksand', sans-serif;
+	color: #666666
+}
 .front.not-logged-in .view-user-hb-incoming-activity tr, .not-logged-in.section-home .view-user-hb-incoming-activity tr {
 	background: url(../images/bgd_sidebar_right.png) repeat-y 0 0;
+}
+.front.not-logged-in .view-user-hb-incoming-activity tr.views-row-last, .not-logged-in.section-home .view-user-hb-incoming-activity tr.views-row-last {
+	border: none
 }
 .front.not-logged-in .views-field-message div, .not-logged-in.section-home .views-field-message div {
 	width: 233px
@@ -505,6 +518,36 @@ a.searchtype_user:hover {
 	padding: 2px 2px 0px;
 	width: auto;
 	border: 1px solid #D7D7D7
+}
+/*recent blog posts*/
+.front.not-logged-in #main-bot-mid ul, .not-logged-in.section-home #main-bot-mid ul {
+	background: url(../images/landing/landing_42.png) no-repeat 8px 0px;
+	height: 218px;
+	list-style: none;
+	font-family: 'Quicksand', sans-serif;
+	padding: 0
+}
+.front.not-logged-in #main-bot-mid li a, .not-logged-in.section-home #main-bot-mid li a {
+	font-size: 14px;
+	display: block;
+	margin-bottom: 6px;
+	margin-left: 8px
+}
+.front.not-logged-in #main-bot-mid li a:hover, .not-logged-in.section-home #main-bot-mid li a:hover {
+	text-decoration: none;
+	color: #FFFFFF;
+}
+.front.not-logged-in #mu-site, .not-logged-in.section-home #mu-site, .front.not-logged-in #tw-site, .not-logged-in.section-home #tw-site, .front.not-logged-in #fb-site, .not-logged-in.section-home #fb-site {
+	padding: 24px 0 24px 30px
+}
+.front.not-logged-in a#fb-site:hover, .not-logged-in.section-home a#fb-site:hover {
+	background: url(../images/landing/landing_66.png) no-repeat -10px -5px;
+}
+.front.not-logged-in a#tw-site:hover, .not-logged-in.section-home  a#tw-site:hover {
+	background: url(../images/landing/landing_66.png) no-repeat -10px -76px;
+}
+.front.not-logged-in a#mu-site:hover, .not-logged-in.section-home  a#mu-site:hover {
+	background: url(../images/landing/landing_66.png) no-repeat -10px -146px;
 }
 .front.not-logged-in, .not-logged-in.section-home {
 }

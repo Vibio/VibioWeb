@@ -44,6 +44,12 @@ function vibio_product_displays_menu() {
     'access arguments' => array('access content'),
     'weight' => 3,
   );
+  $items['admin/settings/vibio-home'] = array(
+    'title' => t('Vibio homepage settings'),
+    'type' => MENU_NORMAL_ITEM,
+    'page callback' => 'vibio_product_displays_admin',
+    'access arguments' => array('product admin'),
+  );
   return $items;
 }
 
@@ -87,8 +93,30 @@ function vibio_product_displays_filter_form(&$form_state) {
   $selected_term = taxonomy_get_term_by_name($url_term);
   $selected_tid = $selected_term[0]->tid;
   $form['categories'] = taxonomy_form($vid, array($selected_tid));
+
+  // Fix the form a bit. Dropdown, single-select.
   $form['categories']['#multiple'] = FALSE;
   $form['categories']['#size'] = 1;
+
+  // Exclude any categories configured to be hidden
+  // @see vibio_product_displays_admin()
+
+  $exclude_tids = array_filter(variable_get('vibio_product_displays_exclude_categories', array()));
+
+  if (!empty($exclude_tids)) {
+    // Never mess with array size while iterating through it.
+    $options_copy = $form['categories']['#options'];
+    foreach ($options_copy as $key => $option) {
+      list($option_key, $option_value) = each($option);
+      // And if you gaze for long into an abyss, the abyss gazes also into you.
+      list($option_value_key, $option_value_value) = each($option_value);
+      if (in_array($option_value_key, $exclude_tids)) {
+        unset($options_copy[$key]);
+      }
+    }
+    $form['categories']['#options'] = $options_copy;
+  }
+
   // HACK: The Category vocabulary was set to Multiple Select at the time
   // this was written, and I didn't want to break anything. The below code
   // checks if a reset (empty) value exists. If it doesn't, it artificially
@@ -101,6 +129,7 @@ function vibio_product_displays_filter_form(&$form_state) {
     }
   }
   if ($has_please_choose === FALSE) {
+    // This is just a key-preserving array_unshift().
     $backwards_options = array_reverse($form['categories']['#options']);
     $backwards_options[] = new stdClass();
     $backwards_option = &end($backwards_options);
@@ -207,6 +236,30 @@ function _vibio_product_displays_homepage_print_google_conversion_code() {
 
     return $conversion;
 }
+
+function vibio_product_displays_admin() {
+  return drupal_get_form('vibio_product_displays_admin_form');
+}
+
+function vibio_product_displays_admin_form() {
+  $category_vid = vibio_product_displays_get_vocabulary_by_name('Category')->vid;
+  $all_terms = taxonomy_get_tree($category_vid);
+  $exclude_options = array();
+  foreach ($all_terms as $term) {
+    $exclude_options[$term->tid] = $term->name;
+  }
+  $form['vibio_product_displays_exclude_categories'] = array(
+    '#title' => t('Hide the following categories'),
+    '#type' => 'checkboxes',
+    '#description' => t('These categories will be hidden from the dropdown menu
+      on the homepage tabs (those provided by the 
+        <em>Vibio Product Displays</em> module). Users will still be able
+      to find products in these categories via search.'),
+    '#options' => $exclude_options,
+    '#default_value' => variable_get('vibio_product_displays_exclude_categories', array()),
+  );
+  return system_settings_form($form);
+};
 
 /**
  * This function will return a vocabulary object which matches the

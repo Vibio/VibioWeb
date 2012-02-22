@@ -13,9 +13,9 @@ $(function() {
   //Once images load, arrange them with masonry
   $('.view-content', $target_views).imagesLoaded(function(){
     // We logged in?
-    if ($('body').hasClass('.not-logged-in')) {
+    if ($('body').hasClass('front.not-logged-in, .not-logged-in.section-home')) {
       $('.view-content', $target_views).masonry({
-  columnWidth : 200,
+  columnWidth : 223,
   itemSelector : '.views-row:visible'
   });
     }

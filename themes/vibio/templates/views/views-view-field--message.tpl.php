@@ -35,7 +35,7 @@ if ($row->nid)
 	";
 }
 
-/* Neither friends nor badges print the second image.  Seems like they
+/* Neither friends norew badges print the second image.  Seems like they
  *  sure should.  Begun work here, realized its a feature not a bug/priority,
  *  code snippets should get you started...
  */

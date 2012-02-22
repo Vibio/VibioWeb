@@ -394,13 +394,29 @@ a.searchtype_user:hover {
 .front.not-logged-in ul.primary li a:hover .tab, .not-logged-in.section-home ul.primary li a:hover .tab, .front.not-logged-in ul li a, .not-logged-in.section-home ul li a, .front.not-logged-in ul li a span, .not-logged-in.section-home ul li a span, .front.not-logged-in .tab, .not-logged-in.section-home .tab, .front.not-logged-in ul.primary li.active a .tab, .front.not-logged-in ul.primary li.active a:hover .tab, .front.not-logged-in ul.primary li.ui-state-active a .tab, .front.not-logged-in ul.primary li.ui-state-active a:hover .tab, .not-logged-in.section-home ul.primary li.active a .tab, .not-logged-in.section-home ul.primary li.active a:hover .tab, .not-logged-in.section-home ul.primary li.ui-state-active a .tab, .not-logged-in.section-home ul.primary li.ui-state-active a:hover .tab {
 	border-bottom: none
 }
-.front.not-logged-in, .not-logged-in.section-home {
+.front.not-logged-in .view.view-flag-featured .view-content, .not-logged-in.section-home .view.view-flag-featured .view-content {
+	width: 750px;
 }
-.front.not-logged-in, .not-logged-in.section-home {
+.front.not-logged-in .views-fluidgrid-item .views-field-field-main-image-fid, .not-logged-in.section-home .views-fluidgrid-item .views-field-field-main-image-fid {
+	width: 190px;
+	margin: 0;
+	padding: 0
 }
-.front.not-logged-in, .not-logged-in.section-home {
+.front.not-logged-in .views-fluidgrid-item, .not-logged-in.section-home .views-fluidgrid-item {
+	width: 200px;
+	padding: 0px;
+	float: none;
+	margin: 0px
 }
-.front.not-logged-in, .not-logged-in.section-home {
+.front.not-logged-in .views-fluidgrid-item .views-field-title, .not-logged-in.section-home .views-fluidgrid-item .views-field-title {
+	width: 190px;
+	margin: 0;
+	padding: 0
+}
+.front.not-logged-in .views-fluidgrid-item .field-content, .not-logged-in.section-home .views-fluidgrid-item .field-content {
+	width: 190px;
+	margin: 0;
+	padding: 0
 }
 /*Sidebar*/
 .logged-in .sidebar .rounded_content {

@@ -493,13 +493,13 @@ a.searchtype_user:hover {
 	font-family: 'Quicksand', sans-serif;
 	color: #666666
 }
-#block-views-63bdc4a9fecbc8421e1619b2ba6a09c8, #block-block-28, #block-block-29 {
+#block-views-63bdc4a9fecbc8421e1619b2ba6a09c8, #block-block-28, #block-block-27 {
 	margin: 0
 }
-.front.logged-in #block-views-63bdc4a9fecbc8421e1619b2ba6a09c8, .front.logged-in #block-block-28, .front.logged-in #block-block-29 {
+.front.logged-in #block-views-63bdc4a9fecbc8421e1619b2ba6a09c8, .front.logged-in #block-block-28, .front.logged-in #block-block-27 {
 	display: none
 }
-.front.not-logged-in .view-user-hb-incoming-activity .view-content, .not-logged-in.section-home .view-user-hb-incoming-activity .view-content, #block-block-29 .gfc-result {
+.front.not-logged-in .view-user-hb-incoming-activity .view-content, .not-logged-in.section-home .view-user-hb-incoming-activity .view-content, #block-block-27 .gfc-result {
 	background: url(../images/bgd_sidebar_right.png) repeat-y 0 0;
 }
 .front.not-logged-in .view-user-hb-incoming-activity tr.views-row-last, .not-logged-in.section-home .view-user-hb-incoming-activity tr.views-row-last {
@@ -592,41 +592,41 @@ a.searchtype_user:hover {
 	background-position: 2px 1px
 }
 /*Latest blog posts*/
-#block-block-29 h2.title {
+#block-block-27 h2.title {
 	background: url(../images/bgd_blog.png) no-repeat 1px 0;
 	padding: 29px 0 0px 10px;
 	border-bottom: 1px solid #D7D7D7;
 }
-#block-block-29 .gfc-result {
+#block-block-27 .gfc-result {
 	margin: 0;
 	border-bottom: 1px solid #d7d7d7;
 	padding: 10px;
 	min-height: 60px
 }
-#block-block-29 .gfc-results {
+#block-block-27 .gfc-results {
 	padding: 0
 }
-#block-block-29 .gf-snippet {
+#block-block-27 .gf-snippet {
 	font-size: 12px;
 	margin-top: 10px;
 	width: 225px
 }
-#block-block-29 div.gf-title a {
+#block-block-27 div.gf-title a {
 	color: #338dc8;
 	font-size: 15px;
 	text-transform: capitalize;
 }
-#block-block-29 div.gf-title {
+#block-block-27 div.gf-title {
 	margin: 0;
 	height: 18px;
 	text-overflow: ellipsis;
 	width: 225px
 }
-#block-block-29 .gfc-resultsHeader {
+#block-block-27 .gfc-resultsHeader {
 	margin: 0;
 	border: none;
 }
-#block-block-29 .gf-relativePublishedDate {
+#block-block-27 .gf-relativePublishedDate {
 	display: none
 }
 /*Sidebar*/

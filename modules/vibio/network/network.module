@@ -59,7 +59,7 @@ function network_get($uid, $rel_type=false, $depth=false)
   //Diana is exceeding memory limits because her network is huge (she's
   //a default friend to everyone). Set her depth to 1.
   if($user->name == "Diana Bull"){
-    $depth = 1;
+    return '';
   }
   
 	static $networks = array();

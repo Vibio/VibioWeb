@@ -74,12 +74,13 @@ If you don\'t want to receive these emails again, please email diana@vibio.com.
       ),
       'notifications_3' => array(
         '#type' => 'rule',
-        '#set' => 'event_node_insert',
+        '#set' => 'event_node_update',
         '#label' => 'When product is wanted',
         '#active' => 1,
         '#weight' => '0',
         '#categories' => array(
           '0' => 'Notifications',
+          '1' => 'notifications',
           'notifications' => 'notifications',
         ),
         '#status' => 'default',
@@ -149,13 +150,13 @@ If you don\'t want to receive these emails again, please email diana@vibio.com.
             '#settings' => array(
               'to' => '<?php module_load_include("inc", "product"); print _product_forsale_owner_mail(vibio_item_product_nid($node->nid)); ?>',
               'from' => '',
-              'subject' => '[user:name] Wants an Item You\'re Selling',
+              'subject' => '[user:user] Wants an Item You\'re Selling',
               'message' => 'Hi,
 
-This is an automatic reminder from the site Vibio. [user:user-name-url] has put your [node:title-raw] in their want list.   
+This is an automatic reminder from the site Vibio. [user:user] has put your item "[node:title]" in their want list.   
 
 To connect with this user, follow this link:
-[user:user-profile-url]
+<?php global $base_url; print $base_url; ?>/user/[user:uid]
 
 If this item is private, don\'t worry: no one knows that you own it. We\'re just sending you a reminder.
 
@@ -177,6 +178,7 @@ If you don\'t want to receive these emails again, please contact diana@vibio.com
                   'to' => array(
                     '0' => 'node',
                   ),
+                  'message' => array(),
                 ),
               ),
             ),

@@ -137,13 +137,7 @@ function product_get_sellers($nid){
 			"user"	=> array(
                 "mail"      => $row['mail'],
                 "picture"	=> theme("user_picture", (object) $row),
-				//v1.0 
-				//"link"		=> $as_uid && $type == "network" && module_exists("dos") ? theme("dos_display", dos_get($row['uid'], false, $depth)) : "<br />".l($row['name'], "user/{$row['uid']}"),
-				// changes: if user logged in, print friend-chain; if not, print nothing
-				//  instead of printing the owner's name again.
-				"link"		=> $as_uid && $type == "network" && ($GLOBALS['user']->uid > 0) && module_exists("dos") ? theme("dos_display", dos_get($row['uid'], false, $depth)) : "", 
-
-				"uid"     => $row['uid'],  // stephen adds, to highlight
+				        "uid"     => $row['uid'],  
 			),
 		);
     }
@@ -162,17 +156,14 @@ function _product_forsale_owner_mail($nid){
     $emails = array();
     
     //Parse the sellers for their emails
-    foreach($owners['vibio']['results'] as $owner){
-      $emails[] = $owner['user']['mail'];
-    }
-    foreach($owners['network']['results'] as $owner){
+    foreach($owners as $owner){
       $emails[] = $owner['user']['mail'];
     }
 
     //Concatenate the results in a string of unique emails
     $emails = array_unique($emails);
     $emails_string = implode($emails, ',');
-    return $emails_string; 
+    return $emails_string;
 }
 
 /**

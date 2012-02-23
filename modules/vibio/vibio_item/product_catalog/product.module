@@ -1,7 +1,7 @@
 <?php
 define("PRODUCT_SEARCH_RESULTS_PER_PAGE", 40);
 define("PRODUCT_DETAIL_SNIPPET_LENGTH", 256);
-// PRODUCT_SEARCH_RESULTS_PER_PAGE does this do anything?  
+// PRODUCT_SEARCH_RESULTS_PER_PAGE does this do anything?
 // Seems to be it's all done in search.module, hard-coded
 function product_perm()
 {
@@ -46,21 +46,21 @@ function product_menu()
 			"file"				=> "product.pages.php",
 			"type"				=> MENU_CALLBACK,
 		),
-	
+
 		/* stephen thinks this should be removed.  It merely sets a message
      * that looks kindof silly as a "message" instead of just part of the 
      * page.  
 			 And sets to true, what is this: $_SESSION['product']['auto_add'] = $val;
        Alec->According to Stephen notes in product.pages.php, this variable
      * indicates whether to create a new item along with the new product.
-     
+
 		"product/add"			=> array(
 			"title"				=> "Add New Product",
 			"page callback"		=> "product_add_new",
 			"file"				=> "product.pages.php",
 			"type"				=> MENU_CALLBACK,
 		),
-     * 
+     *
      */
 		"product/get-owners"				=> array(
 			"page callback"		=> "_product_get_owners_page",
@@ -84,7 +84,7 @@ function product_menu()
 }
 
 function product_external_search($args)
-{	
+{
 	if (!($provider = variable_get("product_source", false)) || !function_exists("{$provider}_product_search"))
 	{
 		return false;
@@ -93,10 +93,10 @@ function product_external_search($args)
 	{
 		$args = array("keywords"	=> $args);
 	}
-	
+
 	module_load_include("inc", "product");
 	product_set_external_search(true, true);
-	
+
 	$func = "{$provider}_product_search";
 	$args['keywords'] = _product_remove_options($args['keywords']);
 // example $func = vibio_amazon_product_search
@@ -109,7 +109,7 @@ function product_external_search_modify_search_query(&$sql)
 	{
 		return false;
 	}
-	
+
 	$func = "{$provider}_product_search_modify_search_query";
 	$func($sql);
 }
@@ -164,8 +164,8 @@ function product_nodeapi(&$node, $op, $a3=null, $a4=null)
 				if (product_get_autoadd(false))    // false means leave autoadd on.
 				{
 					module_load_include("php", "product", "product.pages");
-					drupal_get_messages(); // ooh, sneaky. Get the messages, 
-						// but don't print them, so they go away quietly. 
+					drupal_get_messages(); // ooh, sneaky. Get the messages,
+						// but don't print them, so they go away quietly.
 						//  $clear_queue defaults to TRUE.  Would be nice if there
 						//  was a testing mode for admins. TODO
 
@@ -182,7 +182,7 @@ function product_nodeapi(&$node, $op, $a3=null, $a4=null)
 				return theme("product_display", $node);
 			case 'search result':
 				module_load_include("inc", "product");
-				
+
 				return array(
 					"image"	=> _product_get_image($node->nid, true),
 				);
@@ -267,12 +267,12 @@ function product_preprocess_node(&$vars)
 function product_form_vibio_item_node_form_alter(&$form, &$state)
 {
 	$product = node_load($form['#node']->product_nid);
-	
+
 	if (!$product)
 	{
 		return;
 	}
-	
+
 	$form['title']['#default_value'] = $product->title;
 	$form['product_product_nid'] = array(
 		"#type"	=> "value",
@@ -321,12 +321,12 @@ function product_reports_daily_cron($last_run)
 			GROUP BY td.`name`
 			ORDER BY COUNT(*) DESC";
 	$res = db_query($sql, $last_run);
-	
+
 	while ($row = db_fetch_object($res))
 	{
 		reports_log("items", $row->items_created, $row->category);
 	}
-	
+
 	if ($employee_role = variable_get("reports_employee_role", false))
 	{
 		$sql = "SELECT td.`name` category, COUNT(*) items_created
@@ -344,7 +344,7 @@ function product_reports_daily_cron($last_run)
 				GROUP BY td.`name`
 				ORDER BY COUNT(*) DESC";
 		$res = db_query($sql, $last_run, $employee_role);
-		
+
 		while ($row = db_fetch_object($res))
 		{
 			reports_log("items noemployee", $row->items_created, $row->category);
@@ -369,7 +369,7 @@ function product_user_owns_product($product_id, $uid=false)
 		global $user;
 		$uid = $user->uid;
 	}
-	
+
 	$sql = "SELECT n.`nid`
 			FROM {node} n JOIN {product_items} pi
 				ON n.`nid`=pi.`item_nid`
@@ -379,7 +379,7 @@ function product_user_owns_product($product_id, $uid=false)
 }
 
 /* warning: this uses search text for functional if
- * The point of this is something to do with searches with no results. 
+ * The point of this is something to do with searches with no results.
  * Experiment when time
  * !!! I think I wrote some code for blank searches to. -Stephen
  */
@@ -411,10 +411,10 @@ function product_preprocess_search_results(&$vars)
 	{
 		global $pager_page_array, $pager_total;
 
-		
+
 		module_load_include("inc", "product");
 		drupal_add_css("themes/vibio/css/product.css");
-		
+
 		$is_external = product_set_external_search();
 		// modules/vibiomodules/vibio_item/product_catalog/product.inc
 		// Some function, in a typical search, has already set it to true.
@@ -433,19 +433,19 @@ function product_preprocess_search_results(&$vars)
 //die("is external is $is_external"); = 1
 //$is_external = false;
 // um... the external results look just like what we already have
-		
+
 		if (!$is_external && variable_get("product_append_external", false) && (count($vars['results']) < PRODUCT_SEARCH_RESULTS_PER_PAGE || $_GET['page'] == $pager_total[0] - 1))
 		{
 			product_set_external_search_page_offset($pager_total[0] - 1);
 			$external_results = product_external_search(_vibio_item_search_keys());
-			
+
 			$vars['other_results'] = "";
 			if (!empty($external_results))
 			{
 				// Stephen: we need finer control on external results, add this
 				//  the pager system is out of sorts
 				$vars['unthemed_other_results'] = $external_results;
-				
+
 				foreach ($external_results as $result)
 				{
 					$vars['other_results'] .= theme("search_result", $result, "vibio_item"); /* stephen: what is this?  Ebay, or Ebay and Amazon?  OMG:
@@ -457,7 +457,7 @@ function product_preprocess_search_results(&$vars)
 				}
 				$vars['pager'] = theme("pager");
 			}
-			
+
 			if ($_GET['page'] > product_set_external_search_page_offset())
 			{
 				$vars['search_results'] = "";    /* has this been tested */
@@ -465,7 +465,7 @@ function product_preprocess_search_results(&$vars)
 		}
 		/*elseif (variable_get("product_append_external", false))
 		{
-			
+
 		}*/
 	}
 }
@@ -480,7 +480,7 @@ function product_preprocess_search_result(&$vars)
 	{
 		$item_nid = product_user_owns_product($vars['result']['node']->nid);
     $possess = get_possess(node_load($item_nid));
-	
+
     switch ($possess) {
       case '30':
         $possess_words = 'You Like This!';
@@ -499,10 +499,10 @@ function product_preprocess_search_result(&$vars)
 		// Minor possess changes 20120119
 		$search_links['own_have'] = ($item_nid) ? l(t($possess_words), "node/{$item_nid}", array('attributes' => array('class' => "you-own $you_possess"))) : theme("product_inventory_add", $vars['result']['node']->nid);
 		$search_links['want'] = ($item_nid) ? "" : theme("product_inventory_want", $vars['result']['node']->nid);
-		
+
     if (!empty($vars['result']['node']->field_main_image[0]['filepath'])) {
     	$vars['img'] = theme('imagecache', 'product_fixed_width', $vars['result']['node']->field_main_image[0]['filepath']);
-    } 
+    }
     else {
       // Remote images and altered have/want links for Amazon items not yet converted to local products.
       if ($vars['result']['result_type'] == 'remote') {
@@ -522,11 +522,11 @@ function product_preprocess_search_result(&$vars)
       }
       else {
         // Fall back to default.
-    	  $vars['img'] = theme('imagecache', 'product_fixed_width', "themes/vibio/images/icons/default_item_large.png");    
+    	  $vars['img'] = theme('imagecache', 'product_fixed_width', "themes/vibio/images/icons/default_item_large.png");
       }
     }
 	}
-	
+
 	$vars['search_links'] = implode("\n", $search_links);
 }
 
@@ -574,7 +574,7 @@ function product_vibio_item_images($item_nid)
 	{
 		return array();
 	}
-	
+
 	return product_images($nid);  // an array of urls
 }
 
@@ -592,4 +592,4 @@ function product_get_autoadd($clear=true)
 
 	return $val;
 }
-?>
+

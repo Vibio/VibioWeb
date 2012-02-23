@@ -171,7 +171,7 @@ function product_nodeapi(&$node, $op, $a3=null, $a4=null)
 
 					// PREVIOUSLY
 					// We add the product-node we are about to insert [but haven't yet]
-					//	as an item-node.  We drupal_execute($form_id... 
+					//	as an item-node.  We drupal_execute($form_id...
 					//  and executing the item's form fubars the product before we've saved it.
 					// See:  product_node_form_submit_wrapper
 

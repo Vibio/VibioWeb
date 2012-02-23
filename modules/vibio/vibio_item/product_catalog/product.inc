@@ -177,12 +177,21 @@ function _product_forsale_owner_mail($nid){
  * featured.
  */
 function _product_get_owner_mail($nid){
+
+    //Get the product owners
     $owners = _product_get_product_owners($nid, 1);
     $emails = array(); 
+
+    //Parse the product owners for their emails
     foreach($owners['vibio']['results'] as $owner){
       $emails[] = $owner['user']['mail'];
     }
+    foreach($owners['network']['results'] as $owner){
+      $emails[] = $owner['user']['mail'];
+    }
 
+    //Concatenate the results in a string of unique emails
+    $emails = array_unique($emails);
     $emails_string = implode($emails, ',');
     return $emails_string; 
 }

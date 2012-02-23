@@ -31,8 +31,8 @@ if (isset($image)) {
 		// hey look, terrible, recode!
 	}
 
-  // If there are amphersands in the encoded filename, bad stuff'll happen.
-  $urlimage = str_replace('%2526', '&', $urlimage);
+	// If there are amphersands in the encoded filename, bad stuff'll happen.
+	$urlimage = str_replace('%2526', '&', $urlimage);
 
 	$pattern = "/^\//";
 	$image = preg_replace($pattern, "", $image);
@@ -185,8 +185,8 @@ if ($page) {
 	} else {
 		// note: if you own it, doesn't seem to show up... so...
 		if (product_user_owns_product($node -> nid)) {
-            $user_owns = TRUE;
-            $non_header = t("Besides yourself, no one else in your network has this item.");
+			$user_owns = TRUE;
+			$non_header = t("Besides yourself, no one else in your network has this item.");
 		} else {
 			$non_header = t("Be the first in your network with <em>!title</em>", array("!title" => $node -> title));
 		}
@@ -194,7 +194,7 @@ if ($page) {
       <div class='product_extra_data'>
         $product_images
 				<h3>$non_header</h3>
-		      $external_link</p>
+		      $external_link
           $notification_text
 			</div>
 		";
@@ -210,12 +210,16 @@ if ($page) {
 /* press design/wireframe team to get a back-to-search into the design
  *  $searchcrumb
  */
-if($user_owns){
-    $header_link = l('Edit Item', $manage_link);
-    $manage_link = l('Edit your item details to:', $manage_link);
-}else{
-    $header_link = 
-	"<div class='external_short_link'>
+if ($user_owns) {
+	$header_link = l('Edit Item', $manage_link, array('attributes' => array('class' => 'product-edit-head'))) . "<a id='info-button-head' class='automodal' href='/product-help'><span class='tab'>Info</span></a>";
+	$manage_link = l('Edit your item details to:', $manage_link) . " <ul id='product-manage-ul'>
+                    <li>Move this item into different collections</li>
+                                <li>Remove this item from your collection</li>
+                                            <li>Adjust who can view this item (privacy settings)</li>
+                                                        <li>Change status (For Sale/Not For Sale)</li>
+                                                                    </ul> ";
+} else {
+	$header_link = "<div class='external_short_link'>
        $external_it_link<a id='info-button' class='automodal' href='/product-help'><span class='tab'>Info</span></a>
        </div>";
 }
@@ -232,13 +236,7 @@ echo "
 		</a>
 		$product_content
         $links
-        $manage_link     
-        <ul id='product-manage-ul'>
-                    <li>Move this item into different collections</li>
-                                <li>Remove this item from your collection</li>
-                                            <li>Adjust who can view this item (privacy settings)</li>
-                                                        <li>Change status (For Sale/Not For Sale)</li>
-                                                                    </ul>    
+        $manage_link        
     </div>
 	<div class='clear'></div>
 	$extra_data

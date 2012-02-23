@@ -638,6 +638,10 @@ a.searchtype_user:hover {
 .front.not-logged-in #page-wrapper, .not-logged-in.section-home .region-sidebar-first #page-wrapper {
 	padding: 0
 }
+/*Hide stuff for not logged in useres*/
+.not-logged-in #product-manage-ul {
+	display: none
+}
 /*Popup after earning a badge*/
 #badge_alert_container_earned {
 	text-align: center;
@@ -2898,6 +2902,7 @@ a.local_action_button {
 #product-manage-ul {
 	list-style: square;
 	padding-left: 17px;
+	clear: both
 }
 /* feature-this flag */
 div.search-flag {
@@ -3761,14 +3766,14 @@ a#info-button-small:hover span.tab {
 	border-bottom-color: #CFD2D5
 }
 /*Site wide Info Button*/
-a#info-modal, a#info-button {
+a#info-modal, a#info-button, a#info-button-head {
 	text-indent: -9999px;
 	display: block;
 	background: url(../images/btn_info.png) no-repeat 10px -1px;
 	height: 26px;
 	width: 38px
 }
-a#info-modal:hover, a#info-button:hover {
+a#info-modal:hover, a#info-button:hover, a#info-button-head:hover {
 	background-position: -40px -1px
 }
 a#add-item-button {
@@ -3783,6 +3788,25 @@ a#add-item-button:hover {
 }
 a#info-modal:hover span.tab {
 	border-bottom-color: #CFD2D5
+}
+/*Info buton products*/
+.node-type-product #info-button-head{
+	position: absolute;
+	right: 15px;
+	top:15px;
+}
+.node-type-product .product-edit-head{
+	background: url(../images/btn_edit_item.png) no-repeat scroll 0 0 transparent;
+    display: block;
+    height: 28px;
+    position: absolute;
+    right: 53px;
+    text-indent: -9999px;
+    top: 14px;
+    width: 134px;
+}
+.node-type-product a.product-edit-head:hover{
+	background-position: 0 -32px;
 }
 div.tabs_big ul.primary li a .tab {
 	height: 31px;

@@ -16,7 +16,8 @@
 	height: 24px;
 	width: 24px;
 	float: right;
-	margin-left: 5px
+	margin-left: 5px;
+	margin-top: 3px
 }
 .external_short_link a#info-button:hover {
 	background-position: -40px -1px;

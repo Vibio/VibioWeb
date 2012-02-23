@@ -21,33 +21,22 @@ function notifications_rules_defaults() {
         '#actions' => array(
           '0' => array(
             '#weight' => 0,
-            '#info' => array(
-              'label' => 'Send a mail to an arbitrary mail address',
-              'module' => 'System',
-              'eval input' => array(
-                '0' => 'subject',
-                '1' => 'message',
-                '2' => 'from',
-                '3' => 'to',
-              ),
-            ),
-            '#name' => 'rules_action_mail',
+            '#type' => 'action',
             '#settings' => array(
               'to' => '<?php module_load_include("inc", "product"); print _product_get_owner_mail($node->nid); ?>',
               'from' => '',
               'subject' => 'Your Item Was Featured on Vibio',
               'message' => 'Hello [node:author-name],
 
-This is an automatic reminder from the site Vibio. One of your items from your collection has been chosen to be featured by Vibio.
+This is an automatic reminder from the site Vibio. Your item [node:title-raw] has been chosen to be featured by Vibio.
 
 To see  your featured item, follow this link:
 
-<a href="<?php print $base_url; ?>">Vibio Feature Items</a>
+<a href="<?php global $base_url; print $base_url; ?>">Vibio Featured Items</a>
 
 Don\'t worry, if you\'ve made your item private, no one knows that you own it. We featured the item because other users publicly own it.
 
-Congrats!
-
+Congrats on your great taste!
 
 If you don\'t want to receive these emails again, please email diana@vibio.com.
 ',
@@ -65,55 +54,6 @@ If you don\'t want to receive these emails again, please email diana@vibio.com.
                     '0' => 'node',
                   ),
                   'message' => array(),
-                ),
-              ),
-            ),
-            '#type' => 'action',
-          ),
-        ),
-        '#version' => 6003,
-      ),
-      'notifications_2' => array(
-        '#type' => 'rule',
-        '#set' => 'event_flag_flagged_feature',
-        '#label' => 'When item is featured',
-        '#active' => 1,
-        '#weight' => '0',
-        '#categories' => array(
-          '0' => 'Notifications',
-          'notifications' => 'notifications',
-        ),
-        '#status' => 'default',
-        '#conditions' => array(),
-        '#actions' => array(
-          '0' => array(
-            '#weight' => 0,
-            '#type' => 'action',
-            '#settings' => array(
-              'to' => '<?php module_load_include("inc", "product"); print _product_get_owner_mail($node->nid); ?>',
-              'from' => '',
-              'subject' => 'Your Item Was Featured on Vibio',
-              'message' => 'Hi [node:author-name],
-
-We thought your item "[node:title-raw]" was so cool we decided to feature it on our front page. It should be up there for a couple days. Please let us know if you\'d like it taken down. Otherwise, kudos for having such awesome style!
-
-Best,
-
-Diana Bull
-Vibio Community Manager',
-              '#eval input' => array(
-                'token_rules_input_evaluator' => array(
-                  'message' => array(
-                    '0' => 'node',
-                  ),
-                  'to' => array(
-                    '0' => 'node',
-                  ),
-                ),
-                'rules_input_evaluator_php' => array(
-                  'to' => array(
-                    '0' => 'node',
-                  ),
                 ),
               ),
             ),
@@ -145,16 +85,7 @@ Vibio Community Manager',
         '#status' => 'default',
         '#conditions' => array(
           '0' => array(
-            '#type' => 'condition',
-            '#settings' => array(
-              'type' => array(
-                'vibio_item' => 'vibio_item',
-              ),
-              '#argument map' => array(
-                'node' => 'node',
-              ),
-            ),
-            '#name' => 'rules_condition_content_is_type',
+            '#weight' => 0,
             '#info' => array(
               'label' => 'It\'s an item',
               'label callback' => FALSE,
@@ -166,10 +97,33 @@ Vibio Community Manager',
               ),
               'module' => 'Node',
             ),
-            '#weight' => 0,
+            '#name' => 'rules_condition_content_is_type',
+            '#settings' => array(
+              'type' => array(
+                'vibio_item' => 'vibio_item',
+              ),
+              '#argument map' => array(
+                'node' => 'node',
+              ),
+            ),
+            '#type' => 'condition',
           ),
           '1' => array(
-            '#weight' => 0,
+            '#type' => 'condition',
+            '#settings' => array(
+              'field_name' => 'field_have_want_like',
+              '#argument map' => array(
+                'node' => 'node',
+              ),
+              'value' => array(
+                '0' => array(
+                  'value' => '20',
+                ),
+              ),
+              'code' => '',
+              'vars' => array(),
+            ),
+            '#name' => 'content_rules_field_has_value',
             '#info' => array(
               'label' => 'The item is wanted',
               'label callback' => FALSE,
@@ -185,44 +139,20 @@ Vibio Community Manager',
               ),
               'module' => 'CCK',
             ),
-            '#name' => 'content_rules_field_has_value',
-            '#settings' => array(
-              'field_name' => 'field_have_want_like',
-              '#argument map' => array(
-                'node' => 'node',
-              ),
-              'value' => array(
-                '0' => array(
-                  'value' => '20',
-                ),
-              ),
-              'code' => '',
-              'vars' => array(),
-            ),
-            '#type' => 'condition',
+            '#weight' => 0,
           ),
         ),
         '#actions' => array(
           '0' => array(
             '#weight' => 0,
-            '#info' => array(
-              'label' => 'Send a mail to an arbitrary mail address',
-              'module' => 'System',
-              'eval input' => array(
-                '0' => 'subject',
-                '1' => 'message',
-                '2' => 'from',
-                '3' => 'to',
-              ),
-            ),
-            '#name' => 'rules_action_mail',
+            '#type' => 'action',
             '#settings' => array(
               'to' => '<?php module_load_include("inc", "product"); print _product_forsale_owner_mail(vibio_item_product_nid($node->nid)); ?>',
               'from' => '',
               'subject' => '[user:name] Wants an Item You\'re Selling',
               'message' => 'Hi,
 
-This is an automatic reminder from the site Vibio. [user:user-name-url] has put your [node:title] in their want list.   
+This is an automatic reminder from the site Vibio. [user:user-name-url] has put your [node:title-raw] in their want list.   
 
 To connect with this user, follow this link:
 [user:user-profile-url]
@@ -250,7 +180,17 @@ If you don\'t want to receive these emails again, please contact diana@vibio.com
                 ),
               ),
             ),
-            '#type' => 'action',
+            '#name' => 'rules_action_mail',
+            '#info' => array(
+              'label' => 'Send a mail to an arbitrary mail address',
+              'module' => 'System',
+              'eval input' => array(
+                '0' => 'subject',
+                '1' => 'message',
+                '2' => 'from',
+                '3' => 'to',
+              ),
+            ),
           ),
         ),
         '#version' => 6003,

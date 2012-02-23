@@ -157,12 +157,20 @@ function product_get_sellers($nid){
  * $nid's for sale item owners.
  */
 function _product_forsale_owner_mail($nid){
+    //Get sellers
     $owners = product_get_sellers($nid);
-    $emails = array(); 
-    foreach($owners as $owner){
+    $emails = array();
+    
+    //Parse the sellers for their emails
+    foreach($owners['vibio']['results'] as $owner){
+      $emails[] = $owner['user']['mail'];
+    }
+    foreach($owners['network']['results'] as $owner){
       $emails[] = $owner['user']['mail'];
     }
 
+    //Concatenate the results in a string of unique emails
+    $emails = array_unique($emails);
     $emails_string = implode($emails, ',');
     return $emails_string; 
 }
@@ -179,10 +187,17 @@ function _product_forsale_owner_mail($nid){
 function _product_get_owner_mail($nid){
     $owners = _product_get_product_owners($nid, 1);
     $emails = array(); 
+
+    //Parse the product owners for their emails
     foreach($owners['vibio']['results'] as $owner){
       $emails[] = $owner['user']['mail'];
     }
+    foreach($owners['network']['results'] as $owner){
+      $emails[] = $owner['user']['mail'];
+    }
 
+    //Concatenate the results in a string of unique emails
+    $emails = array_unique($emails);
     $emails_string = implode($emails, ',');
     return $emails_string; 
 }

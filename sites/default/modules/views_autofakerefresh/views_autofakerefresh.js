@@ -81,6 +81,7 @@ Drupal.behaviors.views_autofakerefresh = function(context) {
 
                 return false;
               });
+              return false;
             }); // .each function () {
       }); // $view.filter().each
     });

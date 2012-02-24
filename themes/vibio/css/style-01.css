@@ -1,6 +1,6 @@
 /*Combination of old Css files - Craig Tockman Vibio 11-28-2011*/
 /*Hide things with CSS display:none*/
-div#edit-field-have-want-like-wrapper, div#block-collection-related_collection .collection_item_count, div#block-collection-related_collection .collection_description, div#block-collection-related_collection .collection_categories, div#block-collection-related_collection .collection_date_added, div#block-collection-related_collection .collection_link, form#privatemsg-new input#edit-preview, form#privatemsg-new a#edit-cancel, .not-logged-in #block-block-22, .page-product-add h1#page_title.title, #node-form #field_images_values .delta-order .form-item, img.team_tooltip, .logged-in #block-views-flag_featured_users-block_1, .hide, .popups-box .title, .not-logged-in #block-block-5, .logged-in #block-block-4, .page-about h1#page_title, .page-team h1#page_title, .not-logged-in #block-block-17, img.uri_edit_busy_indicator, #uri_elaborations_edit, .ur_friend_remove img, .views-throbbing, .view_activity_timestamp, .views-table.cols-2 thead, #block-user-0 .menu_description, #profile_ext_submenu, .profile_busy_indicator img, #profile_completion_steps_container, .region-footer h2, .element-hidden, #block-menu-secondary-links h2, #search_type_submenu, #user-login-form span.form-required, div.node-type-offer-neg-seller ul.links, .offer2buy_nid, .offer2buy_offer_view_popup, #edit-search-block-form-1-wrapper label, div.form-radios td.form-item-label, div.form-checkboxes td.form-item-label, .grippie, .hidden, .fb_dialog, .fb_share_params, .view-user-collections .view-filters, .collection_preview_loading, .collection_preview_items, .item_updated, #collection_sidebar, .section-collections h1#page_title, ul.message-actions li.block_author a, .section-messages div.privatemsg-view-pager, .section-messages div.message-participants, #edit-privacy-item-default-privacy-setting-wrapper label, #profile-submenu {
+.front.logged-in h1#page_title, .section-home.logged-in h1#page_title, div#edit-field-have-want-like-wrapper, div#block-collection-related_collection .collection_item_count, div#block-collection-related_collection .collection_description, div#block-collection-related_collection .collection_categories, div#block-collection-related_collection .collection_date_added, div#block-collection-related_collection .collection_link, form#privatemsg-new input#edit-preview, form#privatemsg-new a#edit-cancel, .not-logged-in #block-block-22, .page-product-add h1#page_title.title, #node-form #field_images_values .delta-order .form-item, img.team_tooltip, .logged-in #block-views-flag_featured_users-block_1, .hide, .popups-box .title, .logged-in #block-block-4, .page-about h1#page_title, .page-team h1#page_title, .not-logged-in #block-block-17, img.uri_edit_busy_indicator, #uri_elaborations_edit, .ur_friend_remove img, .views-throbbing, .view_activity_timestamp, .views-table.cols-2 thead, #block-user-0 .menu_description, #profile_ext_submenu, .profile_busy_indicator img, #profile_completion_steps_container, .region-footer h2, .element-hidden, #block-menu-secondary-links h2, #search_type_submenu, #user-login-form span.form-required, div.node-type-offer-neg-seller ul.links, .offer2buy_nid, .offer2buy_offer_view_popup, #edit-search-block-form-1-wrapper label, div.form-radios td.form-item-label, div.form-checkboxes td.form-item-label, .grippie, .hidden, .fb_dialog, .fb_share_params, .view-user-collections .view-filters, .collection_preview_loading, .collection_preview_items, .item_updated, #collection_sidebar, .section-collections h1#page_title, ul.message-actions li.block_author a, .section-messages div.privatemsg-view-pager, .section-messages div.message-participants, #edit-privacy-item-default-privacy-setting-wrapper label, #profile-submenu {
 	display: none
 }
 /*pager on front page that masonry will re-hide*/
@@ -20,14 +20,22 @@ body {
 	font-family: 'Quicksand', sans-serif;
 }
 /*box shadow*/
-#content-area .rounded_content, .sidebar .rounded_content {
-	-webkit-box-shadow: 0px 0px 2px 2px #B5B5B5;
-	-moz-box-shadow: 0px 0px 2px 2px #B5B5B5;
-	-o-box-shadow: 0px 0px 2px 2px #B5B5B5;
-	-ms-box-shadow: 0px 0px 2px 2px #B5B5B5;
-	box-shadow: 0px 0px 2px 2px #B5B5B5;
+#content-area .rounded_content {
+	-webkit-box-shadow: 0 0 1px 2px #CCCCCC inset;
+	-moz-box-shadow: 0 0 1px 2px #CCCCCC inset;
+	-o-box-shadow: 0 0 1px 2px #CCCCCC inset;
+	-ms-box-shadow: 0 0 1px 2px #CCCCCC inset;
+	box-shadow: 0 0 1px 2px #CCCCCC inset;
 }
-.front.not-logged-in .sidebar .rounded_content {
+.sidebar .rounded_content {
+	-webkit-box-shadow: 1px 1px 2px 3px #CCCCCC;
+	-moz-box-shadow: 1px 1px 2px 3px #CCCCCC;
+	-o-box-shadow: 1px 1px 2px 3px #CCCCCC;
+	-ms-box-shadow: 1px 1px 2px 3px #CCCCCC;
+	box-shadow: 1px 1px 2px 3px #CCCCCC;
+	background: #FFFFFF
+}
+.front.not-logged-in .sidebar .rounded_content, .section-home.not-logged-in .sidebar .rounded_content {
 	-webkit-box-shadow: 0 0 0 0;
 	-moz-box-shadow: 0 0 0 0;
 	-o-box-shadow: 0 0 0 0;
@@ -36,6 +44,7 @@ body {
 	border-radius: 0;
 	-moz-border-radius: 0;
 	-webkit-border-radius: 0;
+	position: relative
 }
 /*rounded corners*/
 .rounded_content, .sidebar .rounded_content {
@@ -172,7 +181,7 @@ span#or {
 }
 .not-logged-in #logo {
 	position: relative;
-	z-index: 200
+	z-index: 1001
 }
 h1#site-name, div#site-name {
 	margin: 0;
@@ -272,7 +281,7 @@ h1#site-name, div#site-name {
 #head-collections:hover, #how-works:hover {
 	background: url(../images/header_hover_2.png) no-repeat
 }
-#search-box/* Wrapper for the search form */ {
+#search-box {
 	float: right;
 }
 #search {
@@ -349,7 +358,7 @@ a.searchtype_user:hover {
 	display: block;
 	height: 113px;
 	width: 114px;
-	top: 2px;
+	top: 4px;
 	left: 6px
 }
 .search_type_submenu_container table {
@@ -367,8 +376,21 @@ a.searchtype_user:hover {
 	padding: 0;
 	cursor: pointer
 }
+/*New Featured Page*/
+.rounded_container {
+	background: url(../images/bgd_main_content.png) repeat;
+}
+.front.not-logged-in .rounded_container, .section-home.not-logged-in .rounded_container{
+	background: none
+}
+#content-area .rounded_content {
+	min-height: 749px;
+	padding: 10px !important;
+}
+.front.logged-in #content-area .rounded_content, .section-home.logged-in #content-area .rounded_content {
+	background: url(../images/bgd_main_tabs.png) no-repeat 9px 12px;
+}
 /*New Splash Main Content*/
-
 .front.not-logged-in #content-area .rounded_content, .not-logged-in.section-home #content-area .rounded_content {
 	border: none;
 	-webkit-box-shadow: 0 0 0 0;
@@ -381,21 +403,21 @@ a.searchtype_user:hover {
 	-webkit-border-radius: 0;
 	background: url(../images/bgd_masonry.png) no-repeat;
 }
-.front.not-logged-in #block-heartbeat-publicheartbeat, .not-logged-in.section-home #block-heartbeat-publicheartbeat, .front.not-logged-in #block-collection-related_collection, .not-logged-in.section-home #block-collection-related_collection, .front.not-logged-in #page_title, .not-logged-in.section-home  #page_title, .front.not-logged-in #content-area h2.title, .not-logged-in.section-home #content-area h2.title, .front.not-logged-in #edit-categories-wrapper label, .not-logged-in.section-home #edit-categories-wrapper label, .front.not-logged-in  #info-button, .not-logged-in.section-home #info-button, .front.not-logged-in div.item-list, .not-logged-in.section-home div.item-list {
+.front.not-logged-in #block-heartbeat-publicheartbeat, .not-logged-in.section-home #block-heartbeat-publicheartbeat, .front.not-logged-in #block-collection-related_collection, .not-logged-in.section-home #block-collection-related_collection, .front.not-logged-in #page_title, .section-home #page_title, .front #content-area h2.title, .section-home #content-area h2.title, .front #edit-categories-wrapper label, .section-home #edit-categories-wrapper label, .front.not-logged-in  #info-button, .not-logged-in.section-home #info-button, .front div.item-list, .section-home div.item-list {
 	display: none
 }
-.front.not-logged-in .region-content-top, .not-logged-in.section-home .region-content-top {
+.front .region-content-top, .section-home .region-content-top {
 	float: right;
 	margin: 0
 }
-.front.not-logged-in .tabs, .not-logged-in.section-home .tabs {
+.front .tabs, .section-home .tabs {
 	float: left
 }
 /* the select*/
-.front.not-logged-in #edit-categories option, .not-logged-in.section-home #edit-categories option {
+.front #edit-categories option, .section-home #edit-categories option {
 	width: 140px;
 }
-.front.not-logged-in #edit-categories, .not-logged-in.section-home #edit-categories {
+.front #edit-categories, .section-home #edit-categories {
 	width: 165px;
 }
 .front.not-logged-in #edit-categories-wrapper, .not-logged-in.section-home #edit-categories-wrapper {
@@ -405,10 +427,25 @@ a.searchtype_user:hover {
 	height: 31px;
 	line-height: 22px
 }
-.front.not-logged-in .view-display-id-page, .not-logged-in.section-home .view-display-id-page {
+.front #edit-categories-wrapper, .section-home #edit-categories-wrapper {
+	width: 173px;
+	margin: 11px 46px 0 0;
+	overflow: hidden;
+	height: 31px;
+	line-height: 22px
+}
+.front #block-block-17, .section-home #block-block-7 {
+	top: 14px;
+	right: 10px
+}
+.front.not-logged-in  .view-display-id-page, .not-logged-in.section-home .view-display-id-page {
 	clear: both;
 	margin-left: 10px;
 	width: 670px;
+}
+.front .view-display-id-page, .section-home .view-display-id-page {
+	clear: both;
+	margin-left: 10px;
 }
 .front.not-logged-in #infscr-loading, .not-logged-in.section-home #infscr-loading {
 	left: 200px
@@ -426,15 +463,23 @@ a.searchtype_user:hover {
 	padding: 5px 5px 8px 15px
 }
 .front.not-logged-in div.tabs, .not-logged-in.section-home div.tabs {
-	margin: 32px 0 26px 25px;
+	margin: 32px 0 26px 14px;
 	text-transform: uppercase;
 }
-.front.not-logged-in ul.tabs, .not-logged-in.section-home ul.tabs {
+.front div.tabs, .section-home div.tabs {
+	margin: 17px 0 26px 7px;
+	text-transform: uppercase;
+}
+.front ul.tabs, .section-home ul.tabs {
 	font-family: 'Quicksand', sans-serif;
 	font-size: 15px
 }
-.front.not-logged-in ul.primary li a:hover .tab, .not-logged-in.section-home ul.primary li a:hover .tab, .front.not-logged-in ul li a, .not-logged-in.section-home ul li a, .front.not-logged-in ul li a span, .not-logged-in.section-home ul li a span, .front.not-logged-in .tab, .not-logged-in.section-home .tab, .front.not-logged-in ul.primary li.active a .tab, .front.not-logged-in ul.primary li.active a:hover .tab, .front.not-logged-in ul.primary li.ui-state-active a .tab, .front.not-logged-in ul.primary li.ui-state-active a:hover .tab, .not-logged-in.section-home ul.primary li.active a .tab, .not-logged-in.section-home ul.primary li.active a:hover .tab, .not-logged-in.section-home ul.primary li.ui-state-active a .tab, .not-logged-in.section-home ul.primary li.ui-state-active a:hover .tab {
+.front ul.primary li a:hover .tab, .section-home ul.primary li a:hover .tab, .front ul li a, .section-home ul li a, .front ul li a span, .section-home ul li a span, .front .tab, .section-home .tab, .front ul.primary li.active a .tab, .front ul.primary li.active a:hover .tab, .front ul.primary li.ui-state-active a .tab, .front ul.primary li.ui-state-active a:hover .tab, .section-home ul.primary li.active a .tab, .section-home ul.primary li.active a:hover .tab, .section-home ul.primary li.ui-state-active a .tab, .section-home ul.primary li.ui-state-active a:hover .tab {
 	border-bottom: none
+}
+.front ul.primary li a .tab, .front .blank-li span.tab, .section-home ul.primary li a .tab, .section-home .blank-li span.tab {
+	border: none;
+	padding: 0 15px 0 20px
 }
 .front.not-logged-in .view.view-flag-featured .view-content, .not-logged-in.section-home .view.view-flag-featured .view-content {
 	width: 670px;
@@ -470,11 +515,11 @@ a.searchtype_user:hover {
 	padding: 9px 9px 22px;
 	float: none;
 	margin: 0 0 21px;
-	-webkit-box-shadow: 0px 2px 4px 2px #CCCCCC;
-	-moz-box-shadow: 0px 2px 4px 2px #CCCCCC;
-	-o-box-shadow: 0px 2px 4px 2px #CCCCCC;
-	-ms-box-shadow: 0px 2px 4px 2px #CCCCCC;
-	box-shadow: 0px 2px 4px 2px #CCCCCC;
+	-webkit-box-shadow: 0px 2px 3px #CCCCCC;
+	-moz-box-shadow: 0px 2px 3px #CCCCCC;
+	-o-box-shadow: 0px 2px 3px #CCCCCC;
+	-ms-box-shadow: 0px 2px 3px #CCCCCC;
+	box-shadow: 0px 2px 3px #CCCCCC;
 }
 .front.not-logged-in .views-fluidgrid-item .views-field-title, .not-logged-in.section-home .views-fluidgrid-item .views-field-title {
 	width: 180px;
@@ -496,7 +541,7 @@ a.searchtype_user:hover {
 #block-views-63bdc4a9fecbc8421e1619b2ba6a09c8, #block-block-28, #block-block-27 {
 	margin: 0
 }
-.front.logged-in #block-views-63bdc4a9fecbc8421e1619b2ba6a09c8, .front.logged-in #block-block-28, .front.logged-in #block-block-27 {
+.logged-in #block-views-63bdc4a9fecbc8421e1619b2ba6a09c8, .logged-in #block-block-28, .logged-in #block-block-27 {
 	display: none
 }
 .front.not-logged-in .view-user-hb-incoming-activity .view-content, .not-logged-in.section-home .view-user-hb-incoming-activity .view-content, #block-block-27 .gfc-result {
@@ -882,7 +927,7 @@ div.congrats-popup {
 }
 /*Pages*/
 #page-wrapper {
-	padding: 10px
+	padding: 10px 0
 }
 #page_title {
 	color: #556270
@@ -1122,11 +1167,6 @@ ul.links li {
 }
 #content.reflection {
 	-webkit-box-reflect: below 5px -webkit-gradient(linear,0 0,0 100%,color-stop(.85,transparent),to(white))
-}
-#content-area .rounded_content {
-	background: transparent url(../images/bg-content-tile.jpg);
-	min-height: 749px;
-	padding: 6px
 }
 .sidebar .rounded_content a.active {
 	font-weight: bold
@@ -1953,13 +1993,14 @@ div.product_owners_results .action .wanted img {
  * Footer
  */
 #footer {
-	background: url(/themes/vibio/images/footer_bgd.png) repeat-x
+	background: url(/themes/vibio/images/footer_bgd.png) repeat-x;
+	overflow: hidden
 }
 #footer .section {
 	width: 960px;
 	margin: 0 auto
 }
-#header, #content, #navigation, .region-sidebar-first, .region-sidebar-second, #footer, .region-page-closure {
+#header, #content, #navigation, .region-sidebar-first, .region-sidebar-second, .region-page-closure {
 	overflow: visible;
 	word-wrap: break-word; /* A very nice CSS3 property */
 }
@@ -2775,7 +2816,7 @@ td.col-2 {
 .block-wrapper {
 	background: #E5E7EA;
 	padding: 0 9px 10px;
-	margin: 2px 7px 0;
+	margin: 5px 7px 0;
 	box-shadow: 0 0 1px 1px #CCCCCC
 }
 #block-collection-related_collection h2 {
@@ -3179,27 +3220,18 @@ div.beat-item a:hover {
 	text-align: center
 }
 /*Sidebar Connect Block for featured page*/
-#block-block-5 {
-	background: url(../images/sidebar_connect.png) no-repeat -1px 0;
-	padding: 0 0 0 25px;
-	color: #106F93;
-	font-weight: bold;
-	min-height: 255px;
-	margin: 50px -10px 0
-}
-.not-logged-in div.rounded_content {
-	background: #FFFFFF
-}
+
 #connect-nav {
 	clear: both;
-	padding-top: 25px;
+	padding-top: 23px;
 	font-size: 12px;
-	height: 70px
+	height: 64px;
+	padding-left: 30px
 }
 #connect-nav ul {
 	float: left;
 	list-style: none;
-	padding: 0 25px 0 0
+	padding: 0 22px 0 0
 }
 #connect-nav li {
 	margin-bottom: 7px
@@ -3207,15 +3239,21 @@ div.beat-item a:hover {
 #content-copyright {
 	clear: both;
 	font-size: 9px;
-	color: #FFF;
-	padding-top: 7px
+	color: #4fa1c9;
+	padding-top: 9px;
+	padding-left: 20px
 }
 #content-copyright p {
 	margin: 0
 }
 #connection-top {
-	padding-top: 65px;
-	height: 17px
+	padding-top: 72px;
+	height: 13px;
+	padding-left: 30px
+}
+#content-social {
+	height: 28px;
+	padding-left: 30px
 }
 #content-social a {
 	background: url(../images/sidebar_social.png) no-repeat;
@@ -3790,22 +3828,22 @@ a#info-modal:hover span.tab {
 	border-bottom-color: #CFD2D5
 }
 /*Info buton products*/
-.node-type-product #info-button-head{
+.node-type-product #info-button-head {
 	position: absolute;
 	right: 15px;
-	top:15px;
+	top: 15px;
 }
-.node-type-product .product-edit-head{
+.node-type-product .product-edit-head {
 	background: url(../images/btn_edit_item.png) no-repeat scroll 0 0 transparent;
-    display: block;
-    height: 28px;
-    position: absolute;
-    right: 53px;
-    text-indent: -9999px;
-    top: 14px;
-    width: 134px;
+	display: block;
+	height: 28px;
+	position: absolute;
+	right: 53px;
+	text-indent: -9999px;
+	top: 14px;
+	width: 134px;
 }
-.node-type-product a.product-edit-head:hover{
+.node-type-product a.product-edit-head:hover {
 	background-position: 0 -32px;
 }
 div.tabs_big ul.primary li a .tab {
@@ -3999,10 +4037,6 @@ ul.jquery_dropdown_list li a:hover {
 	font-weight: 500 !important;
 	margin-bottom: 5px
 }
-#content-area .rounded_content {
-	min-height: 749px;
-	padding: 10px !important;
-}
 .page-product-add h1#page_title {
 	padding-left: 10px
 }
@@ -4062,20 +4096,26 @@ ul.jquery_dropdown_list li a:hover {
 	background-position-y: -139px
 }
 #block-block-5 {
-	background: url(../images/sidebar_connect.png) no-repeat;
+	background: url(../images/bgd_floating_footer.png) no-repeat 0px 0px;
 	padding: 0;
-	margin: 0;
+	margin: 10px 0 0 0;
 	color: #106F93;
 	font-weight: bold;
-	height: 255px;
-	width: 208px;
+	height: 263px;
+	width: 193px;
 	position: absolute;
-	right: -8px
+	right: -1px
 }
-#block-block-5 .content {
+.front.not-logged-in #block-block-5, .section-home.not-logged-in #block-block-5  {
+	background: url(../images/bgd_floating_footer.png) no-repeat 0px 0px;
+	padding: 0;
+	margin: 65px 0 0 0;
+	color: #106F93;
+	font-weight: bold;
+	height: 263px;
+	width: 193px;
 	position: absolute;
-	top: 0px;
-	left: 29px
+	right: 46px
 }
 #block-block-5 #content-social a {
 	background: url(../images/sidebar_social.png) no-repeat;

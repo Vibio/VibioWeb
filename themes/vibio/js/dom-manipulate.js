@@ -149,6 +149,6 @@ $(document).ready(function() {
  });
 })(jQuery);
 
-	$('.front.not-logged-in .form-select, .not-logged-in .form-select').customStyle();
+	$('.front .form-select, .section-home .form-select').customStyle();
 
 });

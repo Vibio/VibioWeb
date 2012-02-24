@@ -1,6 +1,6 @@
 /*Combination of old Css files - Craig Tockman Vibio 11-28-2011*/
 /*Hide things with CSS display:none*/
-.front.logged-in h1#page_title, .section-home.logged-in h1#page_title, div#edit-field-have-want-like-wrapper, div#block-collection-related_collection .collection_item_count, div#block-collection-related_collection .collection_description, div#block-collection-related_collection .collection_categories, div#block-collection-related_collection .collection_date_added, div#block-collection-related_collection .collection_link, form#privatemsg-new input#edit-preview, form#privatemsg-new a#edit-cancel, .not-logged-in #block-block-22, .page-product-add h1#page_title.title, #node-form #field_images_values .delta-order .form-item, img.team_tooltip, .logged-in #block-views-flag_featured_users-block_1, .hide, .popups-box .title, .not-logged-in #block-block-5, .logged-in #block-block-4, .page-about h1#page_title, .page-team h1#page_title, .not-logged-in #block-block-17, img.uri_edit_busy_indicator, #uri_elaborations_edit, .ur_friend_remove img, .views-throbbing, .view_activity_timestamp, .views-table.cols-2 thead, #block-user-0 .menu_description, #profile_ext_submenu, .profile_busy_indicator img, #profile_completion_steps_container, .region-footer h2, .element-hidden, #block-menu-secondary-links h2, #search_type_submenu, #user-login-form span.form-required, div.node-type-offer-neg-seller ul.links, .offer2buy_nid, .offer2buy_offer_view_popup, #edit-search-block-form-1-wrapper label, div.form-radios td.form-item-label, div.form-checkboxes td.form-item-label, .grippie, .hidden, .fb_dialog, .fb_share_params, .view-user-collections .view-filters, .collection_preview_loading, .collection_preview_items, .item_updated, #collection_sidebar, .section-collections h1#page_title, ul.message-actions li.block_author a, .section-messages div.privatemsg-view-pager, .section-messages div.message-participants, #edit-privacy-item-default-privacy-setting-wrapper label, #profile-submenu {
+.front.logged-in h1#page_title, .section-home.logged-in h1#page_title, div#edit-field-have-want-like-wrapper, div#block-collection-related_collection .collection_item_count, div#block-collection-related_collection .collection_description, div#block-collection-related_collection .collection_categories, div#block-collection-related_collection .collection_date_added, div#block-collection-related_collection .collection_link, form#privatemsg-new input#edit-preview, form#privatemsg-new a#edit-cancel, .not-logged-in #block-block-22, .page-product-add h1#page_title.title, #node-form #field_images_values .delta-order .form-item, img.team_tooltip, .logged-in #block-views-flag_featured_users-block_1, .hide, .popups-box .title, .logged-in #block-block-4, .page-about h1#page_title, .page-team h1#page_title, .not-logged-in #block-block-17, img.uri_edit_busy_indicator, #uri_elaborations_edit, .ur_friend_remove img, .views-throbbing, .view_activity_timestamp, .views-table.cols-2 thead, #block-user-0 .menu_description, #profile_ext_submenu, .profile_busy_indicator img, #profile_completion_steps_container, .region-footer h2, .element-hidden, #block-menu-secondary-links h2, #search_type_submenu, #user-login-form span.form-required, div.node-type-offer-neg-seller ul.links, .offer2buy_nid, .offer2buy_offer_view_popup, #edit-search-block-form-1-wrapper label, div.form-radios td.form-item-label, div.form-checkboxes td.form-item-label, .grippie, .hidden, .fb_dialog, .fb_share_params, .view-user-collections .view-filters, .collection_preview_loading, .collection_preview_items, .item_updated, #collection_sidebar, .section-collections h1#page_title, ul.message-actions li.block_author a, .section-messages div.privatemsg-view-pager, .section-messages div.message-participants, #edit-privacy-item-default-privacy-setting-wrapper label, #profile-submenu {
 	display: none
 }
 /*pager on front page that masonry will re-hide*/
@@ -33,8 +33,9 @@ body {
 	-o-box-shadow: 1px 1px 2px 3px #CCCCCC;
 	-ms-box-shadow: 1px 1px 2px 3px #CCCCCC;
 	box-shadow: 1px 1px 2px 3px #CCCCCC;
+	background: #FFFFFF
 }
-.front.not-logged-in .sidebar .rounded_content {
+.front.not-logged-in .sidebar .rounded_content, .section-home.not-logged-in .sidebar .rounded_content {
 	-webkit-box-shadow: 0 0 0 0;
 	-moz-box-shadow: 0 0 0 0;
 	-o-box-shadow: 0 0 0 0;
@@ -43,6 +44,7 @@ body {
 	border-radius: 0;
 	-moz-border-radius: 0;
 	-webkit-border-radius: 0;
+	position: relative
 }
 /*rounded corners*/
 .rounded_content, .sidebar .rounded_content {
@@ -179,7 +181,7 @@ span#or {
 }
 .not-logged-in #logo {
 	position: relative;
-	z-index: 200
+	z-index: 1001
 }
 h1#site-name, div#site-name {
 	margin: 0;
@@ -356,7 +358,7 @@ a.searchtype_user:hover {
 	display: block;
 	height: 113px;
 	width: 114px;
-	top: 2px;
+	top: 4px;
 	left: 6px
 }
 .search_type_submenu_container table {
@@ -377,6 +379,9 @@ a.searchtype_user:hover {
 /*New Featured Page*/
 .rounded_container {
 	background: url(../images/bgd_main_content.png) repeat;
+}
+.front.not-logged-in .rounded_container, .section-home.not-logged-in .rounded_container{
+	background: none
 }
 #content-area .rounded_content {
 	min-height: 749px;
@@ -457,12 +462,12 @@ a.searchtype_user:hover {
 	background: url(../images/bgd_select.png) no-repeat 0 0;
 	padding: 5px 5px 8px 15px
 }
-.front.not-logged-in div.tabs, .section-home div.tabs {
-	margin: 32px 0 26px 25px;
+.front.not-logged-in div.tabs, .not-logged-in.section-home div.tabs {
+	margin: 32px 0 26px 14px;
 	text-transform: uppercase;
 }
 .front div.tabs, .section-home div.tabs {
-	margin: 17px 0 26px 16px;
+	margin: 17px 0 26px 7px;
 	text-transform: uppercase;
 }
 .front ul.tabs, .section-home ul.tabs {
@@ -473,7 +478,8 @@ a.searchtype_user:hover {
 	border-bottom: none
 }
 .front ul.primary li a .tab, .front .blank-li span.tab, .section-home ul.primary li a .tab, .section-home .blank-li span.tab {
-	border: none
+	border: none;
+	padding: 0 15px 0 20px
 }
 .front.not-logged-in .view.view-flag-featured .view-content, .not-logged-in.section-home .view.view-flag-featured .view-content {
 	width: 670px;
@@ -509,11 +515,11 @@ a.searchtype_user:hover {
 	padding: 9px 9px 22px;
 	float: none;
 	margin: 0 0 21px;
-	-webkit-box-shadow: 0px 2px 4px 2px #CCCCCC;
-	-moz-box-shadow: 0px 2px 4px 2px #CCCCCC;
-	-o-box-shadow: 0px 2px 4px 2px #CCCCCC;
-	-ms-box-shadow: 0px 2px 4px 2px #CCCCCC;
-	box-shadow: 0px 2px 4px 2px #CCCCCC;
+	-webkit-box-shadow: 0px 2px 3px #CCCCCC;
+	-moz-box-shadow: 0px 2px 3px #CCCCCC;
+	-o-box-shadow: 0px 2px 3px #CCCCCC;
+	-ms-box-shadow: 0px 2px 3px #CCCCCC;
+	box-shadow: 0px 2px 3px #CCCCCC;
 }
 .front.not-logged-in .views-fluidgrid-item .views-field-title, .not-logged-in.section-home .views-fluidgrid-item .views-field-title {
 	width: 180px;
@@ -921,7 +927,7 @@ div.congrats-popup {
 }
 /*Pages*/
 #page-wrapper {
-	padding: 10px
+	padding: 10px 0
 }
 #page_title {
 	color: #556270
@@ -1987,13 +1993,14 @@ div.product_owners_results .action .wanted img {
  * Footer
  */
 #footer {
-	background: url(/themes/vibio/images/footer_bgd.png) repeat-x
+	background: url(/themes/vibio/images/footer_bgd.png) repeat-x;
+	overflow: hidden
 }
 #footer .section {
 	width: 960px;
 	margin: 0 auto
 }
-#header, #content, #navigation, .region-sidebar-first, .region-sidebar-second, #footer, .region-page-closure {
+#header, #content, #navigation, .region-sidebar-first, .region-sidebar-second, .region-page-closure {
 	overflow: visible;
 	word-wrap: break-word; /* A very nice CSS3 property */
 }
@@ -2809,7 +2816,7 @@ td.col-2 {
 .block-wrapper {
 	background: #E5E7EA;
 	padding: 0 9px 10px;
-	margin: 2px 7px 0;
+	margin: 5px 7px 0;
 	box-shadow: 0 0 1px 1px #CCCCCC
 }
 #block-collection-related_collection h2 {
@@ -3213,9 +3220,7 @@ div.beat-item a:hover {
 	text-align: center
 }
 /*Sidebar Connect Block for featured page*/
-.not-logged-in div.rounded_content {
-	background: #FFFFFF
-}
+
 #connect-nav {
 	clear: both;
 	padding-top: 23px;
@@ -4101,7 +4106,17 @@ ul.jquery_dropdown_list li a:hover {
 	position: absolute;
 	right: -1px
 }
-
+.front.not-logged-in #block-block-5, .section-home.not-logged-in #block-block-5  {
+	background: url(../images/bgd_floating_footer.png) no-repeat 0px 0px;
+	padding: 0;
+	margin: 65px 0 0 0;
+	color: #106F93;
+	font-weight: bold;
+	height: 263px;
+	width: 193px;
+	position: absolute;
+	right: 46px
+}
 #block-block-5 #content-social a {
 	background: url(../images/sidebar_social.png) no-repeat;
 	display: block;

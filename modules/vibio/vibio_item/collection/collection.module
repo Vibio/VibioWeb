@@ -569,6 +569,8 @@ function collection_form_vibio_item_node_form_alter(&$form, &$state)
 		*/
 	);
 
+  $form['field_collection']['#access'] = FALSE;
+
 }
 
 /**

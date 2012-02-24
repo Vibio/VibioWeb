@@ -48,8 +48,8 @@ function product_menu()
 		),
 
 		/* stephen thinks this should be removed.  It merely sets a message
-     * that looks kindof silly as a "message" instead of just part of the 
-     * page.  
+     * that looks kindof silly as a "message" instead of just part of the
+     * page.
 			 And sets to true, what is this: $_SESSION['product']['auto_add'] = $val;
        Alec->According to Stephen notes in product.pages.php, this variable
      * indicates whether to create a new item along with the new product.
@@ -225,7 +225,7 @@ function product_theme()
 			"path"		=> drupal_get_path("theme", "vibio"),
 		),
 		// Create the want link/button, that's all.
-		/* v1.0: it was very different from HAVE button 
+		/* v1.0: it was very different from HAVE button
 		"product_inventory_want"=> array(
 			"arguments"	=> array("nid"	=> false),
 			"template"	=> "templates/product/inventory-want",
@@ -420,7 +420,7 @@ function product_preprocess_search_results(&$vars)
 		// Some function, in a typical search, has already set it to true.
 		// look for:
 		// modules/vibio/vibio_item/product_catalog/product.module:  product_set_external_search(true, true);
-	// I think it's called in product_external_search (this file), by 
+	// I think it's called in product_external_search (this file), by
 	//  something before here?   start_here_tuesday
 
 //PRODUCT_SEARCH_RESULTS_PER_PAGE does this do anything?  Is the idea that if you have a full page of results in $vars['results'] 
@@ -451,7 +451,7 @@ function product_preprocess_search_results(&$vars)
 					$vars['other_results'] .= theme("search_result", $result, "vibio_item"); /* stephen: what is this?  Ebay, or Ebay and Amazon?  OMG:
     *  I think other_results is basically less interesting results,
     *  so Amazon results can be regularly results if no other results are
-    *  found, and 'other_results' if local results were found.   
+    *  found, and 'other_results' if local results were found.
     *  Not sure about this, check later.
     */
 				}
@@ -470,7 +470,7 @@ function product_preprocess_search_results(&$vars)
 	}
 }
 
-/* two functions dealing with have-want buttons, 
+/* two functions dealing with have-want buttons,
      one for search, one for view
      main question is do you own this product alread. */
 // now expanded to own/want/like
@@ -509,7 +509,7 @@ function product_preprocess_search_result(&$vars)
         $vars['img'] = '<img src="' . $vars['result']['amazon_data']['imagesets']['largeimage']['url'] . '" width="160"/>';
         //Products must be created before have/want popup is generated; links
         //create product from Amazon item
-        $search_links['want'] = l(t('Want'), 'product-from-asin', 
+        $search_links['want'] = l(t('Want'), 'product-from-asin',
           array(
             'query' => array('asin' => $vars['result']['amazon_data']['asin']),
             'attributes' => array('class' => 'inventory_want', 'asin' => $vars['result']['amazon_data']['asin'])
@@ -558,7 +558,7 @@ function product_have_want($nid)
 
 
 	$search_links .= $item_nid ? l(t($possess_words), "node/{$item_nid}", array('attributes' => array('class' => "you-own $you_possess"))) : theme("product_inventory_add", $nid); // theme just creates the button.
-	$search_links .= $item_nid ? "" : theme("product_inventory_want", $nid); 
+	$search_links .= $item_nid ? "" : theme("product_inventory_want", $nid);
 	return $search_links;
 }
 

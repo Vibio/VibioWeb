@@ -380,7 +380,7 @@ a.searchtype_user:hover {
 .rounded_container {
 	background: url(../images/bgd_main_content.png) repeat;
 }
-.front.not-logged-in .rounded_container, .section-home.not-logged-in .rounded_container{
+.front.not-logged-in .rounded_container, .section-home.not-logged-in .rounded_container {
 	background: none
 }
 #content-area .rounded_content {
@@ -538,13 +538,13 @@ a.searchtype_user:hover {
 	font-family: 'Quicksand', sans-serif;
 	color: #666666
 }
-#block-views-63bdc4a9fecbc8421e1619b2ba6a09c8, #block-block-28, #block-block-27 {
+#block-views-63bdc4a9fecbc8421e1619b2ba6a09c8, #block-block-29, #block-block-28 {
 	margin: 0
 }
-.logged-in #block-views-63bdc4a9fecbc8421e1619b2ba6a09c8, .logged-in #block-block-28, .logged-in #block-block-27 {
+.logged-in #block-views-63bdc4a9fecbc8421e1619b2ba6a09c8, .logged-in #block-block-29, .logged-in #block-block-28 {
 	display: none
 }
-.front.not-logged-in .view-user-hb-incoming-activity .view-content, .not-logged-in.section-home .view-user-hb-incoming-activity .view-content, #block-block-27 .gfc-result {
+.front.not-logged-in .view-user-hb-incoming-activity .view-content, .not-logged-in.section-home .view-user-hb-incoming-activity .view-content, #block-block-28 .gfc-result {
 	background: url(../images/bgd_sidebar_right.png) repeat-y 0 0;
 }
 .front.not-logged-in .view-user-hb-incoming-activity tr.views-row-last, .not-logged-in.section-home .view-user-hb-incoming-activity tr.views-row-last {
@@ -580,7 +580,7 @@ a.searchtype_user:hover {
 	border: 1px solid #D7D7D7
 }
 /*connect to us splash*/
-#block-block-28 h2.title {
+#block-block-29 h2.title {
 	background: url(../images/bgd_social_sb_1.png) no-repeat 0px 0;
 	height: 31px;
 	padding: 42px 0 0 10px;
@@ -637,41 +637,41 @@ a.searchtype_user:hover {
 	background-position: 2px 1px
 }
 /*Latest blog posts*/
-#block-block-27 h2.title {
+#block-block-28 h2.title {
 	background: url(../images/bgd_blog.png) no-repeat 1px 0;
 	padding: 29px 0 0px 10px;
 	border-bottom: 1px solid #D7D7D7;
 }
-#block-block-27 .gfc-result {
+#block-block-28 .gfc-result {
 	margin: 0;
 	border-bottom: 1px solid #d7d7d7;
 	padding: 10px;
 	min-height: 60px
 }
-#block-block-27 .gfc-results {
+#block-block-28 .gfc-results {
 	padding: 0
 }
-#block-block-27 .gf-snippet {
+#block-block-28 .gf-snippet {
 	font-size: 12px;
 	margin-top: 10px;
 	width: 225px
 }
-#block-block-27 div.gf-title a {
+#block-block-28 div.gf-title a {
 	color: #338dc8;
 	font-size: 15px;
 	text-transform: capitalize;
 }
-#block-block-27 div.gf-title {
+#block-block-28 div.gf-title {
 	margin: 0;
 	height: 18px;
 	text-overflow: ellipsis;
 	width: 225px
 }
-#block-block-27 .gfc-resultsHeader {
+#block-block-28 .gfc-resultsHeader {
 	margin: 0;
 	border: none;
 }
-#block-block-27 .gf-relativePublishedDate {
+#block-block-28 .gf-relativePublishedDate {
 	display: none
 }
 /*Sidebar*/
@@ -3076,31 +3076,40 @@ a#profile_ext_displayblock_image {
 }
 /*Upper Left Sidebar*/
 #upper_title {
-	height: 41px;
-	width: 192px;
+	height: 40px;
+	width: 190px;
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 5px;
+	-moz-border-radius-bottomright: 0px;
+	-moz-border-radius-bottomleft: 0px;
+	-webkit-border-radius: 5px 5px 0px 0px;
+	border-radius: 5px 5px 0px 0px;
 }
 #upper_title a {
 	float: left;
-	padding: 11px 24px;
+	padding: 11px 0;
 	text-align: center;
 	display: block;
 	font-weight: bold;
 	font-size: 15px;
-	border-bottom: 1px solid #CCCCCC;
-	width: 47px
+	border-bottom: 1px solid #CCC;
+	text-shadow: 1px 1px 0px #000
 }
 a.home-b {
 	color: #A3A3A3;
-	border-right: 1px solid #CCCCCC
+	width: 95px;
+	
 }
 a.profile-b {
-	color: #A3A3A3
+	color: #A3A3A3;
+	border-left: 1px solid #CCC;
+	width: 94px
 }
 #upper_title a.home-b:hover, #upper_title a.profile-b:hover {
-	background: #CCC;
-	color: #FFFFFF
+	background: #EEE;
+	color: #FFFFFF;
 }
-#upper_title a.home-b:hover {
+#upper_title a.home-b{
 	-moz-border-radius-topleft: 5px;
 	-moz-border-radius-topright: 0px;
 	-moz-border-radius-bottomright: 0px;
@@ -3108,7 +3117,7 @@ a.profile-b {
 	-webkit-border-radius: 5px 0px 0px 0px;
 	border-radius: 5px 0px 0px 0px;
 }
-#upper_title a.profile-b:hover {
+#upper_title a.profile-b {
 	-moz-border-radius-topleft: 0px;
 	-moz-border-radius-topright: 5px;
 	-moz-border-radius-bottomright: 0px;
@@ -4106,7 +4115,7 @@ ul.jquery_dropdown_list li a:hover {
 	position: absolute;
 	right: -1px
 }
-.front.not-logged-in #block-block-5, .section-home.not-logged-in #block-block-5  {
+.front.not-logged-in #block-block-5, .section-home.not-logged-in #block-block-5 {
 	background: url(../images/bgd_floating_footer.png) no-repeat 0px 0px;
 	padding: 0;
 	margin: 65px 0 0 0;

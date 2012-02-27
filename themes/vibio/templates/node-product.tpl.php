@@ -222,15 +222,6 @@ if ($user_owns) {
 	$header_link = "<div class='external_short_link'>
        $external_it_link<a id='info-button' class='automodal' href='/product-help'><span class='tab'>Info</span></a>
        </div>";
-
-  //This is the want case
-  if($manage_link){
-    $manage_link =  l('Edit your want details to:', $manage_link) .
-                      " <ul id='product-manage-ul'>
-                           <li>Record your want in a different collection</li>
-                                <li>Remove this want from your collection</li>
-                                                                    </ul> ";
-  }
 }
 echo "
 	<h1 id='product_description'>Description</h1>

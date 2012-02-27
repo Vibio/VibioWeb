@@ -90,8 +90,12 @@ function network_get($uid, $rel_type=false, $depth=false)
             //Populate data about the current user in the queue
 			if (!array_key_exists($q_uid, $network))
 			{
-                $network[$q_uid] = _network_get_userinfo($q_uid);
-                $network[$q_uid]['friends'] = _network_get_friends($q_uid, $rel_type);
+        //If the current user in the queue is Diana, don't load her network 
+        //@todo: get rid of this hack
+        $network[$q_uid] = _network_get_userinfo($q_uid);
+        if($network[$q_uid]['name'] != 'Diana Bull'){
+          $network[$q_uid]['friends'] = _network_get_friends($q_uid, $rel_type);
+        }
 			}
             //Place the current user's friends next i the queue
             foreach ($network[$q_uid]['friends'] as $friend_id)

@@ -201,7 +201,8 @@ h1#site-name, div#site-name {
 	position: relative;
 	cursor: pointer;
 	height: 14px;
-	padding: 18px 57px 18px 19px;
+	padding: 18px 0 18px 19px;
+	width: 167px
 }
 #profile-menu:hover {
 	background: url(../images/header_hover_1.png) no-repeat

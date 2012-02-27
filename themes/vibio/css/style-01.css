@@ -201,7 +201,8 @@ h1#site-name, div#site-name {
 	position: relative;
 	cursor: pointer;
 	height: 14px;
-	padding: 18px 57px 18px 19px;
+	padding: 18px 0 18px 19px;
+	width: 167px
 }
 #profile-menu:hover {
 	background: url(../images/header_hover_1.png) no-repeat
@@ -490,7 +491,7 @@ a.searchtype_user:hover {
 	border: 0;
 	width: 180px
 }
-.front.not-logged-in .inventory_add, .not-logged-in.section-home .inventory_add, .front.not-logged-in .inventory_want, .not-logged-in.section-home.inventory_want {
+.front.not-logged-in .inventory_add, .not-logged-in.section-home .inventory_add, .front.not-logged-in .inventory_want, .not-logged-in.section-home .inventory_want {
 	position: static
 }
 .front.not-logged-in .views-fluidgrid-item .views-field-field-main-image-fid img, .not-logged-in.section-home .views-fluidgrid-item .views-field-field-main-image-fid img {

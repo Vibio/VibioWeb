@@ -11,12 +11,7 @@ if ($_GET['searchcrumb']) {
 	$searchcrumb = "";
 }
 
-//$product_image can be set by vibio_addthis if it has already loaded the image path. It is an absolute path.
-if (isset($product_image)) {
-	$image = $product_image;
-} else {
-	$image = _product_get_image($node -> nid, true);
-}
+$image = _product_get_image($node -> nid, true);
 
 if (isset($image)) {
 	$image = file_uncreate_url($image);

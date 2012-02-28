@@ -95,6 +95,8 @@ function network_get($uid, $rel_type=false, $depth=false)
         $network[$q_uid] = _network_get_userinfo($q_uid);
         if($network[$q_uid]['name'] != 'Diana Bull'){
           $network[$q_uid]['friends'] = _network_get_friends($q_uid, $rel_type);
+        }else{
+          $network[$q_uid]['friends'] = array();
         }
 			}
             //Place the current user's friends next i the queue

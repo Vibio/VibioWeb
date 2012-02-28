@@ -25,7 +25,7 @@ function product_item_menu() {
   $items['product/amazon/%'] = array(
     'page callback' => 'product_item_prewizard',
     'page arguments' => array(2),
-    'access arguments' => array('access content'),
+    "access arguments"	=> array("create product content"),
     'type' => MENU_CALLBACK
   );
   $items['product/new'] = array(
@@ -62,9 +62,8 @@ function product_item_prewizard($asin = null){
   drupal_goto('product/new');
 }
 
-
-//@TODO REMOVE
 /**
+//@TODO REMOVE
 function print_r_tree($data)
 {
     // capture the output of print_r
@@ -236,9 +235,13 @@ function product_item_product_alter_form(&$form, $product){
   $amazon_data = $product[0];
 
   $form['title']['#default_value'] = $product['title'];
-  $tid = key($product['taxonomy']);
-  $form['taxonomy'][2]['#value'] = $tid;
-
+  if($product['taxonomy']){
+    $tid = key($product['taxonomy']);
+    $form['taxonomy'][2]['#value'] = $tid;
+  }else{
+    //Set to "Accessories", which is default
+    $tid = 67;
+  }
   //If we haven't entered a custom body, use the Amazon data
   if(empty($product['body']) && !empty($amazon_data['editorialreviews'][0]['content'])){
     $form['body_field']['body']['#default_value'] = $amazon_data['editorialreviews'][0]['content'];

@@ -598,6 +598,7 @@ function vibio_product_displays_views_default_views() {
   $handler->display->display_options['fields']['status']['table'] = 'files';
   $handler->display->display_options['fields']['status']['field'] = 'status';
   $handler->display->display_options['fields']['status']['relationship'] = 'field_main_image_fid';
+  $handler->display->display_options['fields']['status']['exclude'] = TRUE;
   $handler->display->display_options['fields']['status']['alter']['alter_text'] = 0;
   $handler->display->display_options['fields']['status']['alter']['make_link'] = 0;
   $handler->display->display_options['fields']['status']['alter']['absolute'] = 0;

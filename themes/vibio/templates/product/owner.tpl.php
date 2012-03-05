@@ -38,7 +38,7 @@ Need to go up-code to change that.
 
 
 if ( $price ) {
-	$price = "<div class='row'><div class='header ask-price'>Asking Price:</div><br /> \$$price</div>";
+	$price = "<div class='row'><div class='header ask-price'>Asking Price:</div> \$$price</div>";
 } else {
 	$price = '';
 }

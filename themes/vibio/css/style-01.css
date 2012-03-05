@@ -3089,13 +3089,16 @@ a#profile_ext_displayblock_image {
 }
 #upper_title a {
 	float: left;
-	padding: 11px 0;
+	padding: 12px 0 10px;
 	text-align: center;
 	display: block;
 	font-weight: bold;
 	font-size: 15px;
 	border-bottom: 1px solid #CCC;
-	text-shadow: 1px 1px 0px #000
+	text-shadow: 1px 2px 1px #CCC;
+	-webkit-box-shadow: inset 0px 2px 2px 0px #FFFFFF;
+	-moz-box-shadow: inset 0px 2px 2px 0px #FFFFFF;
+	box-shadow: inset 0px 2px 2px 0px #FFFFFF;
 }
 a.home-b {
 	color: #A3A3A3;
@@ -3107,7 +3110,7 @@ a.profile-b {
 	width: 94px
 }
 #upper_title a.home-b:hover, #upper_title a.profile-b:hover {
-	background: #EEE;
+	background: #DADDE2;
 	color: #FFFFFF;
 }
 #upper_title a.home-b {

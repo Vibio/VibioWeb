@@ -3095,7 +3095,7 @@ a#profile_ext_displayblock_image {
 	font-weight: bold;
 	font-size: 15px;
 	border-bottom: 1px solid #CCC;
-	text-shadow: 1px 2px 1px #CCC;
+	text-shadow: 1px 1px 1px #CCC;
 	-webkit-box-shadow: inset 0px 2px 2px 0px #FFFFFF;
 	-moz-box-shadow: inset 0px 2px 2px 0px #FFFFFF;
 	box-shadow: inset 0px 2px 2px 0px #FFFFFF;

@@ -12,7 +12,10 @@ function vibio_product_displays_default_page_manager_pages() {
   $page->admin_title = 'Homepage';
   $page->admin_description = 'This is V2.0 of the Vibio home page, formerly an aliased node.';
   $page->path = 'homepage/!term';
-  $page->access = array();
+  $page->access = array(
+    'type' => 'none',
+    'settings' => NULL,
+  );
   $page->menu = array();
   $page->arguments = array(
     'term' => array(

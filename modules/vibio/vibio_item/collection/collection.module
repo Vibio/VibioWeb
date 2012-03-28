@@ -82,7 +82,7 @@ function collection_block($op="list", $delta=0, $edit=array())
 			{
         case "related_collection":
           return array(
-            "subject" => "",
+            "subject" => t("Showcase Item"),
             "content" => collection_display_related(),
           );
 				case "random_collection":
@@ -90,7 +90,7 @@ function collection_block($op="list", $delta=0, $edit=array())
 
 
 					return array(
-						"subject"	=> "",
+						"subject"	=> t("Showcase Item"),
 						"content"	=> collection_random_collection($user),
 					);
 			}
@@ -330,6 +330,8 @@ function collection_preprocess_collection_list_item_preview(&$vars)
 		if(module_exists('offer2buy')){
 			//Insert an offer button or not for sale image
 			$item = $vars['item'];
+      //@TODO: get rid of is_on_sale, properly a DB value in {offer2buy}, or
+      //reconsider the offer data storage in light of performance
 			$item->offer2buy['settings']['is_on_sale'] = $vars['item']->for_sale; 
 			$vars['offer_button'] = theme('offer_button', $item, $user->uid);
 		}
@@ -337,7 +339,7 @@ function collection_preprocess_collection_list_item_preview(&$vars)
 		if ( $possess == 20 ) { // Want
 			$vars['item']->offer2buy_price = "Wanted";
 			$vars['offer_button'] = 
-				"<div class='wanted'><img src='/themes/vibio/images/item/wanted_button.png'
+				"<div class='wanted'><img src='/themes/vibio/images/item/wanted_flag.png'
 					alt='I want this.  Maybe it\'s my birthday today?'
 					title='I want this.'></div>";
 			//override for_sale, if it was set
@@ -389,6 +391,7 @@ function collection_nodeapi(&$node, $op, $a3=null, $a4=null)
       }
       //collection_info is used by product.pages.php; ie the have/want popups
       if(isset($node->collection_info)){
+        $node->collection_info['cid'] = (array)$node->collection_info['cid'];
         $collection_nids = array_merge($collection_nids, $node->collection_info['cid']);
       }
 			//$collection_nids = isset($node->field_collection[0]['nid']) ? $node->field_collection : false;
@@ -426,6 +429,7 @@ function collection_nodeapi(&$node, $op, $a3=null, $a4=null)
       //Consolidate all collection nids into field_collection
       //@todo: eliminate collection_info
       if($node->collection_info){
+        $node->collection_info['cid'] = (array) $node->collection_info['cid'];
         foreach($node->collection_info['cid'] as $cid){
           $node->field_collection = array();
           $node->field_collection[]['nid'] = $cid;
@@ -531,7 +535,7 @@ function collection_form_vibio_item_node_form_alter(&$form, &$state)
 		$default = collection_get_user_default(false, true);
 	}
 	
-	if ($form['#node']->nid) //existing node
+	if (isset($form['#node']->nid)) //existing node
 	{
 		$default = collection_get_item_cid($form['#node']->nid);
 	} 
@@ -552,7 +556,7 @@ function collection_form_vibio_item_node_form_alter(&$form, &$state)
 			"#title"		=> t("Collection"),
 			"#options"		=> $options, //collection_options(),
 			"#default_value"=> $default,
-			"#multiple"		=> true,
+			"#multiple"		=> TRUE,
 		),
 
 		/* this was commented out, why?
@@ -564,6 +568,8 @@ function collection_form_vibio_item_node_form_alter(&$form, &$state)
 		),
 		*/
 	);
+
+  $form['field_collection']['#access'] = FALSE;
 
 }
 

@@ -257,21 +257,21 @@ function profile_ext_display_block($u)
 	}
 
 	global $user;
-  $vars['friend_count'] = module_exists("network") ? count(_network_get_friends($user->uid, 1)) : 0;
+  $vars['friend_count'] = module_exists("network") ? count(_network_get_friends($u->uid, 1)) : 0;
 
 
 	// how many buying and selling offers? Needs rethinking at design level
-
-	// print $GLOBALS['current_view']->total_rows; or num_rows
-	$view = views_get_view('user_selling_offered');	
-	$view->execute_display(); // do one that doesn't have a pager?!!!
-	$vars['selling'] = count($view->result);
 
 	// print $GLOBALS['current_view']->total_rows; or num_rows
 	$view = views_get_view('user_buying_offers');	
 	$view->execute_display(); // do one that doesn't have a pager?!!!
 	$vars['buying'] = count($view->result);
 
+	// print $GLOBALS['current_view']->total_rows; or num_rows
+	$view = views_get_view('user_selling_offered');	
+  // @todo: Change this to use views_get_view_result()
+	$view->execute_display(); // do one that doesn't have a pager?!!!
+	$vars['selling'] = count($view->result);
 
 	//$pic_nelson = $u->picture ? file_create_url($u->picture) : "/themes/vibio/images/icons/default_user_large.png";
   $alt = "Your picture";
@@ -433,6 +433,30 @@ function profile_ext_preprocess_user_profile(&$vars)
 
 
 		break;
+	case "want_list":
+    		$vars['sec_content_class'] = $sec_page;
+		//Access is used to determine which collections you can see
+		$access = module_exists("privacy") ? privacy_get_access_level($uid) : 1;
+		//All users can view the collections page; privacy should hide individual collections from this
+		//view if the proper setting are in place.
+		if(module_exists('addthis')){
+			//We can share the user's collections page
+			$addthis_variables['title'] = $user->name . "'s Vibio Want List";
+			$path = isset($_GET['q']) ? $_GET['q'] : '<front>';
+			$link = url($path, array('absolute' => TRUE));
+			$addthis_variables['url'] = $link; 
+			$share_html = theme('addthis_toolbox', $addthis_variables);
+		}
+		!empty($share_html) ? $msg = "<h1 class='page-title-sub'>Want List</h1>" . $share_html : $msg = "<h1 class='page-title-sub'>Want List</h1>";
+		$vars['sec_content'] =  
+				$msg .
+				views_embed_view("Wantlist", "default", $uid, $access);
+
+
+		break;
+ 
+
+
     case "about me":
     case "about":
 	    // This is overkill, since "About" is always public?  
@@ -477,7 +501,7 @@ function profile_ext_preprocess_user_profile(&$vars)
 	//  is faster than reverse engineering for the moment.
 	// Since network_get shows two degrees out, it's weird.
 	$network = network_get($uid);
-	$me_in_their_wide_network = $network[$user->uid]['friends'];
+	//$me_in_their_wide_network = $network[$user->uid]['friends'];
 
 	// this wants a second parameter of $rel_type... seems like 1 is a default
 	//  elsewhere?
@@ -489,9 +513,9 @@ function profile_ext_preprocess_user_profile(&$vars)
 		$vars['who_to_you'] = 'you';
 	} elseif ( in_array($user->uid, $friends ) ) {
 		$vars['who_to_you'] = 'connection';
-	} elseif ( $me_in_their_wide_network ) {
-		$vars['who_to_you'] = 'second';
-	} else {
+	} //elseif ( $me_in_their_wide_network ) {
+	//	$vars['who_to_you'] = 'second';}
+      else {
 		$vars['who_to_you'] = 'none';
 	}
 

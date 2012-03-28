@@ -1,5 +1,5 @@
 <?php
-define("NETWORK_DEFAULT_DEPTH", 3);
+define("NETWORK_DEFAULT_DEPTH", 1);
 
 function network_menu()
 {
@@ -48,18 +48,30 @@ function network_theme()
  * necessarily be ideal for other applications). However, this function WILL return the friends
  * for each user in the target user's network, so putting the data into a useful format shouldn't
  * be too hard.
+ *
+ * $rel_type --> integer, relatonship type of the connection
+ * $depth    --> integer, ho many levels the network should be traced
 */
 function network_get($uid, $rel_type=false, $depth=false)
 {
+  global $user;
+
+  //Diana is exceeding memory limits because her network is huge (she's
+  //a default friend to everyone). Set her depth to 1.
+  if($user->name == "Diana Bull"){
+    return '';
+  }
+  
 	static $networks = array();
 	
-	$rel_type = $rel_type ? $rel_type : 1;
-	
+    $rel_type = $rel_type ? $rel_type : 1;
+
+    //If the network is already defined, use that.	
 	if (isset($networks[$uid][$rel_type][$depth]))
 	{
 		return $networks[$uid][$rel_type][$depth];
 	}
-	
+
 	if (!$depth)
 	{
 		$depth = NETWORK_DEFAULT_DEPTH;
@@ -68,25 +80,32 @@ function network_get($uid, $rel_type=false, $depth=false)
 	$user_queue = array($uid);
 	$network = array();
 	$current_depth = 0;
-	
+	//generate $network, starting wit the $uid user
 	while (!empty($user_queue) && $current_depth <= $depth)
 	{
 		$next_queue = array();
-		
+		//Populate the $network for every user in $user_queue 
 		foreach ($user_queue as $q_uid)
-		{
+        {
+            //Populate data about the current user in the queue
 			if (!array_key_exists($q_uid, $network))
 			{
-				$network[$q_uid] = _network_get_userinfo($q_uid);
-				$network[$q_uid]['friends'] = _network_get_friends($q_uid, $rel_type);
+        //If the current user in the queue is Diana, don't load her network 
+        //@todo: get rid of this hack
+        $network[$q_uid] = _network_get_userinfo($q_uid);
+        if($network[$q_uid]['name'] != 'Diana Bull'){
+          $network[$q_uid]['friends'] = _network_get_friends($q_uid, $rel_type);
+        }else{
+          $network[$q_uid]['friends'] = array();
+        }
 			}
-			
-			foreach ($network[$q_uid]['friends'] as $friend_id)
+            //Place the current user's friends next i the queue
+            foreach ($network[$q_uid]['friends'] as $friend_id)
 			{
 				$next_queue[] = $friend_id;
 			}
 		}
-		
+	    //Increase the depth and rotate the queue	
 		++$current_depth;
 		$user_queue = $next_queue;
 	}
@@ -131,7 +150,10 @@ function network_ebay_remove_account($uid)
 /**
  * Gets the uids of $uid's existing friends on the vibio network
  * @todo: replace w/User Relationshp function if needed elsewhere
- * @todo: 
+ * @todo: refactor to use caching more intelligently for users
+ *        with very large networks; Diana (default friend) was causing
+ *        huge performance issues, probably because her network was
+ *        being continually refreshed? Needs more investigation...
  *
  * @param <type> $uid
  * @param <type> $rel_type
@@ -139,35 +161,42 @@ function network_ebay_remove_account($uid)
  */
 function _network_get_friends($uid, $rel_type)
 {
-	$cache_key = "friends:{$uid}:{$rel_type}";
+    //See if we can retrieve cache
+    $cache_key = "friends:{$uid}:{$rel_type}";
 	if ($cache = cache_get($cache_key, "cache_network"))
-	{
-		return $cache->data;
-	}
+    {
+        //If so, return the cache and exit
+        return $cache->data;
+    }
 
+    //If not, start constructing the network array
 	$params = array(
 		"user"		=> $uid,
 		"approved"	=> 1,
 	);
 	$options = array(
-		"include_user_info"	=> true,
+        "include_user_info"	=> TRUE,
 	);
 	
 	$friends = array();
-	foreach (user_relationships_load($params, $options) as $rel)
+
+    //Load the related users
+    foreach (user_relationships_load($params, $options) as $rel)
 	{
-		if ($rel->requester_id != $uid)
-		{
-			$friends[] = $rel->requester_id;
+        //Insert friend uids, make sure we aren't entering the user's $uid 
+        if ($rel->requester_id != $uid)
+        {
+            $friends[] = $rel->requester_id;
 		}
 		elseif ($rel->requestee_id != $uid)
 		{
 			$friends[] = $rel->requestee_id;
 		}
 	}
-	
-	cache_set($cache_key, $friends, "cache_network");
-	return $friends;
+    //Set the cache
+    cache_set($cache_key, $friends, "cache_network");
+    
+    return $friends;
 }
 
 /**

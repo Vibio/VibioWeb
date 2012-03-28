@@ -11,12 +11,7 @@ if ($_GET['searchcrumb']) {
 	$searchcrumb = "";
 }
 
-//$product_image can be set by vibio_addthis if it has already loaded the image path. It is an absolute path.
-if (isset($product_image)) {
-	$image = $product_image;
-} else {
-	$image = _product_get_image($node -> nid, true);
-}
+$image = _product_get_image($node -> nid, true);
 
 if (isset($image)) {
 	$image = file_uncreate_url($image);
@@ -31,8 +26,8 @@ if (isset($image)) {
 		// hey look, terrible, recode!
 	}
 
-  // If there are amphersands in the encoded filename, bad stuff'll happen.
-  $urlimage = str_replace('%2526', '&', $urlimage);
+	// If there are amphersands in the encoded filename, bad stuff'll happen.
+	$urlimage = str_replace('%2526', '&', $urlimage);
 
 	$pattern = "/^\//";
 	$image = preg_replace($pattern, "", $image);
@@ -99,6 +94,8 @@ if (arg(0) != "product" && arg(2) != "add-to-inventory") {
 	drupal_set_title($node -> title);
 }
 
+//Until confirmed, assume the user doesn't own the product
+$user_owns = FALSE;
 /*  This section is for the page starting after "People who have...." */
 if ($page) {
 	module_load_include("inc", "product");
@@ -183,14 +180,16 @@ if ($page) {
 	} else {
 		// note: if you own it, doesn't seem to show up... so...
 		if (product_user_owns_product($node -> nid)) {
+			$user_owns = TRUE;
 			$non_header = t("Besides yourself, no one else in your network has this item.");
 		} else {
 			$non_header = t("Be the first in your network with <em>!title</em>", array("!title" => $node -> title));
 		}
 		$extra_data = "
-                        <div class='product_extra_data'>
+      <div class='product_extra_data'>
+        $product_images
 				<h3>$non_header</h3>
-		      $external_link</p>
+		      $external_link
           $notification_text
 			</div>
 		";
@@ -206,13 +205,23 @@ if ($page) {
 /* press design/wireframe team to get a back-to-search into the design
  *  $searchcrumb
  */
-
+if ($user_owns) {
+	$header_link = l('Edit Item', $manage_link, array('attributes' => array('class' => 'product-edit-head'))) . "<a id='info-button-head' class='automodal' href='/product-help'><span class='tab'>Info</span></a>";
+	$manage_link = l('Edit your item details to:', $manage_link) . " <ul id='product-manage-ul'>
+                    <li>Move this item into different collections</li>
+                                <li>Remove this item from your collection</li>
+                                            <li>Adjust who can view this item (privacy settings)</li>
+                                                        <li>Change status (For Sale/Not For Sale)</li>
+                                                                    </ul> ";
+} else {
+	$header_link = "<div class='external_short_link'>
+       $external_it_link<a id='info-button' class='automodal' href='/product-help'><span class='tab'>Info</span></a>
+       </div>";
+}
 echo "
 	<h1 id='product_description'>Description</h1>
-	<div class='external_short_link'>
-       $external_it_link<a id='info-button' class='automodal' href='/product-help'><span class='tab'>Info</span></a>
-   </div>
-	<div class='product_image'>
+    $header_link 
+    <div class='product_image'>
 		$price_image
 		$image
 	</div>
@@ -221,9 +230,9 @@ echo "
 			$title
 		</a>
 		$product_content
-		$links
-		$manage_link
-	</div>
+        $links
+        $manage_link        
+    </div>
 	<div class='clear'></div>
 	$extra_data
 ";

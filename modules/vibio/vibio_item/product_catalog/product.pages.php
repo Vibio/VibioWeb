@@ -26,29 +26,25 @@ function product_ajax_add() {
 	module_load_include("inc","product");
 
 	$image = _product_get_image($product->nid,true);
-// Ugly hack to fix Have popup image
-//   Wait till get Ian approved measures for imagecache and then fix.
-// Something is weird with the above function.  I'm surprised this
-//  is the only thing breaking.  It needs to be looked at (this hack,
-//  that function.)
-//This was a quick-fix patch that can be erased in Dec11... fixed in overrides_file_url_alter instead of here:  $image = "/sites/default/files/uploads/" . $image; ... NOPE.  That fix breaks other things.  Here's the hack.  Imagecache
-// this soon.
-//   @ToDo, why isn't it imagecache?  Hopefully the filesystem
-//    cleanup now means this is an easy fix?
-if(strpos($image, 'sites/default/files') == false){
-	$image = "/sites/default/files/uploads/" . $image;
+/**
+ * Parsing to see if the path given is absolute (and them making it relative)
+ * seems hackish; worried that relative paths might break it...
+ */
+global $base_url;
+if(strpos($image, $base_url . '/sites/default/files/uploads') !== FALSE){
+	$image = str_replace($base_url . '/sites/default/files/uploads/', '', $image);
 }
-if ($_POST['possess'] == 'want') {
+
+$image = theme('imagecache', 'medium_square_standard', $image);
+/*if ($_POST['possess'] == 'want') {
 	$top_text = "  <div id='inventory_top'><span class='bold-text'>So you want this item and think it expresses your unique sense of style?</span><br />Vibio lets you curate your favorite items into Collections while you wait for birthdays, paychecks or miracles to turn your wants into haves.</div>
 	";
 } else {
 	$top_text = "  <div id='inventory_top'><span class='bold-text'>So you own this item and want to add it to your Collections?</span><br />Vibio is for people who possess a unique sense of style so make it good!</div>
 	";
-}
+}*/ /*<div class='inventory_title'>{$product->title}</div>*/
 $out = $top_text . 
-	"<div class='inventory_add_image'><img src='$image' /></div>
-   <div class='inventory_title'>{$product->title}</div>
-  ";
+	"<div class='inventory_add_image'>$image</div>";
 
 // Alter this, put collections downwards, with altered form.?
 $out.=drupal_get_form("product_ajax_add_form",$product, $possess);
@@ -153,10 +149,12 @@ function product_ajax_add_complete() {
      */
   
 		$cids=array();
-		foreach($p['collections'] as $cid) {
+    $p['collections'] = (array) $p['collections'];
+		foreach((array) $p['collections'] as $cid) {
 			// Did Alec overwrite this weird stuff?
 			$cids[$cid]=$cid;
-		}
+	    $state['values']['field_collection'][]['nid'] = $cid;
+    }
 		if(empty($cids)) {
 			module_load_include("inc","collection");
 			// We might re-implement post-Alec's changes

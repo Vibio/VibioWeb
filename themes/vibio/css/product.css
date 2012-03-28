@@ -16,7 +16,8 @@
 	height: 24px;
 	width: 24px;
 	float: right;
-	margin-left: 5px
+	margin-left: 5px;
+	margin-top: 3px
 }
 .external_short_link a#info-button:hover {
 	background-position: -40px -1px;
@@ -47,28 +48,27 @@ div.product_owners_results div.action div.row {
 #content-area div.product_owners_results div.action a.offer-button {
 	display: block;
 	text-indent: -9999px;
-	background: url(../images/btn_make_offer_1.png) no-repeat 0 0;
-	width: 109px;
-	height: 28px;
+	background: url(../images/btn_product_offer.png) no-repeat scroll -2px 5px transparent;
+	width: 113px;
+	height: 40px;
+	margin-top: 10px;
 }
 #content-area div.product_owners_results div.action a.offer-button:hover {
-	background-position: 0px -42px;
+	background-position: -2px -37px;
 }
-.item_owner{
+.item_owner {
 	height: 75px;
 	padding: 10px 0;
 }
 .item_owner .action {
-	width: 140px;
+	width: 124px;
 	float: right;
 	position: relative
 }
-
-.item_owner .action .not_for_sale img{
+.item_owner .action .not_for_sale img {
 	position: absolute;
-	right: 16px;
+	right: 7px;
 }
-
 .item_owner .picture {
 	padding: 5px 5px 0;
 	border: 1px solid #CCCCCC;
@@ -113,10 +113,6 @@ div.product_owners_results div.action div.row {
 }
 .inventory_add_image {
 	padding-right: 10px;
-}
-.inventory_add_image img {
-	max-width: 100px;
-	max-height: 100px;
 }
 .product_snippet_expand {
 	display: none;

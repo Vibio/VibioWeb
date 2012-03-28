@@ -6,18 +6,13 @@ $is_product_page = !isset($product->item);
 if ($is_product_page && $item_id || // PRODUCT page where user owns the product
 	(!$is_product_page && $item_id && $product->item->uid != $user->uid)) // ITEM page where the current user owns the product, but isn't looking at their own item page
 {
-	$manage_link = l(t("Edit your item details to:"), "node/$item_id/edit", 
-		array(
+	$manage_link = url("node/$item_id/edit", 
+        array(
+            'absolute' => TRUE,
 			'attributes' => array(
 				'class' => "local_action_button",),
 			'query'=>'manage=1')
-		) . '<ul id="product-manage-ul">
-		<li>Move this item into different collections</li>
-		<li>Remove this item from your collection</li>
-		<li>Adjust who can view this item (privacy settings)</li>
-		<li>Change status(For Sale/Not For Sale)</li>
-		</ul>';  // used to be View yours
-		
+		); 
 }
 elseif (!$item_id) // user doesn't own this product, always show this.
 {

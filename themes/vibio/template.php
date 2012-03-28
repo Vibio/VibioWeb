@@ -6,18 +6,22 @@
  * @param <type> $variables
  */
 function vibio_preprocess_page(&$variables){
-  if(drupal_is_front_page()){
+  if (drupal_is_front_page()) {
     global $base_url;
     $site_image = $base_url . '/'. drupal_get_path('theme', 'vibio') . '/vibio-logo.png';
     $og_image = '<meta property="og:image" content="' . $site_image . '"/>' . PHP_EOL;
     $og_text = '<meta property="og:description" content="Vibio is a social commerce network for people who possess a unique sense of style."/>';
 
-    //This is apparently necessary, see http://api.drupal.org/api/drupal/includes--common.inc/function/drupal_set_html_head/6#comment-4614
+    // This is apparently necessary, see http://api.drupal.org/api/drupal/includes--common.inc/function/drupal_set_html_head/6#comment-4614
     $variables['head'] .= $og_image . $og_text;
   }
   if ($variables['node']->type != "" && arg(2) != 'edit') {
     $variables['template_files'][] = "page-node-" . $variables['node']->type;
   }
+  drupal_add_js('sites/all/libraries/jquery.ui/external/cookie/jquery.cookie.js');
+  drupal_add_js(drupal_get_path('theme', 'vibio') . '/js/homepage.js');
+  // Reload JS, cuz one must.
+  $variables['scripts'] = drupal_get_js();
 }
 
 /**
@@ -114,9 +118,6 @@ function vibio_addthis_toolbox($html, $variables) {
     $pin_image = $base_url . '/themes/vibio/vibio-logo.png';
   }
   return '
-  <div class="share-text">
-  Share: 
-  </div>
   <div class="addthis_toolbox addthis_default_style"
     addthis:title="'. $title .'"
     addthis:url="'. $url .'"
@@ -126,12 +127,12 @@ function vibio_addthis_toolbox($html, $variables) {
     tw:via="vibio"
     addthis:url="'. $abbreviated_url .'">
   </a>
+  <a class="addthis_counter addthis_pill_style"></a>
   <a class="addthis_button_pinterest"
     pi:pinit:url="'. $url .'"
     pi:pinit:media="'. $pin_image . '"
     pi:pinit:layout="horizontal">
   </a>
-  <a class="addthis_counter addthis_pill_style"></a>
   </div>
   ';
 }
@@ -173,7 +174,7 @@ function vibio_preprocess_box(&$vars) {   //, $hook)
 	if ( $vars['title'] == "Your search yielded no results" ) {
 		$vars['content'] ='
 <h3>Add it?</h3>
-Can\'t find your item? <a href="/product/add">Add it directly to our Product Database</a>
+Can\'t find your item? <a href="/product/new">Add it directly to our Product Database</a>
 <h3>Keep looking for it?</h3>
 <ul>
 	<li>Try removing quotes around phrases: "paisley tie" will match less than paisley tie.</li>
@@ -464,8 +465,8 @@ function vibio_user_login_block($form) {
 if(module_exists('automodal')){
 	automodal_add('.make-modal', array(
 	    'autoFit' => false
-	    ,'width'   => 700
-	    ,'height'  => 605
+	    ,'width'   => 740
+	    ,'height'  => 420
 	    ,'draggable' => false)
 	);
 	automodal_add('.works-modal', array(

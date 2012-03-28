@@ -3,52 +3,280 @@
 include_once('vibio_product_displays.features.inc');
 
 function vibio_product_displays_menu() {
-  $items['for-sale'] = array(
-    'title' => t('For Sale'),
+  $items['home'] = array(
+    'title' => t('Featured by Vibio'),
+    'page callback' => 'vibio_product_displays_show_view',
+    'page arguments' => array(1, 'flag_featured', 'page'),
+    'access arguments' => array('access content'),
+  );
+  $items['home/featured'] = array(
+    'title' => t('Featured'),
+    'description' => t('View products we think are interesting.'),
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'page callback' => 'vibio_product_displays_show_view',
+    'page arguments' => array(2, 'flag_featured', 'page'),
+    'access arguments' => array('access content'),
+    'weight' => 0,
+  );
+  $items['home/popular'] = array(
+    'title' => t('Popular'),
+    'description' => t('View products that people want and have the most.'),
+    'type' => MENU_LOCAL_TASK,
+    'access arguments' => array('access content'),
+    'page arguments' => array(2, 'popular_products', 'page'),
+    'weight' => 1,
+  );
+  $items['home/for-sale'] = array(
+    'title' => t('For sale'),
     'description' => t('View products that people have and are selling.'),
-    'type' => MENU_NORMAL,
-    'page callback' => 'vibio_product_displays_for_sale',
-    'access callback' => 'user_is_logged_in',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'vibio_product_displays_show_view',
+    'page arguments' => array(2, 'all_products_for_sale', 'page'),
+    'access arguments' => array('access content'),
+    'weight' => 2,
+  );
+  $items['home/recent'] = array(
+    'title' => t('Recent'),
+    'description' => t("View products that have recently entered people's collections."),
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'vibio_product_displays_show_view',
+    'page arguments' => array(2, 'recent_products', 'page'),
+    'access arguments' => array('access content'),
+    'weight' => 3,
+  );
+  $items['admin/settings/vibio-home'] = array(
+    'title' => t('Vibio homepage settings'),
+    'type' => MENU_NORMAL_ITEM,
+    'page callback' => 'vibio_product_displays_admin',
+    'access arguments' => array('product admin'),
   );
   return $items;
 }
 
-function vibio_product_displays_for_sale() {
-  $content = views_embed_view('all_products_for_sale', 'page');
-  return $content;
-}
-
-function vibio_product_displays_views_pre_render(&$view) {
-  if ($view->name == 'all_products_for_sale') {
-    $fid_alias = $view->field['field_main_image_fid']->field_alias;
-    // Fake the _list and _data properties
-    $fid_stub = substr($fid_alias, 0, -4);
-    $fid_alias_fid = $fid_stub . '_fid';
-    $fid_alias_list = $fid_alias . '_list';
-    $fid_alias_data = $fid_alias . '_data';
-    foreach ($view->result as $row) {
-      if ($row->{$fid_alias_fid}) {
-        continue;
+function vibio_product_displays_block($op = 'list', $delta = 0, $edit = array()) {
+  switch ($op) {
+    case 'list':
+      $blocks = array();
+      $blocks['filter'] = array(
+          'info' => t('Homepage category filter'),
+          'cache' => BLOCK_NO_CACHE,
+      );
+      return $blocks;
+      break;
+    case 'configure':
+      // TODO: Add setting for which URL argument is the term name. Defaults
+      // to 1 right now.
+      break;
+    case 'save':
+      break;
+    case 'view':
+      // This filter only shows up on the homepage.
+      if ($delta == 'filter') {
+        $block['subject'] = t('Filter a Category');
+        $block['content'] = vibio_product_displays_display_block_filter();
       }
-      else {
-        // Grab the image from the parent product
-        $product_nid = db_result(db_query("select product_nid from {product_items} where item_nid=%d", $row->nid));
-
-        // Load the image, whatever it is
-
-        $field = content_fields('field_main_image');
-        $db_info = content_database_info($field);
-        $table = $db_info['table'];
-        $fid_col = $db_info['columns']['fid']['column'];
-        $list_col = $db_info['columns']['list']['column'];
-        $data_col = $db_info['columns']['data']['column'];
-        $product_image_row = db_fetch_object(db_query("select $fid_col, $list_col, $data_col from {%s}
-            where nid = %d", $table, $product_nid));
-        $row->{$fid_alias_fid} = $product_image_row->{$fid_col};
-        $row->{$fid_alias_list} = $product_image_row->{$list_col};
-        $row->{$fid_alias_data} = $product_image_row->{$data_col};
-      }
-    }
+      return $block;
+      break;
   }
 }
 
+function vibio_product_displays_display_block_filter() {
+  return drupal_get_form('vibio_product_displays_filter_form');
+}
+
+function vibio_product_displays_filter_form(&$form_state) {
+  // Get a list of terms in the Category vocabulary
+  $vid = vibio_product_displays_get_vocabulary_by_name('Category')->vid;
+  $category = '';
+  _vibio_product_displays_process_category($category);
+  $url_term = str_replace('-', ' ', $category);
+  $selected_term = taxonomy_get_term_by_name($url_term);
+  $selected_tid = $selected_term[0]->tid;
+  $form['categories'] = taxonomy_form($vid, array($selected_tid));
+
+  // Fix the form a bit. Dropdown, single-select.
+  $form['categories']['#multiple'] = FALSE;
+  $form['categories']['#size'] = 1;
+
+  // Exclude any categories configured to be hidden
+  // @see vibio_product_displays_admin()
+
+  $exclude_tids = array_filter(variable_get('vibio_product_displays_exclude_categories', array()));
+
+  if (!empty($exclude_tids)) {
+    // Never mess with array size while iterating through it.
+    $options_copy = $form['categories']['#options'];
+    foreach ($options_copy as $key => $option) {
+      list($option_key, $option_value) = each($option);
+      // And if you gaze for long into an abyss, the abyss gazes also into you.
+      list($option_value_key, $option_value_value) = each($option_value);
+      if (in_array($option_value_key, $exclude_tids)) {
+        unset($options_copy[$key]);
+      }
+    }
+    $form['categories']['#options'] = $options_copy;
+  }
+
+  // HACK: The Category vocabulary was set to Multiple Select at the time
+  // this was written, and I didn't want to break anything. The below code
+  // checks if a reset (empty) value exists. If it doesn't, it artificially
+  // adds one.
+  $has_please_choose = FALSE;
+  foreach ($form['categories']['#options'] as $key => $option) {
+    if ($key === '') {
+      $has_please_choose = TRUE;
+      break;
+    }
+  }
+  if ($has_please_choose === FALSE) {
+    // This is just a key-preserving array_unshift().
+    $backwards_options = array_reverse($form['categories']['#options']);
+    $backwards_options[] = new stdClass();
+    $backwards_option = &end($backwards_options);
+    $backwards_option->option[''] = t('- Please choose -');
+    $form['categories']['#options'] = array_reverse($backwards_options);
+  }
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Go'),
+  );
+  return $form;
+}
+
+function vibio_product_displays_filter_form_submit($form, &$form_state) {
+  // Store the current category
+  $category = $_SESSION['vibio_product_displays_category'];
+  // Convert the selected category into lowercase and replace spaces with dashes
+  $term = taxonomy_get_term($form_state['values']['categories']);
+  if ($term) {
+    $term_name = $term->name;
+    $url_argument = strtolower(str_replace(' ', '-', $term_name));
+  }
+  else {
+    // Reset the filter.
+    $url_argument = '';
+    _vibio_product_displays_process_category($url_argument, TRUE);
+  }
+  $url_parts = explode('/', $_GET['q']);
+  $new_category_url_parts = array();
+  // Get everything *before* the current category argument
+  // That's the base path to the current view
+  foreach ($url_parts as $arg) {
+    if ($arg != $category) {
+      $new_category_url_parts[] = $arg;
+    }
+    else {
+      break;
+    }
+  }
+  if (!empty($url_argument)) {
+    $new_category_url_parts[] = $url_argument;
+  }
+  $new_category_url = implode('/', $new_category_url_parts);
+  $form_state['redirect'] = $new_category_url;
+}
+
+function _vibio_product_displays_process_category(&$category, $reset = FALSE) {
+  // Remember the current category in the session.
+  if (!empty($category) || (empty($category) && $reset)) {
+    $_SESSION['vibio_product_displays_category'] = $category;
+  }
+  // If there is none, then set the category to the stored one.
+  if (empty($category) && !empty($_SESSION['vibio_product_displays_category'])) {
+    $category = $_SESSION['vibio_product_displays_category'];
+  }
+}
+
+function vibio_product_displays_show_view($category = '', $view_name = 'popular_products', $display = 'page') {
+  _vibio_product_displays_process_category($category);
+  $arguments = array_filter(array($view_name, $display, $category));
+  $content = call_user_func_array('views_embed_view', $arguments);
+  global $user;
+  // Print Google conversion code if logged in
+  // (though I have no clue what this does).
+  if ($user->uid) {
+    $content .= _vibio_product_displays_homepage_print_google_conversion_code();
+  }
+  return $content;
+}
+
+function vibio_product_displays_form_views_exposed_form_popular_products_alter(&$form, &$form_state) {
+  $form['#action'] = request_uri();
+}
+
+function computed_field_field_item_count_compute($node, $field, &$node_field) {
+  $node_field[0]['value'] = (int) db_result(db_query("select count(item_nid) from {product_items} where product_nid = %d", $node->nid));
+}
+
+function computed_field_field_item_count_display($field, $element, $node) {
+  return $element['#item']['value'];
+}
+
+function _vibio_product_displays_homepage_print_google_conversion_code() {
+  // code to track users who click ad, and then are logged in
+  // assumed to be new users
+  $conversion = '<!-- Google Code for Sign Up Conversion Page -->
+    <script type="text/javascript">
+      /* <![CDATA[ */
+      var google_conversion_id = 1017452623;
+      var google_conversion_language = "en";
+      var google_conversion_format = "3";
+      var google_conversion_color = "ffffff";
+      var google_conversion_label = "J8y9CLGRqgIQz7CU5QM";
+      var google_conversion_value = 0;
+      /* ]]> */
+    </script>
+    <script type="text/javascript" src="http://www.googleadservices.com/pagead/conversion.js">
+    </script>
+    <noscript>
+      <div style="display:inline;">
+      <img height="1" width="1" style="border-style:none;" alt="" src="http://www.googleadservices.com/pagead/conversion/1017452623/?label=J8y9CLGRqgIQz7CU5QM&guid=ON&script=0"/>
+      </div>
+    </noscript>';
+
+    return $conversion;
+}
+
+function vibio_product_displays_admin() {
+  return drupal_get_form('vibio_product_displays_admin_form');
+}
+
+function vibio_product_displays_admin_form() {
+  $category_vid = vibio_product_displays_get_vocabulary_by_name('Category')->vid;
+  $all_terms = taxonomy_get_tree($category_vid);
+  $exclude_options = array();
+  foreach ($all_terms as $term) {
+    $exclude_options[$term->tid] = $term->name;
+  }
+  $form['vibio_product_displays_exclude_categories'] = array(
+    '#title' => t('Hide the following categories'),
+    '#type' => 'checkboxes',
+    '#description' => t('These categories will be hidden from the dropdown menu
+      on the homepage tabs (those provided by the 
+        <em>Vibio Product Displays</em> module). Users will still be able
+      to find products in these categories via search.'),
+    '#options' => $exclude_options,
+    '#default_value' => variable_get('vibio_product_displays_exclude_categories', array()),
+  );
+  return system_settings_form($form);
+};
+
+/**
+ * This function will return a vocabulary object which matches the
+ * given name. Will return null if no such vocabulary exists.
+ *
+ * @param String $vocabulary_name
+ *   This is the name of the section which is required
+ * @return Object
+ *   This is the vocabulary object with the name
+ *   or null if no such vocabulary exists
+ */
+function vibio_product_displays_get_vocabulary_by_name($vocabulary_name) {
+  $vocabs = taxonomy_get_vocabularies(NULL);
+  foreach ($vocabs as $vocab_object) {
+    if ($vocab_object->name == $vocabulary_name) {
+      return $vocab_object;
+    }
+  }
+  return NULL;
+}

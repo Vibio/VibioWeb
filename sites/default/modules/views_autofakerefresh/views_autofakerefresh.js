@@ -61,9 +61,11 @@ Drupal.behaviors.views_autofakerefresh = function(context) {
                     // more complex such as a modal popup. Recurse up the DOM
                     // and scroll the first element that has a non-zero top.
                     var scrollTarget = target;
-                    while ($(scrollTarget).scrollTop() == 0 && $(scrollTarget).parent()) {
-                      scrollTarget = $(scrollTarget).parent()
-                    }
+                    $(scrollTarget).scrollTop();
+                    //Old code, was causing page jumps
+                    //while ($(scrollTarget).scrollTop() == 0 && $(scrollTarget).parent()) {
+                    // scrollTarget = $(scrollTarget).parent()
+                  // }
                     // Only scroll upward
                     if (offset.top - 10 < $(scrollTarget).scrollTop()) {
                       $(scrollTarget).animate({scrollTop: (offset.top - 10)}, 500);

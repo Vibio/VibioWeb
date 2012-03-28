@@ -1,7 +1,7 @@
 <?php
 // reprofileicious
-This page isn't used is it?  Delete if no error message appears after
-multiple cache clears and testing...
+//This page isn't used is it?  Delete if no error message appears after
+//multiple cache clears and testing...
 
 global $user;
 $u = $profile['user'];

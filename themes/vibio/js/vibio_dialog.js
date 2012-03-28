@@ -11,6 +11,14 @@ var vibio_dialog = {
 		this.dialog.html(content).dialog({
 			position : ['center', 30]
 		});
+		//Change Form labels
+		$("#edit-collections-wrapper label").html("Add to Collection:");
+		$("#edit-collections-new-wrapper label").html("OR create a new collection");
+		$("#edit-privacy-wrapper label").html("Item Can Be Viewed By:");
+		$("#edit-privacy-wrapper").insertBefore("#edit-body-wrapper");
+		//If yes is selected on for sale input
+		var flo = $('select#edit-posting-type').val();
+$("#product-ajax-add-form input#edit-submit").css("bottom", (flo == 2) ? "85px" : "36px");
 	},
 	init : function() {
 		this.reset_options();
@@ -22,22 +30,17 @@ var vibio_dialog = {
 			resizeable : false,
 			draggable : false,
 			autoOpen : false,
-			width : 550,
+			width : 638,
 			open : function() {
 				vibio_dialog.center();
 			}
 		};
 	},
 	set_options : function(options) {
-		options = $.extend({}, options, {
-			position : "center"
-		});
-		this.dialog.dialog("option", options);
-		this.center();
+		
 	},
 	center : function() {
-		var current_offset = parseInt(this.dialog.closest(".ui-dialog").css("left"));
-		this.dialog.closest(".ui-dialog").css("left", current_offset + 95 + "px");
+		
 	}
 };
 
@@ -47,3 +50,4 @@ $(document).ready(function() {
 		return false;
 	});
 });
+//

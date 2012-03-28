@@ -8,8 +8,11 @@ Notes for devel finding code:
 function product_vibio_item_images($item_nid)
 calls
 modules/vibio/vibio_item/product_catalog/product.inc:function product_images($node, $get_main=false)    returns images as urls
-
+ *
+ * additional-images.tpl.php is generated within node-product.tpl.php with
+ * $product_images = theme("vibio_item_images", product_images($node));
  */
+
 if (!empty($images)) {
 	$header = t("Additional Images");
 	$image_html = "";

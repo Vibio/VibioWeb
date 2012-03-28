@@ -1,0 +1,3 @@
+<?php
+
+include_once('feature_related_item.features.inc');

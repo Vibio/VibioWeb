@@ -54,12 +54,15 @@ function product_ajax_add_form($state, $product, $possess)
  	switch($possess) {
 		case 'like':
 			$possess_int = 30;	
+        	$form['submit']['#attributes'] = array("class" => 'like-submit'); 
 			break;
 		case 'want':
 			$possess_int = 20;
+        	$form['submit']['#attributes'] = array("class" => 'want-submit');
 			break;
 		default:
 			$possess_int = 10;
+        	$form['submit']['#attributes'] = array("class" => 'have-submit'); 
 	}
 
 	$form['field_have_want_like'] = array(
@@ -82,7 +85,7 @@ function product_ajax_add_form($state, $product, $possess)
 		$form['collections'] = array(
 			"#type"			=> "select",
 			"#title"		=> t("Collection(s)"),
-			"#multiple"		=> true,
+			"#multiple"		=> FALSE,
 			"#options"		=> collection_options(),
 			"#default_value"=> $default,
 		);
@@ -169,11 +172,9 @@ function product_ajax_add_form($state, $product, $possess)
 	);
 */	
 	
-	$form['submit'] = array(
-		"#type"	=> "submit",
-		"#value"=> t("Add Item"),
-	);
-	
+    	
+	$form['submit']['#type'] = "submit";
+    $form['submit']["#value"] = t("Add Item");
 	return $form;
 }
 ?>

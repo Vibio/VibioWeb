@@ -108,15 +108,9 @@ $(document).ready(function() {
 	}, function() {
 		$('.not-sale-popup').remove();
 	});
-	$('.make-offer').hover(function() {
-		$(this).prepend('<div class="make-offer-popup">Negotiate a price with this seller. <a href="/faq#buy">Find out how</a>.</div>');
-	}, function() {
-		$('.make-offer-popup').remove();
-	});
-	
 	/*Messages moving of elements per ian's comp*/
 	$('div.tabs ul.tabs li:eq(1) a, div.tabs ul.tabs li:eq(2) a, div.tabs ul.tabs li:eq(3) a').append('<span class="top-tabs-sep">|</span>');
-	
+
 	$("table.privatemsg-list thead tr th:eq(2)").remove().insertBefore("table.privatemsg-list thead tr th:eq(1)");
 	//th
 	$("table.privatemsg-list tr.odd td:eq(2)").insertBefore("table.privatemsg-list tr.odd td:eq(1)");
@@ -127,4 +121,34 @@ $(document).ready(function() {
 	//marker
 	//Change table header to small caps
 	$("table.privatemsg-list th").css('font-variant', 'small-caps');
+	//style the selects
+	(function($){
+ $.fn.extend({
+ 
+ 	customStyle : function(options) {
+	  if(!$.browser.msie || ($.browser.msie&&$.browser.version>6)){
+	  return this.each(function() {
+	  
+			var currentSelected = $(this).find(':selected');
+			$(this).after('<span class="customStyleSelectBox"><span class="customStyleSelectBoxInner">'+currentSelected.text()+'</span></span>').css({position:'absolute', opacity:0,fontSize:$(this).next().css('font-size')});
+			var selectBoxSpan = $(this).next();
+			var selectBoxWidth = parseInt($(this).width()) - parseInt(selectBoxSpan.css('padding-left')) -parseInt(selectBoxSpan.css('padding-right'));			
+			var selectBoxSpanInner = selectBoxSpan.find(':first-child');
+			selectBoxSpan.css({display:'inline-block'});
+			selectBoxSpanInner.css({width:selectBoxWidth, display:'inline-block'});
+			var selectBoxHeight = parseInt(selectBoxSpan.height()) + parseInt(selectBoxSpan.css('padding-top')) + parseInt(selectBoxSpan.css('padding-bottom'));
+			$(this).height(selectBoxHeight).change(function(){
+				// selectBoxSpanInner.text($(this).val()).parent().addClass('changed');   This was not ideal
+			selectBoxSpanInner.text($(this).find(':selected').text()).parent().addClass('changed');
+				// Thanks to Juarez Filho & PaddyMurphy
+			});
+			
+	  });
+	  }
+	}
+ });
+})(jQuery);
+
+	$('.front .form-select, .section-home .form-select').customStyle();
+
 });

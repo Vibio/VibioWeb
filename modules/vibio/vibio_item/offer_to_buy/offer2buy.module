@@ -346,18 +346,25 @@ function offer2buy_theme(&$existing, $type, $theme, $path)
  * @return <string> HTML
  */
 function theme_offer_button($item, $uid){
-	
   // Start dealing with Have/Want/Like, as well as for sale / not for sale
 	$possess = $item->field_have_want_like[0]['value'];
+  $on_sale = $item->field_posting_type[0]['value'] == VIBIO_ITEM_TYPE_SELL;
+  global $user;
 
 
   //See if the item is for sale (1 == TRUE)
   if ( $possess <= 10 ) {   // Have, including original not-set default
 
-		if ($item->offer2buy[settings][is_on_sale] == TRUE || $item->offer2buy[settings][is_on_sale] == 1) {
+      if ($on_sale == TRUE || $item->offer2buy['settings']['is_on_sale' ] == 1) {
+          //If the current user is not the item owner 
+          if($item->users_uid != $user->uid){
 			//Provide a button to make an offer.
 			$offer_button = "<div class='make-offer'><a href='/offer/$item->nid/$uid' class='make-modal offer-button'>Make Offer</a></div>"; // action_button_link'));
-		}else{
+          }else{
+              //If this is the offer owner, just show a listing flag
+              $offer_button = "<div class='for_sale'>Listed For Sale</div>";
+          }
+      }else{
 			//Not for sale text
 			$nfs_text = t("Just showing my style: Not For Sale");
 			//Provide not for sale image
@@ -369,7 +376,7 @@ function theme_offer_button($item, $uid){
 	} else {  // Want, Like, etc
     if ( $possess == 20 ) { // Want
 			$offer_button = "<div class='wanted'><img 
-					src='/themes/vibio/images/item/wanted_button.png'
+					src='/themes/vibio/images/item/wanted_flag.png'
           alt='I want this.  Maybe it\'s my birthday today?'
           title='I want this.'></div>";
 		}
